@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Smartbills.Core.Models;
+using PolyPaint.Core.Models;
 
 namespace PolyPaint.Core
 {

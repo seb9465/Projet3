@@ -4,9 +4,9 @@ namespace PolyPaint.DataAccess.Services
 {
     public static class DataSeeder
     {
-        public async static void Seed(PolyPaintContext polyPaintContext)
+        public static void Seed(PolyPaintContext polyPaintContext)
         {
-           await polyPaintContext.Database.EnsureCreatedAsync();
+           polyPaintContext.Database.EnsureCreated();
         }
     }
 }

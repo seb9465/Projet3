@@ -16,7 +16,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "Smartbills.API": {
+    "PolyPaint.API": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "login",

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Smartbills.Core.Models
+namespace PolyPaint.Core.Models
 {
     public class RegistrationViewModel
     {
