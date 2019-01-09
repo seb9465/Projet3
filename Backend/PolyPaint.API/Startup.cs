@@ -1,11 +1,14 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using PolyPaint.Core;
 using PolyPaint.DataAccess.Contexts;
+using PolyPaint.DataAccess.Services;
 
 namespace PolyPaint.API
 {
@@ -21,8 +24,17 @@ namespace PolyPaint.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+            {
+                options.User.RequireUniqueEmail = true;
+            })
+            .AddEntityFrameworkStores<PolyPaintContext>()
+            .AddDefaultTokenProviders();
+
             services.AddDbContext<PolyPaintContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+                    options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddScoped<RegisterService>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -39,7 +51,7 @@ namespace PolyPaint.API
             app.UseHttpsRedirection();
             app.UseAuthentication();
             app.UseMvc();
-
+            app.UseIdentity();
             app.Run(async context => { await context.Response.WriteAsync("Route not found in PolyPaint API"); });
         }
     }
