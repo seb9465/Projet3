@@ -4,6 +4,9 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Controls.Primitives;
 using PolyPaint.VueModeles;
+using System.Windows.Media.Imaging;
+using System.IO;
+using Microsoft.Win32;
 
 namespace PolyPaint
 {
@@ -43,5 +46,43 @@ namespace PolyPaint
         }
 
         private void SupprimerSelection(object sender, RoutedEventArgs e) => surfaceDessin.CutSelection();
+
+        private void SaveImage(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.DefaultExt = ".png"; // Default file extension
+            saveFileDialog.Filter = "Image (.png)|*.png"; // Filter files by extension
+
+            // Show save file dialog box
+            Nullable<bool> result = saveFileDialog.ShowDialog();
+
+            // Get the dimensions of the ink control
+            var size = new Size(surfaceDessin.ActualWidth, surfaceDessin.ActualHeight);
+            surfaceDessin.Margin = new Thickness(0, 0, 0, 0);
+            surfaceDessin.Measure(size);
+            surfaceDessin.Arrange(new Rect(size));
+
+            int margin = (int)surfaceDessin.Margin.Left;
+            int width = (int)surfaceDessin.ActualWidth - margin;
+            int height = (int)surfaceDessin.ActualHeight - margin;
+            // Render ink to bitmap
+            RenderTargetBitmap rtb =
+            new RenderTargetBitmap(width, height, 96d, 96d, PixelFormats.Default);
+            rtb.Render(surfaceDessin);
+            // Save the ink to a memory stream
+            BmpBitmapEncoder encoder = new BmpBitmapEncoder();
+            encoder.Frames.Add(BitmapFrame.Create(rtb));
+            byte[] bitmapBytes;
+            using (MemoryStream ms = new MemoryStream())
+            {
+                encoder.Save(ms);
+                // Get the bitmap bytes from the memory stream
+                ms.Position = 0;
+                bitmapBytes = ms.ToArray();
+            }
+            System.IO.File.WriteAllBytes(saveFileDialog.FileName, bitmapBytes);
+
+
+        }
     }
 }
