@@ -32,6 +32,15 @@
                         <Image Source="/Resources/save.png"  />
                     </StackPanel>
                 </Button>
+                <Button Name="load" Width="40" Height="40" Margin="5"
+                        HorizontalContentAlignment="Left"                            
+                        BorderBrush="Transparent"
+                        Background="Transparent"
+                        Click="LoadImage">
+                    <StackPanel>
+                        <Image Source="/Resources/load.png"  />
+                    </StackPanel>
+                </Button>
                 
                 <Button x:Name="reinitialiser" Width="30" Height="30" Margin="5" Background="#00000000" Command="{Binding Reinitialiser}" Content="♺" FontSize="18"/>
                 <Button x:Name="empiler" Width="30" Height="30" Margin="5" Background="#00000000" Command="{Binding Empiler}" Content="≚" FontSize="18"/>
