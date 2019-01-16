@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -51,7 +52,7 @@ namespace PolyPaint.API
             app.UseHttpsRedirection();
             app.UseAuthentication();
             app.UseMvc();
-            app.UseIdentity();
+            app.UseAuthentication();
             app.Run(async context => { await context.Response.WriteAsync("Route not found in PolyPaint API"); });
         }
     }

@@ -3,10 +3,11 @@ using PolyPaint.Core.Models;
 
 namespace PolyPaint.Core
 {
-    public class ApplicationUser: IdentityUser
+    public class ApplicationUser : IdentityUser
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public string FullName() => $"{FirstName} {LastName}";
         public ApplicationUser() : base()
         {
         }
