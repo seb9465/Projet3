@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using PolyPaint.Core;
 using PolyPaint.DataAccess.Services;
-using PolyPaint.Core.Models;
+using PolyPaint.Core.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;

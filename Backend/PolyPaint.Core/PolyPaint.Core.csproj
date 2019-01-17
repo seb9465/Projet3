@@ -12,6 +12,8 @@
 
   <ItemGroup>
     <Folder Include="DbModels\" />
+    <Folder Include="ViewModels\" />
+    <Folder Include="Models\" />
   </ItemGroup>
 
   <ItemGroup>

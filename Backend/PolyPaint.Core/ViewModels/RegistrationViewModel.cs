@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace PolyPaint.Core.Models
+namespace PolyPaint.Core.ViewModels
 {
     public class RegistrationViewModel
     {
