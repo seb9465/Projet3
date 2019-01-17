@@ -23,7 +23,7 @@ namespace PolyPaint.WebSocketAPI
             };
         }
 
-        public virtual void OnConnected(WebSocket socket)
+        public virtual void OnConnected(WebSocket socket, string token)
         {
             WebSocketConnectionManager.AddSocket(socket);
         }

@@ -1,10 +1,12 @@
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 
 namespace PolyPaint.WebSocketAPI.Messages
 {
     public class BaseWebSocketMessage : IWebSocketMessage
     {
+        [JsonConverter(typeof(StringEnumConverter))]
         public MessageType Type { get; set; }
         public string Data { get; set; }
         public System.DateTime Timestamp { get; set; }

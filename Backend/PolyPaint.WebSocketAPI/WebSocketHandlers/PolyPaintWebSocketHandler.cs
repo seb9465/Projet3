@@ -15,10 +15,11 @@ namespace PolyPaint.WebSocketAPI
         public PolyPaintWebSocketHandler(WebSocketConnectionManager webSocketConnectionManager)
             : base(webSocketConnectionManager) { }
 
-        public override async void OnConnected(WebSocket socket)
+        public override async void OnConnected(WebSocket socket, string token)
         {
-            base.OnConnected(socket);
+            base.OnConnected(socket, token);
 
+            // Do something with token like
             // Add connection entry to DB
             // Link socket to user in DB
 
@@ -49,6 +50,7 @@ namespace PolyPaint.WebSocketAPI
                         SendMessageToGroupAsync(groupId, (response as IWebSocketMessage).ToString(), socketId).Wait();
                         break;
                     default:
+                        SendMessageAsync(socket, new ErrorMessage("Not implemented").ToString()).Wait();
                         throw new NotImplementedException();
                 }
             }

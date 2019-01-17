@@ -3,6 +3,7 @@ using System.Net.WebSockets;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using PolyPaint.WebSocketAPI.Messages;
 
 namespace PolyPaint.WebSocketAPI
 {
@@ -23,29 +24,39 @@ namespace PolyPaint.WebSocketAPI
             if (!context.WebSockets.IsWebSocketRequest)
                 return;
 
+            bool isClose;
             var socket = await context.WebSockets.AcceptWebSocketAsync();
-            WebSocketHandler.OnConnected(socket);
-
-            var isClose = false;
-
-            await Receive(socket, async (result, buffer) =>
+            if (context.Request.Query.TryGetValue("token", out var value))
             {
-                if (result.MessageType == WebSocketMessageType.Text)
+                Console.WriteLine($"Value: {value}");
+                WebSocketHandler.OnConnected(socket, value);
+                isClose = false;
+
+                await Receive(socket, async (result, buffer) =>
                 {
-                    await WebSocketHandler.ReceiveAsync(socket, result, buffer);
-                    return;
-                }
+                    if (result.MessageType == WebSocketMessageType.Text)
+                    {
+                        await WebSocketHandler.ReceiveAsync(socket, result, buffer);
+                        return;
+                    }
 
-                else if (result.MessageType == WebSocketMessageType.Close)
-                {
-                    await WebSocketHandler.OnDisconnected(socket);
-                    isClose = true;
-                    return;
-                }
+                    else if (result.MessageType == WebSocketMessageType.Close)
+                    {
+                        await WebSocketHandler.OnDisconnected(socket);
+                        isClose = true;
+                        return;
+                    }
 
-            });
+                });
+            }
+            else
+            {
+                var errorMessage = new ErrorMessage("No token provided");
+                WebSocketHandler.SendMessageAsync(socket, errorMessage.ToString()).Wait();
+                isClose = true;
+            }
 
-            if(!isClose)
+            if (!isClose)
             {
                 await _next.Invoke(context);
             }
