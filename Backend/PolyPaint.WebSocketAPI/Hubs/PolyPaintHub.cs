@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.SignalR;
+using System;
 using System.Collections.Concurrent;
 using System.Threading.Tasks;
 
@@ -6,10 +7,12 @@ namespace PolyPaint.Hubs
 {
     public class PolyPaintHub : Hub
     {
-        private ConcurrentDictionary<string, string> userIds { get; set; }
+        private readonly static ConcurrentDictionary<string, string> userIds =
+            new ConcurrentDictionary<string, string>();
+
         public async Task SendMessage(string user, string message)
         {
-            await Clients.All.SendAsync("ReceiveMessage", user, message);
+            await Clients.All.SendAsync("ReceiveMessage", userIds[Context.ConnectionId], message);
         }
 
         public async Task SendToGroup(string groupId, string message)
@@ -23,9 +26,16 @@ namespace PolyPaint.Hubs
             if (username.Trim().Length != 0)
             {
                 await base.OnConnectedAsync();
-                userIds.AddOrUpdate(Context.ConnectionId, username, (key, old) => username);
+                userIds.GetOrAdd(Context.ConnectionId, username);
                 await Groups.AddToGroupAsync(Context.ConnectionId, "test");
             }
+        }
+
+        public override async Task OnDisconnectedAsync(Exception e)
+        {
+            await base.OnDisconnectedAsync(e);
+            await Clients.All.SendAsync("ReceiveMessage", "System", $"{userIds[Context.ConnectionId]} has disconnected");
+            userIds.TryRemove(Context.ConnectionId, out var value);
         }
     }
 }
