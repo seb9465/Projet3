@@ -144,8 +144,9 @@ namespace PolyPaint
             {
                 // Put the strokes from the file onto the InkCanvas.
                 fs = new FileStream(openFileDialog.FileName, FileMode.Open, FileAccess.Read);
-                StrokeCollection strokes = new StrokeCollection(fs);
-                surfaceDessin.Strokes.Add(strokes);
+                StrokeCollection importedStrokes = new StrokeCollection(fs);
+                surfaceDessin.Strokes.Clear();
+                surfaceDessin.Strokes.Add(importedStrokes);
             }
             finally
             {
