@@ -50,16 +50,20 @@ namespace PolyPaint
 
         private void SaveImage(object sender, RoutedEventArgs e)
         {
-            // Save Image PNG (Probably gonna be used in the gallery later).
+            // Save Image PNG
+            // This part is commented right now because it has no use,
+            // but we will probably use it for the gallery later in the project.
             //{
-            //    SaveFileDialog saveFileDialog = new SaveFileDialog();
-            //    saveFileDialog.DefaultExt = ".png"; // Default file extension
-            //    saveFileDialog.Filter = "Image (.png)|*.png"; // Filter files by extension
+            //    SaveFileDialog saveFileDialog = new SaveFileDialog
+            //    {
+            //        DefaultExt = ".png",
+            //        Filter = "Image (.png)|*.png"
+            //    };
 
             //    // Show save file dialog box
             //    Nullable<bool> result = saveFileDialog.ShowDialog();
 
-            //    // Get the dimensions of the ink control
+            //    // Get the dimensions of the ink canvas
             //    var size = new Size(surfaceDessin.ActualWidth, surfaceDessin.ActualHeight);
             //    surfaceDessin.Margin = new Thickness(0, 0, 0, 0);
             //    surfaceDessin.Measure(size);
@@ -69,19 +73,17 @@ namespace PolyPaint
             //    int width = (int)surfaceDessin.ActualWidth - margin;
             //    int height = (int)surfaceDessin.ActualHeight - margin;
 
-            //    // Render ink to bitmap
-            //    RenderTargetBitmap rtb =
-            //    new RenderTargetBitmap(width, height, 96d, 96d, PixelFormats.Default);
+            //    // Convert the strokes from the canvas to a bitmap
+            //    RenderTargetBitmap rtb = new RenderTargetBitmap(width, height, 96d, 96d, PixelFormats.Default);
             //    rtb.Render(surfaceDessin);
 
-            //    // Save the ink to a memory stream
+            //    // Save the bitmap to a memory stream
             //    BmpBitmapEncoder encoder = new BmpBitmapEncoder();
             //    encoder.Frames.Add(BitmapFrame.Create(rtb));
             //    byte[] bitmapBytes;
             //    using (MemoryStream ms = new MemoryStream())
             //    {
             //        encoder.Save(ms);
-            //        // Get the bitmap bytes from the memory stream
             //        ms.Position = 0;
             //        bitmapBytes = ms.ToArray();
             //    }
@@ -89,11 +91,13 @@ namespace PolyPaint
             //    System.IO.File.WriteAllBytes(saveFileDialog.FileName, bitmapBytes);
             //}
 
-            // Save Strokes to be able to reload it.
+            // Save Strokes on a file.
             {
-                SaveFileDialog saveFileDialog = new SaveFileDialog();
-                saveFileDialog.DefaultExt = ".stro"; // Default file extension
-                saveFileDialog.Filter = "Strokes (.stro)|*.stro"; // Filter files by extension
+                SaveFileDialog saveFileDialog = new SaveFileDialog
+                {
+                    DefaultExt = ".stro",
+                    Filter = "Strokes (.stro)|*.stro"
+                };
 
                 // Show save file dialog box
                 Nullable<bool> result = saveFileDialog.ShowDialog();
@@ -118,9 +122,12 @@ namespace PolyPaint
 
         private void LoadImage(object sender, RoutedEventArgs e)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.DefaultExt = ".stro";
-            openFileDialog.Filter = "Strokes (.stro)|*.stro"; // Filter files by extension
+            // Load the strokes file.
+            OpenFileDialog openFileDialog = new OpenFileDialog
+            {
+                DefaultExt = ".stro",
+                Filter = "Strokes (.stro)|*.stro"
+            };
 
             // Show save file dialog box
             Nullable<bool> result = openFileDialog.ShowDialog();
@@ -129,13 +136,13 @@ namespace PolyPaint
 
             if (!File.Exists(openFileDialog.FileName))
             {
-                MessageBox.Show("The file you requested does not exist." +
-                    " Save the StrokeCollection before loading it.");
+                MessageBox.Show("The file you requested does not exist." + " Save the StrokeCollection before loading it.");    
                 return;
             }
 
             try
             {
+                // Put the strokes from the file onto the InkCanvas.
                 fs = new FileStream(openFileDialog.FileName, FileMode.Open, FileAccess.Read);
                 StrokeCollection strokes = new StrokeCollection(fs);
                 surfaceDessin.Strokes = strokes;
