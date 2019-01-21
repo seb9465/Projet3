@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using PolyPaint.Core;
 using PolyPaint.DataAccess.Contexts;
 using PolyPaint.DataAccess.Services;
+using PolyPaint.Hubs;
 
 namespace PolyPaint.API
 {
@@ -36,6 +37,7 @@ namespace PolyPaint.API
                     options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddScoped<RegisterService>();
+            services.AddSignalR();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -51,6 +53,11 @@ namespace PolyPaint.API
 
             app.UseHttpsRedirection();
             app.UseAuthentication();
+            app.UseSignalR(routes =>
+            {
+                routes.MapHub<PolyPaintHub>("/signalr");
+            });
+
             app.UseMvc();
             app.UseAuthentication();
             app.Run(async context => { await context.Response.WriteAsync("Route not found in PolyPaint API"); });
