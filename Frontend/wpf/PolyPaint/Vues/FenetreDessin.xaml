@@ -41,7 +41,17 @@
                         <Image Source="/Resources/load.png"  />
                     </StackPanel>
                 </Button>
-                
+
+                <Button Name="sendToCloud" Width="40" Height="40" Margin="5"
+                        HorizontalContentAlignment="Left"                            
+                        BorderBrush="Transparent"
+                        Background="Transparent"
+                        Click="SendToCloud">
+                    <StackPanel>
+                        <Image Source="/Resources/cloud.png"  />
+                    </StackPanel>
+                </Button>
+
                 <Button x:Name="reinitialiser" Width="30" Height="30" Margin="5" Background="#00000000" Command="{Binding Reinitialiser}" Content="♺" FontSize="18"/>
                 <Button x:Name="empiler" Width="30" Height="30" Margin="5" Background="#00000000" Command="{Binding Empiler}" Content="≚" FontSize="18"/>
                 <Button x:Name="depiler" Width="30" Height="30" Margin="5" Background="#00000000" Command="{Binding Depiler}" Content="≙" FontSize="18"/>
@@ -171,7 +181,7 @@
 
         <Border DockPanel.Dock="Bottom" Height="25" BorderThickness="0,0.75,0,0.75" BorderBrush="#77000000">
             <StackPanel Orientation="Horizontal" Background="#FFF0F0F0">
-                <Image Source="PolyPaint/Resources/position.png" Margin="5,5,5,5" VerticalAlignment="Center"/>
+                <Image Source="/Resources/position.png" Margin="5,5,5,5" VerticalAlignment="Center"/>
                 <TextBlock Name="textBlockPosition" VerticalAlignment="Center" HorizontalAlignment="Left"/>
             </StackPanel>
         </Border>

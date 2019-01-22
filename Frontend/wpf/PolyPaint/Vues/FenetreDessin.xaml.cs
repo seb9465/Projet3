@@ -156,5 +156,10 @@ namespace PolyPaint
                 }
             }
         }
+
+        private void SendToCloud(object sender, RoutedEventArgs e)
+        {
+            return;
+        }
     }
 }
