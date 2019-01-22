@@ -1,14 +1,18 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using System.Collections.Generic;
+using Microsoft.AspNetCore.Identity;
+using PolyPaint.Core.DbModels;
 using PolyPaint.Core.ViewModels;
 
 namespace PolyPaint.Core
 {
-    public class ApplicationUser: IdentityUser
+    public class ApplicationUser : IdentityUser
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public List<Canvas> Canvas { get; set; }
         public ApplicationUser() : base()
         {
+            Canvas = new List<Canvas>();
         }
         public ApplicationUser(RegistrationViewModel user)
         {
