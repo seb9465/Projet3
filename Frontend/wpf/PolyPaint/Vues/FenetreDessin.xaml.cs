@@ -63,31 +63,7 @@ namespace PolyPaint
             //    // Show save file dialog box
             //    Nullable<bool> result = saveFileDialog.ShowDialog();
 
-            //    // Get the dimensions of the ink canvas
-            //    var size = new Size(surfaceDessin.ActualWidth, surfaceDessin.ActualHeight);
-            //    surfaceDessin.Margin = new Thickness(0, 0, 0, 0);
-            //    surfaceDessin.Measure(size);
-            //    surfaceDessin.Arrange(new Rect(size));
-
-            //    int margin = (int)surfaceDessin.Margin.Left;
-            //    int width = (int)surfaceDessin.ActualWidth - margin;
-            //    int height = (int)surfaceDessin.ActualHeight - margin;
-
-            //    // Convert the strokes from the canvas to a bitmap
-            //    RenderTargetBitmap rtb = new RenderTargetBitmap(width, height, 96d, 96d, PixelFormats.Default);
-            //    rtb.Render(surfaceDessin);
-
-            //    // Save the bitmap to a memory stream
-            //    BmpBitmapEncoder encoder = new BmpBitmapEncoder();
-            //    encoder.Frames.Add(BitmapFrame.Create(rtb));
-            //    byte[] bitmapBytes;
-            //    using (MemoryStream ms = new MemoryStream())
-            //    {
-            //        encoder.Save(ms);
-            //        ms.Position = 0;
-            //        bitmapBytes = ms.ToArray();
-            //    }
-
+            //    byte[] bitmapBytes = GetBytesFromCanvas();
             //    System.IO.File.WriteAllBytes(saveFileDialog.FileName, bitmapBytes);
             //}
 
@@ -159,7 +135,38 @@ namespace PolyPaint
 
         private void SendToCloud(object sender, RoutedEventArgs e)
         {
-            return;
+            byte[] bitmapBytes = GetBytesFromCanvas();
+            String strokesToSend = Convert.ToBase64String(bitmapBytes);
+        }
+
+        private byte[] GetBytesFromCanvas()
+        {
+            // Get the dimensions of the ink canvas
+            var size = new Size(surfaceDessin.ActualWidth, surfaceDessin.ActualHeight);
+            surfaceDessin.Margin = new Thickness(0, 0, 0, 0);
+            surfaceDessin.Measure(size);
+            surfaceDessin.Arrange(new Rect(size));
+
+            int margin = (int)surfaceDessin.Margin.Left;
+            int width = (int)surfaceDessin.ActualWidth - margin;
+            int height = (int)surfaceDessin.ActualHeight - margin;
+
+            // Convert the strokes from the canvas to a bitmap
+            RenderTargetBitmap rtb = new RenderTargetBitmap(width, height, 96d, 96d, PixelFormats.Default);
+            rtb.Render(surfaceDessin);
+
+            // Save the bitmap to a memory stream
+            BmpBitmapEncoder encoder = new BmpBitmapEncoder();
+            encoder.Frames.Add(BitmapFrame.Create(rtb));
+            byte[] bitmapBytes;
+            using (MemoryStream ms = new MemoryStream())
+            {
+                encoder.Save(ms);
+                ms.Position = 0;
+                bitmapBytes = ms.ToArray();
+            }
+
+            return bitmapBytes;
         }
     }
 }
