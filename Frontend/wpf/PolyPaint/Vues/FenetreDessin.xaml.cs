@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -8,6 +8,8 @@ using System.Windows.Media.Imaging;
 using System.IO;
 using Microsoft.Win32;
 using System.Windows.Ink;
+using PolyPaint.Chat;
+using Microsoft.AspNetCore.SignalR.Client;
 
 namespace PolyPaint
 {
@@ -16,10 +18,13 @@ namespace PolyPaint
     /// </summary>
     public partial class FenetreDessin : Window
     {
+        public ChatClient ChatClient { get; set; }
+
         public FenetreDessin()
         {
             InitializeComponent();
             DataContext = new VueModele();
+            ChatClient = new ChatClient();
         }
         
         // Pour gérer les points de contrôles.
@@ -154,6 +159,43 @@ namespace PolyPaint
                 {
                     fs.Close();
                 }
+            }
+        }
+
+        private async void connectButton_Click(object sender, RoutedEventArgs e)
+        {
+            ChatClient.connection.On<string, string>("ReceiveMessage", (user, message) =>
+            {
+                this.Dispatcher.Invoke(() =>
+                {
+                    var newMessage = $"{user}: {message}";
+                    messagesList.Items.Add(newMessage);
+                });
+            });
+
+            try
+            {
+                await ChatClient.connection.StartAsync();
+                messagesList.Items.Add("Connection started");
+                connectButton.IsEnabled = false;
+                sendButton.IsEnabled = true;
+            }
+            catch (Exception ex)
+            {
+                messagesList.Items.Add(ex.Message);
+            }
+        }
+
+        private async void sendButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                await ChatClient.connection.InvokeAsync("SendMessage",
+                    userTextBox.Text, messageTextBox.Text);
+            }
+            catch (Exception ex)
+            {
+                messagesList.Items.Add(ex.Message);
             }
         }
     }
