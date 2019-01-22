@@ -13,7 +13,7 @@
         <convertisseurs:ConvertisseurCouleurFond x:Key="convertisseurCouleurFond" />
         <convertisseurs:ConvertisseurModeEdition x:Key="convertisseurModeEdition" />
     </Window.Resources>
-    <DockPanel>
+    <DockPanel Margin="0,0,-4.444,-0.111">
         <Grid Margin="0,0,193.333,50.667">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="109*"/>
