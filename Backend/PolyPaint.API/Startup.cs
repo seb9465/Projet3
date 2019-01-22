@@ -76,10 +76,10 @@ namespace PolyPaint.API
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             }).AddJwtBearer(options =>
             {
-                options.Audience = "https://localhost:44300";
-                options.ClaimsIssuer = "https://localhost:44300";
-                options.Audience = "https://localhost:44300";
-                options.Authority = "https://localhost:44300";
+                options.Audience = "http://0.0.0.0:5000";
+                options.ClaimsIssuer = "http://0.0.0.0:5000";
+                options.Audience = "http://0.0.0.0:5000";
+                options.Authority = "http://0.0.0.0:5000";
                 options.TokenValidationParameters = tokenValidationParameters;
                 options.SaveToken = true;
                 options.Configuration = new OpenIdConnectConfiguration();
