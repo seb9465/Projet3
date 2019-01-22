@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using PolyPaint.Core.Models;
+using PolyPaint.Core.ViewModels;
 
 namespace PolyPaint.Core
 {
