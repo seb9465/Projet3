@@ -1,0 +1,12 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\Backend",
+    "\\Frontend",
+    "\\Frontend\\wpf",
+    "\\Frontend\\wpf\\PolyPaint",
+    "\\Frontend\\wpf\\PolyPaint\\Convertisseurs"
+  ],
+  "SelectedNode": "\\Frontend\\wpf\\PolyPaint\\Convertisseurs",
+  "PreviewInSolutionExplorer": false
+}
