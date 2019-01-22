@@ -19,6 +19,7 @@ namespace PolyPaint.Core.ViewModels
 
         [Required]
         public string Username { get; set; }
+        
         [Required]
         [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,15}$")]
         [DataType(DataType.Password)]

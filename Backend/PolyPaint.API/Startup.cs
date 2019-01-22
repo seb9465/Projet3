@@ -13,6 +13,7 @@ using Microsoft.IdentityModel.Tokens;
 using PolyPaint.Core;
 using PolyPaint.DataAccess.Contexts;
 using PolyPaint.DataAccess.Services;
+using PolyPaint.Hubs;
 
 namespace PolyPaint.API
 {
@@ -52,6 +53,8 @@ namespace PolyPaint.API
                 facebookOptions.AppSecret = Configuration["Facebook:Secret"];
                 facebookOptions.SaveTokens = true;
             });
+            
+            services.AddSignalR();
         }
 
         private void AddJwtBearerAuthentication(IServiceCollection services)
@@ -74,10 +77,10 @@ namespace PolyPaint.API
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             }).AddJwtBearer(options =>
             {
-                options.Audience = "https://10.200.27.16:5001";
-                options.ClaimsIssuer = "https://10.200.27.16:5001";
-                options.Audience = "https://10.200.27.16:5001";
-                options.Authority = "https://10.200.27.16:5001";
+                options.Audience = "https://0.0.0.0:44300";
+                options.ClaimsIssuer = "https://0.0.0.0:44300";
+                options.Audience = "https://0.0.0.0:44300";
+                options.Authority = "https://0.0.0.0:44300";
                 options.TokenValidationParameters = tokenValidationParameters;
                 options.SaveToken = true;
                 options.Configuration = new OpenIdConnectConfiguration();
@@ -98,8 +101,11 @@ namespace PolyPaint.API
 
             app.UseHttpsRedirection();
             app.UseAuthentication();
+            app.UseSignalR(routes =>
+            {
+                routes.MapHub<PolyPaintHub>("/signalr");
+            });
             app.UseMvc();
-            app.UseIdentity();
             app.Run(async context => { await context.Response.WriteAsync("Route not found in PolyPaint API"); });
         }
     }

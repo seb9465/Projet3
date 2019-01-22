@@ -10,6 +10,7 @@ namespace PolyPaint.Core
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public List<Canvas> Canvas { get; set; }
+        public string FullName() => $"{FirstName} {LastName}";
         public ApplicationUser() : base()
         {
             Canvas = new List<Canvas>();
