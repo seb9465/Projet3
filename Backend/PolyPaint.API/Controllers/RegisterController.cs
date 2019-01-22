@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using PolyPaint.DataAccess.Services;
-using PolyPaint.Core.Models;
 using System.Threading.Tasks;
 using PolyPaint.Core;
+using PolyPaint.Core.ViewModels;
 
 namespace PolyPaint.API.Controllers
 {
