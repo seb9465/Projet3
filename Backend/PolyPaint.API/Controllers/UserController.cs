@@ -11,7 +11,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using PolyPaint.Core.DbModels;
-
 namespace PolyPaint.API.Controllers
 {
     [Route("api/[controller]")]
@@ -26,6 +25,7 @@ namespace PolyPaint.API.Controllers
 
         [Authorize]
         [HttpPost]
+        [Route("Canvas")]
         public async Task<IActionResult> SaveNewCanvasAsync([FromBody]Canvas canvas)
         {
             ClaimsPrincipal user = this.User;
@@ -33,6 +33,17 @@ namespace PolyPaint.API.Controllers
 
             await _userService.Save(userId, canvas);
             return Ok();
+        }
+
+        [Authorize]
+        [HttpGet]
+        [Route("Canvas")]
+        public async Task<IActionResult> GetAllCanvasFromUser()
+        {
+            ClaimsPrincipal user = this.User;
+            string userId = user.FindFirstValue(ClaimTypes.NameIdentifier);
+            List<Canvas> canvas = await _userService.GetAllCanvas(userId);
+            return Ok(canvas);
         }
     }
 }
