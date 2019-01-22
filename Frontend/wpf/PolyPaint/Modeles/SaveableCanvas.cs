@@ -13,6 +13,7 @@ namespace PolyPaint.Modeles
             Name = name;
             Base64Strokes = base64Strokes;
         }
+        public string CanvasId { get; set; }
         public string Name { get; set; }
         public string Base64Strokes { get; set; }
     }

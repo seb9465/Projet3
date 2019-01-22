@@ -13,6 +13,7 @@ using PolyPaint.Modeles;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Collections.Generic;
 
 namespace PolyPaint
 {
@@ -158,13 +159,16 @@ namespace PolyPaint
 
         private async void ImportFromCloud(object sender, RoutedEventArgs e)
         {
+            List<SaveableCanvas> strokes;
             using (var client = new HttpClient())
             {
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6Ik1hcGxlSGFtIiwibmFtZWlkIjoiODY3OGQ2MzktOWJkZC00OWRjLWE2YWUtZjE4ZmRhYjE0NWZjIiwibmJmIjoxNTQ4MTgyOTIyLCJleHAiOjYxNTQ4MTgyODYyLCJpYXQiOjE1NDgxODI5MjIsImlzcyI6IjEwLjIwMC4yNy4xNjo1MDAxIiwiYXVkIjoiMTAuMjAwLjI3LjE2OjUwMDEifQ.QMNWuFCvoUNsp-jMcW9JeoTMoechG-Cip4VGma8eYks");
                 System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
                 var response = await client.GetAsync("https://10.200.27.16:5001/api/user/canvas");
                 var responseString = await response.Content.ReadAsStringAsync();
+                strokes = JsonConvert.DeserializeObject<List<SaveableCanvas>>(responseString);
             }
+            Gallery.CreateGalleryFromCloud(strokes);
         }
 
         private byte[] GetBytesFromCanvas()
