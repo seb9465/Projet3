@@ -127,6 +127,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\importFromCloud.png" />
     <Resource Include="Resources\position.png" />
   </ItemGroup>
   <ItemGroup>
