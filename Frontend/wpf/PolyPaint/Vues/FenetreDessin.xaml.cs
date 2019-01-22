@@ -148,11 +148,11 @@ namespace PolyPaint
             string canvasJson = JsonConvert.SerializeObject(canvas);
             using (var client = new HttpClient())
             {
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6Ik1hcGxlSGFtIiwibmFtZWlkIjoiODY3OGQ2MzktOWJkZC00OWRjLWE2YWUtZjE4ZmRhYjE0NWZjIiwibmJmIjoxNTQ4MTgyOTIyLCJleHAiOjYxNTQ4MTgyODYyLCJpYXQiOjE1NDgxODI5MjIsImlzcyI6IjEwLjIwMC4yNy4xNjo1MDAxIiwiYXVkIjoiMTAuMjAwLjI3LjE2OjUwMDEifQ.QMNWuFCvoUNsp-jMcW9JeoTMoechG-Cip4VGma8eYks");
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IkhvbWUiLCJuYW1laWQiOiI4MzBkYmI4NC1jMzYzLTQwZTYtYjdjMC03ZmM0ZWM5YmUzNDAiLCJuYmYiOjE1NDgxOTE5NDgsImV4cCI6NjE1NDgxOTE4ODgsImlhdCI6MTU0ODE5MTk0OCwiaXNzIjoiMTAuMjAwLjI3LjE2OjUwMDEiLCJhdWQiOiIxMC4yMDAuMjcuMTY6NTAwMSJ9.udDi-4deN17QsbeG72Jm8j-CAmIxzP4Pg3eQyV2KG3Q");
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
                 var content = new StringContent(canvasJson, Encoding.UTF8, "application/json");
-                var response = await client.PostAsync("https://10.200.27.16:5001/api/user/canvas", content);
+                var response = await client.PostAsync("http://localhost:4000/api/user/canvas", content);
                 var responseString = await response.Content.ReadAsStringAsync();
             }
         }
@@ -162,13 +162,13 @@ namespace PolyPaint
             List<SaveableCanvas> strokes;
             using (var client = new HttpClient())
             {
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6Ik1hcGxlSGFtIiwibmFtZWlkIjoiODY3OGQ2MzktOWJkZC00OWRjLWE2YWUtZjE4ZmRhYjE0NWZjIiwibmJmIjoxNTQ4MTgyOTIyLCJleHAiOjYxNTQ4MTgyODYyLCJpYXQiOjE1NDgxODI5MjIsImlzcyI6IjEwLjIwMC4yNy4xNjo1MDAxIiwiYXVkIjoiMTAuMjAwLjI3LjE2OjUwMDEifQ.QMNWuFCvoUNsp-jMcW9JeoTMoechG-Cip4VGma8eYks");
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IkhvbWUiLCJuYW1laWQiOiI4MzBkYmI4NC1jMzYzLTQwZTYtYjdjMC03ZmM0ZWM5YmUzNDAiLCJuYmYiOjE1NDgxOTE5NDgsImV4cCI6NjE1NDgxOTE4ODgsImlhdCI6MTU0ODE5MTk0OCwiaXNzIjoiMTAuMjAwLjI3LjE2OjUwMDEiLCJhdWQiOiIxMC4yMDAuMjcuMTY6NTAwMSJ9.udDi-4deN17QsbeG72Jm8j-CAmIxzP4Pg3eQyV2KG3Q");
                 System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
-                var response = await client.GetAsync("https://10.200.27.16:5001/api/user/canvas");
+                var response = await client.GetAsync("http://localhost:4000/api/user/canvas");
                 var responseString = await response.Content.ReadAsStringAsync();
                 strokes = JsonConvert.DeserializeObject<List<SaveableCanvas>>(responseString);
             }
-            Gallery.CreateGalleryFromCloud(strokes);
+            GalleryGenerator.CreateGalleryFromCloud(strokes);
         }
 
         private byte[] GetBytesFromCanvas()

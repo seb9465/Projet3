@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PolyPaint.Modeles
 {
-    class SaveableCanvas
+    public class SaveableCanvas
     {
         public SaveableCanvas(string name, string base64Strokes)
         {
