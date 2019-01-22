@@ -1,12 +1,13 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using PolyPaint.Core.Models;
+using PolyPaint.Core.ViewModels;
 
 namespace PolyPaint.Core
 {
-    public class ApplicationUser: IdentityUser
+    public class ApplicationUser : IdentityUser
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public string FullName() => $"{FirstName} {LastName}";
         public ApplicationUser() : base()
         {
         }

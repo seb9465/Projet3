@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+  <UserSecretsId>2e0cafa8-0e0d-4480-9478-c8745efccfd5</UserSecretsId>
     <WarningLevel>0</WarningLevel>
   </PropertyGroup>
 

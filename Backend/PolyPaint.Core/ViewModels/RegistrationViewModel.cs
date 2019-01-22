@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace PolyPaint.Core.Models
+namespace PolyPaint.Core.ViewModels
 {
     public class RegistrationViewModel
     {
@@ -19,6 +19,7 @@ namespace PolyPaint.Core.Models
 
         [Required]
         public string Username { get; set; }
+        
         [Required]
         [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,15}$")]
         [DataType(DataType.Password)]
