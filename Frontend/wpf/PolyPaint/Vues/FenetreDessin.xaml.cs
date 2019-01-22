@@ -18,11 +18,12 @@ namespace PolyPaint
     /// </summary>
     public partial class FenetreDessin : Window
     {
-
+        public ChatClient ChatClient { get; set; }
         public FenetreDessin()
         {
             InitializeComponent();
             DataContext = new VueModele();
+            ChatClient = new ChatClient();
         }
         
         // Pour gérer les points de contrôles.
@@ -162,10 +163,51 @@ namespace PolyPaint
 
         private async void chatButton_Click(object sender, RoutedEventArgs e)
         {
-            PolyPaint.Vues.ChatWindow myDialog = new PolyPaint.Vues.ChatWindow();
-            myDialog.ShowDialog();
+            PolyPaint.Vues.ChatWindow w2 = new PolyPaint.Vues.ChatWindow();
+            w2.Show();
+            chat.Visibility = Visibility.Collapsed;
         }
 
+        private async void chatButtonSameWindow_Click(object sender, RoutedEventArgs e)
+        {
+            chat.Visibility = Visibility.Visible;
+        }
 
+        private async void connectButtonn_Click(object sender, RoutedEventArgs e)
+        {
+            ChatClient.connection.On<string, string>("ReceiveMessage", (user, message) =>
+            {
+                this.Dispatcher.Invoke(() =>
+                {
+                    var newMessage = $"{user}: {message}";
+                    messagesList.Items.Add(newMessage);
+                });
+            });
+
+            try
+            {
+                await ChatClient.connection.StartAsync();
+                messagesList.Items.Add("Connection started");
+                connectButtonn.IsEnabled = false;
+                sendButtonn.IsEnabled = true;
+            }
+            catch (Exception ex)
+            {
+                messagesList.Items.Add(ex.Message);
+            }
+        }
+
+        private async void sendButtonn_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                await ChatClient.connection.InvokeAsync("SendMessage",
+                    userTextBox.Text, messageTextBox.Text);
+            }
+            catch (Exception ex)
+            {
+                messagesList.Items.Add(ex.Message);
+            }
+        }
     }
 }
