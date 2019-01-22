@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using PolyPaint.Core;
+using PolyPaint.Core.DbModels;
 
 namespace PolyPaint.DataAccess.Contexts
 {
@@ -10,5 +11,6 @@ namespace PolyPaint.DataAccess.Contexts
             : base(options)
         {
         }
+        public DbSet<Canvas> Canvas { get; set; }
     }
 }

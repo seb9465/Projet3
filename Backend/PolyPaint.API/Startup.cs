@@ -42,6 +42,7 @@ namespace PolyPaint.API
             services.AddScoped<TokenService>();
             services.AddScoped<RegisterService>();
             services.AddScoped<LoginService>();
+            services.AddScoped<UserService>();
 
             AddJwtBearerAuthentication(services);
 
@@ -64,7 +65,7 @@ namespace PolyPaint.API
                 ValidateIssuer = false,
                 ValidateAudience = false,
                 ValidateLifetime = true,
-
+                RequireExpirationTime = false
             };
 
             services.AddAuthentication(options =>
@@ -73,10 +74,10 @@ namespace PolyPaint.API
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             }).AddJwtBearer(options =>
             {
-                options.Audience = "https://localhost:44300";
-                options.ClaimsIssuer = "https://localhost:44300";
-                options.Audience = "https://localhost:44300";
-                options.Authority = "https://localhost:44300";
+                options.Audience = "https://10.200.27.16:5001";
+                options.ClaimsIssuer = "https://10.200.27.16:5001";
+                options.Audience = "https://10.200.27.16:5001";
+                options.Authority = "https://10.200.27.16:5001";
                 options.TokenValidationParameters = tokenValidationParameters;
                 options.SaveToken = true;
                 options.Configuration = new OpenIdConnectConfiguration();
