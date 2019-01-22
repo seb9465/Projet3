@@ -204,6 +204,7 @@ namespace PolyPaint
             }
 
             return bitmapBytes;
+        }
         private async void connectButton_Click(object sender, RoutedEventArgs e)
         {
             ChatClient.connection.On<string, string>("ReceiveMessage", (user, message) =>
