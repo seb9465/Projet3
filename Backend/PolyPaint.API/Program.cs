@@ -33,7 +33,7 @@ namespace PolyPaint.API
         {
             return WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
-                .UseUrls("http://10.200.3.156:5000");
+                .UseUrls("http://*:5000");
         }
     }
 }

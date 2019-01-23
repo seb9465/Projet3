@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  LoginController.swift
 //  ios
 //
 //  Created by Sebastien Cadorette on 2019-01-21.
@@ -7,35 +7,34 @@
 //
 
 import UIKit
+import Alamofire
 
-class ViewController: UIViewController {
+class LoginController: UIViewController {
     @IBOutlet var emailField: UITextField!
     @IBOutlet var passwordField: UITextField!
     @IBOutlet var validationLabel: UILabel!
-    
-    
+
     @IBOutlet var loginButton: UIButton!
-    
+
     @IBAction func loginButton(_ sender: Any) {
-        let valid = isValidEmail(testStr: emailField.text!)
+        let validEmail: Bool = isValidEmail(testStr: emailField.text!);
+        validationLabel.text = validEmail ? "Valid" : "Invalid";
         
-        if valid {
-            validationLabel.text = "Valid"
-        } else {
-            validationLabel.text = "Invalid"
+        if(validEmail){
+            // send request
+//            let answer = wait Alamofire.request("url", method: .get);
         }
     }
-    
-    func isValidEmail(testStr:String) -> Bool {
+
+    func isValidEmail(testStr: String) -> Bool {
         let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
-        
-        let emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
+        let emailTest = NSPredicate(format: "SELF MATCHES %@", emailRegEx)
+
         return emailTest.evaluate(with: testStr)
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
     }
 }
-
