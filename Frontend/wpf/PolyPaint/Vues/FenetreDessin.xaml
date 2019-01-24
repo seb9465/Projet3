@@ -221,19 +221,20 @@
         <StackPanel Orientation="Vertical">
             <Button x:Name="chatButton" Content="Open chat in new window" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Bottom"  Width="210" Click="chatButton_Click" Height="41" />
             <Button x:Name="chatButtonSameWindow" Content="Open chat in same window" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Bottom" Width="210" Click="chatButtonSameWindow_Click" Height="41" />
+            <Grid Margin="0,0,0,0"  x:Name="chat">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="109*"/>
+                    <ColumnDefinition Width="288*"/>
+                </Grid.ColumnDefinitions>
+                <Button x:Name="connectButtonn" Content="Connect" HorizontalAlignment="Left" Margin="220,55,0,0" VerticalAlignment="Top" Width="125" Click="connectButtonn_Click" Height="41" Grid.Column="1" RenderTransformOrigin="-0.061,2.114" />
+                <Button x:Name="sendButtonn" Content="Send Message" HorizontalAlignment="Left" Margin="220,115,0,0" VerticalAlignment="Top" Width="125" Click="sendButtonn_Click" Height="41" Grid.Column="1" IsEnabled="False"/>
+                <TextBox x:Name="messageTextBox" HorizontalAlignment="Left" Height="41" Margin="85,113,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="311" Grid.ColumnSpan="2"/>
+                <ListBox x:Name="messagesList" HorizontalAlignment="Left" Height="141" Margin="85,170,0,0" VerticalAlignment="Top" Width="311" RenderTransformOrigin="-0.304,0.109" BorderThickness="1" Grid.ColumnSpan="2" BorderBrush="Gainsboro"/>
+                <TextBox x:Name="userTextBox" HorizontalAlignment="Left" Height="41" Margin="85,55,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="311" Grid.ColumnSpan="2"/>
+                <Label Content="User" HorizontalAlignment="Left" Height="31" Margin="30,70,0,0" VerticalAlignment="Top" Width="70"/>
+                <Label Content="Message" HorizontalAlignment="Left" Height="26" Margin="20,130,0,0" VerticalAlignment="Top" Width="100"/>
+            </Grid>
         </StackPanel>
-        <Grid Margin="0,0,0,0" Visibility="Collapsed" x:Name="chat">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="109*"/>
-                <ColumnDefinition Width="288*"/>
-            </Grid.ColumnDefinitions>
-            <Button x:Name="connectButtonn" Content="Connect" HorizontalAlignment="Left" Margin="250,55,0,0" VerticalAlignment="Top" Width="95" Click="connectButtonn_Click" Height="41" Grid.Column="1" RenderTransformOrigin="-0.061,2.114" />
-            <Button x:Name="sendButtonn" Content="Send Message" HorizontalAlignment="Left" Margin="250,115,0,0" VerticalAlignment="Top" Width="95" Click="sendButtonn_Click" Height="41" Grid.Column="1" IsEnabled="False"/>
-            <TextBox x:Name="messageTextBox" HorizontalAlignment="Left" Height="41" Margin="82,113,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="311" Grid.ColumnSpan="2"/>
-            <ListBox x:Name="messagesList" HorizontalAlignment="Left" Height="141" Margin="82,170,0,0" VerticalAlignment="Top" Width="311" RenderTransformOrigin="-0.304,0.109" BorderThickness="1" Grid.ColumnSpan="2" BorderBrush="Gainsboro"/>
-            <TextBox x:Name="userTextBox" HorizontalAlignment="Left" Height="41" Margin="82,57,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="311" Grid.ColumnSpan="2"/>
-            <Label Content="User" HorizontalAlignment="Left" Height="31" Margin="39,63,0,0" VerticalAlignment="Top" Width="38"/>
-            <Label Content="Message" HorizontalAlignment="Left" Height="26" Margin="19,120,0,0" VerticalAlignment="Top" Width="58"/>
-        </Grid>
+     
     </DockPanel>
 </Window>
