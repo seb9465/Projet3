@@ -10,10 +10,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
+using PolyPaint.API.Hubs;
 using PolyPaint.Core;
 using PolyPaint.DataAccess.Contexts;
 using PolyPaint.DataAccess.Services;
-using PolyPaint.Hubs;
 
 namespace PolyPaint.API
 {

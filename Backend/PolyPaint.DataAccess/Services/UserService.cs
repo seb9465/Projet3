@@ -33,5 +33,10 @@ namespace PolyPaint.DataAccess.Services
             ApplicationUser user = await _userManager.Users.Include(x => x.Canvas).SingleAsync(u => u.Id == userId);
             return user.Canvas;
         }
+
+        public async Task<ApplicationUser> FindByIdAsync(string userId)
+        {
+            return await _userManager.Users.SingleAsync(u => u.Id == userId);
+        }
     }
 }

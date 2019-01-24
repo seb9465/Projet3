@@ -1,56 +1,73 @@
 using Microsoft.AspNetCore.SignalR;
-using PolyPaint.DataStructures;
+using PolyPaint.API.Handlers;
+using PolyPaint.DataAccess.Services;
 using System;
 using System.Collections.Concurrent;
+using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace PolyPaint.Hubs
+namespace PolyPaint.API.Hubs
 {
     public class PolyPaintHub : Hub
     {
-        private readonly static ConcurrentDictionary<string, ConnectionInfo> userIds =
-            new ConcurrentDictionary<string, ConnectionInfo>();
+        private readonly int MAX_USERS_PER_GROUP = 4;
+        private readonly UserService _userService;
 
-        public async Task SendMessage(string user, string message)
+        public PolyPaintHub(UserService userService)
         {
-            var groupId = userIds[Context.ConnectionId].GroupId;
-            if (groupId != null)
+            _userService = userService;
+        }
+
+        public async Task SendMessage(string message)
+        {
+            var userId = Context.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var user = await _userService.FindByIdAsync(userId);
+            var groupId = UserHandler.UserGroupMap[userId];
+
+            if (user != null && groupId != null)
             {
-                await Clients.Group(groupId).SendAsync("ReceiveMessage", userIds[Context.ConnectionId].Username, message);
+                await Clients.Group(groupId).SendAsync("ReceiveMessage", user.FullName(), message);
             }
         }
 
         public async Task ConnectToGroup(string groupId)
         {
-            await Groups.AddToGroupAsync(Context.ConnectionId, groupId);
-            userIds[Context.ConnectionId].GroupId = groupId;
-        }
+            var userId = Context.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var user = await _userService.FindByIdAsync(userId);
 
-        public async Task SendToGroup(string message)
-        {
-            var groupId = userIds[Context.ConnectionId].GroupId;
-            if (groupId != null)
+            var userCountInGroup = UserHandler.UserGroupMap.Values.Count(x => x == groupId);
+            if (user != null && userCountInGroup < MAX_USERS_PER_GROUP)
             {
-                await Clients.Group(groupId).SendAsync(message);
+                await Groups.AddToGroupAsync(Context.ConnectionId, groupId);
+                UserHandler.UserGroupMap.GetOrAdd(userId, groupId);
             }
         }
 
         public override async Task OnConnectedAsync()
         {
-            string username = Context.GetHttpContext().Request.Query["user"];
-            if (username.Trim().Length != 0)
+            var userId = Context.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var user = await _userService.FindByIdAsync(userId);
+
+            if (user != null)
             {
                 await base.OnConnectedAsync();
-                var connInfo = new ConnectionInfo(username, null);
-                userIds.GetOrAdd(Context.ConnectionId, connInfo);
+                UserHandler.UserGroupMap.GetOrAdd(userId, (string)null);
             }
         }
 
         public override async Task OnDisconnectedAsync(Exception e)
         {
+            var userId = Context.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var user = await _userService.FindByIdAsync(userId);
+            var groupId = UserHandler.UserGroupMap[userId];
+
             await base.OnDisconnectedAsync(e);
-            await Clients.All.SendAsync("ReceiveMessage", "System", $"{userIds[Context.ConnectionId].Username} has disconnected");
-            userIds.TryRemove(Context.ConnectionId, out var value);
+            UserHandler.UserGroupMap.TryRemove(userId, out var value);
+            if (user != null && groupId != null)
+            {
+                await Clients.Group(groupId).SendAsync("ReceiveMessage", null, $"{user.FullName()} has disconnected");
+            }
         }
     }
 }

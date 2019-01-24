@@ -32,7 +32,7 @@ namespace PolyPaint.API
         public static IWebHostBuilder CreateWebHostBuilder(string[] args)
         {
             return WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>().UseIIS().UseUrls("http://localhost:4000");
+                .UseStartup<Startup>();
         }
     }
 }
