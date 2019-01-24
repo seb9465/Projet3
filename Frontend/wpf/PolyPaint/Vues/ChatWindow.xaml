@@ -11,8 +11,8 @@
             <ColumnDefinition Width="109*"/>
             <ColumnDefinition Width="288*"/>
         </Grid.ColumnDefinitions>
-        <Button x:Name="connectButton" Content="Connect" HorizontalAlignment="Left" Margin="333,57,-57.5,0" VerticalAlignment="Top" Width="95" Click="connectButton_Click" Height="41" Grid.Column="1" />
-        <Button x:Name="sendButton" Content="Send Message" HorizontalAlignment="Left" Margin="333,113,-57.5,0" VerticalAlignment="Top" Width="95" Click="sendButton_Click" Height="41" Grid.Column="1" IsEnabled="False"/>
+        <Button x:Name="connectButton" Content="Connect" HorizontalAlignment="Left" Margin="333,57,-57.5,0" VerticalAlignment="Top" Width="130" Click="connectButton_Click" Height="41" Grid.Column="1" />
+        <Button x:Name="sendButton" Content="Send Message" HorizontalAlignment="Left" Margin="333,113,-57.5,0" VerticalAlignment="Top" Width="130" Click="sendButton_Click" Height="41" Grid.Column="1" IsEnabled="False"/>
         <TextBox x:Name="messageTextBox" HorizontalAlignment="Left" Height="41" Margin="82,113,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="311" Grid.ColumnSpan="2"/>
         <ListBox x:Name="messagesList" HorizontalAlignment="Left" Height="141" Margin="82,170,0,0" VerticalAlignment="Top" Width="311" RenderTransformOrigin="-0.304,0.109" BorderThickness="1" Grid.ColumnSpan="2" BorderBrush="Gainsboro"/>
         <TextBox x:Name="userTextBox" HorizontalAlignment="Left" Height="41" Margin="82,57,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="311" Grid.ColumnSpan="2"/>
