@@ -25,7 +25,6 @@ namespace PolyPaint
     public partial class FenetreDessin : Window
     {
         public ChatClient ChatClient { get; set; }
-
         public FenetreDessin()
         {
             InitializeComponent();
@@ -205,7 +204,19 @@ namespace PolyPaint
 
             return bitmapBytes;
         }
-        private async void connectButton_Click(object sender, RoutedEventArgs e)
+        private async void chatButton_Click(object sender, RoutedEventArgs e)
+        {
+            PolyPaint.Vues.ChatWindow w2 = new PolyPaint.Vues.ChatWindow();
+            w2.Show();
+            chat.Visibility = Visibility.Collapsed;
+        }
+
+        private async void chatButtonSameWindow_Click(object sender, RoutedEventArgs e)
+        {
+            chat.Visibility = Visibility.Visible;
+        }
+
+        private async void connectButtonn_Click(object sender, RoutedEventArgs e)
         {
             ChatClient.connection.On<string, string>("ReceiveMessage", (user, message) =>
             {
@@ -220,8 +231,8 @@ namespace PolyPaint
             {
                 await ChatClient.connection.StartAsync();
                 messagesList.Items.Add("Connection started");
-                connectButton.IsEnabled = false;
-                sendButton.IsEnabled = true;
+                connectButtonn.IsEnabled = false;
+                sendButtonn.IsEnabled = true;
             }
             catch (Exception ex)
             {
@@ -229,7 +240,7 @@ namespace PolyPaint
             }
         }
 
-        private async void sendButton_Click(object sender, RoutedEventArgs e)
+        private async void sendButtonn_Click(object sender, RoutedEventArgs e)
         {
             try
             {

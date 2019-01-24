@@ -14,7 +14,7 @@ namespace PolyPaint.Convertisseurs
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            return (value.ToString() == parameter.ToString()) ? "#FF58BDFA" : "#00000000";
+            return (value.ToString() == parameter.ToString()) ? "#66ff2500" : "#00000000";
         }
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture) => System.Windows.DependencyProperty.UnsetValue;
     }
@@ -27,7 +27,7 @@ namespace PolyPaint.Convertisseurs
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            return (value.ToString() == parameter.ToString()) ? "#3F58BDFA" : "#00000000";
+            return (value.ToString() == parameter.ToString()) ? "#1aff2500" : "#00000000";
         }
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture) => System.Windows.DependencyProperty.UnsetValue;
     }
