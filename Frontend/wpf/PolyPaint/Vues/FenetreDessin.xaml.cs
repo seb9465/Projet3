@@ -60,23 +60,6 @@ namespace PolyPaint
 
         private void SaveImage(object sender, RoutedEventArgs e)
         {
-            // Save Image PNG
-            // This part is commented right now because it has no use,
-            // but we will probably use it for the gallery later in the project.
-            //{
-            //    SaveFileDialog saveFileDialog = new SaveFileDialog
-            //    {
-            //        DefaultExt = ".png",
-            //        Filter = "Image (.png)|*.png"
-            //    };
-
-            //    // Show save file dialog box
-            //    Nullable<bool> result = saveFileDialog.ShowDialog();
-
-            //    byte[] bitmapBytes = GetBytesFromCanvas();
-            //    System.IO.File.WriteAllBytes(saveFileDialog.FileName, bitmapBytes);
-            //}
-
             // Save Strokes on a file.
             {
                 SaveFileDialog saveFileDialog = new SaveFileDialog

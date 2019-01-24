@@ -19,9 +19,10 @@ namespace PolyPaint.Vues
     /// </summary>
     public partial class Gallery : Window
     {
-        public Gallery()
+        public Gallery(List<BitmapSource> bitmaps)
         {
             InitializeComponent();
+            DataContext = bitmaps;
         }
     }
 }

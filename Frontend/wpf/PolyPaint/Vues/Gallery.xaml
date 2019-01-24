@@ -7,7 +7,12 @@
         mc:Ignorable="d"
         Title="Gallery" Height="300" Width="300">
     <Grid>
-        <Label Content="Voici une gallery" HorizontalAlignment="Left" Margin="86,119,0,0" VerticalAlignment="Top" Height="75" Width="162"/>
-
+        <ItemsControl ItemsSource="{Binding}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Image Source="{Binding}" />
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
     </Grid>
 </Window>
