@@ -36,7 +36,9 @@ namespace PolyPaint.DataAccess.Services
 
         public async Task<ApplicationUser> FindByIdAsync(string userId)
         {
-            return await _userManager.Users.SingleAsync(u => u.Id == userId);
+            // TODO: next line is the right one, other line is to test without login
+            // return await _userManager.Users.SingleAsync(u => u.Id == userId);
+            return await _userManager.Users.FirstAsync();
         }
     }
 }

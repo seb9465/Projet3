@@ -43,7 +43,8 @@ namespace PolyPaint.DataAccess.Services
 
         public async Task<string> HandleFacebookLogin(ExternalLoginInfo info)
         {
-            SignInResult existingFacebookLogin = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: true);
+            SignInResult existingFacebookLogin = await _signInManager
+                .ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: true);
             string token = null;
             if (!existingFacebookLogin.Succeeded)
             {

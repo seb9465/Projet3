@@ -23,7 +23,8 @@ namespace PolyPaint.API.Hubs
         {
             var userId = Context.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var user = await _userService.FindByIdAsync(userId);
-            var groupId = UserHandler.UserGroupMap[userId];
+            // var groupId = UserHandler.UserGroupMap[userId];
+            var groupId = UserHandler.UserGroupMap[user.Id];
 
             if (user != null && groupId != null)
             {
@@ -40,7 +41,8 @@ namespace PolyPaint.API.Hubs
             if (user != null && userCountInGroup < MAX_USERS_PER_GROUP)
             {
                 await Groups.AddToGroupAsync(Context.ConnectionId, groupId);
-                UserHandler.UserGroupMap.GetOrAdd(userId, groupId);
+                UserHandler.UserGroupMap.AddOrUpdate(user.Id, groupId, (k, v) => groupId );
+                // UserHandler.UserGroupMap[user.Id] = groupId;
             }
         }
 
@@ -52,7 +54,8 @@ namespace PolyPaint.API.Hubs
             if (user != null)
             {
                 await base.OnConnectedAsync();
-                UserHandler.UserGroupMap.GetOrAdd(userId, (string)null);
+                // UserHandler.UserGroupMap.GetOrAdd(userId, (string)null);
+                UserHandler.UserGroupMap.GetOrAdd(user.Id, (string)null);
             }
         }
 
@@ -60,10 +63,12 @@ namespace PolyPaint.API.Hubs
         {
             var userId = Context.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var user = await _userService.FindByIdAsync(userId);
-            var groupId = UserHandler.UserGroupMap[userId];
+            // var groupId = UserHandler.UserGroupMap[userId];
+            var groupId = UserHandler.UserGroupMap[user.Id];
 
             await base.OnDisconnectedAsync(e);
-            UserHandler.UserGroupMap.TryRemove(userId, out var value);
+            // UserHandler.UserGroupMap.TryRemove(userId, out var value);
+            UserHandler.UserGroupMap.TryRemove(user.Id, out var value);
             if (user != null && groupId != null)
             {
                 await Clients.Group(groupId).SendAsync("ReceiveMessage", null, $"{user.FullName()} has disconnected");
