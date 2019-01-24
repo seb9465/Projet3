@@ -8,6 +8,12 @@ using System.Windows.Media.Imaging;
 using System.IO;
 using Microsoft.Win32;
 using System.Windows.Ink;
+using System.Net.Http;
+using PolyPaint.Modeles;
+using Newtonsoft.Json;
+using System.Net.Http.Headers;
+using System.Text;
+using System.Collections.Generic;
 using PolyPaint.Chat;
 using Microsoft.AspNetCore.SignalR.Client;
 
@@ -68,31 +74,7 @@ namespace PolyPaint
             //    // Show save file dialog box
             //    Nullable<bool> result = saveFileDialog.ShowDialog();
 
-            //    // Get the dimensions of the ink canvas
-            //    var size = new Size(surfaceDessin.ActualWidth, surfaceDessin.ActualHeight);
-            //    surfaceDessin.Margin = new Thickness(0, 0, 0, 0);
-            //    surfaceDessin.Measure(size);
-            //    surfaceDessin.Arrange(new Rect(size));
-
-            //    int margin = (int)surfaceDessin.Margin.Left;
-            //    int width = (int)surfaceDessin.ActualWidth - margin;
-            //    int height = (int)surfaceDessin.ActualHeight - margin;
-
-            //    // Convert the strokes from the canvas to a bitmap
-            //    RenderTargetBitmap rtb = new RenderTargetBitmap(width, height, 96d, 96d, PixelFormats.Default);
-            //    rtb.Render(surfaceDessin);
-
-            //    // Save the bitmap to a memory stream
-            //    BmpBitmapEncoder encoder = new BmpBitmapEncoder();
-            //    encoder.Frames.Add(BitmapFrame.Create(rtb));
-            //    byte[] bitmapBytes;
-            //    using (MemoryStream ms = new MemoryStream())
-            //    {
-            //        encoder.Save(ms);
-            //        ms.Position = 0;
-            //        bitmapBytes = ms.ToArray();
-            //    }
-
+            //    byte[] bitmapBytes = GetBytesFromCanvas();
             //    System.IO.File.WriteAllBytes(saveFileDialog.FileName, bitmapBytes);
             //}
 
@@ -114,7 +96,7 @@ namespace PolyPaint
                     fs = new FileStream(saveFileDialog.FileName, FileMode.Create);
                     surfaceDessin.Strokes.Save(fs);
                 }
-                finally
+                catch
                 {
                     if (fs != null)
                     {
@@ -153,7 +135,7 @@ namespace PolyPaint
                 surfaceDessin.Strokes.Clear();
                 surfaceDessin.Strokes.Add(importedStrokes);
             }
-            finally
+            catch
             {
                 if (fs != null)
                 {
@@ -162,6 +144,67 @@ namespace PolyPaint
             }
         }
 
+        private async void SendToCloud(object sender, RoutedEventArgs e)
+        {
+            byte[] bitmapBytes = GetBytesFromCanvas();
+            string strokesToSend = Convert.ToBase64String(bitmapBytes);
+            SaveableCanvas canvas = new SaveableCanvas("NameNotImplementedYet", strokesToSend);
+
+            string canvasJson = JsonConvert.SerializeObject(canvas);
+            using (var client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IkhvbWUiLCJuYW1laWQiOiI4MzBkYmI4NC1jMzYzLTQwZTYtYjdjMC03ZmM0ZWM5YmUzNDAiLCJuYmYiOjE1NDgxOTE5NDgsImV4cCI6NjE1NDgxOTE4ODgsImlhdCI6MTU0ODE5MTk0OCwiaXNzIjoiMTAuMjAwLjI3LjE2OjUwMDEiLCJhdWQiOiIxMC4yMDAuMjcuMTY6NTAwMSJ9.udDi-4deN17QsbeG72Jm8j-CAmIxzP4Pg3eQyV2KG3Q");
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
+                var content = new StringContent(canvasJson, Encoding.UTF8, "application/json");
+                var response = await client.PostAsync("http://localhost:4000/api/user/canvas", content);
+                var responseString = await response.Content.ReadAsStringAsync();
+            }
+        }
+
+        private async void ImportFromCloud(object sender, RoutedEventArgs e)
+        {
+            List<SaveableCanvas> strokes;
+            using (var client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IkhvbWUiLCJuYW1laWQiOiI4MzBkYmI4NC1jMzYzLTQwZTYtYjdjMC03ZmM0ZWM5YmUzNDAiLCJuYmYiOjE1NDgxOTE5NDgsImV4cCI6NjE1NDgxOTE4ODgsImlhdCI6MTU0ODE5MTk0OCwiaXNzIjoiMTAuMjAwLjI3LjE2OjUwMDEiLCJhdWQiOiIxMC4yMDAuMjcuMTY6NTAwMSJ9.udDi-4deN17QsbeG72Jm8j-CAmIxzP4Pg3eQyV2KG3Q");
+                System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
+                var response = await client.GetAsync("http://localhost:4000/api/user/canvas");
+                var responseString = await response.Content.ReadAsStringAsync();
+                strokes = JsonConvert.DeserializeObject<List<SaveableCanvas>>(responseString);
+            }
+            GalleryGenerator.CreateGalleryFromCloud(strokes);
+        }
+
+        private byte[] GetBytesFromCanvas()
+        {
+            // Get the dimensions of the ink canvas
+            var size = new Size(surfaceDessin.ActualWidth, surfaceDessin.ActualHeight);
+            surfaceDessin.Margin = new Thickness(0, 0, 0, 0);
+            surfaceDessin.Measure(size);
+            surfaceDessin.Arrange(new Rect(size));
+
+            int margin = (int)surfaceDessin.Margin.Left;
+            int width = (int)surfaceDessin.ActualWidth - margin;
+            int height = (int)surfaceDessin.ActualHeight - margin;
+
+            // Convert the strokes from the canvas to a bitmap
+            RenderTargetBitmap rtb = new RenderTargetBitmap(width, height, 96d, 96d, PixelFormats.Default);
+            rtb.Render(surfaceDessin);
+
+            // Save the bitmap to a memory stream
+            BmpBitmapEncoder encoder = new BmpBitmapEncoder();
+            encoder.Frames.Add(BitmapFrame.Create(rtb));
+            byte[] bitmapBytes;
+            using (MemoryStream ms = new MemoryStream())
+            {
+                encoder.Save(ms);
+                ms.Position = 0;
+                bitmapBytes = ms.ToArray();
+            }
+
+            return bitmapBytes;
+        }
         private async void connectButton_Click(object sender, RoutedEventArgs e)
         {
             ChatClient.connection.On<string, string>("ReceiveMessage", (user, message) =>

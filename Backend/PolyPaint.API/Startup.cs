@@ -43,6 +43,7 @@ namespace PolyPaint.API
             services.AddScoped<TokenService>();
             services.AddScoped<RegisterService>();
             services.AddScoped<LoginService>();
+            services.AddScoped<UserService>();
 
             AddJwtBearerAuthentication(services);
 
@@ -67,7 +68,7 @@ namespace PolyPaint.API
                 ValidateIssuer = false,
                 ValidateAudience = false,
                 ValidateLifetime = true,
-
+                RequireExpirationTime = false
             };
 
             services.AddAuthentication(options =>

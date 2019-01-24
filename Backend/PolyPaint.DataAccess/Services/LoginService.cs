@@ -35,7 +35,7 @@ namespace PolyPaint.DataAccess.Services
             string token = null;
             if (isLoginSuccesful)
             {
-                token = _tokenService.GenerateToken(loginViewModel.Username);
+                token = _tokenService.GenerateToken(user);
             }
 
             return token;
@@ -71,13 +71,13 @@ namespace PolyPaint.DataAccess.Services
 
                 IdentityResult linkingFacebook = await _userManager.AddLoginAsync(currentUser, info);
                 await _signInManager.SignInAsync(currentUser, isPersistent: false);
-                token = _tokenService.GenerateToken(email);
+                token = _tokenService.GenerateToken(currentUser);
                 return token;
             }
             else
             {
-                string email = info.Principal.FindFirstValue(ClaimTypes.Email);
-                token = _tokenService.GenerateToken(email);
+                //string email = info.Principal.FindFirstValue(ClaimTypes.Email);
+                //token = _tokenService.GenerateToken(email);
                 return token;
             }
         }
