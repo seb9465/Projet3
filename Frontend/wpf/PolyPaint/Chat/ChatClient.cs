@@ -17,7 +17,7 @@ namespace PolyPaint.Chat
         {
             connection = 
                 new HubConnectionBuilder()
-                .WithUrl("https://localhost:44300/signalr?user=JaiLdouaJsuisMecanicien")
+                .WithUrl("http://localhost:4000/signalr?user=JaiLdouaJsuisMecanicien")
                 .Build();
 
             connection.Closed += async (error) =>

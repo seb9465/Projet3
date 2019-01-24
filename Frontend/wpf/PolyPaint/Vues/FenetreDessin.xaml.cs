@@ -207,11 +207,11 @@ namespace PolyPaint
         }
         private async void connectButton_Click(object sender, RoutedEventArgs e)
         {
-            ChatClient.connection.On<string, string>("ReceiveMessage", (user, message) =>
+            ChatClient.connection.On<string, string>("ReceiveMessage", (username, message) =>
             {
                 this.Dispatcher.Invoke(() =>
                 {
-                    var newMessage = $"{user}: {message}";
+                    var newMessage = $"{username}: {message}";
                     messagesList.Items.Add(newMessage);
                 });
             });
@@ -219,6 +219,8 @@ namespace PolyPaint
             try
             {
                 await ChatClient.connection.StartAsync();
+                await ChatClient.connection.InvokeAsync("ConnectToGroup",
+                    groupTextBox.Text);
                 messagesList.Items.Add("Connection started");
                 connectButton.IsEnabled = false;
                 sendButton.IsEnabled = true;
@@ -234,7 +236,7 @@ namespace PolyPaint
             try
             {
                 await ChatClient.connection.InvokeAsync("SendMessage",
-                    userTextBox.Text, messageTextBox.Text);
+                    messageTextBox.Text);
             }
             catch (Exception ex)
             {
