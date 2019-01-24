@@ -20,7 +20,9 @@ namespace PolyPaint.API.Controllers
         private readonly LoginService _loginService;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        public LoginController(LoginService loginService, SignInManager<ApplicationUser> signInManager, IHttpContextAccessor httpContextAccessor)
+        public LoginController(LoginService loginService,
+            SignInManager<ApplicationUser> signInManager,
+            IHttpContextAccessor httpContextAccessor)
         {
             _loginService = loginService;
             _signInManager = signInManager;

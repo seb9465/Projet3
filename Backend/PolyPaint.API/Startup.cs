@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -19,6 +20,7 @@ namespace PolyPaint.API
 {
     public class Startup
     {
+        private readonly string SIGNALR_URL = "/signalr";
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -53,7 +55,7 @@ namespace PolyPaint.API
                 facebookOptions.AppSecret = Configuration["Facebook:Secret"];
                 facebookOptions.SaveTokens = true;
             });
-            
+
             services.AddSignalR();
         }
 
@@ -75,7 +77,8 @@ namespace PolyPaint.API
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(options =>
+            })
+            .AddJwtBearer(options =>
             {
                 options.Audience = "https://localhost:44300";
                 options.ClaimsIssuer = "https://localhost:44300";
@@ -84,6 +87,23 @@ namespace PolyPaint.API
                 options.TokenValidationParameters = tokenValidationParameters;
                 options.SaveToken = true;
                 options.Configuration = new OpenIdConnectConfiguration();
+                // for signalr
+                options.Events = new JwtBearerEvents
+                {
+                    OnMessageReceived = context =>
+                    {
+                        var accessToken = context.Request.Query["access_token"];
+
+                        // If the request is for our hub...
+                        var path = context.HttpContext.Request.Path;
+                        if (!string.IsNullOrEmpty(accessToken) && (path.StartsWithSegments(SIGNALR_URL)))
+                        {
+                            // Read the token out of the query string
+                            context.Token = accessToken;
+                        }
+                        return Task.CompletedTask;
+                    }
+                };
             });
 
         }
@@ -103,7 +123,7 @@ namespace PolyPaint.API
             app.UseAuthentication();
             app.UseSignalR(routes =>
             {
-                routes.MapHub<PolyPaintHub>("/signalr");
+                routes.MapHub<PolyPaintHub>(SIGNALR_URL);
             });
             app.UseMvc();
             app.Run(async context => { await context.Response.WriteAsync("Route not found in PolyPaint API"); });

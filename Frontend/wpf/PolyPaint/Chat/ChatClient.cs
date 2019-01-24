@@ -13,11 +13,16 @@ namespace PolyPaint.Chat
     {
         public HubConnection connection;
 
+        private readonly string _myAccessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImFsZXhpc2xvaXNlbGxlIiwibmFtZWlkIjoiYzNkYWUwYzctNTFhNy00MWE4LTg0ZDYtODZkNzI0OTEwMzgyIiwibmJmIjoxNTQ4MzUwMzEzLCJleHAiOjYxNTQ4MzUwMjUzLCJpYXQiOjE1NDgzNTAzMTMsImlzcyI6IjEwLjIwMC4yNy4xNjo1MDAxIiwiYXVkIjoiMTAuMjAwLjI3LjE2OjUwMDEifQ.zMJ2HAeaAk0P07ut9DoCFjR28WT8A3uO1a9Y8vvMmTs";
+
         public ChatClient()
         {
-            connection = 
+            connection =
                 new HubConnectionBuilder()
-                .WithUrl("http://localhost:4000/signalr?user=JaiLdouaJsuisMecanicien")
+                .WithUrl("http://localhost:4000/signalr", options =>
+                {
+                    options.AccessTokenProvider = () => Task.FromResult(_myAccessToken);
+                })
                 .Build();
 
             connection.Closed += async (error) =>
