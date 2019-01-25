@@ -1,4 +1,6 @@
-﻿using System;
+﻿using PolyPaint.Modeles;
+using PolyPaint.VueModeles;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,10 +21,30 @@ namespace PolyPaint.Vues
     /// </summary>
     public partial class Gallery : Window
     {
-        public Gallery(List<BitmapSource> bitmaps)
+        public List<ImportedCanvas> Canvas { get; set; }
+
+        public Gallery(List<SaveableCanvas> strokes)
         {
             InitializeComponent();
-            DataContext = bitmaps;
+            Canvas = CreateGalleryFromCloud(strokes);
+            DataContext = Canvas;
+            this.ShowDialog();
+        }
+        private static List<ImportedCanvas> CreateGalleryFromCloud(List<SaveableCanvas> strokes)
+        {
+            return ConvertStrokesToPNG(strokes);
+        }
+
+        private static List<ImportedCanvas> ConvertStrokesToPNG(List<SaveableCanvas> strokes)
+        {
+            List<ImportedCanvas> canvas = new List<ImportedCanvas>();
+            foreach (var item in strokes)
+            {
+                var bytes = Convert.FromBase64String(item.Base64Strokes);
+                var bitmap = (BitmapSource)new ImageSourceConverter().ConvertFrom(bytes);
+                canvas.Add(new ImportedCanvas(item.CanvasId, item.Name, bitmap));
+            }
+            return canvas;
         }
     }
 }

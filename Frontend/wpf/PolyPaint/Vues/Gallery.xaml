@@ -5,18 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PolyPaint.Vues"
         mc:Ignorable="d"
-        Title="Gallery" Height="1280" Width="720">
-    <!--<ItemsControl ItemsSource="{Binding}">
-        <ItemsControl.ItemTemplate>
-            <DataTemplate>
-                <Image Source="{Binding}" Height="100" Width="100" />
-            </DataTemplate>
-        </ItemsControl.ItemTemplate>
-    </ItemsControl>-->
+        Title="Gallery" Height="720" Width="1280">
+    
     <ListBox ItemsSource="{Binding}">
         <ListBox.ItemTemplate>
             <DataTemplate>
-                <Image Source="{Binding}" Height="250" Width="250" Margin="5" />
+                <Image Source="{Binding ImagePreview}" Height="250" Width="250" Margin="5" />
             </DataTemplate>
         </ListBox.ItemTemplate>
         <ListBox.ItemsPanel>

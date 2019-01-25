@@ -16,6 +16,7 @@ using System.Text;
 using System.Collections.Generic;
 using PolyPaint.Chat;
 using Microsoft.AspNetCore.SignalR.Client;
+using PolyPaint.Vues;
 
 namespace PolyPaint
 {
@@ -155,7 +156,8 @@ namespace PolyPaint
                 var responseString = await response.Content.ReadAsStringAsync();
                 strokes = JsonConvert.DeserializeObject<List<SaveableCanvas>>(responseString);
             }
-            GalleryGenerator.CreateGalleryFromCloud(strokes);
+            Gallery gallery = new Gallery(strokes);
+            gallery.ShowDialog();
         }
 
         private byte[] GetBytesFromCanvas()
