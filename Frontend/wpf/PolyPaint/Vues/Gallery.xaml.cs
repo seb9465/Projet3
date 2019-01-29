@@ -1,5 +1,8 @@
-﻿using System;
+﻿using PolyPaint.Modeles;
+using PolyPaint.VueModeles;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -7,6 +10,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+using System.Windows.Ink;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -19,9 +23,44 @@ namespace PolyPaint.Vues
     /// </summary>
     public partial class Gallery : Window
     {
-        public Gallery()
+        public List<CanvasViewModel> Canvas { get; set; }
+        public CanvasViewModel SelectedCanvas { get; set; }
+
+        public Gallery(List<SaveableCanvas> strokes, InkCanvas drawingSurface)
         {
             InitializeComponent();
+            Canvas = ConvertStrokesToPNG(strokes, drawingSurface);
+            DataContext = Canvas;
+            this.ShowDialog();
+        }
+
+        private static List<CanvasViewModel> ConvertStrokesToPNG(List<SaveableCanvas> savedCanvas, InkCanvas drawingSurface)
+        {
+            List<CanvasViewModel> canvas = new List<CanvasViewModel>();
+            foreach (var item in savedCanvas)
+            {
+                var bitmapImage = (BitmapSource)new ImageSourceConverter().ConvertFrom(Convert.FromBase64String(item.Base64Image));
+                var strokes = GenerateStrokesFromBytes(Convert.FromBase64String(item.Base64Strokes));
+                canvas.Add(new CanvasViewModel(item.CanvasId, item.Name, bitmapImage, strokes));
+            }
+            return canvas;
+        }
+
+        private static StrokeCollection GenerateStrokesFromBytes(byte[] bytes)
+        {
+            StrokeCollection strokes;
+            using (MemoryStream ms = new MemoryStream(bytes))
+            {
+                strokes = new System.Windows.Ink.StrokeCollection(ms);
+                ms.Close();
+            }
+            return strokes;
+        }
+
+        private void OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            SelectedCanvas = (CanvasViewModel)ImagePreviews.SelectedItem;
+            this.Close();
         }
     }
 }

@@ -5,9 +5,18 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PolyPaint.Vues"
         mc:Ignorable="d"
-        Title="Gallery" Height="300" Width="300">
-    <Grid>
-        <Label Content="Voici une gallery" HorizontalAlignment="Left" Margin="86,119,0,0" VerticalAlignment="Top" Height="75" Width="162"/>
+        Title="Gallery" Height="720" Width="1280">
 
-    </Grid>
+    <ListBox Name="ImagePreviews" SelectionChanged="OnSelectionChanged" ItemsSource="{Binding}">
+        <ListBox.ItemTemplate>
+            <DataTemplate>
+                <Image Source="{Binding ImagePreview}" Height="250" Width="250" Margin="5" />
+            </DataTemplate>
+        </ListBox.ItemTemplate>
+        <ListBox.ItemsPanel>
+            <ItemsPanelTemplate>
+                <WrapPanel />
+            </ItemsPanelTemplate>
+        </ListBox.ItemsPanel>
+    </ListBox>
 </Window>

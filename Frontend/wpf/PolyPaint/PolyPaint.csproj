@@ -356,8 +356,8 @@
     <Compile Include="Convertisseurs\Convertisseurs.cs" />
     <Compile Include="Modeles\Editeur.cs" />
     <Compile Include="Modeles\SaveableCanvas.cs" />
-    <Compile Include="Services\GalleryGenerator.cs" />
     <Compile Include="Utilitaires\RelayCommand.cs" />
+    <Compile Include="VueModeles\CanvasViewModel.cs" />
     <Compile Include="VueModeles\LoginViewModel.cs" />
     <Compile Include="VueModeles\VueModele.cs" />
     <Compile Include="Vues\Login.xaml.cs">
@@ -455,6 +455,9 @@
   <ItemGroup>
     <Resource Include="Resources\cloud.png" />
     <Resource Include="Resources\importFromCloud.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Services\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
