@@ -231,7 +231,7 @@ namespace PolyPaint
             {
                 await ChatClient.connection.StartAsync();
                 await ChatClient.connection.InvokeAsync("ConnectToGroup",
-                    groupTextBox.Text);
+                    userTextBox.Text);
                 messagesList.Items.Add("Connection started");
                 connectButtonn.IsEnabled = false;
                 sendButtonn.IsEnabled = true;
