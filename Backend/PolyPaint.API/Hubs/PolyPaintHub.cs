@@ -29,6 +29,7 @@ namespace PolyPaint.API.Hubs
                 {
                     // Maybe change in a way that it doesnt send back to sender (sender handles his own message in the ui)
                     await Clients.Group(groupId).SendAsync("ReceiveMessage", user.FullName(), message);
+                    Console.WriteLine("A User sent a message");
                 }
             }
         }
@@ -57,6 +58,7 @@ namespace PolyPaint.API.Hubs
                 {
                     await base.OnConnectedAsync();
                     UserHandler.UserGroupMap.GetOrAdd(userId, (string)null);
+                    Console.WriteLine("A User Connected to the chat service");
                 }
             }
         }
