@@ -355,6 +355,8 @@
     <Compile Include="Chat\ChatClient.cs" />
     <Compile Include="Convertisseurs\Convertisseurs.cs" />
     <Compile Include="Modeles\Editeur.cs" />
+    <Compile Include="Modeles\SaveableCanvas.cs" />
+    <Compile Include="Services\GalleryGenerator.cs" />
     <Compile Include="Utilitaires\RelayCommand.cs" />
     <Compile Include="VueModeles\VueModele.cs" />
     <Compile Include="Vues\Login.xaml.cs">
@@ -362,6 +364,8 @@
     </Compile>
     <Compile Include="Vues\Register.xaml.cs">
       <DependentUpon>Register.xaml</DependentUpon>
+    <Compile Include="Vues\Gallery.xaml.cs">
+      <DependentUpon>Gallery.xaml</DependentUpon>
     </Compile>
     <Page Include="Vues\ChatWindow.xaml">
       <SubType>Designer</SubType>
@@ -388,6 +392,9 @@
     <Page Include="Vues\Register.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    <Page Include="Vues\Gallery.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <ItemGroup>
@@ -441,6 +448,10 @@
   <ItemGroup>
     <Resource Include="Resources\load.png" />
     <Resource Include="Resources\save.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\cloud.png" />
+    <Resource Include="Resources\importFromCloud.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

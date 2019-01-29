@@ -54,6 +54,26 @@
                 <Button x:Name="depiler" Width="30" Height="30" Margin="5" Padding="0" Command="{Binding Depiler}" FontSize="18">
                     <materialDesign:PackIcon Kind="RedoVariant" />
                 </Button>
+
+                <Button Name="sendToCloud" Width="40" Height="40" Margin="5"
+                        HorizontalContentAlignment="Left"                            
+                        BorderBrush="Transparent"
+                        Background="Transparent"
+                        Click="SendToCloud">
+                    <StackPanel>
+                        <Image Source="/Resources/cloud.png"  />
+                    </StackPanel>
+                </Button>
+                <Button Name="importFromCloud" Width="40" Height="40" Margin="5"
+                        HorizontalContentAlignment="Left"                            
+                        BorderBrush="Transparent"
+                        Background="Transparent"
+                        Click="ImportFromCloud">
+                    <StackPanel>
+                        <Image Source="/Resources/importFromCloud.png"  />
+                    </StackPanel>
+                </Button>
+
                 <StackPanel Orientation="Horizontal">
                     <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Width="2" />
                 </StackPanel>

@@ -12,8 +12,10 @@ namespace PolyPaint.DataAccess.Services
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly TokenService _tokenService;
-        public LoginService(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager,
-        TokenService tokenService)
+        public LoginService(
+            UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager,
+            TokenService tokenService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -22,6 +24,7 @@ namespace PolyPaint.DataAccess.Services
         public async Task<string> Login(LoginViewModel loginViewModel)
         {
             ApplicationUser user = null;
+            // TODO: REGEX?
             if (loginViewModel.Username.Contains("@"))
             {
                 user = await _userManager.FindByEmailAsync(loginViewModel.Username);
@@ -35,7 +38,7 @@ namespace PolyPaint.DataAccess.Services
             string token = null;
             if (isLoginSuccesful)
             {
-                token = _tokenService.GenerateToken(loginViewModel.Username);
+                token = _tokenService.GenerateToken(user);
             }
 
             return token;
@@ -43,7 +46,8 @@ namespace PolyPaint.DataAccess.Services
 
         public async Task<string> HandleFacebookLogin(ExternalLoginInfo info)
         {
-            SignInResult existingFacebookLogin = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: true);
+            SignInResult existingFacebookLogin = await _signInManager
+                .ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: true);
             string token = null;
             if (!existingFacebookLogin.Succeeded)
             {
@@ -71,13 +75,13 @@ namespace PolyPaint.DataAccess.Services
 
                 IdentityResult linkingFacebook = await _userManager.AddLoginAsync(currentUser, info);
                 await _signInManager.SignInAsync(currentUser, isPersistent: false);
-                token = _tokenService.GenerateToken(email);
+                token = _tokenService.GenerateToken(currentUser);
                 return token;
             }
             else
             {
-                string email = info.Principal.FindFirstValue(ClaimTypes.Email);
-                token = _tokenService.GenerateToken(email);
+                //string email = info.Principal.FindFirstValue(ClaimTypes.Email);
+                //token = _tokenService.GenerateToken(email);
                 return token;
             }
         }
