@@ -129,14 +129,16 @@ namespace PolyPaint
 
         private async void SendToCloud(object sender, RoutedEventArgs e)
         {
-            byte[] bitmapBytes = GetBytesFromCanvas();
-            string strokesToSend = Convert.ToBase64String(bitmapBytes);
-            SaveableCanvas canvas = new SaveableCanvas("NameNotImplementedYet", strokesToSend);
+            byte[] strokesBytes = GetBytesForStrokes();
+            byte[] imageBytes = GetBytesForImage();
+            string strokesToSend = Convert.ToBase64String(strokesBytes);
+            string imageToSend = Convert.ToBase64String(imageBytes);
+            SaveableCanvas canvas = new SaveableCanvas("NameNotImplementedYet", strokesToSend, imageToSend);
 
             string canvasJson = JsonConvert.SerializeObject(canvas);
             using (var client = new HttpClient())
             {
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IkhvbWUiLCJuYW1laWQiOiI4MzBkYmI4NC1jMzYzLTQwZTYtYjdjMC03ZmM0ZWM5YmUzNDAiLCJuYmYiOjE1NDgxOTE5NDgsImV4cCI6NjE1NDgxOTE4ODgsImlhdCI6MTU0ODE5MTk0OCwiaXNzIjoiMTAuMjAwLjI3LjE2OjUwMDEiLCJhdWQiOiIxMC4yMDAuMjcuMTY6NTAwMSJ9.udDi-4deN17QsbeG72Jm8j-CAmIxzP4Pg3eQyV2KG3Q");
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IkhvbWUiLCJuYW1laWQiOiI3ZTRhNGQwYi1jN2RiLTQwZGUtYThkZC1iZDM2MWFkMmMzNDUiLCJuYmYiOjE1NDg3ODMwNzYsImV4cCI6NjE1NDg3ODMwMTYsImlhdCI6MTU0ODc4MzA3NiwiaXNzIjoiMTAuMjAwLjI3LjE2OjUwMDEiLCJhdWQiOiIxMC4yMDAuMjcuMTY6NTAwMSJ9.g09vCNXy32u_8IcZpPHNBbXaQP5tVXXB07D5dyNZll4");
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
                 var content = new StringContent(canvasJson, Encoding.UTF8, "application/json");
@@ -150,18 +152,18 @@ namespace PolyPaint
             List<SaveableCanvas> strokes;
             using (var client = new HttpClient())
             {
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IkhvbWUiLCJuYW1laWQiOiI4MzBkYmI4NC1jMzYzLTQwZTYtYjdjMC03ZmM0ZWM5YmUzNDAiLCJuYmYiOjE1NDgxOTE5NDgsImV4cCI6NjE1NDgxOTE4ODgsImlhdCI6MTU0ODE5MTk0OCwiaXNzIjoiMTAuMjAwLjI3LjE2OjUwMDEiLCJhdWQiOiIxMC4yMDAuMjcuMTY6NTAwMSJ9.udDi-4deN17QsbeG72Jm8j-CAmIxzP4Pg3eQyV2KG3Q");
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IkhvbWUiLCJuYW1laWQiOiI3ZTRhNGQwYi1jN2RiLTQwZGUtYThkZC1iZDM2MWFkMmMzNDUiLCJuYmYiOjE1NDg3ODMwNzYsImV4cCI6NjE1NDg3ODMwMTYsImlhdCI6MTU0ODc4MzA3NiwiaXNzIjoiMTAuMjAwLjI3LjE2OjUwMDEiLCJhdWQiOiIxMC4yMDAuMjcuMTY6NTAwMSJ9.g09vCNXy32u_8IcZpPHNBbXaQP5tVXXB07D5dyNZll4");
                 System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
                 var response = await client.GetAsync("http://localhost:4000/api/user/canvas");
                 var responseString = await response.Content.ReadAsStringAsync();
                 strokes = JsonConvert.DeserializeObject<List<SaveableCanvas>>(responseString);
             }
-            Gallery gallery = new Gallery(strokes);
+            Gallery gallery = new Gallery(strokes, surfaceDessin);
             surfaceDessin.Strokes.Clear();
             surfaceDessin.Strokes.Add(gallery.SelectedCanvas.Strokes);
         }
 
-        private byte[] GetBytesFromCanvas()
+        private byte[] GetBytesForStrokes()
         {
             MemoryStream ms = new MemoryStream();
             using (var memoryStream = new MemoryStream())
@@ -169,6 +171,34 @@ namespace PolyPaint
                 surfaceDessin.Strokes.Save(ms);
                 return ms.ToArray();
             }
+        }
+        private byte[] GetBytesForImage()
+        {
+            // Get the dimensions of the ink canvas
+            var size = new Size(surfaceDessin.ActualWidth, surfaceDessin.ActualHeight);
+            surfaceDessin.Margin = new Thickness(0, 0, 0, 0);
+            surfaceDessin.Measure(size);
+            surfaceDessin.Arrange(new Rect(size));
+
+            int margin = (int)surfaceDessin.Margin.Left;
+            int width = (int)surfaceDessin.ActualWidth - margin;
+            int height = (int)surfaceDessin.ActualHeight - margin;
+
+            // Convert the strokes from the canvas to a bitmap
+            RenderTargetBitmap rtb = new RenderTargetBitmap(width, height, 96d, 96d, PixelFormats.Default);
+            rtb.Render(surfaceDessin);
+
+            // Save the bitmap to a memory stream
+            BmpBitmapEncoder encoder = new BmpBitmapEncoder();
+            encoder.Frames.Add(BitmapFrame.Create(rtb));
+            byte[] bitmapBytes;
+            using (MemoryStream ms = new MemoryStream())
+            {
+                encoder.Save(ms);
+                ms.Position = 0;
+                bitmapBytes = ms.ToArray();
+            }
+            return bitmapBytes;
         }
         private async void chatButton_Click(object sender, RoutedEventArgs e)
         {

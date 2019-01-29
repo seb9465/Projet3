@@ -26,35 +26,24 @@ namespace PolyPaint.Vues
         public List<CanvasViewModel> Canvas { get; set; }
         public CanvasViewModel SelectedCanvas { get; set; }
 
-        public Gallery(List<SaveableCanvas> strokes)
+        public Gallery(List<SaveableCanvas> strokes, InkCanvas drawingSurface)
         {
             InitializeComponent();
-            Canvas = CreateGalleryFromCloud(strokes);
+            Canvas = ConvertStrokesToPNG(strokes, drawingSurface);
             DataContext = Canvas;
             this.ShowDialog();
         }
-        private static List<CanvasViewModel> CreateGalleryFromCloud(List<SaveableCanvas> strokes)
-        {
-            return ConvertStrokesToPNG(strokes);
-        }
 
-        private static List<CanvasViewModel> ConvertStrokesToPNG(List<SaveableCanvas> savedCanvas)
+        private static List<CanvasViewModel> ConvertStrokesToPNG(List<SaveableCanvas> savedCanvas, InkCanvas drawingSurface)
         {
             List<CanvasViewModel> canvas = new List<CanvasViewModel>();
             foreach (var item in savedCanvas)
             {
-                var bytes = Convert.FromBase64String(item.Base64Strokes);
-                var bitmapImage = GenerateImagePreview(bytes);
-                var strokes = GenerateStrokesFromBytes(bytes);
+                var bitmapImage = (BitmapSource)new ImageSourceConverter().ConvertFrom(Convert.FromBase64String(item.Base64Image));
+                var strokes = GenerateStrokesFromBytes(Convert.FromBase64String(item.Base64Strokes));
                 canvas.Add(new CanvasViewModel(item.CanvasId, item.Name, bitmapImage, strokes));
             }
             return canvas;
-        }
-
-        private static BitmapSource GenerateImagePreview(byte[] bytes)
-        {
-            return BitmapSource.Create(1, 1, 1, 1, PixelFormats.BlackWhite, null, new byte[] { 0 }, 1);
-            //return (BitmapSource)new ImageSourceConverter().ConvertFrom(bytes);
         }
 
         private static StrokeCollection GenerateStrokesFromBytes(byte[] bytes)
