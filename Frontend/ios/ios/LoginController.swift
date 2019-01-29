@@ -11,31 +11,38 @@ import Alamofire
 import PromiseKit
 import AwaitKit
 
-class LoginController: UIViewController {
+let loginURL: URLConvertible = "https://polypaint.me/api/login";
+
+class LoginController: UIViewController, UITextFieldDelegate {
     @IBOutlet var emailField: UITextField!
     @IBOutlet var passwordField: UITextField!
     @IBOutlet var validationLabel: UILabel!
 
     @IBOutlet var loginButton: UIButton!
+    
+    var placeHolder = "";
 
     @IBAction func loginButton(_ sender: Any) {
         let validEmail: Bool = isValidEmail(testStr: emailField.text!);
         validationLabel.text = validEmail ? "Valid" : "Invalid";
         
         async{
-            let content = try await(self.getUserInfo());
-            print(content);
+            let usertoken = try await(self.authenticateUser(email: self.emailField.text!, password: self.passwordField.text!));
+            print(usertoken);
         }
     }
     
-    func getUserInfo()  -> Promise<Any> {
-        return
-            Promise {seal in
-                Alamofire.request("https://jsonplaceholder.typicode.com/users/1").responseJSON{response in
-                    seal.fulfill(response);
-                }
-        }
+    func authenticateUser(email: String, password: String) -> Promise<Any>{
+        let parameters = [
+            "username": email,
+            "password": password
+        ];
         
+        return Promise {seal in
+            Alamofire.request(loginURL, method: .post, parameters: parameters).responseJSON{ response in
+                seal.fulfill(response);
+            };
+        }
     }
 
     func isValidEmail(testStr: String) -> Bool {
@@ -48,5 +55,18 @@ class LoginController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+    }
+    
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        print("delegated")
+        placeHolder = textField.placeholder ?? ""
+        textField.placeholder = ""
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        if textField.placeholder == ""{
+            textField.placeholder = placeHolder
+        }
     }
 }
