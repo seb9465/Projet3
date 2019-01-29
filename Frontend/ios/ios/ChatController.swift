@@ -14,30 +14,31 @@ class ChatController: UIViewController, UITextFieldDelegate {
     @IBOutlet var receivedMessage: UILabel!
     @IBOutlet var connectButton: UIButton!
     
+    let chatURL = "http://10.200.19.14:5000/signalr"
     var hubConnection: HubConnection!
     
     @IBAction func connectButtonTrigger(_ sender: Any) {
-        self.hubConnection.invoke(method: "ConnectToGroup", arguments: [], invocationDidComplete: { error in
+        self.hubConnection.invoke(method: "ConnectToGroup", arguments: [""], invocationDidComplete: { error in
             if (error == nil) {
-                print("connected to the group")
-                self.statusLabel.text = "Connected"
+                print("connected to the group");
+                self.statusLabel.text = "Connected";
                 self.statusLabel.textColor = UIColor.green;
                 self.connectButton.isEnabled = false;
             } else {
                 print("error");
                 print(error as Any);
+                self.statusLabel.text = "Error connecting to server!"
+                self.statusLabel.textColor = UIColor.red;
             }
         })
     }
     
-    let chatURL = "http://10.200.19.14:5000/signalr"
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-        //let query: [String: String] = ["parameterA": "valueA", "parameterB": "valueB"]
+        
         self.hubConnection = HubConnectionBuilder(url: URL(string: chatURL)!)
             .build()
+        
         self.hubConnection.start()
         
 //        self.hubConnection.invoke(method: "SendMessage", arguments: ["hello"], invocationDidComplete: { args in
