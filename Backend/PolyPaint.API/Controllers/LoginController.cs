@@ -20,7 +20,9 @@ namespace PolyPaint.API.Controllers
         private readonly LoginService _loginService;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        public LoginController(LoginService loginService, SignInManager<ApplicationUser> signInManager, IHttpContextAccessor httpContextAccessor)
+        public LoginController(LoginService loginService,
+            SignInManager<ApplicationUser> signInManager,
+            IHttpContextAccessor httpContextAccessor)
         {
             _loginService = loginService;
             _signInManager = signInManager;
@@ -53,7 +55,8 @@ namespace PolyPaint.API.Controllers
         [HttpGet]
         public IActionResult FacebookLogin()
         {
-            var properties = _signInManager.ConfigureExternalAuthenticationProperties("Facebook", Url.Action("ExternalLoginCallback", "login"));
+            var properties = _signInManager
+                .ConfigureExternalAuthenticationProperties("Facebook", Url.Action("ExternalLoginCallback", "login"));
             return Challenge(properties, "Facebook");
 
         }
@@ -62,12 +65,10 @@ namespace PolyPaint.API.Controllers
         public async Task<IActionResult> ExternalLoginCallback()
         {
             ExternalLoginInfo info = await _signInManager.GetExternalLoginInfoAsync();
-
             string token = await _loginService.HandleFacebookLogin(info);
 
             if (token != null)
             {
-               
                 return Ok("Login Successful " + token);
             }
             else

@@ -1,7 +1,10 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using System.Windows.Ink;
 using System.Windows.Media;
+using Microsoft.AspNetCore.SignalR.Client;
 using PolyPaint.Modeles;
 using PolyPaint.Utilitaires;
 
@@ -16,10 +19,24 @@ namespace PolyPaint.VueModeles
     class VueModele : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
+        public event EventHandler MessageReceived
+        {
+            add
+            {
+                chatClient.MessageReceived += value;
+            }
+            remove
+            {
+                chatClient.MessageReceived -= value;
+            }
+        }
         private Editeur editeur = new Editeur();
+        private ChatClient chatClient = new ChatClient();
 
         // Ensemble d'attributs qui définissent l'apparence d'un trait.
         public DrawingAttributes AttributsDessin { get; set; } = new DrawingAttributes();
+
+        public HubConnection Connection { get; private set; }
 
         public string OutilSelectionne
         {
@@ -118,7 +135,31 @@ namespace PolyPaint.VueModeles
             else // e.PropertyName == "TailleTrait"
             {               
                 AjusterPointe();
-            }                
+            }
+        }
+
+        public async void InitializeSignalR(string accessToken)
+        {
+            Connection.On<string, string>("ReceiveMessage", (username, message) =>
+            {
+                this.Dispatcher.Invoke(() =>
+                {
+                    var newMessage = $"{username}: {message}";
+                    messagesList.Items.Add(newMessage);
+                });
+            });
+
+            try
+            {
+                await Connection.StartAsync();
+                await Connection.InvokeAsync("ConnectToGroup");
+                messagesList.Items.Add("Connection started");
+                sendButton.IsEnabled = true;
+            }
+            catch (Exception ex)
+            {
+                messagesList.Items.Add(ex.Message);
+            }
         }
 
         /// <summary>

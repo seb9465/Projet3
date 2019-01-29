@@ -8,7 +8,6 @@ using System.Windows.Media.Imaging;
 using System.IO;
 using Microsoft.Win32;
 using System.Windows.Ink;
-using PolyPaint.Chat;
 using Microsoft.AspNetCore.SignalR.Client;
 
 namespace PolyPaint.Vues
@@ -18,44 +17,18 @@ namespace PolyPaint.Vues
     /// </summary>
     public partial class ChatWindow : Window
     {
-        public ChatClient ChatClient { get; set; }
 
         public ChatWindow()
         {
             InitializeComponent();
-            ChatClient = new ChatClient();
         }
-
-        private async void connectButton_Click(object sender, RoutedEventArgs e)
-        {
-            ChatClient.connection.On<string, string>("ReceiveMessage", (user, message) =>
-            {
-                this.Dispatcher.Invoke(() =>
-                {
-                    var newMessage = $"{user}: {message}";
-                    messagesList.Items.Add(newMessage);
-                });
-            });
-
-            try
-            {
-                await ChatClient.connection.StartAsync();
-                messagesList.Items.Add("Connection started");
-                connectButton.IsEnabled = false;
-                sendButton.IsEnabled = true;
-            }
-            catch (Exception ex)
-            {
-                messagesList.Items.Add(ex.Message);
-            }
-        }
-
+        
         private async void sendButton_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                await ChatClient.connection.InvokeAsync("SendMessage",
-                    userTextBox.Text, messageTextBox.Text);
+                await (DataContext as VueModele).Connection.InvokeAsync("SendMessage",
+                    messageTextBox.Text);
             }
             catch (Exception ex)
             {
