@@ -87,6 +87,15 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Of2-1r-cwk">
+                                <rect key="frame" x="340" y="684" width="345" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <state key="normal" title="Chat"/>
+                                <connections>
+                                    <segue destination="1BF-Nu-mFb" kind="show" id="Uu3-xw-ZRy"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
@@ -103,7 +112,25 @@
             </objects>
             <point key="canvasLocation" x="720.1171875" y="409.375"/>
         </scene>
+
         <!--Register Controller-->
+
+        <!--Chat Controller-->
+        <scene sceneID="lki-g3-crL">
+            <objects>
+                <viewController id="1BF-Nu-mFb" customClass="ChatController" customModule="ios" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="dSv-nl-CAo">
+                        <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="oQB-kI-cR8"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="it3-fp-eC1" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="720" y="1288"/>
+        </scene>
+        <!--View Controller-->
         <scene sceneID="kR5-mR-vU8">
             <objects>
                 <viewController id="VLV-Wg-lJt" customClass="RegisterController" sceneMemberID="viewController">
