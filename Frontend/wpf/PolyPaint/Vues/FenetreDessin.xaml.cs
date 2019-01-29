@@ -17,6 +17,7 @@ using System.Collections.Generic;
 using PolyPaint.Chat;
 using Microsoft.AspNetCore.SignalR.Client;
 using PolyPaint.Vues;
+using System.Linq;
 
 namespace PolyPaint
 {
@@ -29,6 +30,7 @@ namespace PolyPaint
         public FenetreDessin()
         {
             InitializeComponent();
+            var token = Application.Current.Properties["token"];
             DataContext = new VueModele();
             ChatClient = new ChatClient();
         }
@@ -214,11 +216,11 @@ namespace PolyPaint
 
         private async void connectButtonn_Click(object sender, RoutedEventArgs e)
         {
-            ChatClient.connection.On<string, string>("ReceiveMessage", (user, message) =>
+            ChatClient.connection.On<string, string>("ReceiveMessage", (username, message) =>
             {
                 this.Dispatcher.Invoke(() =>
                 {
-                    var newMessage = $"{user}: {message}";
+                    var newMessage = $"{username}: {message}";
                     messagesList.Items.Add(newMessage);
                 });
             });
@@ -226,6 +228,8 @@ namespace PolyPaint
             try
             {
                 await ChatClient.connection.StartAsync();
+                await ChatClient.connection.InvokeAsync("ConnectToGroup",
+                    userTextBox.Text);
                 messagesList.Items.Add("Connection started");
                 connectButtonn.IsEnabled = false;
                 sendButtonn.IsEnabled = true;
@@ -241,7 +245,7 @@ namespace PolyPaint
             try
             {
                 await ChatClient.connection.InvokeAsync("SendMessage",
-                    userTextBox.Text, messageTextBox.Text);
+                    messageTextBox.Text);
             }
             catch (Exception ex)
             {

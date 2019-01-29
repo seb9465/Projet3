@@ -12,8 +12,10 @@ namespace PolyPaint.DataAccess.Services
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly TokenService _tokenService;
-        public LoginService(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager,
-        TokenService tokenService)
+        public LoginService(
+            UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager,
+            TokenService tokenService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -22,6 +24,7 @@ namespace PolyPaint.DataAccess.Services
         public async Task<string> Login(LoginViewModel loginViewModel)
         {
             ApplicationUser user = null;
+            // TODO: REGEX?
             if (loginViewModel.Username.Contains("@"))
             {
                 user = await _userManager.FindByEmailAsync(loginViewModel.Username);
@@ -43,7 +46,8 @@ namespace PolyPaint.DataAccess.Services
 
         public async Task<string> HandleFacebookLogin(ExternalLoginInfo info)
         {
-            SignInResult existingFacebookLogin = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: true);
+            SignInResult existingFacebookLogin = await _signInManager
+                .ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: true);
             string token = null;
             if (!existingFacebookLogin.Succeeded)
             {
