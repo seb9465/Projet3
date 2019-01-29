@@ -5,6 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:PolyPaint.Vues"
       mc:Ignorable="d"
+      PreviewKeyDown="Window_PreviewKeyDown"
       Title="Login" Height="500" Width="700">
     <Grid HorizontalAlignment="Left" Height="490" Margin="0,0,-8,-21" VerticalAlignment="Top" Width="700">
         <Button Content="Login" Margin="264,355,255,103" Name="loginBtn" Click="LoginBtn_Click" Height="Auto"/>

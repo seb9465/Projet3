@@ -3,6 +3,8 @@ using System.Net.Http;
 using PolyPaint.VueModeles;
 using System.Text;
 using Newtonsoft.Json;
+using System.Windows.Input;
+using System;
 
 namespace PolyPaint.Vues
 {
@@ -53,5 +55,14 @@ namespace PolyPaint.Vues
                 }
             }
         }
+
+        private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                LoginBtn_Click(sender, e);
+            }
+        }
+       
     }
 }
