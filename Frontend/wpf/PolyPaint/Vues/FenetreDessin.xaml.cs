@@ -35,7 +35,7 @@ namespace PolyPaint
             DataContext = new VueModele();
             ChatClient = new ChatClient();
         }
-        
+
         // Pour gérer les points de contrôles.
         private void GlisserCommence(object sender, DragStartedEventArgs e) => (sender as Thumb).Background = Brushes.Black;
         private void GlisserTermine(object sender, DragCompletedEventArgs e) => (sender as Thumb).Background = Brushes.White;
@@ -55,7 +55,7 @@ namespace PolyPaint
         }
 
         private void DupliquerSelection(object sender, RoutedEventArgs e)
-        {          
+        {
             surfaceDessin.CopySelection();
             surfaceDessin.Paste();
         }
@@ -109,7 +109,7 @@ namespace PolyPaint
 
             if (!File.Exists(openFileDialog.FileName))
             {
-                MessageBox.Show("The file you requested does not exist." + " Save the StrokeCollection before loading it.");    
+                MessageBox.Show("The file you requested does not exist." + " Save the StrokeCollection before loading it.");
                 return;
             }
 

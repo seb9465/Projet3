@@ -64,5 +64,11 @@ namespace PolyPaint.Vues
                 messagesList.Items.Add(ex.Message);
             }
         }
+
+        private void DataWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            e.Cancel = true;
+            this.Hide();
+        }
     }
 }
