@@ -3,10 +3,14 @@
 
 target 'ios' do
   # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
+  # Pods for ios
+
   use_frameworks!
   pod 'Alamofire'
   pod 'SwiftR'
-  # Pods for ios
+  pod 'PromiseKit'
+  pod 'PromiseKit/Alamofire'
+  pod 'AwaitKit'
 
   target 'iosTests' do
     inherit! :search_paths

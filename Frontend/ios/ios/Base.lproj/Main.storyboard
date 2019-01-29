@@ -156,6 +156,7 @@
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>
+                                    <action selector="allo:" destination="hBy-An-Zux" eventType="touchUpInside" id="7ZX-9w-hxt"/>
                                     <action selector="loginButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Bim-h2-ey2"/>
                                 </connections>
                             </button>
@@ -165,6 +166,7 @@
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YDv-gI-AD6" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="hBy-An-Zux" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="1484" y="409"/>
         </scene>

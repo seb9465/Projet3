@@ -8,6 +8,8 @@
 
 import UIKit
 import Alamofire
+import PromiseKit
+import AwaitKit
 
 class LoginController: UIViewController {
     @IBOutlet var emailField: UITextField!
@@ -20,10 +22,20 @@ class LoginController: UIViewController {
         let validEmail: Bool = isValidEmail(testStr: emailField.text!);
         validationLabel.text = validEmail ? "Valid" : "Invalid";
         
-        if(validEmail){
-            // send request
-//            let answer = wait Alamofire.request("url", method: .get);
+        async{
+            let content = try await(self.getUserInfo());
+            print(content);
         }
+    }
+    
+    func getUserInfo()  -> Promise<Any> {
+        return
+            Promise {seal in
+                Alamofire.request("https://jsonplaceholder.typicode.com/users/1").responseJSON{response in
+                    seal.fulfill(response);
+                }
+        }
+        
     }
 
     func isValidEmail(testStr: String) -> Bool {
