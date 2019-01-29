@@ -2,6 +2,7 @@
 using PolyPaint.VueModeles;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,6 +10,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+using System.Windows.Ink;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -21,7 +23,8 @@ namespace PolyPaint.Vues
     /// </summary>
     public partial class Gallery : Window
     {
-        public List<ImportedCanvas> Canvas { get; set; }
+        public List<CanvasViewModel> Canvas { get; set; }
+        public CanvasViewModel SelectedCanvas { get; set; }
 
         public Gallery(List<SaveableCanvas> strokes)
         {
@@ -30,21 +33,45 @@ namespace PolyPaint.Vues
             DataContext = Canvas;
             this.ShowDialog();
         }
-        private static List<ImportedCanvas> CreateGalleryFromCloud(List<SaveableCanvas> strokes)
+        private static List<CanvasViewModel> CreateGalleryFromCloud(List<SaveableCanvas> strokes)
         {
             return ConvertStrokesToPNG(strokes);
         }
 
-        private static List<ImportedCanvas> ConvertStrokesToPNG(List<SaveableCanvas> strokes)
+        private static List<CanvasViewModel> ConvertStrokesToPNG(List<SaveableCanvas> savedCanvas)
         {
-            List<ImportedCanvas> canvas = new List<ImportedCanvas>();
-            foreach (var item in strokes)
+            List<CanvasViewModel> canvas = new List<CanvasViewModel>();
+            foreach (var item in savedCanvas)
             {
                 var bytes = Convert.FromBase64String(item.Base64Strokes);
-                var bitmap = (BitmapSource)new ImageSourceConverter().ConvertFrom(bytes);
-                canvas.Add(new ImportedCanvas(item.CanvasId, item.Name, bitmap));
+                var bitmapImage = GenerateImagePreview(bytes);
+                var strokes = GenerateStrokesFromBytes(bytes);
+                canvas.Add(new CanvasViewModel(item.CanvasId, item.Name, bitmapImage, strokes));
             }
             return canvas;
+        }
+
+        private static BitmapSource GenerateImagePreview(byte[] bytes)
+        {
+            return BitmapSource.Create(1, 1, 1, 1, PixelFormats.BlackWhite, null, new byte[] { 0 }, 1);
+            //return (BitmapSource)new ImageSourceConverter().ConvertFrom(bytes);
+        }
+
+        private static StrokeCollection GenerateStrokesFromBytes(byte[] bytes)
+        {
+            StrokeCollection strokes;
+            using (MemoryStream ms = new MemoryStream(bytes))
+            {
+                strokes = new System.Windows.Ink.StrokeCollection(ms);
+                ms.Close();
+            }
+            return strokes;
+        }
+
+        private void OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            SelectedCanvas = (CanvasViewModel)ImagePreviews.SelectedItem;
+            this.Close();
         }
     }
 }

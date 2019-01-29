@@ -157,37 +157,18 @@ namespace PolyPaint
                 strokes = JsonConvert.DeserializeObject<List<SaveableCanvas>>(responseString);
             }
             Gallery gallery = new Gallery(strokes);
-            gallery.ShowDialog();
+            surfaceDessin.Strokes.Clear();
+            surfaceDessin.Strokes.Add(gallery.SelectedCanvas.Strokes);
         }
 
         private byte[] GetBytesFromCanvas()
         {
-            // Get the dimensions of the ink canvas
-            var size = new Size(surfaceDessin.ActualWidth, surfaceDessin.ActualHeight);
-            surfaceDessin.Margin = new Thickness(0, 0, 0, 0);
-            surfaceDessin.Measure(size);
-            surfaceDessin.Arrange(new Rect(size));
-
-            int margin = (int)surfaceDessin.Margin.Left;
-            int width = (int)surfaceDessin.ActualWidth - margin;
-            int height = (int)surfaceDessin.ActualHeight - margin;
-
-            // Convert the strokes from the canvas to a bitmap
-            RenderTargetBitmap rtb = new RenderTargetBitmap(width, height, 96d, 96d, PixelFormats.Default);
-            rtb.Render(surfaceDessin);
-
-            // Save the bitmap to a memory stream
-            BmpBitmapEncoder encoder = new BmpBitmapEncoder();
-            encoder.Frames.Add(BitmapFrame.Create(rtb));
-            byte[] bitmapBytes;
-            using (MemoryStream ms = new MemoryStream())
+            MemoryStream ms = new MemoryStream();
+            using (var memoryStream = new MemoryStream())
             {
-                encoder.Save(ms);
-                ms.Position = 0;
-                bitmapBytes = ms.ToArray();
+                surfaceDessin.Strokes.Save(ms);
+                return ms.ToArray();
             }
-
-            return bitmapBytes;
         }
         private async void chatButton_Click(object sender, RoutedEventArgs e)
         {

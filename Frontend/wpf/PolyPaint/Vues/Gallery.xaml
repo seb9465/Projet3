@@ -6,8 +6,8 @@
         xmlns:local="clr-namespace:PolyPaint.Vues"
         mc:Ignorable="d"
         Title="Gallery" Height="720" Width="1280">
-    
-    <ListBox ItemsSource="{Binding}">
+
+    <ListBox Name="ImagePreviews" SelectionChanged="OnSelectionChanged" ItemsSource="{Binding}">
         <ListBox.ItemTemplate>
             <DataTemplate>
                 <Image Source="{Binding ImagePreview}" Height="250" Width="250" Margin="5" />
