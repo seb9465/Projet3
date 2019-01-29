@@ -103,10 +103,10 @@
             </objects>
             <point key="canvasLocation" x="720.1171875" y="409.375"/>
         </scene>
-        <!--View Controller-->
+        <!--Register Controller-->
         <scene sceneID="kR5-mR-vU8">
             <objects>
-                <viewController id="VLV-Wg-lJt" sceneMemberID="viewController">
+                <viewController id="VLV-Wg-lJt" customClass="RegisterController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="u7S-SR-31o">
                         <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
