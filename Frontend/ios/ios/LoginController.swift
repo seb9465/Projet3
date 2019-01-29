@@ -11,7 +11,7 @@ import Alamofire
 import PromiseKit
 import AwaitKit
 
-let loginURL: URLConvertible = "http://10.200.27.34:5000/api/login";
+let loginURL: URLConvertible = "http://10.200.19.14:5000/api/login";
 
 class LoginController: UIViewController, UITextFieldDelegate {
     @IBOutlet var emailField: UITextField!
@@ -27,10 +27,8 @@ class LoginController: UIViewController, UITextFieldDelegate {
         validationLabel.text = validEmail ? "Valid" : "Invalid";
         
         async{
-//            let usertoken = try await(self.authenticateUser(email: self.emailField.text!, password: self.passwordField.text!));
-            
-            let usertoken = try await(self.authenticateUser(email:"guccigang", password:"!12345Aa"));
-            print(usertoken);
+            let response = try await(self.authenticateUser(email:"guccigang", password:"!12345Aa"));
+            print(response);
         }
     }
     
@@ -42,7 +40,8 @@ class LoginController: UIViewController, UITextFieldDelegate {
         
         return Promise {seal in
             Alamofire.request(loginURL, method: .post, parameters: parameters, encoding: JSONEncoding.default).responseString{ response in
-                seal.fulfill(response);
+                let value = ["status": response.response!.statusCode, "data": response.value! as Any] as [String : Any];
+                seal.fulfill(value);
             };
         }
     }
