@@ -144,7 +144,7 @@ namespace PolyPaint
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
                 var content = new StringContent(canvasJson, Encoding.UTF8, "application/json");
-                var response = await client.PostAsync("http://localhost:4000/api/user/canvas", content);
+                var response = await client.PostAsync("https://localhost:44300/api/user/canvas", content);
                 var responseString = await response.Content.ReadAsStringAsync();
             }
         }
@@ -156,7 +156,7 @@ namespace PolyPaint
             {
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IkhvbWUiLCJuYW1laWQiOiI3ZTRhNGQwYi1jN2RiLTQwZGUtYThkZC1iZDM2MWFkMmMzNDUiLCJuYmYiOjE1NDg3ODMwNzYsImV4cCI6NjE1NDg3ODMwMTYsImlhdCI6MTU0ODc4MzA3NiwiaXNzIjoiMTAuMjAwLjI3LjE2OjUwMDEiLCJhdWQiOiIxMC4yMDAuMjcuMTY6NTAwMSJ9.g09vCNXy32u_8IcZpPHNBbXaQP5tVXXB07D5dyNZll4");
                 System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
-                var response = await client.GetAsync("http://localhost:4000/api/user/canvas");
+                var response = await client.GetAsync("https://localhost:44300/api/user/canvas");
                 var responseString = await response.Content.ReadAsStringAsync();
                 strokes = JsonConvert.DeserializeObject<List<SaveableCanvas>>(responseString);
             }
