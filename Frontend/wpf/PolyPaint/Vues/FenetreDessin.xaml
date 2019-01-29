@@ -228,6 +228,7 @@
                     <DropShadowEffect Opacity="0.3" BlurRadius="10"/>
                 </Border.Effect>
             </Border>
+            
         </Grid>
         <StackPanel Orientation="Vertical">
             <Button x:Name="chatButton" Content="Open chat in new window" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Bottom"  Width="210" Click="chatButton_Click" Height="41" />

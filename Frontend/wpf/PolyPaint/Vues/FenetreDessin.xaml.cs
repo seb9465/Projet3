@@ -27,6 +27,7 @@ namespace PolyPaint
     public partial class FenetreDessin : Window
     {
         public ChatClient ChatClient { get; set; }
+        PolyPaint.Vues.ChatWindow externalChatWindow = new PolyPaint.Vues.ChatWindow();
         public FenetreDessin()
         {
             InitializeComponent();
@@ -204,13 +205,13 @@ namespace PolyPaint
         }
         private async void chatButton_Click(object sender, RoutedEventArgs e)
         {
-            PolyPaint.Vues.ChatWindow w2 = new PolyPaint.Vues.ChatWindow();
-            w2.Show();
+            externalChatWindow.Show();
             chat.Visibility = Visibility.Collapsed;
         }
 
         private async void chatButtonSameWindow_Click(object sender, RoutedEventArgs e)
         {
+            externalChatWindow.Visibility = Visibility.Collapsed;
             chat.Visibility = Visibility.Visible;
         }
 

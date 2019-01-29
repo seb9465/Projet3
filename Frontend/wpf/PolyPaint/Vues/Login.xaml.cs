@@ -38,7 +38,7 @@ namespace PolyPaint.Vues
 
             using (var client = new HttpClient())
             {
-                client.BaseAddress = new System.Uri("http://10.200.27.34:5000");
+                client.BaseAddress = new System.Uri("https://localhost:44300");
                 client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
                 var result = await client.PostAsync("/api/login", content);
