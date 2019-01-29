@@ -16,6 +16,7 @@ using System.Text;
 using System.Collections.Generic;
 using PolyPaint.Chat;
 using Microsoft.AspNetCore.SignalR.Client;
+using System.Linq;
 
 namespace PolyPaint
 {
@@ -28,6 +29,7 @@ namespace PolyPaint
         public FenetreDessin()
         {
             InitializeComponent();
+            var token = Application.Current.Properties["token"];
             DataContext = new VueModele();
             ChatClient = new ChatClient();
         }

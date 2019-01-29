@@ -9,7 +9,7 @@
     <Grid HorizontalAlignment="Left" Height="490" Margin="0,0,-8,-21" VerticalAlignment="Top" Width="700">
         <Button Content="Login" Margin="264,355,255,103" Name="loginBtn" Click="LoginBtn_Click" Height="Auto"/>
         <Button Content="Continuer hors-ligne" Margin="264,392,255,66" x:Name="offlineBtn" Click="OfflineBtn_Click" Height="Auto" Style="{StaticResource MaterialDesignFlatButton}"/>
-        <TextBox Name="usernameBox" HorizontalAlignment="Left" Height="23" Margin="350,165,0,0" TextWrapping="Wrap" Text="username" VerticalAlignment="Top" Width="205"/>
+        <TextBox Name="usernameBox" HorizontalAlignment="Left" Height="23" Margin="350,165,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="205"/>
         <PasswordBox Name="passwordBox" HorizontalAlignment="Left" Margin="350,240,0,0" VerticalAlignment="Top" Width="205"/>
         <Label Content="PolyPaint PRO" HorizontalContentAlignment="Center" Margin="156,10,154,0" VerticalAlignment="Top" Width="390" Height="75" FontSize="50"/>
         <Label Content="Nom d'ulitisateur:" HorizontalAlignment="Left" Margin="188,170,0,0" VerticalAlignment="Top"/>
