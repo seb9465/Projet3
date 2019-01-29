@@ -32,9 +32,5 @@ namespace PolyPaint.Chat
             };
         }
 
-        public async void SendMessage(string message)
-        {
-            await connection.InvokeAsync("SendMessage", "user1", message);
-        }
     }
 }

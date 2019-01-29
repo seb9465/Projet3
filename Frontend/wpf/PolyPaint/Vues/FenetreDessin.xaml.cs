@@ -215,7 +215,7 @@ namespace PolyPaint
             chat.Visibility = Visibility.Visible;
         }
 
-        private async void connectButtonn_Click(object sender, RoutedEventArgs e)
+        private async void connectButton_Click(object sender, RoutedEventArgs e)
         {
             ChatClient.connection.On<string, string>("ReceiveMessage", (username, message) =>
             {
@@ -232,8 +232,8 @@ namespace PolyPaint
                 await ChatClient.connection.InvokeAsync("ConnectToGroup",
                     userTextBox.Text);
                 messagesList.Items.Add("Connection started");
-                connectButtonn.IsEnabled = false;
-                sendButtonn.IsEnabled = true;
+                connectButton.IsEnabled = false;
+                sendButton.IsEnabled = true;
             }
             catch (Exception ex)
             {
@@ -241,7 +241,7 @@ namespace PolyPaint
             }
         }
 
-        private async void sendButtonn_Click(object sender, RoutedEventArgs e)
+        private async void sendButton_Click(object sender, RoutedEventArgs e)
         {
             try
             {
