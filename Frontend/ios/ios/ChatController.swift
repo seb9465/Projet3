@@ -14,7 +14,6 @@ class ChatController: UIViewController, UITextFieldDelegate {
     @IBOutlet var receivedMessage: UILabel!
     @IBOutlet var connectButton: UIButton!
     
-    
     var hubConnection: HubConnection!
     
     @IBAction func connectButtonTrigger(_ sender: Any) {
@@ -26,13 +25,12 @@ class ChatController: UIViewController, UITextFieldDelegate {
                 self.connectButton.isEnabled = false;
             } else {
                 print("error");
-                print(error);
+                print(error as Any);
             }
         })
     }
     
     let chatURL = "http://10.200.19.14:5000/signalr"
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()

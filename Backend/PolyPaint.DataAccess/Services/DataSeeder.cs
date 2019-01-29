@@ -6,7 +6,7 @@ namespace PolyPaint.DataAccess.Services
     {
         public static void Seed(PolyPaintContext polyPaintContext)
         {
-           polyPaintContext.Database.EnsureCreated();
+            polyPaintContext.Database.EnsureCreated();
         }
     }
 }

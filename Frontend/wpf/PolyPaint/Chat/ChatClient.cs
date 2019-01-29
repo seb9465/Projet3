@@ -13,13 +13,13 @@ namespace PolyPaint.Chat
     {
         public HubConnection connection;
 
-        private readonly string _myAccessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImFsZXhpc2xvaXNlbGxlIiwibmFtZWlkIjoiYzNkYWUwYzctNTFhNy00MWE4LTg0ZDYtODZkNzI0OTEwMzgyIiwibmJmIjoxNTQ4MzUwMzEzLCJleHAiOjYxNTQ4MzUwMjUzLCJpYXQiOjE1NDgzNTAzMTMsImlzcyI6IjEwLjIwMC4yNy4xNjo1MDAxIiwiYXVkIjoiMTAuMjAwLjI3LjE2OjUwMDEifQ.zMJ2HAeaAk0P07ut9DoCFjR28WT8A3uO1a9Y8vvMmTs";
+        private readonly string _myAccessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImFsbG8iLCJuYW1laWQiOiI5MTk1Zjc1Ni1iZDIyLTQ1NjMtYmU5Zi00ZmMxNTI1ODEyNWEiLCJuYmYiOjE1NDg3Nzc4MzksImV4cCI6NjE1NDg3Nzc3NzksImlhdCI6MTU0ODc3NzgzOSwiaXNzIjoiMTAuMjAwLjI3LjE2OjUwMDEiLCJhdWQiOiIxMC4yMDAuMjcuMTY6NTAwMSJ9.CbbjkhbVk5ETsx-q-2CjEcGfUEM_Dzg22FQvnxmgtAg";
 
         public ChatClient()
         {
             connection =
                 new HubConnectionBuilder()
-                .WithUrl("http://localhost:4000/signalr", options =>
+                .WithUrl("https://localhost:44300/signalr", options =>
                 {
                     options.AccessTokenProvider = () => Task.FromResult(_myAccessToken);
                 })
