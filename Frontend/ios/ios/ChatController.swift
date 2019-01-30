@@ -15,7 +15,11 @@ class ChatController: UIViewController, UITextFieldDelegate {
     @IBOutlet var connectButton: UIButton!
     @IBOutlet var sendMessageButton: UIButton!
     
-    let chatURL = "http://10.200.19.14:5000/signalr"
+    @IBOutlet var chatTableViem: UITableView!
+    @IBOutlet var sendBtn: UIButton!
+    @IBOutlet var msgTextField: UITextField!
+    
+    let chatURL = "http://192.168.1.7:5000/signalr"
     var hubConnection: HubConnection!
     
     @IBAction func connectButtonTrigger(_ sender: Any) {
@@ -41,7 +45,6 @@ class ChatController: UIViewController, UITextFieldDelegate {
                 })
     }
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -55,14 +58,17 @@ class ChatController: UIViewController, UITextFieldDelegate {
         
         self.hubConnection.start()
         
-
-        
         self.hubConnection.on(method: "ReceiveMessage", callback: { args, typeConverter in
-            print("Message Sent")
-            print(args);
-            let message = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self)
-            self.receivedMessage.text = message
-        }
+            print("Message received");
+            //let user = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self)
+            //let message = try! typeConverter.convertFromWireType(obj: args[1], targetType: String.self)
+            //let timestamp = try! typeConverter.convertFromWireType(obj: args[2], targetType: String.self)
+            //self.receivedMessage.text = message
+            }
         )
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        self.hubConnection.stop();
     }
 }
