@@ -67,11 +67,10 @@ class ChatController: UIViewController, UITextFieldDelegate, UITableViewDelegate
         self.hubConnection.start();
         
         self.hubConnection.on(method: "ReceiveMessage", callback: { args, typeConverter in
-            print("Message received");
             let user = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self)
             let message = try! typeConverter.convertFromWireType(obj: args[1], targetType: String.self)
             let timestamp = try! typeConverter.convertFromWireType(obj: args[2], targetType: String.self)
-            self.addMessage(message: "\(user!) (\(timestamp!)) : \(message!)");
+            self.addMessage(message: "\(user!) (\(timestamp!))\t : \(message!)");
         })
     }
     
@@ -139,25 +138,5 @@ class ChatController: UIViewController, UITextFieldDelegate, UITableViewDelegate
     func toggleUI(isEnabled: Bool) {
         sendBtn.isEnabled = isEnabled
         msgTextField.isEnabled = isEnabled
-    }
-}
-
-class ChatHubConnectionDelegate: HubConnectionDelegate {
-    weak var controller: ChatController?
-    
-    init(controller: ChatController) {
-        self.controller = controller
-    }
-    
-    func connectionDidOpen(hubConnection: HubConnection!) {
-        controller?.connectionDidOpen()
-    }
-    
-    func connectionDidFailToOpen(error: Error) {
-        controller?.connectionDidFailToOpen(error: error)
-    }
-    
-    func connectionDidClose(error: Error?) {
-        controller?.connectionDidClose(error: error)
     }
 }
