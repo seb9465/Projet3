@@ -23,21 +23,17 @@ class ChatController: UIViewController, UITextFieldDelegate, UITableViewDelegate
     @IBOutlet var sendBtn: UIButton!
     @IBOutlet var msgTextField: UITextField!
     
-    
     var hubConnection: HubConnection!
     var messages: [String] = [];
     
     @IBAction func connectButtonTrigger(_ sender: Any) {
         self.hubConnection.invoke(method: "ConnectToGroup", arguments: [""], invocationDidComplete: { error in
             if (error == nil) {
-                print("connected to the group");
                 self.statusLabel.text = "Connected";
                 self.statusLabel.textColor = UIColor.green;
                 self.connectButton.isEnabled = false;
                 self.sendMessageButton.isEnabled = true;
             } else {
-                print("error");
-                print(error as Any);
                 self.statusLabel.text = "Error connecting to server!"
                 self.statusLabel.textColor = UIColor.red;
             }
@@ -49,7 +45,7 @@ class ChatController: UIViewController, UITextFieldDelegate, UITableViewDelegate
     }
     
     override func viewDidLoad() {
-        super.viewDidLoad()
+        super.viewDidLoad();
         
         self.chatTableView.delegate = self;
         self.chatTableView.dataSource = self;
@@ -62,14 +58,14 @@ class ChatController: UIViewController, UITextFieldDelegate, UITableViewDelegate
         self.hubConnection = HubConnectionBuilder(url: URL(string: CHAT_URL)!)
             .withHttpConnectionOptions() { httpConnectionOptions in
                 httpConnectionOptions.accessTokenProvider = { return USER_TOKEN; }}
-            .build()
+            .build();
         
         self.hubConnection.start();
         
         self.hubConnection.on(method: "ReceiveMessage", callback: { args, typeConverter in
-            let user = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self)
-            let message = try! typeConverter.convertFromWireType(obj: args[1], targetType: String.self)
-            let timestamp = try! typeConverter.convertFromWireType(obj: args[2], targetType: String.self)
+            let user = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self);
+            let message = try! typeConverter.convertFromWireType(obj: args[1], targetType: String.self);
+            let timestamp = try! typeConverter.convertFromWireType(obj: args[2], targetType: String.self);
             self.addMessage(message: "\(user!) (\(timestamp!))\t : \(message!)");
         })
     }
@@ -99,44 +95,44 @@ class ChatController: UIViewController, UITextFieldDelegate, UITableViewDelegate
         print(self.messages);
         self.chatTableView.beginUpdates();
         print("INSERT ROW");
-        self.chatTableView.insertRows(at: [IndexPath(row: messages.count - 1, section: 0)], with: .automatic)
+        self.chatTableView.insertRows(at: [IndexPath(row: messages.count - 1, section: 0)], with: .automatic);
         self.chatTableView.endUpdates();
-        self.chatTableView.scrollToRow(at: IndexPath(item: messages.count - 1, section: 0), at: .bottom, animated: true)
+        self.chatTableView.scrollToRow(at: IndexPath(item: messages.count - 1, section: 0), at: .bottom, animated: true);
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        var count = -1
-        count = self.messages.count
-        return count
+        var count = -1;
+        count = self.messages.count;
+        return count;
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "TextCell", for: indexPath)
-        let row = indexPath.row
-        cell.textLabel?.text = messages[row]
-        return cell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "TextCell", for: indexPath);
+        let row = indexPath.row;
+        cell.textLabel?.text = messages[row];
+        return cell;
     }
     
     fileprivate func connectionDidOpen() {
-        toggleUI(isEnabled: true)
+        toggleUI(isEnabled: true);
     }
     
     fileprivate func connectionDidFailToOpen(error: Error) {
-        addMessage(message: "Connection failed to start. Error \(error)")
-        toggleUI(isEnabled: false)
+        addMessage(message: "Connection failed to start. Error \(error)");
+        toggleUI(isEnabled: false);
     }
     
     fileprivate func connectionDidClose(error: Error?) {
-        var message = "Connection closed."
+        var message = "Connection closed.";
         if let e = error {
-            message.append(" Error: \(e)")
+            message.append(" Error: \(e)");
         }
         addMessage(message: message)
-        toggleUI(isEnabled: false)
+        toggleUI(isEnabled: false);
     }
     
     func toggleUI(isEnabled: Bool) {
-        sendBtn.isEnabled = isEnabled
-        msgTextField.isEnabled = isEnabled
+        sendBtn.isEnabled = isEnabled;
+        msgTextField.isEnabled = isEnabled;
     }
 }
