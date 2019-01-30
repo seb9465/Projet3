@@ -9,17 +9,21 @@
 import UIKit
 import SwiftSignalRClient
 
+//let CHAT_URL = "http://192.168.1.7:5000/signalr";
+let CHAT_URL = "http://10.200.19.14:5000/signalr";
+let USER_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6InNlYmFzIiwibmFtZWlkIjoiMTc4ZDAyMTYtZjMzYS00OWE1LWIxZWYtNWY1NDVhMGE2NTkzIiwibmJmIjoxNTQ4Nzk3NzEyLCJleHAiOjYxNTQ4Nzk3NjUyLCJpYXQiOjE1NDg3OTc3MTIsImlzcyI6IjEwLjIwMC4yNy4xNjo1MDAxIiwiYXVkIjoiMTAuMjAwLjI3LjE2OjUwMDEifQ.Am6W-nUbklrC4cV-w2NxhI56Df9awzFdXhtwGoihqDU";
+
 class ChatController: UIViewController, UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource {
+    
     @IBOutlet var statusLabel: UILabel!
     @IBOutlet var receivedMessage: UILabel!
     @IBOutlet var connectButton: UIButton!
     @IBOutlet var sendMessageButton: UIButton!
-    
     @IBOutlet var chatTableView: UITableView!
     @IBOutlet var sendBtn: UIButton!
     @IBOutlet var msgTextField: UITextField!
     
-    let chatURL = "http://192.168.1.7:5000/signalr"
+    
     var hubConnection: HubConnection!
     var messages: [String] = [];
     
@@ -41,28 +45,26 @@ class ChatController: UIViewController, UITextFieldDelegate, UITableViewDelegate
     }
     
     @IBAction func sendMessageTrigger(_ sender: Any) {
-            self.hubConnection.invoke(method: "SendMessage", arguments: ["hello"], invocationDidComplete: { args in
-                    print("Message sent")
-                })
+        self.hubConnection.invoke(method: "SendMessage", arguments: ["hello"], invocationDidComplete: { _ in });
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.chatTableView.delegate = self
-        self.chatTableView.dataSource = self
+        self.chatTableView.delegate = self;
+        self.chatTableView.dataSource = self;
     }
     
     override func viewDidAppear(_ animated: Bool) {
         self.sendMessageButton.isEnabled = false;
         
         // Token avec /api/token dans postman avec un user et un password en param
-        self.hubConnection = HubConnectionBuilder(url: URL(string: chatURL)!)
+        self.hubConnection = HubConnectionBuilder(url: URL(string: CHAT_URL)!)
             .withHttpConnectionOptions() { httpConnectionOptions in
-                httpConnectionOptions.accessTokenProvider = { return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6InNlYmFzIiwibmFtZWlkIjoiMTc4ZDAyMTYtZjMzYS00OWE1LWIxZWYtNWY1NDVhMGE2NTkzIiwibmJmIjoxNTQ4Nzk3NzEyLCJleHAiOjYxNTQ4Nzk3NjUyLCJpYXQiOjE1NDg3OTc3MTIsImlzcyI6IjEwLjIwMC4yNy4xNjo1MDAxIiwiYXVkIjoiMTAuMjAwLjI3LjE2OjUwMDEifQ.Am6W-nUbklrC4cV-w2NxhI56Df9awzFdXhtwGoihqDU" }}
+                httpConnectionOptions.accessTokenProvider = { return USER_TOKEN; }}
             .build()
         
-        self.hubConnection.start()
+        self.hubConnection.start();
         
         self.hubConnection.on(method: "ReceiveMessage", callback: { args, typeConverter in
             print("Message received");
@@ -105,10 +107,7 @@ class ChatController: UIViewController, UITextFieldDelegate, UITableViewDelegate
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         var count = -1
-        
         count = self.messages.count
-        print("COUNT");
-        print(count);
         return count
     }
     
