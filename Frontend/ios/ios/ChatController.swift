@@ -23,7 +23,7 @@ class ChatController: UIViewController, UITextFieldDelegate, UITableViewDelegate
     @IBOutlet var sendBtn: UIButton!
     @IBOutlet var msgTextField: UITextField!
     
-    var hubConnection: HubConnection!
+    var hubConnection: HubConnection!;
     var messages: [String] = [];
     
     @IBAction func connectButtonTrigger(_ sender: Any) {
@@ -42,6 +42,18 @@ class ChatController: UIViewController, UITextFieldDelegate, UITableViewDelegate
     
     @IBAction func sendMessageTrigger(_ sender: Any) {
         self.hubConnection.invoke(method: "SendMessage", arguments: ["hello"], invocationDidComplete: { _ in });
+    }
+    
+    @IBAction func sendBtn(_ sender: Any) {
+        let message = msgTextField.text;
+        if (message != "") {
+            self.hubConnection.invoke(method: "SendMessage", arguments: [message], invocationDidComplete: { error in
+                if let e = error {
+                    self.addMessage(message: "Error: \(e)");
+                }
+                self.msgTextField.text = "";
+            });
+        }
     }
     
     override func viewDidLoad() {
@@ -74,27 +86,9 @@ class ChatController: UIViewController, UITextFieldDelegate, UITableViewDelegate
         self.hubConnection.stop();
     }
     
-    
-    @IBAction func sendBtn(_ sender: Any) {
-        let message = msgTextField.text;
-        if (message != "") {
-            self.hubConnection.invoke(method: "SendMessage", arguments: [message], invocationDidComplete: { error in
-                if let e = error {
-                    self.addMessage(message: "Error: \(e)");
-                } else {
-                    print("Message sent");
-                }
-                self.msgTextField.text = "";
-            });
-        }
-    }
-    
     private func addMessage(message: String) {
-        print(self.messages);
         self.messages.append(message);
-        print(self.messages);
         self.chatTableView.beginUpdates();
-        print("INSERT ROW");
         self.chatTableView.insertRows(at: [IndexPath(row: messages.count - 1, section: 0)], with: .automatic);
         self.chatTableView.endUpdates();
         self.chatTableView.scrollToRow(at: IndexPath(item: messages.count - 1, section: 0), at: .bottom, animated: true);
