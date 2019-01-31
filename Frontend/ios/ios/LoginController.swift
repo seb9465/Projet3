@@ -29,6 +29,10 @@ class LoginController: UIViewController, UITextFieldDelegate {
         async{
             let response = try await(self.authenticateUser(email:"guccigang", password:"!12345Aa"));
             print(response);
+            
+//            if(response.){
+//                
+//            }
         }
     }
     
@@ -36,12 +40,12 @@ class LoginController: UIViewController, UITextFieldDelegate {
         let parameters = [
             "username": email,
             "password": password
-        ];
+            ]
         
         return Promise {seal in
-            Alamofire.request(loginURL, method: .post, parameters: parameters, encoding: JSONEncoding.default).responseString{ response in
-                let value = ["status": response.response!.statusCode, "data": response.value! as Any] as [String : Any];
-                seal.fulfill(value);
+            Alamofire.request(loginURL, method: .post, parameters: parameters, encoding: JSONEncoding.default).responseJSON{ response in
+
+                seal.fulfill(response);
             };
         }
     }
@@ -53,12 +57,6 @@ class LoginController: UIViewController, UITextFieldDelegate {
         return emailTest.evaluate(with: testStr)
     }
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-    }
-    
-    
     func textFieldDidBeginEditing(_ textField: UITextField) {
         print("delegated")
         placeHolder = textField.placeholder ?? ""
