@@ -11,6 +11,7 @@ target 'ios' do
   pod 'PromiseKit/Alamofire'
   pod 'AwaitKit'
   pod 'SwiftSignalRClient'
+  pod 'NMessenger'
 
   target 'iosTests' do
     inherit! :search_paths
