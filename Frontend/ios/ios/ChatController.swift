@@ -9,7 +9,7 @@
 import UIKit
 import SwiftSignalRClient
 
-let CHAT_URL = "http://192.168.1.6:5000/signalr";
+let CHAT_URL = "https://192.168.1.6:5000/signalr";
 //let CHAT_URL = "http://10.200.19.14:5000/signalr";
 let USER_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6InNlYmFzIiwibmFtZWlkIjoiMTc4ZDAyMTYtZjMzYS00OWE1LWIxZWYtNWY1NDVhMGE2NTkzIiwibmJmIjoxNTQ4Nzk3NzEyLCJleHAiOjYxNTQ4Nzk3NjUyLCJpYXQiOjE1NDg3OTc3MTIsImlzcyI6IjEwLjIwMC4yNy4xNjo1MDAxIiwiYXVkIjoiMTAuMjAwLjI3LjE2OjUwMDEifQ.Am6W-nUbklrC4cV-w2NxhI56Df9awzFdXhtwGoihqDU";
 
