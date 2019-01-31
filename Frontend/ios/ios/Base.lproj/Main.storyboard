@@ -292,6 +292,7 @@
                         <outlet property="lastNameField" destination="6D4-iY-sqX" id="OFv-T8-rYI"/>
                         <outlet property="passwordField" destination="Egp-x2-jry" id="WUe-PP-gvf"/>
                         <outlet property="usernameField" destination="ug2-3g-T5E" id="jyc-ay-wmm"/>
+                        <segue destination="BYZ-38-t0r" kind="custom" identifier="goBackToLogin" customClass="SlideDownSegue" customModule="ios" customModuleProvider="target" id="LwB-eW-sbJ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YDv-gI-AD6" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -317,4 +318,7 @@
             <point key="canvasLocation" x="-4.1015625" y="409.375"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="LwB-eW-sbJ"/>
+    </inferredMetricsTieBreakers>
 </document>

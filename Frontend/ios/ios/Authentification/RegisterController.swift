@@ -39,20 +39,26 @@ class RegisterController: UIViewController {
             "password": self.passwordField.text,
         ];
 
-        async{
-            let response = try await(self.registerUser(parameters: userInfo));
-            print(response);
-        }
+//        async {
+//            let response = try await(self.registerUser(parameters: userInfo));
+//            print(response);
+//            self.performSegue(withIdentifier: "goBackToLogin", sender: nil)
+//        }
+        registerUser(parameters: userInfo)
+            .done { response in
+                print(response);
+                self.performSegue(withIdentifier: "goBackToLogin", sender: nil)
+            }
     }
     
     func registerUser(parameters: [String: String?]) -> Promise<Any>{
         return Promise {seal in
-            Alamofire.request(registerURL, method: .post, parameters: parameters as Parameters, encoding: JSONEncoding.default).responseString{ response in
-                seal.fulfill(response);
+            Alamofire.request(registerURL, method: .post, parameters: parameters as Parameters, encoding: JSONEncoding.default).responseJSON(){ response in
+                seal.fulfill(response.value!);
             };
         }
     }
-    
+        
     @IBAction func validateNameField(_ sender: UITextField) {
         if((sender.text!.isEmpty)){
             sender.layer.borderWidth = 1.0;
