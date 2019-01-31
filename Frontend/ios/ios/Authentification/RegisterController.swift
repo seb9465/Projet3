@@ -5,6 +5,7 @@
 //  Created by William Sevigny on 2019-01-29.
 //  Copyright © 2019 LOG3000 equipe 12. All rights reserved.
 //
+
 import UIKit
 import Alamofire
 import PromiseKit
@@ -18,7 +19,7 @@ protocol UserProtocol {
     var password: String { get }
 }
 
-let registerURL: URLConvertible = "http://10.200.27.34:5000/api/register";
+let registerURL: URLConvertible = "http://192.168.0.183:4000/api/register";
 
 class RegisterController: UIViewController {
     
@@ -28,26 +29,22 @@ class RegisterController: UIViewController {
     @IBOutlet weak var passwordField: UITextField!
     @IBOutlet weak var lastNameField: UITextField!
     
-    @IBAction func registerUser(_ sender: Any) {
-        
-//         print(self.firstNameField.text!);
+    @IBAction func registerButtonPressed(_ sender: UIButton) {
         let userInfo = [
             "firstName": self.firstNameField.text,
             "lastName": self.lastNameField.text,
             "username": self.usernameField.text,
             "email": self.emailField.text,
             "password": self.passwordField.text,
-            ];
-        
-        print(userInfo);
-        
+        ];
+
         async{
-            let response = try await(self.registerRequest(parameters: userInfo));
+            let response = try await(self.registerUser(parameters: userInfo));
             print(response);
         }
     }
     
-    func registerRequest(parameters: [String: String?]) -> Promise<Any>{
+    func registerUser(parameters: [String: String?]) -> Promise<Any>{
         return Promise {seal in
             Alamofire.request(registerURL, method: .post, parameters: parameters as Parameters, encoding: JSONEncoding.default).responseString{ response in
                 seal.fulfill(response);

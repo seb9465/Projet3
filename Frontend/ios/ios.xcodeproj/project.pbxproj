@@ -80,11 +80,19 @@
 		3D24628321FFF29E00C89165 /* Authentification */ = {
 			isa = PBXGroup;
 			children = (
+				B711B5EB21F659A30096BF7F /* LoginController.swift */,
 				3DC61EB82200B44B003FE445 /* RegisterController.swift */,
+			);
+			path = Authentification;
+			sourceTree = "<group>";
+		};
+		3DDE25162202A3650082E735 /* Segues */ = {
+			isa = PBXGroup;
+			children = (
 				3D5537BF2200E86E002C1B77 /* SlideDownSegue.swift */,
 				3D5537C12200ED5F002C1B77 /* SlideUpSegue.swift */,
 			);
-			path = Authentification;
+			path = Segues;
 			sourceTree = "<group>";
 		};
 		701D9ED2FE30B29705115D8B /* Frameworks */ = {
@@ -120,9 +128,9 @@
 		B711B5E821F659A30096BF7F /* ios */ = {
 			isa = PBXGroup;
 			children = (
+				3DDE25162202A3650082E735 /* Segues */,
 				3D24628321FFF29E00C89165 /* Authentification */,
 				B711B5E921F659A30096BF7F /* AppDelegate.swift */,
-				B711B5EB21F659A30096BF7F /* LoginController.swift */,
 				B711B5ED21F659A30096BF7F /* Main.storyboard */,
 				B7E31EDE2200B3DD00E7134D /* ChatController.swift */,
 				B711B5F021F659A50096BF7F /* Assets.xcassets */,
