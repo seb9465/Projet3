@@ -36,6 +36,10 @@ class LoginController: UIViewController, UITextFieldDelegate {
         }
     }
     
+    @IBAction func registerPressed(_ sender: UIButton) {
+        self.performSegue(withIdentifier: "goToRegister", sender: nil)
+    }
+    
     func authenticateUser(email: String, password: String) -> Promise<Any>{
         let parameters = [
             "username": email,

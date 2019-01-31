@@ -114,8 +114,7 @@
                                     <color key="titleColor" white="0.5" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="bleh:" destination="FN6-hJ-ctA" eventType="touchUpInside" id="aKf-zH-sFy"/>
-                                    <segue destination="VLV-Wg-lJt" kind="show" id="EIM-Hq-LYe"/>
+                                    <action selector="registerPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="uEL-ta-Rck"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -128,10 +127,10 @@
                         <outlet property="loginButton" destination="Hrm-z5-RNa" id="dpS-kU-zbE"/>
                         <outlet property="passwordField" destination="Q8W-2o-jAM" id="fIx-n1-Fs4"/>
                         <outlet property="validationLabel" destination="xyw-KZ-w3f" id="g6P-Eu-5FF"/>
+                        <segue destination="VLV-Wg-lJt" kind="custom" identifier="goToRegister" customClass="SlideUpSegue" customModule="ios" customModuleProvider="target" id="iwa-wL-tyP"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
-                <exit id="FN6-hJ-ctA" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="720.1171875" y="409.375"/>
         </scene>
@@ -302,6 +301,7 @@
         <!--Navigation Controller-->
         <scene sceneID="LqC-Bn-CM5">
             <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="BwF-Ae-V3y" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Jek-0K-h4B" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="NeE-TH-Q9i">
@@ -313,12 +313,11 @@
                         <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="6Rs-yQ-YLJ"/>
                     </connections>
                 </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="BwF-Ae-V3y" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-4.1015625" y="409.375"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="LwB-eW-sbJ"/>
+        <segue reference="6Rs-yQ-YLJ"/>
     </inferredMetricsTieBreakers>
 </document>
