@@ -11,7 +11,7 @@ target 'ios' do
   pod 'PromiseKit/Alamofire'
   pod 'AwaitKit'
   pod 'SwiftSignalRClient'
-  pod 'NMessenger', :git => 'https://github.com/mbalex99/NMessenger', :branch => 'swift4'
+  pod 'MessageKit'
 
   target 'iosTests' do
     inherit! :search_paths

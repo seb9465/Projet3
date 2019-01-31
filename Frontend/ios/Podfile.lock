@@ -2,23 +2,9 @@ PODS:
   - Alamofire (4.8.1)
   - AwaitKit (5.1.0):
     - PromiseKit (~> 6)
-  - NMessenger (1.0.80):
-    - Texture (= 2.5)
-  - PINCache (3.0.1-beta.5):
-    - PINCache/Arc-exception-safe (= 3.0.1-beta.5)
-    - PINCache/Core (= 3.0.1-beta.5)
-  - PINCache/Arc-exception-safe (3.0.1-beta.5):
-    - PINCache/Core
-  - PINCache/Core (3.0.1-beta.5):
-    - PINOperation (= 1.0.3)
-  - PINOperation (1.0.3)
-  - PINRemoteImage/Core (3.0.0-beta.12):
-    - PINOperation
-  - PINRemoteImage/iOS (3.0.0-beta.12):
-    - PINRemoteImage/Core
-  - PINRemoteImage/PINCache (3.0.0-beta.12):
-    - PINCache (= 3.0.1-beta.5)
-    - PINRemoteImage/Core
+  - MessageInputBar/Core (0.4.1)
+  - MessageKit (2.0.0):
+    - MessageInputBar/Core
   - PromiseKit (6.7.1):
     - PromiseKit/CorePromise (= 6.7.1)
     - PromiseKit/Foundation (= 6.7.1)
@@ -32,18 +18,11 @@ PODS:
   - PromiseKit/UIKit (6.7.1):
     - PromiseKit/CorePromise
   - SwiftSignalRClient (0.4.1)
-  - Texture (2.5):
-    - Texture/PINRemoteImage (= 2.5)
-  - Texture/Core (2.5)
-  - Texture/PINRemoteImage (2.5):
-    - PINRemoteImage/iOS (= 3.0.0-beta.12)
-    - PINRemoteImage/PINCache
-    - Texture/Core
 
 DEPENDENCIES:
   - Alamofire
   - AwaitKit
-  - NMessenger (from `https://github.com/mbalex99/NMessenger`, branch `swift4`)
+  - MessageKit
   - PromiseKit
   - PromiseKit/Alamofire
   - SwiftSignalRClient
@@ -52,34 +31,19 @@ SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - Alamofire
     - AwaitKit
-    - PINCache
-    - PINOperation
-    - PINRemoteImage
+    - MessageInputBar
+    - MessageKit
     - PromiseKit
     - SwiftSignalRClient
-    - Texture
-
-EXTERNAL SOURCES:
-  NMessenger:
-    :branch: swift4
-    :git: https://github.com/mbalex99/NMessenger
-
-CHECKOUT OPTIONS:
-  NMessenger:
-    :commit: aa71c026afa4e2aaf0c8842b3069413bceda920f
-    :git: https://github.com/mbalex99/NMessenger
 
 SPEC CHECKSUMS:
   Alamofire: 16ce2c353fb72865124ddae8a57c5942388f4f11
   AwaitKit: a8a3d8982097ee09ac75f5c5d3952fbcc2f26f1c
-  NMessenger: bc5d7dff03fdd46d0c68d09710d4e922878aaaa7
-  PINCache: 98e7b1ef782824ad231ade51987c218b758c30d8
-  PINOperation: ac23db44796d4a564ecf9b5ea7163510f579b71d
-  PINRemoteImage: 0cefe720c2612960bd360710efbd6c73a1991d5f
+  MessageInputBar: e81c7535347f1f7b923de7080409a535a004b6e4
+  MessageKit: 29c1c87e5a396d2ca7a3f712e5171dc9aba42a1e
   PromiseKit: ef376fb8b4e92edfeb66bd403b983eaa07fbde0c
   SwiftSignalRClient: edd4e6e16c87370ca624c6868279483a2ffe4f1d
-  Texture: 12eb0807c117aaa21ef86f7f52dc61cc13e59739
 
-PODFILE CHECKSUM: cc5440604988fcea046cce86d3696cc262424429
+PODFILE CHECKSUM: 526ad1601ee0f5478f6f57275ce3b719a6ba5bdd
 
 COCOAPODS: 1.5.3
