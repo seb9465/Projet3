@@ -284,10 +284,10 @@
             </objects>
             <point key="canvasLocation" x="1484" y="409"/>
         </scene>
-        <!--View Controller-->
+        <!--Msg Chat Controller-->
         <scene sceneID="NyM-4C-Ov4">
             <objects>
-                <viewController id="ODd-lg-S1I" sceneMemberID="viewController">
+                <viewController id="ODd-lg-S1I" customClass="MsgChatController" customModule="ios" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="kp1-ci-ZEb">
                         <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
