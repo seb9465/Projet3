@@ -2,6 +2,8 @@ PODS:
   - Alamofire (4.8.1)
   - AwaitKit (5.1.0):
     - PromiseKit (~> 6)
+  - MessageInputBar (0.4.1):
+    - MessageInputBar/Core (= 0.4.1)
   - MessageInputBar/Core (0.4.1)
   - MessageKit (2.0.0):
     - MessageInputBar/Core
@@ -22,6 +24,7 @@ PODS:
 DEPENDENCIES:
   - Alamofire
   - AwaitKit
+  - MessageInputBar
   - MessageKit
   - PromiseKit
   - PromiseKit/Alamofire
@@ -44,6 +47,6 @@ SPEC CHECKSUMS:
   PromiseKit: ef376fb8b4e92edfeb66bd403b983eaa07fbde0c
   SwiftSignalRClient: edd4e6e16c87370ca624c6868279483a2ffe4f1d
 
-PODFILE CHECKSUM: 526ad1601ee0f5478f6f57275ce3b719a6ba5bdd
+PODFILE CHECKSUM: be3bdb8fed9543d20c48763d6ac2c44ea9738269
 
 COCOAPODS: 1.5.3

@@ -12,6 +12,7 @@ target 'ios' do
   pod 'AwaitKit'
   pod 'SwiftSignalRClient'
   pod 'MessageKit'
+  pod 'MessageInputBar'
 
   target 'iosTests' do
     inherit! :search_paths
