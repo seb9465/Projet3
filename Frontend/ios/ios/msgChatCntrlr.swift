@@ -17,6 +17,7 @@ let USER_TOKEN_2 = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6InN
 
 class MsgChatController: MessagesViewController {
     var hubConnection: HubConnection!
+    var connectedToGroup: Bool = false
     var messages: [Message] = [];
     var member: Member!;
     
@@ -38,6 +39,20 @@ class MsgChatController: MessagesViewController {
             .build();
         
         self.hubConnection.start();
+        
+        self.hubConnection.on(method: "ReceiveMessage", callback: { args, typeConverter in
+            let user = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self);
+            let message = try! typeConverter.convertFromWireType(obj: args[1], targetType: String.self);
+            let timestamp = try! typeConverter.convertFromWireType(obj: args[2], targetType: String.self);
+            let newMember = Member(
+                name: user!,
+                color: .random)
+            let newMessage = Message(
+                member: newMember,
+                text: message!,
+                messageId: UUID().uuidString)
+            self.messages.append(newMessage)
+        })
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -113,11 +128,13 @@ extension MsgChatController: MessageInputBarDelegate {
         _ inputBar: MessageInputBar,
         didPressSendButtonWith text: String) {
         
-        self.hubConnection.invoke(method: "ConnectToGroup", arguments: [""], invocationDidComplete: { error in
-            if (error != nil) {
-                print("Error connecting to server!")
-            }
-        })
+        if (!self.connectedToGroup) {
+            self.hubConnection.invoke(method: "ConnectToGroup", arguments: [""], invocationDidComplete: { error in
+                if (error != nil) {
+                    print("Error connecting to server!")
+                }
+            })
+        }
         
         let newMessage = Message(
             member: member,
