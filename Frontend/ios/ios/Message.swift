@@ -20,3 +20,17 @@ struct Message {
     let text: String;
     let messageId: String;
 }
+
+extension Message: MessageType {
+    var sender: Sender {
+        return Sender(id: member.name, displayName: member.name);
+    }
+    
+    var sentDate: Date {
+        return Date();
+    }
+    
+    var kind: MessageKind {
+        return .text(text);
+    }
+}
