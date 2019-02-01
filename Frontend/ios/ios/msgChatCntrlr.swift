@@ -9,12 +9,16 @@
 import UIKit
 import MessageKit
 import MessageInputBar
+import SwiftSignalRClient
+
+let CHAT_URL_2 = "http://192.168.1.7:5000/signalr";
+//let CHAT_URL = "http://10.200.19.14:5000/signalr";
+let USER_TOKEN_2 = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6InNlYmFzIiwibmFtZWlkIjoiMTc4ZDAyMTYtZjMzYS00OWE1LWIxZWYtNWY1NDVhMGE2NTkzIiwibmJmIjoxNTQ5MDM2NzE5LCJleHAiOjYxNTQ5MDM2NjU5LCJpYXQiOjE1NDkwMzY3MTksImlzcyI6IjEwLjIwMC4yNy4xNjo1MDAxIiwiYXVkIjoiMTAuMjAwLjI3LjE2OjUwMDEifQ.F17GYsYBA0jn36AbKkJNzd43g3s7Xd01UklkDDCI4qE";
 
 class MsgChatController: MessagesViewController {
-    
+    var hubConnection: HubConnection!
     var messages: [Message] = [];
     var member: Member!;
-    
     
     
     override func viewDidLoad() {
@@ -25,6 +29,19 @@ class MsgChatController: MessagesViewController {
         messagesCollectionView.messagesLayoutDelegate = self
         messageInputBar.delegate = self
         messagesCollectionView.messagesDisplayDelegate = self
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        self.hubConnection = HubConnectionBuilder(url: URL(string: CHAT_URL_2)!)
+            .withHttpConnectionOptions() { httpConnectionOptions in
+                httpConnectionOptions.accessTokenProvider = { return USER_TOKEN_2; }}
+            .build();
+        
+        self.hubConnection.start();
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        self.hubConnection.stop();
     }
 }
 
@@ -42,13 +59,13 @@ extension MsgChatController: MessagesDataSource {
     
     func messageForItem(
         at indexPath: IndexPath,
-        in messagesCollectionView: MessagesCollectionView) -> MessageType {
+        in messagesCollectionView: MessagesCollectionView) -> MessageKit.MessageType {
         
         return messages[indexPath.section]
     }
     
     func messageTopLabelHeight(
-        for message: MessageType,
+        for message: MessageKit.MessageType,
         at indexPath: IndexPath,
         in messagesCollectionView: MessagesCollectionView) -> CGFloat {
         
@@ -56,7 +73,7 @@ extension MsgChatController: MessagesDataSource {
     }
     
     func messageTopLabelAttributedText(
-        for message: MessageType,
+        for message: MessageKit.MessageType,
         at indexPath: IndexPath) -> NSAttributedString? {
         
         return NSAttributedString(
@@ -67,7 +84,7 @@ extension MsgChatController: MessagesDataSource {
 
 // MessagesLayoutDelegate qui donne la hauteur, le padding et l'alignement des differentes vues.
 extension MsgChatController: MessagesLayoutDelegate {
-    func heightForLocation(message: MessageType,
+    func heightForLocation(message: MessageKit.MessageType,
                            at indexPath: IndexPath,
                            with maxWidth: CGFloat,
                            in messagesCollectionView: MessagesCollectionView) -> CGFloat {
@@ -80,7 +97,7 @@ extension MsgChatController: MessagesLayoutDelegate {
 extension MsgChatController: MessagesDisplayDelegate {
     func configureAvatarView(
         _ avatarView: AvatarView,
-        for message: MessageType,
+        for message: MessageKit.MessageType,
         at indexPath: IndexPath,
         in messagesCollectionView: MessagesCollectionView) {
         
@@ -96,14 +113,31 @@ extension MsgChatController: MessageInputBarDelegate {
         _ inputBar: MessageInputBar,
         didPressSendButtonWith text: String) {
         
+        self.hubConnection.invoke(method: "ConnectToGroup", arguments: [""], invocationDidComplete: { error in
+            if (error != nil) {
+                print("Error connecting to server!")
+            }
+        })
+        
         let newMessage = Message(
             member: member,
             text: text,
             messageId: UUID().uuidString)
         
-        messages.append(newMessage)
-        inputBar.inputTextView.text = ""
-        messagesCollectionView.reloadData()
-        messagesCollectionView.scrollToBottom(animated: true)
+        print(newMessage);
+        
+        self.hubConnection.invoke(method: "SendMessage", arguments: [newMessage.text], invocationDidComplete: { error in
+            if let e = error {
+                print("ERROR");
+                print(e);
+            }
+            self.messages.append(newMessage)
+            inputBar.inputTextView.text = ""
+            self.messagesCollectionView.reloadData()
+            self.messagesCollectionView.scrollToBottom(animated: true)
+        });
+        
+        
+        
     }
 }
