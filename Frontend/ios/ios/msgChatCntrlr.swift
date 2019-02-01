@@ -20,62 +20,90 @@ class MsgChatController: MessagesViewController {
     override func viewDidLoad() {
         super.viewDidLoad();
         
-        member = Member(name: "bluemoon", color: .blue);
-        messagesCollectionView.messagesDataSource = self;
-        messagesCollectionView.messagesLayoutDelegate = self;
-        messageInputBar.delegate = self;
-        messagesCollectionView.messagesDisplayDelegate = self;
+        member = Member(name: "bluemoon", color: .blue)
+        messagesCollectionView.messagesDataSource = self
+        messagesCollectionView.messagesLayoutDelegate = self
+        messageInputBar.delegate = self
+        messagesCollectionView.messagesDisplayDelegate = self
     }
 }
 
 // 4 protocoles a implementer pour connecter les messages au UI & controler les interactions.
 // MessagesDataSource qui donne le nombre et le contenu des messages
 extension MsgChatController: MessagesDataSource {
-    func numberOfSections(in messagesCollectionView: MessagesCollectionView) -> Int {
-        return messages.count;
+    func numberOfSections(
+        in messagesCollectionView: MessagesCollectionView) -> Int {
+        return messages.count
     }
     
     func currentSender() -> Sender {
-        return Sender(id: member.name, displayName: member.name);
+        return Sender(id: member.name, displayName: member.name)
     }
     
-    func messageForItem( at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> MessageType {
-        return messages[indexPath.section];
+    func messageForItem(
+        at indexPath: IndexPath,
+        in messagesCollectionView: MessagesCollectionView) -> MessageType {
+        
+        return messages[indexPath.section]
     }
     
-    func messageTopLabelHeight(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> CGFloat {
-        return 12;
+    func messageTopLabelHeight(
+        for message: MessageType,
+        at indexPath: IndexPath,
+        in messagesCollectionView: MessagesCollectionView) -> CGFloat {
+        
+        return 12
     }
     
-    func messageTopLabelAttributedText(for message: MessageType, at indexPath: IndexPath) -> NSAttributedString? {
-        return NSAttributedString(string: message.sender.displayName, attributes: [.font: UIFont.systemFont(ofSize: 12)]);
+    func messageTopLabelAttributedText(
+        for message: MessageType,
+        at indexPath: IndexPath) -> NSAttributedString? {
+        
+        return NSAttributedString(
+            string: message.sender.displayName,
+            attributes: [.font: UIFont.systemFont(ofSize: 12)])
     }
 }
 
 // MessagesLayoutDelegate qui donne la hauteur, le padding et l'alignement des differentes vues.
 extension MsgChatController: MessagesLayoutDelegate {
-    func heightForLocation(message: MessageType, at indexPath: IndexPath, with maxWidth: CGFloat, in messagesCollectionView: MessagesCollectionView) -> CGFloat {
-        // On retourne 0 mais MessageKit s'occupe de calculer le tout pour nous.
-        return 0;
+    func heightForLocation(message: MessageType,
+                           at indexPath: IndexPath,
+                           with maxWidth: CGFloat,
+                           in messagesCollectionView: MessagesCollectionView) -> CGFloat {
+        
+        return 0
     }
 }
 
 // MessagesDisplayDelegate qui donne la couleur, le style et les vues qui definisse l'allure des messages.
 extension MsgChatController: MessagesDisplayDelegate {
-    func configureAvatarView(_ avatarView: AvatarView, for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) {
-        let message = messages[indexPath.section];
-        let color = message.member.color;
-        avatarView.backgroundColor = color;
+    func configureAvatarView(
+        _ avatarView: AvatarView,
+        for message: MessageType,
+        at indexPath: IndexPath,
+        in messagesCollectionView: MessagesCollectionView) {
+        
+        let message = messages[indexPath.section]
+        let color = message.member.color
+        avatarView.backgroundColor = color
     }
 }
 
 // MessageInputBarDelegate qui permet le controle de l'envoie et de l'ecriture des nouveaux messages.
 extension MsgChatController: MessageInputBarDelegate {
-    func messagesInputBar(_ inputBar: MessageInputBar, didPressSendButtonWith text: String) {
-        let newMessage = Message(member: member, text: text, messageId: UUID().uuidString);
-        messages.append(newMessage);
-        inputBar.inputTextView.text = "";
-        messagesCollectionView.reloadData();
-        messagesCollectionView.scrollToBottom(animated: true);
+    func messageInputBar(
+        _ inputBar: MessageInputBar,
+        didPressSendButtonWith text: String) {
+        
+        let newMessage = Message(
+            member: member,
+            text: text,
+            messageId: UUID().uuidString)
+        
+        messages.append(newMessage)
+        inputBar.inputTextView.text = ""
+        messagesCollectionView.reloadData()
+        messagesCollectionView.scrollToBottom(animated: true)
     }
 }
