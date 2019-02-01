@@ -20,7 +20,7 @@ class MsgChatController: MessagesViewController {
     override func viewDidLoad() {
         super.viewDidLoad();
         
-        member = Member(name: "bluemoon", color: .blue)
+        member = Member(name: .randomName, color: .random)
         messagesCollectionView.messagesDataSource = self
         messagesCollectionView.messagesLayoutDelegate = self
         messageInputBar.delegate = self
