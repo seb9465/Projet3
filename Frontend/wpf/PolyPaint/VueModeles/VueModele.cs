@@ -19,19 +19,9 @@ namespace PolyPaint.VueModeles
     class VueModele : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
-        public event EventHandler MessageReceived
-        {
-            add
-            {
-                chatClient.MessageReceived += value;
-            }
-            remove
-            {
-                chatClient.MessageReceived -= value;
-            }
-        }
         private Editeur editeur = new Editeur();
-        private ChatClient chatClient = new ChatClient();
+
+        public ChatClient ChatClient { get; set; }
 
         // Ensemble d'attributs qui définissent l'apparence d'un trait.
         public DrawingAttributes AttributsDessin { get; set; } = new DrawingAttributes();
@@ -78,6 +68,8 @@ namespace PolyPaint.VueModeles
         /// </summary>
         public VueModele()
         {
+            ChatClient = new ChatClient();
+
             // On écoute pour des changements sur le modèle. Lorsqu'il y en a, EditeurProprieteModifiee est appelée.
             editeur.PropertyChanged += new PropertyChangedEventHandler(EditeurProprieteModifiee);
 
@@ -135,30 +127,6 @@ namespace PolyPaint.VueModeles
             else // e.PropertyName == "TailleTrait"
             {               
                 AjusterPointe();
-            }
-        }
-
-        public async void InitializeSignalR(string accessToken)
-        {
-            Connection.On<string, string>("ReceiveMessage", (username, message) =>
-            {
-                this.Dispatcher.Invoke(() =>
-                {
-                    var newMessage = $"{username}: {message}";
-                    messagesList.Items.Add(newMessage);
-                });
-            });
-
-            try
-            {
-                await Connection.StartAsync();
-                await Connection.InvokeAsync("ConnectToGroup");
-                messagesList.Items.Add("Connection started");
-                sendButton.IsEnabled = true;
-            }
-            catch (Exception ex)
-            {
-                messagesList.Items.Add(ex.Message);
             }
         }
 

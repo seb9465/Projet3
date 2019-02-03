@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.SignalR.Client;
+using PolyPaint.Structures;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -20,7 +21,7 @@ namespace PolyPaint.Modeles
         {
             Connection =
                 new HubConnectionBuilder()
-                .WithUrl("https://localhost:44300/signalr", options =>
+                .WithUrl("http://10.200.11.151:4000/signalr", options =>
                 {
                     options.AccessTokenProvider = () => Task.FromResult(accessToken);
                 })
@@ -28,15 +29,20 @@ namespace PolyPaint.Modeles
 
             HandleMessages();
             await Connection.StartAsync();
-            await Connection.InvokeAsync("ConnectToGroup");
+            await Connection.InvokeAsync("ConnectToGroup", "");
         }
 
         private void HandleMessages()
         {
             Connection.On<string, string, string>("ReceiveMessage", (username, message, timestamp) =>
             {
-                MessageReceived?.Invoke(this, username, message, timestamp);
+                MessageReceived?.Invoke(this, new MessageArgs(username, message, timestamp));
             });
+        }
+
+        public async void SendMessage(string message)
+        {
+            await Connection.InvokeAsync("SendMessage", message);
         }
     }
 }

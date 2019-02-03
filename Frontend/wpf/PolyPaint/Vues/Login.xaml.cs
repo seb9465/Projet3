@@ -20,10 +20,10 @@ namespace PolyPaint.Vues
 
         private void OfflineBtn_Click(object sender, RoutedEventArgs e)
         {
-            /*          FenetreDessin main = new FenetreDessin();
-                      App.Current.MainWindow = main;
-                      this.Close();
-                      main.Show();*/
+            FenetreDessin main = new FenetreDessin();
+            Application.Current.MainWindow = main;
+            this.Close();
+            main.Show();
         }
 
         private async void LoginBtn_Click(object sender, RoutedEventArgs e)
@@ -38,7 +38,7 @@ namespace PolyPaint.Vues
 
             using (var client = new HttpClient())
             {
-                client.BaseAddress = new System.Uri("https://localhost:44300");
+                client.BaseAddress = new System.Uri("http://10.200.11.151:4000");
                 client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
                 var result = await client.PostAsync("/api/login", content);

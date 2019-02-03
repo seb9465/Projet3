@@ -356,6 +356,7 @@
     <Compile Include="Modeles\ChatClient.cs" />
     <Compile Include="Modeles\Editeur.cs" />
     <Compile Include="Modeles\SaveableCanvas.cs" />
+    <Compile Include="Structures\MessageArgs.cs" />
     <Compile Include="Utilitaires\RelayCommand.cs" />
     <Compile Include="VueModeles\CanvasViewModel.cs" />
     <Compile Include="VueModeles\LoginViewModel.cs" />

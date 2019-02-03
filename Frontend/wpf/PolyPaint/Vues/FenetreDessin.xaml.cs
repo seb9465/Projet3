@@ -17,6 +17,7 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.SignalR.Client;
 using PolyPaint.Vues;
 using System.Linq;
+using PolyPaint.Structures;
 
 namespace PolyPaint
 {
@@ -30,9 +31,6 @@ namespace PolyPaint
             InitializeComponent();
             var token = Application.Current.Properties["token"];
             DataContext = new VueModele();
-            (DataContext as VueModele).MessageReceived += AddMessage;
-            ChatWindow externalChatWindow = new ChatWindow();
-            externalChatWindow.DataContext = DataContext;
         }
 
         // Pour gérer les points de contrôles.
@@ -203,40 +201,36 @@ namespace PolyPaint
             return bitmapBytes;
         }
 
-        private void AddMessage(object sender, EventArgs e)
+        private void AddMessage(object sender, EventArgs args)
         {
-            //messagesList.Items.Add($"{username}: {message}\t{timestamp}");
-            
+            MessageArgs messArgs = args as MessageArgs;
+            this.Dispatcher.Invoke(() =>
+            {
+                messagesList.Items.Add($"{messArgs.Username}: {messArgs.Message}\t{messArgs.Timestamp}");
+            });
         }
 
-        private async void chatButton_Click(object sender, RoutedEventArgs e)
+        private void chatButton_Click(object sender, RoutedEventArgs e)
         {
-            externalChatWindow.Show();
+            ChatWindow w2 = new ChatWindow();
+            w2.DataContext = DataContext;
+            w2.Show();
             chat.Visibility = Visibility.Collapsed;
         }
 
-        private async void chatButtonSameWindow_Click(object sender, RoutedEventArgs e)
+        private void chatButtonSameWindow_Click(object sender, RoutedEventArgs e)
         {
-            externalChatWindow.Visibility = Visibility.Collapsed;
             chat.Visibility = Visibility.Visible;
         }
 
-        private async void connectButton_Click(object sender, RoutedEventArgs e)
+        private void connectButton_Click(object sender, RoutedEventArgs e)
         {
-            ChatClient.connection.On<string, string>("ReceiveMessage", (username, message) =>
-            {
-                this.Dispatcher.Invoke(() =>
-                {
-                    var newMessage = $"{username}: {message}";
-                    messagesList.Items.Add(newMessage);
-                });
-            });
-
+            var accessToken = (string)Application.Current.Properties["token"];
+            Console.WriteLine(accessToken);
             try
             {
-                await ChatClient.connection.StartAsync();
-                await ChatClient.connection.InvokeAsync("ConnectToGroup",
-                    userTextBox.Text);
+                (DataContext as VueModele).ChatClient.Initialize(accessToken);
+                (DataContext as VueModele).ChatClient.MessageReceived += AddMessage;
                 messagesList.Items.Add("Connection started");
                 connectButton.IsEnabled = false;
                 sendButton.IsEnabled = true;
@@ -247,12 +241,11 @@ namespace PolyPaint
             }
         }
 
-        private async void sendButton_Click(object sender, RoutedEventArgs e)
+        private void sendButton_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                await ChatClient.connection.InvokeAsync("SendMessage",
-                    messageTextBox.Text);
+                (DataContext as VueModele).ChatClient.SendMessage(messageTextBox.Text);
             }
             catch (Exception ex)
             {
