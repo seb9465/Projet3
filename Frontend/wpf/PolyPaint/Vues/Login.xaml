@@ -13,7 +13,7 @@
         <TextBox Name="usernameBox" HorizontalAlignment="Left" Height="23" Margin="350,165,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="205"/>
         <PasswordBox Name="passwordBox" HorizontalAlignment="Left" Margin="350,240,0,0" VerticalAlignment="Top" Width="205"/>
         <Label Content="PolyPaint PRO" HorizontalContentAlignment="Center" Margin="156,10,154,0" VerticalAlignment="Top" Width="390" Height="75" FontSize="50"/>
-        <Label Content="Nom d'ulitisateur:" HorizontalAlignment="Left" Margin="188,170,0,0" VerticalAlignment="Top"/>
+        <Label Content="Nom d'utilisateur:" HorizontalAlignment="Left" Margin="188,170,0,0" VerticalAlignment="Top"/>
         <Label Content="Mot de passe:" HorizontalAlignment="Left" Margin="188,247,0,0" VerticalAlignment="Top"/>
     </Grid>
 </Window>

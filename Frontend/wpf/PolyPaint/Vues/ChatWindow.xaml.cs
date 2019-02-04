@@ -25,7 +25,7 @@ namespace PolyPaint.Vues
             InitializeComponent();
             ChatClient = new ChatClient();
         }
-
+        
         private async void connectButton_Click(object sender, RoutedEventArgs e)
         {
             ChatClient.connection.On<string, string>("ReceiveMessage", (username, message) =>
@@ -54,21 +54,35 @@ namespace PolyPaint.Vues
 
         private async void sendButton_Click(object sender, RoutedEventArgs e)
         {
-            try
+            if (!string.IsNullOrWhiteSpace(messageTextBox.Text))
             {
-                await ChatClient.connection.InvokeAsync("SendMessage",
-                    messageTextBox.Text);
+                try
+                {
+                    await ChatClient.connection.InvokeAsync("SendMessage",
+                        messageTextBox.Text);
+
+                    messageTextBox.Text = String.Empty;
+                }
+                catch (Exception ex)
+                {
+                    messagesList.Items.Add(ex.Message);
+                }
             }
-            catch (Exception ex)
-            {
-                messagesList.Items.Add(ex.Message);
-            }
+            messageTextBox.Focus();
         }
 
         private void DataWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             e.Cancel = true;
             this.Hide();
+        }
+
+        private void enterKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                sendButton_Click(sender, e);
+            }
         }
     }
 }

@@ -243,14 +243,29 @@ namespace PolyPaint
 
         private async void sendButton_Click(object sender, RoutedEventArgs e)
         {
-            try
+            if (!string.IsNullOrWhiteSpace(messageTextBox.Text))
             {
-                await ChatClient.connection.InvokeAsync("SendMessage",
-                    messageTextBox.Text);
+                try
+                {
+                    await ChatClient.connection.InvokeAsync("SendMessage",
+                        messageTextBox.Text);
+
+                    messageTextBox.Text = String.Empty;
+                }
+                catch (Exception ex)
+                {
+                    messagesList.Items.Add(ex.Message);
+                }
             }
-            catch (Exception ex)
+            messageTextBox.Focus();
+        }
+
+
+        private void enterKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
             {
-                messagesList.Items.Add(ex.Message);
+                sendButton_Click(sender, e);
             }
         }
     }

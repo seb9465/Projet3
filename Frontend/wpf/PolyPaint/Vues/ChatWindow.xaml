@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:PolyPaint.Vues"
         mc:Ignorable="d"
         Title="ChatWindow" Height="450" Width="800"
-        Closing="DataWindow_Closing"  >
+        Closing="DataWindow_Closing" 
+        PreviewKeyDown="enterKeyDown">
     <Grid Margin="0,0,193.333,50.667">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="109*"/>
