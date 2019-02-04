@@ -21,31 +21,29 @@ namespace PolyPaint.API.Hubs
 
         public async Task SendMessage(string message)
         {
-            if (message.Trim().Length != 0 && _userService.TryGetUserId(Context.User, out var userId))
+            if (_userService.TryGetUserId(Context.User, out var userId))
             {
-                var timestamp = DateTime.Now.ToString("HH:mm:ss");
                 var user = await _userService.FindByIdAsync(userId);
 
                 if (user != null && UserHandler.UserGroupMap.TryGetValue(userId, out var groupId))
                 {
                     // Maybe change in a way that it doesnt send back to sender (sender handles his own message in the ui)
-                    await Clients.Group(groupId).SendAsync("ReceiveMessage", user.UserName, message, timestamp);
+                    await Clients.Group(groupId).SendAsync("ReceiveMessage", user.FullName(), message);
                 }
             }
         }
 
-        public async Task ConnectToGroup(string groupId = "default")
+        public async Task ConnectToGroup(string groupId)
         {
             if (_userService.TryGetUserId(Context.User, out var userId))
             {
                 var user = await _userService.FindByIdAsync(userId);
                 var userCountInGroup = UserHandler.UserGroupMap.Values.Count(x => x == groupId);
-
+                
                 if (user != null && userCountInGroup < MAX_USERS_PER_GROUP)
                 {
                     await Groups.AddToGroupAsync(Context.ConnectionId, groupId);
                     UserHandler.UserGroupMap.AddOrUpdate(user.Id, groupId, (k, v) => groupId);
-                    await Clients.Group(groupId).SendAsync("SystemMessage", $"{user.UserName} just connected");
                 }
             }
         }
@@ -72,7 +70,7 @@ namespace PolyPaint.API.Hubs
 
                 if (user != null && UserHandler.UserGroupMap.TryRemove(userId, out var groupId))
                 {
-                    await Clients.Group(groupId).SendAsync("SystemMessage", $"{user.FullName()} has disconnected");
+                    await Clients.Group(groupId).SendAsync("ReceiveMessage", null, $"{user.FullName()} has disconnected");
                 }
             }
         }
