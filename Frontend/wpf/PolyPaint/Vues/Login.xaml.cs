@@ -20,10 +20,10 @@ namespace PolyPaint.Vues
 
         private void OfflineBtn_Click(object sender, RoutedEventArgs e)
         {
-            FenetreDessin main = new FenetreDessin();
-            Application.Current.MainWindow = main;
-            this.Close();
-            main.Show();
+            /*          FenetreDessin main = new FenetreDessin();
+                      App.Current.MainWindow = main;
+                      this.Close();
+                      main.Show();*/
         }
 
         private async void LoginBtn_Click(object sender, RoutedEventArgs e)
