@@ -11,7 +11,7 @@ import Alamofire
 import PromiseKit
 import AwaitKit
 
-let loginURL: URLConvertible = "http://10.200.21.214:4000/api/login";
+let loginURL: URLConvertible = "https://polypaint.me/api/login";
 
 class LoginController: UIViewController, UITextFieldDelegate {
     
@@ -41,7 +41,7 @@ class LoginController: UIViewController, UITextFieldDelegate {
                 UserDefaults.standard.synchronize();
                 
                 print(UserDefaults.standard.string(forKey: "token") ?? "unkwnon");
-                
+                self.performSegue(withIdentifier: "goToDashboard", sender: nil)
             }
         }
     }
