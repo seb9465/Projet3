@@ -34,10 +34,10 @@ namespace PolyPaint.API.Auth
             })
             .AddJwtBearer(options =>
             {
-                options.Audience = "https://localhost:44300";
-                options.ClaimsIssuer = "https://localhost:44300";
-                options.Audience = "https://localhost:44300";
-                options.Authority = "https://localhost:44300";
+                options.Audience = "https://polypaint.me";
+                options.ClaimsIssuer = "https://polypaint.me";
+                options.Audience = "https://polypaint.me";
+                options.Authority = "https://polypaint.me";
                 options.TokenValidationParameters = tokenValidationParameters;
                 options.SaveToken = true;
                 options.Configuration = new OpenIdConnectConfiguration();

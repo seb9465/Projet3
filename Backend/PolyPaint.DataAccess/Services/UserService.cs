@@ -39,9 +39,18 @@ namespace PolyPaint.DataAccess.Services
             return await _userManager.Users.SingleAsync(u => u.Id == userId);
         }
 
-        public bool TryGetUserId(ClaimsPrincipal user, out string userId){
+        public bool TryGetUserId(ClaimsPrincipal user, out string userId)
+        {
             userId = user.FindFirstValue(ClaimTypes.NameIdentifier);
             return userId != null;
+        }
+
+        public async Task<bool> LogoutUser(string userid)
+        {
+            ApplicationUser user = await FindByIdAsync(userid);
+            user.IsLoggedIn = false;
+            IdentityResult result = await _userManager.UpdateAsync(user);
+            return result.Succeeded;
         }
     }
 }

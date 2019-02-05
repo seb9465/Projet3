@@ -19,10 +19,11 @@ namespace PolyPaint.DataAccess.Services
             {
                 Subject = new ClaimsIdentity(new[]{
                         new Claim(ClaimTypes.Name, user.UserName),
-                        new Claim(ClaimTypes.NameIdentifier, user.Id)
+                        new Claim(ClaimTypes.NameIdentifier, user.Id),
+                        new Claim(ClaimTypes.Surname, user.FirstName)
                     }),
-                Audience = "10.200.27.16:5001",
-                Issuer = "10.200.27.16:5001",
+                Audience = "https://polypaint.me",
+                Issuer = "https://polypaint.me",
                 IssuedAt = DateTime.Now,
                 Expires = now.AddMinutes(Convert.ToInt32(expireMinutes)),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(symmetricKey), SecurityAlgorithms.HmacSha256Signature)

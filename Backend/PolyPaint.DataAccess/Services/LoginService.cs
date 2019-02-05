@@ -36,8 +36,10 @@ namespace PolyPaint.DataAccess.Services
 
             bool isLoginSuccesful = await _userManager.CheckPasswordAsync(user, loginViewModel.Password);
             string token = null;
-            if (isLoginSuccesful)
+            if (isLoginSuccesful && !user.IsLoggedIn)
             {
+                user.IsLoggedIn = true;
+                await _userManager.UpdateAsync(user);
                 token = _tokenService.GenerateToken(user);
             }
 

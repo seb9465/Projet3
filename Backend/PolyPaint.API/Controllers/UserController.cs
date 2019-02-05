@@ -45,5 +45,21 @@ namespace PolyPaint.API.Controllers
             List<Canvas> canvas = await _userService.GetAllCanvas(userId);
             return Ok(canvas);
         }
+
+        [Authorize]
+        [HttpGet]
+        [Route("logout")]
+        public async Task<IActionResult> LogoutUser()
+        {
+            ClaimsPrincipal user = this.User;
+            string userId = user.FindFirstValue(ClaimTypes.NameIdentifier);
+            bool success = await _userService.LogoutUser(userId);
+            if (success)
+            {
+                return Ok("Déconnexion réussi");
+
+            }
+            return BadRequest("Erreur lors de la déconnexion");
+        }
     }
 }

@@ -34,6 +34,7 @@ namespace PolyPaint.API
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddIdentity<ApplicationUser, IdentityRole>(options =>
             {
+                options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890._-";
                 options.User.RequireUniqueEmail = true;
             })
             .AddEntityFrameworkStores<PolyPaintContext>()

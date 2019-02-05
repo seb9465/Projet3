@@ -11,6 +11,7 @@ namespace PolyPaint.Core
         public string LastName { get; set; }
         public List<Canvas> Canvas { get; set; }
         public string FullName() => $"{FirstName} {LastName}";
+        public bool IsLoggedIn { get; set; } = false;
         public ApplicationUser() : base()
         {
             Canvas = new List<Canvas>();
