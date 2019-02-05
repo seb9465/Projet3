@@ -63,7 +63,9 @@ namespace PolyPaint.Vues
             MessageArgs messArgs = args as MessageArgs;
             this.Dispatcher.Invoke(() =>
             {
-                messagesList.Items.Insert(0, $"{messArgs.Username}: {messArgs.Message}\t{messArgs.Timestamp}");
+                messagesList.Items.Add($"{messArgs.Timestamp} - {messArgs.Username}: {messArgs.Message}");
+                messagesList.SelectedIndex = messagesList.Items.Count - 1;
+                messagesList.ScrollIntoView(messagesList.SelectedItem);
             });
         }
     }
