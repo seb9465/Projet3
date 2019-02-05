@@ -21,23 +21,15 @@ namespace PolyPaint.API.Hubs
 
         public async Task SendMessage(string message)
         {
-
-            Console.WriteLine("ETAPE 1");
-            Console.WriteLine(message.Trim().Length != 0);
-            Console.WriteLine(_userService.TryGetUserId(Context.User, out var userId2));
             if (message.Trim().Length != 0 && _userService.TryGetUserId(Context.User, out var userId))
             {
-                Console.WriteLine("ETAPE 2");
                 var timestamp = DateTime.Now.ToString("HH:mm:ss");
                 var user = await _userService.FindByIdAsync(userId);
 
-
                 if (user != null && UserHandler.UserGroupMap.TryGetValue(userId, out var groupId))
                 {
-                    Console.WriteLine("ETAPE 3");
                     // Maybe change in a way that it doesnt send back to sender (sender handles his own message in the ui)
                     await Clients.Group(groupId).SendAsync("ReceiveMessage", user.UserName, message, timestamp);
-                    Console.WriteLine("MESSAGE RECEIVED IN THE SERVER AND SENT TO USERS");
                 }
             }
         }
@@ -66,7 +58,6 @@ namespace PolyPaint.API.Hubs
                 {
                     await base.OnConnectedAsync();
                     UserHandler.UserGroupMap.GetOrAdd(userId, (string)null);
-                    Console.WriteLine("A User Connected to the chat service");
                 }
             }
         }
