@@ -29,8 +29,7 @@ namespace PolyPaint.API.Hubs
                 if (user != null && UserHandler.UserGroupMap.TryGetValue(userId, out var groupId))
                 {
                     // Maybe change in a way that it doesnt send back to sender (sender handles his own message in the ui)
-                    await Clients.GroupExcept(groupId, Context.ConnectionId)
-                        .SendAsync("ReceiveMessage", user.UserName, message, timestamp);
+                    await Clients.Group(groupId).SendAsync("ReceiveMessage", user.UserName, message, timestamp);
                 }
             }
         }
