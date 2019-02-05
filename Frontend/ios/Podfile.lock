@@ -14,28 +14,24 @@ PODS:
     - PromiseKit/CorePromise
   - PromiseKit/UIKit (6.7.1):
     - PromiseKit/CorePromise
-  - SwiftR (0.14.0)
 
 DEPENDENCIES:
   - Alamofire
   - AwaitKit
   - PromiseKit
   - PromiseKit/Alamofire
-  - SwiftR
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - Alamofire
     - AwaitKit
     - PromiseKit
-    - SwiftR
 
 SPEC CHECKSUMS:
   Alamofire: 16ce2c353fb72865124ddae8a57c5942388f4f11
   AwaitKit: a8a3d8982097ee09ac75f5c5d3952fbcc2f26f1c
   PromiseKit: ef376fb8b4e92edfeb66bd403b983eaa07fbde0c
-  SwiftR: 38aa6ed938f1a57ae030ed99e15455d58e008615
 
-PODFILE CHECKSUM: 8064cbe69da1751ad93c4c4919838fe68c8c3baa
+PODFILE CHECKSUM: 3b9aa9bbb47df964d27b7b723dbd7891454affc7
 
 COCOAPODS: 1.5.3
