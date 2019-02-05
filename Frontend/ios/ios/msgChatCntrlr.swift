@@ -11,8 +11,7 @@ import MessageKit
 import MessageInputBar
 import SwiftSignalRClient
 
-let CHAT_URL_2 = "http://192.168.1.7:5000/signalr";
-//let CHAT_URL = "http://10.200.19.14:5000/signalr";
+let CHAT_URL_2 = "http://10.200.18.232:5000/signalr";
 let USER_TOKEN_2 = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6InNlYmFzIiwibmFtZWlkIjoiMTc4ZDAyMTYtZjMzYS00OWE1LWIxZWYtNWY1NDVhMGE2NTkzIiwibmJmIjoxNTQ5MDM2NzE5LCJleHAiOjYxNTQ5MDM2NjU5LCJpYXQiOjE1NDkwMzY3MTksImlzcyI6IjEwLjIwMC4yNy4xNjo1MDAxIiwiYXVkIjoiMTAuMjAwLjI3LjE2OjUwMDEifQ.F17GYsYBA0jn36AbKkJNzd43g3s7Xd01UklkDDCI4qE";
 
 class MsgChatController: MessagesViewController {
@@ -21,11 +20,12 @@ class MsgChatController: MessagesViewController {
     var messages: [Message] = [];
     var member: Member!;
     
-    
     override func viewDidLoad() {
         super.viewDidLoad();
         
-        member = Member(name: .randomName, color: .random)
+        // A regler avec Will
+        member = Member(name: "sebas", color: .random)
+        
         messagesCollectionView.messagesDataSource = self
         messagesCollectionView.messagesLayoutDelegate = self
         messageInputBar.delegate = self
@@ -51,7 +51,11 @@ class MsgChatController: MessagesViewController {
                 member: newMember,
                 text: message!,
                 messageId: UUID().uuidString)
-            self.messages.append(newMessage)
+            
+            // A ajuster lorsque le lien avec le login sera fait.
+            if (newMember.name != self.member.name) {
+                self.messages.append(newMessage)
+            }
         })
     }
     
@@ -141,8 +145,6 @@ extension MsgChatController: MessageInputBarDelegate {
             text: text,
             messageId: UUID().uuidString)
         
-        print(newMessage);
-        
         self.hubConnection.invoke(method: "SendMessage", arguments: [newMessage.text], invocationDidComplete: { error in
             if let e = error {
                 print("ERROR");
@@ -153,8 +155,5 @@ extension MsgChatController: MessageInputBarDelegate {
             self.messagesCollectionView.reloadData()
             self.messagesCollectionView.scrollToBottom(animated: true)
         });
-        
-        
-        
     }
 }
