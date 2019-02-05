@@ -7,10 +7,13 @@ target 'ios' do
 
   use_frameworks!
   pod 'Alamofire'
-  pod 'SwiftR'
   pod 'PromiseKit'
   pod 'PromiseKit/Alamofire'
   pod 'AwaitKit'
+  pod 'SwiftSignalRClient'
+  pod 'MessageKit'
+  pod 'MessageInputBar'
+  pod 'JWTDecode'
 
   target 'iosTests' do
     inherit! :search_paths
