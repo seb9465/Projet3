@@ -33,11 +33,13 @@ class MsgChatController: MessagesViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        // Initialisation du hub.
         self.hubConnection = HubConnectionBuilder(url: URL(string: CHAT_URL_2)!)
             .withHttpConnectionOptions() { httpConnectionOptions in
                 httpConnectionOptions.accessTokenProvider = { return USER_TOKEN_2; }}
             .build();
         
+        // Connexion au serveur.
         self.hubConnection.start();
         
         self.hubConnection.on(method: "ReceiveMessage", callback: { args, typeConverter in
