@@ -7,7 +7,16 @@
 //
 
 import UIKit
+import JWTDecode
 
 class DashboardController: UIViewController, UITextFieldDelegate {
-
+    @IBOutlet weak var UsernameLabel: UILabel!
+    
+    override func viewDidLoad() {
+        super.viewDidLoad();
+        let token = UserDefaults.standard.string(forKey: "token");
+        let jwt = try! decode(jwt: token!)
+        UsernameLabel.text = jwt.claim(name: "unique_name").string
+    }
+    
 }
