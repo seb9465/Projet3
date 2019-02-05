@@ -24,4 +24,7 @@
     <ProjectReference Include="..\PolyPaint.DataAccess\PolyPaint.DataAccess.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="Controllers\DumbController.cs" />
+  </ItemGroup>
 </Project>
