@@ -11,8 +11,8 @@ import MessageKit
 import MessageInputBar
 import SwiftSignalRClient
 
-let CHAT_URL_2 = "http://10.200.18.232:5000/signalr";
-let USER_TOKEN_2 = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6InNlYmFzIiwibmFtZWlkIjoiMTc4ZDAyMTYtZjMzYS00OWE1LWIxZWYtNWY1NDVhMGE2NTkzIiwibmJmIjoxNTQ5MDM2NzE5LCJleHAiOjYxNTQ5MDM2NjU5LCJpYXQiOjE1NDkwMzY3MTksImlzcyI6IjEwLjIwMC4yNy4xNjo1MDAxIiwiYXVkIjoiMTAuMjAwLjI3LjE2OjUwMDEifQ.F17GYsYBA0jn36AbKkJNzd43g3s7Xd01UklkDDCI4qE";
+let CHAT_URL_2 = "https://polypaint.me/signalr";
+let USER_TOKEN_2 = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImRlZmF1bHQiLCJuYW1laWQiOiJlMjAxMGMzYy1kZDIzLTQzYzAtYTJhOC03NzQwZGI1MTk1ZmUiLCJuYmYiOjE1NDkzODg3MzQsImV4cCI6NjE1NDkzODg2NzQsImlhdCI6MTU0OTM4ODczNCwiaXNzIjoiMTAuMjAwLjI3LjE2OjUwMDEiLCJhdWQiOiIxMC4yMDAuMjcuMTY6NTAwMSJ9.YBxuKvDdPdpSjVmSvSUL3uSWvR7LP2PaWtPXdwmdG_U";
 
 class MsgChatController: MessagesViewController, MessagesDataSource {
     var hubConnection: HubConnection!
@@ -24,7 +24,7 @@ class MsgChatController: MessagesViewController, MessagesDataSource {
         super.viewDidLoad();
         
         // A regler avec Will
-        member = Member(name: "sebas", color: .random)
+        member = Member(name: "default", color: .random)
         
         messagesCollectionView.messagesDataSource = self
         messagesCollectionView.messagesLayoutDelegate = self
