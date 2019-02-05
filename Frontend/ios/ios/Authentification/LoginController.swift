@@ -11,9 +11,10 @@ import Alamofire
 import PromiseKit
 import AwaitKit
 
-let loginURL: URLConvertible = "http://10.200.19.14:5000/api/login";
+let loginURL: URLConvertible = "http://10.200.21.214:4000/api/login";
 
 class LoginController: UIViewController, UITextFieldDelegate {
+    
     @IBOutlet var emailField: UITextField!
     @IBOutlet var passwordField: UITextField!
     @IBOutlet var validationLabel: UILabel!
@@ -23,16 +24,25 @@ class LoginController: UIViewController, UITextFieldDelegate {
     var placeHolder = "";
 
     @IBAction func loginButton(_ sender: Any) {
-        let validEmail: Bool = isValidEmail(testStr: emailField.text!);
-        validationLabel.text = validEmail ? "Valid" : "Invalid";
         
-        async{
-            let response = try await(self.authenticateUser(email:"guccigang", password:"!12345Aa"));
-            print(response);
-            
-//            if(response.){
-//                
-//            }
+        let validEmail: Bool = isValidEmail(testStr: emailField.text!);
+        
+        let parameters = [
+            "username": emailField.text,
+            "password": passwordField.text
+        ]
+        
+        self.authenticateUser(parameters: parameters).done { response in
+            if(response == "ERROR") {
+                self.validationLabel.text = "Invalid Credentials"
+            } else {
+                self.validationLabel.text = ""
+                UserDefaults.standard.set(response, forKey: "token")
+                UserDefaults.standard.synchronize();
+                
+                print(UserDefaults.standard.string(forKey: "token") ?? "unkwnon");
+                
+            }
         }
     }
     
@@ -40,16 +50,18 @@ class LoginController: UIViewController, UITextFieldDelegate {
         self.performSegue(withIdentifier: "goToRegister", sender: nil)
     }
     
-    func authenticateUser(email: String, password: String) -> Promise<Any>{
-        let parameters = [
-            "username": email,
-            "password": password
-            ]
-        
+    func authenticateUser(parameters: [String: String?]) -> Promise<String>{
         return Promise {seal in
-            Alamofire.request(loginURL, method: .post, parameters: parameters, encoding: JSONEncoding.default).responseJSON{ response in
-
-                seal.fulfill(response);
+            Alamofire.request(loginURL, method: .post, parameters: parameters, encoding: JSONEncoding.default).validate().responseString{ response in
+                
+                switch response.result {
+                    case .success:
+                        print("Login Successful")
+                        seal.fulfill(response.value!);
+                case .failure( _):
+                        print("Login Failed")
+                        seal.fulfill("ERROR");
+                }
             };
         }
     }
