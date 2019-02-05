@@ -24,22 +24,6 @@ class MsgChatController: MessagesViewController, MessagesDataSource {
     override func viewDidLoad() {
         super.viewDidLoad();
         
-        let jwt = try! decode(jwt: USER_TOKEN_2!)
-        let name = jwt.claim(name: "unique_name").string
-        print(name);
-        
-        // A regler avec Will
-        member = Member(name: name!, color: .random)
-        
-        messagesCollectionView.messagesDataSource = self
-        messagesCollectionView.messagesLayoutDelegate = self
-        messageInputBar.delegate = self
-        messagesCollectionView.messagesDisplayDelegate = self
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated);
-        
         // Initialisation du hub.
         self.hubConnection = HubConnectionBuilder(url: URL(string: CHAT_URL_2)!)
             .withHttpConnectionOptions() { httpConnectionOptions in
@@ -49,6 +33,16 @@ class MsgChatController: MessagesViewController, MessagesDataSource {
         // Connexion au serveur.
         self.hubConnection.start();
         
+        let jwt = try! decode(jwt: USER_TOKEN_2!)
+        let name = jwt.claim(name: "unique_name").string
+        
+        member = Member(name: name!, color: .random)
+        
+        messagesCollectionView.messagesDataSource = self
+        messagesCollectionView.messagesLayoutDelegate = self
+        messageInputBar.delegate = self
+        messagesCollectionView.messagesDisplayDelegate = self
+        
         self.hubConnection.on(method: "ReceiveMessage", callback: { args, typeConverter in
             let user = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self);
             let message = try! typeConverter.convertFromWireType(obj: args[1], targetType: String.self);
@@ -56,7 +50,8 @@ class MsgChatController: MessagesViewController, MessagesDataSource {
             
             let newMember = Member(
                 name: user!,
-                color: .random)
+                color: .random
+            )
             
             let newMessage = Message(
                 member: newMember,
@@ -67,7 +62,16 @@ class MsgChatController: MessagesViewController, MessagesDataSource {
             if (user != self.member.name) {
                 self.insertMessage(newMessage);
             }
-        })
+        });
+        
+        self.hubConnection.on(method: "ClientIsConnected", callback: { args, typeConverter in
+            self.hubConnection.invoke(method: "ConnectToGroup", arguments: [""], invocationDidComplete: { error in
+                if (error != nil) {
+                    print("Error connecting to server!")
+                }
+                print("Connected to the group");
+            });
+        });
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -187,14 +191,6 @@ extension MsgChatController: MessageInputBarDelegate {
     func messageInputBar(
         _ inputBar: MessageInputBar,
         didPressSendButtonWith text: String) {
-        
-        if (!self.connectedToGroup) {
-            self.hubConnection.invoke(method: "ConnectToGroup", arguments: [""], invocationDidComplete: { error in
-                if (error != nil) {
-                    print("Error connecting to server!")
-                }
-            })
-        }
         
         let date = Date();
         let dateFormatter = DateFormatter();
