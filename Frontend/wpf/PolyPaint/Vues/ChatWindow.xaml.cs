@@ -19,8 +19,6 @@ namespace PolyPaint.Vues
     /// </summary>
     public partial class ChatWindow : Window
     {
-        public object ParentElement { get; }
-
         public ChatWindow(object dataContext)
         {
             InitializeComponent();
@@ -65,7 +63,7 @@ namespace PolyPaint.Vues
             MessageArgs messArgs = args as MessageArgs;
             this.Dispatcher.Invoke(() =>
             {
-                messagesList.Items.Add($"{messArgs.Timestamp} \t {messArgs.Username}: {messArgs.Message}");
+                messagesList.Items.Insert(0, $"{messArgs.Username}: {messArgs.Message}\t{messArgs.Timestamp}");
             });
         }
     }
