@@ -38,6 +38,8 @@ class MsgChatController: MessagesViewController, MessagesDataSource {
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated);
+        
         // Initialisation du hub.
         self.hubConnection = HubConnectionBuilder(url: URL(string: CHAT_URL_2)!)
             .withHttpConnectionOptions() { httpConnectionOptions in
@@ -62,15 +64,14 @@ class MsgChatController: MessagesViewController, MessagesDataSource {
                 timestamp: timestamp!,
                 messageId: UUID().uuidString)
             
-            // A ajuster lorsque le lien avec le login sera fait.
             if (user != self.member.name) {
-                self.insertMessage(newMessage)
+                self.insertMessage(newMessage);
             }
         })
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-//        self.hubConnection.stop();
+        self.hubConnection.stop();
     }
     
     let formatter: DateFormatter = {
