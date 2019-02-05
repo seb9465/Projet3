@@ -28,23 +28,37 @@ namespace PolyPaint.Vues
         
         private void sendButton_Click(object sender, RoutedEventArgs e)
         {
-            try
+            if (!string.IsNullOrWhiteSpace(messageTextBox.Text))
             {
-                (DataContext as VueModele).ChatClient.SendMessage(messageTextBox.Text);
+                try
+                {
+                    (DataContext as VueModele).ChatClient.SendMessage(messageTextBox.Text);
+                
+                    messageTextBox.Text = String.Empty;
+                }
+                catch (Exception ex)
+                {
+                    messagesList.Items.Add(ex.Message);
+                }
             }
-            catch (Exception ex)
-            {
-                messagesList.Items.Add(ex.Message);
-            }
+            messageTextBox.Focus();
         }
 
         private void DataWindow_Closing(object sender, CancelEventArgs e)
         {
             e.Cancel = true;
-            Hide();
+            this.Hide();
         }
 
-        private void AddMessage(object sender, EventArgs args)
+        private void enterKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                sendButton_Click(sender, e);
+            }
+        }
+
+         private void AddMessage(object sender, EventArgs args)
         {
             MessageArgs messArgs = args as MessageArgs;
             this.Dispatcher.Invoke(() =>

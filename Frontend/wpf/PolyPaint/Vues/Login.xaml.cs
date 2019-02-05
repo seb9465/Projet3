@@ -3,6 +3,8 @@ using System.Net.Http;
 using PolyPaint.VueModeles;
 using System.Text;
 using Newtonsoft.Json;
+using System.Windows.Input;
+using System;
 
 namespace PolyPaint.Vues
 {
@@ -38,7 +40,7 @@ namespace PolyPaint.Vues
 
             using (var client = new HttpClient())
             {
-                client.BaseAddress = new System.Uri("http://10.200.16.225:4000");
+                client.BaseAddress = new System.Uri("https://polypaint.me");
                 client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
                 var result = await client.PostAsync("/api/login", content);
@@ -53,5 +55,14 @@ namespace PolyPaint.Vues
                 }
             }
         }
+
+        private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                LoginBtn_Click(sender, e);
+            }
+        }
+       
     }
 }
