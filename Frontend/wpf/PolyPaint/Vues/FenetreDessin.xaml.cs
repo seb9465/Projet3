@@ -208,7 +208,7 @@ namespace PolyPaint
             MessageArgs messArgs = args as MessageArgs;
             this.Dispatcher.Invoke(() =>
             {
-                messagesList.Items.Add($"{messArgs.Username}: {messArgs.Message}\t{messArgs.Timestamp}");
+                messagesList.Items.Add($"{messArgs.Timestamp} \t {messArgs.Username}: {messArgs.Message}");
             });
         }
 
@@ -230,6 +230,7 @@ namespace PolyPaint
             {
                 (DataContext as VueModele).ChatClient.SendMessage(messageTextBox.Text);
             }
+            messageTextBox.Text = String.Empty;
             messageTextBox.Focus();
         }
 

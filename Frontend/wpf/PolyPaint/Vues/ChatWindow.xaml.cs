@@ -30,25 +30,12 @@ namespace PolyPaint.Vues
         
         private void sendButton_Click(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                (DataContext as VueModele).ChatClient.SendMessage(messageTextBox.Text);
-            }
-            catch (Exception ex)
-            {
-                messagesList.Items.Add(ex.Message);
-            }
-        }
-
-        private void DataWindow_Closing(object sender, CancelEventArgs e)
-        {
             if (!string.IsNullOrWhiteSpace(messageTextBox.Text))
             {
                 try
                 {
-                    await ChatClient.connection.InvokeAsync("SendMessage",
-                        messageTextBox.Text);
-
+                    (DataContext as VueModele).ChatClient.SendMessage(messageTextBox.Text);
+                
                     messageTextBox.Text = String.Empty;
                 }
                 catch (Exception ex)
@@ -57,6 +44,12 @@ namespace PolyPaint.Vues
                 }
             }
             messageTextBox.Focus();
+        }
+
+        private void DataWindow_Closing(object sender, CancelEventArgs e)
+        {
+            e.Cancel = true;
+            this.Hide();
         }
 
         private void enterKeyDown(object sender, KeyEventArgs e)
@@ -72,7 +65,7 @@ namespace PolyPaint.Vues
             MessageArgs messArgs = args as MessageArgs;
             this.Dispatcher.Invoke(() =>
             {
-                messagesList.Items.Add($"{messArgs.Username}: {messArgs.Message}\t{messArgs.Timestamp}");
+                messagesList.Items.Add($"{messArgs.Timestamp} \t {messArgs.Username}: {messArgs.Message}");
             });
         }
     }
