@@ -14,7 +14,7 @@ import SwiftSignalRClient
 let CHAT_URL_2 = "http://10.200.18.232:5000/signalr";
 let USER_TOKEN_2 = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6InNlYmFzIiwibmFtZWlkIjoiMTc4ZDAyMTYtZjMzYS00OWE1LWIxZWYtNWY1NDVhMGE2NTkzIiwibmJmIjoxNTQ5MDM2NzE5LCJleHAiOjYxNTQ5MDM2NjU5LCJpYXQiOjE1NDkwMzY3MTksImlzcyI6IjEwLjIwMC4yNy4xNjo1MDAxIiwiYXVkIjoiMTAuMjAwLjI3LjE2OjUwMDEifQ.F17GYsYBA0jn36AbKkJNzd43g3s7Xd01UklkDDCI4qE";
 
-class MsgChatController: MessagesViewController {
+class MsgChatController: MessagesViewController, MessagesDataSource {
     var hubConnection: HubConnection!
     var connectedToGroup: Bool = false
     var messages: [Message] = [];
@@ -46,17 +46,20 @@ class MsgChatController: MessagesViewController {
             let user = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self);
             let message = try! typeConverter.convertFromWireType(obj: args[1], targetType: String.self);
             let timestamp = try! typeConverter.convertFromWireType(obj: args[2], targetType: String.self);
+            
             let newMember = Member(
                 name: user!,
                 color: .random)
+            
             let newMessage = Message(
                 member: newMember,
                 text: message!,
+                timestamp: timestamp!,
                 messageId: UUID().uuidString)
             
             // A ajuster lorsque le lien avec le login sera fait.
-            if (newMember.name != self.member.name) {
-                self.messages.append(newMessage)
+            if (user != self.member.name) {
+                self.insertMessage(newMessage)
             }
         })
     }
@@ -64,11 +67,41 @@ class MsgChatController: MessagesViewController {
     override func viewWillDisappear(_ animated: Bool) {
         self.hubConnection.stop();
     }
-}
+    
+    let formatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "HH:mm:ss"
+        return formatter
+    }()
+    
+    func insertMessage(_ message: Message) {
+        messages.append(message)
+        // Reload last section to update header/footer labels and insert a new one
+        messagesCollectionView.performBatchUpdates({
+            messagesCollectionView.insertSections([messages.count - 1])
+        }, completion: { [weak self] _ in
+            if self?.isLastSectionVisible() == true {
+                self?.messagesCollectionView.scrollToBottom(animated: true)
+            }
+        })
+    }
+    
+    func isLastSectionVisible() -> Bool {
+        
+        guard !messages.isEmpty else { return false }
+        
+        let lastIndexPath = IndexPath(item: 0, section: messages.count - 1)
+        
+        return messagesCollectionView.indexPathsForVisibleItems.contains(lastIndexPath)
+    }
+    
+//}
 
 // 4 protocoles a implementer pour connecter les messages au UI & controler les interactions.
 // MessagesDataSource qui donne le nombre et le contenu des messages
-extension MsgChatController: MessagesDataSource {
+    
+//extension MsgChatController: MessagesDataSource {
+
     func numberOfSections(
         in messagesCollectionView: MessagesCollectionView) -> Int {
         return messages.count
@@ -93,6 +126,15 @@ extension MsgChatController: MessagesDataSource {
         return 12
     }
     
+    func messageBottomLabelHeight(
+        for message: MessageKit.MessageType,
+        at indexPath: IndexPath,
+        in messagesCollectionView: MessagesCollectionView) -> CGFloat {
+        
+        return 12
+    }
+
+    
     func messageTopLabelAttributedText(
         for message: MessageKit.MessageType,
         at indexPath: IndexPath) -> NSAttributedString? {
@@ -101,10 +143,17 @@ extension MsgChatController: MessagesDataSource {
             string: message.sender.displayName,
             attributes: [.font: UIFont.systemFont(ofSize: 12)])
     }
+    
+    func messageBottomLabelAttributedText(for message: MessageKit.MessageType, at indexPath: IndexPath) -> NSAttributedString? {
+        
+        let dateString = formatter.string(from: message.sentDate)
+        return NSAttributedString(string: dateString, attributes: [NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .caption2)])
+    }
 }
 
 // MessagesLayoutDelegate qui donne la hauteur, le padding et l'alignement des differentes vues.
 extension MsgChatController: MessagesLayoutDelegate {
+    
     func heightForLocation(message: MessageKit.MessageType,
                            at indexPath: IndexPath,
                            with maxWidth: CGFloat,
@@ -142,9 +191,15 @@ extension MsgChatController: MessageInputBarDelegate {
             })
         }
         
+        let date = Date();
+        let dateFormatter = DateFormatter();
+        dateFormatter.dateFormat = "HH:mm:ss";
+        let result = dateFormatter.string(from: date);
+        
         let newMessage = Message(
             member: member,
             text: text,
+            timestamp: result,
             messageId: UUID().uuidString)
         
         self.hubConnection.invoke(method: "SendMessage", arguments: [newMessage.text], invocationDidComplete: { error in
@@ -152,7 +207,8 @@ extension MsgChatController: MessageInputBarDelegate {
                 print("ERROR");
                 print(e);
             }
-            self.messages.append(newMessage)
+            
+            self.insertMessage(newMessage)
             inputBar.inputTextView.text = ""
             self.messagesCollectionView.reloadData()
             self.messagesCollectionView.scrollToBottom(animated: true)

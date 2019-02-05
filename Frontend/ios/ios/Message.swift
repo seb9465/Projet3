@@ -18,6 +18,7 @@ struct Member {
 struct Message {
     let member: Member;
     let text: String;
+    let timestamp: String;
     let messageId: String;
 }
 
