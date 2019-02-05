@@ -10,6 +10,7 @@ using Microsoft.Win32;
 using System.Windows.Ink;
 using Microsoft.AspNetCore.SignalR.Client;
 using PolyPaint.Structures;
+using System.ComponentModel;
 
 namespace PolyPaint.Vues
 {
@@ -18,10 +19,13 @@ namespace PolyPaint.Vues
     /// </summary>
     public partial class ChatWindow : Window
     {
+        public object ParentElement { get; }
 
-        public ChatWindow()
+        public ChatWindow(object dataContext)
         {
             InitializeComponent();
+            DataContext = dataContext;
+            (DataContext as VueModele).ChatClient.MessageReceived += AddMessage;
         }
         
         private void sendButton_Click(object sender, RoutedEventArgs e)
@@ -36,21 +40,10 @@ namespace PolyPaint.Vues
             }
         }
 
-        private void connectButton_Click(object sender, RoutedEventArgs e)
+        private void DataWindow_Closing(object sender, CancelEventArgs e)
         {
-            string accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImFsZXhpc2xvaXNlbGxlIiwibmFtZWlkIjoiYzNkYWUwYzctNTFhNy00MWE4LTg0ZDYtODZkNzI0OTEwMzgyIiwibmJmIjoxNTQ5MTU5NTg0LCJleHAiOjYxNTQ5MTU5NTI0LCJpYXQiOjE1NDkxNTk1ODQsImlzcyI6IjEwLjIwMC4yNy4xNjo1MDAxIiwiYXVkIjoiMTAuMjAwLjI3LjE2OjUwMDEifQ.qj0TmQ5FeUf9FxwTy-QcikbhFlpyucK_oQXyxJkrDi4";
-            try
-            {
-                (DataContext as VueModele).ChatClient.Initialize(accessToken);
-                (DataContext as VueModele).ChatClient.MessageReceived += AddMessage;
-                messagesList.Items.Add("Connection started");
-                connectButton.IsEnabled = false;
-                sendButton.IsEnabled = true;
-            }
-            catch (Exception ex)
-            {
-                messagesList.Items.Add(ex.Message);
-            }
+            e.Cancel = true;
+            Hide();
         }
 
         private void AddMessage(object sender, EventArgs args)

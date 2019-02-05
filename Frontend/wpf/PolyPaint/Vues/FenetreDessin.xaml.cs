@@ -14,9 +14,7 @@ using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Collections.Generic;
-using Microsoft.AspNetCore.SignalR.Client;
 using PolyPaint.Vues;
-using System.Linq;
 using PolyPaint.Structures;
 
 namespace PolyPaint
@@ -26,11 +24,15 @@ namespace PolyPaint
     /// </summary>
     public partial class FenetreDessin : Window
     {
+        ChatWindow externalChatWindow;
         public FenetreDessin()
         {
             InitializeComponent();
             var token = Application.Current.Properties["token"];
             DataContext = new VueModele();
+            (DataContext as VueModele).ChatClient.Initialize((string)Application.Current.Properties["token"]);
+            (DataContext as VueModele).ChatClient.MessageReceived += AddMessage;
+            externalChatWindow = new ChatWindow(DataContext);
         }
 
         // Pour gérer les points de contrôles.
@@ -212,33 +214,14 @@ namespace PolyPaint
 
         private void chatButton_Click(object sender, RoutedEventArgs e)
         {
-            ChatWindow w2 = new ChatWindow();
-            w2.DataContext = DataContext;
-            w2.Show();
+            externalChatWindow.Show();
             chat.Visibility = Visibility.Collapsed;
         }
 
         private void chatButtonSameWindow_Click(object sender, RoutedEventArgs e)
         {
+            externalChatWindow.Visibility = Visibility.Collapsed;
             chat.Visibility = Visibility.Visible;
-        }
-
-        private void connectButton_Click(object sender, RoutedEventArgs e)
-        {
-            var accessToken = (string)Application.Current.Properties["token"];
-            Console.WriteLine(accessToken);
-            try
-            {
-                (DataContext as VueModele).ChatClient.Initialize(accessToken);
-                (DataContext as VueModele).ChatClient.MessageReceived += AddMessage;
-                messagesList.Items.Add("Connection started");
-                connectButton.IsEnabled = false;
-                sendButton.IsEnabled = true;
-            }
-            catch (Exception ex)
-            {
-                messagesList.Items.Add(ex.Message);
-            }
         }
 
         private void sendButton_Click(object sender, RoutedEventArgs e)
