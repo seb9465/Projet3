@@ -10,6 +10,9 @@ target 'ios' do
   pod 'PromiseKit'
   pod 'PromiseKit/Alamofire'
   pod 'AwaitKit'
+  pod 'SwiftSignalRClient'
+  pod 'MessageKit'
+  pod 'MessageInputBar'
 
   target 'iosTests' do
     inherit! :search_paths
