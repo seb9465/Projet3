@@ -39,7 +39,6 @@ namespace PolyPaint.API.Hubs
             {
                 var user = await _userService.FindByIdAsync(userId);
                 var userCountInGroup = UserHandler.UserGroupMap.Values.Count(x => x == groupId);
-                
                 if (user != null && userCountInGroup < MAX_USERS_PER_GROUP)
                 {
                     await Groups.AddToGroupAsync(Context.ConnectionId, groupId);

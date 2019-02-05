@@ -352,10 +352,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Chat\ChatClient.cs" />
     <Compile Include="Convertisseurs\Convertisseurs.cs" />
+    <Compile Include="Modeles\ChatClient.cs" />
     <Compile Include="Modeles\Editeur.cs" />
     <Compile Include="Modeles\SaveableCanvas.cs" />
+    <Compile Include="Structures\MessageArgs.cs" />
     <Compile Include="Utilitaires\RelayCommand.cs" />
     <Compile Include="VueModeles\CanvasViewModel.cs" />
     <Compile Include="VueModeles\LoginViewModel.cs" />
@@ -457,6 +458,7 @@
     <Resource Include="Resources\importFromCloud.png" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Chat\" />
     <Folder Include="Services\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

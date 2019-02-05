@@ -1,7 +1,10 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using System.Windows.Ink;
 using System.Windows.Media;
+using Microsoft.AspNetCore.SignalR.Client;
 using PolyPaint.Modeles;
 using PolyPaint.Utilitaires;
 
@@ -18,8 +21,12 @@ namespace PolyPaint.VueModeles
         public event PropertyChangedEventHandler PropertyChanged;
         private Editeur editeur = new Editeur();
 
+        public ChatClient ChatClient { get; set; }
+
         // Ensemble d'attributs qui définissent l'apparence d'un trait.
         public DrawingAttributes AttributsDessin { get; set; } = new DrawingAttributes();
+
+        public HubConnection Connection { get; private set; }
 
         public string OutilSelectionne
         {
@@ -61,6 +68,8 @@ namespace PolyPaint.VueModeles
         /// </summary>
         public VueModele()
         {
+            ChatClient = new ChatClient();
+
             // On écoute pour des changements sur le modèle. Lorsqu'il y en a, EditeurProprieteModifiee est appelée.
             editeur.PropertyChanged += new PropertyChangedEventHandler(EditeurProprieteModifiee);
 
@@ -118,7 +127,7 @@ namespace PolyPaint.VueModeles
             else // e.PropertyName == "TailleTrait"
             {               
                 AjusterPointe();
-            }                
+            }
         }
 
         /// <summary>

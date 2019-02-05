@@ -8,8 +8,9 @@ using System.Windows.Media.Imaging;
 using System.IO;
 using Microsoft.Win32;
 using System.Windows.Ink;
-using PolyPaint.Chat;
 using Microsoft.AspNetCore.SignalR.Client;
+using PolyPaint.Structures;
+using System.ComponentModel;
 
 namespace PolyPaint.Vues
 {
@@ -18,33 +19,20 @@ namespace PolyPaint.Vues
     /// </summary>
     public partial class ChatWindow : Window
     {
-        public ChatClient ChatClient { get; set; }
+        public object ParentElement { get; }
 
-        public ChatWindow()
+        public ChatWindow(object dataContext)
         {
             InitializeComponent();
-            ChatClient = new ChatClient();
+            DataContext = dataContext;
+            (DataContext as VueModele).ChatClient.MessageReceived += AddMessage;
         }
         
-        private async void connectButton_Click(object sender, RoutedEventArgs e)
+        private void sendButton_Click(object sender, RoutedEventArgs e)
         {
-            ChatClient.connection.On<string, string>("ReceiveMessage", (username, message) =>
-            {
-                this.Dispatcher.Invoke(() =>
-                {
-                    var newMessage = $"{username}: {message}";
-                    messagesList.Items.Add(newMessage);
-                });
-            });
-
             try
             {
-                await ChatClient.connection.StartAsync();
-                await ChatClient.connection.InvokeAsync("ConnectToGroup",
-                    userTextBox.Text);
-                messagesList.Items.Add("Connection started");
-                connectButton.IsEnabled = false;
-                sendButton.IsEnabled = true;
+                (DataContext as VueModele).ChatClient.SendMessage(messageTextBox.Text);
             }
             catch (Exception ex)
             {
@@ -52,7 +40,7 @@ namespace PolyPaint.Vues
             }
         }
 
-        private async void sendButton_Click(object sender, RoutedEventArgs e)
+        private void DataWindow_Closing(object sender, CancelEventArgs e)
         {
             if (!string.IsNullOrWhiteSpace(messageTextBox.Text))
             {
@@ -71,18 +59,21 @@ namespace PolyPaint.Vues
             messageTextBox.Focus();
         }
 
-        private void DataWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            e.Cancel = true;
-            this.Hide();
-        }
-
         private void enterKeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
             {
                 sendButton_Click(sender, e);
             }
+        }
+
+         private void AddMessage(object sender, EventArgs args)
+        {
+            MessageArgs messArgs = args as MessageArgs;
+            this.Dispatcher.Invoke(() =>
+            {
+                messagesList.Items.Add($"{messArgs.Username}: {messArgs.Message}\t{messArgs.Timestamp}");
+            });
         }
     }
 }
