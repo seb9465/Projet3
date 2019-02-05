@@ -13,6 +13,7 @@ target 'ios' do
   pod 'SwiftSignalRClient'
   pod 'MessageKit'
   pod 'MessageInputBar'
+  pod 'JWTDecode'
 
   target 'iosTests' do
     inherit! :search_paths

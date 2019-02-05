@@ -10,9 +10,10 @@ import UIKit
 import MessageKit
 import MessageInputBar
 import SwiftSignalRClient
+import JWTDecode
 
 let CHAT_URL_2 = "https://polypaint.me/signalr";
-let USER_TOKEN_2 = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImRlZmF1bHQiLCJuYW1laWQiOiJlMjAxMGMzYy1kZDIzLTQzYzAtYTJhOC03NzQwZGI1MTk1ZmUiLCJuYmYiOjE1NDkzODg3MzQsImV4cCI6NjE1NDkzODg2NzQsImlhdCI6MTU0OTM4ODczNCwiaXNzIjoiMTAuMjAwLjI3LjE2OjUwMDEiLCJhdWQiOiIxMC4yMDAuMjcuMTY6NTAwMSJ9.YBxuKvDdPdpSjVmSvSUL3uSWvR7LP2PaWtPXdwmdG_U";
+let USER_TOKEN_2 = UserDefaults.standard.string(forKey: "token");
 
 class MsgChatController: MessagesViewController, MessagesDataSource {
     var hubConnection: HubConnection!
@@ -23,8 +24,12 @@ class MsgChatController: MessagesViewController, MessagesDataSource {
     override func viewDidLoad() {
         super.viewDidLoad();
         
+        let jwt = try! decode(jwt: USER_TOKEN_2!)
+        let name = jwt.claim(name: "unique_name").string
+        print(name);
+        
         // A regler avec Will
-        member = Member(name: "default", color: .random)
+        member = Member(name: name!, color: .random)
         
         messagesCollectionView.messagesDataSource = self
         messagesCollectionView.messagesLayoutDelegate = self
@@ -65,7 +70,7 @@ class MsgChatController: MessagesViewController, MessagesDataSource {
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        self.hubConnection.stop();
+//        self.hubConnection.stop();
     }
     
     let formatter: DateFormatter = {
