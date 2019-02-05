@@ -71,7 +71,7 @@ namespace PolyPaint.API.Hubs
 
                 if (user != null && UserHandler.UserGroupMap.TryRemove(userId, out var groupId))
                 {
-                    await Clients.Group(groupId).SendAsync("SystemMessage", $"{user.FullName()} has disconnected");
+                    await Clients.Group(groupId).SendAsync("SystemMessage", $"{user.UserName} has disconnected");
                 }
             }
         }
