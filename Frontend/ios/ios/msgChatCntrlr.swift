@@ -36,6 +36,16 @@ class MsgChatController: MessagesViewController, MessagesDataSource {
         messageInputBar.delegate = self
         messagesCollectionView.messagesDisplayDelegate = self
     }
+
+    
+    func messageInputBar(_ inputBar: MessageInputBar, textViewTextDidChangeTo text: String) {
+        if(messageInputBar.inputTextView.text.contains("\n")) {
+            messageInputBar.inputTextView.text.popLast();
+            if(messageInputBar.sendButton.isEnabled) {
+                messageInputBar.didSelectSendButton();
+            }
+        }
+    }
     
     override func viewDidAppear(_ animated: Bool) {
         // Initialisation du hub.
