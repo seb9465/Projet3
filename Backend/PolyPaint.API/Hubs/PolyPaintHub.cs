@@ -58,6 +58,7 @@ namespace PolyPaint.API.Hubs
                 {
                     await base.OnConnectedAsync();
                     UserHandler.UserGroupMap.GetOrAdd(userId, (string)null);
+                    await Clients.Caller.SendAsync("ClientIsConnected", "You are connected!");
                 }
             }
         }
