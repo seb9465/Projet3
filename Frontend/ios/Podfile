@@ -7,7 +7,6 @@ target 'ios' do
 
   use_frameworks!
   pod 'Alamofire'
-  pod 'SwiftR'
   pod 'PromiseKit'
   pod 'PromiseKit/Alamofire'
   pod 'AwaitKit'
