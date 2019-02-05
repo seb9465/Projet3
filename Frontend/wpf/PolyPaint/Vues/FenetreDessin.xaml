@@ -239,10 +239,17 @@
                     <ColumnDefinition Width="109*"/>
                     <ColumnDefinition Width="288*"/>
                 </Grid.ColumnDefinitions>
-                <Button x:Name="sendButton" Content="Send Message" HorizontalAlignment="Left" Margin="220,115,0,0" VerticalAlignment="Top" Width="125" Click="sendButton_Click" Height="41" Grid.Column="1" IsEnabled="True"/>
-                <TextBox x:Name="messageTextBox" HorizontalAlignment="Left" Height="41" Margin="85,113,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="311" Grid.ColumnSpan="2"/>
-                <ListBox x:Name="messagesList" HorizontalAlignment="Left" Height="141" Margin="85,170,0,0" VerticalAlignment="Top" Width="311" RenderTransformOrigin="-0.304,0.109" BorderThickness="1" Grid.ColumnSpan="2" BorderBrush="Gainsboro"/>
-                <Label Content="Message" HorizontalAlignment="Left" Height="26" Margin="20,130,0,0" VerticalAlignment="Top" Width="100"/>
+                <ListBox x:Name="messagesList" HorizontalAlignment="Left" Height="180" Margin="85,50,0,20" VerticalAlignment="Top" Width="500" RenderTransformOrigin="-0.304,0.109" BorderThickness="1" Grid.ColumnSpan="2" BorderBrush="Gainsboro">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Path=.}" TextWrapping="Wrap"></TextBlock>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                <Button x:Name="sendButton" Content="Send Message" HorizontalAlignment="Left" Margin="240,220,0,0" VerticalAlignment="Bottom" Width="125" Click="sendButton_Click" Height="41" Grid.Column="1" IsEnabled="True"/>
+                <TextBox x:Name="messageTextBox" HorizontalAlignment="Left" Height="41" Margin="85,238,0,0" TextWrapping="Wrap" VerticalAlignment="Bottom" Width="311" Grid.ColumnSpan="2"/>
+                <Label Content="Message" HorizontalAlignment="Left" Height="26" Margin="20,255,0,0" VerticalAlignment="Bottom" Width="100"/>
+
             </Grid>
         </StackPanel>
      

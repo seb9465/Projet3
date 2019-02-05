@@ -32,6 +32,7 @@ namespace PolyPaint
             DataContext = new VueModele();
             (DataContext as VueModele).ChatClient.Initialize((string)Application.Current.Properties["token"]);
             (DataContext as VueModele).ChatClient.MessageReceived += AddMessage;
+            (DataContext as VueModele).ChatClient.SystemMessageReceived += AddSystemMessage;
             externalChatWindow = new ChatWindow(DataContext);
         }
 
@@ -208,7 +209,20 @@ namespace PolyPaint
             MessageArgs messArgs = args as MessageArgs;
             this.Dispatcher.Invoke(() =>
             {
-                messagesList.Items.Insert(0, $"{messArgs.Username}: {messArgs.Message}\t{messArgs.Timestamp}");
+                messagesList.Items.Add($"{messArgs.Timestamp} - {messArgs.Username}: {messArgs.Message}");
+                messagesList.SelectedIndex = messagesList.Items.Count - 1;
+                messagesList.ScrollIntoView(messagesList.SelectedItem);
+            });
+        }
+
+        private void AddSystemMessage(object sender, EventArgs args)
+        {
+            MessageArgs messArgs = args as MessageArgs;
+            this.Dispatcher.Invoke(() =>
+            {
+                messagesList.Items.Add(messArgs.Message);
+                messagesList.SelectedIndex = messagesList.Items.Count - 1;
+                messagesList.ScrollIntoView(messagesList.SelectedItem);
             });
         }
 

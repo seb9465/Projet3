@@ -24,8 +24,9 @@ namespace PolyPaint.Vues
             InitializeComponent();
             DataContext = dataContext;
             (DataContext as VueModele).ChatClient.MessageReceived += AddMessage;
+            (DataContext as VueModele).ChatClient.SystemMessageReceived += AddSystemMessage;
         }
-        
+
         private void sendButton_Click(object sender, RoutedEventArgs e)
         {
             if (!string.IsNullOrWhiteSpace(messageTextBox.Text))
@@ -33,7 +34,7 @@ namespace PolyPaint.Vues
                 try
                 {
                     (DataContext as VueModele).ChatClient.SendMessage(messageTextBox.Text);
-                
+
                     messageTextBox.Text = String.Empty;
                 }
                 catch (Exception ex)
@@ -58,12 +59,25 @@ namespace PolyPaint.Vues
             }
         }
 
-         private void AddMessage(object sender, EventArgs args)
+        private void AddMessage(object sender, EventArgs args)
         {
             MessageArgs messArgs = args as MessageArgs;
             this.Dispatcher.Invoke(() =>
             {
-                messagesList.Items.Insert(0, $"{messArgs.Username}: {messArgs.Message}\t{messArgs.Timestamp}");
+                messagesList.Items.Add($"{messArgs.Timestamp} - {messArgs.Username}: {messArgs.Message}");
+                messagesList.SelectedIndex = messagesList.Items.Count - 1;
+                messagesList.ScrollIntoView(messagesList.SelectedItem);
+            });
+        }
+
+        private void AddSystemMessage(object sender, EventArgs args)
+        {
+            MessageArgs messArgs = args as MessageArgs;
+            this.Dispatcher.Invoke(() =>
+            {
+                messagesList.Items.Add(messArgs.Message);
+                messagesList.SelectedIndex = messagesList.Items.Count - 1;
+                messagesList.ScrollIntoView(messagesList.SelectedItem);
             });
         }
     }

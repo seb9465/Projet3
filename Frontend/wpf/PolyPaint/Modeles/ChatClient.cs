@@ -12,6 +12,7 @@ namespace PolyPaint.Modeles
     class ChatClient
     {
         public event EventHandler MessageReceived;
+        public event EventHandler SystemMessageReceived;
         private HubConnection Connection { get; set; }
 
         public ChatClient()
@@ -37,6 +38,10 @@ namespace PolyPaint.Modeles
             Connection.On<string, string, string>("ReceiveMessage", (username, message, timestamp) =>
             {
                 MessageReceived?.Invoke(this, new MessageArgs(username, message, timestamp));
+            });
+            Connection.On<string>("SystemMessage", (message) =>
+            {
+                SystemMessageReceived?.Invoke(this, new MessageArgs(null, message, null));
             });
         }
 
