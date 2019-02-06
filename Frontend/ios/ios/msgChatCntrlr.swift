@@ -16,8 +16,8 @@ let CHAT_URL = "https://polypaint.me/signalr";
 let USER_TOKEN = UserDefaults.standard.string(forKey: "token");
 
 class MsgChatController: MessagesViewController {
-    var hubConnection: HubConnection!
-    var connectedToGroup: Bool = false
+    var hubConnection: HubConnection!;
+    var connectedToGroup: Bool = false;
     var messages: [Message] = [];
     var member: Member!;
     
@@ -25,7 +25,7 @@ class MsgChatController: MessagesViewController {
         super.viewDidLoad();
         
         self.establishConnectionToHub();
-        self.setMember();
+        self.setCurrentMemberAttributes();
         self.initDelegate();
         self.initOnReceiveMessage();
         self.connectToGroup();
@@ -60,13 +60,14 @@ class MsgChatController: MessagesViewController {
             let newMember = Member(
                 name: user!,
                 color: .random
-            )
+            );
             
             let newMessage = Message(
                 member: newMember,
                 text: message!,
                 timestamp: timestamp!,
-                messageId: UUID().uuidString)
+                messageId: UUID().uuidString
+            );
             
             if (user != self.member.name) {
                 self.insertMessage(newMessage);
@@ -74,49 +75,51 @@ class MsgChatController: MessagesViewController {
         });
     }
     
-    func initDelegate() {
-        messagesCollectionView.messagesDataSource = self
-        messagesCollectionView.messagesLayoutDelegate = self
-        messageInputBar.delegate = self
-        messagesCollectionView.messagesDisplayDelegate = self
+    func initDelegate() -> Void {
+        messagesCollectionView.messagesDataSource = self;
+        messagesCollectionView.messagesLayoutDelegate = self;
+        messageInputBar.delegate = self;
+        messagesCollectionView.messagesDisplayDelegate = self;
     }
     
-    func setMember() {
-        let jwt = try! decode(jwt: USER_TOKEN!)
-        let name = jwt.claim(name: "unique_name").string
+    func setCurrentMemberAttributes() -> Void {
+        let jwt = try! decode(jwt: USER_TOKEN!);
+        let name = jwt.claim(name: "unique_name").string;
         
-        self.member = Member(name: name!, color: .random)
+        self.member = Member(name: name!, color: .random);
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) -> Void {
         self.hubConnection.stop();
     }
     
     let formatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "HH:mm:ss"
-        return formatter
+        let formatter = DateFormatter();
+        formatter.dateFormat = "HH:mm:ss";
+        return formatter;
     }()
     
-    func insertMessage(_ message: Message) {
-        messages.append(message)
-        // Reload last section to update header/footer labels and insert a new one
+    func insertMessage(_ message: Message) -> Void {
+        messages.append(message);
+        
         messagesCollectionView.performBatchUpdates({
-            messagesCollectionView.insertSections([messages.count - 1])
+            messagesCollectionView.insertSections([messages.count - 1]);
         }, completion: { [weak self] _ in
             if self?.isLastSectionVisible() == true {
-                self?.messagesCollectionView.scrollToBottom(animated: true)
+                self?.messagesCollectionView.scrollToBottom(animated: true);
             }
-        })
+        });
     }
     
     func isLastSectionVisible() -> Bool {
         
-        guard !messages.isEmpty else { return false }
+        guard !messages.isEmpty else {
+            return false;
+        }
         
-        let lastIndexPath = IndexPath(item: 0, section: messages.count - 1)
+        let lastIndexPath = IndexPath(item: 0, section: messages.count - 1);
         
-        return messagesCollectionView.indexPathsForVisibleItems.contains(lastIndexPath)
+        return messagesCollectionView.indexPathsForVisibleItems.contains(lastIndexPath);
     }
     
 }
@@ -125,21 +128,19 @@ class MsgChatController: MessagesViewController {
 // MessagesDataSource qui donne le nombre et le contenu des messages
     
 extension MsgChatController: MessagesDataSource {
-
-    func numberOfSections(
-        in messagesCollectionView: MessagesCollectionView) -> Int {
-        return messages.count
+    func numberOfSections( in messagesCollectionView: MessagesCollectionView) -> Int {
+        return messages.count;
     }
     
     func currentSender() -> Sender {
-        return Sender(id: member.name, displayName: member.name)
+        return Sender(id: member.name, displayName: member.name);
     }
     
     func messageForItem(
         at indexPath: IndexPath,
         in messagesCollectionView: MessagesCollectionView) -> MessageKit.MessageType {
         
-        return messages[indexPath.section]
+        return messages[indexPath.section];
     }
     
     func messageTopLabelHeight(
@@ -147,7 +148,7 @@ extension MsgChatController: MessagesDataSource {
         at indexPath: IndexPath,
         in messagesCollectionView: MessagesCollectionView) -> CGFloat {
         
-        return 12
+        return 12;
     }
     
     func messageBottomLabelHeight(
@@ -155,7 +156,7 @@ extension MsgChatController: MessagesDataSource {
         at indexPath: IndexPath,
         in messagesCollectionView: MessagesCollectionView) -> CGFloat {
         
-        return 12
+        return 12;
     }
 
     
@@ -165,12 +166,12 @@ extension MsgChatController: MessagesDataSource {
         
         return NSAttributedString(
             string: message.sender.displayName,
-            attributes: [.font: UIFont.systemFont(ofSize: 12)])
+            attributes: [.font: UIFont.systemFont(ofSize: 12)]);
     }
     
     func messageBottomLabelAttributedText(for message: MessageKit.MessageType, at indexPath: IndexPath) -> NSAttributedString? {
         
-        return NSAttributedString(string: messages[indexPath.section].timestamp, attributes: [NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .caption2)])
+        return NSAttributedString(string: messages[indexPath.section].timestamp, attributes: [NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .caption2)]);
     }
 }
 
@@ -182,7 +183,7 @@ extension MsgChatController: MessagesLayoutDelegate {
                            with maxWidth: CGFloat,
                            in messagesCollectionView: MessagesCollectionView) -> CGFloat {
         
-        return 0
+        return 0;
     }
 }
 
@@ -194,9 +195,9 @@ extension MsgChatController: MessagesDisplayDelegate {
         at indexPath: IndexPath,
         in messagesCollectionView: MessagesCollectionView) {
         
-        let message = messages[indexPath.section]
-        let color = message.member.color
-        avatarView.backgroundColor = color
+        let message = messages[indexPath.section];
+        let color = message.member.color;
+        avatarView.backgroundColor = color;
     }
 }
 
@@ -223,10 +224,10 @@ extension MsgChatController: MessageInputBarDelegate {
                 print(e);
             }
             
-            self.insertMessage(newMessage)
-            inputBar.inputTextView.text = ""
-            self.messagesCollectionView.reloadData()
-            self.messagesCollectionView.scrollToBottom(animated: true)
+            self.insertMessage(newMessage);
+            inputBar.inputTextView.text = "";
+            self.messagesCollectionView.reloadData();
+            self.messagesCollectionView.scrollToBottom(animated: true);
         });
     }
 }
