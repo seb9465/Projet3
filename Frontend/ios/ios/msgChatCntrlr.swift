@@ -15,7 +15,7 @@ import JWTDecode
 let CHAT_URL_2 = "https://polypaint.me/signalr";
 let USER_TOKEN_2 = UserDefaults.standard.string(forKey: "token");
 
-class MsgChatController: MessagesViewController, MessagesDataSource {
+class MsgChatController: MessagesViewController {
     var hubConnection: HubConnection!
     var connectedToGroup: Bool = false
     var messages: [Message] = [];
@@ -24,25 +24,34 @@ class MsgChatController: MessagesViewController, MessagesDataSource {
     override func viewDidLoad() {
         super.viewDidLoad();
         
-        // Initialisation du hub.
+        self.establishConnectionToHub();
+        self.setMember();
+        self.initDelegate();
+        self.initOnReceiveMessage();
+        self.connectToGroup();
+    }
+    
+    func establishConnectionToHub() {
         self.hubConnection = HubConnectionBuilder(url: URL(string: CHAT_URL_2)!)
             .withHttpConnectionOptions() { httpConnectionOptions in
                 httpConnectionOptions.accessTokenProvider = { return USER_TOKEN_2; }}
             .build();
         
-        // Connexion au serveur.
         self.hubConnection.start();
-        
-        let jwt = try! decode(jwt: USER_TOKEN_2!)
-        let name = jwt.claim(name: "unique_name").string
-        
-        member = Member(name: name!, color: .random)
-        
-        messagesCollectionView.messagesDataSource = self
-        messagesCollectionView.messagesLayoutDelegate = self
-        messageInputBar.delegate = self
-        messagesCollectionView.messagesDisplayDelegate = self
-        
+    }
+    
+    func connectToGroup() {
+        self.hubConnection.on(method: "ClientIsConnected", callback: { args, typeConverter in
+            self.hubConnection.invoke(method: "ConnectToGroup", arguments: [""], invocationDidComplete: { error in
+                if (error != nil) {
+                    print("Error connecting to server!")
+                }
+                print("Connected to the group");
+            });
+        });
+    }
+    
+    func initOnReceiveMessage() {
         self.hubConnection.on(method: "ReceiveMessage", callback: { args, typeConverter in
             let user = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self);
             let message = try! typeConverter.convertFromWireType(obj: args[1], targetType: String.self);
@@ -63,15 +72,20 @@ class MsgChatController: MessagesViewController, MessagesDataSource {
                 self.insertMessage(newMessage);
             }
         });
+    }
+    
+    func initDelegate() {
+        messagesCollectionView.messagesDataSource = self
+        messagesCollectionView.messagesLayoutDelegate = self
+        messageInputBar.delegate = self
+        messagesCollectionView.messagesDisplayDelegate = self
+    }
+    
+    func setMember() {
+        let jwt = try! decode(jwt: USER_TOKEN_2!)
+        let name = jwt.claim(name: "unique_name").string
         
-        self.hubConnection.on(method: "ClientIsConnected", callback: { args, typeConverter in
-            self.hubConnection.invoke(method: "ConnectToGroup", arguments: [""], invocationDidComplete: { error in
-                if (error != nil) {
-                    print("Error connecting to server!")
-                }
-                print("Connected to the group");
-            });
-        });
+        self.member = Member(name: name!, color: .random)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -105,12 +119,12 @@ class MsgChatController: MessagesViewController, MessagesDataSource {
         return messagesCollectionView.indexPathsForVisibleItems.contains(lastIndexPath)
     }
     
-//}
+}
 
 // 4 protocoles a implementer pour connecter les messages au UI & controler les interactions.
 // MessagesDataSource qui donne le nombre et le contenu des messages
     
-//extension MsgChatController: MessagesDataSource {
+extension MsgChatController: MessagesDataSource {
 
     func numberOfSections(
         in messagesCollectionView: MessagesCollectionView) -> Int {
