@@ -23,8 +23,6 @@
 		B7A3A5C02203BF3B00031F64 /* msgChatCntrlr.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A3A5BF2203BF3B00031F64 /* msgChatCntrlr.swift */; };
 		B7A3A5C22203C27600031F64 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A3A5C12203C27600031F64 /* Message.swift */; };
 		B7A3A5C42203CF7100031F64 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A3A5C32203CF7100031F64 /* Extensions.swift */; };
-		B7A3A5C622049E8E00031F64 /* ChatService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A3A5C522049E8E00031F64 /* ChatService.swift */; };
-		B7E31EDF2200B3DD00E7134D /* ChatController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7E31EDE2200B3DD00E7134D /* ChatController.swift */; };
 		C5724AD99504D99A25966BB9 /* Pods_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6CD8C54089242A6862A3C2E4 /* Pods_ios.framework */; };
 /* End PBXBuildFile section */
 
@@ -61,8 +59,6 @@
 		B7A3A5BF2203BF3B00031F64 /* msgChatCntrlr.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = msgChatCntrlr.swift; sourceTree = "<group>"; };
 		B7A3A5C12203C27600031F64 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		B7A3A5C32203CF7100031F64 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
-		B7A3A5C522049E8E00031F64 /* ChatService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatService.swift; sourceTree = "<group>"; };
-		B7E31EDE2200B3DD00E7134D /* ChatController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatController.swift; sourceTree = "<group>"; };
 		C6C9AA086604975DCA6FF292 /* Pods-iosTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iosTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-iosTests/Pods-iosTests.debug.xcconfig"; sourceTree = "<group>"; };
 		E7966B3EFE20A93B4BE0DB10 /* Pods-ios.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ios.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ios/Pods-ios.debug.xcconfig"; sourceTree = "<group>"; };
 		FF4400EA77DC6188B44EF010 /* Pods-ios.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ios.release.xcconfig"; path = "Pods/Target Support Files/Pods-ios/Pods-ios.release.xcconfig"; sourceTree = "<group>"; };
@@ -156,8 +152,6 @@
 				B711B5ED21F659A30096BF7F /* Main.storyboard */,
 				B7A3A5C12203C27600031F64 /* Message.swift */,
 				B7A3A5BF2203BF3B00031F64 /* msgChatCntrlr.swift */,
-				B7A3A5C522049E8E00031F64 /* ChatService.swift */,
-				B7E31EDE2200B3DD00E7134D /* ChatController.swift */,
 				B711B5F021F659A50096BF7F /* Assets.xcassets */,
 				B711B5F221F659A50096BF7F /* LaunchScreen.storyboard */,
 				B711B5F521F659A50096BF7F /* Info.plist */,
@@ -378,11 +372,9 @@
 				3DC967ED220A09C400FA76CB /* DashboardController.swift in Sources */,
 				3DDE25192202B2AF0082E735 /* RoundedCorners.swift in Sources */,
 				B7A3A5C42203CF7100031F64 /* Extensions.swift in Sources */,
-				B7A3A5C622049E8E00031F64 /* ChatService.swift in Sources */,
 				B711B5EA21F659A30096BF7F /* AppDelegate.swift in Sources */,
 				B7A3A5C22203C27600031F64 /* Message.swift in Sources */,
 				B7A3A5C02203BF3B00031F64 /* msgChatCntrlr.swift in Sources */,
-				B7E31EDF2200B3DD00E7134D /* ChatController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
