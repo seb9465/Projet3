@@ -11,7 +11,7 @@ import Alamofire
 import PromiseKit
 import AwaitKit
 
-let loginURL: URLConvertible = "https://polypaint.me/api/login";
+let loginURL: URLConvertible = "http://10.200.17.188:5000/api/login";
 
 class LoginController: UIViewController, UITextFieldDelegate {
     
