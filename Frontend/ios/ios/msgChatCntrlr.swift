@@ -12,7 +12,7 @@ import MessageInputBar
 import SwiftSignalRClient
 import JWTDecode
 
-let CHAT_URL = "http://10.200.17.188:5000/signalr";
+let CHAT_URL = "https://polypaint.me/signalr";
 let USER_TOKEN = UserDefaults.standard.string(forKey: "token");
 
 class MsgChatController: MessagesViewController {
@@ -28,7 +28,28 @@ class MsgChatController: MessagesViewController {
         self.setCurrentMemberAttributes();
         self.initDelegate();
         self.initOnReceiveMessage();
+        self.initOnAnotherUserConnection();
         self.connectToGroup();
+    }
+    
+    func initOnAnotherUserConnection() -> Void {
+        self.hubConnection.on(method: "SystemMessage", callback: { args, typeConverter in
+            let message = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self);
+            
+            let sysMember = Member(
+                name: "SYSTEM",
+                color: .random
+            );
+            
+            let newMessage = Message(
+                member: sysMember,
+                text: message!,
+                timestamp: self.formatter.string(from: Date()),
+                messageId: UUID().uuidString
+            );
+            
+            self.insertMessage(newMessage);
+        });
     }
     
     func establishConnectionToHub() {
@@ -177,7 +198,6 @@ extension MsgChatController: MessagesDataSource {
 
 // MessagesLayoutDelegate qui donne la hauteur, le padding et l'alignement des differentes vues.
 extension MsgChatController: MessagesLayoutDelegate {
-    
     func heightForLocation(message: MessageKit.MessageType,
                            at indexPath: IndexPath,
                            with maxWidth: CGFloat,

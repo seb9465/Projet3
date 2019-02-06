@@ -11,7 +11,7 @@ import Alamofire
 import PromiseKit
 import AwaitKit
 
-let loginURL: URLConvertible = "http://10.200.17.188:5000/api/login";
+let loginURL: URLConvertible = "https://polypaint.me/api/login";
 
 class LoginController: UIViewController, UITextFieldDelegate {
     
@@ -27,14 +27,14 @@ class LoginController: UIViewController, UITextFieldDelegate {
         
         let validEmail: Bool = isValidEmail(testStr: emailField.text!);
         
-//        let parameters = [
-//            "username": emailField.text,
-//            "password": passwordField.text
-//        ]
         let parameters = [
-            "username": "william.sevigny",
-            "password": "!12345Aa"
+            "username": emailField.text,
+            "password": passwordField.text
         ]
+//        let parameters = [
+//            "username": "william.sevigny",
+//            "password": "!12345Aa"
+//        ]
         
         self.authenticateUser(parameters: parameters).done { response in
             if(response == "ERROR") {
