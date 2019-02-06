@@ -12,8 +12,8 @@ import MessageInputBar
 import SwiftSignalRClient
 import JWTDecode
 
-let CHAT_URL_2 = "https://polypaint.me/signalr";
-let USER_TOKEN_2 = UserDefaults.standard.string(forKey: "token");
+let CHAT_URL = "https://polypaint.me/signalr";
+let USER_TOKEN = UserDefaults.standard.string(forKey: "token");
 
 class MsgChatController: MessagesViewController {
     var hubConnection: HubConnection!
@@ -32,9 +32,9 @@ class MsgChatController: MessagesViewController {
     }
     
     func establishConnectionToHub() {
-        self.hubConnection = HubConnectionBuilder(url: URL(string: CHAT_URL_2)!)
+        self.hubConnection = HubConnectionBuilder(url: URL(string: CHAT_URL)!)
             .withHttpConnectionOptions() { httpConnectionOptions in
-                httpConnectionOptions.accessTokenProvider = { return USER_TOKEN_2; }}
+                httpConnectionOptions.accessTokenProvider = { return USER_TOKEN; }}
             .build();
         
         self.hubConnection.start();
@@ -82,7 +82,7 @@ class MsgChatController: MessagesViewController {
     }
     
     func setMember() {
-        let jwt = try! decode(jwt: USER_TOKEN_2!)
+        let jwt = try! decode(jwt: USER_TOKEN!)
         let name = jwt.claim(name: "unique_name").string
         
         self.member = Member(name: name!, color: .random)
