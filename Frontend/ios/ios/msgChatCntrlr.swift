@@ -66,6 +66,7 @@ class MsgChatController: MessagesViewController {
             self.hubConnection.invoke(method: "ConnectToGroup", arguments: [""], invocationDidComplete: { error in
                 if (error != nil) {
                     print("Error connecting to server!")
+                    print(error as Any);
                 }
                 print("Connected to the group");
             });
