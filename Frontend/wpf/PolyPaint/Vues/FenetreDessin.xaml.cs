@@ -236,7 +236,7 @@ namespace PolyPaint
 
         private void chatButtonSameWindow_Click(object sender, RoutedEventArgs e)
         {
-            externalChatWindow.Visibility = Visibility.Collapsed;
+            externalChatWindow.Close();
             chat.Visibility = Visibility.Visible;
         }
 
