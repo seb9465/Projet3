@@ -50,8 +50,9 @@ namespace PolyPaint.Vues
                 {
                     Application.Current.Properties.Add("token", token);
                     FenetreDessin fenetreDessin = new FenetreDessin();
+                    Application.Current.MainWindow = fenetreDessin;
+                    Close();
                     fenetreDessin.Show();
-                    this.Close();
                 }
             }
         }

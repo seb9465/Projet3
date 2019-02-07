@@ -34,6 +34,8 @@ namespace PolyPaint
             (DataContext as VueModele).ChatClient.MessageReceived += AddMessage;
             (DataContext as VueModele).ChatClient.SystemMessageReceived += AddSystemMessage;
             externalChatWindow = new ChatWindow(DataContext);
+
+            Application.Current.Exit += OnClosing;
         }
 
         // Pour gérer les points de contrôles.
@@ -255,6 +257,20 @@ namespace PolyPaint
             {
                 sendButton_Click(sender, e);
             }
+        }
+
+        private void OnClosing(object sender, EventArgs e)
+        {
+            try
+            {
+                using (var client = new HttpClient())
+                {
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", (string)Application.Current.Properties["token"]);
+                    System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
+                    client.GetAsync("https://polypaint.me/api/user/logout").Wait();
+                }
+            }
+            catch { }
         }
     }
 }
