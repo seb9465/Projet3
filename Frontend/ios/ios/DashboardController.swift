@@ -8,11 +8,13 @@
 
 import UIKit
 import JWTDecode
+import Alamofire
 
 class DashboardController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var UsernameLabel: UILabel!
     
     override func viewDidLoad() {
+        self.navigationItem.setHidesBackButton(true, animated:true);
         super.viewDidLoad();
         let token = UserDefaults.standard.string(forKey: "token");
         let jwt = try! decode(jwt: token!)
