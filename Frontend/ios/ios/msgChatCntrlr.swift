@@ -21,6 +21,12 @@ class MsgChatController: MessagesViewController {
     var messages: [Message] = [];
     var member: Member!;
     
+    let formatter: DateFormatter = {
+        let formatter = DateFormatter();
+        formatter.dateFormat = "HH:mm:ss";
+        return formatter;
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad();
         
@@ -30,6 +36,10 @@ class MsgChatController: MessagesViewController {
         self.initOnReceiveMessage();
         self.initOnAnotherUserConnection();
         self.connectToGroup();
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) -> Void {
+        self.hubConnection.stop();
     }
     
     func initOnAnotherUserConnection() -> Void {
@@ -111,16 +121,6 @@ class MsgChatController: MessagesViewController {
         self.member = Member(name: name!, color: .random);
     }
     
-    override func viewWillDisappear(_ animated: Bool) -> Void {
-        self.hubConnection.stop();
-    }
-    
-    let formatter: DateFormatter = {
-        let formatter = DateFormatter();
-        formatter.dateFormat = "HH:mm:ss";
-        return formatter;
-    }()
-    
     func insertMessage(_ message: Message) -> Void {
         messages.append(message);
         
@@ -143,10 +143,9 @@ class MsgChatController: MessagesViewController {
         
         return messagesCollectionView.indexPathsForVisibleItems.contains(lastIndexPath);
     }
-    
 }
 
-// 4 protocoles a implementer pour connecter les messages au UI & controler les interactions.
+// 4 protocoles implementés pour connecter les messages au UI & controler les interactions.
 // MessagesDataSource qui donne le nombre et le contenu des messages
     
 extension MsgChatController: MessagesDataSource {
@@ -180,7 +179,6 @@ extension MsgChatController: MessagesDataSource {
         
         return 12;
     }
-
     
     func messageTopLabelAttributedText(
         for message: MessageKit.MessageType,
