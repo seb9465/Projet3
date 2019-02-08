@@ -40,17 +40,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-        let logoutURL: URLConvertible = "https://polypaint.me/api/logout"
-        let parameters = [
-            "token": UserDefaults.standard.string(forKey: "token")
+        
+        let logoutURL: URLConvertible = "https://polypaint.me/api/user/logout"
+        let headers = [
+            "Authorization": "Bearer " + UserDefaults.standard.string(forKey: "token")!
         ]
-        Alamofire.request(logoutURL, method: .get, parameters: parameters, encoding: JSONEncoding.default).validate().responseString{ response in
-            print();
+        
+        Alamofire.request(logoutURL, method: .get, encoding: JSONEncoding.default, headers: headers).responseString{ response in
+            print(response);
         }
-
-       
+        UserDefaults.standard.removePersistentDomain(forName: "token")
+        sleep(5);
+        print("terminated");
     }
-
-
 }
 
