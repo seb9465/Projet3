@@ -42,6 +42,15 @@ class MsgChatController: MessagesViewController {
         self.hubConnection.stop();
     }
     
+    func messageInputBar(_ inputBar: MessageInputBar, textViewTextDidChangeTo text: String) {
+        if(messageInputBar.inputTextView.text.contains("\n")) {
+            messageInputBar.inputTextView.text.popLast();
+            if(messageInputBar.sendButton.isEnabled) {
+                messageInputBar.didSelectSendButton();
+            }
+        }
+    }
+    
     func initOnAnotherUserConnection() -> Void {
         self.hubConnection.on(method: "SystemMessage", callback: { args, typeConverter in
             let message = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self);
