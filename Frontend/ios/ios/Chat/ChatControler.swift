@@ -11,6 +11,8 @@ import MessageKit
 import MessageInputBar
 import SwiftSignalRClient
 import JWTDecode
+import PromiseKit
+import AwaitKit
 
 let CHAT_URL = "https://polypaint.me/signalr";
 let USER_TOKEN = UserDefaults.standard.string(forKey: "token");
@@ -179,10 +181,10 @@ extension MsgChatController: MessageInputBarDelegate {
             timestamp: result,
             messageId: UUID().uuidString)
         
-        self.chatService.sendMessage(message: newMessage, function: self.insertMessage).done { response in
-            inputBar.inputTextView.text = "";
-            self.messagesCollectionView.reloadData();
-            self.messagesCollectionView.scrollToBottom(animated: true);
-        }
+        self.chatService.sendMessage(message: newMessage, function: self.insertMessage);
+        inputBar.inputTextView.text = "";
+        self.messagesCollectionView.reloadData();
+        self.messagesCollectionView.scrollToBottom(animated: true);
+        
     }
 }

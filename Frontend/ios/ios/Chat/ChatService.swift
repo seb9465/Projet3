@@ -90,17 +90,15 @@ class ChatService {
         self.hubConnection.stop();
     }
     
-    public func sendMessage(message: Message, function: @escaping (_ message: Message) -> Void) -> Promise<Any> {
-        return Promise{seal in
-            self.hubConnection.invoke(method: "SendMessage", arguments: [message.text], invocationDidComplete: { error in
-                if let e = error {
-                    print("ERROR");
-                    print(e);
-                }
-                
-                // Insert message
-                function(message);
-            })
-        }
+    public func sendMessage(message: Message, function: @escaping (_ message: Message) -> Void) -> Void {
+        self.hubConnection.invoke(method: "SendMessage", arguments: [message.text], invocationDidComplete: { error in
+            if let e = error {
+                print("ERROR");
+                print(e);
+            }
+            
+            // Insert message
+            function(message);
+        });
     }
 }
