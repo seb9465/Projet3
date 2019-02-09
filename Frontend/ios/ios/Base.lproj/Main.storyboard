@@ -294,7 +294,7 @@
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>
-                                    <segue destination="ODd-lg-S1I" kind="custom" customClass="SlideUpSegue" customModule="ios" customModuleProvider="target" id="T86-h6-wfM"/>
+                                    <segue destination="dDl-qJ-RPL" kind="custom" customClass="SlideDownSegue" customModule="ios" customModuleProvider="target" id="fCZ-Hx-mFF"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SIF-gA-PaH" userLabel="UsernameLabel">
@@ -316,20 +316,13 @@
             </objects>
             <point key="canvasLocation" x="1483.59375" y="1257.8125"/>
         </scene>
-        <!--Msg Chat Controller-->
-        <scene sceneID="NyM-4C-Ov4">
+        <!--Chat-->
+        <scene sceneID="7Gi-od-bYT">
             <objects>
-                <viewController id="ODd-lg-S1I" customClass="MsgChatController" customModule="ios" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="kp1-ci-ZEb">
-                        <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <viewLayoutGuide key="safeArea" id="gbQ-2y-QT8"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="rnT-AP-TUI" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <viewControllerPlaceholder storyboardIdentifier="Chat" storyboardName="Chat" id="dDl-qJ-RPL" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="NKd-Vk-iP4" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="720" y="1258"/>
+            <point key="canvasLocation" x="720" y="1148"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="LqC-Bn-CM5">
@@ -351,6 +344,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="LwB-eW-sbJ"/>
+        <segue reference="6Rs-yQ-YLJ"/>
     </inferredMetricsTieBreakers>
 </document>
