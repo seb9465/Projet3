@@ -11,8 +11,6 @@ import MessageKit
 import MessageInputBar
 import SwiftSignalRClient
 import JWTDecode
-import PromiseKit
-import AwaitKit
 
 let CHAT_URL = "https://polypaint.me/signalr";
 let USER_TOKEN = UserDefaults.standard.string(forKey: "token");
