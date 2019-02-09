@@ -11,6 +11,9 @@ import Foundation
 struct Constants {
     static let SERVER_BASE_URL: String = "https://polypaint.me";
     static let CHAT_URL: String = Constants.SERVER_BASE_URL + "/signalr";
+    static let LOGIN_URL: String = Constants.SERVER_BASE_URL + "/api/login";
+    
+    
     static let formatter: DateFormatter = {
         let formatter = DateFormatter();
         formatter.dateFormat = "HH:mm:ss";

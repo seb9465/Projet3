@@ -11,14 +11,11 @@ import Alamofire
 import PromiseKit
 import AwaitKit
 
-let loginURL: URLConvertible = "https://polypaint.me/api/login";
-
 class LoginController: UIViewController, UITextFieldDelegate {
     
     @IBOutlet var emailField: UITextField!
     @IBOutlet var passwordField: UITextField!
     @IBOutlet var validationLabel: UILabel!
-
     @IBOutlet var loginButton: UIButton!
     
     var placeHolder = "";
@@ -56,7 +53,7 @@ class LoginController: UIViewController, UITextFieldDelegate {
     
     func authenticateUser(parameters: [String: String?]) -> Promise<String>{
         return Promise {seal in
-            Alamofire.request(loginURL, method: .post, parameters: parameters, encoding: JSONEncoding.default).validate().responseString{ response in
+            Alamofire.request(Constants.LOGIN_URL as URLConvertible, method: .post, parameters: parameters, encoding: JSONEncoding.default).validate().responseString{ response in
                 
                 switch response.result {
                     case .success:
