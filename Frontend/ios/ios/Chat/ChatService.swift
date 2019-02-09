@@ -37,7 +37,7 @@ class ChatService {
                 color: .random
             );
             
-            if (self._members.isAlreadyInArray(memberName: user!)) {
+            if (!self._members.addMember(member: memberFromMessage)) {
                 memberFromMessage = self._members.getMemberByName(memberName: user!);
             }
             

@@ -12,13 +12,10 @@ import MessageInputBar
 import SwiftSignalRClient
 import JWTDecode
 
-let CHAT_URL = "https://polypaint.me/signalr";
 let USER_TOKEN = UserDefaults.standard.string(forKey: "token");
 
 class MsgChatController: MessagesViewController {
     var chatService: ChatService!;
-//    var hubConnection: HubConnection!;
-    var connectedToGroup: Bool = false;
     var messages: [Message] = [];
     var member: Member!;
     
