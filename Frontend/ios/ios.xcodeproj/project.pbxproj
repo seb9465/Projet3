@@ -20,6 +20,8 @@
 		B711B5F121F659A50096BF7F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B711B5F021F659A50096BF7F /* Assets.xcassets */; };
 		B711B5F421F659A50096BF7F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B711B5F221F659A50096BF7F /* LaunchScreen.storyboard */; };
 		B711B5FF21F659A50096BF7F /* iosTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B711B5FE21F659A50096BF7F /* iosTests.swift */; };
+		B7567946220F33CD00F80B12 /* ChatService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7567945220F33CD00F80B12 /* ChatService.swift */; };
+		B7567948220F355F00F80B12 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7567947220F355F00F80B12 /* Constants.swift */; };
 		B7A3A5C02203BF3B00031F64 /* msgChatCntrlr.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A3A5BF2203BF3B00031F64 /* msgChatCntrlr.swift */; };
 		B7A3A5C22203C27600031F64 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A3A5C12203C27600031F64 /* Message.swift */; };
 		B7A3A5C42203CF7100031F64 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A3A5C32203CF7100031F64 /* Extensions.swift */; };
@@ -56,6 +58,8 @@
 		B711B5FA21F659A50096BF7F /* iosTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iosTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B711B5FE21F659A50096BF7F /* iosTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iosTests.swift; sourceTree = "<group>"; };
 		B711B60021F659A50096BF7F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B7567945220F33CD00F80B12 /* ChatService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatService.swift; sourceTree = "<group>"; };
+		B7567947220F355F00F80B12 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		B7A3A5BF2203BF3B00031F64 /* msgChatCntrlr.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = msgChatCntrlr.swift; sourceTree = "<group>"; };
 		B7A3A5C12203C27600031F64 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		B7A3A5C32203CF7100031F64 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
@@ -144,18 +148,17 @@
 		B711B5E821F659A30096BF7F /* ios */ = {
 			isa = PBXGroup;
 			children = (
+				B7567944220F330700F80B12 /* Clavardage */,
 				3DDE25172202B28E0082E735 /* Buttons */,
 				3DDE25162202A3650082E735 /* Segues */,
 				3D24628321FFF29E00C89165 /* Authentification */,
 				B711B5E921F659A30096BF7F /* AppDelegate.swift */,
-				B7A3A5C32203CF7100031F64 /* Extensions.swift */,
 				B711B5ED21F659A30096BF7F /* Main.storyboard */,
-				B7A3A5C12203C27600031F64 /* Message.swift */,
-				B7A3A5BF2203BF3B00031F64 /* msgChatCntrlr.swift */,
 				B711B5F021F659A50096BF7F /* Assets.xcassets */,
 				B711B5F221F659A50096BF7F /* LaunchScreen.storyboard */,
 				B711B5F521F659A50096BF7F /* Info.plist */,
 				3DC967EC220A09C400FA76CB /* DashboardController.swift */,
+				B7567947220F355F00F80B12 /* Constants.swift */,
 			);
 			path = ios;
 			sourceTree = "<group>";
@@ -167,6 +170,17 @@
 				B711B60021F659A50096BF7F /* Info.plist */,
 			);
 			path = iosTests;
+			sourceTree = "<group>";
+		};
+		B7567944220F330700F80B12 /* Clavardage */ = {
+			isa = PBXGroup;
+			children = (
+				B7A3A5C32203CF7100031F64 /* Extensions.swift */,
+				B7A3A5C12203C27600031F64 /* Message.swift */,
+				B7A3A5BF2203BF3B00031F64 /* msgChatCntrlr.swift */,
+				B7567945220F33CD00F80B12 /* ChatService.swift */,
+			);
+			path = Clavardage;
 			sourceTree = "<group>";
 		};
 		D66C1DCE238BFD31669CE467 /* Pods */ = {
@@ -375,6 +389,8 @@
 				B711B5EA21F659A30096BF7F /* AppDelegate.swift in Sources */,
 				B7A3A5C22203C27600031F64 /* Message.swift in Sources */,
 				B7A3A5C02203BF3B00031F64 /* msgChatCntrlr.swift in Sources */,
+				B7567946220F33CD00F80B12 /* ChatService.swift in Sources */,
+				B7567948220F355F00F80B12 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
