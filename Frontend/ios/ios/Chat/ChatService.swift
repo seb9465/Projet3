@@ -26,7 +26,7 @@ class ChatService {
         self.hubConnection.start();
     }
     
-    public func initOnReceivingMessage(currentMemberName: String, function: @escaping (_ message: Message) -> Void) {
+    public func initOnReceivingMessage(currentMemberName: String, insertMessage: @escaping (_ message: Message) -> Void) {
         self.hubConnection.on(method: "ReceiveMessage", callback: { args, typeConverter in
             let user = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self);
             let message = try! typeConverter.convertFromWireType(obj: args[1], targetType: String.self);
@@ -49,12 +49,12 @@ class ChatService {
             );
             
             if (user != currentMemberName) {
-                function(newMessage);
+                insertMessage(newMessage);
             }
         });
     }
     
-    public func initOnAnotherUserConnection(function: @escaping (_ message: Message) -> Void) -> Void {
+    public func initOnAnotherUserConnection(insertMessage: @escaping (_ message: Message) -> Void) -> Void {
         self.hubConnection.on(method: "SystemMessage", callback: { args, typeConverter in
             let message = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self);
             
@@ -70,7 +70,7 @@ class ChatService {
                 messageId: UUID().uuidString
             );
             
-            function(newMessage);
+            insertMessage(newMessage);
         });
     }
     
@@ -90,15 +90,14 @@ class ChatService {
         self.hubConnection.stop();
     }
     
-    public func sendMessage(message: Message, function: @escaping (_ message: Message) -> Void) -> Void {
+    public func sendMessage(message: Message, insertMessage: @escaping (_ message: Message) -> Void) -> Void {
         self.hubConnection.invoke(method: "SendMessage", arguments: [message.text], invocationDidComplete: { error in
             if let e = error {
                 print("ERROR");
                 print(e);
             }
             
-            // Insert message
-            function(message);
+            insertMessage(message);
         });
     }
 }
