@@ -23,6 +23,7 @@
 		B7567946220F33CD00F80B12 /* ChatService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7567945220F33CD00F80B12 /* ChatService.swift */; };
 		B7567948220F355F00F80B12 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7567947220F355F00F80B12 /* Constants.swift */; };
 		B756794A220F5DC800F80B12 /* Chat.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B7567949220F5DC800F80B12 /* Chat.storyboard */; };
+		B756794C220F608B00F80B12 /* Members.swift in Sources */ = {isa = PBXBuildFile; fileRef = B756794B220F608B00F80B12 /* Members.swift */; };
 		B7A3A5C02203BF3B00031F64 /* ChatControler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A3A5BF2203BF3B00031F64 /* ChatControler.swift */; };
 		B7A3A5C22203C27600031F64 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A3A5C12203C27600031F64 /* Message.swift */; };
 		B7A3A5C42203CF7100031F64 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A3A5C32203CF7100031F64 /* Extensions.swift */; };
@@ -62,6 +63,7 @@
 		B7567945220F33CD00F80B12 /* ChatService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatService.swift; sourceTree = "<group>"; };
 		B7567947220F355F00F80B12 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		B7567949220F5DC800F80B12 /* Chat.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Chat.storyboard; sourceTree = "<group>"; };
+		B756794B220F608B00F80B12 /* Members.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Members.swift; sourceTree = "<group>"; };
 		B7A3A5BF2203BF3B00031F64 /* ChatControler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatControler.swift; sourceTree = "<group>"; };
 		B7A3A5C12203C27600031F64 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		B7A3A5C32203CF7100031F64 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
@@ -182,6 +184,7 @@
 				B7A3A5BF2203BF3B00031F64 /* ChatControler.swift */,
 				B7567945220F33CD00F80B12 /* ChatService.swift */,
 				B7567949220F5DC800F80B12 /* Chat.storyboard */,
+				B756794B220F608B00F80B12 /* Members.swift */,
 			);
 			path = Chat;
 			sourceTree = "<group>";
@@ -393,6 +396,7 @@
 				B711B5EA21F659A30096BF7F /* AppDelegate.swift in Sources */,
 				B7A3A5C22203C27600031F64 /* Message.swift in Sources */,
 				B7A3A5C02203BF3B00031F64 /* ChatControler.swift in Sources */,
+				B756794C220F608B00F80B12 /* Members.swift in Sources */,
 				B7567946220F33CD00F80B12 /* ChatService.swift in Sources */,
 				B7567948220F355F00F80B12 /* Constants.swift in Sources */,
 			);
