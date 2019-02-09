@@ -19,5 +19,4 @@ struct Constants {
         formatter.dateFormat = "HH:mm:ss";
         return formatter;
     }()
-    
 }

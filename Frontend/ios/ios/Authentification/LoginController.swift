@@ -28,10 +28,6 @@ class LoginController: UIViewController, UITextFieldDelegate {
             "username": emailField.text,
             "password": passwordField.text
         ]
-//        let parameters = [
-//            "username": "william.sevigny",
-//            "password": "!12345Aa"
-//        ]
         
         self.authenticateUser(parameters: parameters).done { response in
             if(response == "ERROR") {
