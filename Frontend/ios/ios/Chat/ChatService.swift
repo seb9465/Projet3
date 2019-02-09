@@ -12,12 +12,14 @@ import PromiseKit
 
 class ChatService {
     var hubConnection: HubConnection;
+    var _members: Members;
     
     init() {
         self.hubConnection = HubConnectionBuilder(url: URL(string: Constants.CHAT_URL)!)
             .withHttpConnectionOptions() { httpConnectionOptions in
                 httpConnectionOptions.accessTokenProvider = { return USER_TOKEN; }}
             .build();
+        self._members = Members();
     }
     
     public func connectToHub() -> Void {
@@ -30,13 +32,17 @@ class ChatService {
             let message = try! typeConverter.convertFromWireType(obj: args[1], targetType: String.self);
             let timestamp = try! typeConverter.convertFromWireType(obj: args[2], targetType: String.self);
             
-            let newMember = Member(
+            var memberFromMessage: Member = Member(
                 name: user!,
                 color: .random
             );
             
+            if (self._members.isAlreadyInArray(memberName: user!)) {
+                memberFromMessage = self._members.getMemberByName(memberName: user!);
+            }
+            
             let newMessage = Message(
-                member: newMember,
+                member: memberFromMessage,
                 text: message!,
                 timestamp: timestamp!,
                 messageId: UUID().uuidString

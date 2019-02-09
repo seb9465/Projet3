@@ -21,7 +21,7 @@ class Members {
     }
     
     public func addMember(member: Member) -> Bool {
-        if (!self.isAlreadyInArray(member: member)) {
+        if (!self.isAlreadyInArray(memberName: member.name)) {
             self._members.append(member);
             
             return true;
@@ -31,8 +31,8 @@ class Members {
     }
     
     public func removeFromArray(member: Member) -> Bool {
-        if (self.isAlreadyInArray(member: member)) {
-            self._members.remove(at: self.getIndexOfMember(member: member));
+        if (self.isAlreadyInArray(memberName: member.name)) {
+            self._members.remove(at: self.getIndexOfMember(memberName: member.name));
             
             return true;
         }
@@ -40,13 +40,17 @@ class Members {
         return false;
     }
     
-    private func isAlreadyInArray(member: Member) -> Bool {
-        return self._members.contains(where: { $0.name == member.name });
+    public func getMemberByName(memberName: String) -> Member {
+        return self._members[self.getIndexOfMember(memberName: memberName)];
     }
     
-    private func getIndexOfMember(member: Member) -> Int {
+    public func isAlreadyInArray(memberName: String) -> Bool {
+        return self._members.contains(where: { $0.name == memberName });
+    }
+    
+    private func getIndexOfMember(memberName: String) -> Int {
         return self._members.index(where: { (memb) -> Bool in
-            memb.name == member.name
+            memb.name == memberName
         }) ?? -1;
     }
 }
