@@ -26,13 +26,13 @@ class MsgChatController: MessagesViewController {
         self.chatService.connectToHub();
         self.setCurrentMemberAttributes();
         self.initDelegate();
-        self.chatService.initOnReceivingMessage(currentMemberName: self.member.name, function: self.insertMessage)
-        self.chatService.initOnAnotherUserConnection(function: self.insertMessage);
+        self.chatService.initOnReceivingMessage(currentMemberName: self.member.name, insertMessage: self.insertMessage)
+        self.chatService.initOnAnotherUserConnection(insertMessage: self.insertMessage);
         self.chatService.connectToGroup();
     }
     
     override func viewWillDisappear(_ animated: Bool) -> Void {
-        // super.viewWillDisappear(animated);
+         super.viewWillDisappear(animated);
         
         self.chatService.disconnectFromHub();
     }
@@ -176,7 +176,7 @@ extension MsgChatController: MessageInputBarDelegate {
             timestamp: result,
             messageId: UUID().uuidString)
         
-        self.chatService.sendMessage(message: newMessage, function: self.insertMessage);
+        self.chatService.sendMessage(message: newMessage, insertMessage: self.insertMessage);
         inputBar.inputTextView.text = "";
         self.messagesCollectionView.reloadData();
         self.messagesCollectionView.scrollToBottom(animated: true);

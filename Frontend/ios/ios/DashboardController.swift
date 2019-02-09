@@ -20,5 +20,4 @@ class DashboardController: UIViewController, UITextFieldDelegate {
         let jwt = try! decode(jwt: token!)
         UsernameLabel.text = jwt.claim(name: "unique_name").string
     }
-    
 }
