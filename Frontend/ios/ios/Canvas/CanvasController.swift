@@ -38,8 +38,6 @@ class CanvasController: UIViewController, ButtonViewInterface {
         scrollView.frame.origin.x = 0;
         scrollView.frame.origin.y = UIScreen.main.bounds.height - buttonView.frame.size.height;
     }
-    
-    
 }
 
 extension CanvasController {
@@ -60,5 +58,13 @@ extension CanvasController {
     
     func tapClearButton() {
         sketchView.clear();
+    }
+    
+    func tapUndoButton() {
+        sketchView.undo();
+    }
+    
+    func tapRedoButton() {
+        sketchView.redo();
     }
 }

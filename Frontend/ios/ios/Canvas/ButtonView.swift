@@ -12,6 +12,8 @@ protocol ButtonViewInterface: class {
     func tapFigureButton();
     func tapPenButton();
     func tapClearButton();
+    func tapUndoButton();
+    func tapRedoButton();
 }
 
 class ButtonView: UIView {
@@ -39,5 +41,11 @@ class ButtonView: UIView {
     }
     @IBAction func tapClearButton(_ sender: Any) {
         delegate?.tapClearButton();
+    }
+    @IBAction func tapUndoButton(_ sender: Any) {
+        delegate?.tapUndoButton();
+    }
+    @IBAction func tapRedoButton(_ sender: Any) {
+        delegate?.tapRedoButton()
     }
 }
