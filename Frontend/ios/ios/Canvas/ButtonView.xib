@@ -40,7 +40,6 @@
                     <fontDescription key="fontDescription" type="system" pointSize="25"/>
                     <state key="normal" title="Clear"/>
                     <connections>
-                        <action selector="tapClearButton:" destination="iN0-l3-epB" eventType="touchUpInside" id="WjV-9i-jqF"/>
                         <action selector="tapPenButton:" destination="iN0-l3-epB" eventType="touchUpInside" id="Nhe-rE-gah"/>
                     </connections>
                 </button>
@@ -50,8 +49,6 @@
                     <fontDescription key="fontDescription" type="system" pointSize="25"/>
                     <state key="normal" title="Undo"/>
                     <connections>
-                        <action selector="tapClearButton:" destination="iN0-l3-epB" eventType="touchUpInside" id="Vyn-Wo-i6L"/>
-                        <action selector="tapPenButton:" destination="iN0-l3-epB" eventType="touchUpInside" id="Oxb-Fg-GRB"/>
                         <action selector="tapUndoButton:" destination="iN0-l3-epB" eventType="touchUpInside" id="7ZD-Ir-jgR"/>
                     </connections>
                 </button>
@@ -61,8 +58,6 @@
                     <fontDescription key="fontDescription" type="system" pointSize="25"/>
                     <state key="normal" title="Redo"/>
                     <connections>
-                        <action selector="tapClearButton:" destination="iN0-l3-epB" eventType="touchUpInside" id="IAv-NB-HPo"/>
-                        <action selector="tapPenButton:" destination="iN0-l3-epB" eventType="touchUpInside" id="Qtf-SF-qOj"/>
                         <action selector="tapRedoButton:" destination="iN0-l3-epB" eventType="touchUpInside" id="JPI-gC-T8Y"/>
                     </connections>
                 </button>
