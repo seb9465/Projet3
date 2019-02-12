@@ -13,7 +13,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="ButtonView" customModule="ios" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="1024" height="70"/>
+            <rect key="frame" x="0.0" y="0.0" width="1866" height="70"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8V9-sV-Dch">
@@ -25,11 +25,20 @@
                         <action selector="tapFigureButton:" destination="iN0-l3-epB" eventType="touchUpInside" id="LA6-iu-Np8"/>
                     </connections>
                 </button>
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HQ0-2c-ttb">
+                    <rect key="frame" x="187" y="14" width="81" height="42"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="25"/>
+                    <state key="normal" title="Pen"/>
+                    <connections>
+                        <action selector="tapPenButton:" destination="iN0-l3-epB" eventType="touchUpInside" id="ay8-hJ-QGT"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
-            <point key="canvasLocation" x="53.90625" y="-224.21875"/>
+            <point key="canvasLocation" x="563.0859375" y="-246.875"/>
         </view>
     </objects>
 </document>
