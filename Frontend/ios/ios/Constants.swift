@@ -13,7 +13,7 @@ struct Constants {
     static let CHAT_URL: String = Constants.SERVER_BASE_URL + "/signalr";
     static let LOGIN_URL: String = Constants.SERVER_BASE_URL + "/api/login";
     static let REGISTER_URL: String = Constants.SERVER_BASE_URL + "/api/register";
-    static let USER_LOGOUT: String = Constants.SERVER_BASE_URL + "/api/user/logout";
+    static let LOGOUT_URL: String = Constants.SERVER_BASE_URL + "/api/user/logout";
     
     static let formatter: DateFormatter = {
         let formatter = DateFormatter();

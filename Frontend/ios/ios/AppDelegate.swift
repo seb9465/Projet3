@@ -32,7 +32,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             "Authorization": "Bearer " + UserDefaults.standard.string(forKey: "token")!
         ];
         
-        Alamofire.request(Constants.SERVER_BASE_URL as URLConvertible, method: .get, encoding: JSONEncoding.default, headers: headers).responseString{ response in
+        Alamofire.request(Constants.LOGOUT_URL as URLConvertible, method: .get, encoding: JSONEncoding.default, headers: headers).responseString{ response in
             print(response);
         };
         UserDefaults.standard.removePersistentDomain(forName: "token");
@@ -56,7 +56,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             "Authorization": "Bearer " + UserDefaults.standard.string(forKey: "token")!
         ];
         
-        Alamofire.request(Constants.SERVER_BASE_URL as URLConvertible, method: .get, encoding: JSONEncoding.default, headers: headers).responseString{ response in
+        Alamofire.request(Constants.LOGOUT_URL as URLConvertible, method: .get, encoding: JSONEncoding.default, headers: headers).responseString{ response in
             print(response);
         };
         UserDefaults.standard.removePersistentDomain(forName: "token");
