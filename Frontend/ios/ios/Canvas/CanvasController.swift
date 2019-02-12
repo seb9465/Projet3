@@ -46,8 +46,31 @@ extension CanvasController {
             self.sketchView.drawTool = .line
         }
         
+        let arrowAction = UIAlertAction(title: "Arrow", style: .default) { _ in
+            self.sketchView.drawTool = .arrow
+        }
+        
+        let rectAction = UIAlertAction(title: "Rect", style: .default) { _ in
+            self.sketchView.drawTool = .rectangleStroke
+        }
+        
+        let rectFillAction = UIAlertAction(title: "Rect(Fill)", style: .default) { _ in
+            self.sketchView.drawTool = .rectangleFill
+        }
+        
+        let ellipseAction = UIAlertAction(title: "Ellipse", style: .default) { _ in
+            self.sketchView.drawTool = .ellipseStroke
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .default) { _ in }
+        
         let alertController = UIAlertController(title: "Please select a figure", message: nil, preferredStyle: .alert)
         alertController.addAction(lineAction)
+        alertController.addAction(arrowAction);
+        alertController.addAction(rectAction);
+        alertController.addAction(rectFillAction);
+        alertController.addAction(ellipseAction);
+        alertController.addAction(cancelAction);
         
         present(alertController, animated: true, completion: nil)
     }
