@@ -10,14 +10,14 @@ import UIKit
 import Sketch
 
 class CanvasController: UIViewController, ButtonViewInterface {
-    @IBOutlet weak var sketchView: SketchView!
+    @IBOutlet var sketchView: SketchView!
     var buttonView: ButtonView!;
     var scrollView = UIScrollView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 100))
     
     override func viewDidLoad() {
         super.viewDidLoad();
         
-        let sketchView = SketchView(frame:
+        sketchView = SketchView(frame:
             CGRect(
                 x: 0,
                 y: 0,
@@ -25,6 +25,7 @@ class CanvasController: UIViewController, ButtonViewInterface {
                 height: UIScreen.main.bounds.height
             )
         );
+        sketchView.backgroundColor = UIColor(red: 255, green: 255, blue: 255, alpha: 1);
         view.addSubview(sketchView);
         
         buttonView = ButtonView.instanceFromNib(self);
