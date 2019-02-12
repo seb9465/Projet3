@@ -9,7 +9,8 @@
 import UIKit
 
 protocol ButtonViewInterface: class {
-    func tapFigureButton()
+    func tapFigureButton();
+    func tapPenButton();
 }
 
 class ButtonView: UIView {
@@ -31,5 +32,8 @@ class ButtonView: UIView {
     
     @IBAction func tapFigureButton(_ sender: Any) {
         delegate?.tapFigureButton();
+    }
+    @IBAction func tapPenButton(_ sender: Any) {
+        delegate?.tapPenButton();
     }
 }
