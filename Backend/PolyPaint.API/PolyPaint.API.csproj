@@ -23,4 +23,10 @@
   <ItemGroup>
     <ProjectReference Include="..\PolyPaint.DataAccess\PolyPaint.DataAccess.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Remove="appsettings.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="appsettings.json" />
+  </ItemGroup>
 </Project>

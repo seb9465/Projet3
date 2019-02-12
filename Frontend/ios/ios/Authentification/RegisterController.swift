@@ -19,7 +19,6 @@ protocol UserProtocol {
     var password: String { get }
 }
 
-let registerURL: URLConvertible = "http://10.200.21.214:4000/api/register"
 let emailTest = NSPredicate(format: "SELF MATCHES %@", "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}")
 
 class RegisterController: UIViewController {
@@ -53,7 +52,7 @@ class RegisterController: UIViewController {
     
     func registerUser(parameters: [String: String?]) -> Promise<Any>{
         return Promise {seal in
-            Alamofire.request(registerURL, method: .post, parameters: parameters as Parameters, encoding: JSONEncoding.default).responseJSON{ response in
+            Alamofire.request(Constants.REGISTER_URL as URLConvertible, method: .post, parameters: parameters as Parameters, encoding: JSONEncoding.default).responseJSON{ response in
                 seal.fulfill(response);
             };
         }
