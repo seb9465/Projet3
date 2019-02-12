@@ -28,6 +28,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationDidEnterBackground(_ application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+        let headers = [
+            "Authorization": "Bearer " + UserDefaults.standard.string(forKey: "token")!
+        ];
+        
+        Alamofire.request(Constants.LOGOUT_URL as URLConvertible, method: .get, encoding: JSONEncoding.default, headers: headers).responseString{ response in
+            print(response);
+        };
+        UserDefaults.standard.removePersistentDomain(forName: "token");
+        
+        let mainView: UIStoryboard = UIStoryboard(name: "Main", bundle: nil);
+        let viewcontroller : UIViewController = mainView.instantiateViewController(withIdentifier: "LoginStoryboard") as UIViewController;
+        self.window!.rootViewController = viewcontroller;
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
@@ -42,13 +54,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
         let headers = [
             "Authorization": "Bearer " + UserDefaults.standard.string(forKey: "token")!
-        ]
+        ];
         
-        Alamofire.request(Constants.SERVER_BASE_URL as URLConvertible, method: .get, encoding: JSONEncoding.default, headers: headers).responseString{ response in
+        Alamofire.request(Constants.LOGOUT_URL as URLConvertible, method: .get, encoding: JSONEncoding.default, headers: headers).responseString{ response in
             print(response);
-        }
-        UserDefaults.standard.removePersistentDomain(forName: "token")
-        sleep(5);
+        };
+        UserDefaults.standard.removePersistentDomain(forName: "token");
+        sleep(10);
         print("terminated");
     }
 }

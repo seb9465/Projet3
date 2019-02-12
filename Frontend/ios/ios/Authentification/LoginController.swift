@@ -21,6 +21,7 @@ class LoginController: UIViewController, UITextFieldDelegate {
     var placeHolder = "";
 
     @IBAction func loginButton(_ sender: Any) {
+        let sv = UIViewController.displaySpinner(onView: self.view);
         
         let validEmail: Bool = isValidEmail(testStr: emailField.text!);
         
@@ -30,6 +31,7 @@ class LoginController: UIViewController, UITextFieldDelegate {
         ]
         
         self.authenticateUser(parameters: parameters).done { response in
+            UIViewController.removeSpinner(spinner: sv);
             if(response == "ERROR") {
                 self.validationLabel.text = "Invalid Credentials"
             } else {
