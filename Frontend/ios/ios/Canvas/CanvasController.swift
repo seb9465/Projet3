@@ -9,21 +9,37 @@
 import UIKit
 import Sketch
 
-class CanvasController: UIViewController {
+class CanvasController: UIViewController, ButtonViewInterface {
+    @IBOutlet weak var sketchView: SketchView!
+    var buttonView: ButtonView!;
+    var scrollView = UIScrollView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 50))
     
     override func viewDidLoad() {
         super.viewDidLoad();
         
-        let sketchView = SketchView(frame:
-            CGRect(x: 0,
-                   y: 0,
-                   width: UIScreen.main.bounds.width,
-                   height: UIScreen.main.bounds.height
-            )
-        )
+        buttonView = ButtonView.instanceFromNib(self);
         
-        view.addSubview(sketchView)
+        view.addSubview(scrollView);
+        scrollView.addSubview(buttonView);
+        
+        scrollView.contentSize = buttonView.frame.size;
+        scrollView.showsHorizontalScrollIndicator = false;
+        scrollView.frame.origin.x = 0;
+        scrollView.frame.origin.y = UIScreen.main.bounds.height - buttonView.frame.size.height;
     }
     
     
+}
+
+extension CanvasController {
+    func tapFigureButton() {
+        let lineAction = UIAlertAction(title: "Line", style: .default) { _ in
+            self.sketchView.drawTool = .line
+        }
+        
+        let alertController = UIAlertController(title: "Please select a figure", message: nil, preferredStyle: .alert)
+        alertController.addAction(lineAction)
+        
+        present(alertController, animated: true, completion: nil)
+    }
 }
