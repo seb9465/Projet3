@@ -13,7 +13,7 @@
         <!--Canvas Controller-->
         <scene sceneID="Isk-t8-nkS">
             <objects>
-                <viewController id="Vts-He-P18" customClass="CanvasController" sceneMemberID="viewController">
+                <viewController id="Vts-He-P18" customClass="CanvasController" customModule="ios" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="hqe-fa-MVE">
                         <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
