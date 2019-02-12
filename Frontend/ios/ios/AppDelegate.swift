@@ -48,7 +48,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             print(response);
         }
         UserDefaults.standard.removePersistentDomain(forName: "token")
-        sleep(5);
+        sleep(10);
         print("terminated");
     }
 }

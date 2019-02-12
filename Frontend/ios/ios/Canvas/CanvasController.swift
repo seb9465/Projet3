@@ -25,7 +25,7 @@ class CanvasController: UIViewController, ButtonViewInterface {
                 height: UIScreen.main.bounds.height
             )
         );
-        sketchView.backgroundColor = UIColor(red: 255, green: 255, blue: 255, alpha: 1);
+        sketchView.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 1);
         view.addSubview(sketchView);
         
         buttonView = ButtonView.instanceFromNib(self);
@@ -56,5 +56,9 @@ extension CanvasController {
     
     func tapPenButton() {
         sketchView.drawTool = .pen;
+    }
+    
+    func tapClearButton() {
+        sketchView.clear();
     }
 }
