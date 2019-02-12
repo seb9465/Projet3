@@ -16,6 +16,7 @@ using System.Text;
 using System.Collections.Generic;
 using PolyPaint.Vues;
 using PolyPaint.Structures;
+using MaterialDesignThemes.Wpf;
 
 namespace PolyPaint
 {
@@ -271,6 +272,19 @@ namespace PolyPaint
                 }
             }
             catch { }
+        }
+
+        private void Sample5_DialogHost_OnDialogClosing(object sender, DialogClosingEventArgs eventArgs)
+        {
+            Console.WriteLine("SAMPLE 5: Closing dialog with parameter: " + (eventArgs.Parameter ?? ""));
+
+            //you can cancel the dialog close:
+            //eventArgs.Cancel();
+
+            if (!Equals(eventArgs.Parameter, true)) return;
+
+            if (!string.IsNullOrWhiteSpace(AnimalTextBox.Text))
+                AnimalListBox.Items.Add(AnimalTextBox.Text.Trim());
         }
     }
 }
