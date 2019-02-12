@@ -9,7 +9,7 @@
 import Foundation
 
 struct Constants {
-    static let SERVER_BASE_URL: String = "http://10.200.16.82:5000";
+    static let SERVER_BASE_URL: String = "http://10.200.19.251:5000";
     static let CHAT_URL: String = Constants.SERVER_BASE_URL + "/signalr";
     static let LOGIN_URL: String = Constants.SERVER_BASE_URL + "/api/login";
     static let USER_LOGOUT: String = Constants.SERVER_BASE_URL + "api/user/logout";
