@@ -23,12 +23,17 @@ namespace PolyPaint
     /// <summary>
     /// Logique d'interaction pour FenetreDessin.xaml
     /// </summary>
+    /// 
+
+
+
     public partial class FenetreDessin : Window
     {
         ChatWindow externalChatWindow;
         public FenetreDessin()
         {
             InitializeComponent();
+            roomList.Items.Add(new Room() { Title = "room0", Join = "join" });
             var token = Application.Current.Properties["token"];
             DataContext = new VueModele();
             (DataContext as VueModele).ChatClient.Initialize((string)Application.Current.Properties["token"]);
@@ -273,18 +278,8 @@ namespace PolyPaint
             }
             catch { }
         }
+        
 
-        private void Sample5_DialogHost_OnDialogClosing(object sender, DialogClosingEventArgs eventArgs)
-        {
-            Console.WriteLine("SAMPLE 5: Closing dialog with parameter: " + (eventArgs.Parameter ?? ""));
-
-            //you can cancel the dialog close:
-            //eventArgs.Cancel();
-
-            if (!Equals(eventArgs.Parameter, true)) return;
-
-            if (!string.IsNullOrWhiteSpace(AnimalTextBox.Text))
-                AnimalListBox.Items.Add(AnimalTextBox.Text.Trim());
-        }
+      
     }
 }

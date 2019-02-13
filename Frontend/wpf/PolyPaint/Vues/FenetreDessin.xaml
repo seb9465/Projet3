@@ -236,11 +236,7 @@
                 <Button x:Name="chatButton" Content="Open chat in new window" HorizontalAlignment="Left" Margin="10,10,0,0"  Width="200" Click="chatButton_Click" Height="30" />
                 <Button x:Name="chatButtonSameWindow" Content="Open chat in same window" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Bottom" Width="200" Click="chatButtonSameWindow_Click" Height="30" />
             </StackPanel>
-            <Grid x:Name="chat" Margin="50,0,0,0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="109*"/>
-                    <ColumnDefinition Width="288*"/>
-                </Grid.ColumnDefinitions>
+            <Grid x:Name="chat" Margin="0,0,0,0">
                 <ListBox x:Name="messagesList" HorizontalAlignment="Left" Height="180" Margin="85,20,0,0" VerticalAlignment="Top" Width="500"  BorderThickness="1" Grid.ColumnSpan="2" BorderBrush="Gainsboro">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
@@ -248,120 +244,69 @@
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
-                <Button x:Name="sendButton" Content="Send Message" HorizontalAlignment="Left" Margin="240,0,0,0" VerticalAlignment="Bottom" Width="125" Click="sendButton_Click" Height="35" Grid.Column="1" IsEnabled="True"/>
+                <Button x:Name="sendButton" Content="Send Message" HorizontalAlignment="left" Margin="450,0,0,0" VerticalAlignment="Bottom" Width="125" Click="sendButton_Click" Height="35" Grid.Column="1" IsEnabled="True"/>
                 <TextBox x:Name="messageTextBox" HorizontalAlignment="Left" Height="41" Margin="85,220,0,0" TextWrapping="Wrap" VerticalAlignment="Bottom" Width="311" Grid.ColumnSpan="2"/>
                 <Label Content="Message" HorizontalAlignment="Left" Height="26" Margin="20,0,0,0" VerticalAlignment="Bottom" Width="100"/>
 
             </Grid>
 
-            <TreeView Margin="0,40,0,0">
-                <TreeViewItem Header="Chatrooms" Width="540" HorizontalAlignment="Left">
-                    <TreeViewItem>
-                        <TreeViewItem.Header>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock>
-                                    Android
-                                </TextBlock>
-                                <materialDesign:DialogHost
-  DialogClosing="Sample5_DialogHost_OnDialogClosing"
-  Style="{StaticResource MaterialDesignEmbeddedDialogHost}"
-  DialogMargin="8" Width="400">
-                                    <materialDesign:DialogHost.DialogContent>
-                                        <StackPanel
-      Margin="16">
-                                            <TextBlock>
-      Add a new animal.
-                                            </TextBlock>
-                                            <TextBox
-        Margin="0 8 0 0"
-        HorizontalAlignment="Stretch"
-        x:Name="AnimalTextBox" />
-                                            <StackPanel
-        Orientation="Horizontal"
-        HorizontalAlignment="Right">
-                                                <Button
-          Style="{StaticResource MaterialDesignFlatButton}"
-          IsDefault="True"
-          Margin="0 8 8 0"
-          Command="materialDesign:DialogHost.CloseDialogCommand">
-                                                    <Button.CommandParameter>
-                                                        <system:Boolean xmlns:system="clr-namespace:System;assembly=mscorlib">
-                                                            True
-                                                        </system:Boolean>
-                                                    </Button.CommandParameter>
-                                                    ACCEPT
-                                                </Button>
-                                                <Button
-          Style="{StaticResource MaterialDesignFlatButton}"
-          IsCancel="True"
-          Margin="0 8 8 0"
-          Command="materialDesign:DialogHost.CloseDialogCommand">
-                                                    <Button.CommandParameter>
-                                                        <system:Boolean xmlns:system="clr-namespace:System;assembly=mscorlib">
-                                                            False
-                                                        </system:Boolean>
-                                                    </Button.CommandParameter>
-                                                    CANCEL
-                                                </Button>
-                                            </StackPanel>
-                                        </StackPanel>
-                                    </materialDesign:DialogHost.DialogContent>
-                                    <Border
-    BorderThickness="1"
-    BorderBrush="{DynamicResource PrimaryHueMidBrush}"
-    ClipToBounds="True"
-    HorizontalAlignment="Stretch">
-                                        <Grid>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition
-          Height="*" />
-                                                <RowDefinition
-          Height="Auto" />
-                                            </Grid.RowDefinitions>
-                                            <ListBox
-        x:Name="AnimalListBox">
-                                                <ListBoxItem>
-                                                    Dog
-                                                </ListBoxItem>
-                                                <ListBoxItem>
-                                                    Cat
-                                                </ListBoxItem>
-                                                <ListBoxItem>
-                                                    Platypus
-                                                </ListBoxItem>
-                                            </ListBox>
-                                            <materialDesign:ColorZone
-        Mode="PrimaryMid"
-        Grid.Row="1"
-        Effect="{DynamicResource MaterialDesignShadowDepth5}">
-                                                <TextBlock
-          Margin="16">
-        Petting Zoo
-                                                </TextBlock>
-                                            </materialDesign:ColorZone>
-                                            <Button
-        Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}"
-        Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"
-        VerticalAlignment="Bottom"
-        HorizontalAlignment="Right"
-        Grid.Row="0"
-        Margin="0 0 28 -20">
-                                                <materialDesign:PackIcon
-          Kind="Plus"
-          Height="22"
-          Width="22" />
-                                            </Button>
-                                        </Grid>
-                                    </Border>
-                                </materialDesign:DialogHost>
+            <materialDesign:DialogHost DialogClosing="addRoom" Style="{StaticResource MaterialDesignEmbeddedDialogHost}"
+                Margin="20,50,0,0" Width="300"  HorizontalAlignment="Left">
+                <materialDesign:DialogHost.DialogContent>
+                    <StackPanel Margin="15">
+                        <TextBlock>
+                                                Create a new chatroom
+                        </TextBlock>
+                        <TextBox Margin="0 8 0 0" HorizontalAlignment="Stretch" x:Name="AnimalTextBox" />
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                            <Button Style="{StaticResource MaterialDesignFlatButton}" IsDefault="True" Margin="0 8 8 0" Command="materialDesign:DialogHost.CloseDialogCommand">
+                                <Button.CommandParameter>
+                                    <system:Boolean xmlns:system="clr-namespace:System;assembly=mscorlib">
+                                        True
+                                    </system:Boolean>
+                                </Button.CommandParameter>
+                                ADD
+                            </Button>
+                            <Button Style="{StaticResource MaterialDesignFlatButton}" IsCancel="True"  Margin="0 8 8 0" Command="materialDesign:DialogHost.CloseDialogCommand">
+                                <Button.CommandParameter>
+                                    <system:Boolean xmlns:system="clr-namespace:System;assembly=mscorlib">
+                                        False
+                                    </system:Boolean>
+                                </Button.CommandParameter>
+                                CANCEL
+                            </Button>
+                        </StackPanel>
+                    </StackPanel>
+                </materialDesign:DialogHost.DialogContent>
+                <Border BorderThickness="1" BorderBrush="{DynamicResource PrimaryHueMidBrush}" ClipToBounds="True" HorizontalAlignment="Stretch">
+                    <Grid>
 
-                            </StackPanel>
-                        </TreeViewItem.Header>
-                    </TreeViewItem>
-                    <TreeViewItem Header="Join a chatroom" />
-                </TreeViewItem>
-            </TreeView>
+                        <ListBox Name="roomList" Margin="0,50,0,0" MaxHeight="100">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Margin="0,2">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="100" />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Text="{Binding Title}" Margin="0,0,50,0"/>
+                                        <TextBlock HorizontalAlignment="Right" Text="{Binding Join}" />
+                                    </Grid>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
 
+                        <materialDesign:ColorZone Mode="PrimaryMid">
+                            <TextBlock  Margin="16">
+                                  Chatrooms
+                            </TextBlock>
+                        </materialDesign:ColorZone>
+                        <Button Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}" Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}" VerticalAlignment="Top" HorizontalAlignment="Right" Grid.Row="0" Margin="0 20 15 0">
+                            <materialDesign:PackIcon Kind="Plus" Height="22" Width="22" />
+                        </Button>
+                    </Grid>
+                </Border>
+            </materialDesign:DialogHost>
 
 
         </StackPanel>
