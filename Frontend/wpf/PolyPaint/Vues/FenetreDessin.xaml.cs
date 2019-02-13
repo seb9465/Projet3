@@ -280,6 +280,21 @@ namespace PolyPaint
         }
         
 
-      
+        private void addRoom(object sender, DialogClosingEventArgs eventArgs)
+        {
+
+            if (!Equals(eventArgs.Parameter, true)) return;
+
+            if (!string.IsNullOrWhiteSpace(AnimalTextBox.Text))
+            {
+                roomList.Items.Add(new Room() { Title = AnimalTextBox.Text.Trim(), Join = "join" });
+            }
+        }
+
+        public class Room
+        {
+            public string Title { get; set; }
+            public string Join { get; set; }
+        }
     }
 }
