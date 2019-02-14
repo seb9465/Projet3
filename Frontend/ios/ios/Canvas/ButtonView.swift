@@ -18,6 +18,7 @@ protocol ButtonViewInterface: class {
 
 class ButtonView: UIView {
     var delegate: ButtonViewInterface?;
+    @IBOutlet var penButton: UIButton!
     
     class func instanceFromNib(_ delegate: ButtonViewInterface?) -> ButtonView {
         let buttonView: ButtonView = UINib(
@@ -33,19 +34,29 @@ class ButtonView: UIView {
         return buttonView;
     }
     
+    private func clearButtons() -> Void {
+        self.penButton.setImage(UIImage(named: "Pen Icon"), for: .normal);
+    }
+    
     @IBAction func tapFigureButton(_ sender: Any) {
+        clearButtons();
         delegate?.tapFigureButton();
     }
     @IBAction func tapPenButton(_ sender: Any) {
+        clearButtons();
+        self.penButton.setImage(UIImage(named: "Pen Icon Black"), for: .normal);
         delegate?.tapPenButton();
     }
     @IBAction func tapClearButton(_ sender: Any) {
+        clearButtons();
         delegate?.tapClearButton();
     }
     @IBAction func tapUndoButton(_ sender: Any) {
+        clearButtons();
         delegate?.tapUndoButton();
     }
     @IBAction func tapRedoButton(_ sender: Any) {
+        clearButtons();
         delegate?.tapRedoButton()
     }
 }
