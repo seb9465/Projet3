@@ -17,8 +17,6 @@ class CanvasController: UIViewController, ButtonViewInterface {
     override func viewDidLoad() {
         super.viewDidLoad();
         
-        self.navigationController?.setNavigationBarHidden(true, animated: animated);
-        
         sketchView = SketchView(frame:
             CGRect(
                 x: 0,
@@ -39,6 +37,10 @@ class CanvasController: UIViewController, ButtonViewInterface {
         scrollView.showsHorizontalScrollIndicator = false;
         scrollView.frame.origin.x = 0;
         scrollView.frame.origin.y = UIScreen.main.bounds.height - buttonView.frame.size.height;
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        self.navigationController?.setNavigationBarHidden(true, animated: animated);
     }
     
     override func viewWillDisappear(_ animated: Bool) {
