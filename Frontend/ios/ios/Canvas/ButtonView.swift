@@ -35,9 +35,15 @@ class ButtonView: UIView {
         return buttonView;
     }
     
+    private func clearBorders() -> Void {
+        self.figureButton.layer.borderWidth = 0;
+        self.figureButton.layer.cornerRadius = 0;
+    }
+    
     private func clearButtons() -> Void {
         self.penButton.setImage(UIImage(named: "Pen Icon"), for: .normal);
         self.figureButton.setImage(UIImage(named: "Figure Icon"), for: .normal);
+        self.clearBorders();
     }
     
     @IBAction func tapFigureButton(_ sender: Any) {

@@ -45,6 +45,9 @@ extension CanvasController {
         let lineAction = UIAlertAction(title: "Line", style: .default) { _ in
             self.sketchView.drawTool = .line
             figureButton.setImage(UIImage(named: "Line Icon Black"), for: .normal);
+            figureButton.layer.cornerRadius = 5;
+            figureButton.layer.borderWidth = 1;
+            figureButton.layer.borderColor = UIColor.black.cgColor;
         }
         
         let arrowAction = UIAlertAction(title: "Arrow", style: .default) { _ in
