@@ -285,17 +285,12 @@
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
                                     <Grid Margin="0,2">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="100" />
-                                        </Grid.ColumnDefinitions>
                                         <TextBlock Text="{Binding Title}" Margin="0,0,50,0"/>
-                                        <TextBlock HorizontalAlignment="Right" Text="{Binding Join}" />
+                                        <Button Content="Connected" Width="100" Height="20" FontSize="10" Click="roomConnect" Background="GreenYellow" BorderBrush="Transparent" Foreground="Black" Margin="100,0,0,0" />
                                     </Grid>
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
                         </ListBox>
-
                         <materialDesign:ColorZone Mode="PrimaryMid">
                             <TextBlock  Margin="16">
                                   Chatrooms

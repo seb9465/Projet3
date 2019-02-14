@@ -51,6 +51,7 @@ namespace PolyPaint.Vues
             this.Hide();
         }
 
+
         private void enterKeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
