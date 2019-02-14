@@ -17,6 +17,8 @@ class CanvasController: UIViewController, ButtonViewInterface {
     override func viewDidLoad() {
         super.viewDidLoad();
         
+        self.navigationController?.setNavigationBarHidden(true, animated: animated);
+        
         sketchView = SketchView(frame:
             CGRect(
                 x: 0,
@@ -38,9 +40,14 @@ class CanvasController: UIViewController, ButtonViewInterface {
         scrollView.frame.origin.x = 0;
         scrollView.frame.origin.y = UIScreen.main.bounds.height - buttonView.frame.size.height;
     }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        self.navigationController?.setNavigationBarHidden(false, animated: animated);
+    }
 }
 
 extension CanvasController {
+    
     func tapFigureButton(figureButton: UIButton) {
         let lineAction = UIAlertAction(title: "Line", style: .default) { _ in
             self.sketchView.drawTool = .line
