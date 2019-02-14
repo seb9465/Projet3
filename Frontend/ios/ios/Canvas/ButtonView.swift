@@ -14,6 +14,7 @@ protocol ButtonViewInterface: class {
     func tapClearButton();
     func tapUndoButton();
     func tapRedoButton();
+    func tapQuitButton();
 }
 
 class ButtonView: UIView {
@@ -63,5 +64,8 @@ class ButtonView: UIView {
     }
     @IBAction func tapRedoButton(_ sender: Any) {
         delegate?.tapRedoButton()
+    }
+    @IBAction func tapQuitButton(_ sender: Any) {
+        delegate?.tapQuitButton();
     }
 }

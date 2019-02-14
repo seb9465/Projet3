@@ -37,6 +37,7 @@ class CanvasController: UIViewController, ButtonViewInterface {
         scrollView.showsHorizontalScrollIndicator = false;
         scrollView.frame.origin.x = 0;
         scrollView.frame.origin.y = UIScreen.main.bounds.height - buttonView.frame.size.height;
+        print(UIScreen.main.bounds.width);
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -102,5 +103,12 @@ extension CanvasController {
     
     func tapRedoButton() {
         sketchView.redo();
+    }
+    
+    func tapQuitButton() {
+        let cancelAction = UIAlertAction(title: "Cancel", style: .default) { _ in }
+        
+        let alertController = UIAlertController(title: "Would you like to save before quitting ?", message: nil, preferredStyle: .alert);
+        alertController.addAction(cancelAction);
     }
 }
