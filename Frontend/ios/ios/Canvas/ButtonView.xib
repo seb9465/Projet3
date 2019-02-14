@@ -61,6 +61,7 @@
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <connections>
+                <outlet property="FigureButton" destination="8V9-sV-Dch" id="wtb-qG-LzM"/>
                 <outlet property="penButton" destination="HQ0-2c-ttb" id="15j-R8-5TM"/>
             </connections>
             <point key="canvasLocation" x="404.8828125" y="-332.03125"/>

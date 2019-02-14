@@ -41,9 +41,10 @@ class CanvasController: UIViewController, ButtonViewInterface {
 }
 
 extension CanvasController {
-    func tapFigureButton() {
+    func tapFigureButton(figureButton: UIButton) {
         let lineAction = UIAlertAction(title: "Line", style: .default) { _ in
             self.sketchView.drawTool = .line
+            figureButton.setImage(UIImage(named: "Line Icon Black"), for: .normal);
         }
         
         let arrowAction = UIAlertAction(title: "Arrow", style: .default) { _ in

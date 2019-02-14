@@ -9,7 +9,7 @@
 import UIKit
 
 protocol ButtonViewInterface: class {
-    func tapFigureButton();
+    func tapFigureButton(figureButton: UIButton);
     func tapPenButton();
     func tapClearButton();
     func tapUndoButton();
@@ -19,6 +19,7 @@ protocol ButtonViewInterface: class {
 class ButtonView: UIView {
     var delegate: ButtonViewInterface?;
     @IBOutlet var penButton: UIButton!
+    @IBOutlet var figureButton: UIButton!
     
     class func instanceFromNib(_ delegate: ButtonViewInterface?) -> ButtonView {
         let buttonView: ButtonView = UINib(
@@ -36,11 +37,12 @@ class ButtonView: UIView {
     
     private func clearButtons() -> Void {
         self.penButton.setImage(UIImage(named: "Pen Icon"), for: .normal);
+        self.figureButton.setImage(UIImage(named: "Figure Icon"), for: .normal);
     }
     
     @IBAction func tapFigureButton(_ sender: Any) {
         clearButtons();
-        delegate?.tapFigureButton();
+        delegate?.tapFigureButton(figureButton: self.figureButton);
     }
     @IBAction func tapPenButton(_ sender: Any) {
         clearButtons();
