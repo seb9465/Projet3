@@ -34,38 +34,40 @@
                         <action selector="tapPenButton:" destination="iN0-l3-epB" eventType="touchUpInside" id="ay8-hJ-QGT"/>
                     </connections>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hAM-eU-S43">
-                    <rect key="frame" x="292" y="14" width="104" height="42"/>
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hAM-eU-S43">
+                    <rect key="frame" x="290" y="0.0" width="70" height="70"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="25"/>
-                    <state key="normal" title="Clear"/>
+                    <state key="normal" image="Clear Icon"/>
                     <connections>
-                        <action selector="tapPenButton:" destination="iN0-l3-epB" eventType="touchUpInside" id="Nhe-rE-gah"/>
+                        <action selector="tapClearButton:" destination="iN0-l3-epB" eventType="touchUpInside" id="4oN-Lr-0HB"/>
                     </connections>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ubS-iW-Qy3">
-                    <rect key="frame" x="404" y="14" width="104" height="42"/>
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ubS-iW-Qy3">
+                    <rect key="frame" x="368" y="0.0" width="70" height="70"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="25"/>
-                    <state key="normal" title="Undo"/>
+                    <state key="normal" image="Undo Icon"/>
                     <connections>
                         <action selector="tapUndoButton:" destination="iN0-l3-epB" eventType="touchUpInside" id="7ZD-Ir-jgR"/>
                     </connections>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8fd-oO-Xgg">
-                    <rect key="frame" x="516" y="14" width="104" height="42"/>
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8fd-oO-Xgg">
+                    <rect key="frame" x="446" y="0.0" width="70" height="70"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="25"/>
-                    <state key="normal" title="Redo"/>
+                    <state key="normal" image="Redo Icon"/>
                     <connections>
                         <action selector="tapRedoButton:" destination="iN0-l3-epB" eventType="touchUpInside" id="JPI-gC-T8Y"/>
                     </connections>
                 </button>
             </subviews>
-            <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
-            <point key="canvasLocation" x="563.0859375" y="-246.875"/>
+            <point key="canvasLocation" x="404.8828125" y="-332.03125"/>
         </view>
     </objects>
+    <resources>
+        <image name="Clear Icon" width="100" height="100"/>
+        <image name="Redo Icon" width="100" height="100"/>
+        <image name="Undo Icon" width="100" height="100"/>
+    </resources>
 </document>
