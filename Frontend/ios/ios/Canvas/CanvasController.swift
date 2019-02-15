@@ -37,7 +37,6 @@ class CanvasController: UIViewController, ButtonViewInterface {
         scrollView.showsHorizontalScrollIndicator = false;
         scrollView.frame.origin.x = 0;
         scrollView.frame.origin.y = UIScreen.main.bounds.height - buttonView.frame.size.height;
-        print(UIScreen.main.bounds.width);
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -106,9 +105,19 @@ extension CanvasController {
     }
     
     func tapQuitButton() {
+        let yesAction = UIAlertAction(title: "Yes", style: .default) { _ in
+            let mainView: UIStoryboard = UIStoryboard(name: "Main", bundle: nil);
+            let viewcontroller : UIViewController = mainView.instantiateViewController(withIdentifier: "LoginStoryboard") as UIViewController;
+            self.present(viewcontroller, animated: true, completion: nil);
+        }
+        let noAction = UIAlertAction(title: "No", style: .default) { _ in }
         let cancelAction = UIAlertAction(title: "Cancel", style: .default) { _ in }
         
         let alertController = UIAlertController(title: "Would you like to save before quitting ?", message: nil, preferredStyle: .alert);
+        alertController.addAction(yesAction);
+        alertController.addAction(noAction);
         alertController.addAction(cancelAction);
+        
+        present(alertController, animated: true, completion: nil);
     }
 }
