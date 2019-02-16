@@ -58,7 +58,11 @@ class RegisterController: UIViewController {
             };
         }
     }
-        
+    
+    @IBAction func goBackPressed(_ sender: UIButton) {
+        dismiss(animated: true, completion: nil)
+    }
+    
     @IBAction func validateNameField(_ sender: UITextField) {
         if((sender.text!.isEmpty)){
             sender.layer.borderWidth = 1.0;
