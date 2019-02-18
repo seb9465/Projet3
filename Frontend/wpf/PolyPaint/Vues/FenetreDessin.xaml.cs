@@ -16,6 +16,7 @@ using System.Text;
 using System.Collections.Generic;
 using PolyPaint.Vues;
 using PolyPaint.Structures;
+using PolyPaint.Strokes;
 
 namespace PolyPaint
 {
@@ -25,6 +26,10 @@ namespace PolyPaint
     public partial class FenetreDessin : Window
     {
         ChatWindow externalChatWindow;
+
+        Stroke DrawingStroke = null;
+        bool IsDrawing = false;
+        Point currentPoint, mouseLeftDownPoint;
         public FenetreDessin()
         {
             InitializeComponent();
@@ -271,6 +276,51 @@ namespace PolyPaint
                 }
             }
             catch { }
+        }
+
+        private void InkCanvas_StartDraw(object sender, MouseButtonEventArgs e)
+        {
+            IsDrawing = true;
+
+            mouseLeftDownPoint = e.GetPosition((IInputElement)sender);
+        }
+        private void InkCanvas_DrawMove(object sender, MouseEventArgs e)
+        {
+            if (IsDrawing)
+            {
+                currentPoint = e.GetPosition((IInputElement)sender);
+                StylusPointCollection pts = new StylusPointCollection();
+
+                pts.Add(new StylusPoint(mouseLeftDownPoint.X, mouseLeftDownPoint.Y));
+                pts.Add(new StylusPoint(currentPoint.X, currentPoint.Y));
+
+                if (DrawingStroke != null)
+                    surfaceDessin.Strokes.Remove(DrawingStroke);
+
+                switch ((DataContext as VueModele).OutilSelectionne)
+                {
+                    case "rectangle":
+                        DrawingStroke = new RectangleStroke(pts);
+                        DrawingStroke.DrawingAttributes.Color = Colors.LightBlue;
+                        surfaceDessin.Strokes.Add(DrawingStroke);
+                        break;
+                    case "rounded_rectangle":
+                        DrawingStroke = new RoundedRectangleStroke(pts);
+                        DrawingStroke.DrawingAttributes.Color = Colors.Red;
+                        surfaceDessin.Strokes.Add(DrawingStroke);
+                        break;
+                }
+            }
+        }
+
+        private void InkCanvas_EndDraw(object sender, MouseButtonEventArgs e)
+        {
+            if (DrawingStroke != null)
+            {
+                surfaceDessin.Strokes.Remove(DrawingStroke);
+                surfaceDessin.Strokes.Add(DrawingStroke.Clone());
+            }
+            IsDrawing = false;
         }
     }
 }
