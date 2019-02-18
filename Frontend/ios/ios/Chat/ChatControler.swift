@@ -180,6 +180,5 @@ extension MsgChatController: MessageInputBarDelegate {
         inputBar.inputTextView.text = "";
         self.messagesCollectionView.reloadData();
         self.messagesCollectionView.scrollToBottom(animated: true);
-        
     }
 }
