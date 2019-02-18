@@ -267,7 +267,7 @@ namespace PolyPaint
                 {
                     client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", (string)Application.Current.Properties["token"]);
                     System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
-                    client.GetAsync("https://polypaint.me/api/user/logout").Wait();
+                    client.GetAsync("https://localhost:44300/api/user/logout").Wait();
                 }
             }
             catch { }
