@@ -14,14 +14,9 @@ enum STATE {
     case SELECTION
 }
 
-// SUBVIEW
-//  1. TOOLBAR
-let SUBVIEWS_COUNT: Int = 1;
-
-
 class CanvasController: UIViewController {
-    private let undoArray: NSMutableArray = NSMutableArray();
-    private let redoArray: NSMutableArray = NSMutableArray();
+    private var undoArray: [CanvasService] = [];
+    private var redoArray: [CanvasService] = [];
     
     @IBOutlet var rectButton: UIBarButtonItem!
     
@@ -33,7 +28,7 @@ class CanvasController: UIViewController {
         if (tapPoint!.y >= 70 && self.toolState == STATE.DRAW_RECT) {
             let can = CanvasService(origin: tapPoint!);
             self.view.addSubview(can);
-            self.undoArray.add(can);
+            self.undoArray.append(can);
         }
     }
     
@@ -86,17 +81,17 @@ class CanvasController: UIViewController {
     }
     public func undo() {
         if (undoArray.count > 0) {
-            let v = self.view.subviews.last;
-            redoArray.add(v);
-            v!.removeFromSuperview();
+            let v: CanvasService = self.view.subviews.last as! CanvasService;
+            self.redoArray.append(v);
+            v.removeFromSuperview();
         }
     }
     
     public func redo() {
         if (redoArray.count > 0) {
-            let v = self.redoArray.lastObject;
+            let v: CanvasService = self.redoArray.last as! CanvasService;
             self.view.addSubview(v);
-            self.redoArray.removeLastObject();
+            self.redoArray.removeLast();
         }
     }
 }
