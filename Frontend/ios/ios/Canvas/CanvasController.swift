@@ -15,6 +15,9 @@ enum STATE {
 }
 
 class CanvasController: UIViewController {
+    private let undoArray: NSMutableArray = NSMutableArray();
+    private let redoArray: NSMutableArray = NSMutableArray();
+    
     @IBOutlet var rectButton: UIBarButtonItem!
     
     var toolState: STATE = STATE.NOTHING_SELECTED;
@@ -74,5 +77,23 @@ class CanvasController: UIViewController {
         alert.addAction(noAction);
         
         self.present(alert, animated: true, completion: nil)
+    }
+    
+    public func undo() {
+//        if (undoArray.count > 0) {
+//            guard let p = pathArray.lastObject else { return }
+//            bufferArray.add(p);
+//            pathArray.removeLastObject();
+            let v = self.view.subviews.last;
+            v!.removeFromSuperview();
+//        }
+    }
+    
+    public func redo() {
+        if (redoArray.count > 0) {
+//            guard let p = bufferArray.lastObject else { return }
+//            pathArray.add(p);
+//            bufferArray.removeLastObject();
+        }
     }
 }

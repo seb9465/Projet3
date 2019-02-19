@@ -11,6 +11,8 @@ import PromiseKit
 import Alamofire
 
 class CanvasService: UIView {
+    private let pathArray: NSMutableArray = NSMutableArray();
+    private let bufferArray: NSMutableArray = NSMutableArray();
     
     init(origin: CGPoint) {
         super.init(frame: CGRect(x: 100, y: 100, width: 100, height: 100));
@@ -38,6 +40,8 @@ class CanvasService: UIView {
         path.fill();
         path.stroke();
     }
+    
+    
 }
 
 extension CanvasService {
