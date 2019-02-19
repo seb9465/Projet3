@@ -26,31 +26,66 @@ namespace PolyPaint.API.Hubs
             {
                 var timestamp = DateTime.Now.ToString("HH:mm:ss");
 
-                if (UserHandler.UserGroupMap.TryGetValue(chatMessage.ChannelId, out var users))
+                if (UserHandler.UserGroupMap.TryGetValue(chatMessage.ChannelId, out var users) && users.Contains(user.Id))
                 {
-                    if (users.Contains(user.Id))
-                    {
-                        // Maybe change in a way that it doesnt send back to sender (sender handles his own message in the ui)
-                        await Clients.Group(chatMessage.ChannelId).SendAsync("ChatMessage",
-                            new ChatMessage(user.UserName, chatMessage.Message, chatMessage.ChannelId, timestamp)
-                        );
-                    }
+                    // Maybe change in a way that it doesnt send back to sender (sender handles his own message in the ui)
+                    await Clients.Group(chatMessage.ChannelId).SendAsync("SendMessage",
+                        new ChatMessage(user.UserName, chatMessage.Message, chatMessage.ChannelId, timestamp)
+                    );
                 }
             }
         }
 
-        public async Task ConnectToGroup(string groupId = "general")
+        public async Task FetchChannels()
         {
             var user = await GetUserFromToken(Context.User);
             if (user != null)
             {
-                await Groups.AddToGroupAsync(Context.ConnectionId, groupId);
-                UserHandler.UserGroupMap.AddOrUpdate(groupId, new List<string>() { user.Id }, (k, v) =>
+                List<Channel> list = UserHandler.UserGroupMap.Select(x => new Channel(x.Key, x.Value.Contains(user.Id))).ToList();
+                ChannelsMessage channelsMessage = new ChannelsMessage(list);
+                await Clients.Caller.SendAsync("FetchChannels", channelsMessage);
+            }
+        }
+
+        public async Task CreateChannel(ChannelMessage channelMessage)
+        {
+
+            var user = await GetUserFromToken(Context.User);
+            if (user != null)
+            {
+                UserHandler.AddOrUpdateMap(channelMessage.Channel.Name, user.Id);
+                await Clients.Caller.SendAsync("CreateChannel", channelMessage);
+            }
+        }
+
+        public async Task ConnectToChannel(ConnectionMessage connectionMessage)
+        {
+            var user = await GetUserFromToken(Context.User);
+            if (user != null)
+            {
+                await Groups.AddToGroupAsync(Context.ConnectionId, connectionMessage.ChannelId);
+                UserHandler.AddOrUpdateMap(connectionMessage.ChannelId, user.Id);
+                await Clients.Group(connectionMessage.ChannelId).SendAsync(
+                    "ConnectToChannel",
+                    new ConnectionMessage(user.UserName, channelId: connectionMessage.ChannelId)
+                );
+            }
+        }
+
+        public async Task DisconnectFromChannel(ConnectionMessage connectionMessage)
+        {
+            var user = await GetUserFromToken(Context.User);
+            if (user != null)
+            {
+                await Groups.RemoveFromGroupAsync(Context.ConnectionId, connectionMessage.ChannelId);
+                if (UserHandler.UserGroupMap.TryGetValue(connectionMessage.ChannelId, out var list))
                 {
-                    v.Add(user.Id);
-                    return v;
-                });
-                await Clients.Group(groupId).SendAsync("SystemMessage", $"{user.UserName} just connected");
+                    list.Remove(user.Id);
+                    await Clients.Group(connectionMessage.ChannelId).SendAsync(
+                        "DisconnectFromChannel",
+                        new ConnectionMessage(username: user.UserName, channelId: connectionMessage.ChannelId)
+                    );
+                }
             }
         }
 
@@ -60,7 +95,7 @@ namespace PolyPaint.API.Hubs
             if (user != null)
             {
                 await base.OnConnectedAsync();
-                await ConnectToGroup();
+                await ConnectToChannel(new ConnectionMessage(channelId: "general"));
                 await Clients.Caller.SendAsync("ClientIsConnected", "You are connected!");
             }
         }
@@ -77,7 +112,10 @@ namespace PolyPaint.API.Hubs
                     if (user != null)
                     {
                         pair.Value.Remove(user.Id);
-                        await Clients.Group(pair.Key).SendAsync("SystemMessage", $"{user.UserName} has disconnected");
+                        await Clients.Group(pair.Key).SendAsync(
+                            "DisconnectFromChannel",
+                            new ConnectionMessage(username: user.UserName)
+                        );
                     }
                 }
             }

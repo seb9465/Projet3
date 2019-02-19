@@ -4,7 +4,7 @@ public class ChatMessage
     public string Message { get; set; }
     public string ChannelId { get; set; }
     public string Timestamp { get; set; }
-    public ChatMessage(string username, string message, string channelId, string timestamp)
+    public ChatMessage(string username = "", string message = "", string channelId = "", string timestamp = "")
     {
         Username = username;
         Message = message;
