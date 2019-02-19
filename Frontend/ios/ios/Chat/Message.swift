@@ -10,11 +10,6 @@ import Foundation
 import UIKit
 import MessageKit
 
-struct Member {
-    let name: String;
-    let color: UIColor;
-}
-
 struct Message {
     let member: Member;
     let text: String;

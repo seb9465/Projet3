@@ -12,34 +12,29 @@ import MessageInputBar
 import SwiftSignalRClient
 import JWTDecode
 
-let CHAT_URL = "https://polypaint.me/signalr";
 let USER_TOKEN = UserDefaults.standard.string(forKey: "token");
 
 class MsgChatController: MessagesViewController {
-    var hubConnection: HubConnection!;
-    var connectedToGroup: Bool = false;
+    var chatService: ChatService!;
     var messages: [Message] = [];
     var member: Member!;
-    
-    let formatter: DateFormatter = {
-        let formatter = DateFormatter();
-        formatter.dateFormat = "HH:mm:ss";
-        return formatter;
-    }()
     
     override func viewDidLoad() {
         super.viewDidLoad();
         
-        self.establishConnectionToHub();
+        self.chatService = ChatService();
+        self.chatService.connectToHub();
         self.setCurrentMemberAttributes();
         self.initDelegate();
-        self.initOnReceiveMessage();
-        self.initOnAnotherUserConnection();
-        self.connectToGroup();
+        self.chatService.initOnReceivingMessage(currentMemberName: self.member.name, insertMessage: self.insertMessage)
+        self.chatService.initOnAnotherUserConnection(insertMessage: self.insertMessage);
+        self.chatService.connectToGroup();
     }
     
     override func viewWillDisappear(_ animated: Bool) -> Void {
-        self.hubConnection.stop();
+         super.viewWillDisappear(animated);
+        
+        self.chatService.disconnectFromHub();
     }
     
     func messageInputBar(_ inputBar: MessageInputBar, textViewTextDidChangeTo text: String) {
@@ -49,71 +44,6 @@ class MsgChatController: MessagesViewController {
                 messageInputBar.didSelectSendButton();
             }
         }
-    }
-    
-    func initOnAnotherUserConnection() -> Void {
-        self.hubConnection.on(method: "SystemMessage", callback: { args, typeConverter in
-            let message = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self);
-            
-            let sysMember = Member(
-                name: "SYSTEM",
-                color: .random
-            );
-            
-            let newMessage = Message(
-                member: sysMember,
-                text: message!,
-                timestamp: self.formatter.string(from: Date()),
-                messageId: UUID().uuidString
-            );
-            
-            self.insertMessage(newMessage);
-        });
-    }
-    
-    func establishConnectionToHub() {
-        self.hubConnection = HubConnectionBuilder(url: URL(string: CHAT_URL)!)
-            .withHttpConnectionOptions() { httpConnectionOptions in
-                httpConnectionOptions.accessTokenProvider = { return USER_TOKEN; }}
-            .build();
-        
-        self.hubConnection.start();
-    }
-    
-    func connectToGroup() {
-        self.hubConnection.on(method: "ClientIsConnected", callback: { args, typeConverter in
-            self.hubConnection.invoke(method: "ConnectToGroup", arguments: [""], invocationDidComplete: { error in
-                if (error != nil) {
-                    print("Error connecting to server!")
-                    print(error as Any);
-                }
-                print("Connected to the group");
-            });
-        });
-    }
-    
-    func initOnReceiveMessage() {
-        self.hubConnection.on(method: "ReceiveMessage", callback: { args, typeConverter in
-            let user = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self);
-            let message = try! typeConverter.convertFromWireType(obj: args[1], targetType: String.self);
-            let timestamp = try! typeConverter.convertFromWireType(obj: args[2], targetType: String.self);
-            
-            let newMember = Member(
-                name: user!,
-                color: .random
-            );
-            
-            let newMessage = Message(
-                member: newMember,
-                text: message!,
-                timestamp: timestamp!,
-                messageId: UUID().uuidString
-            );
-            
-            if (user != self.member.name) {
-                self.insertMessage(newMessage);
-            }
-        });
     }
     
     func initDelegate() -> Void {
@@ -246,16 +176,9 @@ extension MsgChatController: MessageInputBarDelegate {
             timestamp: result,
             messageId: UUID().uuidString)
         
-        self.hubConnection.invoke(method: "SendMessage", arguments: [newMessage.text], invocationDidComplete: { error in
-            if let e = error {
-                print("ERROR");
-                print(e);
-            }
-            
-            self.insertMessage(newMessage);
-            inputBar.inputTextView.text = "";
-            self.messagesCollectionView.reloadData();
-            self.messagesCollectionView.scrollToBottom(animated: true);
-        });
+        self.chatService.sendMessage(message: newMessage, insertMessage: self.insertMessage);
+        inputBar.inputTextView.text = "";
+        self.messagesCollectionView.reloadData();
+        self.messagesCollectionView.scrollToBottom(animated: true);
     }
 }

@@ -11,32 +11,27 @@ import Alamofire
 import PromiseKit
 import AwaitKit
 
-let loginURL: URLConvertible = "https://polypaint.me/api/login";
-
 class LoginController: UIViewController, UITextFieldDelegate {
     
     @IBOutlet var emailField: UITextField!
     @IBOutlet var passwordField: UITextField!
     @IBOutlet var validationLabel: UILabel!
-
     @IBOutlet var loginButton: UIButton!
     
     var placeHolder = "";
 
     @IBAction func loginButton(_ sender: Any) {
+        let sv = UIViewController.displaySpinner(onView: self.view);
         
         let validEmail: Bool = isValidEmail(testStr: emailField.text!);
         
-//        let parameters = [
-//            "username": emailField.text,
-//            "password": passwordField.text
-//        ]
         let parameters = [
-            "username": "user.2",
-            "password": "!12345Aa"
+            "username": emailField.text,
+            "password": passwordField.text
         ]
         
         self.authenticateUser(parameters: parameters).done { response in
+            UIViewController.removeSpinner(spinner: sv);
             if(response == "ERROR") {
                 self.validationLabel.text = "Invalid Credentials"
             } else {
@@ -65,7 +60,7 @@ class LoginController: UIViewController, UITextFieldDelegate {
     
     func authenticateUser(parameters: [String: String?]) -> Promise<String>{
         return Promise {seal in
-            Alamofire.request(loginURL, method: .post, parameters: parameters, encoding: JSONEncoding.default).validate().responseString{ response in
+            Alamofire.request(Constants.LOGIN_URL as URLConvertible, method: .post, parameters: parameters, encoding: JSONEncoding.default).validate().responseString{ response in
                 
                 switch response.result {
                     case .success:
