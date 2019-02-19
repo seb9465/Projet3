@@ -93,6 +93,16 @@
                         <Image Source="/Resources/lasso.png" Width="25" Height="25"/>
                     </StackPanel>
                 </Button>
+                <Button Name="select"
+                        Style="{StaticResource MaterialDesignRaisedLightButton}" HorizontalAlignment="Left" ToolTip="MaterialDesignRaisedLightButton" 
+                        BorderBrush="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurBordure}, ConverterParameter=select, UpdateSourceTrigger=PropertyChanged}" 
+                            Background="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurCouleurFond}, ConverterParameter=select, UpdateSourceTrigger=PropertyChanged}" 
+                            Command="{Binding Path=ChoisirOutil}"
+                            CommandParameter="select">
+                    <StackPanel>
+                        <Image Source="/Resources/select.png" Width="25" Height="25"/>
+                    </StackPanel>
+                </Button>
                 <StackPanel Orientation="Horizontal">
                     <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Width="2" />
                 </StackPanel>
@@ -245,7 +255,7 @@
             <Border BorderThickness="5,5,0,0">
                 <InkCanvas ClipToBounds="True" Grid.Column="0" Grid.Row="0" Name="surfaceDessin" 
                            HorizontalAlignment="Stretch" VerticalAlignment="Stretch"                           
-                           MouseLeave="surfaceDessin_MouseLeave" MouseMove="surfaceDessin_MouseMove" PreviewMouseMove="InkCanvas_DrawMove" PreviewMouseUp="InkCanvas_EndDraw" PreviewMouseDown="InkCanvas_StartDraw"                                        
+                           MouseLeave="surfaceDessin_MouseLeave" MouseMove="surfaceDessin_MouseMove" PreviewMouseMove="InkCanvas_DrawMove" PreviewMouseUp="InkCanvas_EndDraw" PreviewMouseDown="InkCanvas_StartDraw"                                   
                            Strokes="{Binding Path=Traits, Mode=OneTime}" EditingMode="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurModeEdition}, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
                            DefaultDrawingAttributes="{Binding Path=AttributsDessin, Mode=OneTime}"/>
                 <Border.Effect>

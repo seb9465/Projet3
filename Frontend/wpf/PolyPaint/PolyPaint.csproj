@@ -432,6 +432,7 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\position.png" />
+    <Resource Include="Resources\select.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\efface.png" />

@@ -278,12 +278,27 @@ namespace PolyPaint
             }
             catch { }
         }
-
         private void InkCanvas_StartDraw(object sender, MouseButtonEventArgs e)
         {
-            IsDrawing = true;
-
             mouseLeftDownPoint = e.GetPosition((IInputElement)sender);
+
+            if ((DataContext as VueModele).OutilSelectionne == "select")
+            {
+                StrokeCollection allo = surfaceDessin.Strokes;
+                foreach (var maybeStroke in allo)
+                {
+                    StrokeCollection collection = new StrokeCollection();
+                    Rect box = maybeStroke.GetBounds();
+                    if (mouseLeftDownPoint.X >= box.Left && mouseLeftDownPoint.X <= box.Right &&
+                        mouseLeftDownPoint.Y <= box.Bottom && mouseLeftDownPoint.Y >= box.Top)
+                    {
+                        collection.Add(maybeStroke);
+                        surfaceDessin.Select(collection);
+                        break;
+                    }
+                }
+            }
+            IsDrawing = true;
         }
         private void InkCanvas_DrawMove(object sender, MouseEventArgs e)
         {
@@ -316,7 +331,8 @@ namespace PolyPaint
 
         private void InkCanvas_EndDraw(object sender, MouseButtonEventArgs e)
         {
-            if (DrawingStroke != null)
+            if (DrawingStroke != null && (DataContext as VueModele).OutilSelectionne == "rectangle" 
+                                      || (DataContext as VueModele).OutilSelectionne == "rounded_rectangle")
             {
                 surfaceDessin.Strokes.Remove(DrawingStroke);
                 surfaceDessin.Strokes.Add(DrawingStroke.Clone());
