@@ -18,6 +18,11 @@
 		3DC967EB220A067900FA76CB /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DC967EA220A067900FA76CB /* LoginController.swift */; };
 		3DC967ED220A09C400FA76CB /* DashboardController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DC967EC220A09C400FA76CB /* DashboardController.swift */; };
 		3DDE25192202B2AF0082E735 /* RoundedCorners.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DDE25182202B2AF0082E735 /* RoundedCorners.swift */; };
+		3DDF1A6A221C66C000937C77 /* CanvasService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DDF1A69221C66C000937C77 /* CanvasService.swift */; };
+		3DDF1A6D221C693B00937C77 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DDF1A6C221C693B00937C77 /* NetworkService.swift */; };
+		3DF62971221C73550052209A /* APIConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DF62970221C73550052209A /* APIConfiguration.swift */; };
+		3DF62973221C73840052209A /* CanvasEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DF62972221C73830052209A /* CanvasEndpoint.swift */; };
+		3DF62975221C75810052209A /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DF62974221C75810052209A /* Constants.swift */; };
 		AAAF9A5351EEC102D9A22B92 /* Pods_iosTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97F0F22A4C1686AFA3D462D8 /* Pods_iosTests.framework */; };
 		B711B5EA21F659A30096BF7F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B711B5E921F659A30096BF7F /* AppDelegate.swift */; };
 		B711B5EF21F659A30096BF7F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B711B5ED21F659A30096BF7F /* Main.storyboard */; };
@@ -52,6 +57,11 @@
 		3DC967EA220A067900FA76CB /* LoginController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
 		3DC967EC220A09C400FA76CB /* DashboardController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardController.swift; sourceTree = "<group>"; };
 		3DDE25182202B2AF0082E735 /* RoundedCorners.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedCorners.swift; sourceTree = "<group>"; };
+		3DDF1A69221C66C000937C77 /* CanvasService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasService.swift; sourceTree = "<group>"; };
+		3DDF1A6C221C693B00937C77 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
+		3DF62970221C73550052209A /* APIConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIConfiguration.swift; sourceTree = "<group>"; };
+		3DF62972221C73830052209A /* CanvasEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasEndpoint.swift; sourceTree = "<group>"; };
+		3DF62974221C75810052209A /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		6A1149C56A5EEAFC45859F6D /* Pods-iosTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iosTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-iosTests/Pods-iosTests.release.xcconfig"; sourceTree = "<group>"; };
 		6CD8C54089242A6862A3C2E4 /* Pods_ios.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ios.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		97F0F22A4C1686AFA3D462D8 /* Pods_iosTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_iosTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -107,6 +117,8 @@
 			isa = PBXGroup;
 			children = (
 				3D1C018D221BA02700C2BFB4 /* Canvas.swift */,
+				3DDF1A69221C66C000937C77 /* CanvasService.swift */,
+				3DF62972221C73830052209A /* CanvasEndpoint.swift */,
 			);
 			path = Canvas;
 			sourceTree = "<group>";
@@ -135,6 +147,16 @@
 				3DDE25182202B2AF0082E735 /* RoundedCorners.swift */,
 			);
 			path = Buttons;
+			sourceTree = "<group>";
+		};
+		3DDF1A6B221C691700937C77 /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				3DDF1A6C221C693B00937C77 /* NetworkService.swift */,
+				3DF62970221C73550052209A /* APIConfiguration.swift */,
+				3DF62974221C75810052209A /* Constants.swift */,
+			);
+			path = Networking;
 			sourceTree = "<group>";
 		};
 		701D9ED2FE30B29705115D8B /* Frameworks */ = {
@@ -170,6 +192,7 @@
 		B711B5E821F659A30096BF7F /* ios */ = {
 			isa = PBXGroup;
 			children = (
+				3DDF1A6B221C691700937C77 /* Networking */,
 				3D1C018F221BA02F00C2BFB4 /* Canvas */,
 				3D1C018A221B9E8000C2BFB4 /* Gallery */,
 				3DDE25172202B28E0082E735 /* Buttons */,
@@ -399,14 +422,19 @@
 				3DC61EB92200B44B003FE445 /* RegisterController.swift in Sources */,
 				3D1C0192221BA79700C2BFB4 /* GalleryCell.swift in Sources */,
 				3D5537C22200ED5F002C1B77 /* SlideUpSegue.swift in Sources */,
+				3DF62971221C73550052209A /* APIConfiguration.swift in Sources */,
 				3D5537C02200E86E002C1B77 /* SlideDownSegue.swift in Sources */,
 				3DC967ED220A09C400FA76CB /* DashboardController.swift in Sources */,
 				3DDE25192202B2AF0082E735 /* RoundedCorners.swift in Sources */,
 				B7A3A5C42203CF7100031F64 /* Extensions.swift in Sources */,
+				3DDF1A6A221C66C000937C77 /* CanvasService.swift in Sources */,
+				3DF62973221C73840052209A /* CanvasEndpoint.swift in Sources */,
+				3DDF1A6D221C693B00937C77 /* NetworkService.swift in Sources */,
 				B711B5EA21F659A30096BF7F /* AppDelegate.swift in Sources */,
 				B7A3A5C22203C27600031F64 /* Message.swift in Sources */,
 				B7A3A5C02203BF3B00031F64 /* msgChatCntrlr.swift in Sources */,
 				3D1C018E221BA02700C2BFB4 /* Canvas.swift in Sources */,
+				3DF62975221C75810052209A /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
