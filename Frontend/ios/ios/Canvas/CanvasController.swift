@@ -8,23 +8,28 @@
 
 import UIKit
 
+
+
 class CanvasController: UIViewController {
     var canvas: CanvasService!;
+    
+    @objc func handleTap(sender: UITapGestureRecognizer? = nil) {
+        print("HELLO");
+        let tapPoint = sender?.location(in: self.view);
+        let can = CanvasService(origin: tapPoint!);
+        self.view.addSubview(can);
+    }
+    
+    override func viewDidLoad() {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(CanvasController.handleTap(sender:)))
+        self.view.addGestureRecognizer(tap);
+    }
+    
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated);
         
         navigationController?.setNavigationBarHidden(true, animated: animated);
-        
-        let width: CGFloat = UIScreen.main.bounds.width;
-        let height: CGFloat = UIScreen.main.bounds.height;
-        
-        self.canvas = CanvasService(frame: CGRect(x: 0,
-                                              y: 0,
-                                              width: width,
-                                              height: height))
-        
-        self.view.addSubview(self.canvas)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -34,7 +39,8 @@ class CanvasController: UIViewController {
     }
     
     @IBAction func drawRectButton(_ sender: Any) {
-        self.canvas.createRectangle();
+        var can: CanvasService = CanvasService(frame: CGRect(x: 150, y: 150, width: 150, height: 150))
+        self.view.addSubview(can);
         print("Add Rectangle");
     }
     
