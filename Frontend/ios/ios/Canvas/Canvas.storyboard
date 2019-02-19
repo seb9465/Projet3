@@ -27,6 +27,11 @@
                                             <action selector="quitButton:" destination="Vts-He-P18" id="KcM-sA-VDA"/>
                                         </connections>
                                     </barButtonItem>
+                                    <barButtonItem title="Rect" id="SLY-eP-ACv">
+                                        <connections>
+                                            <action selector="drawRectButton:" destination="Vts-He-P18" id="OqV-ma-hpT"/>
+                                        </connections>
+                                    </barButtonItem>
                                 </items>
                             </toolbar>
                         </subviews>

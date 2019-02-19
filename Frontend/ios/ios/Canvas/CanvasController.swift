@@ -9,20 +9,35 @@
 import UIKit
 
 class CanvasController: UIViewController {
+    var canvas: CanvasService!;
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated);
         
-        let width: CGFloat = 240.0
-        let height: CGFloat = 160.0
+        navigationController?.setNavigationBarHidden(true, animated: animated);
         
-        let demoView = DemoView(frame: CGRect(x: self.view.frame.size.width/2 - width/2,
-                                              y: self.view.frame.size.height/2 - height/2,
+        let width: CGFloat = UIScreen.main.bounds.width;
+        let height: CGFloat = UIScreen.main.bounds.height;
+        
+        self.canvas = CanvasService(frame: CGRect(x: 0,
+                                              y: 0,
                                               width: width,
                                               height: height))
         
-        self.view.addSubview(demoView)
+        self.view.addSubview(self.canvas)
     }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated);
+        
+        navigationController?.setNavigationBarHidden(false, animated: animated);
+    }
+    
+    @IBAction func drawRectButton(_ sender: Any) {
+        self.canvas.createRectangle();
+        print("Add Rectangle");
+    }
+    
     
     @IBAction func quitButton(_ sender: Any) {
         let alert = UIAlertController(title: "Alert", message: "Would you like to quit ?", preferredStyle: .alert)
@@ -39,4 +54,5 @@ class CanvasController: UIViewController {
         
         self.present(alert, animated: true, completion: nil)
     }
+    
 }

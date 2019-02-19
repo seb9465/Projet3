@@ -19,7 +19,7 @@ class CanvasService: UIView {
         super.init(frame: frame)
         
         // Background color du frame.
-//        self.backgroundColor = UIColor.darkGray
+        self.backgroundColor = UIColor.darkGray
     }
     
     required init?(coder aDecoder: NSCoder) {
