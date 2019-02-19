@@ -30,24 +30,26 @@ class CanvasService: UIView {
     }
 
     override func draw(_ rect: CGRect) {
-        
-//        let insetRect = CGRect(x: 100, y: 100, width: 100, height: 100)
-
         let path = UIBezierPath(roundedRect: rect, cornerRadius: 10);
         
         UIColor.red.setFill()
+        path.lineWidth = 3;
+        UIColor.black.setStroke();
         path.fill();
+        path.stroke();
     }
+}
 
+extension CanvasService {
     @discardableResult
     private static func request(route:CanvasEndpoint) -> Promise<Any> {
         return Promise {seal in
             Alamofire.request(route).responseJSON{ (response) in
                 switch response.result {
                 case .success(let value):
-                     seal.fulfill(value);
+                    seal.fulfill(value);
                 case .failure(let error):
-                     seal.fulfill(error);
+                    seal.fulfill(error);
                 }
             }
         }

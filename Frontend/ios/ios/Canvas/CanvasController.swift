@@ -60,7 +60,6 @@ class CanvasController: UIViewController {
         }
     }
     
-    
     @IBAction func quitButton(_ sender: Any) {
         let alert = UIAlertController(title: "Alert", message: "Would you like to quit ?", preferredStyle: .alert)
         
@@ -76,5 +75,4 @@ class CanvasController: UIViewController {
         
         self.present(alert, animated: true, completion: nil)
     }
-    
 }
