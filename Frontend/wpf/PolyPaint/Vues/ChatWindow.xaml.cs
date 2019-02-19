@@ -50,6 +50,13 @@ namespace PolyPaint.Vues
         {
             e.Cancel = true;
             this.Hide();
+            foreach (Window window in Application.Current.Windows)
+            {
+                if (window.GetType() == typeof(FenetreDessin))
+                {
+                    (window as FenetreDessin).chat.Visibility = Visibility.Visible;
+                }
+            }
         }
 
 

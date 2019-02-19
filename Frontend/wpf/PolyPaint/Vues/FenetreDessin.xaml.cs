@@ -265,6 +265,7 @@ namespace PolyPaint
                 sendButton_Click(sender, e);
             }
         }
+       
 
         private void OnClosing(object sender, EventArgs e)
         {
