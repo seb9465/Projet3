@@ -25,13 +25,9 @@ class LoginController: UIViewController, UITextFieldDelegate {
         
         let validEmail: Bool = isValidEmail(testStr: emailField.text!);
         
-//        let parameters = [
-//            "username": emailField.text,
-//            "password": passwordField.text
-//        ]
         let parameters = [
-            "username": "seb.cado",
-            "password": "!12345Aa"
+            "username": emailField.text,
+            "password": passwordField.text
         ]
         
         self.authenticateUser(parameters: parameters).done { response in
