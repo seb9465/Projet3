@@ -9,15 +9,19 @@
 import UIKit
 
 
-
 class CanvasController: UIViewController {
-    var canvas: CanvasService!;
     
     @objc func handleTap(sender: UITapGestureRecognizer? = nil) {
-        print("HELLO");
         let tapPoint = sender?.location(in: self.view);
-        let can = CanvasService(origin: tapPoint!);
-        self.view.addSubview(can);
+        
+        if (tapPoint!.y >= 70) {
+            let can = CanvasService(origin: tapPoint!);
+            self.view.addSubview(can);
+        }
+        
+        print("TAP");
+        print("\t\(tapPoint!.x)");
+        print("\t\(tapPoint!.y)");
     }
     
     override func viewDidLoad() {
@@ -50,7 +54,7 @@ class CanvasController: UIViewController {
         
         let yesAction: UIAlertAction = UIAlertAction(title: "Yes", style: .default) { _ in
             let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil);
-            let viewController: UIViewController = mainStoryboard.instantiateViewController(withIdentifier: "DashboardController");
+            let viewController: UIViewController = mainStoryboard.instantiateViewController(withIdentifier: "DashboardView");
             self.present(viewController, animated: true, completion: nil);
         }
         let noAction: UIAlertAction = UIAlertAction(title: "No", style: .default, handler: nil);
