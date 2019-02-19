@@ -58,9 +58,6 @@ class CanvasController: UIViewController {
             self.toolState = STATE.DRAW_RECT;
             self.rectButton.tintColor = UIColor(red:0,green:0,blue:0,alpha:1);
         }
-        
-        var can: CanvasService = CanvasService(frame: CGRect(x: 150, y: 150, width: 150, height: 150))
-        self.view.addSubview(can);
     }
     
     
