@@ -8,13 +8,21 @@
 
 import UIKit
 
+enum STATE {
+    case NOTHING_SELECTED
+    case DRAW_RECT
+    case SELECTION
+}
 
 class CanvasController: UIViewController {
+    @IBOutlet var rectButton: UIBarButtonItem!
+    
+    var toolState: STATE = STATE.NOTHING_SELECTED;
     
     @objc func handleTap(sender: UITapGestureRecognizer? = nil) {
         let tapPoint = sender?.location(in: self.view);
         
-        if (tapPoint!.y >= 70) {
+        if (tapPoint!.y >= 70 && self.toolState == STATE.DRAW_RECT) {
             let can = CanvasService(origin: tapPoint!);
             self.view.addSubview(can);
         }
@@ -29,11 +37,11 @@ class CanvasController: UIViewController {
         self.view.addGestureRecognizer(tap);
     }
     
-    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated);
         
         navigationController?.setNavigationBarHidden(true, animated: animated);
+        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -43,9 +51,16 @@ class CanvasController: UIViewController {
     }
     
     @IBAction func drawRectButton(_ sender: Any) {
+        if (self.toolState == STATE.DRAW_RECT) {
+            self.toolState = STATE.NOTHING_SELECTED;
+            self.rectButton.tintColor = UIColor(red:0,green:122/255,blue:1,alpha:1);
+        } else {
+            self.toolState = STATE.DRAW_RECT;
+            self.rectButton.tintColor = UIColor(red:0,green:0,blue:0,alpha:1);
+        }
+        
         var can: CanvasService = CanvasService(frame: CGRect(x: 150, y: 150, width: 150, height: 150))
         self.view.addSubview(can);
-        print("Add Rectangle");
     }
     
     
