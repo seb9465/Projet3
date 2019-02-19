@@ -25,8 +25,6 @@
 		B756794A220F5DC800F80B12 /* Chat.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B7567949220F5DC800F80B12 /* Chat.storyboard */; };
 		B756794C220F608B00F80B12 /* Members.swift in Sources */ = {isa = PBXBuildFile; fileRef = B756794B220F608B00F80B12 /* Members.swift */; };
 		B775FE3F22135D6300B2EFE0 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B775FE3E22135D6300B2EFE0 /* Extensions.swift */; };
-		B775FE412213601E00B2EFE0 /* ButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B775FE402213601E00B2EFE0 /* ButtonView.swift */; };
-		B775FE45221366C500B2EFE0 /* ButtonView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B775FE44221366C500B2EFE0 /* ButtonView.xib */; };
 		B781B95922132BDB001C1BD8 /* Canvas.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B781B95822132BDB001C1BD8 /* Canvas.storyboard */; };
 		B781B95B22132C2F001C1BD8 /* CanvasController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B781B95A22132C2F001C1BD8 /* CanvasController.swift */; };
 		B7A3A5C02203BF3B00031F64 /* ChatControler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A3A5BF2203BF3B00031F64 /* ChatControler.swift */; };
@@ -71,8 +69,6 @@
 		B7567949220F5DC800F80B12 /* Chat.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Chat.storyboard; sourceTree = "<group>"; };
 		B756794B220F608B00F80B12 /* Members.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Members.swift; sourceTree = "<group>"; };
 		B775FE3E22135D6300B2EFE0 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
-		B775FE402213601E00B2EFE0 /* ButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonView.swift; sourceTree = "<group>"; };
-		B775FE44221366C500B2EFE0 /* ButtonView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ButtonView.xib; sourceTree = "<group>"; };
 		B781B95822132BDB001C1BD8 /* Canvas.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Canvas.storyboard; sourceTree = "<group>"; };
 		B781B95A22132C2F001C1BD8 /* CanvasController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasController.swift; sourceTree = "<group>"; };
 		B7A3A5BF2203BF3B00031F64 /* ChatControler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatControler.swift; sourceTree = "<group>"; };
@@ -209,8 +205,6 @@
 			children = (
 				B781B95822132BDB001C1BD8 /* Canvas.storyboard */,
 				B781B95A22132C2F001C1BD8 /* CanvasController.swift */,
-				B775FE402213601E00B2EFE0 /* ButtonView.swift */,
-				B775FE44221366C500B2EFE0 /* ButtonView.xib */,
 			);
 			path = Canvas;
 			sourceTree = "<group>";
@@ -312,7 +306,6 @@
 			files = (
 				B711B5F421F659A50096BF7F /* LaunchScreen.storyboard in Resources */,
 				B781B95922132BDB001C1BD8 /* Canvas.storyboard in Resources */,
-				B775FE45221366C500B2EFE0 /* ButtonView.xib in Resources */,
 				B711B5F121F659A50096BF7F /* Assets.xcassets in Resources */,
 				B756794A220F5DC800F80B12 /* Chat.storyboard in Resources */,
 				B711B5EF21F659A30096BF7F /* Main.storyboard in Resources */,
@@ -431,7 +424,6 @@
 				C43102E122132226008F1D80 /* SoundNotification.swift in Sources */,
 				B775FE3F22135D6300B2EFE0 /* Extensions.swift in Sources */,
 				B756794C220F608B00F80B12 /* Members.swift in Sources */,
-				B775FE412213601E00B2EFE0 /* ButtonView.swift in Sources */,
 				B781B95B22132C2F001C1BD8 /* CanvasController.swift in Sources */,
 				B7567946220F33CD00F80B12 /* ChatService.swift in Sources */,
 				B7567948220F355F00F80B12 /* Constants.swift in Sources */,
