@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3D1C018C221B9EA700C2BFB4 /* GalleryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D1C018B221B9EA700C2BFB4 /* GalleryController.swift */; };
+		3D1C018E221BA02700C2BFB4 /* Canvas.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D1C018D221BA02700C2BFB4 /* Canvas.swift */; };
+		3D1C0192221BA79700C2BFB4 /* GalleryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D1C0190221BA79700C2BFB4 /* GalleryCell.swift */; };
+		3D1C0193221BA79700C2BFB4 /* GalleryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3D1C0191221BA79700C2BFB4 /* GalleryCell.xib */; };
 		3D5537C02200E86E002C1B77 /* SlideDownSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D5537BF2200E86E002C1B77 /* SlideDownSegue.swift */; };
 		3D5537C22200ED5F002C1B77 /* SlideUpSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D5537C12200ED5F002C1B77 /* SlideUpSegue.swift */; };
 		3D77176921F7C8BC006244A8 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D77176821F7C8BC006244A8 /* Alamofire.framework */; };
@@ -37,6 +41,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3D1C018B221B9EA700C2BFB4 /* GalleryController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryController.swift; sourceTree = "<group>"; };
+		3D1C018D221BA02700C2BFB4 /* Canvas.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Canvas.swift; sourceTree = "<group>"; };
+		3D1C0190221BA79700C2BFB4 /* GalleryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryCell.swift; sourceTree = "<group>"; };
+		3D1C0191221BA79700C2BFB4 /* GalleryCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GalleryCell.xib; sourceTree = "<group>"; };
 		3D5537BF2200E86E002C1B77 /* SlideDownSegue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlideDownSegue.swift; sourceTree = "<group>"; };
 		3D5537C12200ED5F002C1B77 /* SlideUpSegue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlideUpSegue.swift; sourceTree = "<group>"; };
 		3D77176821F7C8BC006244A8 /* Alamofire.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Alamofire.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -85,6 +93,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3D1C018A221B9E8000C2BFB4 /* Gallery */ = {
+			isa = PBXGroup;
+			children = (
+				3D1C018B221B9EA700C2BFB4 /* GalleryController.swift */,
+				3D1C0190221BA79700C2BFB4 /* GalleryCell.swift */,
+				3D1C0191221BA79700C2BFB4 /* GalleryCell.xib */,
+			);
+			path = Gallery;
+			sourceTree = "<group>";
+		};
+		3D1C018F221BA02F00C2BFB4 /* Canvas */ = {
+			isa = PBXGroup;
+			children = (
+				3D1C018D221BA02700C2BFB4 /* Canvas.swift */,
+			);
+			path = Canvas;
+			sourceTree = "<group>";
+		};
 		3D24628321FFF29E00C89165 /* Authentification */ = {
 			isa = PBXGroup;
 			children = (
@@ -144,6 +170,8 @@
 		B711B5E821F659A30096BF7F /* ios */ = {
 			isa = PBXGroup;
 			children = (
+				3D1C018F221BA02F00C2BFB4 /* Canvas */,
+				3D1C018A221B9E8000C2BFB4 /* Gallery */,
 				3DDE25172202B28E0082E735 /* Buttons */,
 				3DDE25162202A3650082E735 /* Segues */,
 				3D24628321FFF29E00C89165 /* Authentification */,
@@ -264,6 +292,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3D1C0193221BA79700C2BFB4 /* GalleryCell.xib in Resources */,
 				B711B5F421F659A50096BF7F /* LaunchScreen.storyboard in Resources */,
 				B711B5F121F659A50096BF7F /* Assets.xcassets in Resources */,
 				B711B5EF21F659A30096BF7F /* Main.storyboard in Resources */,
@@ -365,8 +394,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3D1C018C221B9EA700C2BFB4 /* GalleryController.swift in Sources */,
 				3DC967EB220A067900FA76CB /* LoginController.swift in Sources */,
 				3DC61EB92200B44B003FE445 /* RegisterController.swift in Sources */,
+				3D1C0192221BA79700C2BFB4 /* GalleryCell.swift in Sources */,
 				3D5537C22200ED5F002C1B77 /* SlideUpSegue.swift in Sources */,
 				3D5537C02200E86E002C1B77 /* SlideDownSegue.swift in Sources */,
 				3DC967ED220A09C400FA76CB /* DashboardController.swift in Sources */,
@@ -375,6 +406,7 @@
 				B711B5EA21F659A30096BF7F /* AppDelegate.swift in Sources */,
 				B7A3A5C22203C27600031F64 /* Message.swift in Sources */,
 				B7A3A5C02203BF3B00031F64 /* msgChatCntrlr.swift in Sources */,
+				3D1C018E221BA02700C2BFB4 /* Canvas.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -538,7 +570,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = Z9SQJM9KY3;
+				DEVELOPMENT_TEAM = 227V6QKFLX;
 				INFOPLIST_FILE = ios/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -557,7 +589,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = Z9SQJM9KY3;
+				DEVELOPMENT_TEAM = 227V6QKFLX;
 				INFOPLIST_FILE = ios/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
