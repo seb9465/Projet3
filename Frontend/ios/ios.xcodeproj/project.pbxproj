@@ -20,6 +20,7 @@
 		B711B5F121F659A50096BF7F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B711B5F021F659A50096BF7F /* Assets.xcassets */; };
 		B711B5F421F659A50096BF7F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B711B5F221F659A50096BF7F /* LaunchScreen.storyboard */; };
 		B711B5FF21F659A50096BF7F /* iosTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B711B5FE21F659A50096BF7F /* iosTests.swift */; };
+		B74BE368221C66B50001D62A /* CanvasService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74BE367221C66B50001D62A /* CanvasService.swift */; };
 		B7567946220F33CD00F80B12 /* ChatService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7567945220F33CD00F80B12 /* ChatService.swift */; };
 		B7567948220F355F00F80B12 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7567947220F355F00F80B12 /* Constants.swift */; };
 		B756794A220F5DC800F80B12 /* Chat.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B7567949220F5DC800F80B12 /* Chat.storyboard */; };
@@ -64,6 +65,7 @@
 		B711B5FA21F659A50096BF7F /* iosTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iosTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B711B5FE21F659A50096BF7F /* iosTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iosTests.swift; sourceTree = "<group>"; };
 		B711B60021F659A50096BF7F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B74BE367221C66B50001D62A /* CanvasService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasService.swift; sourceTree = "<group>"; };
 		B7567945220F33CD00F80B12 /* ChatService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatService.swift; sourceTree = "<group>"; };
 		B7567947220F355F00F80B12 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		B7567949220F5DC800F80B12 /* Chat.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Chat.storyboard; sourceTree = "<group>"; };
@@ -203,6 +205,7 @@
 		B781B95722132671001C1BD8 /* Canvas */ = {
 			isa = PBXGroup;
 			children = (
+				B74BE367221C66B50001D62A /* CanvasService.swift */,
 				B781B95822132BDB001C1BD8 /* Canvas.storyboard */,
 				B781B95A22132C2F001C1BD8 /* CanvasController.swift */,
 			);
@@ -420,6 +423,7 @@
 				C43102E122132226008F1D80 /* SoundNotification.swift in Sources */,
 				B775FE3F22135D6300B2EFE0 /* Extensions.swift in Sources */,
 				B756794C220F608B00F80B12 /* Members.swift in Sources */,
+				B74BE368221C66B50001D62A /* CanvasService.swift in Sources */,
 				B781B95B22132C2F001C1BD8 /* CanvasController.swift in Sources */,
 				B7567946220F33CD00F80B12 /* ChatService.swift in Sources */,
 				B7567948220F355F00F80B12 /* Constants.swift in Sources */,

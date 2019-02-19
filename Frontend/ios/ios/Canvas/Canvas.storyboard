@@ -17,6 +17,19 @@
                     <view key="view" contentMode="scaleToFill" id="hqe-fa-MVE" customClass="ConvasController">
                         <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="P0r-rK-G4e">
+                                <rect key="frame" x="0.0" y="20" width="1024" height="50"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                <items>
+                                    <barButtonItem title="Quit" id="4Er-Gx-QB8">
+                                        <connections>
+                                            <action selector="quitButton:" destination="Vts-He-P18" id="KcM-sA-VDA"/>
+                                        </connections>
+                                    </barButtonItem>
+                                </items>
+                            </toolbar>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="h7K-cJ-n3H"/>
                     </view>
