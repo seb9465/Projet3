@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import PromiseKit
+import Alamofire
 
 class CanvasService: UIView {
     
@@ -35,5 +37,25 @@ class CanvasService: UIView {
         
         UIColor.red.setFill()
         path.fill();
+    }
+
+    @discardableResult
+    private static func request(route:CanvasEndpoint) -> Promise<Any> {
+        return Promise {seal in
+            Alamofire.request(route).responseJSON{ (response) in
+                switch response.result {
+                case .success(let value):
+                     seal.fulfill(value);
+                case .failure(let error):
+                     seal.fulfill(error);
+                }
+            }
+        }
+    }
+    
+    static func getAll() -> Void{
+        CanvasService.request(route: CanvasEndpoint.getAll()).done{canvas in
+            print(canvas)
+        }
     }
 }

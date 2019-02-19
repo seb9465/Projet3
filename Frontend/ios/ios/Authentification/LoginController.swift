@@ -25,13 +25,9 @@ class LoginController: UIViewController, UITextFieldDelegate {
         
         let validEmail: Bool = isValidEmail(testStr: emailField.text!);
         
-//        let parameters = [
-//            "username": emailField.text,
-//            "password": passwordField.text
-//        ]
         let parameters = [
-            "username": "seb.cado",
-            "password": "!12345Aa"
+            "username": emailField.text,
+            "password": passwordField.text
         ]
         
         self.authenticateUser(parameters: parameters).done { response in
@@ -44,13 +40,22 @@ class LoginController: UIViewController, UITextFieldDelegate {
                 UserDefaults.standard.synchronize();
                 
                 print(UserDefaults.standard.string(forKey: "token") ?? "unkwnon");
-                self.performSegue(withIdentifier: "goToDashboard", sender: nil)
+                
+                let mainController = self.storyboard?
+                    .instantiateViewController(withIdentifier: "MainController")
+                    as! UINavigationController
+                self.present(mainController, animated: true, completion: nil)
+//                self.performSegue(withIdentifier: "goToDashboard", sender: nil)
             }
         }
     }
     
     @IBAction func registerPressed(_ sender: UIButton) {
-        self.performSegue(withIdentifier: "goToRegister", sender: nil)
+        let registerConroller = storyboard?
+            .instantiateViewController(withIdentifier: "RegisterController")
+        as! RegisterController
+        self.present(registerConroller, animated: true, completion: nil)
+//        self.performSegue(withIdentifier: "goToRegister", sender: nil)
     }
     
     func authenticateUser(parameters: [String: String?]) -> Promise<String>{
