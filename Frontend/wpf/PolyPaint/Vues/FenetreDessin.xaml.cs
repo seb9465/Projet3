@@ -241,12 +241,6 @@ namespace PolyPaint
             chat.Visibility = Visibility.Collapsed;
         }
 
-        private void chatButtonSameWindow_Click(object sender, RoutedEventArgs e)
-        {
-            externalChatWindow.Close();
-            chat.Visibility = Visibility.Visible;
-        }
-
         private void sendButton_Click(object sender, RoutedEventArgs e)
         {
             if (!string.IsNullOrWhiteSpace(messageTextBox.Text))
@@ -284,20 +278,24 @@ namespace PolyPaint
 
         private void addRoom(object sender, DialogClosingEventArgs eventArgs)
         {
-
             if (!Equals(eventArgs.Parameter, true)) return;
 
-            if (!string.IsNullOrWhiteSpace(AnimalTextBox.Text))
+            if (!string.IsNullOrWhiteSpace(roomTextBox.Text))
             {
-                roomList.Items.Add(new Room() { Title = AnimalTextBox.Text.Trim() });
+                roomList.Items.Add(new Room() { Title = roomTextBox.Text});
             }
+            clearRoomName(sender, eventArgs);
+        }
+
+        private void clearRoomName(object sender, RoutedEventArgs e)
+        {
+            roomTextBox.Text = "";
         }
 
         public class Room
         {
             public string Title { get; set; }
         }
-
 
         private void roomConnect(object sender, RoutedEventArgs e)
         {
