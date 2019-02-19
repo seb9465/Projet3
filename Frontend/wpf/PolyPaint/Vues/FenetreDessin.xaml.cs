@@ -18,6 +18,7 @@ using PolyPaint.Vues;
 using PolyPaint.Structures;
 using PolyPaint.Strokes;
 using System.Windows.Controls;
+using PolyPaint.Utilitaires;
 
 namespace PolyPaint
 {
@@ -27,8 +28,7 @@ namespace PolyPaint
     public partial class FenetreDessin : Window
     {
         ChatWindow externalChatWindow;
-
-        Stroke DrawingStroke = null;
+        InkCanvasEventManager icEventManager = new InkCanvasEventManager();
         bool IsDrawing = false;
         Point currentPoint, mouseLeftDownPoint;
         public FenetreDessin()
@@ -292,63 +292,23 @@ namespace PolyPaint
 
             if ((DataContext as VueModele).OutilSelectionne == "select")
             {
-                var all = surfaceDessin.EditingMode;
-                StrokeCollection strokes = surfaceDessin.Strokes;
-                // We travel the StrokeCollection inversely to select the first plan item first
-                // if some items overlap.
-                StrokeCollection strokeToSelect = new StrokeCollection();
-                for (int i = strokes.Count - 1; i >= 0; i--)
-                {
-                    Rect box = strokes[i].GetBounds();
-                    if (mouseLeftDownPoint.X >= box.Left && mouseLeftDownPoint.X <= box.Right &&
-                        mouseLeftDownPoint.Y <= box.Bottom && mouseLeftDownPoint.Y >= box.Top)
-                    {
-                        strokeToSelect.Add(strokes[i]);
-                        surfaceDessin.Select(strokeToSelect);
-                        break;
-                    }
-                }
+                icEventManager.SelectItem(surfaceDessin, mouseLeftDownPoint);
             }
 
             IsDrawing = true;
         }
         private void InkCanvas_LeftMouseMove(object sender, MouseEventArgs e)
         {
+            currentPoint = e.GetPosition((IInputElement)sender);
             if (IsDrawing)
             {
-                currentPoint = e.GetPosition((IInputElement)sender);
-                StylusPointCollection pts = new StylusPointCollection();
-
-                pts.Add(new StylusPoint(mouseLeftDownPoint.X, mouseLeftDownPoint.Y));
-                pts.Add(new StylusPoint(currentPoint.X, currentPoint.Y));
-
-                if (DrawingStroke != null)
-                    surfaceDessin.Strokes.Remove(DrawingStroke);
-
-                switch ((DataContext as VueModele).OutilSelectionne)
-                {
-                    case "rectangle":
-                        DrawingStroke = new RectangleStroke(pts);
-                        DrawingStroke.DrawingAttributes.Color = Colors.LightBlue;
-                        surfaceDessin.Strokes.Add(DrawingStroke);
-                        break;
-                    case "rounded_rectangle":
-                        DrawingStroke = new RoundedRectangleStroke(pts);
-                        DrawingStroke.DrawingAttributes.Color = Colors.Red;
-                        surfaceDessin.Strokes.Add(DrawingStroke);
-                        break;
-                }
+                icEventManager.DrawShape(surfaceDessin, (DataContext as VueModele).OutilSelectionne, currentPoint, mouseLeftDownPoint);                
             }
         }
 
         private void InkCanvas_LeftMouseUp(object sender, MouseButtonEventArgs e)
         {
-            if (DrawingStroke != null && (DataContext as VueModele).OutilSelectionne == "rectangle" 
-                                      || (DataContext as VueModele).OutilSelectionne == "rounded_rectangle")
-            {
-                surfaceDessin.Strokes.Remove(DrawingStroke);
-                surfaceDessin.Strokes.Add(DrawingStroke.Clone());
-            }
+            icEventManager.EndDraw(surfaceDessin, (DataContext as VueModele).OutilSelectionne);
             IsDrawing = false;
         }
     }
