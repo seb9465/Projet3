@@ -266,7 +266,7 @@
         <!--Dashboard Controller-->
         <scene sceneID="mBQ-oF-8KH">
             <objects>
-                <viewController id="Pl7-a7-y5J" customClass="DashboardController" customModule="ios" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="DashboardView" id="Pl7-a7-y5J" customClass="DashboardController" customModule="ios" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="ieC-AE-bqk">
                         <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

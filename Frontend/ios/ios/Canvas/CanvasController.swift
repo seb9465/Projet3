@@ -107,7 +107,7 @@ extension CanvasController {
     func tapQuitButton() {
         let yesAction = UIAlertAction(title: "Yes", style: .default) { _ in
             let mainView: UIStoryboard = UIStoryboard(name: "Main", bundle: nil);
-            let viewcontroller : UIViewController = mainView.instantiateViewController(withIdentifier: "LoginStoryboard") as UIViewController;
+            let viewcontroller : UIViewController = mainView.instantiateViewController(withIdentifier: "DashboardView") as UIViewController;
             self.present(viewcontroller, animated: true, completion: nil);
         }
         let noAction = UIAlertAction(title: "No", style: .default) { _ in }
