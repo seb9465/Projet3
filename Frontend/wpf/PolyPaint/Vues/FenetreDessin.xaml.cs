@@ -286,7 +286,7 @@ namespace PolyPaint
             }
             catch { }
         }
-        private void InkCanvas_StartDraw(object sender, MouseButtonEventArgs e)
+        private void InkCanvas_LeftMouseDown(object sender, MouseButtonEventArgs e)
         {
             mouseLeftDownPoint = e.GetPosition((IInputElement)sender);
 
@@ -312,7 +312,7 @@ namespace PolyPaint
 
             IsDrawing = true;
         }
-        private void InkCanvas_DrawMove(object sender, MouseEventArgs e)
+        private void InkCanvas_LeftMouseMove(object sender, MouseEventArgs e)
         {
             if (IsDrawing)
             {
@@ -341,7 +341,7 @@ namespace PolyPaint
             }
         }
 
-        private void InkCanvas_EndDraw(object sender, MouseButtonEventArgs e)
+        private void InkCanvas_LeftMouseUp(object sender, MouseButtonEventArgs e)
         {
             if (DrawingStroke != null && (DataContext as VueModele).OutilSelectionne == "rectangle" 
                                       || (DataContext as VueModele).OutilSelectionne == "rounded_rectangle")

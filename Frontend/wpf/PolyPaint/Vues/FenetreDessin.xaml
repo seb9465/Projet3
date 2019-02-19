@@ -255,7 +255,7 @@
             <Border BorderThickness="5,5,0,0">
                 <InkCanvas ClipToBounds="True" Grid.Column="0" Grid.Row="0" Name="surfaceDessin" 
                            HorizontalAlignment="Stretch" VerticalAlignment="Stretch"                           
-                           MouseLeave="surfaceDessin_MouseLeave" MouseMove="surfaceDessin_MouseMove" PreviewMouseMove="InkCanvas_DrawMove" PreviewMouseUp="InkCanvas_EndDraw" PreviewMouseDown="InkCanvas_StartDraw"                                   
+                           MouseLeave="surfaceDessin_MouseLeave" MouseMove="surfaceDessin_MouseMove" PreviewMouseMove="InkCanvas_LeftMouseMove" PreviewMouseUp="InkCanvas_LeftMouseUp" PreviewMouseDown="InkCanvas_LeftMouseDown"                                   
                            Strokes="{Binding Path=Traits, Mode=OneTime}" EditingMode="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurModeEdition}, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
                            DefaultDrawingAttributes="{Binding Path=AttributsDessin, Mode=OneTime}"/>
                 <Border.Effect>
