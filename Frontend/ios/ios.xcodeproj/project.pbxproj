@@ -29,7 +29,6 @@
 		B775FE45221366C500B2EFE0 /* ButtonView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B775FE44221366C500B2EFE0 /* ButtonView.xib */; };
 		B781B95922132BDB001C1BD8 /* Canvas.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B781B95822132BDB001C1BD8 /* Canvas.storyboard */; };
 		B781B95B22132C2F001C1BD8 /* CanvasController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B781B95A22132C2F001C1BD8 /* CanvasController.swift */; };
-		B78D42C022161CD000D54E42 /* icons8-undo-100.png in Resources */ = {isa = PBXBuildFile; fileRef = B78D42BF22161CD000D54E42 /* icons8-undo-100.png */; };
 		B7A3A5C02203BF3B00031F64 /* ChatControler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A3A5BF2203BF3B00031F64 /* ChatControler.swift */; };
 		B7A3A5C22203C27600031F64 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A3A5C12203C27600031F64 /* Message.swift */; };
 		B7A3A5C42203CF7100031F64 /* Extensions_Chat.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A3A5C32203CF7100031F64 /* Extensions_Chat.swift */; };
@@ -76,7 +75,6 @@
 		B775FE44221366C500B2EFE0 /* ButtonView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ButtonView.xib; sourceTree = "<group>"; };
 		B781B95822132BDB001C1BD8 /* Canvas.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Canvas.storyboard; sourceTree = "<group>"; };
 		B781B95A22132C2F001C1BD8 /* CanvasController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasController.swift; sourceTree = "<group>"; };
-		B78D42BF22161CD000D54E42 /* icons8-undo-100.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icons8-undo-100.png"; sourceTree = "<group>"; };
 		B7A3A5BF2203BF3B00031F64 /* ChatControler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatControler.swift; sourceTree = "<group>"; };
 		B7A3A5C12203C27600031F64 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		B7A3A5C32203CF7100031F64 /* Extensions_Chat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions_Chat.swift; sourceTree = "<group>"; };
@@ -167,7 +165,6 @@
 		B711B5E821F659A30096BF7F /* ios */ = {
 			isa = PBXGroup;
 			children = (
-				B78D42BE22161CB900D54E42 /* Assets */,
 				B781B95722132671001C1BD8 /* Canvas */,
 				B7567944220F330700F80B12 /* Chat */,
 				3DDE25172202B28E0082E735 /* Buttons */,
@@ -216,14 +213,6 @@
 				B775FE44221366C500B2EFE0 /* ButtonView.xib */,
 			);
 			path = Canvas;
-			sourceTree = "<group>";
-		};
-		B78D42BE22161CB900D54E42 /* Assets */ = {
-			isa = PBXGroup;
-			children = (
-				B78D42BF22161CD000D54E42 /* icons8-undo-100.png */,
-			);
-			path = Assets;
 			sourceTree = "<group>";
 		};
 		D66C1DCE238BFD31669CE467 /* Pods */ = {
@@ -327,7 +316,6 @@
 				B711B5F121F659A50096BF7F /* Assets.xcassets in Resources */,
 				B756794A220F5DC800F80B12 /* Chat.storyboard in Resources */,
 				B711B5EF21F659A30096BF7F /* Main.storyboard in Resources */,
-				B78D42C022161CD000D54E42 /* icons8-undo-100.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
