@@ -21,6 +21,7 @@
 		B711B5F421F659A50096BF7F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B711B5F221F659A50096BF7F /* LaunchScreen.storyboard */; };
 		B711B5FF21F659A50096BF7F /* iosTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B711B5FE21F659A50096BF7F /* iosTests.swift */; };
 		B74BE368221C66B50001D62A /* CanvasService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74BE367221C66B50001D62A /* CanvasService.swift */; };
+		B74BE36A221C823C0001D62A /* SaveService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74BE369221C823C0001D62A /* SaveService.swift */; };
 		B7567946220F33CD00F80B12 /* ChatService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7567945220F33CD00F80B12 /* ChatService.swift */; };
 		B7567948220F355F00F80B12 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7567947220F355F00F80B12 /* Constants.swift */; };
 		B756794A220F5DC800F80B12 /* Chat.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B7567949220F5DC800F80B12 /* Chat.storyboard */; };
@@ -66,6 +67,7 @@
 		B711B5FE21F659A50096BF7F /* iosTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iosTests.swift; sourceTree = "<group>"; };
 		B711B60021F659A50096BF7F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B74BE367221C66B50001D62A /* CanvasService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasService.swift; sourceTree = "<group>"; };
+		B74BE369221C823C0001D62A /* SaveService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveService.swift; sourceTree = "<group>"; };
 		B7567945220F33CD00F80B12 /* ChatService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatService.swift; sourceTree = "<group>"; };
 		B7567947220F355F00F80B12 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		B7567949220F5DC800F80B12 /* Chat.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Chat.storyboard; sourceTree = "<group>"; };
@@ -208,6 +210,7 @@
 				B74BE367221C66B50001D62A /* CanvasService.swift */,
 				B781B95822132BDB001C1BD8 /* Canvas.storyboard */,
 				B781B95A22132C2F001C1BD8 /* CanvasController.swift */,
+				B74BE369221C823C0001D62A /* SaveService.swift */,
 			);
 			path = Canvas;
 			sourceTree = "<group>";
@@ -410,6 +413,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B74BE36A221C823C0001D62A /* SaveService.swift in Sources */,
 				3DC967EB220A067900FA76CB /* LoginController.swift in Sources */,
 				3DC61EB92200B44B003FE445 /* RegisterController.swift in Sources */,
 				3D5537C22200ED5F002C1B77 /* SlideUpSegue.swift in Sources */,
