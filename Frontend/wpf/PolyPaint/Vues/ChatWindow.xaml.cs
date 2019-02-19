@@ -34,9 +34,9 @@ namespace PolyPaint.Vues
             {
                 try
                 {
-                    (DataContext as VueModele).ChatClient.SendMessage(messageTextBox.Text);
+                    (DataContext as VueModele).ChatClient.SendMessage(messageTextBox.Text, (DataContext as VueModele).CurrentRoom);
 
-                    messageTextBox.Text = String.Empty;
+                    messageTextBox.Text = string.Empty;
                 }
                 catch (Exception ex)
                 {

@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using System.Windows.Ink;
 using System.Windows.Media;
 using Microsoft.AspNetCore.SignalR.Client;
@@ -20,6 +22,8 @@ namespace PolyPaint.VueModeles
     {
         public event PropertyChangedEventHandler PropertyChanged;
         private Editeur editeur = new Editeur();
+        private string _currentRoom;
+        public ConcurrentDictionary<string, ListBox> MessagesByChannel;
 
         public ChatClient ChatClient { get; set; }
 
@@ -27,6 +31,12 @@ namespace PolyPaint.VueModeles
         public DrawingAttributes AttributsDessin { get; set; } = new DrawingAttributes();
 
         public HubConnection Connection { get; private set; }
+
+        public string CurrentRoom
+        {
+            get { return _currentRoom; }
+            set { _currentRoom = value; ProprieteModifiee("CurrentRoom");  }
+        }
 
         public string OutilSelectionne
         {
@@ -59,6 +69,7 @@ namespace PolyPaint.VueModeles
         public RelayCommand<object> Depiler { get; set; }
         public RelayCommand<string> ChoisirPointe { get; set; }
         public RelayCommand<string> ChoisirOutil { get; set; }
+        public RelayCommand<string> ChoisirRoom { get; set; }
         public RelayCommand<object> Reinitialiser { get; set; }        
 
         /// <summary>
@@ -87,6 +98,7 @@ namespace PolyPaint.VueModeles
             // Donc, aucune vérification de type Peut"Action" à faire.
             ChoisirPointe = new RelayCommand<string>(editeur.ChoisirPointe);
             ChoisirOutil = new RelayCommand<string>(editeur.ChoisirOutil);
+            ChoisirRoom = new RelayCommand<string>(choisirRoom);
             Reinitialiser = new RelayCommand<object>(editeur.Reinitialiser);            
         }
 
@@ -140,6 +152,11 @@ namespace PolyPaint.VueModeles
             AttributsDessin.StylusTip = (editeur.PointeSelectionnee == "ronde") ? StylusTip.Ellipse : StylusTip.Rectangle;
             AttributsDessin.Width = (editeur.PointeSelectionnee == "verticale") ? 1 : editeur.TailleTrait;
             AttributsDessin.Height = (editeur.PointeSelectionnee == "horizontale") ? 1 : editeur.TailleTrait;
+        }
+
+        private void choisirRoom(string room)
+        {
+            CurrentRoom = room;
         }
     }
 }

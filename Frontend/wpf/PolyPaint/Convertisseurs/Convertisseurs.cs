@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Globalization;
 using System.Windows.Controls;
 using System.Windows.Data;
 
 namespace PolyPaint.Convertisseurs
 {
+
     /// <summary>
     /// Permet de générer une couleur en fonction de la chaine passée en paramètre.
     /// Par exemple, pour chaque bouton d'un groupe d'options on compare son nom avec l'élément actif (sélectionné) du groupe.

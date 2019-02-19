@@ -21,6 +21,7 @@
         <convertisseurs:ConvertisseurBordure x:Key="convertisseurBordure" />
         <convertisseurs:ConvertisseurCouleurFond x:Key="convertisseurCouleurFond" />
         <convertisseurs:ConvertisseurModeEdition x:Key="convertisseurModeEdition" />
+        <convertisseurs:ConvertisseurRoom x:Key="convertisseurRoom" />
     </Window.Resources>
     <DockPanel Margin="0,0,-4.444,-0.111">
 
@@ -237,7 +238,7 @@
                 <Button x:Name="chatButtonSameWindow" Content="Open chat in same window" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Bottom" Width="200" Click="chatButtonSameWindow_Click" Height="30" />
             </StackPanel>
             <Grid x:Name="chat" Margin="0,0,0,0">
-                <ListBox x:Name="messagesList" HorizontalAlignment="Left" Height="180" Margin="85,20,0,0" VerticalAlignment="Top" Width="500"  BorderThickness="1" Grid.ColumnSpan="2" BorderBrush="Gainsboro">
+                <ListBox ItemsSource="{Binding Path=GetItems, UpdateSourceTrigger=PropertyChanged}"  x:Name="messagesList" HorizontalAlignment="Left" Height="180" Margin="85,20,0,0" VerticalAlignment="Top" Width="500"  BorderThickness="1" Grid.ColumnSpan="2" BorderBrush="Gainsboro">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding Path=.}" TextWrapping="Wrap"></TextBlock>
@@ -287,6 +288,9 @@
                                     <Grid Margin="0,2">
                                         <TextBlock Text="{Binding Title}" Margin="0,0,50,0"/>
                                         <Button Content="Connected" Width="100" Height="20" FontSize="10" Click="roomConnect" Background="GreenYellow" BorderBrush="Transparent" Foreground="Black" Margin="120,0,0,0" />
+                                        <RadioButton Margin="250,0,0,0" GroupName="ChatRooms"
+                                                Command="{Binding Path=DataContext.ChoisirRoom, ElementName=roomList}"
+                                                CommandParameter="{Binding Title}" />
                                     </Grid>
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
