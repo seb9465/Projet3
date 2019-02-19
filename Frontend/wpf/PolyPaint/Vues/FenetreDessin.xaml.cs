@@ -60,6 +60,14 @@ namespace PolyPaint
         {
             Point p = e.GetPosition(surfaceDessin);
             textBlockPosition.Text = Math.Round(p.X) + ", " + Math.Round(p.Y) + "px";
+
+            // Select single UML option is not an existing InkCanvasEditingMode, so this extra verification
+            // is required when moving the mouse in canvas.
+            if ((DataContext as VueModele).OutilSelectionne == "lasso")
+                surfaceDessin.EditingMode = InkCanvasEditingMode.Select;
+
+            else if (surfaceDessin.GetSelectedStrokes().Count == 0)
+                surfaceDessin.EditingMode = InkCanvasEditingMode.None;
         }
 
         private void DupliquerSelection(object sender, RoutedEventArgs e)
@@ -284,20 +292,24 @@ namespace PolyPaint
 
             if ((DataContext as VueModele).OutilSelectionne == "select")
             {
-                StrokeCollection allo = surfaceDessin.Strokes;
-                foreach (var maybeStroke in allo)
+                var all = surfaceDessin.EditingMode;
+                StrokeCollection strokes = surfaceDessin.Strokes;
+                // We travel the StrokeCollection inversely to select the first plan item first
+                // if some items overlap.
+                StrokeCollection strokeToSelect = new StrokeCollection();
+                for (int i = strokes.Count - 1; i >= 0; i--)
                 {
-                    StrokeCollection collection = new StrokeCollection();
-                    Rect box = maybeStroke.GetBounds();
+                    Rect box = strokes[i].GetBounds();
                     if (mouseLeftDownPoint.X >= box.Left && mouseLeftDownPoint.X <= box.Right &&
                         mouseLeftDownPoint.Y <= box.Bottom && mouseLeftDownPoint.Y >= box.Top)
                     {
-                        collection.Add(maybeStroke);
-                        surfaceDessin.Select(collection);
+                        strokeToSelect.Add(strokes[i]);
+                        surfaceDessin.Select(strokeToSelect);
                         break;
                     }
                 }
             }
+
             IsDrawing = true;
         }
         private void InkCanvas_DrawMove(object sender, MouseEventArgs e)
