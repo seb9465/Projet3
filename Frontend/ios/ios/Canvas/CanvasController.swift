@@ -79,6 +79,9 @@ class CanvasController: UIViewController {
         self.present(alert, animated: true, completion: nil)
     }
     
+    @IBAction func undoButton(_ sender: Any) {
+        self.undo();
+    }
     public func undo() {
 //        if (undoArray.count > 0) {
 //            guard let p = pathArray.lastObject else { return }

@@ -32,6 +32,11 @@
                                             <action selector="drawRectButton:" destination="Vts-He-P18" id="OqV-ma-hpT"/>
                                         </connections>
                                     </barButtonItem>
+                                    <barButtonItem title="Undo" id="vbj-g9-11e">
+                                        <connections>
+                                            <action selector="undoButton:" destination="Vts-He-P18" id="Q7f-VC-utl"/>
+                                        </connections>
+                                    </barButtonItem>
                                 </items>
                             </toolbar>
                         </subviews>
