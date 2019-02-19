@@ -81,7 +81,7 @@
                         Background="Transparent" BorderBrush="Transparent">
                         <materialDesign:PackIcon Kind="ContentCut" Height="17" Width="17" />
                     </Button>
-                    
+
                 </StackPanel>
                 <Button Name="lasso"
                         Style="{StaticResource MaterialDesignRaisedLightButton}" HorizontalAlignment="Left" ToolTip="MaterialDesignRaisedLightButton" 
@@ -187,7 +187,7 @@
                         Foreground="OrangeRed"                        
                         TickFrequency="10" TickPlacement="BottomRight" IsSnapToTickEnabled="False">
                 </Slider>
-         
+
             </StackPanel>
         </Border>
 
@@ -229,29 +229,79 @@
                     <DropShadowEffect Opacity="0.3" BlurRadius="10"/>
                 </Border.Effect>
             </Border>
-            
+
         </Grid>
         <StackPanel Orientation="Vertical">
-            <Button x:Name="chatButton" Content="Open chat in new window" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Bottom"  Width="210" Click="chatButton_Click" Height="41" />
-            <Button x:Name="chatButtonSameWindow" Content="Open chat in same window" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Bottom" Width="210" Click="chatButtonSameWindow_Click" Height="41" />
-            <Grid Margin="0,0,0,0"  x:Name="chat">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="109*"/>
-                    <ColumnDefinition Width="288*"/>
-                </Grid.ColumnDefinitions>
-                <ListBox x:Name="messagesList" HorizontalAlignment="Left" Height="180" Margin="85,50,0,20" VerticalAlignment="Top" Width="500" RenderTransformOrigin="-0.304,0.109" BorderThickness="1" Grid.ColumnSpan="2" BorderBrush="Gainsboro">
+            <StackPanel Orientation="Horizontal">
+                <Button x:Name="chatButton" Content="Open chat in new window" HorizontalAlignment="Left" Margin="10,10,0,0"  Width="200" Click="chatButton_Click" Height="30" />
+                <Button x:Name="chatButtonSameWindow" Content="Open chat in same window" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Bottom" Width="200" Click="chatButtonSameWindow_Click" Height="30" />
+            </StackPanel>
+            <Grid x:Name="chat" Margin="0,0,0,0">
+                <ListBox x:Name="messagesList" HorizontalAlignment="Left" Height="180" Margin="85,20,0,0" VerticalAlignment="Top" Width="500"  BorderThickness="1" Grid.ColumnSpan="2" BorderBrush="Gainsboro">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding Path=.}" TextWrapping="Wrap"></TextBlock>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
-                <Button x:Name="sendButton" Content="Send Message" HorizontalAlignment="Left" Margin="240,220,0,0" VerticalAlignment="Bottom" Width="125" Click="sendButton_Click" Height="41" Grid.Column="1" IsEnabled="True"/>
-                <TextBox x:Name="messageTextBox" HorizontalAlignment="Left" Height="41" Margin="85,238,0,0" TextWrapping="Wrap" VerticalAlignment="Bottom" Width="311" Grid.ColumnSpan="2"/>
-                <Label Content="Message" HorizontalAlignment="Left" Height="26" Margin="20,255,0,0" VerticalAlignment="Bottom" Width="100"/>
+                <Button x:Name="sendButton" Content="Send Message" HorizontalAlignment="left" Margin="450,0,0,0" VerticalAlignment="Bottom" Width="125" Click="sendButton_Click" Height="35" Grid.Column="1" IsEnabled="True"/>
+                <TextBox x:Name="messageTextBox" HorizontalAlignment="Left" Height="41" Margin="85,220,0,0" TextWrapping="Wrap" VerticalAlignment="Bottom" Width="311" Grid.ColumnSpan="2"/>
+                <Label Content="Message" HorizontalAlignment="Left" Height="26" Margin="20,0,0,0" VerticalAlignment="Bottom" Width="100"/>
 
             </Grid>
+
+            <materialDesign:DialogHost DialogClosing="addRoom" Style="{StaticResource MaterialDesignEmbeddedDialogHost}"
+                Margin="20,50,0,0" Width="300"  HorizontalAlignment="Left" Height="200">
+                <materialDesign:DialogHost.DialogContent>
+                    <StackPanel Margin="15">
+                        <TextBlock>
+                                                Create a new chatroom
+                        </TextBlock>
+                        <TextBox MaxLength="15" Margin="0 8 0 0" HorizontalAlignment="Stretch" x:Name="AnimalTextBox" />
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                            <Button Style="{StaticResource MaterialDesignFlatButton}" IsDefault="True" Margin="0 8 8 0" Command="materialDesign:DialogHost.CloseDialogCommand">
+                                <Button.CommandParameter>
+                                    <system:Boolean xmlns:system="clr-namespace:System;assembly=mscorlib">
+                                        True
+                                    </system:Boolean>
+                                </Button.CommandParameter>
+                                ADD
+                            </Button>
+                            <Button Style="{StaticResource MaterialDesignFlatButton}" IsCancel="True"  Margin="0 8 8 0" Command="materialDesign:DialogHost.CloseDialogCommand">
+                                <Button.CommandParameter>
+                                    <system:Boolean xmlns:system="clr-namespace:System;assembly=mscorlib">
+                                        False
+                                    </system:Boolean>
+                                </Button.CommandParameter>
+                                CANCEL
+                            </Button>
+                        </StackPanel>
+                    </StackPanel>
+                </materialDesign:DialogHost.DialogContent>
+                <Border BorderThickness="1" BorderBrush="{DynamicResource PrimaryHueMidBrush}" ClipToBounds="True" HorizontalAlignment="Stretch">
+                    <Grid>
+
+                        <ListBox Name="roomList" Margin="0,50,0,0" MaxHeight="150" Height="150">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Margin="0,2">
+                                        <TextBlock Text="{Binding Title}" Margin="0,0,50,0"/>
+                                        <Button Content="Connected" Width="100" Height="20" FontSize="10" Click="roomConnect" Background="GreenYellow" BorderBrush="Transparent" Foreground="Black" Margin="120,0,0,0" />
+                                    </Grid>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                        <materialDesign:ColorZone Mode="PrimaryMid">
+                            <TextBlock  Margin="16">
+                                  Chatrooms
+                            </TextBlock>
+                        </materialDesign:ColorZone>
+                        <Button Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}" Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}" VerticalAlignment="Top" HorizontalAlignment="Right" Grid.Row="0" Margin="0 20 15 0">
+                            <materialDesign:PackIcon Kind="Plus" Height="22" Width="22" />
+                        </Button>
+                    </Grid>
+                </Border>
+            </materialDesign:DialogHost>
         </StackPanel>
-     
     </DockPanel>
 </Window>

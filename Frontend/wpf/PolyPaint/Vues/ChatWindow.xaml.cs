@@ -26,6 +26,7 @@ namespace PolyPaint.Vues
             (DataContext as VueModele).ChatClient.MessageReceived += AddMessage;
             (DataContext as VueModele).ChatClient.SystemMessageReceived += AddSystemMessage;
         }
+        
 
         private void sendButton_Click(object sender, RoutedEventArgs e)
         {
@@ -50,6 +51,7 @@ namespace PolyPaint.Vues
             e.Cancel = true;
             this.Hide();
         }
+
 
         private void enterKeyDown(object sender, KeyEventArgs e)
         {
