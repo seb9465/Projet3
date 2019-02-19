@@ -37,6 +37,11 @@
                                             <action selector="undoButton:" destination="Vts-He-P18" id="Q7f-VC-utl"/>
                                         </connections>
                                     </barButtonItem>
+                                    <barButtonItem title="Redo" id="Bmp-bw-401">
+                                        <connections>
+                                            <action selector="redoButton:" destination="Vts-He-P18" id="2RI-2W-Sfy"/>
+                                        </connections>
+                                    </barButtonItem>
                                 </items>
                             </toolbar>
                         </subviews>

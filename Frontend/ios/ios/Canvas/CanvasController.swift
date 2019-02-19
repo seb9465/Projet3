@@ -50,6 +50,14 @@ class CanvasController: UIViewController {
         navigationController?.setNavigationBarHidden(false, animated: animated);
     }
     
+    @IBAction func undoButton(_ sender: Any) {
+        self.undo();
+    }
+    
+    @IBAction func redoButton(_ sender: Any) {
+        self.redo();
+    }
+    
     @IBAction func drawRectButton(_ sender: Any) {
         if (self.toolState == STATE.DRAW_RECT) {
             self.toolState = STATE.NOTHING_SELECTED;
@@ -76,9 +84,6 @@ class CanvasController: UIViewController {
         self.present(alert, animated: true, completion: nil)
     }
     
-    @IBAction func undoButton(_ sender: Any) {
-        self.undo();
-    }
     public func undo() {
         if (undoArray.count > 0) {
             let v: CanvasService = self.view.subviews.last as! CanvasService;
