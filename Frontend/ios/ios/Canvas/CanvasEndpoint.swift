@@ -12,7 +12,6 @@ import Alamofire
 enum CanvasEndpoint: APIConfiguration {
     case getAll()
     
-    // MARK: - HTTPMethod
     var method: HTTPMethod {
         switch self {
         case .getAll():
@@ -20,7 +19,6 @@ enum CanvasEndpoint: APIConfiguration {
         }
     }
     
-    // MARK: - Path
     var path: String {
         switch self {
         case .getAll():
@@ -28,11 +26,20 @@ enum CanvasEndpoint: APIConfiguration {
         }
     }
     
-    // MARK: - Parameters
     var parameters: Parameters? {
         switch self {
         case .getAll():
             return nil
+        }
+    }
+    
+    var headers: HTTPHeaders {
+        switch self {
+        case .getAll():
+            return [
+                "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6InVzZXIuMiIsIm5hbWVpZCI6IjFmOTNlODQ0LTQ2OWEtNDEzOS04MTBhLTRjMzIxN2RiNDU4OCIsImZhbWlseV9uYW1lIjoidXNlcjIiLCJuYmYiOjE1NTA2MDk0MDUsImV4cCI6NjE1NTA2MDkzNDUsImlhdCI6MTU1MDYwOTQwNSwiaXNzIjoiaHR0cHM6Ly9wb2x5cGFpbnQubWUiLCJhdWQiOiJodHRwczovL3BvbHlwYWludC5tZSJ9.EF94akvlPi7XkdcvNCM-mqD0JhWD7w7v7B-rCqLnYOQ==",
+                "Accept": "application/json"
+            ]
         }
     }
     

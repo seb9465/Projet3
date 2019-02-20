@@ -20,7 +20,7 @@ final class GalleryController: UICollectionViewController {
     )
     
     override func viewDidLoad() {
-        print(CanvasService.getAll())
+        CanvasService.getAll()
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

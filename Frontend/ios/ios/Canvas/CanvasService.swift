@@ -15,19 +15,29 @@ class CanvasService {
     
     @discardableResult
     private static func request(route:CanvasEndpoint) -> Promise<Any> {
+        let token = UserDefaults.standard.string(forKey: "token")
+        let headers = [
+            "Authorization": "Bearer " + token!,
+            "Accept": "application/json"
+        ]
+        
+        let url: URLConvertible = "https://polypaint.me/api/user/canvas"
+        
         return Promise {seal in
-            Alamofire.request(route).responseJSON{ (response) in
+            let request = Alamofire.request(url, method: .get, encoding: JSONEncoding.default, headers: headers).responseJSON{ (response) in
                 switch response.result {
-                case .success(let value):
-                     seal.fulfill(value);
-                case .failure(let error):
-                     seal.fulfill(error);
+                    case .success(let value):
+                         seal.fulfill(value);
+                    case .failure(let error):
+                         seal.fulfill(error);
                 }
             }
         }
     }
     
-    static func getAll() -> Void{
+    static func getAll() -> Void {
+        let a = CanvasEndpoint.asURLRequest(CanvasEndpoint.getAll());
+        print(a);
         CanvasService.request(route: CanvasEndpoint.getAll()).done{canvas in
             print(canvas)
         }
