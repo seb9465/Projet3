@@ -59,6 +59,10 @@ class CanvasController: UIViewController {
         self.redo();
     }
     
+    @IBAction func clearButton(_ sender: Any) {
+        self.clear();
+    }
+    
     @IBAction func drawRectButton(_ sender: Any) {
         if (self.toolState == STATE.DRAW_RECT) {
             self.toolState = STATE.NOTHING_SELECTED;
@@ -95,9 +99,19 @@ class CanvasController: UIViewController {
     
     public func redo() {
         if (redoArray.count > 0) {
-            let v: CanvasService = self.redoArray.last as! CanvasService;
+            let v: CanvasService = self.redoArray.last!;
             self.view.addSubview(v);
             self.redoArray.removeLast();
+        }
+    }
+    
+    public func clear() {
+        if (undoArray.count > 0) {
+            for v in self.undoArray {
+                v.removeFromSuperview();
+            }
+            self.undoArray.removeAll();
+            self.redoArray.removeAll();
         }
     }
 }

@@ -42,6 +42,11 @@
                                             <action selector="redoButton:" destination="Vts-He-P18" id="2RI-2W-Sfy"/>
                                         </connections>
                                     </barButtonItem>
+                                    <barButtonItem title="Clear" id="ic3-cN-C5G">
+                                        <connections>
+                                            <action selector="clearButton:" destination="Vts-He-P18" id="JlR-Gh-chb"/>
+                                        </connections>
+                                    </barButtonItem>
                                 </items>
                             </toolbar>
                         </subviews>
