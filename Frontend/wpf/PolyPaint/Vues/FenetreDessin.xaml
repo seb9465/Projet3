@@ -93,6 +93,39 @@
                         <Image Source="/Resources/lasso.png" Width="25" Height="25"/>
                     </StackPanel>
                 </Button>
+                <Button Name="select"
+                        Style="{StaticResource MaterialDesignRaisedLightButton}" HorizontalAlignment="Left" ToolTip="MaterialDesignRaisedLightButton" 
+                        BorderBrush="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurBordure}, ConverterParameter=select, UpdateSourceTrigger=PropertyChanged}" 
+                            Background="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurCouleurFond}, ConverterParameter=select, UpdateSourceTrigger=PropertyChanged}" 
+                            Command="{Binding Path=ChoisirOutil}"
+                            CommandParameter="select">
+                    <StackPanel>
+                        <Image Source="/Resources/select.png" Width="25" Height="25"/>
+                    </StackPanel>
+                </Button>
+                <StackPanel Orientation="Horizontal">
+                    <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Width="2" />
+                </StackPanel>
+                <Button Name="rectangle"
+                        Style="{StaticResource MaterialDesignRaisedLightButton}" HorizontalAlignment="Left" ToolTip="MaterialDesignRaisedLightButton" 
+                        BorderBrush="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurBordure}, ConverterParameter=rectangle, UpdateSourceTrigger=PropertyChanged}" 
+                        Background="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurCouleurFond}, ConverterParameter=rectangle, UpdateSourceTrigger=PropertyChanged}" 
+                        Command="{Binding Path=ChoisirOutil}"
+                        CommandParameter="rectangle">
+                    <StackPanel>
+                        <Image Source="/Resources/rectangle.png" Height="25" Width="25"  />
+                    </StackPanel>
+                </Button>
+                <Button Name="rounded_rectangle"
+                        Style="{StaticResource MaterialDesignRaisedLightButton}" HorizontalAlignment="Left" ToolTip="MaterialDesignRaisedLightButton" 
+                        BorderBrush="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurBordure}, ConverterParameter=rounded_rectangle, UpdateSourceTrigger=PropertyChanged}" 
+                        Background="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurCouleurFond}, ConverterParameter=rounded_rectangle, UpdateSourceTrigger=PropertyChanged}" 
+                        Command="{Binding Path=ChoisirOutil}"
+                        CommandParameter="rounded_rectangle">
+                    <StackPanel>
+                        <Image Source="/Resources/rounded_rectangle.png" Height="25" Width="25"  />
+                    </StackPanel>
+                </Button>
                 <StackPanel Orientation="Horizontal">
                     <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Width="2" />
                 </StackPanel>
@@ -222,7 +255,7 @@
             <Border BorderThickness="5,5,0,0">
                 <InkCanvas ClipToBounds="True" Grid.Column="0" Grid.Row="0" Name="surfaceDessin" 
                            HorizontalAlignment="Stretch" VerticalAlignment="Stretch"                           
-                           MouseLeave="surfaceDessin_MouseLeave" MouseMove="surfaceDessin_MouseMove"                                              
+                           MouseLeave="surfaceDessin_MouseLeave" MouseMove="surfaceDessin_MouseMove" PreviewMouseMove="InkCanvas_LeftMouseMove" PreviewMouseUp="InkCanvas_LeftMouseUp" PreviewMouseDown="InkCanvas_LeftMouseDown"                                   
                            Strokes="{Binding Path=Traits, Mode=OneTime}" EditingMode="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurModeEdition}, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
                            DefaultDrawingAttributes="{Binding Path=AttributsDessin, Mode=OneTime}"/>
                 <Border.Effect>
