@@ -33,6 +33,8 @@ class CanvasController: UIViewController {
     }
     
     override func viewDidLoad() {
+        super.viewDidLoad();
+        
         let tap = UITapGestureRecognizer(target: self, action: #selector(CanvasController.handleTap(sender:)))
         self.view.addGestureRecognizer(tap);
     }
@@ -41,7 +43,6 @@ class CanvasController: UIViewController {
         super.viewDidAppear(animated);
         
         navigationController?.setNavigationBarHidden(true, animated: animated);
-        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
