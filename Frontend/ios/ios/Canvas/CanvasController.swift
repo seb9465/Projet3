@@ -130,10 +130,12 @@ class CanvasController: UIViewController {
     }
     
     public func undo() {
+        print(undoArray);
         if (undoArray.count > 0) {
             let v: CanvasService = self.view.subviews.last as! CanvasService;
             self.redoArray.append(v);
             v.removeFromSuperview();
+            self.undoArray.removeLast();
         }
     }
     
@@ -141,6 +143,7 @@ class CanvasController: UIViewController {
         if (redoArray.count > 0) {
             let v: CanvasService = self.redoArray.last!;
             self.view.addSubview(v);
+            self.undoArray.append(v);
             self.redoArray.removeLast();
         }
     }
