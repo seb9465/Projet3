@@ -22,6 +22,8 @@ namespace PolyPaint.API
     public class Startup
     {
         private readonly string SIGNALR_URL = "/signalr";
+        private readonly string SIGNALR_COLLABORATIVE_URL = "/signalr/collaborative";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -71,6 +73,7 @@ namespace PolyPaint.API
             app.UseSignalR(routes =>
             {
                 routes.MapHub<PolyPaintHub>(SIGNALR_URL);
+                routes.MapHub<CollaborativeHub>(SIGNALR_COLLABORATIVE_URL);
             });
             app.UseMvc();
             app.Run(async context => { await context.Response.WriteAsync("Route not found in PolyPaint API"); });

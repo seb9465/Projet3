@@ -19,6 +19,8 @@ using PolyPaint.Structures;
 using PolyPaint.Strokes;
 using System.Windows.Controls;
 using PolyPaint.Utilitaires;
+using Microsoft.AspNetCore.SignalR.Client;
+using System.Threading.Tasks;
 
 namespace PolyPaint
 {
@@ -31,10 +33,17 @@ namespace PolyPaint
         InkCanvasEventManager icEventManager = new InkCanvasEventManager();
         bool IsDrawing = false;
         Point currentPoint, mouseLeftDownPoint;
+        private HubConnection Connection;
+
+        public event EventHandler MessageReceived;
+        public event EventHandler SystemMessageReceived;
+
         public FenetreDessin()
         {
             InitializeComponent();
             var token = Application.Current.Properties["token"];
+            token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6InVzZXIuMyIsIm5hbWVpZCI6ImQwZTA2YTkwLWFjMDEtNDhlZS1iODkwLWE1ZDE1ZTg4NGVjNCIsImZhbWlseV9uYW1lIjoidXNlcjMiLCJuYmYiOjE1NTA3MTc0ODksImV4cCI6NjE1NTA3MTc0MjksImlhdCI6MTU1MDcxNzQ4OSwiaXNzIjoiaHR0cHM6Ly9wb2x5cGFpbnQubWUiLCJhdWQiOiJodHRwczovL3BvbHlwYWludC5tZSJ9.YY6FWiP5h2qY89OG4PoKMQkKRgQJLV0P-IhBDoQozWw";
+            this.ConnectToCollaborativeServer((string) token);
             DataContext = new VueModele();
             (DataContext as VueModele).ChatClient.Initialize((string)Application.Current.Properties["token"]);
             (DataContext as VueModele).ChatClient.MessageReceived += AddMessage;
@@ -310,6 +319,44 @@ namespace PolyPaint
         {
             icEventManager.EndDraw(surfaceDessin, (DataContext as VueModele).OutilSelectionne);
             IsDrawing = false;
+        }
+
+        public async void ConnectToCollaborativeServer(string accessToken)
+        {
+            Connection =
+                new HubConnectionBuilder()
+                .WithUrl("https://localhost:5001/signalr/collaborative", options =>
+                {
+                    options.AccessTokenProvider = () => Task.FromResult(accessToken);
+                })
+                .Build();
+
+            HandleMessages();
+            await Connection.StartAsync();
+            await Connection.InvokeAsync("ConnectToGroup", "collaborative");
+        }
+
+
+        private void DialogHost_DialogClosing(object sender, MaterialDesignThemes.Wpf.DialogClosingEventArgs eventArgs)
+        {
+
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void HandleMessages()
+        {
+            Connection.On<string, string, string>("ReceiveMessage", (username, message, timestamp) =>
+            {
+                MessageReceived?.Invoke(this, new MessageArgs(username, message, timestamp));
+            });
+            Connection.On<string>("SystemMessage", (message) =>
+            {
+                Console.WriteLine("message");
+            });
         }
     }
 }

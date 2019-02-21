@@ -283,7 +283,7 @@
 
             </Grid>
 
-            <materialDesign:DialogHost DialogClosing="addRoom" Style="{StaticResource MaterialDesignEmbeddedDialogHost}"
+            <materialDesign:DialogHost DialogClosing="DialogHost_DialogClosing" Style="{StaticResource MaterialDesignEmbeddedDialogHost}"
                 Margin="20,50,0,0" Width="300"  HorizontalAlignment="Left" Height="200">
                 <materialDesign:DialogHost.DialogContent>
                     <StackPanel Margin="15">
@@ -319,7 +319,7 @@
                                 <DataTemplate>
                                     <Grid Margin="0,2">
                                         <TextBlock Text="{Binding Title}" Margin="0,0,50,0"/>
-                                        <Button Content="Connected" Width="100" Height="20" FontSize="10" Click="roomConnect" Background="GreenYellow" BorderBrush="Transparent" Foreground="Black" Margin="120,0,0,0" />
+                                        <Button Content="Connected" Width="100" Height="20" FontSize="10" Click="Button_Click" Background="GreenYellow" BorderBrush="Transparent" Foreground="Black" Margin="120,0,0,0" />
                                     </Grid>
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
