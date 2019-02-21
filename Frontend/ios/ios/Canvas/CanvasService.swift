@@ -43,6 +43,18 @@ class CanvasService {
             self.redoArray.removeLast();
         }
     }
+    
+    public func clear() {
+        for v in self.undoArray {
+            v.removeFromSuperview();
+        }
+        self.undoArray.removeAll();
+        self.redoArray.removeAll();
+    }
+    
+    public func figuresInView() -> Bool {
+        return self.undoArray.count > 0;
+    }
 }
 
 extension CanvasService {

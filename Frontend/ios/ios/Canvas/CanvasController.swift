@@ -153,23 +153,19 @@ class CanvasController: UIViewController {
     }
     
     public func clear() {
-//        if (undoArray.count > 0) {
-//            let alert: UIAlertController = UIAlertController(title: "Alert", message: "Are you sure you want to clear the canvas ?", preferredStyle: .alert);
-//
-//            let yesAction: UIAlertAction = UIAlertAction(title: "Yes", style: .default, handler: { (alert: UIAlertAction!) in
-//                for v in self.undoArray {
-//                v.removeFromSuperview();
-//                }
-//                self.undoArray.removeAll();
-//                self.redoArray.removeAll();
-//            });
-//            let noAction: UIAlertAction = UIAlertAction(title: "No", style: .default, handler:nil);
-//
-//            alert.addAction(yesAction);
-//            alert.addAction(noAction);
-//
-//            self.present(alert, animated: true, completion: nil);
-//        }
+        if (self.canvas.figuresInView()) {
+            let alert: UIAlertController = UIAlertController(title: "Alert", message: "Are you sure you want to clear the canvas ?", preferredStyle: .alert);
+
+            let yesAction: UIAlertAction = UIAlertAction(title: "Yes", style: .default, handler: { (alert: UIAlertAction!) in
+                self.canvas.clear();
+            });
+            let noAction: UIAlertAction = UIAlertAction(title: "No", style: .default, handler:nil);
+
+            alert.addAction(yesAction);
+            alert.addAction(noAction);
+
+            self.present(alert, animated: true, completion: nil);
+        }
     }
     
     public func selectFigure(point: CGPoint) {
