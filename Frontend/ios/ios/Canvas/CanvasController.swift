@@ -35,6 +35,8 @@ class CanvasController: UIViewController {
             self.undoArray.append(can);
         } else if (self.toolState == STATE.SELECTION) {
             self.selectFigure(point: tapPoint);
+        } else if (self.toolState == STATE.DELETE) {
+            self.deleteFigure(point: tapPoint);
         }
     }
     
@@ -75,6 +77,7 @@ class CanvasController: UIViewController {
             self.activeButton = nil;
             self.deleteButton.tintColor = UIColor(red: 0, green: 122/255, blue: 1, alpha: 1);
         } else {
+            print("DELETE BUTTON SELECTED");
             self.toolState = STATE.DELETE;
             self.activeButton?.tintColor = UIColor(red: 0, green: 122/255, blue: 1, alpha: 1);
             self.activeButton = self.deleteButton;
@@ -88,6 +91,7 @@ class CanvasController: UIViewController {
             self.activeButton = nil;
             self.selectButton.tintColor = UIColor(red: 0, green: 122/255, blue: 1, alpha: 1);
         } else {
+            print("SLECT BUTTON SELECTED");
             self.toolState = STATE.SELECTION;
             self.activeButton?.tintColor = UIColor(red: 0, green: 122/255, blue: 1, alpha: 1);
             self.activeButton = self.selectButton;
@@ -101,6 +105,7 @@ class CanvasController: UIViewController {
             self.activeButton = nil;
             self.rectButton.tintColor = UIColor(red:0,green:122/255,blue:1,alpha:1);
         } else {
+            print("RECT BUTTON SELECTED");
             self.toolState = STATE.DRAW_RECT;
             self.activeButton?.tintColor = UIColor(red: 0, green: 122/255, blue: 1, alpha: 1);
             self.activeButton = self.rectButton;
@@ -167,6 +172,23 @@ class CanvasController: UIViewController {
             print("TAPED SUBVIEW");
         } else {
             print("NO SUBVIEW THERE");
+        }
+    }
+    
+    public func deleteFigure(point: CGPoint) {
+        let subview = self.view.hitTest(point, with: nil);
+    
+        if (self.subviewIsInUndoArray(subview: subview!)) {
+            var counter: Int = 0;
+            for v in self.undoArray {
+                if (v == subview) {
+                    self.redoArray.append(v);
+                    v.removeFromSuperview();
+                    self.undoArray.remove(at: counter);
+                    break;
+                }
+                counter += 1;
+            }
         }
     }
     
