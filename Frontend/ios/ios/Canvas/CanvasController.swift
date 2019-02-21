@@ -62,7 +62,8 @@ class CanvasController: UIViewController {
     }
     
     @IBAction func undoButton(_ sender: Any) {
-        self.undo();
+        self.canvas.undo(view: self.view);
+//        self.undo();
     }
     
     @IBAction func redoButton(_ sender: Any) {
