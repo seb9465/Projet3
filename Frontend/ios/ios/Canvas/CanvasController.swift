@@ -21,6 +21,7 @@ class CanvasController: UIViewController {
     
     @IBOutlet var rectButton: UIBarButtonItem!
     @IBOutlet var selectButton: UIBarButtonItem!
+    var activeButton: UIBarButtonItem!;
     
     
     @objc func handleTap(sender: UITapGestureRecognizer? = nil) {
@@ -72,6 +73,8 @@ class CanvasController: UIViewController {
             self.selectButton.tintColor = UIColor(red: 0, green: 122/255, blue: 1, alpha: 1);
         } else {
             self.toolState = STATE.SELECTION;
+            self.activeButton.tintColor = UIColor(red: 0, green: 122/255, blue: 1, alpha: 1);
+            self.activeButton = self.selectButton;
             self.selectButton.tintColor = UIColor(red: 0, green: 0, blue: 0, alpha: 1);
         }
     }
@@ -82,6 +85,8 @@ class CanvasController: UIViewController {
             self.rectButton.tintColor = UIColor(red:0,green:122/255,blue:1,alpha:1);
         } else {
             self.toolState = STATE.DRAW_RECT;
+            self.activeButton.tintColor = UIColor(red: 0, green: 122/255, blue: 1, alpha: 1);
+            self.activeButton = self.rectButton;
             self.rectButton.tintColor = UIColor(red:0,green:0,blue:0,alpha:1);
         }
     }
@@ -139,6 +144,11 @@ class CanvasController: UIViewController {
     }
     
     public func selectFigure(point: CGPoint) {
-        
+        let subview = self.view.hitTest(point, with: nil);
+        if ((subview) != nil) {
+            print("TAPED SUBVIEW");
+        } else {
+            print("NO SUBVIEW THERE");
+        }
     }
 }
