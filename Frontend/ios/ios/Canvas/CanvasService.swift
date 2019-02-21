@@ -10,8 +10,18 @@ import UIKit
 import PromiseKit
 import Alamofire
 
-class CanvasService: UIView {
+class CanvasService {
+    private var undoArray: [FigureService];
     
+    init() {
+        self.undoArray = [];
+        
+    }
+    func addNewFigure(origin: CGPoint, view: UIView) {
+        let figure = FigureService(origin: origin);
+        view.addSubview(figure);
+        self.undoArray.append(figure);
+    }
 }
 
 extension CanvasService {
