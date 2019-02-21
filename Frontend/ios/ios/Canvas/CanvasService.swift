@@ -14,7 +14,7 @@ import Alamofire
 class CanvasService {
     
     @discardableResult
-    private static func request(route:CanvasEndpoint) -> Promise<Any> {
+    private static func request(route:CanvasEndpoint) -> Promise<Data> {
         let token = UserDefaults.standard.string(forKey: "token")
         let headers = [
             "Authorization": "Bearer " + token!,
@@ -25,21 +25,28 @@ class CanvasService {
         
         return Promise {seal in
             let request = Alamofire.request(url, method: .get, encoding: JSONEncoding.default, headers: headers).responseJSON{ (response) in
-                switch response.result {
-                    case .success(let value):
-                         seal.fulfill(value);
-                    case .failure(let error):
-                         seal.fulfill(error);
+               print(response.value)
+//                switch response.result {
+//                    case .success(let value):
+                        seal.fulfill(response.data!);
+//                    case .failure(let error):
+//                         seal.fulfill(nil);
                 }
             }
         }
-    }
+//    }
     
     static func getAll() -> Void {
-        let a = CanvasEndpoint.asURLRequest(CanvasEndpoint.getAll());
-        print(a);
-        CanvasService.request(route: CanvasEndpoint.getAll()).done{canvas in
-            print(canvas)
+        CanvasService.request(route: CanvasEndpoint.getAll()).done{ (data) in
+            do {
+                debugPrint(data)
+                let canvas = try JSONDecoder().decode([Canvas].self, from: data)
+                debugPrint(canvas)
+//                print(canvas[0])
+            } catch {
+                print(error)
+                print("Error in decoding")
+            }
         }
     }
 }

@@ -7,8 +7,8 @@
 //
 
 struct Canvas: Decodable {
-    let CanvasId: String
-    let Name: String
-    let Base64Strokes: String
-    let Base64Image: String
+    let canvasId: String
+    let name: String
+    let base64Strokes: String
+    let base64Image: String
 }
