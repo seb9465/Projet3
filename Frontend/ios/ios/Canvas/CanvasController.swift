@@ -67,7 +67,8 @@ class CanvasController: UIViewController {
     }
     
     @IBAction func redoButton(_ sender: Any) {
-        self.redo();
+        self.canvas.redo(view: self.view);
+//        self.redo();
     }
     
     @IBAction func clearButton(_ sender: Any) {

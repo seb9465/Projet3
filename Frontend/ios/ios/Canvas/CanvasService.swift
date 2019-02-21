@@ -34,6 +34,15 @@ class CanvasService {
             self.undoArray.removeLast();
         }
     }
+    
+    public func redo(view: UIView) {
+        if (redoArray.count > 0) {
+            let v: FigureService = self.redoArray.last!;
+            view.addSubview(v);
+            self.undoArray.append(v);
+            self.redoArray.removeLast();
+        }
+    }
 }
 
 extension CanvasService {
