@@ -15,13 +15,13 @@ enum STATE {
 }
 
 class CanvasController: UIViewController {
+    private var toolState: STATE = STATE.NOTHING_SELECTED;
     private var undoArray: [CanvasService] = [];
     private var redoArray: [CanvasService] = [];
     
     @IBOutlet var rectButton: UIBarButtonItem!
     @IBOutlet var selectButton: UIBarButtonItem!
     
-    var toolState: STATE = STATE.NOTHING_SELECTED;
     
     @objc func handleTap(sender: UITapGestureRecognizer? = nil) {
         let tapPoint: CGPoint = (sender?.location(in: self.view))!;
