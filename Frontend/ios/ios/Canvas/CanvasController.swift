@@ -12,23 +12,31 @@ enum STATE {
     case NOTHING_SELECTED
     case DRAW_RECT
     case SELECTION
+    case DELETE
 }
 
 class CanvasController: UIViewController {
+    private var toolState: STATE = STATE.NOTHING_SELECTED;
     private var undoArray: [CanvasService] = [];
     private var redoArray: [CanvasService] = [];
     
     @IBOutlet var rectButton: UIBarButtonItem!
+    @IBOutlet var selectButton: UIBarButtonItem!
+    @IBOutlet var deleteButton: UIBarButtonItem!
+    var activeButton: UIBarButtonItem!;
     
-    var toolState: STATE = STATE.NOTHING_SELECTED;
     
     @objc func handleTap(sender: UITapGestureRecognizer? = nil) {
-        let tapPoint = sender?.location(in: self.view);
+        let tapPoint: CGPoint = (sender?.location(in: self.view))!;
         
-        if (tapPoint!.y >= 70 && self.toolState == STATE.DRAW_RECT) {
-            let can = CanvasService(origin: tapPoint!);
+        if (tapPoint.y >= 70 && self.toolState == STATE.DRAW_RECT) {
+            let can = CanvasService(origin: tapPoint);
             self.view.addSubview(can);
             self.undoArray.append(can);
+        } else if (self.toolState == STATE.SELECTION) {
+            self.selectFigure(point: tapPoint);
+        } else if (self.toolState == STATE.DELETE) {
+            self.deleteFigure(point: tapPoint);
         }
     }
     
@@ -63,18 +71,50 @@ class CanvasController: UIViewController {
         self.clear();
     }
     
+    @IBAction func deleteButton(_ sender: Any) {
+        if (self.toolState == STATE.DELETE) {
+            self.toolState = STATE.NOTHING_SELECTED;
+            self.activeButton = nil;
+            self.deleteButton.tintColor = UIColor(red: 0, green: 122/255, blue: 1, alpha: 1);
+        } else {
+            print("DELETE BUTTON SELECTED");
+            self.toolState = STATE.DELETE;
+            self.activeButton?.tintColor = UIColor(red: 0, green: 122/255, blue: 1, alpha: 1);
+            self.activeButton = self.deleteButton;
+            self.deleteButton.tintColor = UIColor(red: 0, green: 0, blue: 0, alpha: 1);
+        }
+    }
+    
+    @IBAction func selectFigureButton(_ sender: Any) {
+        if (self.toolState == STATE.SELECTION) {
+            self.toolState = STATE.NOTHING_SELECTED;
+            self.activeButton = nil;
+            self.selectButton.tintColor = UIColor(red: 0, green: 122/255, blue: 1, alpha: 1);
+        } else {
+            print("SLECT BUTTON SELECTED");
+            self.toolState = STATE.SELECTION;
+            self.activeButton?.tintColor = UIColor(red: 0, green: 122/255, blue: 1, alpha: 1);
+            self.activeButton = self.selectButton;
+            self.selectButton.tintColor = UIColor(red: 0, green: 0, blue: 0, alpha: 1);
+        }
+    }
+    
     @IBAction func drawRectButton(_ sender: Any) {
         if (self.toolState == STATE.DRAW_RECT) {
             self.toolState = STATE.NOTHING_SELECTED;
+            self.activeButton = nil;
             self.rectButton.tintColor = UIColor(red:0,green:122/255,blue:1,alpha:1);
         } else {
+            print("RECT BUTTON SELECTED");
             self.toolState = STATE.DRAW_RECT;
+            self.activeButton?.tintColor = UIColor(red: 0, green: 122/255, blue: 1, alpha: 1);
+            self.activeButton = self.rectButton;
             self.rectButton.tintColor = UIColor(red:0,green:0,blue:0,alpha:1);
         }
     }
     
     @IBAction func quitButton(_ sender: Any) {
-        let alert = UIAlertController(title: "Alert", message: "Would you like to quit ?", preferredStyle: .alert)
+        let alert = UIAlertController(title: "Alert", message: "Would you like to quit ?", preferredStyle: .alert);
         
         let yesAction: UIAlertAction = UIAlertAction(title: "Yes", style: .default) { _ in
             let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil);
@@ -86,7 +126,7 @@ class CanvasController: UIViewController {
         alert.addAction(yesAction);
         alert.addAction(noAction);
         
-        self.present(alert, animated: true, completion: nil)
+        self.present(alert, animated: true, completion: nil);
     }
     
     public func undo() {
@@ -107,11 +147,57 @@ class CanvasController: UIViewController {
     
     public func clear() {
         if (undoArray.count > 0) {
-            for v in self.undoArray {
+            let alert: UIAlertController = UIAlertController(title: "Alert", message: "Are you sure you want to clear the canvas ?", preferredStyle: .alert);
+            
+            let yesAction: UIAlertAction = UIAlertAction(title: "Yes", style: .default, handler: { (alert: UIAlertAction!) in
+                for v in self.undoArray {
                 v.removeFromSuperview();
-            }
-            self.undoArray.removeAll();
-            self.redoArray.removeAll();
+                }
+                self.undoArray.removeAll();
+                self.redoArray.removeAll();
+            });
+            let noAction: UIAlertAction = UIAlertAction(title: "No", style: .default, handler:nil);
+            
+            alert.addAction(yesAction);
+            alert.addAction(noAction);
+            
+            self.present(alert, animated: true, completion: nil);
         }
+    }
+    
+    public func selectFigure(point: CGPoint) {
+        let subview = self.view.hitTest(point, with: nil);
+        
+        if (self.subviewIsInUndoArray(subview: subview!)) {
+            print("TAPED SUBVIEW");
+        } else {
+            print("NO SUBVIEW THERE");
+        }
+    }
+    
+    public func deleteFigure(point: CGPoint) {
+        let subview = self.view.hitTest(point, with: nil);
+    
+        if (self.subviewIsInUndoArray(subview: subview!)) {
+            var counter: Int = 0;
+            for v in self.undoArray {
+                if (v == subview) {
+                    self.redoArray.append(v);
+                    v.removeFromSuperview();
+                    self.undoArray.remove(at: counter);
+                    break;
+                }
+                counter += 1;
+            }
+        }
+    }
+    
+    public func subviewIsInUndoArray(subview: UIView) -> Bool {
+        for a in self.undoArray {
+            if (a == subview) {
+                return true;
+            }
+        }
+        return false;
     }
 }
