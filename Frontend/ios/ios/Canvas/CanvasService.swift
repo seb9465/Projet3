@@ -12,15 +12,27 @@ import Alamofire
 
 class CanvasService {
     private var undoArray: [FigureService];
+    private var redoArray: [FigureService];
     
     init() {
         self.undoArray = [];
-        
+        self.redoArray = [];
     }
+    
     func addNewFigure(origin: CGPoint, view: UIView) {
         let figure = FigureService(origin: origin);
         view.addSubview(figure);
         self.undoArray.append(figure);
+    }
+    
+    public func undo(view: UIView) {
+        print(undoArray);
+        if (undoArray.count > 0) {
+            let v: FigureService = view.subviews.last as! FigureService;
+            self.redoArray.append(v);
+            v.removeFromSuperview();
+            self.undoArray.removeLast();
+        }
     }
 }
 

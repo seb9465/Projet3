@@ -18,7 +18,7 @@ enum STATE {
 class CanvasController: UIViewController {
     private var toolState: STATE = STATE.NOTHING_SELECTED;
 //    private var undoArray: [CanvasService] = [];
-    private var redoArray: [CanvasService] = [];
+//    private var redoArray: [CanvasService] = [];
     private var canvas: CanvasService = CanvasService();
     
     @IBOutlet var rectButton: UIBarButtonItem!
