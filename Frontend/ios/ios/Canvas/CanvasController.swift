@@ -181,27 +181,7 @@ class CanvasController: UIViewController {
     
     public func deleteFigure(point: CGPoint) {
         let subview = self.view.hitTest(point, with: nil);
-    
-//        if (self.subviewIsInUndoArray(subview: subview!)) {
-//            var counter: Int = 0;
-//            for v in self.undoArray {
-//                if (v == subview) {
-//                    self.redoArray.append(v);
-//                    v.removeFromSuperview();
-//                    self.undoArray.remove(at: counter);
-//                    break;
-//                }
-//                counter += 1;
-//            }
-//        }
-    }
-    
-    public func subviewIsInUndoArray(subview: UIView) -> Bool {
-//        for a in self.undoArray {
-//            if (a == subview) {
-//                return true;
-//            }
-//        }
-        return false;
+        
+        self.canvas.deleteFigure(subview: subview!);
     }
 }

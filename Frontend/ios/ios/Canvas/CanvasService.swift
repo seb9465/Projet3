@@ -55,6 +55,30 @@ class CanvasService {
     public func figuresInView() -> Bool {
         return self.undoArray.count > 0;
     }
+    
+    public func subviewIsInUndoArray(subview: UIView) -> Bool {
+        for a in self.undoArray {
+            if (a == subview) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    public func deleteFigure(subview: UIView) {
+        if (self.subviewIsInUndoArray(subview: subview)) {
+            var counter: Int = 0;
+            for v in self.undoArray {
+                if (v == subview) {
+                    self.redoArray.append(v);
+                    v.removeFromSuperview();
+                    self.undoArray.remove(at: counter);
+                    break;
+                }
+                counter += 1;
+            }
+        }
+    }
 }
 
 extension CanvasService {
