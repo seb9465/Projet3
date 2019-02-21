@@ -170,6 +170,7 @@ class CanvasController: UIViewController {
         
         if (self.subviewIsInUndoArray(subview: subview!)) {
             print("TAPED SUBVIEW");
+            (subview as! CanvasService).isSelected = true;
         } else {
             print("NO SUBVIEW THERE");
         }
