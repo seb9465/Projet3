@@ -45,7 +45,7 @@ class CanvasService: UIView {
 //        frame.origin.y =  window.frame.origin.y + touchLocation.y - oldY;
 //        window.frame = frame;
         print("DRAW IS CALLED");
-        let r: CGRect = CGRect(x: firstPoint.x, y: firstPoint.y, width: lastPoint.x - firstPoint.x, height: lastPoint.y - firstPoint.y);
+        let r: CGRect = CGRect(x: 0, y: 0, width: lastPoint.x - firstPoint.x, height: lastPoint.y - firstPoint.y);
         
         self.frame = CGRect(x: firstPoint.x, y: firstPoint.y, width: lastPoint.x - firstPoint.x, height: lastPoint.y - firstPoint.y);
         
@@ -80,7 +80,14 @@ class CanvasService: UIView {
             previousPoint1 = point.previousLocation(in: self)
             currentPoint = point.location(in: self)
             
-            self.lastPoint = currentPoint!;
+            let deltax = currentPoint!.x - previousPoint1!.x;
+            let deltay = currentPoint!.y - previousPoint1!.y;
+            
+            self.lastPoint.x += deltax;
+            self.lastPoint.y += deltay;
+            self.firstPoint.x += deltax;
+            self.firstPoint.y += deltay;
+            
             setNeedsDisplay();
         }
     }
