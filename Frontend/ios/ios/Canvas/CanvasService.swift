@@ -17,13 +17,13 @@ class CanvasService: UIView {
     init(origin: CGPoint) {
         super.init(frame: CGRect(x: 0, y: 0, width: 100, height: 100));
         self.center = origin;
-        // Background color du frame.
+        
         self.backgroundColor = UIColor.clear;
     }
     
     override init(frame: CGRect) {
         super.init(frame: CGRect(x: 100, y: 100, width: 100, height: 100));
-        // Background color du frame.
+        
         self.backgroundColor = UIColor.clear;
     }
     
@@ -41,8 +41,6 @@ class CanvasService: UIView {
         path.fill();
         path.stroke();
     }
-    
-    
 }
 
 extension CanvasService {
