@@ -47,7 +47,11 @@
                                             <action selector="clearButton:" destination="Vts-He-P18" id="JlR-Gh-chb"/>
                                         </connections>
                                     </barButtonItem>
-                                    <barButtonItem title="Select" id="Lts-nR-qFd"/>
+                                    <barButtonItem title="Select" id="Lts-nR-qFd">
+                                        <connections>
+                                            <action selector="selectFigureButton:" destination="Vts-He-P18" id="ZEn-to-nDy"/>
+                                        </connections>
+                                    </barButtonItem>
                                 </items>
                             </toolbar>
                         </subviews>

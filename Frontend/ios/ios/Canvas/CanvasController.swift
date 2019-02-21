@@ -23,12 +23,14 @@ class CanvasController: UIViewController {
     var toolState: STATE = STATE.NOTHING_SELECTED;
     
     @objc func handleTap(sender: UITapGestureRecognizer? = nil) {
-        let tapPoint = sender?.location(in: self.view);
+        let tapPoint: CGPoint = (sender?.location(in: self.view))!;
         
-        if (tapPoint!.y >= 70 && self.toolState == STATE.DRAW_RECT) {
-            let can = CanvasService(origin: tapPoint!);
+        if (tapPoint.y >= 70 && self.toolState == STATE.DRAW_RECT) {
+            let can = CanvasService(origin: tapPoint);
             self.view.addSubview(can);
             self.undoArray.append(can);
+        } else if (self.toolState == STATE.SELECTION) {
+            self.selectFigure(point: tapPoint);
         }
     }
     
@@ -61,6 +63,10 @@ class CanvasController: UIViewController {
     
     @IBAction func clearButton(_ sender: Any) {
         self.clear();
+    }
+    
+    @IBAction func selectFigureButton(_ sender: Any) {
+        self.toolState = STATE.SELECTION;
     }
     
     @IBAction func drawRectButton(_ sender: Any) {
@@ -123,5 +129,9 @@ class CanvasController: UIViewController {
             
             self.present(alert, animated: true, completion: nil);
         }
+    }
+    
+    public func selectFigure(point: CGPoint) {
+        
     }
 }
