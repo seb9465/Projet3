@@ -469,6 +469,12 @@
   <ItemGroup>
     <Resource Include="Resources\rounded_rectangle.png" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Common\PolyPaint.Common\PolyPaint.Common.csproj">
+      <Project>{9b11c2a8-1f73-4ea4-a48f-de2ff7bb589c}</Project>
+      <Name>PolyPaint.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

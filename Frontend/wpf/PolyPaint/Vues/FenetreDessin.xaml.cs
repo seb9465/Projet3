@@ -1,26 +1,25 @@
-using System;
-using System.Windows;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Controls.Primitives;
-using PolyPaint.VueModeles;
-using System.Windows.Media.Imaging;
-using System.IO;
+using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Win32;
-using System.Windows.Ink;
-using System.Net.Http;
-using PolyPaint.Modeles;
 using Newtonsoft.Json;
+using PolyPaint.Modeles;
+using PolyPaint.Structures;
+using PolyPaint.Utilitaires;
+using PolyPaint.VueModeles;
+using PolyPaint.Vues;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
-using System.Collections.Generic;
-using PolyPaint.Vues;
-using PolyPaint.Structures;
-using PolyPaint.Strokes;
-using System.Windows.Controls;
-using PolyPaint.Utilitaires;
-using Microsoft.AspNetCore.SignalR.Client;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
+using System.Windows.Ink;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace PolyPaint
 {
@@ -29,10 +28,10 @@ namespace PolyPaint
     /// </summary>
     public partial class FenetreDessin : Window
     {
-        ChatWindow externalChatWindow;
-        InkCanvasEventManager icEventManager = new InkCanvasEventManager();
-        bool IsDrawing = false;
-        Point currentPoint, mouseLeftDownPoint;
+        private ChatWindow externalChatWindow;
+        private InkCanvasEventManager icEventManager = new InkCanvasEventManager();
+        private bool IsDrawing = false;
+        private Point currentPoint, mouseLeftDownPoint;
         private HubConnection Connection;
 
         public event EventHandler MessageReceived;
@@ -41,11 +40,11 @@ namespace PolyPaint
         public FenetreDessin()
         {
             InitializeComponent();
-            var token = Application.Current.Properties["token"];
+            object token = Application.Current.Properties["token"];
             token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6InVzZXIuMyIsIm5hbWVpZCI6ImQwZTA2YTkwLWFjMDEtNDhlZS1iODkwLWE1ZDE1ZTg4NGVjNCIsImZhbWlseV9uYW1lIjoidXNlcjMiLCJuYmYiOjE1NTA3MTc0ODksImV4cCI6NjE1NTA3MTc0MjksImlhdCI6MTU1MDcxNzQ4OSwiaXNzIjoiaHR0cHM6Ly9wb2x5cGFpbnQubWUiLCJhdWQiOiJodHRwczovL3BvbHlwYWludC5tZSJ9.YY6FWiP5h2qY89OG4PoKMQkKRgQJLV0P-IhBDoQozWw";
-            this.ConnectToCollaborativeServer((string) token);
+            ConnectToCollaborativeServer((string) token);
             DataContext = new VueModele();
-            (DataContext as VueModele).ChatClient.Initialize((string)Application.Current.Properties["token"]);
+            (DataContext as VueModele).ChatClient.Initialize((string) Application.Current.Properties["token"]);
             (DataContext as VueModele).ChatClient.MessageReceived += AddMessage;
             (DataContext as VueModele).ChatClient.SystemMessageReceived += AddSystemMessage;
             externalChatWindow = new ChatWindow(DataContext);
@@ -164,26 +163,26 @@ namespace PolyPaint
             SaveableCanvas canvas = new SaveableCanvas("NameNotImplementedYet", strokesToSend, imageToSend);
 
             string canvasJson = JsonConvert.SerializeObject(canvas);
-            using (var client = new HttpClient())
+            using (HttpClient client = new HttpClient())
             {
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6Im9saXZpZXIubGF1em9uIiwibmFtZWlkIjoiMjY5MGYyMjAtN2JiYS00NDViLTgzYWEtMjIwZmVlMDczMTRiIiwiZmFtaWx5X25hbWUiOiJ1c2VyIiwibmJmIjoxNTUwNTkwMjgzLCJleHAiOjYxNTUwNTkwMjIzLCJpYXQiOjE1NTA1OTAyODMsImlzcyI6Imh0dHBzOi8vcG9seXBhaW50Lm1lIiwiYXVkIjoiaHR0cHM6Ly9wb2x5cGFpbnQubWUifQ.7zc5SqJNkJi7q8-SPzJ7Jbz1S5umsMszoJrxyBResVQ");
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
-                var content = new StringContent(canvasJson, Encoding.UTF8, "application/json");
-                var response = await client.PostAsync("https://localhost:44300/api/user/canvas", content);
-                var responseString = await response.Content.ReadAsStringAsync();
+                StringContent content = new StringContent(canvasJson, Encoding.UTF8, "application/json");
+                HttpResponseMessage response = await client.PostAsync("https://localhost:44300/api/user/canvas", content);
+                string responseString = await response.Content.ReadAsStringAsync();
             }
         }
 
         private async void ImportFromCloud(object sender, RoutedEventArgs e)
         {
             List<SaveableCanvas> strokes;
-            using (var client = new HttpClient())
+            using (HttpClient client = new HttpClient())
             {
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6Im9saXZpZXIubGF1em9uIiwibmFtZWlkIjoiMjY5MGYyMjAtN2JiYS00NDViLTgzYWEtMjIwZmVlMDczMTRiIiwiZmFtaWx5X25hbWUiOiJ1c2VyIiwibmJmIjoxNTUwNTkwMjgzLCJleHAiOjYxNTUwNTkwMjIzLCJpYXQiOjE1NTA1OTAyODMsImlzcyI6Imh0dHBzOi8vcG9seXBhaW50Lm1lIiwiYXVkIjoiaHR0cHM6Ly9wb2x5cGFpbnQubWUifQ.7zc5SqJNkJi7q8-SPzJ7Jbz1S5umsMszoJrxyBResVQ");
                 System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
-                var response = await client.GetAsync("https://localhost:44300/api/user/canvas");
-                var responseString = await response.Content.ReadAsStringAsync();
+                HttpResponseMessage response = await client.GetAsync("https://localhost:44300/api/user/canvas");
+                string responseString = await response.Content.ReadAsStringAsync();
                 strokes = JsonConvert.DeserializeObject<List<SaveableCanvas>>(responseString);
             }
             Gallery gallery = new Gallery(strokes, surfaceDessin);
@@ -194,7 +193,7 @@ namespace PolyPaint
         private byte[] GetBytesForStrokes()
         {
             MemoryStream ms = new MemoryStream();
-            using (var memoryStream = new MemoryStream())
+            using (MemoryStream memoryStream = new MemoryStream())
             {
                 surfaceDessin.Strokes.Save(ms);
                 return ms.ToArray();
@@ -203,14 +202,14 @@ namespace PolyPaint
         private byte[] GetBytesForImage()
         {
             // Get the dimensions of the ink canvas
-            var size = new Size(surfaceDessin.ActualWidth, surfaceDessin.ActualHeight);
+            Size size = new Size(surfaceDessin.ActualWidth, surfaceDessin.ActualHeight);
             surfaceDessin.Margin = new Thickness(0, 0, 0, 0);
             surfaceDessin.Measure(size);
             surfaceDessin.Arrange(new Rect(size));
 
-            int margin = (int)surfaceDessin.Margin.Left;
-            int width = (int)surfaceDessin.ActualWidth - margin;
-            int height = (int)surfaceDessin.ActualHeight - margin;
+            int margin = (int) surfaceDessin.Margin.Left;
+            int width = (int) surfaceDessin.ActualWidth - margin;
+            int height = (int) surfaceDessin.ActualHeight - margin;
 
             // Convert the strokes from the canvas to a bitmap
             RenderTargetBitmap rtb = new RenderTargetBitmap(width, height, 96d, 96d, PixelFormats.Default);
@@ -232,7 +231,7 @@ namespace PolyPaint
         private void AddMessage(object sender, EventArgs args)
         {
             MessageArgs messArgs = args as MessageArgs;
-            this.Dispatcher.Invoke(() =>
+            Dispatcher.Invoke(() =>
             {
                 messagesList.Items.Add($"{messArgs.Timestamp} - {messArgs.Username}: {messArgs.Message}");
                 messagesList.SelectedIndex = messagesList.Items.Count - 1;
@@ -243,7 +242,7 @@ namespace PolyPaint
         private void AddSystemMessage(object sender, EventArgs args)
         {
             MessageArgs messArgs = args as MessageArgs;
-            this.Dispatcher.Invoke(() =>
+            Dispatcher.Invoke(() =>
             {
                 messagesList.Items.Add(messArgs.Message);
                 messagesList.SelectedIndex = messagesList.Items.Count - 1;
@@ -286,9 +285,9 @@ namespace PolyPaint
         {
             try
             {
-                using (var client = new HttpClient())
+                using (HttpClient client = new HttpClient())
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", (string)Application.Current.Properties["token"]);
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", (string) Application.Current.Properties["token"]);
                     System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
                     client.GetAsync("https://localhost:44300/api/user/logout").Wait();
                 }
@@ -297,7 +296,7 @@ namespace PolyPaint
         }
         private void InkCanvas_LeftMouseDown(object sender, MouseButtonEventArgs e)
         {
-            mouseLeftDownPoint = e.GetPosition((IInputElement)sender);
+            mouseLeftDownPoint = e.GetPosition((IInputElement) sender);
 
             if ((DataContext as VueModele).OutilSelectionne == "select")
             {
@@ -306,12 +305,20 @@ namespace PolyPaint
 
             IsDrawing = true;
         }
-        private void InkCanvas_LeftMouseMove(object sender, MouseEventArgs e)
+        private async void InkCanvas_LeftMouseMove(object sender, MouseEventArgs e)
         {
-            currentPoint = e.GetPosition((IInputElement)sender);
+            currentPoint = e.GetPosition((IInputElement) sender);
             if (IsDrawing)
             {
-                icEventManager.DrawShape(surfaceDessin, (DataContext as VueModele).OutilSelectionne, currentPoint, mouseLeftDownPoint);                
+                DrawViewModel drawViewModel = new DrawViewModel
+                {
+                    OutilSelectionne = (DataContext as VueModele).OutilSelectionne,
+                    CurrentPointX = currentPoint.X,
+                    CurrentPointY = currentPoint.Y,
+                    MouseLeftDownPointX = mouseLeftDownPoint.X,
+                    MouseLeftDownPointY = mouseLeftDownPoint.Y,
+                };
+                await CollaborativeDrawAsync(drawViewModel);
             }
         }
 
@@ -325,7 +332,7 @@ namespace PolyPaint
         {
             Connection =
                 new HubConnectionBuilder()
-                .WithUrl("https://localhost:5001/signalr/collaborative", options =>
+                .WithUrl("https://localhost:44300/signalr/collaborative", options =>
                 {
                     options.AccessTokenProvider = () => Task.FromResult(accessToken);
                 })
@@ -346,7 +353,10 @@ namespace PolyPaint
         {
 
         }
-
+        private async Task CollaborativeDrawAsync(DrawViewModel drawViewModel)
+        {
+            await Connection.InvokeAsync("Draw", drawViewModel);
+        }
         private void HandleMessages()
         {
             Connection.On<string, string, string>("ReceiveMessage", (username, message, timestamp) =>
@@ -355,7 +365,14 @@ namespace PolyPaint
             });
             Connection.On<string>("SystemMessage", (message) =>
             {
-                Console.WriteLine("message");
+                Console.WriteLine(message);
+            });
+            Connection.On<DrawViewModel>("Draw", (drawViewModel) =>
+            {
+                Dispatcher.Invoke(() =>
+                {
+                    icEventManager.DrawShape(surfaceDessin, drawViewModel.OutilSelectionne, new Point(drawViewModel.CurrentPointX, drawViewModel.CurrentPointY), new Point(drawViewModel.MouseLeftDownPointX, drawViewModel.MouseLeftDownPointY));
+                });
             });
         }
     }
