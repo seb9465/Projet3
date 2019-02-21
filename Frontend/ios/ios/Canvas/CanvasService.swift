@@ -28,22 +28,11 @@ class CanvasService: UIView {
         self.backgroundColor = UIColor.clear;
     }
     
-    override init(frame: CGRect) {
-        super.init(frame: CGRect(x: 100, y: 100, width: 100, height: 100));
-        
-        self.backgroundColor = UIColor.clear;
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-
     override func draw(_ rect: CGRect) {
-//        CGRect frame = window.frame;
-//        frame.origin.x = window.frame.origin.x + touchLocation.x - oldX;
-//        frame.origin.y =  window.frame.origin.y + touchLocation.y - oldY;
-//        window.frame = frame;
-        print("DRAW IS CALLED");
         let r: CGRect = CGRect(x: 0, y: 0, width: lastPoint.x - firstPoint.x, height: lastPoint.y - firstPoint.y);
         
         self.frame = CGRect(x: firstPoint.x, y: firstPoint.y, width: lastPoint.x - firstPoint.x, height: lastPoint.y - firstPoint.y);
