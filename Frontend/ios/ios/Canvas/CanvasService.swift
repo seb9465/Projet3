@@ -65,8 +65,10 @@ class CanvasService {
         return false;
     }
     
-    public func deleteFigure(subview: UIView) {
-        if (self.subviewIsInUndoArray(subview: subview)) {
+    public func deleteFigure(tapPoint: CGPoint, view: UIView) {
+        let subview = view.hitTest(tapPoint, with: nil);
+        
+        if (self.subviewIsInUndoArray(subview: subview!)) {
             var counter: Int = 0;
             for v in self.undoArray {
                 if (v == subview) {
@@ -80,8 +82,10 @@ class CanvasService {
         }
     }
     
-    public func selectFigure(subview: UIView) {
-        if (self.subviewIsInUndoArray(subview: subview)) {
+    public func selectFigure(tapPoint: CGPoint, view: UIView) {
+        let subview = view.hitTest(tapPoint, with: nil);
+        
+        if (self.subviewIsInUndoArray(subview: subview!)) {
             print("TAPED SUBVIEW");
             (subview as! FigureService).isSelected = true;
         } else {

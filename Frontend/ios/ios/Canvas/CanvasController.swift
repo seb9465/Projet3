@@ -18,12 +18,11 @@ enum STATE {
 class CanvasController: UIViewController {
     private var toolState: STATE = STATE.NOTHING_SELECTED;
     private var canvas: CanvasService = CanvasService();
+    var activeButton: UIBarButtonItem!;
     
     @IBOutlet var rectButton: UIBarButtonItem!
     @IBOutlet var selectButton: UIBarButtonItem!
     @IBOutlet var deleteButton: UIBarButtonItem!
-    var activeButton: UIBarButtonItem!;
-    
     
     @objc func handleTap(sender: UITapGestureRecognizer? = nil) {
         let tapPoint: CGPoint = (sender?.location(in: self.view))!;
@@ -31,9 +30,9 @@ class CanvasController: UIViewController {
         if (tapPoint.y >= 70 && self.toolState == STATE.DRAW_RECT) {
             self.canvas.addNewFigure(origin: tapPoint, view: self.view);
         } else if (self.toolState == STATE.SELECTION) {
-            self.selectFigure(point: tapPoint);
+            self.canvas.selectFigure(tapPoint: tapPoint, view: self.view);
         } else if (self.toolState == STATE.DELETE) {
-            self.deleteFigure(point: tapPoint);
+            self.canvas.deleteFigure(tapPoint: tapPoint, view: self.view);
         }
     }
     
@@ -140,17 +139,5 @@ class CanvasController: UIViewController {
 
             self.present(alert, animated: true, completion: nil);
         }
-    }
-    
-    public func selectFigure(point: CGPoint) {
-        let subview = self.view.hitTest(point, with: nil);
-        
-        self.canvas.selectFigure(subview: subview!);
-    }
-    
-    public func deleteFigure(point: CGPoint) {
-        let subview = self.view.hitTest(point, with: nil);
-        
-        self.canvas.deleteFigure(subview: subview!);
     }
 }
