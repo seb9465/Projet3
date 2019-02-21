@@ -60,6 +60,7 @@
                     </view>
                     <connections>
                         <outlet property="rectButton" destination="SLY-eP-ACv" id="5wO-L8-aeR"/>
+                        <outlet property="selectButton" destination="Lts-nR-qFd" id="AOd-xa-kni"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YaL-1F-IzF" userLabel="First Responder" sceneMemberID="firstResponder"/>

@@ -19,6 +19,7 @@ class CanvasController: UIViewController {
     private var redoArray: [CanvasService] = [];
     
     @IBOutlet var rectButton: UIBarButtonItem!
+    @IBOutlet var selectButton: UIBarButtonItem!
     
     var toolState: STATE = STATE.NOTHING_SELECTED;
     
@@ -66,7 +67,13 @@ class CanvasController: UIViewController {
     }
     
     @IBAction func selectFigureButton(_ sender: Any) {
-        self.toolState = STATE.SELECTION;
+        if (self.toolState == STATE.SELECTION) {
+            self.toolState = STATE.NOTHING_SELECTED;
+            self.selectButton.tintColor = UIColor(red: 0, green: 122/255, blue: 1, alpha: 1);
+        } else {
+            self.toolState = STATE.SELECTION;
+            self.selectButton.tintColor = UIColor(red: 0, green: 0, blue: 0, alpha: 1);
+        }
     }
     
     @IBAction func drawRectButton(_ sender: Any) {
