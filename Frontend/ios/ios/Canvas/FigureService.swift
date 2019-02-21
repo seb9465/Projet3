@@ -8,7 +8,7 @@
 
 import UIKit
 
-class figureService: UIView {
+class FigureService: UIView {
     private var firstPoint: CGPoint = CGPoint(x: 0, y: 0);
     private var lastPoint: CGPoint = CGPoint(x: 100, y: 100);
     
