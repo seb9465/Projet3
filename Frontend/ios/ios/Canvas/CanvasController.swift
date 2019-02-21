@@ -17,8 +17,6 @@ enum STATE {
 
 class CanvasController: UIViewController {
     private var toolState: STATE = STATE.NOTHING_SELECTED;
-//    private var undoArray: [CanvasService] = [];
-//    private var redoArray: [CanvasService] = [];
     private var canvas: CanvasService = CanvasService();
     
     @IBOutlet var rectButton: UIBarButtonItem!
@@ -32,9 +30,6 @@ class CanvasController: UIViewController {
         
         if (tapPoint.y >= 70 && self.toolState == STATE.DRAW_RECT) {
             self.canvas.addNewFigure(origin: tapPoint, view: self.view);
-//            let can = CanvasService(origin: tapPoint, view: self.view);
-//            self.view.addSubview(can);
-//            self.undoArray.append(can);
         } else if (self.toolState == STATE.SELECTION) {
             self.selectFigure(point: tapPoint);
         } else if (self.toolState == STATE.DELETE) {
@@ -63,12 +58,10 @@ class CanvasController: UIViewController {
     
     @IBAction func undoButton(_ sender: Any) {
         self.canvas.undo(view: self.view);
-//        self.undo();
     }
     
     @IBAction func redoButton(_ sender: Any) {
         self.canvas.redo(view: self.view);
-//        self.redo();
     }
     
     @IBAction func clearButton(_ sender: Any) {
@@ -133,25 +126,6 @@ class CanvasController: UIViewController {
         self.present(alert, animated: true, completion: nil);
     }
     
-    public func undo() {
-//        print(undoArray);
-//        if (undoArray.count > 0) {
-//            let v: CanvasService = self.view.subviews.last as! CanvasService;
-//            self.redoArray.append(v);
-//            v.removeFromSuperview();
-//            self.undoArray.removeLast();
-//        }
-    }
-    
-    public func redo() {
-//        if (redoArray.count > 0) {
-//            let v: CanvasService = self.redoArray.last!;
-//            self.view.addSubview(v);
-//            self.undoArray.append(v);
-//            self.redoArray.removeLast();
-//        }
-    }
-    
     public func clear() {
         if (self.canvas.figuresInView()) {
             let alert: UIAlertController = UIAlertController(title: "Alert", message: "Are you sure you want to clear the canvas ?", preferredStyle: .alert);
@@ -172,31 +146,11 @@ class CanvasController: UIViewController {
         let subview = self.view.hitTest(point, with: nil);
         
         self.canvas.selectFigure(subview: subview!);
-        
-//        if (self.subviewIsInUndoArray(subview: subview!)) {
-//            print("TAPED SUBVIEW");
-//            (subview as! CanvasService).isSelected = true;
-//        } else {
-//            print("NO SUBVIEW THERE");
-//        }
     }
     
     public func deleteFigure(point: CGPoint) {
         let subview = self.view.hitTest(point, with: nil);
         
         self.canvas.deleteFigure(subview: subview!);
-        
-    //        if (self.subviewIsInUndoArray(subview: subview!)) {
-    //            var counter: Int = 0;
-    //            for v in self.undoArray {
-    //                if (v == subview) {
-    //                    self.redoArray.append(v);
-    //                    v.removeFromSuperview();
-    //                    self.undoArray.remove(at: counter);
-    //                    break;
-    //                }
-    //                counter += 1;
-    //            }
-    //        }
     }
 }
