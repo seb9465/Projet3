@@ -147,10 +147,20 @@ class CanvasController: UIViewController {
     
     public func selectFigure(point: CGPoint) {
         let subview = self.view.hitTest(point, with: nil);
-        if ((subview) != nil) {
+        
+        if (self.subviewIsInUndoArray(subview: subview!)) {
             print("TAPED SUBVIEW");
         } else {
             print("NO SUBVIEW THERE");
         }
+    }
+    
+    public func subviewIsInUndoArray(subview: UIView) -> Bool {
+        for a in self.undoArray {
+            if (a == subview) {
+                return true;
+            }
+        }
+        return false;
     }
 }
