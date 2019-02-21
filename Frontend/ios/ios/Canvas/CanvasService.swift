@@ -19,7 +19,6 @@ class CanvasService: UIView {
     
     private var currentPoint: CGPoint?
     private var previousPoint1: CGPoint?
-    private var previousPoint2: CGPoint?
     
     init(origin: CGPoint) {
         super.init(frame: CGRect(x: origin.x - 50, y: origin.y - 50, width: 100, height: 100));
@@ -76,7 +75,6 @@ class CanvasService: UIView {
             print("touches moved");
             guard let point = touches.first else { return };
             
-            previousPoint2 = previousPoint1
             previousPoint1 = point.previousLocation(in: self)
             currentPoint = point.location(in: self)
             
