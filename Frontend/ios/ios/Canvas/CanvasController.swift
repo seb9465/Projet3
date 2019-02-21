@@ -16,31 +16,29 @@ enum STATE {
 }
 
 class CanvasController: UIViewController {
-    private var toolState: STATE = STATE.NOTHING_SELECTED;
-    private var canvas: CanvasService = CanvasService();
-    var activeButton: UIBarButtonItem!;
+    private var toolState: STATE;
+    private var canvas: CanvasService;
+    private var activeButton: UIBarButtonItem!;
     
     @IBOutlet var rectButton: UIBarButtonItem!
     @IBOutlet var selectButton: UIBarButtonItem!
     @IBOutlet var deleteButton: UIBarButtonItem!
     
-    @objc func handleTap(sender: UITapGestureRecognizer? = nil) {
-        let tapPoint: CGPoint = (sender?.location(in: self.view))!;
+    init() {
+        self.toolState = STATE.NOTHING_SELECTED;
+        self.canvas = CanvasService();
         
-        if (tapPoint.y >= 70 && self.toolState == STATE.DRAW_RECT) {
-            self.canvas.addNewFigure(origin: tapPoint, view: self.view);
-        } else if (self.toolState == STATE.SELECTION) {
-            self.canvas.selectFigure(tapPoint: tapPoint, view: self.view);
-        } else if (self.toolState == STATE.DELETE) {
-            self.canvas.deleteFigure(tapPoint: tapPoint, view: self.view);
-        }
+        super.init(nibName: nil, bundle: nil);
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     override func viewDidLoad() {
         super.viewDidLoad();
         
-        let tap = UITapGestureRecognizer(target: self, action: #selector(CanvasController.handleTap(sender:)))
-        self.view.addGestureRecognizer(tap);
+        self.addTapGestureRecognizer();
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -53,6 +51,18 @@ class CanvasController: UIViewController {
         super.viewWillDisappear(animated);
         
         navigationController?.setNavigationBarHidden(false, animated: animated);
+    }
+    
+    @objc func handleTap(sender: UITapGestureRecognizer? = nil) {
+        let tapPoint: CGPoint = (sender?.location(in: self.view))!;
+        
+        if (tapPoint.y >= 70 && self.toolState == STATE.DRAW_RECT) {
+            self.canvas.addNewFigure(origin: tapPoint, view: self.view);
+        } else if (self.toolState == STATE.SELECTION) {
+            self.canvas.selectFigure(tapPoint: tapPoint, view: self.view);
+        } else if (self.toolState == STATE.DELETE) {
+            self.canvas.deleteFigure(tapPoint: tapPoint, view: self.view);
+        }
     }
     
     @IBAction func undoButton(_ sender: Any) {
@@ -139,5 +149,10 @@ class CanvasController: UIViewController {
 
             self.present(alert, animated: true, completion: nil);
         }
+    }
+    
+    private func addTapGestureRecognizer() -> Void {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(CanvasController.handleTap(sender:)))
+        self.view.addGestureRecognizer(tap);
     }
 }

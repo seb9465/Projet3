@@ -20,32 +20,32 @@ class CanvasService {
         self.redoArray = [];
     }
     
-    func addNewFigure(origin: CGPoint, view: UIView) {
+    public func addNewFigure(origin: CGPoint, view: UIView) -> Void {
         let figure = FigureService(origin: origin);
         view.addSubview(figure);
         self.undoArray.append(figure);
     }
     
-    public func undo(view: UIView) {
+    public func undo(view: UIView) -> Void {
         print(undoArray);
         if (undoArray.count > 0) {
-            let v: FigureService = view.subviews.last as! FigureService;
-            self.redoArray.append(v);
-            v.removeFromSuperview();
+            let figure: FigureService = view.subviews.last as! FigureService;
+            self.redoArray.append(figure);
+            figure.removeFromSuperview();
             self.undoArray.removeLast();
         }
     }
     
-    public func redo(view: UIView) {
+    public func redo(view: UIView) -> Void {
         if (redoArray.count > 0) {
-            let v: FigureService = self.redoArray.last!;
-            view.addSubview(v);
-            self.undoArray.append(v);
+            let figure: FigureService = self.redoArray.last!;
+            view.addSubview(figure);
+            self.undoArray.append(figure);
             self.redoArray.removeLast();
         }
     }
     
-    public func clear() {
+    public func clear() -> Void {
         for v in self.undoArray {
             v.removeFromSuperview();
         }
@@ -63,10 +63,11 @@ class CanvasService {
                 return true;
             }
         }
+        
         return false;
     }
     
-    public func deleteFigure(tapPoint: CGPoint, view: UIView) {
+    public func deleteFigure(tapPoint: CGPoint, view: UIView) -> Void {
         let subview = view.hitTest(tapPoint, with: nil);
         
         if (self.subviewIsInUndoArray(subview: subview!)) {
@@ -83,7 +84,7 @@ class CanvasService {
         }
     }
     
-    public func selectFigure(tapPoint: CGPoint, view: UIView) {
+    public func selectFigure(tapPoint: CGPoint, view: UIView) -> Void {
         let subview = view.hitTest(tapPoint, with: nil);
         
         if (self.subviewIsInUndoArray(subview: subview!)) {
