@@ -171,6 +171,8 @@ class CanvasController: UIViewController {
     public func selectFigure(point: CGPoint) {
         let subview = self.view.hitTest(point, with: nil);
         
+        self.canvas.selectFigure(subview: subview!);
+        
 //        if (self.subviewIsInUndoArray(subview: subview!)) {
 //            print("TAPED SUBVIEW");
 //            (subview as! CanvasService).isSelected = true;
@@ -183,5 +185,18 @@ class CanvasController: UIViewController {
         let subview = self.view.hitTest(point, with: nil);
         
         self.canvas.deleteFigure(subview: subview!);
+        
+    //        if (self.subviewIsInUndoArray(subview: subview!)) {
+    //            var counter: Int = 0;
+    //            for v in self.undoArray {
+    //                if (v == subview) {
+    //                    self.redoArray.append(v);
+    //                    v.removeFromSuperview();
+    //                    self.undoArray.remove(at: counter);
+    //                    break;
+    //                }
+    //                counter += 1;
+    //            }
+    //        }
     }
 }

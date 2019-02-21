@@ -79,6 +79,15 @@ class CanvasService {
             }
         }
     }
+    
+    public func selectFigure(subview: UIView) {
+        if (self.subviewIsInUndoArray(subview: subview)) {
+            print("TAPED SUBVIEW");
+            (subview as! FigureService).isSelected = true;
+        } else {
+            print("NO SUBVIEW THERE");
+        }
+    }
 }
 
 extension CanvasService {
