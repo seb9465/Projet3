@@ -12,6 +12,7 @@ enum STATE {
     case NOTHING_SELECTED
     case DRAW_RECT
     case SELECTION
+    case DELETE
 }
 
 class CanvasController: UIViewController {
@@ -21,6 +22,7 @@ class CanvasController: UIViewController {
     
     @IBOutlet var rectButton: UIBarButtonItem!
     @IBOutlet var selectButton: UIBarButtonItem!
+    @IBOutlet var deleteButton: UIBarButtonItem!
     var activeButton: UIBarButtonItem!;
     
     
@@ -65,6 +67,19 @@ class CanvasController: UIViewController {
     
     @IBAction func clearButton(_ sender: Any) {
         self.clear();
+    }
+    
+    @IBAction func deleteButton(_ sender: Any) {
+        if (self.toolState == STATE.DELETE) {
+            self.toolState = STATE.NOTHING_SELECTED;
+            self.activeButton = nil;
+            self.deleteButton.tintColor = UIColor(red: 0, green: 122/255, blue: 1, alpha: 1);
+        } else {
+            self.toolState = STATE.DELETE;
+            self.activeButton?.tintColor = UIColor(red: 0, green: 122/255, blue: 1, alpha: 1);
+            self.activeButton = self.deleteButton;
+            self.deleteButton.tintColor = UIColor(red: 0, green: 0, blue: 0, alpha: 1);
+        }
     }
     
     @IBAction func selectFigureButton(_ sender: Any) {
