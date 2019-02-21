@@ -47,6 +47,7 @@
                                             <action selector="clearButton:" destination="Vts-He-P18" id="JlR-Gh-chb"/>
                                         </connections>
                                     </barButtonItem>
+                                    <barButtonItem title="Select" id="Lts-nR-qFd"/>
                                 </items>
                             </toolbar>
                         </subviews>
