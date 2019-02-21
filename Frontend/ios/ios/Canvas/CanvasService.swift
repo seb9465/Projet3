@@ -13,6 +13,7 @@ import Alamofire
 class CanvasService {
     private var undoArray: [FigureService];
     private var redoArray: [FigureService];
+    private var currentlySelectedFigure: FigureService!;
     
     init() {
         self.undoArray = [];
@@ -86,10 +87,12 @@ class CanvasService {
         let subview = view.hitTest(tapPoint, with: nil);
         
         if (self.subviewIsInUndoArray(subview: subview!)) {
-            print("TAPED SUBVIEW");
-            (subview as! FigureService).isSelected = true;
-        } else {
-            print("NO SUBVIEW THERE");
+            if (self.currentlySelectedFigure != nil) {
+                self.currentlySelectedFigure.isSelected = false;
+            }
+            
+            self.currentlySelectedFigure = subview as? FigureService;
+            self.currentlySelectedFigure.isSelected = true;
         }
     }
 }
