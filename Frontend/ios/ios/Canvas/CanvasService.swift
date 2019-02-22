@@ -42,7 +42,7 @@ class CanvasService {
                 debugPrint(data)
                 let canvas = try JSONDecoder().decode([Canvas].self, from: data)
                 debugPrint(canvas)
-//                print(canvas[0])
+                print(canvas[0].name)
             } catch {
                 print(error)
                 print("Error in decoding")

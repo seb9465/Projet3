@@ -16,7 +16,6 @@
 		3DDE25192202B2AF0082E735 /* RoundedCorners.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DDE25182202B2AF0082E735 /* RoundedCorners.swift */; };
 		3DF6297C221C9FA70052209A /* NetworkConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DF62979221C9FA70052209A /* NetworkConstants.swift */; };
 		3DF6297D221C9FA70052209A /* APIConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DF6297A221C9FA70052209A /* APIConfiguration.swift */; };
-		3DF6297E221C9FA70052209A /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DF6297B221C9FA70052209A /* NetworkService.swift */; };
 		3DF62982221C9FB30052209A /* CanvasService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DF6297F221C9FB20052209A /* CanvasService.swift */; };
 		3DF62983221C9FB30052209A /* CanvasEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DF62980221C9FB30052209A /* CanvasEndpoint.swift */; };
 		3DF62984221C9FB30052209A /* Canvas.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DF62981221C9FB30052209A /* Canvas.swift */; };
@@ -63,7 +62,6 @@
 		3DDE25182202B2AF0082E735 /* RoundedCorners.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedCorners.swift; sourceTree = "<group>"; };
 		3DF62979221C9FA70052209A /* NetworkConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkConstants.swift; sourceTree = "<group>"; };
 		3DF6297A221C9FA70052209A /* APIConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIConfiguration.swift; sourceTree = "<group>"; };
-		3DF6297B221C9FA70052209A /* NetworkService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
 		3DF6297F221C9FB20052209A /* CanvasService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CanvasService.swift; sourceTree = "<group>"; };
 		3DF62980221C9FB30052209A /* CanvasEndpoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CanvasEndpoint.swift; sourceTree = "<group>"; };
 		3DF62981221C9FB30052209A /* Canvas.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Canvas.swift; sourceTree = "<group>"; };
@@ -150,7 +148,6 @@
 			children = (
 				3DF62979221C9FA70052209A /* NetworkConstants.swift */,
 				3DF6297A221C9FA70052209A /* APIConfiguration.swift */,
-				3DF6297B221C9FA70052209A /* NetworkService.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -472,7 +469,6 @@
 				3DF62982221C9FB30052209A /* CanvasService.swift in Sources */,
 				3DF62989221C9FBC0052209A /* GalleryController.swift in Sources */,
 				3DF62983221C9FB30052209A /* CanvasEndpoint.swift in Sources */,
-				3DF6297E221C9FA70052209A /* NetworkService.swift in Sources */,
 				B781B95B22132C2F001C1BD8 /* CanvasController.swift in Sources */,
 				B7567946220F33CD00F80B12 /* ChatService.swift in Sources */,
 				B7567948220F355F00F80B12 /* Constants.swift in Sources */,
