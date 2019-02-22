@@ -9,8 +9,8 @@
 import UIKit
 
 class FigureService: UIView {
-    private var firstPoint: CGPoint = CGPoint(x: 0, y: 0);
-    private var lastPoint: CGPoint = CGPoint(x: 100, y: 100);
+    private var firstPoint: CGPoint = CGPoint(x: 1, y: 1);
+    private var lastPoint: CGPoint = CGPoint(x: 101, y: 101);
     
     public var isSelected: Bool = false;
     private var isDragging: Bool = false;
@@ -19,7 +19,7 @@ class FigureService: UIView {
     private var previousPoint1: CGPoint?
     
     init(origin: CGPoint) {
-        super.init(frame: CGRect(x: origin.x - 50, y: origin.y - 50, width: 100, height: 100));
+        super.init(frame: CGRect(x: origin.x - 50, y: origin.y - 50, width: 101, height: 101));
         self.firstPoint = CGPoint(x: origin.x - 50, y: origin.y - 50);
         self.lastPoint = CGPoint(x: origin.x + 50, y: origin.y + 50);
         
@@ -35,23 +35,31 @@ class FigureService: UIView {
         self.frame = CGRect(x: firstPoint.x, y: firstPoint.y, width: lastPoint.x - firstPoint.x, height: lastPoint.y - firstPoint.y);
         
         // Drawing the figure.
-        let r: CGRect = CGRect(x: 0, y: 0, width: lastPoint.x - firstPoint.x, height: lastPoint.y - firstPoint.y);
+        let r: CGRect = CGRect(x: 1, y: 1, width: lastPoint.x - firstPoint.x, height: lastPoint.y - firstPoint.y);
         
         // Inset to be able to place a border.
-        let insetRect = r.insetBy(dx: 3, dy: 3);
+        let insetRect = r.insetBy(dx: 4, dy: 4);
         
         let path = UIBezierPath(roundedRect: insetRect, cornerRadius: 10);
         
+        let dotedLayer: CAShapeLayer = CAShapeLayer();
+        dotedLayer.path = UIBezierPath(roundedRect: CGRect(x: -2.5, y: -2.5, width: 105, height: 105), cornerRadius: 0).cgPath;
+        dotedLayer.position = CGPoint(x: 0, y: 0);
+        dotedLayer.fillColor = UIColor.clear.cgColor;
+        dotedLayer.lineWidth = 1;
+        dotedLayer.lineDashPattern = [1];
+        self.layer.addSublayer(dotedLayer);
+        
         let circleLayer: CAShapeLayer = CAShapeLayer();
-        let radius: CGFloat = 150.0;
-        circleLayer.path = UIBezierPath(roundedRect: CGRect(x: 0, y: 0, width: 2.0 * radius, height: 2.0 * radius), cornerRadius: radius).cgPath;
+        let radius: CGFloat = 5.0;
+        circleLayer.path = UIBezierPath(roundedRect: CGRect(x: -2.5, y: -2.5, width: 2.0 * radius, height: 2.0 * radius), cornerRadius: radius).cgPath;
         circleLayer.position = CGPoint(x: 0, y: 0);
         circleLayer.fillColor = UIColor.blue.cgColor;
         self.layer.addSublayer(circleLayer);
         
         // Border and fill parameters.
         UIColor.red.setFill()
-        path.lineWidth = 3;
+        path.lineWidth = 2;
         UIColor.black.setStroke();
         path.fill();
         path.stroke();

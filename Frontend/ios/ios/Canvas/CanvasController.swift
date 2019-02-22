@@ -16,24 +16,13 @@ enum STATE {
 }
 
 class CanvasController: UIViewController {
-    private var toolState: STATE;
-    private var canvas: CanvasService;
+    private var toolState: STATE  = STATE.NOTHING_SELECTED;
+    private var canvas: CanvasService = CanvasService();
     private var activeButton: UIBarButtonItem!;
     
     @IBOutlet var rectButton: UIBarButtonItem!
     @IBOutlet var selectButton: UIBarButtonItem!
     @IBOutlet var deleteButton: UIBarButtonItem!
-    
-    init() {
-        self.toolState = STATE.NOTHING_SELECTED;
-        self.canvas = CanvasService();
-        
-        super.init(nibName: nil, bundle: nil);
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad();
