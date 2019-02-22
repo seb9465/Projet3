@@ -31,14 +31,25 @@ class FigureService: UIView {
     }
 
     override func draw(_ rect: CGRect) {
-        let r: CGRect = CGRect(x: 0, y: 0, width: lastPoint.x - firstPoint.x, height: lastPoint.y - firstPoint.y);
-        
+        // Redimension and put at the right place the frame of the figure.
         self.frame = CGRect(x: firstPoint.x, y: firstPoint.y, width: lastPoint.x - firstPoint.x, height: lastPoint.y - firstPoint.y);
         
+        // Drawing the figure.
+        let r: CGRect = CGRect(x: 0, y: 0, width: lastPoint.x - firstPoint.x, height: lastPoint.y - firstPoint.y);
         
+        // Inset to be able to place a border.
         let insetRect = r.insetBy(dx: 3, dy: 3);
+        
         let path = UIBezierPath(roundedRect: insetRect, cornerRadius: 10);
         
+        let circleLayer: CAShapeLayer = CAShapeLayer();
+        let radius: CGFloat = 150.0;
+        circleLayer.path = UIBezierPath(roundedRect: CGRect(x: 0, y: 0, width: 2.0 * radius, height: 2.0 * radius), cornerRadius: radius).cgPath;
+        circleLayer.position = CGPoint(x: 0, y: 0);
+        circleLayer.fillColor = UIColor.blue.cgColor;
+        self.layer.addSublayer(circleLayer);
+        
+        // Border and fill parameters.
         UIColor.red.setFill()
         path.lineWidth = 3;
         UIColor.black.setStroke();
