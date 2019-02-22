@@ -36,17 +36,22 @@ class CanvasService {
         }
 //    }
     
-    static func getAll() -> Void {
-        CanvasService.request(route: CanvasEndpoint.getAll()).done{ (data) in
-            do {
-                debugPrint(data)
+    static func getAll() -> Promise<[Canvas]> {
+        return Promise { seal in
+            CanvasService.request(route: CanvasEndpoint.getAll()).done{ (data) in
                 let canvas = try JSONDecoder().decode([Canvas].self, from: data)
-                debugPrint(canvas)
-                print(canvas[0].name)
-            } catch {
-                print(error)
-                print("Error in decoding")
+                seal.fulfill(canvas)
             }
         }
+//        CanvasService.request(route: CanvasEndpoint.getAll()).done{ (data) in
+//            do {
+//                debugPrint(data)
+//                let canvas = try JSONDecoder().decode([Canvas].self, from: data)
+//                return canvas
+//            } catch {
+//                print(error)
+//                print("Error in decoding")
+//            }
+//        }
     }
 }

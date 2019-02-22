@@ -408,16 +408,26 @@
                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="TXB-JQ-HOu">
                                             <rect key="frame" x="0.0" y="0.0" width="200" height="200"/>
                                         </imageView>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cell name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IOx-1Q-utT">
+                                            <rect key="frame" x="39" y="149" width="122" height="33"/>
+                                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="27"/>
+                                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
                                     </subviews>
                                 </view>
+                                <color key="backgroundColor" red="1" green="0.41960784309999999" blue="0.41960784309999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="bottom" secondItem="TXB-JQ-HOu" secondAttribute="bottom" id="19M-Qp-ada"/>
+                                    <constraint firstItem="IOx-1Q-utT" firstAttribute="centerX" secondItem="E2h-bq-ue7" secondAttribute="centerX" id="55Q-5o-tHf"/>
                                     <constraint firstAttribute="trailing" secondItem="TXB-JQ-HOu" secondAttribute="trailing" id="5bH-bc-fTB"/>
+                                    <constraint firstAttribute="bottomMargin" secondItem="IOx-1Q-utT" secondAttribute="bottom" constant="10" id="DPO-st-Bxd"/>
                                     <constraint firstItem="TXB-JQ-HOu" firstAttribute="top" secondItem="E2h-bq-ue7" secondAttribute="top" id="T0r-aL-eXo"/>
                                     <constraint firstItem="TXB-JQ-HOu" firstAttribute="leading" secondItem="E2h-bq-ue7" secondAttribute="leading" id="ogf-n4-ps7"/>
                                 </constraints>
                                 <connections>
-                                    <outlet property="imageView" destination="TXB-JQ-HOu" id="eX7-oi-Fi4"/>
+                                    <outlet property="imageView" destination="TXB-JQ-HOu" id="wKr-7M-R3A"/>
+                                    <outlet property="name" destination="IOx-1Q-utT" id="kRH-QQ-joq"/>
                                 </connections>
                             </collectionViewCell>
                         </cells>
