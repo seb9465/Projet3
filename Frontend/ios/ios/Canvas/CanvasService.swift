@@ -92,8 +92,9 @@ class CanvasService {
                 self.currentlySelectedFigure.isSelected = false;
             }
             
+            
             self.currentlySelectedFigure = subview as? FigureService;
-            self.currentlySelectedFigure.isSelected = true;
+            self.currentlySelectedFigure.setIsSelected();
         }
     }
 }

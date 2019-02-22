@@ -42,20 +42,22 @@ class FigureService: UIView {
         
         let path = UIBezierPath(roundedRect: insetRect, cornerRadius: 10);
         
-        let yourViewBorder: CAShapeLayer = CAShapeLayer()
-        yourViewBorder.strokeColor = UIColor.black.cgColor
-        yourViewBorder.lineDashPattern = [4, 4]
-        yourViewBorder.frame = self.bounds
-        yourViewBorder.fillColor = nil
-        yourViewBorder.path = UIBezierPath(rect: self.bounds).cgPath
-        self.layer.addSublayer(yourViewBorder)
-        
-        let circleLayer: CAShapeLayer = CAShapeLayer();
-        let radius: CGFloat = 5.0;
-        circleLayer.path = UIBezierPath(roundedRect: CGRect(x: -2.5, y: -2.5, width: 2.0 * radius, height: 2.0 * radius), cornerRadius: radius).cgPath;
-        circleLayer.position = CGPoint(x: 0, y: 0);
-        circleLayer.fillColor = UIColor.blue.cgColor;
-        self.layer.addSublayer(circleLayer);
+        if (self.isSelected) {
+            let yourViewBorder: CAShapeLayer = CAShapeLayer()
+            yourViewBorder.strokeColor = UIColor.black.cgColor
+            yourViewBorder.lineDashPattern = [4, 4]
+            yourViewBorder.frame = self.bounds
+            yourViewBorder.fillColor = nil
+            yourViewBorder.path = UIBezierPath(rect: self.bounds).cgPath
+            self.layer.addSublayer(yourViewBorder)
+            
+            let circleLayer: CAShapeLayer = CAShapeLayer();
+            let radius: CGFloat = 5.0;
+            circleLayer.path = UIBezierPath(roundedRect: CGRect(x: -2.5, y: -2.5, width: 2.0 * radius, height: 2.0 * radius), cornerRadius: radius).cgPath;
+            circleLayer.position = CGPoint(x: 0, y: 0);
+            circleLayer.fillColor = UIColor.blue.cgColor;
+            self.layer.addSublayer(circleLayer);
+        }
         
         // Border and fill parameters.
         UIColor.red.setFill()
@@ -100,5 +102,10 @@ class FigureService: UIView {
         self.isDragging = false;
         touchesMoved(touches, with: event);
         print("touches ended");
+    }
+    
+    public func setIsSelected() -> Void {
+        self.isSelected = true;
+        setNeedsDisplay();
     }
 }
