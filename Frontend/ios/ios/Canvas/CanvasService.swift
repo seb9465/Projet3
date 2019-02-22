@@ -89,7 +89,7 @@ class CanvasService {
         
         if (self.subviewIsInUndoArray(subview: subview!)) {
             if (self.currentlySelectedFigure != nil) {
-                self.currentlySelectedFigure.isSelected = false;
+                self.currentlySelectedFigure.setIsNotSelected();
             }
             
             

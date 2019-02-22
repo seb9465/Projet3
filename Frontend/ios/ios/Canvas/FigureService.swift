@@ -108,4 +108,9 @@ class FigureService: UIView {
         self.isSelected = true;
         setNeedsDisplay();
     }
+    
+    public func setIsNotSelected() -> Void {
+        self.isSelected = false;
+        setNeedsDisplay();
+    }
 }
