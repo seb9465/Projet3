@@ -10,6 +10,7 @@
 		3D5537C02200E86E002C1B77 /* SlideDownSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D5537BF2200E86E002C1B77 /* SlideDownSegue.swift */; };
 		3D5537C22200ED5F002C1B77 /* SlideUpSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D5537C12200ED5F002C1B77 /* SlideUpSegue.swift */; };
 		3D77176921F7C8BC006244A8 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D77176821F7C8BC006244A8 /* Alamofire.framework */; };
+		3DC07CC722205B7C0045E7DE /* ContextMenuCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DC07CC622205B7C0045E7DE /* ContextMenuCell.swift */; };
 		3DC61EB92200B44B003FE445 /* RegisterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DC61EB82200B44B003FE445 /* RegisterController.swift */; };
 		3DC967EB220A067900FA76CB /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DC967EA220A067900FA76CB /* LoginController.swift */; };
 		3DC967ED220A09C400FA76CB /* DashboardController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DC967EC220A09C400FA76CB /* DashboardController.swift */; };
@@ -55,6 +56,7 @@
 		3D5537BF2200E86E002C1B77 /* SlideDownSegue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlideDownSegue.swift; sourceTree = "<group>"; };
 		3D5537C12200ED5F002C1B77 /* SlideUpSegue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlideUpSegue.swift; sourceTree = "<group>"; };
 		3D77176821F7C8BC006244A8 /* Alamofire.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Alamofire.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		3DC07CC622205B7C0045E7DE /* ContextMenuCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContextMenuCell.swift; sourceTree = "<group>"; };
 		3DC61EB82200B44B003FE445 /* RegisterController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterController.swift; sourceTree = "<group>"; };
 		3DC967EA220A067900FA76CB /* LoginController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
 		3DC967EC220A09C400FA76CB /* DashboardController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardController.swift; sourceTree = "<group>"; };
@@ -155,6 +157,7 @@
 			children = (
 				3DF62988221C9FBC0052209A /* GalleryCell.swift */,
 				3DFF94B0221FB738006B2679 /* GalleryController.swift */,
+				3DC07CC622205B7C0045E7DE /* ContextMenuCell.swift */,
 			);
 			name = Gallery;
 			path = ios/Gallery;
@@ -463,6 +466,7 @@
 				B775FE3F22135D6300B2EFE0 /* Extensions.swift in Sources */,
 				3DF6297D221C9FA70052209A /* APIConfiguration.swift in Sources */,
 				B756794C220F608B00F80B12 /* Members.swift in Sources */,
+				3DC07CC722205B7C0045E7DE /* ContextMenuCell.swift in Sources */,
 				3DF62982221C9FB30052209A /* CanvasService.swift in Sources */,
 				3DF62983221C9FB30052209A /* CanvasEndpoint.swift in Sources */,
 				B781B95B22132C2F001C1BD8 /* CanvasController.swift in Sources */,
