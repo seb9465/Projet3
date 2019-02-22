@@ -80,13 +80,12 @@ namespace PolyPaint
                 surfaceDessin.EditingMode = InkCanvasEditingMode.None;
         }
 
-        private void DupliquerSelection(object sender, RoutedEventArgs e)
+        private async void DupliquerSelection(object sender, RoutedEventArgs e)
         {
-            surfaceDessin.CopySelection();
-            surfaceDessin.Paste();
+            await CollaborativeDuplicateAsync();
         }
 
-        private void SupprimerSelection(object sender, RoutedEventArgs e) => surfaceDessin.CutSelection();
+        private async void SupprimerSelection(object sender, RoutedEventArgs e) => await CollaborativeDeleteAsync();
 
         private void SaveImage(object sender, RoutedEventArgs e)
         {
@@ -388,6 +387,14 @@ namespace PolyPaint
             await Connection.InvokeAsync("Select", selectViewModel);
         }
 
+        private async Task CollaborativeDuplicateAsync()
+        {
+            await Connection.InvokeAsync("Duplicate");
+        }
+        private async Task CollaborativeDeleteAsync()
+        {
+            await Connection.InvokeAsync("Delete");
+        }
 
         private void HandleMessages()
         {
@@ -413,7 +420,21 @@ namespace PolyPaint
                     icEventManager.SelectItem(surfaceDessin, new Point(selectViewModel.MouseLeftDownPointX, selectViewModel.MouseLeftDownPointY));
                 });
             });
-
+            Connection.On("Duplicate", () =>
+            {
+                Dispatcher.Invoke(() =>
+                {
+                    surfaceDessin.CopySelection();
+                    surfaceDessin.Paste();
+                });
+            });
+            Connection.On("Delete", () =>
+            {
+                Dispatcher.Invoke(() =>
+                {
+                    surfaceDessin.CutSelection();
+                });
+            });
         }
     }
 }

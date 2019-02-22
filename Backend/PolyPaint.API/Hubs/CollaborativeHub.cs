@@ -59,6 +59,28 @@ namespace PolyPaint.API.Hubs
             }
         }
 
+        public async Task Duplicate()
+        {
+            if (_userService.TryGetUserId(Context.User, out var userId))
+            {
+                UserHandler.UserGroupMap.TryGetValue(userId, out var groupId);
+                var user = await _userService.FindByIdAsync(userId);
+                await Clients.Group(groupId).SendAsync("Duplicate");
+            }
+        }
+
+        public async Task Delete()
+        {
+            if (_userService.TryGetUserId(Context.User, out var userId))
+            {
+                UserHandler.UserGroupMap.TryGetValue(userId, out var groupId);
+                var user = await _userService.FindByIdAsync(userId);
+                await Clients.Group(groupId).SendAsync("Delete");
+            }
+        }
+
+
+
 
         public async Task Select(SelectViewModel selectViewModel)
         {
