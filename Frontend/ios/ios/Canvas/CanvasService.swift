@@ -87,14 +87,18 @@ class CanvasService {
     public func selectFigure(tapPoint: CGPoint, view: UIView) -> Void {
         let subview = view.hitTest(tapPoint, with: nil);
         
+        // CONDITIONS TO BE REVIEWED. DRY.
         if (self.subviewIsInUndoArray(subview: subview!)) {
             if (self.currentlySelectedFigure != nil) {
                 self.currentlySelectedFigure.setIsNotSelected();
             }
             
-            
             self.currentlySelectedFigure = subview as? FigureService;
             self.currentlySelectedFigure.setIsSelected();
+        } else {
+            if (self.currentlySelectedFigure != nil) {
+                self.currentlySelectedFigure.setIsNotSelected();
+            }
         }
     }
 }
