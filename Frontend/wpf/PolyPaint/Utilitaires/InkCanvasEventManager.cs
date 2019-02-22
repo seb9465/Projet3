@@ -1,9 +1,6 @@
-﻿using PolyPaint.Strokes;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using PolyPaint.Common;
+using PolyPaint.Strokes;
+using PolyPaint.VueModeles;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Ink;
@@ -12,15 +9,15 @@ using System.Windows.Media;
 
 namespace PolyPaint.Utilitaires
 {
-    class InkCanvasEventManager
+    internal class InkCanvasEventManager
     {
-        Stroke DrawingStroke = null;
+        public Stroke DrawingStroke = null;
 
         public void SelectItem(InkCanvas surfaceDessin, Point mouseLeftDownPoint)
         {
-            var all = surfaceDessin.EditingMode;
+            InkCanvasEditingMode all = surfaceDessin.EditingMode;
             StrokeCollection strokes = surfaceDessin.Strokes;
-            
+
             // We travel the StrokeCollection inversely to select the first plan item first
             // if some items overlap.
             StrokeCollection strokeToSelect = new StrokeCollection();
@@ -62,13 +59,42 @@ namespace PolyPaint.Utilitaires
             }
         }
 
-        internal void EndDraw(InkCanvas surfaceDessin, string outilSelectionne)
+        internal void EndDraw(InkCanvas surfaceDessin, string outilSelectionne, DrawViewModel drawViewModel)
         {
             if (DrawingStroke != null && outilSelectionne == "rectangle"
                                       || outilSelectionne == "rounded_rectangle")
             {
-                surfaceDessin.Strokes.Remove(DrawingStroke);
-                surfaceDessin.Strokes.Add(DrawingStroke.Clone());
+
+
+                StylusPointCollection collection = new StylusPointCollection();
+
+                foreach (PolyPaintStylusPoint point in drawViewModel.StylusPoints)
+                {
+                    collection.Add(new StylusPoint()
+                    {
+                        X = point.X,
+                        Y = point.Y,
+                        PressureFactor = point.PressureFactor,
+                    });
+                }
+
+                Stroke stroke = null;
+                switch (drawViewModel.ItemType)
+                {
+                    case ItemTypeEnum.RoundedRectangleStroke:
+                        stroke = new RoundedRectangleStroke(collection);
+                        break;
+                }
+                Color color = new Color()
+                {
+                    A = drawViewModel.Color.A,
+                    B = drawViewModel.Color.B,
+                    G = drawViewModel.Color.G,
+                    R = drawViewModel.Color.R,
+                };
+                stroke.DrawingAttributes.Color = color;
+                surfaceDessin.Strokes.Remove(stroke);
+                surfaceDessin.Strokes.Add(stroke.Clone());
             }
         }
     }

@@ -1,11 +1,14 @@
-﻿namespace PolyPaint.VueModeles
+﻿using PolyPaint.Common;
+using System.Collections.Generic;
+
+
+namespace PolyPaint.VueModeles
 {
     public class DrawViewModel
     {
+        public ItemTypeEnum ItemType { get; set; }
+        public List<PolyPaintStylusPoint> StylusPoints { get; set; }
         public string OutilSelectionne { get; set; }
-        public double CurrentPointX { get; set; }
-        public double CurrentPointY { get; set; }
-        public double MouseLeftDownPointX { get; set; }
-        public double MouseLeftDownPointY { get; set; }
+        public PolyPaintColor Color { get; set; }
     }
 }

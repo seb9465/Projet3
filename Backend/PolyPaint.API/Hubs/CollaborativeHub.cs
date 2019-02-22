@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using PolyPaint.API.Handlers;
+using PolyPaint.Common;
 using PolyPaint.DataAccess.Services;
 using PolyPaint.VueModeles;
 using System;
@@ -55,6 +56,18 @@ namespace PolyPaint.API.Hubs
                 UserHandler.UserGroupMap.TryGetValue(userId, out var groupId);
                 var user = await _userService.FindByIdAsync(userId);
                 await Clients.Group(groupId).SendAsync("Draw", drawViewModel);
+            }
+        }
+
+
+        public async Task Select(SelectViewModel selectViewModel)
+        {
+            if (_userService.TryGetUserId(Context.User, out var userId))
+            {
+                UserHandler.UserGroupMap.TryGetValue(userId, out var groupId);
+                var user = await _userService.FindByIdAsync(userId);
+
+                await Clients.Group(groupId).SendAsync("Select", selectViewModel);
             }
         }
     }

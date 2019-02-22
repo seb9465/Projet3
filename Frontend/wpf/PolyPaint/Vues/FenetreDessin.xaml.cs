@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Win32;
 using Newtonsoft.Json;
+using PolyPaint.Common;
 using PolyPaint.Modeles;
 using PolyPaint.Structures;
 using PolyPaint.Utilitaires;
@@ -9,6 +10,7 @@ using PolyPaint.Vues;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -294,37 +296,60 @@ namespace PolyPaint
             }
             catch { }
         }
-        private void InkCanvas_LeftMouseDown(object sender, MouseButtonEventArgs e)
+        private async void InkCanvas_LeftMouseDown(object sender, MouseButtonEventArgs e)
         {
             mouseLeftDownPoint = e.GetPosition((IInputElement) sender);
 
             if ((DataContext as VueModele).OutilSelectionne == "select")
             {
-                icEventManager.SelectItem(surfaceDessin, mouseLeftDownPoint);
+                SelectViewModel selectViewModel = new SelectViewModel
+                {
+                    MouseLeftDownPointX = mouseLeftDownPoint.X,
+                    MouseLeftDownPointY = mouseLeftDownPoint.Y,
+                };
+                await CollaborativeSelectAsync(selectViewModel);
             }
 
             IsDrawing = true;
         }
-        private async void InkCanvas_LeftMouseMove(object sender, MouseEventArgs e)
+        private void InkCanvas_LeftMouseMove(object sender, MouseEventArgs e)
         {
             currentPoint = e.GetPosition((IInputElement) sender);
             if (IsDrawing)
             {
-                DrawViewModel drawViewModel = new DrawViewModel
-                {
-                    OutilSelectionne = (DataContext as VueModele).OutilSelectionne,
-                    CurrentPointX = currentPoint.X,
-                    CurrentPointY = currentPoint.Y,
-                    MouseLeftDownPointX = mouseLeftDownPoint.X,
-                    MouseLeftDownPointY = mouseLeftDownPoint.Y,
-                };
-                await CollaborativeDrawAsync(drawViewModel);
+                icEventManager.DrawShape(surfaceDessin, (DataContext as VueModele).OutilSelectionne, currentPoint, mouseLeftDownPoint);
             }
         }
 
-        private void InkCanvas_LeftMouseUp(object sender, MouseButtonEventArgs e)
+        private async void InkCanvas_LeftMouseUp(object sender, MouseButtonEventArgs e)
         {
-            icEventManager.EndDraw(surfaceDessin, (DataContext as VueModele).OutilSelectionne);
+            List<PolyPaintStylusPoint> points = new List<PolyPaintStylusPoint>();
+            foreach (StylusPoint point in icEventManager.DrawingStroke.StylusPoints.ToList())
+            {
+                points.Add(new PolyPaintStylusPoint()
+                {
+                    PressureFactor = point.PressureFactor,
+                    X = point.X,
+                    Y = point.Y,
+                });
+            }
+            Enum.TryParse<ItemTypeEnum>(icEventManager.DrawingStroke.GetType().ToString(), out ItemTypeEnum itemType);
+
+            PolyPaintColor color = new PolyPaintColor()
+            {
+                A = icEventManager.DrawingStroke.DrawingAttributes.Color.A,
+                B = icEventManager.DrawingStroke.DrawingAttributes.Color.B,
+                G = icEventManager.DrawingStroke.DrawingAttributes.Color.G,
+                R = icEventManager.DrawingStroke.DrawingAttributes.Color.R,
+            };
+            DrawViewModel drawViewModel = new DrawViewModel
+            {
+                OutilSelectionne = (DataContext as VueModele).OutilSelectionne,
+                StylusPoints = points,
+                ItemType = itemType,
+                Color = color,
+            };
+            await CollaborativeDrawAsync(drawViewModel);
             IsDrawing = false;
         }
 
@@ -357,6 +382,13 @@ namespace PolyPaint
         {
             await Connection.InvokeAsync("Draw", drawViewModel);
         }
+
+        private async Task CollaborativeSelectAsync(SelectViewModel selectViewModel)
+        {
+            await Connection.InvokeAsync("Select", selectViewModel);
+        }
+
+
         private void HandleMessages()
         {
             Connection.On<string, string, string>("ReceiveMessage", (username, message, timestamp) =>
@@ -371,9 +403,17 @@ namespace PolyPaint
             {
                 Dispatcher.Invoke(() =>
                 {
-                    icEventManager.DrawShape(surfaceDessin, drawViewModel.OutilSelectionne, new Point(drawViewModel.CurrentPointX, drawViewModel.CurrentPointY), new Point(drawViewModel.MouseLeftDownPointX, drawViewModel.MouseLeftDownPointY));
+                    icEventManager.EndDraw(surfaceDessin, drawViewModel.OutilSelectionne, drawViewModel);
                 });
             });
+            Connection.On<SelectViewModel>("Select", (selectViewModel) =>
+            {
+                Dispatcher.Invoke(() =>
+                {
+                    icEventManager.SelectItem(surfaceDessin, new Point(selectViewModel.MouseLeftDownPointX, selectViewModel.MouseLeftDownPointY));
+                });
+            });
+
         }
     }
 }
