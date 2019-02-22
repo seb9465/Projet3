@@ -18,10 +18,26 @@ class FigureService: UIView {
     private var currentPoint: CGPoint?
     private var previousPoint1: CGPoint?
     
+    private var yourViewBorder: CAShapeLayer!;
+    private var circleLayer: CAShapeLayer!;
+    
     init(origin: CGPoint) {
         super.init(frame: CGRect(x: origin.x - 50, y: origin.y - 50, width: 101, height: 101));
         self.firstPoint = CGPoint(x: origin.x - 50, y: origin.y - 50);
         self.lastPoint = CGPoint(x: origin.x + 50, y: origin.y + 50);
+        
+        yourViewBorder = CAShapeLayer();
+        yourViewBorder.strokeColor = UIColor.black.cgColor;
+        yourViewBorder.lineDashPattern = [4, 4];
+        yourViewBorder.frame = self.bounds;
+        yourViewBorder.fillColor = nil;
+        yourViewBorder.path = UIBezierPath(rect: self.bounds).cgPath;
+        
+        circleLayer = CAShapeLayer();
+        let radius: CGFloat = 5.0;
+        circleLayer.path = UIBezierPath(roundedRect: CGRect(x: -2.5, y: -2.5, width: 2.0 * radius, height: 2.0 * radius), cornerRadius: radius).cgPath;
+        circleLayer.position = CGPoint(x: 0, y: 0);
+        circleLayer.fillColor = UIColor.blue.cgColor;
         
         self.backgroundColor = UIColor.clear;
     }
@@ -43,20 +59,23 @@ class FigureService: UIView {
         let path = UIBezierPath(roundedRect: insetRect, cornerRadius: 10);
         
         if (self.isSelected) {
-            let yourViewBorder: CAShapeLayer = CAShapeLayer()
-            yourViewBorder.strokeColor = UIColor.black.cgColor
-            yourViewBorder.lineDashPattern = [4, 4]
-            yourViewBorder.frame = self.bounds
-            yourViewBorder.fillColor = nil
-            yourViewBorder.path = UIBezierPath(rect: self.bounds).cgPath
-            self.layer.addSublayer(yourViewBorder)
+//            let yourViewBorder: CAShapeLayer = CAShapeLayer()
+//            yourViewBorder.strokeColor = UIColor.black.cgColor
+//            yourViewBorder.lineDashPattern = [4, 4]
+//            yourViewBorder.frame = self.bounds
+//            yourViewBorder.fillColor = nil
+//            yourViewBorder.path = UIBezierPath(rect: self.bounds).cgPath
+            self.layer.addSublayer(yourViewBorder);
             
-            let circleLayer: CAShapeLayer = CAShapeLayer();
-            let radius: CGFloat = 5.0;
-            circleLayer.path = UIBezierPath(roundedRect: CGRect(x: -2.5, y: -2.5, width: 2.0 * radius, height: 2.0 * radius), cornerRadius: radius).cgPath;
-            circleLayer.position = CGPoint(x: 0, y: 0);
-            circleLayer.fillColor = UIColor.blue.cgColor;
+//            let circleLayer: CAShapeLayer = CAShapeLayer();
+//            let radius: CGFloat = 5.0;
+//            circleLayer.path = UIBezierPath(roundedRect: CGRect(x: -2.5, y: -2.5, width: 2.0 * radius, height: 2.0 * radius), cornerRadius: radius).cgPath;
+//            circleLayer.position = CGPoint(x: 0, y: 0);
+//            circleLayer.fillColor = UIColor.blue.cgColor;
             self.layer.addSublayer(circleLayer);
+        } else {
+            self.circleLayer.removeFromSuperlayer();
+            self.yourViewBorder.removeFromSuperlayer();
         }
         
         // Border and fill parameters.
