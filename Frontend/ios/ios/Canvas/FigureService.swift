@@ -42,13 +42,13 @@ class FigureService: UIView {
         
         let path = UIBezierPath(roundedRect: insetRect, cornerRadius: 10);
         
-        let dotedLayer: CAShapeLayer = CAShapeLayer();
-        dotedLayer.path = UIBezierPath(roundedRect: CGRect(x: -2.5, y: -2.5, width: 105, height: 105), cornerRadius: 0).cgPath;
-        dotedLayer.position = CGPoint(x: 0, y: 0);
-        dotedLayer.fillColor = UIColor.clear.cgColor;
-        dotedLayer.lineWidth = 1;
-        dotedLayer.lineDashPattern = [1];
-        self.layer.addSublayer(dotedLayer);
+        let yourViewBorder: CAShapeLayer = CAShapeLayer()
+        yourViewBorder.strokeColor = UIColor.black.cgColor
+        yourViewBorder.lineDashPattern = [4, 4]
+        yourViewBorder.frame = self.bounds
+        yourViewBorder.fillColor = nil
+        yourViewBorder.path = UIBezierPath(rect: self.bounds).cgPath
+        self.layer.addSublayer(yourViewBorder)
         
         let circleLayer: CAShapeLayer = CAShapeLayer();
         let radius: CGFloat = 5.0;
