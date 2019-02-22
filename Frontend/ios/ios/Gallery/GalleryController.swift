@@ -8,14 +8,17 @@
 
 import UIKit
 
-private let reuseIdentifier = "GalleryCell"
-private let canvasCellIdentifier = "GalleryCell"
+private let reuseIdentifier = "CanvasCell"
+private let canvasCellIdentifier = "CanvasCell"
 private let contextMenuIdentifier = "ContextMenuCell"
 
 class GalleryController: UICollectionViewController {
     
     private var canvas : [Canvas] = []
-    private var clicked = false;
+    
+    private var isContextMenuActive = false;
+    private var selectedCellIndex: Int = -1;
+    
     private let itemsPerRow: CGFloat = 4
     private let sectionInsets = UIEdgeInsets(top: 50.0, left: 20.0, bottom: 50.0, right: 20.0)
 
@@ -44,7 +47,7 @@ class GalleryController: UICollectionViewController {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: contextMenuIdentifier, for: indexPath)
             return cell
         } else {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! GalleryCell
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! CanvasCell
             return cell
         }
         // Configure the cell
@@ -55,7 +58,12 @@ class GalleryController: UICollectionViewController {
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         self.collectionView?.performBatchUpdates({
-                self.clicked = !self.clicked
+            if (indexPath.row == selectedCellIndex) {
+                self.isContextMenuActive = !self.isContextMenuActive
+            } else {
+                selectedCellIndex = indexPath.row
+                self.isContextMenuActive = true
+            }
         }, completion: nil)
     }
     
@@ -106,8 +114,10 @@ extension GalleryController : UICollectionViewDelegateFlowLayout {
         if ((indexPath.row + 1) % 5 == 0) {
             widthPerItem = view.frame.width
             heightPerItem = 0
-            if(self.clicked) {
-                heightPerItem = 200
+            if(self.isContextMenuActive) {
+                if(indexPath.row + 1 == (selectedCellIndex + (5-(selectedCellIndex%5)))) {
+                    heightPerItem = 200
+                }
             }
         }
 //        let paddingSpace = sectionInsets.left * (itemsPerRow + 1)

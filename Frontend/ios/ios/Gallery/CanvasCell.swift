@@ -8,7 +8,7 @@
 
 import UIKit
 
-class GalleryCell: UICollectionViewCell {
+class CanvasCell: UICollectionViewCell {
     
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var name: UILabel!
