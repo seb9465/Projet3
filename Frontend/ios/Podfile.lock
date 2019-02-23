@@ -2,6 +2,7 @@ PODS:
   - Alamofire (4.8.1)
   - AwaitKit (5.1.0):
     - PromiseKit (~> 6)
+  - ChromaColorPicker (1.7.2)
   - JWTDecode (2.2.0)
   - MessageInputBar (0.4.1):
     - MessageInputBar/Core (= 0.4.1)
@@ -25,6 +26,7 @@ PODS:
 DEPENDENCIES:
   - Alamofire
   - AwaitKit
+  - ChromaColorPicker
   - JWTDecode
   - MessageInputBar
   - MessageKit
@@ -36,6 +38,7 @@ SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - Alamofire
     - AwaitKit
+    - ChromaColorPicker
     - JWTDecode
     - MessageInputBar
     - MessageKit
@@ -45,12 +48,13 @@ SPEC REPOS:
 SPEC CHECKSUMS:
   Alamofire: 16ce2c353fb72865124ddae8a57c5942388f4f11
   AwaitKit: a8a3d8982097ee09ac75f5c5d3952fbcc2f26f1c
+  ChromaColorPicker: 78194fbae9f342d3781ac178c4d92c7652197d18
   JWTDecode: 85a405ab16d5473e99bd89ded1d535090ebd6a0e
   MessageInputBar: e81c7535347f1f7b923de7080409a535a004b6e4
   MessageKit: 29c1c87e5a396d2ca7a3f712e5171dc9aba42a1e
   PromiseKit: ef376fb8b4e92edfeb66bd403b983eaa07fbde0c
   SwiftSignalRClient: edd4e6e16c87370ca624c6868279483a2ffe4f1d
 
-PODFILE CHECKSUM: dec1b9d9a1355f78cc48d624bbd473e271ea8872
+PODFILE CHECKSUM: 8ccc76d1f6ef9760885a95bb46ccdf20baee92ba
 
 COCOAPODS: 1.5.3

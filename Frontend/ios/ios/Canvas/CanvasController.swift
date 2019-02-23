@@ -6,6 +6,7 @@
 //  Copyright © 2019 LOG3000 equipe 12. All rights reserved.
 //
 
+import ChromaColorPicker
 import UIKit
 
 enum STATE {
@@ -19,6 +20,7 @@ class CanvasController: UIViewController {
     private var toolState: STATE  = STATE.NOTHING_SELECTED;
     public var canvas: CanvasService = CanvasService();
     private var activeButton: UIBarButtonItem!;
+    private var colorPicker: ChromaColorPicker!;
     
     @IBOutlet var rectButton: UIBarButtonItem!
     @IBOutlet var selectButton: UIBarButtonItem!
@@ -30,6 +32,23 @@ class CanvasController: UIViewController {
         super.viewDidLoad();
         
         self.addTapGestureRecognizer();
+        
+        // Color picker parameters.
+        let pickerSize = CGSize(width: view.bounds.width*0.8, height: view.bounds.width*0.8)
+        let pickerOrigin = CGPoint(x: view.bounds.midX - pickerSize.width/2, y: view.bounds.midY - pickerSize.height/2)
+        /* Create Color Picker */
+        colorPicker = ChromaColorPicker(frame: CGRect(origin: pickerOrigin, size: pickerSize))
+        colorPicker.delegate = self as? ChromaColorPickerDelegate
+        /* Customize the view (optional) */
+        colorPicker.padding = 10
+        colorPicker.stroke = 3 //stroke of the rainbow circle
+        colorPicker.currentAngle = Float.pi
+        /* Customize for grayscale (optional) */
+//        colorPicker.supportsShadesOfGray = true // false by default
+        //colorPicker.colorToggleButton.grayColorGradientLayer.colors = [UIColor.lightGray.cgColor, UIColor.gray.cgColor] // You can also override gradient colors
+        
+        
+        colorPicker.hexLabel.textColor = UIColor.white
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -142,7 +161,7 @@ class CanvasController: UIViewController {
     
     @IBAction func fillButton(_ sender: Any) {
         print("FILL BUTTON TAPED");
-        
+        self.view.addSubview(colorPicker)
     }
     
     public func clear() {
@@ -164,5 +183,22 @@ class CanvasController: UIViewController {
     private func addTapGestureRecognizer() -> Void {
         let tap = UITapGestureRecognizer(target: self, action: #selector(CanvasController.handleTap(sender:)))
         self.view.addGestureRecognizer(tap);
+    }
+}
+
+extension CanvasController: ChromaColorPickerDelegate {
+    func colorPickerDidChooseColor(_ colorPicker: ChromaColorPicker, color: UIColor) {
+        //Set color for the display view
+//        colorDisplayView.backgroundColor = color
+        print(color);
+        //Perform zesty animation
+//        UIView.animate(withDuration: 0.2,
+//                       animations: {
+//                        self.colorDisplayView.transform = CGAffineTransform(scaleX: 1.05, y: 1.05)
+//        }, completion: { (done) in
+//            UIView.animate(withDuration: 0.2, animations: {
+//                self.colorDisplayView.transform = CGAffineTransform.identity
+//            })
+//        })
     }
 }
