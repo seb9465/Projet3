@@ -24,6 +24,7 @@ class CanvasController: UIViewController {
     @IBOutlet var selectButton: UIBarButtonItem!
     @IBOutlet var deleteButton: UIBarButtonItem!
     @IBOutlet var borderButton: UIBarButtonItem!
+    @IBOutlet var fillButton: UIBarButtonItem!
     
     override func viewDidLoad() {
         super.viewDidLoad();
@@ -36,6 +37,7 @@ class CanvasController: UIViewController {
         
         navigationController?.setNavigationBarHidden(true, animated: animated);
         self.borderButton.isEnabled = false;
+        self.fillButton.isEnabled = false;
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -50,7 +52,9 @@ class CanvasController: UIViewController {
         if (tapPoint.y >= 70 && self.toolState == STATE.DRAW_RECT) {
             self.canvas.addNewFigure(origin: tapPoint, view: self.view);
         } else if (self.toolState == STATE.SELECTION) {
-            self.borderButton.isEnabled = self.canvas.selectFigure(tapPoint: tapPoint, view: self.view);
+            let res: Bool = self.canvas.selectFigure(tapPoint: tapPoint, view: self.view);
+            self.borderButton.isEnabled = res;
+            self.fillButton.isEnabled = res;
         } else if (self.toolState == STATE.DELETE) {
             self.canvas.deleteFigure(tapPoint: tapPoint, view: self.view);
         }
@@ -78,6 +82,7 @@ class CanvasController: UIViewController {
             self.toolState = STATE.DELETE;
             self.canvas.unselectSelectedFigure();
             self.borderButton.isEnabled = false;
+            self.fillButton.isEnabled = false;
             self.activeButton?.tintColor = UIColor(red: 0, green: 122/255, blue: 1, alpha: 1);
             self.activeButton = self.deleteButton;
             self.deleteButton.tintColor = UIColor(red: 0, green: 0, blue: 0, alpha: 1);
@@ -108,6 +113,7 @@ class CanvasController: UIViewController {
             self.toolState = STATE.DRAW_RECT;
             self.canvas.unselectSelectedFigure();
             self.borderButton.isEnabled = false;
+            self.fillButton.isEnabled = false;
             self.activeButton?.tintColor = UIColor(red: 0, green: 122/255, blue: 1, alpha: 1);
             self.activeButton = self.rectButton;
             self.rectButton.tintColor = UIColor(red:0,green:0,blue:0,alpha:1);
@@ -131,7 +137,11 @@ class CanvasController: UIViewController {
     }
     
     @IBAction func borderButton(_ sender: Any) {
-        print("BORDER BUTTON SELECTED");
+        print("BORDER BUTTON TAPED");
+    }
+    
+    @IBAction func fillButton(_ sender: Any) {
+        print("FILL BUTTON TAPED");
     }
     
     public func clear() {
