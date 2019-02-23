@@ -15,7 +15,7 @@ enum STATE {
     case DELETE
 }
 
-class CanvasController: UIViewController, UIPopoverPresentationControllerDelegate {
+class CanvasController: UIViewController {
     private var toolState: STATE  = STATE.NOTHING_SELECTED;
     public var canvas: CanvasService = CanvasService();
     private var activeButton: UIBarButtonItem!;
