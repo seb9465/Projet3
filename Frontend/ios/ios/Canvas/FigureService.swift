@@ -47,6 +47,16 @@ class FigureService: UIView {
         selectedCornerCircle2.position = CGPoint(x: lastPoint.x - firstPoint.x + 2, y: 0);
         selectedCornerCircle2.fillColor = UIColor.blue.cgColor;
         
+        selectedCornerCircle3 = CAShapeLayer();
+        selectedCornerCircle3.path = UIBezierPath(roundedRect: CGRect(x: -5, y: -5, width: 2.0 * self.radius, height: 2.0 * self.radius), cornerRadius: self.radius).cgPath;
+        selectedCornerCircle3.position = CGPoint(x: lastPoint.x - firstPoint.x + 2, y: lastPoint.y - firstPoint.y + 2);
+        selectedCornerCircle3.fillColor = UIColor.blue.cgColor;
+        
+        selectedCornerCircle4 = CAShapeLayer();
+        selectedCornerCircle4.path = UIBezierPath(roundedRect: CGRect(x: -5, y: -5, width: 2.0 * self.radius, height: 2.0 * self.radius), cornerRadius: self.radius).cgPath;
+        selectedCornerCircle4.position = CGPoint(x: 0, y: lastPoint.y - firstPoint.y + 2);
+        selectedCornerCircle4.fillColor = UIColor.blue.cgColor;
+        
         self.backgroundColor = UIColor.clear;
     }
     
@@ -70,10 +80,14 @@ class FigureService: UIView {
             self.layer.addSublayer(selectedDashedBorder);
             self.layer.addSublayer(selectedCornerCircle1);
             self.layer.addSublayer(selectedCornerCircle2);
+            self.layer.addSublayer(selectedCornerCircle3);
+            self.layer.addSublayer(selectedCornerCircle4);
         } else {
             self.selectedDashedBorder.removeFromSuperlayer();
             self.selectedCornerCircle1.removeFromSuperlayer();
             self.selectedCornerCircle2.removeFromSuperlayer();
+            self.selectedCornerCircle3.removeFromSuperlayer();
+            self.selectedCornerCircle4.removeFromSuperlayer();
         }
         
         // Border and fill parameters.
