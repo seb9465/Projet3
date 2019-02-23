@@ -11,13 +11,16 @@ import UIKit
 private let reuseIdentifier = "CanvasCell"
 private let canvasCellIdentifier = "CanvasCell"
 private let contextMenuIdentifier = "ContextMenuCell"
+private let placeholderIdentifier = "PlaceHolderCell"
 
 class GalleryController: UICollectionViewController {
     
     private var canvas : [Canvas] = []
     
-    private var isContextMenuActive = false;
-    private var selectedCellIndex: Int = -1;
+    private var isContextMenuActive = false
+    private var selectedCellIndex: Int = -1
+    private var contextMenuCellCount: Int = -1
+    private var placeholderCellCount: Int = -1;
     
     private let itemsPerRow: CGFloat = 4
     private let sectionInsets = UIEdgeInsets(top: 50.0, left: 20.0, bottom: 50.0, right: 20.0)
@@ -27,6 +30,8 @@ class GalleryController: UICollectionViewController {
         
         CanvasService.getAll().done { (retreivedCanvas) in
             self.canvas = retreivedCanvas
+            self.contextMenuCellCount = Int(ceil(Double(self.canvas.count) / 4.0))
+            self.placeholderCellCount = (self.canvas.count) % 4
             self.collectionView.reloadData()
         }
     }
@@ -39,12 +44,16 @@ class GalleryController: UICollectionViewController {
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // Return the number of items
-        return canvas.count
+        return canvas.count + contextMenuCellCount + placeholderCellCount
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if ((indexPath.row + 1) % 5 == 0) {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: contextMenuIdentifier, for: indexPath)
+            return cell
+        } else if((indexPath.row + 1) >= canvas.count + contextMenuCellCount && (indexPath.row + 1) % 5 != 0){
+            print("placeholder")
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: placeholderIdentifier, for: indexPath)
             return cell
         } else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! CanvasCell
@@ -108,35 +117,36 @@ extension GalleryController : UICollectionViewDelegateFlowLayout {
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        var widthPerItem: CGFloat = 200;
+        let paddingSpace = sectionInsets.left * (itemsPerRow + 1)
+        let availableWidth = view.frame.width - paddingSpace
+        var widthPerItem = availableWidth / itemsPerRow
+        
+//        var widthPerItem: CGFloat = 200;
         var heightPerItem: CGFloat = 200;
 
         if ((indexPath.row + 1) % 5 == 0) {
-            widthPerItem = view.frame.width
+            widthPerItem = view.frame.width - sectionInsets.left * 2
             heightPerItem = 0
             if(self.isContextMenuActive) {
-                if(indexPath.row + 1 == (selectedCellIndex + (5-(selectedCellIndex%5)))) {
+                if(indexPath.row + 1 == (selectedCellIndex + (5 - (selectedCellIndex % 5)))) {
                     heightPerItem = 200
                 }
             }
         }
-//        let paddingSpace = sectionInsets.left * (itemsPerRow + 1)
-//        let availableWidth = view.frame.width - paddingSpace
-//        let widthPerItem = availableWidth / itemsPerRow
 
         return CGSize(width: widthPerItem, height: heightPerItem)
     }
     
-//    func collectionView(_ collectionView: UICollectionView,
-//                        layout collectionViewLayout: UICollectionViewLayout,
-//                        insetForSectionAt section: Int) -> UIEdgeInsets {
-//        return sectionInsets
-//    }
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        insetForSectionAt section: Int) -> UIEdgeInsets {
+        return sectionInsets
+    }
     
-//    func collectionView(_ collectionView: UICollectionView,
-//                        layout collectionViewLayout: UICollectionViewLayout,
-//                        minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-//        return sectionInsets.left
-//    }
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return sectionInsets.left
+    }
 }
 

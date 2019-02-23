@@ -431,7 +431,7 @@
                                 </connections>
                             </collectionViewCell>
                             <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ContextMenuCell" id="6OL-lz-rNp" userLabel="ContextualMenuCell" customClass="ContextMenuCell" customModule="ios" customModuleProvider="target">
-                                <rect key="frame" x="210" y="50" width="769" height="200"/>
+                                <rect key="frame" x="255" y="50" width="769" height="200"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
                                     <rect key="frame" x="0.0" y="0.0" width="769" height="200"/>
@@ -465,6 +465,14 @@
                                 </view>
                                 <color key="backgroundColor" white="0.84790382919999996" alpha="1" colorSpace="calibratedWhite"/>
                                 <size key="customSize" width="769" height="200"/>
+                            </collectionViewCell>
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="PlaceHolderCell" id="p0s-fB-WuH" customClass="PlaceHolderCell" customModule="ios" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="260" width="200" height="200"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
+                                    <rect key="frame" x="0.0" y="0.0" width="200" height="200"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </view>
                             </collectionViewCell>
                         </cells>
                         <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="dKg-8w-IFe">

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3D121EDC22209E070074C61C /* PlaceHolderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D121EDB22209E070074C61C /* PlaceHolderCell.swift */; };
 		3D5537C02200E86E002C1B77 /* SlideDownSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D5537BF2200E86E002C1B77 /* SlideDownSegue.swift */; };
 		3D5537C22200ED5F002C1B77 /* SlideUpSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D5537C12200ED5F002C1B77 /* SlideUpSegue.swift */; };
 		3D77176921F7C8BC006244A8 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D77176821F7C8BC006244A8 /* Alamofire.framework */; };
@@ -53,6 +54,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3D121EDB22209E070074C61C /* PlaceHolderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceHolderCell.swift; sourceTree = "<group>"; };
 		3D5537BF2200E86E002C1B77 /* SlideDownSegue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlideDownSegue.swift; sourceTree = "<group>"; };
 		3D5537C12200ED5F002C1B77 /* SlideUpSegue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlideUpSegue.swift; sourceTree = "<group>"; };
 		3D77176821F7C8BC006244A8 /* Alamofire.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Alamofire.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -158,6 +160,7 @@
 				3DF62988221C9FBC0052209A /* CanvasCell.swift */,
 				3DFF94B0221FB738006B2679 /* GalleryController.swift */,
 				3DC07CC622205B7C0045E7DE /* ContextMenuCell.swift */,
+				3D121EDB22209E070074C61C /* PlaceHolderCell.swift */,
 			);
 			name = Gallery;
 			path = ios/Gallery;
@@ -460,6 +463,7 @@
 				B711B5EA21F659A30096BF7F /* AppDelegate.swift in Sources */,
 				B7A3A5C22203C27600031F64 /* Message.swift in Sources */,
 				B7A3A5C02203BF3B00031F64 /* ChatControler.swift in Sources */,
+				3D121EDC22209E070074C61C /* PlaceHolderCell.swift in Sources */,
 				3DFF94B1221FB738006B2679 /* GalleryController.swift in Sources */,
 				3DF6298B221C9FBC0052209A /* CanvasCell.swift in Sources */,
 				C43102E122132226008F1D80 /* SoundNotification.swift in Sources */,
