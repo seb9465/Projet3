@@ -9,5 +9,8 @@
 import UIKit
 
 class PlaceHolderCell: UICollectionViewCell {
-    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        self.layer.cornerRadius = 5;
+    }
 }

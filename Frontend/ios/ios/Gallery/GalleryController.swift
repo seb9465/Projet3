@@ -17,9 +17,10 @@ class GalleryController: UICollectionViewController {
     private var canvas : [Canvas] = []
     
     private var isContextMenuActive = false
+    private var selectedCanvasIndex: Int = 1
     private var selectedCellIndex: Int = 1
     private var contextMenuCellCount: Int = -1
-    private var placeholderCellCount: Int = -1;
+    private var placeholderCellCount: Int = -1
     
     private let itemsPerRow: CGFloat = 4
     private let sectionInsets = UIEdgeInsets(top: 50.0, left: 20.0, bottom: 50.0, right: 20.0)
@@ -53,11 +54,8 @@ class GalleryController: UICollectionViewController {
         
         if (isContextMenuCell) {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: contextMenuIdentifier, for: indexPath) as! ContextMenuCell
-//            print(selectedCellIndex)
-//            print("canvas name" + canvas[selectedCellIndex].name)
-//            print("canvas id" + canvas[selectedCellIndex].canvasId)
-            cell.CanvasName.text = canvas[selectedCellIndex - Int(floor(Double(selectedCellIndex) / 5.0))].name
-            cell.CanvasID.text = canvas[selectedCellIndex - Int(floor(Double(selectedCellIndex) / 5.0))].canvasId
+            cell.CanvasName.text = canvas[selectedCanvasIndex].name
+            cell.CanvasID.text = canvas[selectedCanvasIndex].canvasId
             return cell
         }
         
@@ -75,8 +73,7 @@ class GalleryController: UICollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let isContextMenuCell = (indexPath.row + 1) % 5 == 0
         let isPlaceholderCell = (indexPath.row + 1) >= canvas.count + contextMenuCellCount && !isContextMenuCell
-//        print(selectedCellIndex)
-        
+
         // Ignore placeholder cells on click
         if (isPlaceholderCell) {
             return
@@ -92,6 +89,7 @@ class GalleryController: UICollectionViewController {
             } else {
                 self.isContextMenuActive = true
                 selectedCellIndex = indexPath.row
+                selectedCanvasIndex = selectedCellIndex - Int(floor(Double(selectedCellIndex) / 5.0))
             }
             
         }, completion: { (finished) in
@@ -147,7 +145,7 @@ extension GalleryController : UICollectionViewDelegateFlowLayout {
         var widthPerItem = availableWidth / itemsPerRow
         
 //        var widthPerItem: CGFloat = 200;
-        var heightPerItem: CGFloat = 200;
+        var heightPerItem: CGFloat = widthPerItem;
 
         if ((indexPath.row + 1) % 5 == 0) {
             widthPerItem = view.frame.width - sectionInsets.left * 2
@@ -171,7 +169,7 @@ extension GalleryController : UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return sectionInsets.left
+        return sectionInsets.left / 2
     }
 }
 

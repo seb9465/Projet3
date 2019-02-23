@@ -12,8 +12,11 @@ class CanvasCell: UICollectionViewCell {
     
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var name: UILabel!
-    
-//    let canvas: Canvas;
+
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        self.layer.cornerRadius = 5;
+    }
     
     
     override func awakeFromNib() {

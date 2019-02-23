@@ -12,4 +12,8 @@ class ContextMenuCell: UICollectionViewCell {
     @IBOutlet weak var CanvasName: UILabel!
     @IBOutlet weak var CanvasID: UILabel!
     
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        self.layer.cornerRadius = 5;
+    }
 }
