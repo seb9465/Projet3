@@ -13,7 +13,7 @@ import Alamofire
 class CanvasService {
     private var undoArray: [FigureService];
     private var redoArray: [FigureService];
-    private var currentlySelectedFigure: FigureService!;
+    public var currentlySelectedFigure: FigureService!;
     
     init() {
         self.undoArray = [];
@@ -84,7 +84,7 @@ class CanvasService {
         }
     }
     
-    public func selectFigure(tapPoint: CGPoint, view: UIView) -> Void {
+    public func selectFigure(tapPoint: CGPoint, view: UIView) -> Bool {
         let subview = view.hitTest(tapPoint, with: nil);
         
         // CONDITIONS TO BE REVIEWED. DRY.
@@ -95,10 +95,14 @@ class CanvasService {
             
             self.currentlySelectedFigure = subview as? FigureService;
             self.currentlySelectedFigure.setIsSelected();
+            
+            return true;
         } else {
             if (self.currentlySelectedFigure != nil) {
                 self.currentlySelectedFigure.setIsNotSelected();
             }
+            
+            return false;
         }
     }
     
@@ -106,6 +110,18 @@ class CanvasService {
         if (self.currentlySelectedFigure != nil) {
             self.currentlySelectedFigure.setIsNotSelected();
         }
+    }
+    
+    public func setFillColor(fillColor: UIColor) -> Void {
+        self.currentlySelectedFigure.figureColor = fillColor;
+    }
+    
+    public func setSelectedFigureColor(color: UIColor) -> Void {
+        self.currentlySelectedFigure.setFillColor(fillColor: color);
+    }
+    
+    public func setSelectFigureBorderColor(color: UIColor) -> Void {
+        self.currentlySelectedFigure.setBorderColor(borderColor: color);
     }
 }
 

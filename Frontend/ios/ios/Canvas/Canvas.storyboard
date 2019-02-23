@@ -13,7 +13,7 @@
         <!--Canvas Controller-->
         <scene sceneID="Isk-t8-nkS">
             <objects>
-                <viewController id="Vts-He-P18" customClass="CanvasController" customModule="ios" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="CanvasView" id="Vts-He-P18" customClass="CanvasController" customModule="ios" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="hqe-fa-MVE" customClass="ConvasController">
                         <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -62,6 +62,11 @@
                                             <action selector="borderButton:" destination="Vts-He-P18" id="r6O-iM-TLH"/>
                                         </connections>
                                     </barButtonItem>
+                                    <barButtonItem title="Fill" id="QqS-3X-DNp">
+                                        <connections>
+                                            <action selector="fillButton:" destination="Vts-He-P18" id="lSt-J1-ym8"/>
+                                        </connections>
+                                    </barButtonItem>
                                 </items>
                             </toolbar>
                         </subviews>
@@ -71,6 +76,7 @@
                     <connections>
                         <outlet property="borderButton" destination="mdZ-5y-94T" id="FgC-S0-rGV"/>
                         <outlet property="deleteButton" destination="5ld-32-8cy" id="y06-F1-JC8"/>
+                        <outlet property="fillButton" destination="QqS-3X-DNp" id="rPk-OW-90X"/>
                         <outlet property="rectButton" destination="SLY-eP-ACv" id="5wO-L8-aeR"/>
                         <outlet property="selectButton" destination="Lts-nR-qFd" id="AOd-xa-kni"/>
                     </connections>

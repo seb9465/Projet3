@@ -8,15 +8,24 @@
 
 import UIKit
 
-class FigureService: UIView {
-    private var firstPoint: CGPoint = CGPoint(x: 0, y: 0);
-    private var lastPoint: CGPoint = CGPoint(x: 100, y: 100);
+protocol FigureProtocol {
+    var figureColor: UIColor { get set }
+    var lineWidth: CGFloat { get set }
+    var lineColor: UIColor { get set }
+}
+
+class FigureService: UIView, FigureProtocol {
+    var figureColor: UIColor
+    var lineWidth: CGFloat
+    var lineColor: UIColor
+    private var firstPoint: CGPoint;
+    private var lastPoint: CGPoint;
     
     public var isSelected: Bool = false;
     private var isDragging: Bool = false;
     
-    private var currentPoint: CGPoint?
-    private var previousPoint1: CGPoint?
+    private var currentPoint: CGPoint?;
+    private var previousPoint1: CGPoint?;
     
     private let radius: CGFloat = 5.0;
     private var selectedDashedBorder: CAShapeLayer!;
@@ -26,15 +35,20 @@ class FigureService: UIView {
     private var selectedCornerCircle4: CAShapeLayer!;
     
     init(origin: CGPoint) {
-        super.init(frame: CGRect(x: origin.x - 50, y: origin.y - 50, width: 102, height: 102));
         self.firstPoint = CGPoint(x: origin.x - 50, y: origin.y - 50);
         self.lastPoint = CGPoint(x: origin.x + 50, y: origin.y + 50);
+        self.figureColor = UIColor.clear;
+        self.lineWidth = 2;
+        self.lineColor = UIColor.black;
+        
+        super.init(frame: CGRect(x: origin.x - 50, y: origin.y - 50, width: 102, height: 102));
         
         self.setInitialSelectedDashedBorder();
         
         self.setInitialSelectedCornerCirles();
         
         self.backgroundColor = UIColor.clear;
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -60,9 +74,9 @@ class FigureService: UIView {
         }
         
         // Border and fill parameters.
-        UIColor.red.setFill()
-        path.lineWidth = 2;
-        UIColor.black.setStroke();
+        self.figureColor.setFill();
+        path.lineWidth = self.lineWidth;
+        self.lineColor.setStroke();
         path.fill();
         path.stroke();
     }
@@ -111,6 +125,16 @@ class FigureService: UIView {
     
     public func setIsNotSelected() -> Void {
         self.isSelected = false;
+        setNeedsDisplay();
+    }
+    
+    public func setFillColor(fillColor: UIColor) -> Void {
+        self.figureColor = fillColor;
+        setNeedsDisplay();
+    }
+    
+    public func setBorderColor(borderColor: UIColor) -> Void {
+        self.lineColor = borderColor;
         setNeedsDisplay();
     }
     

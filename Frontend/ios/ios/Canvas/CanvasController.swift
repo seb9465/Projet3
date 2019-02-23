@@ -6,6 +6,7 @@
 //  Copyright © 2019 LOG3000 equipe 12. All rights reserved.
 //
 
+import ChromaColorPicker
 import UIKit
 
 enum STATE {
@@ -13,22 +14,38 @@ enum STATE {
     case DRAW_RECT
     case SELECTION
     case DELETE
+    case FILL
+    case BORDER_COLOR
 }
 
 class CanvasController: UIViewController {
     private var toolState: STATE  = STATE.NOTHING_SELECTED;
-    private var canvas: CanvasService = CanvasService();
+    private var previousToolState: STATE = STATE.NOTHING_SELECTED;
+    public var canvas: CanvasService = CanvasService();
     private var activeButton: UIBarButtonItem!;
+    private var colorPicker: ChromaColorPicker!;
     
     @IBOutlet var rectButton: UIBarButtonItem!
     @IBOutlet var selectButton: UIBarButtonItem!
     @IBOutlet var deleteButton: UIBarButtonItem!
     @IBOutlet var borderButton: UIBarButtonItem!
+    @IBOutlet var fillButton: UIBarButtonItem!
     
     override func viewDidLoad() {
         super.viewDidLoad();
         
         self.addTapGestureRecognizer();
+        
+        // Color picker parameters.
+        let pickerSize = CGSize(width: 200, height: 200);
+        let pickerOrigin = CGPoint(x: 200, y: 100);
+        colorPicker = ChromaColorPicker(frame: CGRect(origin: pickerOrigin, size: pickerSize))
+        colorPicker.delegate = self as ChromaColorPickerDelegate;
+        colorPicker.padding = 10
+        colorPicker.stroke = 3 //stroke of the rainbow circle
+        colorPicker.currentAngle = Float.pi
+        colorPicker.hexLabel.textColor = UIColor.white
+        colorPicker.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.1);
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -36,6 +53,7 @@ class CanvasController: UIViewController {
         
         navigationController?.setNavigationBarHidden(true, animated: animated);
         self.borderButton.isEnabled = false;
+        self.fillButton.isEnabled = false;
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -50,7 +68,9 @@ class CanvasController: UIViewController {
         if (tapPoint.y >= 70 && self.toolState == STATE.DRAW_RECT) {
             self.canvas.addNewFigure(origin: tapPoint, view: self.view);
         } else if (self.toolState == STATE.SELECTION) {
-            self.canvas.selectFigure(tapPoint: tapPoint, view: self.view);
+            let res: Bool = self.canvas.selectFigure(tapPoint: tapPoint, view: self.view);
+            self.borderButton.isEnabled = res;
+            self.fillButton.isEnabled = res;
         } else if (self.toolState == STATE.DELETE) {
             self.canvas.deleteFigure(tapPoint: tapPoint, view: self.view);
         }
@@ -77,6 +97,8 @@ class CanvasController: UIViewController {
             print("DELETE BUTTON SELECTED");
             self.toolState = STATE.DELETE;
             self.canvas.unselectSelectedFigure();
+            self.borderButton.isEnabled = false;
+            self.fillButton.isEnabled = false;
             self.activeButton?.tintColor = UIColor(red: 0, green: 122/255, blue: 1, alpha: 1);
             self.activeButton = self.deleteButton;
             self.deleteButton.tintColor = UIColor(red: 0, green: 0, blue: 0, alpha: 1);
@@ -106,6 +128,8 @@ class CanvasController: UIViewController {
             print("RECT BUTTON SELECTED");
             self.toolState = STATE.DRAW_RECT;
             self.canvas.unselectSelectedFigure();
+            self.borderButton.isEnabled = false;
+            self.fillButton.isEnabled = false;
             self.activeButton?.tintColor = UIColor(red: 0, green: 122/255, blue: 1, alpha: 1);
             self.activeButton = self.rectButton;
             self.rectButton.tintColor = UIColor(red:0,green:0,blue:0,alpha:1);
@@ -129,6 +153,19 @@ class CanvasController: UIViewController {
     }
     
     @IBAction func borderButton(_ sender: Any) {
+        print("BORDER BUTTON TAPED");
+        self.displayColorPickerFor(state: STATE.BORDER_COLOR);
+    }
+    
+    @IBAction func fillButton(_ sender: Any) {
+        print("FILL BUTTON TAPED");
+        self.displayColorPickerFor(state: STATE.FILL);
+    }
+    
+    private func displayColorPickerFor(state: STATE) -> Void {
+        self.previousToolState = self.toolState;
+        self.toolState = state;
+        self.view.addSubview(colorPicker)
     }
     
     public func clear() {
@@ -150,5 +187,22 @@ class CanvasController: UIViewController {
     private func addTapGestureRecognizer() -> Void {
         let tap = UITapGestureRecognizer(target: self, action: #selector(CanvasController.handleTap(sender:)))
         self.view.addGestureRecognizer(tap);
+    }
+}
+
+extension CanvasController: ChromaColorPickerDelegate {
+    func colorPickerDidChooseColor(_ colorPicker: ChromaColorPicker, color: UIColor) {
+        switch (self.toolState) {
+        case STATE.FILL:
+            self.canvas.setSelectedFigureColor(color: color);
+            break;
+        case STATE.BORDER_COLOR:
+            self.canvas.setSelectFigureBorderColor(color: color);
+            break;
+        default:
+            break;
+        }
+        self.toolState = self.previousToolState;
+        self.colorPicker.removeFromSuperview();
     }
 }
