@@ -74,6 +74,7 @@ class CanvasController: UIViewController {
         } else {
             print("DELETE BUTTON SELECTED");
             self.toolState = STATE.DELETE;
+            self.canvas.unselectSelectedFigure();
             self.activeButton?.tintColor = UIColor(red: 0, green: 122/255, blue: 1, alpha: 1);
             self.activeButton = self.deleteButton;
             self.deleteButton.tintColor = UIColor(red: 0, green: 0, blue: 0, alpha: 1);
@@ -102,6 +103,7 @@ class CanvasController: UIViewController {
         } else {
             print("RECT BUTTON SELECTED");
             self.toolState = STATE.DRAW_RECT;
+            self.canvas.unselectSelectedFigure();
             self.activeButton?.tintColor = UIColor(red: 0, green: 122/255, blue: 1, alpha: 1);
             self.activeButton = self.rectButton;
             self.rectButton.tintColor = UIColor(red:0,green:0,blue:0,alpha:1);

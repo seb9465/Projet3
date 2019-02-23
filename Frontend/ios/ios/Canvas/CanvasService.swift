@@ -101,6 +101,12 @@ class CanvasService {
             }
         }
     }
+    
+    public func unselectSelectedFigure() -> Void {
+        if (self.currentlySelectedFigure != nil) {
+            self.currentlySelectedFigure.setIsNotSelected();
+        }
+    }
 }
 
 extension CanvasService {
