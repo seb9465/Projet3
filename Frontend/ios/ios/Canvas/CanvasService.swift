@@ -13,7 +13,7 @@ import Alamofire
 class CanvasService {
     private var undoArray: [FigureService];
     private var redoArray: [FigureService];
-    private var currentlySelectedFigure: FigureService!;
+    public var currentlySelectedFigure: FigureService!;
     
     init() {
         self.undoArray = [];
@@ -114,6 +114,10 @@ class CanvasService {
     
     public func setFillColor(fillColor: UIColor) -> Void {
         self.currentlySelectedFigure.figureColor = fillColor;
+    }
+    
+    public func setSelectedFigureColor(color: UIColor) -> Void {
+        self.currentlySelectedFigure.setFillColor(fillColor: color);
     }
 }
 

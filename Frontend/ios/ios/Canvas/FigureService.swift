@@ -128,6 +128,11 @@ class FigureService: UIView, FigureProtocol {
         setNeedsDisplay();
     }
     
+    public func setFillColor(fillColor: UIColor) -> Void {
+        self.figureColor = fillColor;
+        setNeedsDisplay();
+    }
+    
     private func setInitialSelectedCornerCirles() -> Void {
         selectedCornerCircle1 = CAShapeLayer();
         selectedCornerCircle1.path = UIBezierPath(roundedRect: CGRect(x: -5, y: -5, width: 2.0 * self.radius, height: 2.0 * self.radius), cornerRadius: self.radius).cgPath;

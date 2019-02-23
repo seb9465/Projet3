@@ -14,10 +14,13 @@ enum STATE {
     case DRAW_RECT
     case SELECTION
     case DELETE
+    case FILL_STATE
+    case BORDER_COLOR_STATE
 }
 
 class CanvasController: UIViewController {
     private var toolState: STATE  = STATE.NOTHING_SELECTED;
+    private var previousToolState: STATE = STATE.NOTHING_SELECTED;
     public var canvas: CanvasService = CanvasService();
     private var activeButton: UIBarButtonItem!;
     private var colorPicker: ChromaColorPicker!;
@@ -161,6 +164,8 @@ class CanvasController: UIViewController {
     
     @IBAction func fillButton(_ sender: Any) {
         print("FILL BUTTON TAPED");
+        self.previousToolState = self.toolState;
+        self.toolState = STATE.FILL_STATE;
         self.view.addSubview(colorPicker)
     }
     
@@ -188,17 +193,16 @@ class CanvasController: UIViewController {
 
 extension CanvasController: ChromaColorPickerDelegate {
     func colorPickerDidChooseColor(_ colorPicker: ChromaColorPicker, color: UIColor) {
-        //Set color for the display view
-//        colorDisplayView.backgroundColor = color
-        print(color);
-        //Perform zesty animation
-//        UIView.animate(withDuration: 0.2,
-//                       animations: {
-//                        self.colorDisplayView.transform = CGAffineTransform(scaleX: 1.05, y: 1.05)
-//        }, completion: { (done) in
-//            UIView.animate(withDuration: 0.2, animations: {
-//                self.colorDisplayView.transform = CGAffineTransform.identity
-//            })
-//        })
+        switch (self.toolState) {
+        case STATE.FILL_STATE:
+            self.canvas.setSelectedFigureColor(color: color);
+            break;
+        case STATE.BORDER_COLOR_STATE:
+            break;
+        default:
+            break;
+        }
+        self.toolState = self.previousToolState;
+        self.colorPicker.removeFromSuperview();
     }
 }
