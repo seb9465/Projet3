@@ -14,8 +14,8 @@ enum STATE {
     case DRAW_RECT
     case SELECTION
     case DELETE
-    case FILL_STATE
-    case BORDER_COLOR_STATE
+    case FILL
+    case BORDER_COLOR
 }
 
 class CanvasController: UIViewController {
@@ -37,21 +37,15 @@ class CanvasController: UIViewController {
         self.addTapGestureRecognizer();
         
         // Color picker parameters.
-        let pickerSize = CGSize(width: view.bounds.width*0.8, height: view.bounds.width*0.8)
-        let pickerOrigin = CGPoint(x: view.bounds.midX - pickerSize.width/2, y: view.bounds.midY - pickerSize.height/2)
-        /* Create Color Picker */
+        let pickerSize = CGSize(width: 200, height: 200);
+        let pickerOrigin = CGPoint(x: 200, y: 100);
         colorPicker = ChromaColorPicker(frame: CGRect(origin: pickerOrigin, size: pickerSize))
-        colorPicker.delegate = self as? ChromaColorPickerDelegate
-        /* Customize the view (optional) */
+        colorPicker.delegate = self as ChromaColorPickerDelegate;
         colorPicker.padding = 10
         colorPicker.stroke = 3 //stroke of the rainbow circle
         colorPicker.currentAngle = Float.pi
-        /* Customize for grayscale (optional) */
-//        colorPicker.supportsShadesOfGray = true // false by default
-        //colorPicker.colorToggleButton.grayColorGradientLayer.colors = [UIColor.lightGray.cgColor, UIColor.gray.cgColor] // You can also override gradient colors
-        
-        
         colorPicker.hexLabel.textColor = UIColor.white
+        colorPicker.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.1);
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -160,12 +154,17 @@ class CanvasController: UIViewController {
     
     @IBAction func borderButton(_ sender: Any) {
         print("BORDER BUTTON TAPED");
+        self.displayColorPickerFor(state: STATE.BORDER_COLOR);
     }
     
     @IBAction func fillButton(_ sender: Any) {
         print("FILL BUTTON TAPED");
+        self.displayColorPickerFor(state: STATE.FILL);
+    }
+    
+    private func displayColorPickerFor(state: STATE) -> Void {
         self.previousToolState = self.toolState;
-        self.toolState = STATE.FILL_STATE;
+        self.toolState = state;
         self.view.addSubview(colorPicker)
     }
     
@@ -194,10 +193,11 @@ class CanvasController: UIViewController {
 extension CanvasController: ChromaColorPickerDelegate {
     func colorPickerDidChooseColor(_ colorPicker: ChromaColorPicker, color: UIColor) {
         switch (self.toolState) {
-        case STATE.FILL_STATE:
+        case STATE.FILL:
             self.canvas.setSelectedFigureColor(color: color);
             break;
-        case STATE.BORDER_COLOR_STATE:
+        case STATE.BORDER_COLOR:
+            self.canvas.setSelectFigureBorderColor(color: color);
             break;
         default:
             break;
