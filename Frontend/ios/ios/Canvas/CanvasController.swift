@@ -35,6 +35,7 @@ class CanvasController: UIViewController {
         super.viewDidAppear(animated);
         
         navigationController?.setNavigationBarHidden(true, animated: animated);
+        self.borderButton.isEnabled = false;
     }
     
     override func viewWillDisappear(_ animated: Bool) {

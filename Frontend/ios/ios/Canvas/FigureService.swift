@@ -30,7 +30,7 @@ class FigureService: UIView {
         self.firstPoint = CGPoint(x: origin.x - 50, y: origin.y - 50);
         self.lastPoint = CGPoint(x: origin.x + 50, y: origin.y + 50);
         
-        self.setInitialSelectedCornerCirles();
+        self.setInitialSelectedDashedBorder();
         
         self.setInitialSelectedCornerCirles();
         
