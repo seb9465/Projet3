@@ -51,6 +51,7 @@ class CanvasController: UIViewController {
             self.canvas.addNewFigure(origin: tapPoint, view: self.view);
         } else if (self.toolState == STATE.SELECTION) {
             self.canvas.selectFigure(tapPoint: tapPoint, view: self.view);
+            self.borderButton.isEnabled = true;
         } else if (self.toolState == STATE.DELETE) {
             self.canvas.deleteFigure(tapPoint: tapPoint, view: self.view);
         }
@@ -77,6 +78,7 @@ class CanvasController: UIViewController {
             print("DELETE BUTTON SELECTED");
             self.toolState = STATE.DELETE;
             self.canvas.unselectSelectedFigure();
+            self.borderButton.isEnabled = false;
             self.activeButton?.tintColor = UIColor(red: 0, green: 122/255, blue: 1, alpha: 1);
             self.activeButton = self.deleteButton;
             self.deleteButton.tintColor = UIColor(red: 0, green: 0, blue: 0, alpha: 1);
@@ -106,6 +108,7 @@ class CanvasController: UIViewController {
             print("RECT BUTTON SELECTED");
             self.toolState = STATE.DRAW_RECT;
             self.canvas.unselectSelectedFigure();
+            self.borderButton.isEnabled = false;
             self.activeButton?.tintColor = UIColor(red: 0, green: 122/255, blue: 1, alpha: 1);
             self.activeButton = self.rectButton;
             self.rectButton.tintColor = UIColor(red:0,green:0,blue:0,alpha:1);
@@ -129,6 +132,7 @@ class CanvasController: UIViewController {
     }
     
     @IBAction func borderButton(_ sender: Any) {
+        print("BORDER BUTTON SELECTED");
     }
     
     public func clear() {
