@@ -8,7 +8,6 @@
 
 import UIKit
 
-private let reuseIdentifier = "CanvasCell"
 private let canvasCellIdentifier = "CanvasCell"
 private let contextMenuIdentifier = "ContextMenuCell"
 private let placeholderIdentifier = "PlaceHolderCell"
@@ -47,6 +46,7 @@ class GalleryController: UICollectionViewController {
         return canvas.count + contextMenuCellCount + placeholderCellCount
     }
 
+    // Configure the cells
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if ((indexPath.row + 1) % 5 == 0) {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: contextMenuIdentifier, for: indexPath)
@@ -56,12 +56,13 @@ class GalleryController: UICollectionViewController {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: placeholderIdentifier, for: indexPath)
             return cell
         } else {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! CanvasCell
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: canvasCellIdentifier, for: indexPath) as! CanvasCell
+            print(self.canvas.count)
+            print(indexPath.row - Int(floor(Double(indexPath.row) / 5.0)))
+            cell.name.text = canvas[indexPath.row - Int(floor(Double(indexPath.row) / 5.0))].name
             return cell
         }
-        // Configure the cell
 
-//        cell.name.text = canvas[indexPath.row].name
     
     }
     

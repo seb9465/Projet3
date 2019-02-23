@@ -25,7 +25,7 @@ class CanvasService {
         
         return Promise {seal in
             let request = Alamofire.request(url, method: .get, encoding: JSONEncoding.default, headers: headers).responseJSON{ (response) in
-               print(response.value)
+//               print(response.value)
 //                switch response.result {
 //                    case .success(let value):
                         seal.fulfill(response.data!);
