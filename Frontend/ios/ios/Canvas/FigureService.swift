@@ -26,7 +26,7 @@ class FigureService: UIView {
     private var selectedCornerCircle4: CAShapeLayer!;
     
     init(origin: CGPoint) {
-        super.init(frame: CGRect(x: origin.x - 50, y: origin.y - 50, width: 100, height: 100));
+        super.init(frame: CGRect(x: origin.x - 50, y: origin.y - 50, width: 102, height: 102));
         self.firstPoint = CGPoint(x: origin.x - 50, y: origin.y - 50);
         self.lastPoint = CGPoint(x: origin.x + 50, y: origin.y + 50);
         
@@ -38,13 +38,13 @@ class FigureService: UIView {
         selectedDashedBorder.path = UIBezierPath(rect: self.bounds).cgPath;
         
         selectedCornerCircle1 = CAShapeLayer();
-        selectedCornerCircle1.path = UIBezierPath(roundedRect: CGRect(x: -2.5, y: -2.5, width: 2.0 * self.radius, height: 2.0 * self.radius), cornerRadius: self.radius).cgPath;
+        selectedCornerCircle1.path = UIBezierPath(roundedRect: CGRect(x: -5, y: -5, width: 2.0 * self.radius, height: 2.0 * self.radius), cornerRadius: self.radius).cgPath;
         selectedCornerCircle1.position = CGPoint(x: 0, y: 0);
         selectedCornerCircle1.fillColor = UIColor.blue.cgColor;
         
         selectedCornerCircle2 = CAShapeLayer();
-        selectedCornerCircle2.path = UIBezierPath(roundedRect: CGRect(x: 2.5, y: -2.5, width: 2.0 * self.radius, height: 2.0 * self.radius), cornerRadius: self.radius).cgPath;
-        selectedCornerCircle2.position = CGPoint(x: lastPoint.x - firstPoint.x, y: 0);
+        selectedCornerCircle2.path = UIBezierPath(roundedRect: CGRect(x: -5, y: -5, width: 2.0 * self.radius, height: 2.0 * self.radius), cornerRadius: self.radius).cgPath;
+        selectedCornerCircle2.position = CGPoint(x: lastPoint.x - firstPoint.x + 2, y: 0);
         selectedCornerCircle2.fillColor = UIColor.blue.cgColor;
         
         self.backgroundColor = UIColor.clear;
