@@ -84,7 +84,7 @@ class CanvasService {
         }
     }
     
-    public func selectFigure(tapPoint: CGPoint, view: UIView) -> Void {
+    public func selectFigure(tapPoint: CGPoint, view: UIView) -> Bool {
         let subview = view.hitTest(tapPoint, with: nil);
         
         // CONDITIONS TO BE REVIEWED. DRY.
@@ -95,10 +95,14 @@ class CanvasService {
             
             self.currentlySelectedFigure = subview as? FigureService;
             self.currentlySelectedFigure.setIsSelected();
+            
+            return true;
         } else {
             if (self.currentlySelectedFigure != nil) {
                 self.currentlySelectedFigure.setIsNotSelected();
             }
+            
+            return false;
         }
     }
     

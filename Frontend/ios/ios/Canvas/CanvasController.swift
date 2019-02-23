@@ -50,8 +50,7 @@ class CanvasController: UIViewController {
         if (tapPoint.y >= 70 && self.toolState == STATE.DRAW_RECT) {
             self.canvas.addNewFigure(origin: tapPoint, view: self.view);
         } else if (self.toolState == STATE.SELECTION) {
-            self.canvas.selectFigure(tapPoint: tapPoint, view: self.view);
-            self.borderButton.isEnabled = true;
+            self.borderButton.isEnabled = self.canvas.selectFigure(tapPoint: tapPoint, view: self.view);
         } else if (self.toolState == STATE.DELETE) {
             self.canvas.deleteFigure(tapPoint: tapPoint, view: self.view);
         }
