@@ -9,8 +9,8 @@
 import UIKit
 
 class FigureService: UIView {
-    private var firstPoint: CGPoint = CGPoint(x: 1, y: 1);
-    private var lastPoint: CGPoint = CGPoint(x: 101, y: 101);
+    private var firstPoint: CGPoint = CGPoint(x: 0, y: 0);
+    private var lastPoint: CGPoint = CGPoint(x: 100, y: 100);
     
     public var isSelected: Bool = false;
     private var isDragging: Bool = false;
@@ -26,7 +26,7 @@ class FigureService: UIView {
     private var selectedCornerCircle4: CAShapeLayer!;
     
     init(origin: CGPoint) {
-        super.init(frame: CGRect(x: origin.x - 50, y: origin.y - 50, width: 101, height: 101));
+        super.init(frame: CGRect(x: origin.x - 50, y: origin.y - 50, width: 100, height: 100));
         self.firstPoint = CGPoint(x: origin.x - 50, y: origin.y - 50);
         self.lastPoint = CGPoint(x: origin.x + 50, y: origin.y + 50);
         
