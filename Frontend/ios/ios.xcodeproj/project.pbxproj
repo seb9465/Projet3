@@ -232,6 +232,13 @@
 			path = iosTests;
 			sourceTree = "<group>";
 		};
+		B74BE3732221C29A0001D62A /* ColorPicker */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ColorPicker;
+			sourceTree = "<group>";
+		};
 		B7567944220F330700F80B12 /* Chat */ = {
 			isa = PBXGroup;
 			children = (
@@ -248,6 +255,7 @@
 		B781B95722132671001C1BD8 /* Canvas */ = {
 			isa = PBXGroup;
 			children = (
+				B74BE3732221C29A0001D62A /* ColorPicker */,
 				3DF62981221C9FB30052209A /* Canvas.swift */,
 				3DF62980221C9FB30052209A /* CanvasEndpoint.swift */,
 				B781B95822132BDB001C1BD8 /* Canvas.storyboard */,

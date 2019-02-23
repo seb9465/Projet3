@@ -111,6 +111,10 @@ class CanvasService {
             self.currentlySelectedFigure.setIsNotSelected();
         }
     }
+    
+    public func setFillColor(fillColor: UIColor) -> Void {
+        self.currentlySelectedFigure.figureColor = fillColor;
+    }
 }
 
 extension CanvasService {

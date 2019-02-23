@@ -15,9 +15,9 @@ enum STATE {
     case DELETE
 }
 
-class CanvasController: UIViewController {
+class CanvasController: UIViewController, UIPopoverPresentationControllerDelegate {
     private var toolState: STATE  = STATE.NOTHING_SELECTED;
-    private var canvas: CanvasService = CanvasService();
+    public var canvas: CanvasService = CanvasService();
     private var activeButton: UIBarButtonItem!;
     
     @IBOutlet var rectButton: UIBarButtonItem!
@@ -142,6 +142,7 @@ class CanvasController: UIViewController {
     
     @IBAction func fillButton(_ sender: Any) {
         print("FILL BUTTON TAPED");
+        
     }
     
     public func clear() {
