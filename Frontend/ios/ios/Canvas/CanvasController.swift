@@ -23,6 +23,7 @@ class CanvasController: UIViewController {
     @IBOutlet var rectButton: UIBarButtonItem!
     @IBOutlet var selectButton: UIBarButtonItem!
     @IBOutlet var deleteButton: UIBarButtonItem!
+    @IBOutlet var borderButton: UIBarButtonItem!
     
     override func viewDidLoad() {
         super.viewDidLoad();
@@ -124,6 +125,9 @@ class CanvasController: UIViewController {
         alert.addAction(noAction);
         
         self.present(alert, animated: true, completion: nil);
+    }
+    
+    @IBAction func borderButton(_ sender: Any) {
     }
     
     public func clear() {
