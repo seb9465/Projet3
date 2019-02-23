@@ -9,5 +9,7 @@
 import UIKit
 
 class ContextMenuCell: UICollectionViewCell {
+    @IBOutlet weak var CanvasName: UILabel!
+    @IBOutlet weak var CanvasID: UILabel!
     
 }

@@ -17,7 +17,7 @@ class GalleryController: UICollectionViewController {
     private var canvas : [Canvas] = []
     
     private var isContextMenuActive = false
-    private var selectedCellIndex: Int = -1
+    private var selectedCellIndex: Int = 1
     private var contextMenuCellCount: Int = -1
     private var placeholderCellCount: Int = -1;
     
@@ -48,33 +48,57 @@ class GalleryController: UICollectionViewController {
 
     // Configure the cells
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if ((indexPath.row + 1) % 5 == 0) {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: contextMenuIdentifier, for: indexPath)
-            return cell
-        } else if((indexPath.row + 1) >= canvas.count + contextMenuCellCount && (indexPath.row + 1) % 5 != 0){
-            print("placeholder")
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: placeholderIdentifier, for: indexPath)
-            return cell
-        } else {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: canvasCellIdentifier, for: indexPath) as! CanvasCell
-            print(self.canvas.count)
-            print(indexPath.row - Int(floor(Double(indexPath.row) / 5.0)))
-            cell.name.text = canvas[indexPath.row - Int(floor(Double(indexPath.row) / 5.0))].name
+        let isContextMenuCell = (indexPath.row + 1) % 5 == 0
+        let isPlaceholderCell = (indexPath.row + 1) >= canvas.count + contextMenuCellCount && !isContextMenuCell
+        
+        if (isContextMenuCell) {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: contextMenuIdentifier, for: indexPath) as! ContextMenuCell
+//            print(selectedCellIndex)
+//            print("canvas name" + canvas[selectedCellIndex].name)
+//            print("canvas id" + canvas[selectedCellIndex].canvasId)
+            cell.CanvasName.text = canvas[selectedCellIndex - Int(floor(Double(selectedCellIndex) / 5.0))].name
+            cell.CanvasID.text = canvas[selectedCellIndex - Int(floor(Double(selectedCellIndex) / 5.0))].canvasId
             return cell
         }
-
-    
+        
+        if (isPlaceholderCell){
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: placeholderIdentifier, for: indexPath)
+            return cell
+        }
+        
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: canvasCellIdentifier, for: indexPath) as! CanvasCell
+        cell.name.text = canvas[indexPath.row - Int(floor(Double(indexPath.row) / 5.0))].name
+        
+        return cell
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        self.collectionView?.performBatchUpdates({
+        let isContextMenuCell = (indexPath.row + 1) % 5 == 0
+        let isPlaceholderCell = (indexPath.row + 1) >= canvas.count + contextMenuCellCount && !isContextMenuCell
+//        print(selectedCellIndex)
+        
+        // Ignore placeholder cells on click
+        if (isPlaceholderCell) {
+            return
+        }
+        
+        self.collectionView.performBatchUpdates({
+            if(isContextMenuCell) {
+                return
+            }
+            
             if (indexPath.row == selectedCellIndex) {
                 self.isContextMenuActive = !self.isContextMenuActive
             } else {
-                selectedCellIndex = indexPath.row
                 self.isContextMenuActive = true
+                selectedCellIndex = indexPath.row
             }
-        }, completion: nil)
+            
+        }, completion: { (finished) in
+            print((self.selectedCellIndex + (5 - (self.selectedCellIndex % 5))) - 1);
+            let temp = IndexPath(row: (self.selectedCellIndex + (5 - (self.selectedCellIndex % 5))) - 1, section: 0)
+            self.collectionView.reloadItems(at: [temp])
+        })
     }
     
     

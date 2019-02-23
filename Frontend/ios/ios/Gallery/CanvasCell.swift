@@ -13,9 +13,8 @@ class CanvasCell: UICollectionViewCell {
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var name: UILabel!
     
-    @IBAction func Addnewcell(_ sender: Any) {
-        print("adding new cell")
-    }
+//    let canvas: Canvas;
+    
     
     override func awakeFromNib() {
         super.awakeFromNib()
