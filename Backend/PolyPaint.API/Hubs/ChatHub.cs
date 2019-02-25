@@ -65,10 +65,12 @@ namespace PolyPaint.API.Hubs
             {
                 await Groups.AddToGroupAsync(Context.ConnectionId, connectionMessage.ChannelId);
                 UserHandler.AddOrUpdateMap(connectionMessage.ChannelId, user.Id);
+                var message = new ConnectionMessage(user.UserName, channelId: connectionMessage.ChannelId);
                 await Clients.Group(connectionMessage.ChannelId).SendAsync(
                     "ConnectToChannel",
-                    new ConnectionMessage(user.UserName, channelId: connectionMessage.ChannelId)
+                    message
                 );
+                await Clients.Caller.SendAsync("ConnectToChannelSender", message);
             }
         }
 
@@ -81,10 +83,12 @@ namespace PolyPaint.API.Hubs
                 if (UserHandler.UserGroupMap.TryGetValue(connectionMessage.ChannelId, out var list))
                 {
                     list.Remove(user.Id);
+                    var message = new ConnectionMessage(username: user.UserName, channelId: connectionMessage.ChannelId);
                     await Clients.Group(connectionMessage.ChannelId).SendAsync(
                         "DisconnectFromChannel",
-                        new ConnectionMessage(username: user.UserName, channelId: connectionMessage.ChannelId)
+                        message
                     );
+                    await Clients.Caller.SendAsync("DisconnectFromChannelSender", message);
                 }
             }
         }
