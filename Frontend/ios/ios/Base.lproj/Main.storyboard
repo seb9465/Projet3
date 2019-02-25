@@ -534,7 +534,7 @@
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kkH-1J-k0t" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4678" y="2044"/>
+            <point key="canvasLocation" x="5418" y="1466"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="rvV-6D-WXT">
@@ -549,9 +549,9 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wqV-yT-Vfl" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5300" y="2044"/>
+            <point key="canvasLocation" x="5418" y="805"/>
         </scene>
-        <!--Root View Controller-->
+        <!--PolyPaint pro-->
         <scene sceneID="UG6-yy-hOm">
             <objects>
                 <tableViewController clearsSelectionOnViewWillAppear="NO" id="sQa-Vi-tsW" customClass="MasterViewController" customModule="ios" customModuleProvider="target" sceneMemberID="viewController">
@@ -583,7 +583,7 @@
                             <outlet property="delegate" destination="sQa-Vi-tsW" id="bSx-1y-HHb"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Root View Controller" id="BHK-lR-T30"/>
+                    <navigationItem key="navigationItem" title="PolyPaint pro" id="BHK-lR-T30"/>
                     <connections>
                         <segue destination="ZEl-L7-wg3" kind="showDetail" identifier="TEST" id="Qdq-Zd-Oyz"/>
                         <segue destination="XhH-om-7ff" kind="showDetail" identifier="toGallery" id="5Ib-es-D2C"/>

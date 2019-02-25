@@ -40,10 +40,17 @@ class MasterViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if (indexPath.row == 0) {
-            self.performSegue(withIdentifier: "TEST", sender: self)
-        } else {
-            self.performSegue(withIdentifier: "toGallery", sender: self)
+        switch(indexPath.row) {
+            case 0 :
+                self.performSegue(withIdentifier: "TEST", sender: self)
+                break
+            case 1 :
+                self.performSegue(withIdentifier: "toGallery", sender: self)
+                break
+            case 2 :
+                self.performSegue(withIdentifier: "TEST", sender: self)
+                break
+            default: print("nada")
         }
     }
  
