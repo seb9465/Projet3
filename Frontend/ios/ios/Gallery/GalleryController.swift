@@ -11,6 +11,7 @@ import UIKit
 private let canvasCellIdentifier = "CanvasCell"
 private let contextMenuIdentifier = "ContextMenuCell"
 private let placeholderIdentifier = "PlaceHolderCell"
+private let sectionHeaderIdentifier = "GalleryHeader"
 
 class GalleryController: UICollectionViewController {
     
@@ -23,7 +24,7 @@ class GalleryController: UICollectionViewController {
     private var placeholderCellCount: Int = -1
     
     private let itemsPerRow: CGFloat = 4
-    private let sectionInsets = UIEdgeInsets(top: 50.0, left: 20.0, bottom: 50.0, right: 20.0)
+    private let sectionInsets = UIEdgeInsets(top: 0, left: 10.0, bottom: 50.0, right: 10.0)
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -93,45 +94,36 @@ class GalleryController: UICollectionViewController {
             }
             
         }, completion: { (finished) in
-            print((self.selectedCellIndex + (5 - (self.selectedCellIndex % 5))) - 1);
             let temp = IndexPath(row: (self.selectedCellIndex + (5 - (self.selectedCellIndex % 5))) - 1, section: 0)
             self.collectionView.reloadItems(at: [temp])
         })
     }
     
-    
-
-    // MARK: UICollectionViewDelegate
-
-    /*
-    // Uncomment this method to specify if the specified item should be highlighted during tracking
-    override func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath) -> Bool {
-        return true
+    override func collectionView(_ collectionView: UICollectionView,
+                                 viewForSupplementaryElementOfKind kind: String,
+                                 at indexPath: IndexPath) -> UICollectionReusableView {
+        // 1
+        switch kind {
+        // 2
+        case UICollectionView.elementKindSectionHeader:
+            // 3
+            guard
+                let headerView = collectionView.dequeueReusableSupplementaryView(
+                    ofKind: kind,
+                    withReuseIdentifier: sectionHeaderIdentifier,
+                    for: indexPath) as? GalleryHeader
+                else {
+                    fatalError("Invalid view type")
+            }
+            
+//            let searchTerm = searches[indexPath.section].searchTerm
+//            headerView.label.text = searchTerm
+            return headerView
+        default:
+            // 4
+            assert(false, "Invalid element type")
+        }
     }
-    */
-
-    /*
-    // Uncomment this method to specify if the specified item should be selected
-    override func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    */
-
-    /*
-    // Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
-    override func collectionView(_ collectionView: UICollectionView, shouldShowMenuForItemAt indexPath: IndexPath) -> Bool {
-        return false
-    }
-
-    override func collectionView(_ collectionView: UICollectionView, canPerformAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) -> Bool {
-        return false
-    }
-
-    override func collectionView(_ collectionView: UICollectionView, performAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) {
-    
-    }
-    */
-
 }
 
 // MARK: - Collection View Flow Layout Delegate
@@ -144,7 +136,6 @@ extension GalleryController : UICollectionViewDelegateFlowLayout {
         let availableWidth = view.frame.width - paddingSpace
         var widthPerItem = availableWidth / itemsPerRow
         
-//        var widthPerItem: CGFloat = 200;
         var heightPerItem: CGFloat = widthPerItem;
 
         if ((indexPath.row + 1) % 5 == 0) {
