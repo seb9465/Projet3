@@ -21,7 +21,8 @@
         <convertisseurs:ConvertisseurBordure x:Key="convertisseurBordure" />
         <convertisseurs:ConvertisseurCouleurFond x:Key="convertisseurCouleurFond" />
         <convertisseurs:ConvertisseurModeEdition x:Key="convertisseurModeEdition" />
-        <convertisseurs:ConvertisseurRoom x:Key="convertisseurRoom" />
+        <convertisseurs:ConvertisseurRoomCouleurFond x:Key="convertisseurRoomCouleurFond" />
+        <convertisseurs:ConvertisseurRoomContent x:Key="convertisseurRoomContent" />
     </Window.Resources>
     <DockPanel Margin="0,0,-4.444,-0.111">
 
@@ -237,11 +238,13 @@
                 <Button x:Name="chatButton" Content="Open chat in new window" HorizontalAlignment="Left" Margin="10,10,0,0"  Width="200" Click="chatButton_Click" Height="30" />
                 <Button x:Name="chatButtonSameWindow" Content="Open chat in same window" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Bottom" Width="200" Click="chatButtonSameWindow_Click" Height="30" />
             </StackPanel>
-            <Grid x:Name="chat" Margin="0,0,0,0">
-                <ListBox ItemsSource="{Binding Path=GetItems, UpdateSourceTrigger=PropertyChanged}"  x:Name="messagesList" HorizontalAlignment="Left" Height="180" Margin="85,20,0,0" VerticalAlignment="Top" Width="500"  BorderThickness="1" Grid.ColumnSpan="2" BorderBrush="Gainsboro">
+            <Grid x:Name="chat" Margin="0,10,0,0">
+                <TextBlock Text="{Binding CurrentRoom, StringFormat='Room: {0}'}" Margin="85,0,-85,0" />
+                <ListBox ItemsSource="{Binding MessagesListBox, UpdateSourceTrigger=PropertyChanged}"  x:Name="messagesList" HorizontalAlignment="Left" Height="180" Margin="85,25
+                         ,0,0" VerticalAlignment="Top" Width="500"  BorderThickness="1" Grid.ColumnSpan="2" BorderBrush="Gainsboro">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding Path=.}" TextWrapping="Wrap"></TextBlock>
+                            <TextBlock Text="{Binding .}" TextWrapping="Wrap"/>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
@@ -281,13 +284,14 @@
                 </materialDesign:DialogHost.DialogContent>
                 <Border BorderThickness="1" BorderBrush="{DynamicResource PrimaryHueMidBrush}" ClipToBounds="True" HorizontalAlignment="Stretch">
                     <Grid>
-
-                        <ListBox Name="roomList" Margin="0,50,0,0" MaxHeight="150" Height="150">
+                        <ListBox ItemsSource="{Binding Rooms}" Name="roomList" Margin="0,50,0,0" MaxHeight="150" Height="150">
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
                                     <Grid Margin="0,2">
                                         <TextBlock Text="{Binding Title}" Margin="0,0,50,0"/>
-                                        <Button Content="Connected" Width="100" Height="20" FontSize="10" Click="roomConnect" Background="GreenYellow" BorderBrush="Transparent" Foreground="Black" Margin="120,0,0,0" />
+                                        <Button Background="{Binding Connected, Converter={StaticResource convertisseurRoomCouleurFond}, UpdateSourceTrigger=PropertyChanged}"
+                                                Content="{Binding Connected, Converter={StaticResource convertisseurRoomContent}, UpdateSourceTrigger=PropertyChanged}"
+                                                Width="100" Height="20" FontSize="10" Click="roomConnect" BorderBrush="Transparent" Foreground="Black" Margin="120,0,0,0" />
                                         <RadioButton Margin="250,0,0,0" GroupName="ChatRooms"
                                                 Command="{Binding Path=DataContext.ChoisirRoom, ElementName=roomList}"
                                                 CommandParameter="{Binding Title}" />

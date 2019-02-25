@@ -12,11 +12,13 @@ namespace PolyPaint.Modeles
     class ChatClient
     {
         public event EventHandler<MessageArgs> MessageReceived;
-        public event EventHandler<MessageArgs> SystemMessageReceived;
+        //public event EventHandler<MessageArgs> SystemMessageReceived;
         public event EventHandler ChannelsReceived;
         public event EventHandler<ChannelArgs> ChannelCreated;
         public event EventHandler<MessageArgs> ConnectedToChannel;
+        public event EventHandler<MessageArgs> ConnectedToChannelSender;
         public event EventHandler<MessageArgs> DisconnectedFromChannel;
+        public event EventHandler<MessageArgs> DisconnectedFromChannelSender;
         private HubConnection Connection { get; set; }
         private List<Channel> Channels { get; set; }
 
@@ -43,11 +45,7 @@ namespace PolyPaint.Modeles
         {
             Connection.On<ChatMessage>("SendMessage", (chatMessage) =>
             {
-                MessageReceived?.Invoke(this, new MessageArgs(chatMessage.Username, chatMessage.Message, chatMessage.Timestamp));
-            });
-            Connection.On<string>("SystemMessage", (message) =>
-            {
-                SystemMessageReceived?.Invoke(this, new MessageArgs(null, message, null));
+                MessageReceived?.Invoke(this, new MessageArgs(chatMessage.Username, chatMessage.Message, chatMessage.Timestamp, chatMessage.ChannelId));
             });
             Connection.On<ChannelsMessage>("FetchChannels", (channelsMessage) =>
             {
@@ -62,9 +60,17 @@ namespace PolyPaint.Modeles
             {
                 ConnectedToChannel?.Invoke(this, new MessageArgs(username: connectionMessage.Username, message: connectionMessage.ChannelId));
             });
+            Connection.On<ConnectionMessage>("ConnectToChannelSender", (connectionMessage) =>
+            {
+                ConnectedToChannelSender?.Invoke(this, new MessageArgs(username: connectionMessage.Username, message: connectionMessage.ChannelId));
+            });
             Connection.On<ConnectionMessage>("DisconnectFromChannel", (connectionMessage) =>
             {
                 DisconnectedFromChannel?.Invoke(this, new MessageArgs(username: connectionMessage.Username, message: connectionMessage.ChannelId));
+            });
+            Connection.On<ConnectionMessage>("DisconnectFromChannelSender", (connectionMessage) =>
+            {
+                DisconnectedFromChannelSender?.Invoke(this, new MessageArgs(username: connectionMessage.Username, message: connectionMessage.ChannelId));
             });
         }
 

@@ -42,11 +42,12 @@ namespace PolyPaint
             DataContext = new VueModele();
             (DataContext as VueModele).ChatClient.Initialize((string)Application.Current.Properties["token"]);
             (DataContext as VueModele).ChatClient.MessageReceived += AddMessage;
-            (DataContext as VueModele).ChatClient.SystemMessageReceived += AddSystemMessage;
             (DataContext as VueModele).ChatClient.ChannelsReceived += InitializeChatRooms;
             (DataContext as VueModele).ChatClient.ChannelCreated += addRoomItem;
             (DataContext as VueModele).ChatClient.ConnectedToChannel += connectedToChannel;
+            (DataContext as VueModele).ChatClient.ConnectedToChannelSender += connectedToChannelSender;
             (DataContext as VueModele).ChatClient.DisconnectedFromChannel += disconnectedFromChannel;
+            (DataContext as VueModele).ChatClient.DisconnectedFromChannelSender += disconnectedFromChannelSender;
             (DataContext as VueModele).PropertyChanged += viewModelChanged;
             externalChatWindow = new ChatWindow(DataContext);
 
@@ -68,9 +69,8 @@ namespace PolyPaint
                 var channels = (DataContext as VueModele).ChatClient.GetChannels();
                 foreach (Channel channel in channels)
                 {
-                    roomList.Items.Add(new Room() { Title = channel.Name });
+                    (DataContext as VueModele).AddRoom(channel.Name);
                 }
-                if (channels.Count != 0) (DataContext as VueModele).CurrentRoom = channels[0].Name;
             });
         }
 
@@ -246,17 +246,7 @@ namespace PolyPaint
         {
             Dispatcher.Invoke(() =>
             {
-                messagesList.Items.Add($"{args.Timestamp} - {args.Username}: {args.Message}");
-                messagesList.SelectedIndex = messagesList.Items.Count - 1;
-                messagesList.ScrollIntoView(messagesList.SelectedItem);
-            });
-        }
-
-        private void AddSystemMessage(object sender, MessageArgs args)
-        {
-            Dispatcher.Invoke(() =>
-            {
-                messagesList.Items.Add(args.Message);
+                (DataContext as VueModele).AddMessageToRoom(args.ChannelId, $"{args.Timestamp} - {args.Username}: {args.Message}");
                 messagesList.SelectedIndex = messagesList.Items.Count - 1;
                 messagesList.ScrollIntoView(messagesList.SelectedItem);
             });
@@ -266,7 +256,15 @@ namespace PolyPaint
         {
             Dispatcher.Invoke(() =>
             {
-                messagesList.Items.Add($"{e.Username} has connected");
+                (DataContext as VueModele).ConnectToRoom(e);
+            });
+        }
+
+        private void connectedToChannelSender(object sender, MessageArgs e)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                (DataContext as VueModele).ConnectToRoomSender(e);
             });
         }
 
@@ -274,7 +272,15 @@ namespace PolyPaint
         {
             Dispatcher.Invoke(() =>
             {
-                messagesList.Items.Add($"{e.Username} has disconnected");
+                (DataContext as VueModele).DisconnectFromRoom(e);
+            });
+        }
+
+        private void disconnectedFromChannelSender(object sender, MessageArgs e)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                (DataContext as VueModele).DisconnectFromRoomSender(e);
             });
         }
 
@@ -338,24 +344,21 @@ namespace PolyPaint
             ChannelArgs args = e as ChannelArgs;
             Dispatcher.Invoke(() =>
             {
-                roomList.Items.Add(new Room() { Title = args.Channel.Name });
+                (DataContext as VueModele).AddRoom(args.Channel.Name);
             });
         }
 
         private void roomConnect(object sender, RoutedEventArgs e)
         {
             Button btn = sender as Button;
-            btn.Background = btn.Background == Brushes.GreenYellow ? (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFDDDDDD")) : Brushes.GreenYellow;
-            var title = (btn.DataContext as Room).Title;
-            if (btn.Content.ToString() == "Connected")
+            var room = (btn.DataContext as Room);
+            if (room.Connected)
             {
-                btn.Content = "Disconnected";
-                (DataContext as VueModele).ChatClient.DisconnectFromChannel(title);
+                (DataContext as VueModele).ChatClient.DisconnectFromChannel(room.Title);
             }
             else
             {
-                btn.Content = "Connected";
-                (DataContext as VueModele).ChatClient.ConnectToChannel(title);
+                (DataContext as VueModele).ChatClient.ConnectToChannel(room.Title);
             }
         }
     }

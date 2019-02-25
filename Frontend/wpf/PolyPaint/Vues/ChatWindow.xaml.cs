@@ -24,34 +24,23 @@ namespace PolyPaint.Vues
             InitializeComponent();
             DataContext = dataContext;
             (DataContext as VueModele).ChatClient.MessageReceived += AddMessage;
-            (DataContext as VueModele).ChatClient.SystemMessageReceived += AddSystemMessage;
         }
-        
 
         private void sendButton_Click(object sender, RoutedEventArgs e)
         {
             if (!string.IsNullOrWhiteSpace(messageTextBox.Text))
             {
-                try
-                {
-                    (DataContext as VueModele).ChatClient.SendMessage(messageTextBox.Text, (DataContext as VueModele).CurrentRoom);
-
-                    messageTextBox.Text = string.Empty;
-                }
-                catch (Exception ex)
-                {
-                    messagesList.Items.Add(ex.Message);
-                }
+                (DataContext as VueModele).ChatClient.SendMessage(messageTextBox.Text, (DataContext as VueModele).CurrentRoom);
             }
+            messageTextBox.Text = String.Empty;
             messageTextBox.Focus();
         }
 
         private void DataWindow_Closing(object sender, CancelEventArgs e)
         {
             e.Cancel = true;
-            this.Hide();
+            Hide();
         }
-
 
         private void enterKeyDown(object sender, KeyEventArgs e)
         {
@@ -61,23 +50,10 @@ namespace PolyPaint.Vues
             }
         }
 
-        private void AddMessage(object sender, EventArgs args)
+        private void AddMessage(object sender, MessageArgs args)
         {
-            MessageArgs messArgs = args as MessageArgs;
-            this.Dispatcher.Invoke(() =>
+            Dispatcher.Invoke(() =>
             {
-                messagesList.Items.Add($"{messArgs.Timestamp} - {messArgs.Username}: {messArgs.Message}");
-                messagesList.SelectedIndex = messagesList.Items.Count - 1;
-                messagesList.ScrollIntoView(messagesList.SelectedItem);
-            });
-        }
-
-        private void AddSystemMessage(object sender, EventArgs args)
-        {
-            MessageArgs messArgs = args as MessageArgs;
-            this.Dispatcher.Invoke(() =>
-            {
-                messagesList.Items.Add(messArgs.Message);
                 messagesList.SelectedIndex = messagesList.Items.Count - 1;
                 messagesList.ScrollIntoView(messagesList.SelectedItem);
             });
