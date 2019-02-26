@@ -135,16 +135,12 @@ class FigureService: UIView, FigureProtocol {
                     self.firstPoint.y += deltay;
                     break;
                 case .FROM_CIRCLE_2:
-                    self.lastPoint.x -= deltax;
-                    self.lastPoint.y -= deltay;
-                    self.firstPoint.x += deltax;
+                    self.lastPoint.x += deltax;
                     self.firstPoint.y += deltay;
                     break;
                 case .FROM_CIRCLE_3:
-                    self.lastPoint.x += deltax;
                     self.lastPoint.y += deltay;
                     self.firstPoint.x -= deltax;
-                    self.firstPoint.y -= deltay;
                     break;
                 case .FROM_CIRCLE_4:
                     self.lastPoint.x += deltax;
