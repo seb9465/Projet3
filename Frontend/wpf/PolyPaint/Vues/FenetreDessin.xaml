@@ -7,7 +7,7 @@
      TextOptions.TextRenderingMode="Auto"
      Background="{DynamicResource MaterialDesignPaper}"
      FontFamily="{DynamicResource MaterialDesignFont}"
-     PreviewKeyDown="enterKeyDown"
+     PreviewKeyDown="EnterKeyDown"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -254,7 +254,7 @@
 
             </Grid>
 
-            <materialDesign:DialogHost DialogClosing="addRoom" Style="{StaticResource MaterialDesignEmbeddedDialogHost}"
+            <materialDesign:DialogHost DialogClosing="AddRoom" Style="{StaticResource MaterialDesignEmbeddedDialogHost}"
                 Margin="20,50,0,0" Width="300"  HorizontalAlignment="Left" Height="200">
                 <materialDesign:DialogHost.DialogContent>
                     <StackPanel Margin="15">
@@ -291,7 +291,8 @@
                                         <TextBlock Text="{Binding Title}" Margin="0,0,50,0"/>
                                         <Button Background="{Binding Connected, Converter={StaticResource convertisseurRoomCouleurFond}, UpdateSourceTrigger=PropertyChanged}"
                                                 Content="{Binding Connected, Converter={StaticResource convertisseurRoomContent}, UpdateSourceTrigger=PropertyChanged}"
-                                                Width="100" Height="20" FontSize="10" Click="roomConnect" BorderBrush="Transparent" Foreground="Black" Margin="120,0,0,0" />
+                                                Width="100" Height="20" FontSize="10" BorderBrush="Transparent" Foreground="Black" Margin="120,0,0,0"
+                                                Command="{Binding Path=DataContext.RoomConnect, ElementName=roomList}" CommandParameter="{Binding Path=.}" />
                                         <RadioButton Margin="250,0,0,0" GroupName="ChatRooms"
                                                 Command="{Binding Path=DataContext.ChoisirRoom, ElementName=roomList}"
                                                 CommandParameter="{Binding Title}" />

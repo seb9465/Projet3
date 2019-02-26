@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Ink;
 using System.Windows.Media;
@@ -97,6 +98,7 @@ namespace PolyPaint.VueModeles
         public RelayCommand<string> ChoisirPointe { get; set; }
         public RelayCommand<string> ChoisirOutil { get; set; }
         public RelayCommand<string> ChoisirRoom { get; set; }
+        public RelayCommand<Room> RoomConnect { get; set; }
         public RelayCommand<object> Reinitialiser { get; set; }
 
         /// <summary>
@@ -126,7 +128,17 @@ namespace PolyPaint.VueModeles
             ChoisirPointe = new RelayCommand<string>(editeur.ChoisirPointe);
             ChoisirOutil = new RelayCommand<string>(editeur.ChoisirOutil);
             ChoisirRoom = new RelayCommand<string>(choisirRoom);
+            RoomConnect = new RelayCommand<Room>(roomConnect);
             Reinitialiser = new RelayCommand<object>(editeur.Reinitialiser);
+
+            ChatClient.MessageReceived += AddMessage;
+            ChatClient.ChannelsReceived += InitializeChatRooms;
+            ChatClient.ChannelCreated += AddRoomItem;
+            ChatClient.ConnectedToChannel += ConnectedToRoom;
+            ChatClient.ConnectedToChannelSender += ConnectedToRoomSender;
+            ChatClient.DisconnectedFromChannel += DisconnectedFromRoom;
+            ChatClient.DisconnectedFromChannelSender += DisconnectedFromRoomSender;
+
             _messagesByChannel = new ConcurrentDictionary<string, ObservableCollection<string>>();
             _rooms = new ObservableCollection<Room>();
         }
@@ -188,64 +200,107 @@ namespace PolyPaint.VueModeles
             CurrentRoom = room;
         }
 
+        private void roomConnect(Room room)
+        {
+            if (room.Connected)
+            {
+                ChatClient.DisconnectFromChannel(room.Title);
+            }
+            else
+            {
+                ChatClient.ConnectToChannel(room.Title);
+            }
+        }
+
+        private void AddMessage(object sender, MessageArgs args)
+        {
+            AddMessageToRoom(args.ChannelId, $"{args.Timestamp} - {args.Username}: {args.Message}");
+        }
+
+        private void InitializeChatRooms(object sender, EventArgs args)
+        {
+            var channels = ChatClient.GetChannels();
+            foreach (Channel channel in channels)
+            {
+                AddRoom(channel.Name);
+            }
+        }
+
         public void AddRoom(string roomName)
         {
-            if(!_messagesByChannel.Keys.Contains(roomName))
+            Application.Current.Dispatcher.Invoke(() =>
             {
-                _messagesByChannel.GetOrAdd(roomName, new ObservableCollection<string>());
-                ProprieteModifiee("MessagesListBox");
-            }
-            if (_rooms.FirstOrDefault(x => x.Title == roomName) == null)
-            {
-                _rooms.Add(new Room(roomName, false));
-                ProprieteModifiee("Rooms");
-            }
+                if (!_messagesByChannel.Keys.Contains(roomName))
+                {
+                    _messagesByChannel.GetOrAdd(roomName, new ObservableCollection<string>());
+                    ProprieteModifiee("MessagesListBox");
+                }
+                if (_rooms.FirstOrDefault(x => x.Title == roomName) == null)
+                {
+                    _rooms.Add(new Room(roomName, false));
+                    ProprieteModifiee("Rooms");
+                }
+            });
+        }
+
+        private void AddRoomItem(object sender, ChannelArgs args)
+        {
+            AddRoom(args.Channel.Name);
         }
 
         public void AddMessageToRoom(string room, string message)
         {
-            _messagesByChannel.AddOrUpdate(room, new ObservableCollection<string>() { message }, (k, v) =>
+            Application.Current.Dispatcher.Invoke(() =>
             {
-                v.Add(message);
-                return v;
+                _messagesByChannel.AddOrUpdate(room, new ObservableCollection<string>() { message }, (k, v) =>
+                {
+                    v.Add(message);
+                    return v;
+                });
             });
             ProprieteModifiee("MessagesListBox");
         }
 
-        public void ConnectToRoom(MessageArgs e)
+        public void ConnectedToRoom(object sender, MessageArgs e)
         {
             AddMessageToRoom(e.Message, $"{e.Username} has connected");
         }
 
-        public void ConnectToRoomSender(MessageArgs e)
+        public void ConnectedToRoomSender(object sender, MessageArgs e)
         {
-            var room = _rooms.FirstOrDefault(x => x.Title == e.Message);
-            if (room != null)
+            Application.Current.Dispatcher.Invoke(() =>
             {
-                room.Connected = true;
-            }
-            else
-            {
-                _rooms.Add(new Room(e.Message, true));
-            }
+                var room = _rooms.FirstOrDefault(x => x.Title == e.Message);
+                if (room != null)
+                {
+                    room.Connected = true;
+                }
+                else
+                {
+                    _rooms.Add(new Room(e.Message, true));
+                }
+            });
         }
 
-        public void DisconnectFromRoom(MessageArgs e)
+        public void DisconnectedFromRoom(object sender, MessageArgs e)
         {
             AddMessageToRoom(e.Message, $"{e.Username} has disconnected");
         }
 
-        public void DisconnectFromRoomSender(MessageArgs e)
+        public void DisconnectedFromRoomSender(object sender, MessageArgs e)
         {
-            var room = _rooms.FirstOrDefault(x => x.Title == e.Message);
-            if (room != null)
+            Application.Current.Dispatcher.Invoke(() =>
             {
-                room.Connected = false;
-            }
-            else
-            {
-                _rooms.Add(new Room(e.Message, false));
-            }
+                var room = _rooms.FirstOrDefault(x => x.Title == e.Message);
+                if (room != null)
+                {
+                    room.Connected = false;
+                }
+                else
+                {
+                    _rooms.Add(new Room(e.Message, false));
+                }
+            });
         }
     }
 }

@@ -41,37 +41,10 @@ namespace PolyPaint
             var token = Application.Current.Properties["token"];
             DataContext = new VueModele();
             (DataContext as VueModele).ChatClient.Initialize((string)Application.Current.Properties["token"]);
-            (DataContext as VueModele).ChatClient.MessageReceived += AddMessage;
-            (DataContext as VueModele).ChatClient.ChannelsReceived += InitializeChatRooms;
-            (DataContext as VueModele).ChatClient.ChannelCreated += addRoomItem;
-            (DataContext as VueModele).ChatClient.ConnectedToChannel += connectedToChannel;
-            (DataContext as VueModele).ChatClient.ConnectedToChannelSender += connectedToChannelSender;
-            (DataContext as VueModele).ChatClient.DisconnectedFromChannel += disconnectedFromChannel;
-            (DataContext as VueModele).ChatClient.DisconnectedFromChannelSender += disconnectedFromChannelSender;
-            (DataContext as VueModele).PropertyChanged += viewModelChanged;
+            (DataContext as VueModele).ChatClient.MessageReceived += ScrollDown;
             externalChatWindow = new ChatWindow(DataContext);
 
             Application.Current.Exit += OnClosing;
-        }
-
-        private void viewModelChanged(object sender, PropertyChangedEventArgs args)
-        {
-            if (args.PropertyName == "CurrentRoom")
-            {
-
-            }
-        }
-
-        private void InitializeChatRooms(object sender, EventArgs args)
-        {
-            Dispatcher.Invoke(() =>
-            {
-                var channels = (DataContext as VueModele).ChatClient.GetChannels();
-                foreach (Channel channel in channels)
-                {
-                    (DataContext as VueModele).AddRoom(channel.Name);
-                }
-            });
         }
 
         // Pour gérer les points de contrôles.
@@ -111,7 +84,7 @@ namespace PolyPaint
                 };
 
                 // Show save file dialog box
-                Nullable<bool> result = saveFileDialog.ShowDialog();
+                bool? result = saveFileDialog.ShowDialog();
 
                 FileStream fs = null;
 
@@ -242,45 +215,12 @@ namespace PolyPaint
             return bitmapBytes;
         }
 
-        private void AddMessage(object sender, MessageArgs args)
+        private void ScrollDown(object sender, MessageArgs args)
         {
             Dispatcher.Invoke(() =>
             {
-                (DataContext as VueModele).AddMessageToRoom(args.ChannelId, $"{args.Timestamp} - {args.Username}: {args.Message}");
                 messagesList.SelectedIndex = messagesList.Items.Count - 1;
                 messagesList.ScrollIntoView(messagesList.SelectedItem);
-            });
-        }
-
-        private void connectedToChannel(object sender, MessageArgs e)
-        {
-            Dispatcher.Invoke(() =>
-            {
-                (DataContext as VueModele).ConnectToRoom(e);
-            });
-        }
-
-        private void connectedToChannelSender(object sender, MessageArgs e)
-        {
-            Dispatcher.Invoke(() =>
-            {
-                (DataContext as VueModele).ConnectToRoomSender(e);
-            });
-        }
-
-        private void disconnectedFromChannel(object sender, MessageArgs e)
-        {
-            Dispatcher.Invoke(() =>
-            {
-                (DataContext as VueModele).DisconnectFromRoom(e);
-            });
-        }
-
-        private void disconnectedFromChannelSender(object sender, MessageArgs e)
-        {
-            Dispatcher.Invoke(() =>
-            {
-                (DataContext as VueModele).DisconnectFromRoomSender(e);
             });
         }
 
@@ -288,12 +228,14 @@ namespace PolyPaint
         {
             externalChatWindow.Show();
             chat.Visibility = Visibility.Collapsed;
+            ScrollDown(null, null);
         }
 
         private void chatButtonSameWindow_Click(object sender, RoutedEventArgs e)
         {
             externalChatWindow.Close();
             chat.Visibility = Visibility.Visible;
+            ScrollDown(null, null);
         }
 
         private void sendButton_Click(object sender, RoutedEventArgs e)
@@ -306,7 +248,7 @@ namespace PolyPaint
             messageTextBox.Focus();
         }
 
-        private void enterKeyDown(object sender, KeyEventArgs e)
+        private void EnterKeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
             {
@@ -328,37 +270,13 @@ namespace PolyPaint
             catch { }
         }
 
-
-        private void addRoom(object sender, DialogClosingEventArgs eventArgs)
+        private void AddRoom(object sender, DialogClosingEventArgs eventArgs)
         {
             if (!Equals(eventArgs.Parameter, true)) return;
 
             if (!string.IsNullOrWhiteSpace(AnimalTextBox.Text))
             {
                 (DataContext as VueModele).ChatClient.CreateChannel(AnimalTextBox.Text.Trim());
-            }
-        }
-
-        private void addRoomItem(object sender, EventArgs e)
-        {
-            ChannelArgs args = e as ChannelArgs;
-            Dispatcher.Invoke(() =>
-            {
-                (DataContext as VueModele).AddRoom(args.Channel.Name);
-            });
-        }
-
-        private void roomConnect(object sender, RoutedEventArgs e)
-        {
-            Button btn = sender as Button;
-            var room = (btn.DataContext as Room);
-            if (room.Connected)
-            {
-                (DataContext as VueModele).ChatClient.DisconnectFromChannel(room.Title);
-            }
-            else
-            {
-                (DataContext as VueModele).ChatClient.ConnectToChannel(room.Title);
             }
         }
     }

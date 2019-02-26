@@ -23,7 +23,7 @@ namespace PolyPaint.Vues
         {
             InitializeComponent();
             DataContext = dataContext;
-            (DataContext as VueModele).ChatClient.MessageReceived += AddMessage;
+            (DataContext as VueModele).ChatClient.MessageReceived += ScrollDown;
         }
 
         private void sendButton_Click(object sender, RoutedEventArgs e)
@@ -50,7 +50,7 @@ namespace PolyPaint.Vues
             }
         }
 
-        private void AddMessage(object sender, MessageArgs args)
+        private void ScrollDown(object sender, MessageArgs args)
         {
             Dispatcher.Invoke(() =>
             {
