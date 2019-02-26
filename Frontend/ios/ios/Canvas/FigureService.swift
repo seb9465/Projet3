@@ -56,7 +56,7 @@ class FigureService: UIView, FigureProtocol {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func draw(_ rect: CGRect) {
+    public override func draw(_ rect: CGRect) {
         // Redimension and put at the right place the frame of the figure.
         self.frame = CGRect(x: firstPoint.x, y: firstPoint.y, width: lastPoint.x - firstPoint.x, height: lastPoint.y - firstPoint.y);
         
@@ -68,7 +68,6 @@ class FigureService: UIView, FigureProtocol {
         
         let path = UIBezierPath(roundedRect: insetRect, cornerRadius: 10);
         
-        
         // Border and fill parameters.
         self.figureColor.setFill();
         path.lineWidth = self.lineWidth;
@@ -77,7 +76,7 @@ class FigureService: UIView, FigureProtocol {
         path.stroke();
     }
     
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+    public override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         if (self.isSelected) {
             // si clique sur un point
             //  active le resize
@@ -99,7 +98,7 @@ class FigureService: UIView, FigureProtocol {
         }
     }
     
-    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+    public override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         if(self.isSelected) {
             guard let point = touches.first else { return };
         
@@ -123,22 +122,12 @@ class FigureService: UIView, FigureProtocol {
         }
     }
     
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+    public override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.isDragging = false;
         self.isResizing = false;
         touchesMoved(touches, with: event);
         self.adjustSelectedFigureLayers();
         print("touches ended");
-    }
-    
-    private func adjustSelectedFigureLayers() -> Void {
-        selectedDashedBorder.path = UIBezierPath(rect: self.bounds).cgPath;
-        selectedCornerCircle2.position.x = lastPoint.x - firstPoint.x + 2;
-        selectedCornerCircle3.position.x = lastPoint.x - firstPoint.x + 2;
-        selectedCornerCircle3.position.y = lastPoint.y - firstPoint.y + 2;
-        selectedCornerCircle4.position.y = lastPoint.y - firstPoint.y + 2;
-        self.addSelectedFigureLayers();
-        setNeedsDisplay();
     }
     
     public func setIsSelected() -> Void {
@@ -208,5 +197,15 @@ class FigureService: UIView, FigureProtocol {
         self.selectedCornerCircle2.removeFromSuperlayer();
         self.selectedCornerCircle3.removeFromSuperlayer();
         self.selectedCornerCircle4.removeFromSuperlayer();
+    }
+    
+    private func adjustSelectedFigureLayers() -> Void {
+        selectedDashedBorder.path = UIBezierPath(rect: self.bounds).cgPath;
+        selectedCornerCircle2.position.x = lastPoint.x - firstPoint.x + 2;
+        selectedCornerCircle3.position.x = lastPoint.x - firstPoint.x + 2;
+        selectedCornerCircle3.position.y = lastPoint.y - firstPoint.y + 2;
+        selectedCornerCircle4.position.y = lastPoint.y - firstPoint.y + 2;
+        self.addSelectedFigureLayers();
+        setNeedsDisplay();
     }
 }
