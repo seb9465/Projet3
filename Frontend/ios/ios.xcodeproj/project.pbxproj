@@ -19,7 +19,6 @@
 		3DF6297E221C9FA70052209A /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DF6297B221C9FA70052209A /* NetworkService.swift */; };
 		3DF62983221C9FB30052209A /* CanvasEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DF62980221C9FB30052209A /* CanvasEndpoint.swift */; };
 		3DF62984221C9FB30052209A /* Canvas.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DF62981221C9FB30052209A /* Canvas.swift */; };
-		3DF62989221C9FBC0052209A /* GalleryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DF62986221C9FBC0052209A /* GalleryController.swift */; };
 		3DF6298A221C9FBC0052209A /* GalleryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3DF62987221C9FBC0052209A /* GalleryCell.xib */; };
 		3DF6298B221C9FBC0052209A /* GalleryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DF62988221C9FBC0052209A /* GalleryCell.swift */; };
 		AAAF9A5351EEC102D9A22B92 /* Pods_iosTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97F0F22A4C1686AFA3D462D8 /* Pods_iosTests.framework */; };
@@ -68,7 +67,6 @@
 		3DF6297B221C9FA70052209A /* NetworkService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
 		3DF62980221C9FB30052209A /* CanvasEndpoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CanvasEndpoint.swift; sourceTree = "<group>"; };
 		3DF62981221C9FB30052209A /* Canvas.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Canvas.swift; sourceTree = "<group>"; };
-		3DF62986221C9FBC0052209A /* GalleryController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryController.swift; sourceTree = "<group>"; };
 		3DF62987221C9FBC0052209A /* GalleryCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GalleryCell.xib; sourceTree = "<group>"; };
 		3DF62988221C9FBC0052209A /* GalleryCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryCell.swift; sourceTree = "<group>"; };
 		6A1149C56A5EEAFC45859F6D /* Pods-iosTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iosTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-iosTests/Pods-iosTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -162,7 +160,6 @@
 		3DF62985221C9FBC0052209A /* Gallery */ = {
 			isa = PBXGroup;
 			children = (
-				3DF62986221C9FBC0052209A /* GalleryController.swift */,
 				3DF62987221C9FBC0052209A /* GalleryCell.xib */,
 				3DF62988221C9FBC0052209A /* GalleryCell.swift */,
 			);
@@ -480,7 +477,6 @@
 				B775FE3F22135D6300B2EFE0 /* Extensions.swift in Sources */,
 				3DF6297D221C9FA70052209A /* APIConfiguration.swift in Sources */,
 				B756794C220F608B00F80B12 /* Members.swift in Sources */,
-				3DF62989221C9FBC0052209A /* GalleryController.swift in Sources */,
 				3DF62983221C9FB30052209A /* CanvasEndpoint.swift in Sources */,
 				3DF6297E221C9FA70052209A /* NetworkService.swift in Sources */,
 				B781B95B22132C2F001C1BD8 /* CanvasController.swift in Sources */,
