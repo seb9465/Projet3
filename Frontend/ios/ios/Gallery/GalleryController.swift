@@ -29,7 +29,7 @@ class GalleryController: UICollectionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        CanvasService.getAll()
+        CanvasAPI.getAll()
             .done { (retreivedCanvas) in
                 self.canvas = retreivedCanvas
                 self.contextMenuCellCount = Int(ceil(Double(self.canvas.count) / Double(self.itemsPerRow)))

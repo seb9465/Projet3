@@ -19,6 +19,7 @@
 		3DC967EB220A067900FA76CB /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DC967EA220A067900FA76CB /* LoginController.swift */; };
 		3DC967ED220A09C400FA76CB /* DashboardController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DC967EC220A09C400FA76CB /* DashboardController.swift */; };
 		3DDE25192202B2AF0082E735 /* RoundedCorners.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DDE25182202B2AF0082E735 /* RoundedCorners.swift */; };
+		3DE984D12225F984004D036C /* CanvasAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DE984D02225F984004D036C /* CanvasAPI.swift */; };
 		3DF6297C221C9FA70052209A /* NetworkConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DF62979221C9FA70052209A /* NetworkConstants.swift */; };
 		3DF6297D221C9FA70052209A /* APIConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DF6297A221C9FA70052209A /* APIConfiguration.swift */; };
 		3DF62984221C9FB30052209A /* Canvas.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DF62981221C9FB30052209A /* Canvas.swift */; };
@@ -69,6 +70,7 @@
 		3DC967EA220A067900FA76CB /* LoginController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
 		3DC967EC220A09C400FA76CB /* DashboardController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardController.swift; sourceTree = "<group>"; };
 		3DDE25182202B2AF0082E735 /* RoundedCorners.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedCorners.swift; sourceTree = "<group>"; };
+		3DE984D02225F984004D036C /* CanvasAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasAPI.swift; sourceTree = "<group>"; };
 		3DF62979221C9FA70052209A /* NetworkConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkConstants.swift; sourceTree = "<group>"; };
 		3DF6297A221C9FA70052209A /* APIConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIConfiguration.swift; sourceTree = "<group>"; };
 		3DF62981221C9FB30052209A /* Canvas.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Canvas.swift; sourceTree = "<group>"; };
@@ -266,6 +268,7 @@
 				B74BE371221F40950001D62A /* CanvasService.swift */,
 				B74BE369221C823C0001D62A /* SaveService.swift */,
 				B74BE36F221F3FCE0001D62A /* FigureService.swift */,
+				3DE984D02225F984004D036C /* CanvasAPI.swift */,
 			);
 			path = Canvas;
 			sourceTree = "<group>";
@@ -487,6 +490,7 @@
 				B7A3A5C02203BF3B00031F64 /* ChatControler.swift in Sources */,
 				3D121EDC22209E070074C61C /* PlaceHolderCell.swift in Sources */,
 				3DF6298B221C9FBC0052209A /* CanvasCell.swift in Sources */,
+				3DE984D12225F984004D036C /* CanvasAPI.swift in Sources */,
 				B74BE370221F3FCE0001D62A /* FigureService.swift in Sources */,
 				C43102E122132226008F1D80 /* SoundNotification.swift in Sources */,
 				B775FE3F22135D6300B2EFE0 /* Extensions.swift in Sources */,

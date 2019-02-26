@@ -51,7 +51,7 @@ class LoginController: UIViewController, UITextFieldDelegate {
 //            "password": passwordField.text
 //        ]
         let parameters = [
-            "username": "seb.cado",
+            "username": "user.2",
             "password": "!12345Aa"
         ]
         
