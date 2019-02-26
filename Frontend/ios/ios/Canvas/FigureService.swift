@@ -83,6 +83,8 @@ class FigureService: UIView, FigureProtocol {
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         if (self.isSelected) {
+            // si clique sur un point
+            //  active le resize
             self.isDragging = true;
             print("touches began");
             guard let point = touches.first else { return };
@@ -109,7 +111,7 @@ class FigureService: UIView, FigureProtocol {
             self.firstPoint.y += deltay;
             
             setNeedsDisplay();
-        }
+        } // else if isResize
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
