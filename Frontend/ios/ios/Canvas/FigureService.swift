@@ -49,7 +49,6 @@ class FigureService: UIView, FigureProtocol {
         self.setInitialSelectedCornerCirles();
         
         self.backgroundColor = UIColor.clear;
-        
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -78,8 +77,6 @@ class FigureService: UIView, FigureProtocol {
     
     public override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         if (self.isSelected) {
-            // si clique sur un point
-            //  active le resize
             print("touches began");
             guard let point = touches.first else { return };
             previousPoint1 = point.previousLocation(in: self)
@@ -116,18 +113,21 @@ class FigureService: UIView, FigureProtocol {
             } else if (self.isResizing) {
                 self.firstPoint.x += deltax;
                 self.firstPoint.y += deltay;
-            } // else if isResize
+            }
+            
             self.removeSelectedFigureLayers();
+            
             setNeedsDisplay();
         }
     }
     
     public override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        touchesMoved(touches, with: event);
+        
         self.isDragging = false;
         self.isResizing = false;
-        touchesMoved(touches, with: event);
+        
         self.adjustSelectedFigureLayers();
-        print("touches ended");
     }
     
     public func setIsSelected() -> Void {
