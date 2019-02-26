@@ -77,15 +77,14 @@ class FigureService: UIView, FigureProtocol {
     
     public override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         if (self.isSelected) {
-            print("touches began");
             guard let point = touches.first else { return };
             previousPoint1 = point.previousLocation(in: self)
             currentPoint = point.location(in: self)
             
-            let point1 = CGPoint(x: 0, y: 0);
-            let point2 = CGPoint(x: 25, y: 25);
+            let temp = CGRect(x: currentPoint!.x - 25, y: currentPoint!.y-25, width: 50, height: 50)
             
-            if (currentPoint!.x >= point1.x && currentPoint!.y >= point1.y && currentPoint!.x <= point2.x && currentPoint!.y <= point2.y) {
+//            if (currentPoint!.x >= point1.x && currentPoint!.y >= point1.y && currentPoint!.x <= point2.x && currentPoint!.y <= point2.y) {
+            if (temp.contains(self.selectedCornerCircle1.position)) {
                 self.isResizing = true;
                 print("RESIZING");
             } else {
