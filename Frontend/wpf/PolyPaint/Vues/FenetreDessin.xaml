@@ -287,7 +287,7 @@
                                                 Content="{Binding Connected, Converter={StaticResource convertisseurRoomContent}, UpdateSourceTrigger=PropertyChanged}"
                                                 Width="100" Height="20" FontSize="10" BorderBrush="Transparent" Foreground="Black" Margin="120,0,0,0"
                                                 Command="{Binding Path=DataContext.RoomConnect, ElementName=roomList}" CommandParameter="{Binding Path=.}" />
-                                                <RadioButton Margin="250,0,0,0" GroupName="ChatRooms"
+                                                    <RadioButton Margin="100,0,0,0" GroupName="ChatRooms"
                                                 Command="{Binding Path=DataContext.ChoisirRoom, ElementName=roomList}"
                                                 CommandParameter="{Binding Title}" />
                                                 </Grid>
@@ -306,7 +306,7 @@
                             </Border>
                         </materialDesign:DialogHost>
                         <Grid x:Name="chat" Height="257" x:FieldModifier="public">
-                        <TextBlock Text="{Binding CurrentRoom, StringFormat='Room: {0}'}" Margin="85,0,-85,0" />
+                            <TextBlock Text="{Binding CurrentRoom, StringFormat='Room: {0}'}" Margin="85,0,-85,0" />
                             <ListBox ItemsSource="{Binding MessagesListBox, UpdateSourceTrigger=PropertyChanged}" x:Name="messagesList" HorizontalAlignment="Left" Height="190" Margin="30,10,0,0" VerticalAlignment="Top" Width="400"  BorderThickness="1" BorderBrush="Gainsboro">
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
