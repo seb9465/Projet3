@@ -70,7 +70,7 @@ namespace PolyPaint.API
             app.UseAuthentication();
             app.UseSignalR(routes =>
             {
-                routes.MapHub<PolyPaintHub>(SIGNALR_URL);
+                routes.MapHub<ChatHub>(SIGNALR_URL);
             });
             app.UseMvc();
             app.Run(async context => { await context.Response.WriteAsync("Route not found in PolyPaint API"); });

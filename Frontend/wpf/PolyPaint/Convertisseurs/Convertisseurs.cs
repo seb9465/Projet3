@@ -1,9 +1,32 @@
 ﻿using System;
+using System.Globalization;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Media;
 
 namespace PolyPaint.Convertisseurs
 {
+
+    class ConvertisseurRoomCouleurFond : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            return (bool)value ? Brushes.GreenYellow : (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFDDDDDD"));
+
+        }
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture) => System.Windows.DependencyProperty.UnsetValue;
+    }
+
+    class ConvertisseurRoomContent : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            return (bool)value ? "Connected" : "Disconnected";
+        }
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture) => System.Windows.DependencyProperty.UnsetValue;
+    }
+
+
     /// <summary>
     /// Permet de générer une couleur en fonction de la chaine passée en paramètre.
     /// Par exemple, pour chaque bouton d'un groupe d'options on compare son nom avec l'élément actif (sélectionné) du groupe.

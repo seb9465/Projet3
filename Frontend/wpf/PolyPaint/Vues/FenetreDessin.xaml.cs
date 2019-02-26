@@ -18,6 +18,8 @@ using PolyPaint.Vues;
 using PolyPaint.Structures;
 using MaterialDesignThemes.Wpf;
 using System.Windows.Controls;
+using System.Linq;
+using System.ComponentModel;
 
 namespace PolyPaint
 {
@@ -34,12 +36,10 @@ namespace PolyPaint
         public FenetreDessin()
         {
             InitializeComponent();
-            roomList.Items.Add(new Room() { Title = "room0"});
             var token = Application.Current.Properties["token"];
             DataContext = new VueModele();
             (DataContext as VueModele).ChatClient.Initialize((string)Application.Current.Properties["token"]);
-            (DataContext as VueModele).ChatClient.MessageReceived += AddMessage;
-            (DataContext as VueModele).ChatClient.SystemMessageReceived += AddSystemMessage;
+            (DataContext as VueModele).ChatClient.MessageReceived += ScrollDown;
             externalChatWindow = new ChatWindow(DataContext);
 
             Application.Current.Exit += OnClosing;
@@ -154,7 +154,7 @@ namespace PolyPaint
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
                 var content = new StringContent(canvasJson, Encoding.UTF8, "application/json");
-                var response = await client.PostAsync("https://polypaint.me/api/user/canvas", content);
+                var response = await client.PostAsync($"{Config.URL}/api/user/canvas", content);
                 var responseString = await response.Content.ReadAsStringAsync();
             }
         }
@@ -166,7 +166,7 @@ namespace PolyPaint
             {
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IkhvbWUiLCJuYW1laWQiOiI3ZTRhNGQwYi1jN2RiLTQwZGUtYThkZC1iZDM2MWFkMmMzNDUiLCJuYmYiOjE1NDg3ODMwNzYsImV4cCI6NjE1NDg3ODMwMTYsImlhdCI6MTU0ODc4MzA3NiwiaXNzIjoiMTAuMjAwLjI3LjE2OjUwMDEiLCJhdWQiOiIxMC4yMDAuMjcuMTY6NTAwMSJ9.g09vCNXy32u_8IcZpPHNBbXaQP5tVXXB07D5dyNZll4");
                 System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
-                var response = await client.GetAsync("https://polypaint.me/api/user/canvas");
+                var response = await client.GetAsync($"{Config.URL}/api/user/canvas");
                 var responseString = await response.Content.ReadAsStringAsync();
                 strokes = JsonConvert.DeserializeObject<List<SaveableCanvas>>(responseString);
             }
@@ -213,23 +213,10 @@ namespace PolyPaint
             return bitmapBytes;
         }
 
-        private void AddMessage(object sender, EventArgs args)
+        private void ScrollDown(object sender, MessageArgs args)
         {
-            MessageArgs messArgs = args as MessageArgs;
             this.Dispatcher.Invoke(() =>
             {
-                messagesList.Items.Add($"{messArgs.Timestamp} - {messArgs.Username}: {messArgs.Message}");
-                messagesList.SelectedIndex = messagesList.Items.Count - 1;
-                messagesList.ScrollIntoView(messagesList.SelectedItem);
-            });
-        }
-
-        private void AddSystemMessage(object sender, EventArgs args)
-        {
-            MessageArgs messArgs = args as MessageArgs;
-            this.Dispatcher.Invoke(() =>
-            {
-                messagesList.Items.Add(messArgs.Message);
                 messagesList.SelectedIndex = messagesList.Items.Count - 1;
                 messagesList.ScrollIntoView(messagesList.SelectedItem);
             });
@@ -239,20 +226,21 @@ namespace PolyPaint
         {
             externalChatWindow.Show();
             chat.Visibility = Visibility.Collapsed;
+            ScrollDown(null,null);
         }
 
         private void sendButton_Click(object sender, RoutedEventArgs e)
         {
             if (!string.IsNullOrWhiteSpace(messageTextBox.Text))
             {
-                (DataContext as VueModele).ChatClient.SendMessage(messageTextBox.Text);
+                (DataContext as VueModele).ChatClient.SendMessage(messageTextBox.Text, (DataContext as VueModele).CurrentRoom);
             }
             messageTextBox.Text = String.Empty;
             messageTextBox.Focus();
         }
 
 
-        private void enterKeyDown(object sender, KeyEventArgs e)
+        private void EnterKeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
             {
@@ -269,20 +257,19 @@ namespace PolyPaint
                 {
                     client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", (string)Application.Current.Properties["token"]);
                     System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
-                    client.GetAsync("https://localhost:44300/api/user/logout").Wait();
+                    client.GetAsync($"{Config.URL}/api/user/logout").Wait();
                 }
             }
             catch { }
         }
         
-
-        private void addRoom(object sender, DialogClosingEventArgs eventArgs)
+        private void AddRoom(object sender, DialogClosingEventArgs eventArgs)
         {
             if (!Equals(eventArgs.Parameter, true)) return;
 
             if (!string.IsNullOrWhiteSpace(roomTextBox.Text))
             {
-                roomList.Items.Add(new Room() { Title = roomTextBox.Text});
+                (DataContext as VueModele).ChatClient.CreateChannel(roomTextBox.Text.Trim());
             }
             clearRoomName(sender, eventArgs);
         }
@@ -292,27 +279,6 @@ namespace PolyPaint
             roomTextBox.Text = "";
         }
 
-        public class Room
-        {
-            public string Title { get; set; }
-        }
-
-        private void roomConnect(object sender, RoutedEventArgs e)
-        {
-            Button btn = sender as Button;
-            btn.Background = btn.Background == Brushes.GreenYellow ? (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFDDDDDD")) : Brushes.GreenYellow;
-            if (btn.Content.ToString() == "Connected")
-            {
-                btn.Content = "Disconnected";
-            }
-            else
-            {
-                btn.Content = "Connected";
-            }
-        }
     }
 }
 
-
-
-            
