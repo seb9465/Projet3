@@ -92,6 +92,8 @@ class FigureService: UIView, FigureProtocol {
                 self.isDragging = true;
                 print("DRAGGING");
             }
+            
+            self.removeSelectedFigureLayers();
         }
     }
     
@@ -115,15 +117,11 @@ class FigureService: UIView, FigureProtocol {
                 self.firstPoint.y += deltay;
             }
             
-            self.removeSelectedFigureLayers();
-            
             setNeedsDisplay();
         }
     }
     
     public override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        touchesMoved(touches, with: event);
-        
         self.isDragging = false;
         self.isResizing = false;
         
