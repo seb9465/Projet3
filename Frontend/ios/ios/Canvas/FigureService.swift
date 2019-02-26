@@ -23,6 +23,7 @@ class FigureService: UIView, FigureProtocol {
     
     public var isSelected: Bool = false;
     private var isDragging: Bool = false;
+    private var isResizing: Bool = false;
     
     private var currentPoint: CGPoint?;
     private var previousPoint1: CGPoint?;
@@ -67,11 +68,6 @@ class FigureService: UIView, FigureProtocol {
         
         let path = UIBezierPath(roundedRect: insetRect, cornerRadius: 10);
         
-        if (self.isSelected) {
-            self.addSelectedFigureLayers();
-        } else {
-            self.removeSelectedFigureLayers();
-        }
         
         // Border and fill parameters.
         self.figureColor.setFill();
@@ -85,48 +81,75 @@ class FigureService: UIView, FigureProtocol {
         if (self.isSelected) {
             // si clique sur un point
             //  active le resize
-            self.isDragging = true;
             print("touches began");
             guard let point = touches.first else { return };
-            
             previousPoint1 = point.previousLocation(in: self)
             currentPoint = point.location(in: self)
+            
+            let point1 = CGPoint(x: 0, y: 0);
+            let point2 = CGPoint(x: 25, y: 25);
+            
+            if (currentPoint!.x >= point1.x && currentPoint!.y >= point1.y && currentPoint!.x <= point2.x && currentPoint!.y <= point2.y) {
+                self.isResizing = true;
+                print("RESIZING");
+            } else {
+                self.isDragging = true;
+                print("DRAGGING");
+            }
         }
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if (self.isDragging) {
-            print("touches moved");
+        if(self.isSelected) {
             guard let point = touches.first else { return };
-            
-            previousPoint1 = point.previousLocation(in: self)
-            currentPoint = point.location(in: self)
+        
+            previousPoint1 = point.previousLocation(in: self);
+            currentPoint = point.location(in: self);
             
             let deltax = currentPoint!.x - previousPoint1!.x;
             let deltay = currentPoint!.y - previousPoint1!.y;
             
-            self.lastPoint.x += deltax;
-            self.lastPoint.y += deltay;
-            self.firstPoint.x += deltax;
-            self.firstPoint.y += deltay;
-            
+            if (self.isDragging) {
+                self.lastPoint.x += deltax;
+                self.lastPoint.y += deltay;
+                self.firstPoint.x += deltax;
+                self.firstPoint.y += deltay;
+            } else if (self.isResizing) {
+                self.firstPoint.x += deltax;
+                self.firstPoint.y += deltay;
+            } // else if isResize
+            self.removeSelectedFigureLayers();
             setNeedsDisplay();
-        } // else if isResize
+        }
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.isDragging = false;
+        self.isResizing = false;
         touchesMoved(touches, with: event);
+        self.adjustSelectedFigureLayers();
         print("touches ended");
+    }
+    
+    private func adjustSelectedFigureLayers() -> Void {
+        selectedDashedBorder.path = UIBezierPath(rect: self.bounds).cgPath;
+        selectedCornerCircle2.position.x = lastPoint.x - firstPoint.x + 2;
+        selectedCornerCircle3.position.x = lastPoint.x - firstPoint.x + 2;
+        selectedCornerCircle3.position.y = lastPoint.y - firstPoint.y + 2;
+        selectedCornerCircle4.position.y = lastPoint.y - firstPoint.y + 2;
+        self.addSelectedFigureLayers();
+        setNeedsDisplay();
     }
     
     public func setIsSelected() -> Void {
         self.isSelected = true;
+        self.addSelectedFigureLayers();
         setNeedsDisplay();
     }
     
     public func setIsNotSelected() -> Void {
         self.isSelected = false;
+        self.removeSelectedFigureLayers();
         setNeedsDisplay();
     }
     
