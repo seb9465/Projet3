@@ -33,11 +33,9 @@ namespace PolyPaint
     public partial class FenetreDessin : Window
     {
         ChatWindow externalChatWindow;
-
         public FenetreDessin()
         {
             InitializeComponent();
-
             var token = Application.Current.Properties["token"];
             DataContext = new VueModele();
             (DataContext as VueModele).ChatClient.Initialize((string)Application.Current.Properties["token"]);
@@ -84,7 +82,7 @@ namespace PolyPaint
                 };
 
                 // Show save file dialog box
-                bool? result = saveFileDialog.ShowDialog();
+                Nullable<bool> result = saveFileDialog.ShowDialog();
 
                 FileStream fs = null;
 
@@ -217,7 +215,7 @@ namespace PolyPaint
 
         private void ScrollDown(object sender, MessageArgs args)
         {
-            Dispatcher.Invoke(() =>
+            this.Dispatcher.Invoke(() =>
             {
                 messagesList.SelectedIndex = messagesList.Items.Count - 1;
                 messagesList.ScrollIntoView(messagesList.SelectedItem);
@@ -228,14 +226,7 @@ namespace PolyPaint
         {
             externalChatWindow.Show();
             chat.Visibility = Visibility.Collapsed;
-            ScrollDown(null, null);
-        }
-
-        private void chatButtonSameWindow_Click(object sender, RoutedEventArgs e)
-        {
-            externalChatWindow.Close();
-            chat.Visibility = Visibility.Visible;
-            ScrollDown(null, null);
+            ScrollDown(null,null);
         }
 
         private void sendButton_Click(object sender, RoutedEventArgs e)
@@ -248,6 +239,7 @@ namespace PolyPaint
             messageTextBox.Focus();
         }
 
+
         private void EnterKeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
@@ -255,6 +247,7 @@ namespace PolyPaint
                 sendButton_Click(sender, e);
             }
         }
+       
 
         private void OnClosing(object sender, EventArgs e)
         {
@@ -269,18 +262,23 @@ namespace PolyPaint
             }
             catch { }
         }
-
-        private void AddRoom(object sender, DialogClosingEventArgs eventArgs)
+        
+        private void addRoom(object sender, DialogClosingEventArgs eventArgs)
         {
             if (!Equals(eventArgs.Parameter, true)) return;
 
-            if (!string.IsNullOrWhiteSpace(AnimalTextBox.Text))
+            if (!string.IsNullOrWhiteSpace(roomTextBox.Text))
             {
                 (DataContext as VueModele).ChatClient.CreateChannel(AnimalTextBox.Text.Trim());
             }
+            clearRoomName(sender, eventArgs);
         }
+
+        private void clearRoomName(object sender, RoutedEventArgs e)
+        {
+            roomTextBox.Text = "";
+        }
+
     }
 }
-
-
 

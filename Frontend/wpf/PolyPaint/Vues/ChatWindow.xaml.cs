@@ -39,7 +39,14 @@ namespace PolyPaint.Vues
         private void DataWindow_Closing(object sender, CancelEventArgs e)
         {
             e.Cancel = true;
-            Hide();
+            this.Hide();
+            foreach (Window window in Application.Current.Windows)
+            {
+                if (window.GetType() == typeof(FenetreDessin))
+                {
+                    (window as FenetreDessin).chat.Visibility = Visibility.Visible;
+                }
+            }
         }
 
         private void enterKeyDown(object sender, KeyEventArgs e)
