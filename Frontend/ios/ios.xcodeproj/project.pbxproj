@@ -14,19 +14,34 @@
 		3DC967EB220A067900FA76CB /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DC967EA220A067900FA76CB /* LoginController.swift */; };
 		3DC967ED220A09C400FA76CB /* DashboardController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DC967EC220A09C400FA76CB /* DashboardController.swift */; };
 		3DDE25192202B2AF0082E735 /* RoundedCorners.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DDE25182202B2AF0082E735 /* RoundedCorners.swift */; };
+		3DF6297C221C9FA70052209A /* NetworkConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DF62979221C9FA70052209A /* NetworkConstants.swift */; };
+		3DF6297D221C9FA70052209A /* APIConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DF6297A221C9FA70052209A /* APIConfiguration.swift */; };
+		3DF6297E221C9FA70052209A /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DF6297B221C9FA70052209A /* NetworkService.swift */; };
+		3DF62983221C9FB30052209A /* CanvasEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DF62980221C9FB30052209A /* CanvasEndpoint.swift */; };
+		3DF62984221C9FB30052209A /* Canvas.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DF62981221C9FB30052209A /* Canvas.swift */; };
+		3DF62989221C9FBC0052209A /* GalleryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DF62986221C9FBC0052209A /* GalleryController.swift */; };
+		3DF6298A221C9FBC0052209A /* GalleryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3DF62987221C9FBC0052209A /* GalleryCell.xib */; };
+		3DF6298B221C9FBC0052209A /* GalleryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DF62988221C9FBC0052209A /* GalleryCell.swift */; };
 		AAAF9A5351EEC102D9A22B92 /* Pods_iosTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97F0F22A4C1686AFA3D462D8 /* Pods_iosTests.framework */; };
 		B711B5EA21F659A30096BF7F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B711B5E921F659A30096BF7F /* AppDelegate.swift */; };
 		B711B5EF21F659A30096BF7F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B711B5ED21F659A30096BF7F /* Main.storyboard */; };
 		B711B5F121F659A50096BF7F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B711B5F021F659A50096BF7F /* Assets.xcassets */; };
 		B711B5F421F659A50096BF7F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B711B5F221F659A50096BF7F /* LaunchScreen.storyboard */; };
 		B711B5FF21F659A50096BF7F /* iosTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B711B5FE21F659A50096BF7F /* iosTests.swift */; };
+		B74BE36A221C823C0001D62A /* SaveService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74BE369221C823C0001D62A /* SaveService.swift */; };
+		B74BE370221F3FCE0001D62A /* FigureService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74BE36F221F3FCE0001D62A /* FigureService.swift */; };
+		B74BE372221F40950001D62A /* CanvasService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74BE371221F40950001D62A /* CanvasService.swift */; };
 		B7567946220F33CD00F80B12 /* ChatService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7567945220F33CD00F80B12 /* ChatService.swift */; };
 		B7567948220F355F00F80B12 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7567947220F355F00F80B12 /* Constants.swift */; };
 		B756794A220F5DC800F80B12 /* Chat.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B7567949220F5DC800F80B12 /* Chat.storyboard */; };
 		B756794C220F608B00F80B12 /* Members.swift in Sources */ = {isa = PBXBuildFile; fileRef = B756794B220F608B00F80B12 /* Members.swift */; };
+		B775FE3F22135D6300B2EFE0 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B775FE3E22135D6300B2EFE0 /* Extensions.swift */; };
+		B781B95922132BDB001C1BD8 /* Canvas.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B781B95822132BDB001C1BD8 /* Canvas.storyboard */; };
+		B781B95B22132C2F001C1BD8 /* CanvasController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B781B95A22132C2F001C1BD8 /* CanvasController.swift */; };
 		B7A3A5C02203BF3B00031F64 /* ChatControler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A3A5BF2203BF3B00031F64 /* ChatControler.swift */; };
 		B7A3A5C22203C27600031F64 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A3A5C12203C27600031F64 /* Message.swift */; };
-		B7A3A5C42203CF7100031F64 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A3A5C32203CF7100031F64 /* Extensions.swift */; };
+		B7A3A5C42203CF7100031F64 /* Extensions_Chat.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A3A5C32203CF7100031F64 /* Extensions_Chat.swift */; };
+		C43102E122132226008F1D80 /* SoundNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43102E022132226008F1D80 /* SoundNotification.swift */; };
 		C5724AD99504D99A25966BB9 /* Pods_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6CD8C54089242A6862A3C2E4 /* Pods_ios.framework */; };
 /* End PBXBuildFile section */
 
@@ -48,6 +63,14 @@
 		3DC967EA220A067900FA76CB /* LoginController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
 		3DC967EC220A09C400FA76CB /* DashboardController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardController.swift; sourceTree = "<group>"; };
 		3DDE25182202B2AF0082E735 /* RoundedCorners.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedCorners.swift; sourceTree = "<group>"; };
+		3DF62979221C9FA70052209A /* NetworkConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkConstants.swift; sourceTree = "<group>"; };
+		3DF6297A221C9FA70052209A /* APIConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIConfiguration.swift; sourceTree = "<group>"; };
+		3DF6297B221C9FA70052209A /* NetworkService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
+		3DF62980221C9FB30052209A /* CanvasEndpoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CanvasEndpoint.swift; sourceTree = "<group>"; };
+		3DF62981221C9FB30052209A /* Canvas.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Canvas.swift; sourceTree = "<group>"; };
+		3DF62986221C9FBC0052209A /* GalleryController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryController.swift; sourceTree = "<group>"; };
+		3DF62987221C9FBC0052209A /* GalleryCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GalleryCell.xib; sourceTree = "<group>"; };
+		3DF62988221C9FBC0052209A /* GalleryCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryCell.swift; sourceTree = "<group>"; };
 		6A1149C56A5EEAFC45859F6D /* Pods-iosTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iosTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-iosTests/Pods-iosTests.release.xcconfig"; sourceTree = "<group>"; };
 		6CD8C54089242A6862A3C2E4 /* Pods_ios.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ios.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		97F0F22A4C1686AFA3D462D8 /* Pods_iosTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_iosTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -60,13 +83,20 @@
 		B711B5FA21F659A50096BF7F /* iosTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iosTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B711B5FE21F659A50096BF7F /* iosTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iosTests.swift; sourceTree = "<group>"; };
 		B711B60021F659A50096BF7F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B74BE369221C823C0001D62A /* SaveService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveService.swift; sourceTree = "<group>"; };
+		B74BE36F221F3FCE0001D62A /* FigureService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FigureService.swift; sourceTree = "<group>"; };
+		B74BE371221F40950001D62A /* CanvasService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasService.swift; sourceTree = "<group>"; };
 		B7567945220F33CD00F80B12 /* ChatService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatService.swift; sourceTree = "<group>"; };
 		B7567947220F355F00F80B12 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		B7567949220F5DC800F80B12 /* Chat.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Chat.storyboard; sourceTree = "<group>"; };
 		B756794B220F608B00F80B12 /* Members.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Members.swift; sourceTree = "<group>"; };
+		B775FE3E22135D6300B2EFE0 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		B781B95822132BDB001C1BD8 /* Canvas.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Canvas.storyboard; sourceTree = "<group>"; };
+		B781B95A22132C2F001C1BD8 /* CanvasController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasController.swift; sourceTree = "<group>"; };
 		B7A3A5BF2203BF3B00031F64 /* ChatControler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatControler.swift; sourceTree = "<group>"; };
 		B7A3A5C12203C27600031F64 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
-		B7A3A5C32203CF7100031F64 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		B7A3A5C32203CF7100031F64 /* Extensions_Chat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions_Chat.swift; sourceTree = "<group>"; };
+		C43102E022132226008F1D80 /* SoundNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundNotification.swift; sourceTree = "<group>"; };
 		C6C9AA086604975DCA6FF292 /* Pods-iosTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iosTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-iosTests/Pods-iosTests.debug.xcconfig"; sourceTree = "<group>"; };
 		E7966B3EFE20A93B4BE0DB10 /* Pods-ios.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ios.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ios/Pods-ios.debug.xcconfig"; sourceTree = "<group>"; };
 		FF4400EA77DC6188B44EF010 /* Pods-ios.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ios.release.xcconfig"; path = "Pods/Target Support Files/Pods-ios/Pods-ios.release.xcconfig"; sourceTree = "<group>"; };
@@ -119,6 +149,27 @@
 			path = Buttons;
 			sourceTree = "<group>";
 		};
+		3DF62978221C9FA70052209A /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				3DF62979221C9FA70052209A /* NetworkConstants.swift */,
+				3DF6297A221C9FA70052209A /* APIConfiguration.swift */,
+				3DF6297B221C9FA70052209A /* NetworkService.swift */,
+			);
+			path = Networking;
+			sourceTree = "<group>";
+		};
+		3DF62985221C9FBC0052209A /* Gallery */ = {
+			isa = PBXGroup;
+			children = (
+				3DF62986221C9FBC0052209A /* GalleryController.swift */,
+				3DF62987221C9FBC0052209A /* GalleryCell.xib */,
+				3DF62988221C9FBC0052209A /* GalleryCell.swift */,
+			);
+			name = Gallery;
+			path = ios/Gallery;
+			sourceTree = SOURCE_ROOT;
+		};
 		701D9ED2FE30B29705115D8B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -132,6 +183,7 @@
 		B711B5DD21F659A30096BF7F = {
 			isa = PBXGroup;
 			children = (
+				C43102E022132226008F1D80 /* SoundNotification.swift */,
 				B711B5E821F659A30096BF7F /* ios */,
 				B711B5FD21F659A50096BF7F /* iosTests */,
 				B711B5E721F659A30096BF7F /* Products */,
@@ -152,7 +204,10 @@
 		B711B5E821F659A30096BF7F /* ios */ = {
 			isa = PBXGroup;
 			children = (
+				3DF62978221C9FA70052209A /* Networking */,
+				B781B95722132671001C1BD8 /* Canvas */,
 				B7567944220F330700F80B12 /* Chat */,
+				3DF62985221C9FBC0052209A /* Gallery */,
 				3DDE25172202B28E0082E735 /* Buttons */,
 				3DDE25162202A3650082E735 /* Segues */,
 				3D24628321FFF29E00C89165 /* Authentification */,
@@ -163,6 +218,7 @@
 				B711B5F521F659A50096BF7F /* Info.plist */,
 				3DC967EC220A09C400FA76CB /* DashboardController.swift */,
 				B7567947220F355F00F80B12 /* Constants.swift */,
+				B775FE3E22135D6300B2EFE0 /* Extensions.swift */,
 			);
 			path = ios;
 			sourceTree = "<group>";
@@ -179,7 +235,7 @@
 		B7567944220F330700F80B12 /* Chat */ = {
 			isa = PBXGroup;
 			children = (
-				B7A3A5C32203CF7100031F64 /* Extensions.swift */,
+				B7A3A5C32203CF7100031F64 /* Extensions_Chat.swift */,
 				B7A3A5C12203C27600031F64 /* Message.swift */,
 				B7A3A5BF2203BF3B00031F64 /* ChatControler.swift */,
 				B7567945220F33CD00F80B12 /* ChatService.swift */,
@@ -187,6 +243,20 @@
 				B756794B220F608B00F80B12 /* Members.swift */,
 			);
 			path = Chat;
+			sourceTree = "<group>";
+		};
+		B781B95722132671001C1BD8 /* Canvas */ = {
+			isa = PBXGroup;
+			children = (
+				3DF62981221C9FB30052209A /* Canvas.swift */,
+				3DF62980221C9FB30052209A /* CanvasEndpoint.swift */,
+				B781B95822132BDB001C1BD8 /* Canvas.storyboard */,
+				B781B95A22132C2F001C1BD8 /* CanvasController.swift */,
+				B74BE371221F40950001D62A /* CanvasService.swift */,
+				B74BE369221C823C0001D62A /* SaveService.swift */,
+				B74BE36F221F3FCE0001D62A /* FigureService.swift */,
+			);
+			path = Canvas;
 			sourceTree = "<group>";
 		};
 		D66C1DCE238BFD31669CE467 /* Pods */ = {
@@ -285,8 +355,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				B711B5F421F659A50096BF7F /* LaunchScreen.storyboard in Resources */,
+				B781B95922132BDB001C1BD8 /* Canvas.storyboard in Resources */,
 				B711B5F121F659A50096BF7F /* Assets.xcassets in Resources */,
 				B756794A220F5DC800F80B12 /* Chat.storyboard in Resources */,
+				3DF6298A221C9FBC0052209A /* GalleryCell.xib in Resources */,
 				B711B5EF21F659A30096BF7F /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -334,6 +406,7 @@
 				"${SRCROOT}/Pods/Target Support Files/Pods-ios/Pods-ios-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/AwaitKit/AwaitKit.framework",
+				"${BUILT_PRODUCTS_DIR}/ChromaColorPicker/ChromaColorPicker.framework",
 				"${BUILT_PRODUCTS_DIR}/JWTDecode/JWTDecode.framework",
 				"${BUILT_PRODUCTS_DIR}/MessageInputBar/MessageInputBar.framework",
 				"${BUILT_PRODUCTS_DIR}/MessageKit/MessageKit.framework",
@@ -346,6 +419,7 @@
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AwaitKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ChromaColorPicker.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JWTDecode.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MessageInputBar.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MessageKit.framework",
@@ -386,17 +460,30 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B74BE36A221C823C0001D62A /* SaveService.swift in Sources */,
 				3DC967EB220A067900FA76CB /* LoginController.swift in Sources */,
+				3DF62984221C9FB30052209A /* Canvas.swift in Sources */,
+				3DF6297C221C9FA70052209A /* NetworkConstants.swift in Sources */,
 				3DC61EB92200B44B003FE445 /* RegisterController.swift in Sources */,
 				3D5537C22200ED5F002C1B77 /* SlideUpSegue.swift in Sources */,
 				3D5537C02200E86E002C1B77 /* SlideDownSegue.swift in Sources */,
 				3DC967ED220A09C400FA76CB /* DashboardController.swift in Sources */,
 				3DDE25192202B2AF0082E735 /* RoundedCorners.swift in Sources */,
-				B7A3A5C42203CF7100031F64 /* Extensions.swift in Sources */,
+				B7A3A5C42203CF7100031F64 /* Extensions_Chat.swift in Sources */,
 				B711B5EA21F659A30096BF7F /* AppDelegate.swift in Sources */,
+				B74BE372221F40950001D62A /* CanvasService.swift in Sources */,
 				B7A3A5C22203C27600031F64 /* Message.swift in Sources */,
 				B7A3A5C02203BF3B00031F64 /* ChatControler.swift in Sources */,
+				B74BE370221F3FCE0001D62A /* FigureService.swift in Sources */,
+				3DF6298B221C9FBC0052209A /* GalleryCell.swift in Sources */,
+				C43102E122132226008F1D80 /* SoundNotification.swift in Sources */,
+				B775FE3F22135D6300B2EFE0 /* Extensions.swift in Sources */,
+				3DF6297D221C9FA70052209A /* APIConfiguration.swift in Sources */,
 				B756794C220F608B00F80B12 /* Members.swift in Sources */,
+				3DF62989221C9FBC0052209A /* GalleryController.swift in Sources */,
+				3DF62983221C9FB30052209A /* CanvasEndpoint.swift in Sources */,
+				3DF6297E221C9FA70052209A /* NetworkService.swift in Sources */,
+				B781B95B22132C2F001C1BD8 /* CanvasController.swift in Sources */,
 				B7567946220F33CD00F80B12 /* ChatService.swift in Sources */,
 				B7567948220F355F00F80B12 /* Constants.swift in Sources */,
 			);
@@ -568,7 +655,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "ca.polymtl.H18-LOG3900-012";
+				PRODUCT_BUNDLE_IDENTIFIER = "ca.polymtl.H18-LOG3900-122";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = 2;
@@ -587,7 +674,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "ca.polymtl.H18-LOG3900-012";
+				PRODUCT_BUNDLE_IDENTIFIER = "ca.polymtl.H18-LOG3900-122";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = 2;

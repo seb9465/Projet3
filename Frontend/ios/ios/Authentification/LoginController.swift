@@ -21,6 +21,7 @@ class LoginController: UIViewController, UITextFieldDelegate {
     var placeHolder = "";
 
     @IBAction func loginButton(_ sender: Any) {
+        let sv = UIViewController.displaySpinner(onView: self.view);
         
         let validEmail: Bool = isValidEmail(testStr: emailField.text!);
         
@@ -28,8 +29,13 @@ class LoginController: UIViewController, UITextFieldDelegate {
             "username": emailField.text,
             "password": passwordField.text
         ]
+//        let parameters = [
+//            "username": "seb.cado",
+//            "password": "!12345Aa"
+//        ]
         
         self.authenticateUser(parameters: parameters).done { response in
+            UIViewController.removeSpinner(spinner: sv);
             if(response == "ERROR") {
                 self.validationLabel.text = "Invalid Credentials"
             } else {
@@ -38,13 +44,22 @@ class LoginController: UIViewController, UITextFieldDelegate {
                 UserDefaults.standard.synchronize();
                 
                 print(UserDefaults.standard.string(forKey: "token") ?? "unkwnon");
-                self.performSegue(withIdentifier: "goToDashboard", sender: nil)
+                
+                let mainController = self.storyboard?
+                    .instantiateViewController(withIdentifier: "MainController")
+                    as! UINavigationController
+                self.present(mainController, animated: true, completion: nil)
+//                self.performSegue(withIdentifier: "goToDashboard", sender: nil)
             }
         }
     }
     
     @IBAction func registerPressed(_ sender: UIButton) {
-        self.performSegue(withIdentifier: "goToRegister", sender: nil)
+        let registerConroller = storyboard?
+            .instantiateViewController(withIdentifier: "RegisterController")
+        as! RegisterController
+        self.present(registerConroller, animated: true, completion: nil)
+//        self.performSegue(withIdentifier: "goToRegister", sender: nil)
     }
     
     func authenticateUser(parameters: [String: String?]) -> Promise<String>{

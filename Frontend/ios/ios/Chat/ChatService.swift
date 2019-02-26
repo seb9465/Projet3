@@ -9,7 +9,7 @@
 import Foundation
 import SwiftSignalRClient
 import PromiseKit
-
+import AVFoundation
 class ChatService {
     var hubConnection: HubConnection;
     var _members: Members;
@@ -31,7 +31,7 @@ class ChatService {
             let user = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self);
             let message = try! typeConverter.convertFromWireType(obj: args[1], targetType: String.self);
             let timestamp = try! typeConverter.convertFromWireType(obj: args[2], targetType: String.self);
-            
+
             var memberFromMessage: Member = Member(
                 name: user!,
                 color: .random
@@ -50,6 +50,7 @@ class ChatService {
             
             if (user != currentMemberName) {
                 insertMessage(newMessage);
+                SoundNotification.play(sound: Sound.SendMessage);
             }
         });
     }
@@ -96,7 +97,7 @@ class ChatService {
                 print("ERROR");
                 print(e);
             }
-            
+            SoundNotification.play(sound: Sound.ReceiveMessage);
             insertMessage(message);
         });
     }

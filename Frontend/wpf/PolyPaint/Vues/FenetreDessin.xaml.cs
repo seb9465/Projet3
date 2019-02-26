@@ -16,18 +16,25 @@ using System.Text;
 using System.Collections.Generic;
 using PolyPaint.Vues;
 using PolyPaint.Structures;
+using MaterialDesignThemes.Wpf;
+using System.Windows.Controls;
 
 namespace PolyPaint
 {
     /// <summary>
     /// Logique d'interaction pour FenetreDessin.xaml
     /// </summary>
+    /// 
+
+
+
     public partial class FenetreDessin : Window
     {
         ChatWindow externalChatWindow;
         public FenetreDessin()
         {
             InitializeComponent();
+            roomList.Items.Add(new Room() { Title = "room0"});
             var token = Application.Current.Properties["token"];
             DataContext = new VueModele();
             (DataContext as VueModele).ChatClient.Initialize((string)Application.Current.Properties["token"]);
@@ -234,12 +241,6 @@ namespace PolyPaint
             chat.Visibility = Visibility.Collapsed;
         }
 
-        private void chatButtonSameWindow_Click(object sender, RoutedEventArgs e)
-        {
-            externalChatWindow.Close();
-            chat.Visibility = Visibility.Visible;
-        }
-
         private void sendButton_Click(object sender, RoutedEventArgs e)
         {
             if (!string.IsNullOrWhiteSpace(messageTextBox.Text))
@@ -258,6 +259,7 @@ namespace PolyPaint
                 sendButton_Click(sender, e);
             }
         }
+       
 
         private void OnClosing(object sender, EventArgs e)
         {
@@ -267,10 +269,50 @@ namespace PolyPaint
                 {
                     client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", (string)Application.Current.Properties["token"]);
                     System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
-                    client.GetAsync("https://polypaint.me/api/user/logout").Wait();
+                    client.GetAsync("https://localhost:44300/api/user/logout").Wait();
                 }
             }
             catch { }
         }
+        
+
+        private void addRoom(object sender, DialogClosingEventArgs eventArgs)
+        {
+            if (!Equals(eventArgs.Parameter, true)) return;
+
+            if (!string.IsNullOrWhiteSpace(roomTextBox.Text))
+            {
+                roomList.Items.Add(new Room() { Title = roomTextBox.Text});
+            }
+            clearRoomName(sender, eventArgs);
+        }
+
+        private void clearRoomName(object sender, RoutedEventArgs e)
+        {
+            roomTextBox.Text = "";
+        }
+
+        public class Room
+        {
+            public string Title { get; set; }
+        }
+
+        private void roomConnect(object sender, RoutedEventArgs e)
+        {
+            Button btn = sender as Button;
+            btn.Background = btn.Background == Brushes.GreenYellow ? (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFDDDDDD")) : Brushes.GreenYellow;
+            if (btn.Content.ToString() == "Connected")
+            {
+                btn.Content = "Disconnected";
+            }
+            else
+            {
+                btn.Content = "Connected";
+            }
+        }
     }
 }
+
+
+
+            

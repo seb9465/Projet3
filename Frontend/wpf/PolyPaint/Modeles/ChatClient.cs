@@ -22,7 +22,7 @@ namespace PolyPaint.Modeles
         {
             Connection =
                 new HubConnectionBuilder()
-                .WithUrl("https://polypaint.me/signalr", options =>
+                .WithUrl("https://localhost:44300/signalr", options =>
                 {
                     options.AccessTokenProvider = () => Task.FromResult(accessToken);
                 })
