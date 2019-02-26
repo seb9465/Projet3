@@ -51,7 +51,7 @@ class FigureService: UIView, FigureProtocol {
         self.lineWidth = 2;
         self.lineColor = UIColor.black;
         
-        super.init(frame: CGRect(x: origin.x - 50, y: origin.y - 50, width: 102, height: 102));
+        super.init(frame: CGRect(x: origin.x - 50, y: origin.y - 50, width: 103, height: 103));
         
         self.setInitialSelectedDashedBorder();
         
@@ -90,7 +90,7 @@ class FigureService: UIView, FigureProtocol {
             previousPoint1 = point.previousLocation(in: self)
             currentPoint = point.location(in: self)
             
-            let temp = CGRect(x: currentPoint!.x - 25, y: currentPoint!.y-25, width: 50, height: 50)
+            let temp = CGRect(x: currentPoint!.x - 75/2, y: currentPoint!.y-75/2, width: 75, height: 75)
             
             if (temp.contains(self.selectedCornerCircle1.position)) {
                 self.isResizing = true;
@@ -139,12 +139,12 @@ class FigureService: UIView, FigureProtocol {
                     self.firstPoint.y += deltay;
                     break;
                 case .FROM_CIRCLE_3:
-                    self.lastPoint.y += deltay;
-                    self.firstPoint.x -= deltax;
-                    break;
-                case .FROM_CIRCLE_4:
                     self.lastPoint.x += deltax;
                     self.lastPoint.y += deltay;
+                    break;
+                case .FROM_CIRCLE_4:
+                    self.lastPoint.y += deltay;
+                    self.firstPoint.x += deltax;
                     break;
                 default:
                     break;
