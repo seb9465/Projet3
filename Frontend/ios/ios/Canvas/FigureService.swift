@@ -8,6 +8,14 @@
 
 import UIKit
 
+enum RESIZING {
+    case FROM_CIRCLE_1
+    case FROM_CIRCLE_2
+    case FROM_CIRCLE_3
+    case FROM_CIRCLE_4
+    case NO_RESIZING
+}
+
 protocol FigureProtocol {
     var figureColor: UIColor { get set }
     var lineWidth: CGFloat { get set }
@@ -24,6 +32,7 @@ class FigureService: UIView, FigureProtocol {
     public var isSelected: Bool = false;
     private var isDragging: Bool = false;
     private var isResizing: Bool = false;
+    private var resizingState: RESIZING = RESIZING.NO_RESIZING;
     
     private var currentPoint: CGPoint?;
     private var previousPoint1: CGPoint?;
@@ -83,10 +92,18 @@ class FigureService: UIView, FigureProtocol {
             
             let temp = CGRect(x: currentPoint!.x - 25, y: currentPoint!.y-25, width: 50, height: 50)
             
-//            if (currentPoint!.x >= point1.x && currentPoint!.y >= point1.y && currentPoint!.x <= point2.x && currentPoint!.y <= point2.y) {
             if (temp.contains(self.selectedCornerCircle1.position)) {
                 self.isResizing = true;
-                print("RESIZING");
+                self.resizingState = RESIZING.FROM_CIRCLE_1;
+            } else if (temp.contains(self.selectedCornerCircle2.position)) {
+                self.isResizing = true;
+                self.resizingState = RESIZING.FROM_CIRCLE_2;
+            } else if (temp.contains(self.selectedCornerCircle3.position)) {
+                self.isResizing = true;
+                self.resizingState = RESIZING.FROM_CIRCLE_3;
+            } else if (temp.contains(self.selectedCornerCircle4.position)) {
+                self.isResizing = true;
+                self.resizingState = RESIZING.FROM_CIRCLE_4;
             } else {
                 self.isDragging = true;
                 print("DRAGGING");
@@ -112,8 +129,31 @@ class FigureService: UIView, FigureProtocol {
                 self.firstPoint.x += deltax;
                 self.firstPoint.y += deltay;
             } else if (self.isResizing) {
-                self.firstPoint.x += deltax;
-                self.firstPoint.y += deltay;
+                switch (self.resizingState) {
+                case .FROM_CIRCLE_1:
+                    self.firstPoint.x += deltax;
+                    self.firstPoint.y += deltay;
+                    break;
+                case .FROM_CIRCLE_2:
+                    self.lastPoint.x -= deltax;
+                    self.lastPoint.y -= deltay;
+                    self.firstPoint.x += deltax;
+                    self.firstPoint.y += deltay;
+                    break;
+                case .FROM_CIRCLE_3:
+                    self.lastPoint.x += deltax;
+                    self.lastPoint.y += deltay;
+                    self.firstPoint.x -= deltax;
+                    self.firstPoint.y -= deltay;
+                    break;
+                case .FROM_CIRCLE_4:
+                    self.lastPoint.x += deltax;
+                    self.lastPoint.y += deltay;
+                    break;
+                default:
+                    break;
+                }
+                
             }
             
             setNeedsDisplay();
