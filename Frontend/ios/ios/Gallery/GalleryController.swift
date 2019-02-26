@@ -24,7 +24,7 @@ class GalleryController: UICollectionViewController {
     private var placeholderCellCount: Int = -1
     
     private let itemsPerRow: CGFloat = 4
-    private let sectionInsets = UIEdgeInsets(top: 0, left: 10.0, bottom: 50.0, right: 10.0)
+    private let sectionInsets = UIEdgeInsets(top: 10, left: 10.0, bottom: 50.0, right: 10.0)
 
     override func viewDidLoad() {
         super.viewDidLoad()
