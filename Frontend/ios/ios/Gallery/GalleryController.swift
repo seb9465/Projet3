@@ -29,26 +29,23 @@ class GalleryController: UICollectionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        CanvasService.getAll().done { (retreivedCanvas) in
-            self.canvas = retreivedCanvas
-            self.contextMenuCellCount = Int(ceil(Double(self.canvas.count) / 4.0))
-            self.placeholderCellCount = (self.canvas.count) % 4
-            self.collectionView.reloadData()
-        }
+        CanvasService.getAll()
+            .done { (retreivedCanvas) in
+                self.canvas = retreivedCanvas
+                self.contextMenuCellCount = Int(ceil(Double(self.canvas.count) / Double(self.itemsPerRow)))
+                self.placeholderCellCount = (self.canvas.count) % Int(self.itemsPerRow)
+                self.collectionView.reloadData()
+            }.catch { (Error) in
+                print("Fetch for canvas failed", Error)
+            }
     }
-
-    // UICollectionViewDataSource
-    override func numberOfSections(in collectionView: UICollectionView) -> Int {
-        // Return the number of sections
-        return 1
-    }
-
+    
+    // Number of items
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        // Return the number of items
         return canvas.count + contextMenuCellCount + placeholderCellCount
     }
 
-    // Configure the cells
+    // Cell configuration
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let isContextMenuCell = (indexPath.row + 1) % 5 == 0
         let isPlaceholderCell = (indexPath.row + 1) >= canvas.count + contextMenuCellCount && !isContextMenuCell
@@ -99,9 +96,7 @@ class GalleryController: UICollectionViewController {
         })
     }
     
-    override func collectionView(_ collectionView: UICollectionView,
-                                 viewForSupplementaryElementOfKind kind: String,
-                                 at indexPath: IndexPath) -> UICollectionReusableView {
+    override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         // 1
         switch kind {
         // 2
@@ -128,6 +123,7 @@ class GalleryController: UICollectionViewController {
 
 // MARK: - Collection View Flow Layout Delegate
 extension GalleryController : UICollectionViewDelegateFlowLayout {
+
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {

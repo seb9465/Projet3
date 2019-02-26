@@ -14,44 +14,31 @@ import Alamofire
 class CanvasService {
     
     @discardableResult
-    private static func request(route:CanvasEndpoint) -> Promise<Data> {
-        let token = UserDefaults.standard.string(forKey: "token")
+    private static func get() -> Promise<Data> {
+        let url: URLConvertible = "https://polypaint.me/api/user/canvas"
         let headers = [
-            "Authorization": "Bearer " + token!,
+            "Authorization": "Bearer " + UserDefaults.standard.string(forKey: "token")!,
             "Accept": "application/json"
         ]
-        
-        let url: URLConvertible = "https://polypaint.me/api/user/canvas"
-        
-        return Promise {seal in
-            let request = Alamofire.request(url, method: .get, encoding: JSONEncoding.default, headers: headers).responseJSON{ (response) in
-//               print(response.value)
-//                switch response.result {
-//                    case .success(let value):
+
+        return Promise { (seal) in
+            Alamofire.request(url, method: .get, encoding: JSONEncoding.default, headers: headers).responseJSON{ (response) in
+                switch response.result {
+                    case .success( _):
                         seal.fulfill(response.data!);
-//                    case .failure(let error):
-//                         seal.fulfill(nil);
+                    case .failure(let error):
+                         seal.reject(error)
                 }
             }
         }
-//    }
+    }
     
     static func getAll() -> Promise<[Canvas]> {
         return Promise { seal in
-            CanvasService.request(route: CanvasEndpoint.getAll()).done{ (data) in
+            CanvasService.get().done{ (data) in
                 let canvas = try JSONDecoder().decode([Canvas].self, from: data)
                 seal.fulfill(canvas)
             }
         }
-//        CanvasService.request(route: CanvasEndpoint.getAll()).done{ (data) in
-//            do {
-//                debugPrint(data)
-//                let canvas = try JSONDecoder().decode([Canvas].self, from: data)
-//                return canvas
-//            } catch {
-//                print(error)
-//                print("Error in decoding")
-//            }
-//        }
     }
 }

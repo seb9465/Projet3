@@ -386,7 +386,6 @@
         <!--View Controller-->
         <scene sceneID="puW-H5-aqM">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="twB-AM-cHq" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController id="byH-F7-qas" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Fpe-cP-hD1">
                         <rect key="frame" x="0.0" y="0.0" width="703.5" height="768"/>
@@ -395,6 +394,7 @@
                         <viewLayoutGuide key="safeArea" id="D5y-Aq-ze8"/>
                     </view>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="twB-AM-cHq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3946" y="1776"/>
         </scene>
@@ -488,7 +488,7 @@
                                     <outlet property="CanvasName" destination="9Ob-wr-duu" id="GjE-Pb-oQr"/>
                                 </connections>
                             </collectionViewCell>
-                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="PlaceHolderCell" id="p0s-fB-WuH" customClass="PlaceHolderCell" customModule="ios" customModuleProvider="target">
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" misplaced="YES" reuseIdentifier="PlaceHolderCell" id="p0s-fB-WuH" customClass="PlaceHolderCell" customModule="ios" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="260" width="200" height="200"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
@@ -501,8 +501,8 @@
                             <rect key="frame" x="0.0" y="0.0" width="703.5" height="50"/>
                             <autoresizingMask key="autoresizingMask"/>
                             <subviews>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Gallerie publique" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UCb-qz-6dt">
-                                    <rect key="frame" x="10" y="15" width="228.5" height="36"/>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Galerie publique" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UCb-qz-6dt">
+                                    <rect key="frame" x="10" y="15" width="221.5" height="36"/>
                                     <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="30"/>
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
