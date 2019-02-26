@@ -1,16 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using PolyPaint.Core;
+﻿using Microsoft.AspNetCore.Mvc;
 using PolyPaint.DataAccess.Services;
-using PolyPaint.Core.ViewModels;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using PolyPaint.Core.DbModels;
+
 namespace PolyPaint.API.Controllers
 {
     [Route("api/[controller]")]

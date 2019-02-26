@@ -54,6 +54,10 @@ class LoginController: UIViewController, UITextFieldDelegate {
             "username": "user.2",
             "password": "!12345Aa"
         ]
+//        let parameters = [
+//            "username": "seb.cado",
+//            "password": "!12345Aa"
+//        ]
         
         self.authenticateUser(parameters: parameters).done { response in
             UIViewController.removeSpinner(spinner: sv);

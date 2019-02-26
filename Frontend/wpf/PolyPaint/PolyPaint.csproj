@@ -352,10 +352,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Config.cs" />
     <Compile Include="Convertisseurs\Convertisseurs.cs" />
+    <Compile Include="Modeles\Channel.cs" />
     <Compile Include="Modeles\ChatClient.cs" />
     <Compile Include="Modeles\Editeur.cs" />
+    <Compile Include="Modeles\Messages\ChannelMessage.cs" />
+    <Compile Include="Modeles\Messages\ChannelsMessage.cs" />
+    <Compile Include="Modeles\Messages\ChatMessage.cs" />
+    <Compile Include="Modeles\Messages\ConnectionMessage.cs" />
+    <Compile Include="Modeles\Messages\ErrorMessage.cs" />
+    <Compile Include="Modeles\Room.cs" />
     <Compile Include="Modeles\SaveableCanvas.cs" />
+    <Compile Include="Structures\ChannelArgs.cs" />
     <Compile Include="Structures\MessageArgs.cs" />
     <Compile Include="Utilitaires\RelayCommand.cs" />
     <Compile Include="VueModeles\CanvasViewModel.cs" />
