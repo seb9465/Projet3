@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		3D121EDC22209E070074C61C /* PlaceHolderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D121EDB22209E070074C61C /* PlaceHolderCell.swift */; };
+		3D2565602225BDFE00BCE946 /* GalleryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D25655F2225BDFE00BCE946 /* GalleryController.swift */; };
 		3D5537C02200E86E002C1B77 /* SlideDownSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D5537BF2200E86E002C1B77 /* SlideDownSegue.swift */; };
 		3D5537C22200ED5F002C1B77 /* SlideUpSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D5537C12200ED5F002C1B77 /* SlideUpSegue.swift */; };
 		3D77176921F7C8BC006244A8 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D77176821F7C8BC006244A8 /* Alamofire.framework */; };
@@ -57,6 +58,7 @@
 
 /* Begin PBXFileReference section */
 		3D121EDB22209E070074C61C /* PlaceHolderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceHolderCell.swift; sourceTree = "<group>"; };
+		3D25655F2225BDFE00BCE946 /* GalleryController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryController.swift; sourceTree = "<group>"; };
 		3D5537BF2200E86E002C1B77 /* SlideDownSegue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlideDownSegue.swift; sourceTree = "<group>"; };
 		3D5537C12200ED5F002C1B77 /* SlideUpSegue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlideUpSegue.swift; sourceTree = "<group>"; };
 		3D77176821F7C8BC006244A8 /* Alamofire.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Alamofire.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -169,6 +171,7 @@
 		3DF62985221C9FBC0052209A /* Gallery */ = {
 			isa = PBXGroup;
 			children = (
+				3D25655F2225BDFE00BCE946 /* GalleryController.swift */,
 				3DF62988221C9FBC0052209A /* CanvasCell.swift */,
 				3DC07CC622205B7C0045E7DE /* ContextMenuCell.swift */,
 				3D121EDB22209E070074C61C /* PlaceHolderCell.swift */,
@@ -489,6 +492,7 @@
 				B775FE3F22135D6300B2EFE0 /* Extensions.swift in Sources */,
 				3DF6297D221C9FA70052209A /* APIConfiguration.swift in Sources */,
 				B756794C220F608B00F80B12 /* Members.swift in Sources */,
+				3D2565602225BDFE00BCE946 /* GalleryController.swift in Sources */,
 				3DC07CC722205B7C0045E7DE /* ContextMenuCell.swift in Sources */,
 				3D9FBC1222248371006BB297 /* MasterViewController.swift in Sources */,
 				B781B95B22132C2F001C1BD8 /* CanvasController.swift in Sources */,
