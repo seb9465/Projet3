@@ -20,8 +20,6 @@
 		3DC967ED220A09C400FA76CB /* DashboardController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DC967EC220A09C400FA76CB /* DashboardController.swift */; };
 		3DDE25192202B2AF0082E735 /* RoundedCorners.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DDE25182202B2AF0082E735 /* RoundedCorners.swift */; };
 		3DE984D322261707004D036C /* AuthentificationAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DE984D222261707004D036C /* AuthentificationAPI.swift */; };
-		3DF6297C221C9FA70052209A /* NetworkConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DF62979221C9FA70052209A /* NetworkConstants.swift */; };
-		3DF6297D221C9FA70052209A /* APIConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DF6297A221C9FA70052209A /* APIConfiguration.swift */; };
 		3DF62984221C9FB30052209A /* Canvas.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DF62981221C9FB30052209A /* Canvas.swift */; };
 		3DF6298B221C9FBC0052209A /* CanvasCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DF62988221C9FBC0052209A /* CanvasCell.swift */; };
 		AAAF9A5351EEC102D9A22B92 /* Pods_iosTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97F0F22A4C1686AFA3D462D8 /* Pods_iosTests.framework */; };
@@ -71,8 +69,6 @@
 		3DC967EC220A09C400FA76CB /* DashboardController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardController.swift; sourceTree = "<group>"; };
 		3DDE25182202B2AF0082E735 /* RoundedCorners.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedCorners.swift; sourceTree = "<group>"; };
 		3DE984D222261707004D036C /* AuthentificationAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthentificationAPI.swift; sourceTree = "<group>"; };
-		3DF62979221C9FA70052209A /* NetworkConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkConstants.swift; sourceTree = "<group>"; };
-		3DF6297A221C9FA70052209A /* APIConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIConfiguration.swift; sourceTree = "<group>"; };
 		3DF62981221C9FB30052209A /* Canvas.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Canvas.swift; sourceTree = "<group>"; };
 		3DF62988221C9FBC0052209A /* CanvasCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CanvasCell.swift; sourceTree = "<group>"; };
 		6A1149C56A5EEAFC45859F6D /* Pods-iosTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iosTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-iosTests/Pods-iosTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -162,15 +158,6 @@
 			path = Buttons;
 			sourceTree = "<group>";
 		};
-		3DF62978221C9FA70052209A /* Networking */ = {
-			isa = PBXGroup;
-			children = (
-				3DF62979221C9FA70052209A /* NetworkConstants.swift */,
-				3DF6297A221C9FA70052209A /* APIConfiguration.swift */,
-			);
-			path = Networking;
-			sourceTree = "<group>";
-		};
 		3DF62985221C9FBC0052209A /* Gallery */ = {
 			isa = PBXGroup;
 			children = (
@@ -219,7 +206,6 @@
 			isa = PBXGroup;
 			children = (
 				3D9FBC102224834D006BB297 /* Dashboard */,
-				3DF62978221C9FA70052209A /* Networking */,
 				B781B95722132671001C1BD8 /* Canvas */,
 				B7567944220F330700F80B12 /* Chat */,
 				3DF62985221C9FBC0052209A /* Gallery */,
@@ -477,7 +463,6 @@
 				3DC967EB220A067900FA76CB /* LoginController.swift in Sources */,
 				3DE984D322261707004D036C /* AuthentificationAPI.swift in Sources */,
 				3DF62984221C9FB30052209A /* Canvas.swift in Sources */,
-				3DF6297C221C9FA70052209A /* NetworkConstants.swift in Sources */,
 				3DC61EB92200B44B003FE445 /* RegisterController.swift in Sources */,
 				3D5537C22200ED5F002C1B77 /* SlideUpSegue.swift in Sources */,
 				3D5537C02200E86E002C1B77 /* SlideDownSegue.swift in Sources */,
@@ -494,7 +479,6 @@
 				B74BE370221F3FCE0001D62A /* FigureService.swift in Sources */,
 				C43102E122132226008F1D80 /* SoundNotification.swift in Sources */,
 				B775FE3F22135D6300B2EFE0 /* Extensions.swift in Sources */,
-				3DF6297D221C9FA70052209A /* APIConfiguration.swift in Sources */,
 				B756794C220F608B00F80B12 /* Members.swift in Sources */,
 				3D2565602225BDFE00BCE946 /* GalleryController.swift in Sources */,
 				3DC07CC722205B7C0045E7DE /* ContextMenuCell.swift in Sources */,
