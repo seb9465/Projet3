@@ -158,13 +158,21 @@
 			path = Buttons;
 			sourceTree = "<group>";
 		};
+		3DE984D422262ECA004D036C /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				3D121EDB22209E070074C61C /* PlaceHolderCell.swift */,
+				3DC07CC622205B7C0045E7DE /* ContextMenuCell.swift */,
+				3DF62988221C9FBC0052209A /* CanvasCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
 		3DF62985221C9FBC0052209A /* Gallery */ = {
 			isa = PBXGroup;
 			children = (
+				3DE984D422262ECA004D036C /* Cells */,
 				3D25655F2225BDFE00BCE946 /* GalleryController.swift */,
-				3DF62988221C9FBC0052209A /* CanvasCell.swift */,
-				3DC07CC622205B7C0045E7DE /* ContextMenuCell.swift */,
-				3D121EDB22209E070074C61C /* PlaceHolderCell.swift */,
 				3DA9A50022220F870005F3AF /* GalleryHeader.swift */,
 			);
 			name = Gallery;
