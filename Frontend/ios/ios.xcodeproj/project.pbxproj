@@ -18,6 +18,7 @@
 		3DC61EB92200B44B003FE445 /* RegisterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DC61EB82200B44B003FE445 /* RegisterController.swift */; };
 		3DC967EB220A067900FA76CB /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DC967EA220A067900FA76CB /* LoginController.swift */; };
 		3DC967ED220A09C400FA76CB /* DashboardController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DC967EC220A09C400FA76CB /* DashboardController.swift */; };
+		3DD55D722227208C009D893B /* ColloborationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DD55D712227208C009D893B /* ColloborationService.swift */; };
 		3DDE25192202B2AF0082E735 /* RoundedCorners.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DDE25182202B2AF0082E735 /* RoundedCorners.swift */; };
 		3DE984D322261707004D036C /* AuthentificationAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DE984D222261707004D036C /* AuthentificationAPI.swift */; };
 		3DF62984221C9FB30052209A /* Canvas.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DF62981221C9FB30052209A /* Canvas.swift */; };
@@ -67,6 +68,7 @@
 		3DC61EB82200B44B003FE445 /* RegisterController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterController.swift; sourceTree = "<group>"; };
 		3DC967EA220A067900FA76CB /* LoginController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
 		3DC967EC220A09C400FA76CB /* DashboardController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardController.swift; sourceTree = "<group>"; };
+		3DD55D712227208C009D893B /* ColloborationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColloborationService.swift; sourceTree = "<group>"; };
 		3DDE25182202B2AF0082E735 /* RoundedCorners.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedCorners.swift; sourceTree = "<group>"; };
 		3DE984D222261707004D036C /* AuthentificationAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthentificationAPI.swift; sourceTree = "<group>"; };
 		3DF62981221C9FB30052209A /* Canvas.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Canvas.swift; sourceTree = "<group>"; };
@@ -128,7 +130,6 @@
 			children = (
 				3DC967EA220A067900FA76CB /* LoginController.swift */,
 				3DC61EB82200B44B003FE445 /* RegisterController.swift */,
-				3DE984D222261707004D036C /* AuthentificationAPI.swift */,
 			);
 			path = Authentification;
 			sourceTree = "<group>";
@@ -139,6 +140,14 @@
 				3D9FBC1122248371006BB297 /* MasterViewController.swift */,
 			);
 			path = Dashboard;
+			sourceTree = "<group>";
+		};
+		3DD55D6E22271E90009D893B /* API */ = {
+			isa = PBXGroup;
+			children = (
+				3DE984D222261707004D036C /* AuthentificationAPI.swift */,
+			);
+			path = API;
 			sourceTree = "<group>";
 		};
 		3DDE25162202A3650082E735 /* Segues */ = {
@@ -213,6 +222,7 @@
 		B711B5E821F659A30096BF7F /* ios */ = {
 			isa = PBXGroup;
 			children = (
+				3DD55D6E22271E90009D893B /* API */,
 				3D9FBC102224834D006BB297 /* Dashboard */,
 				B781B95722132671001C1BD8 /* Canvas */,
 				B7567944220F330700F80B12 /* Chat */,
@@ -263,6 +273,7 @@
 				B74BE371221F40950001D62A /* CanvasService.swift */,
 				B74BE369221C823C0001D62A /* SaveService.swift */,
 				B74BE36F221F3FCE0001D62A /* FigureService.swift */,
+				3DD55D712227208C009D893B /* ColloborationService.swift */,
 			);
 			path = Canvas;
 			sourceTree = "<group>";
@@ -472,6 +483,7 @@
 				3DE984D322261707004D036C /* AuthentificationAPI.swift in Sources */,
 				3DF62984221C9FB30052209A /* Canvas.swift in Sources */,
 				3DC61EB92200B44B003FE445 /* RegisterController.swift in Sources */,
+				3DD55D722227208C009D893B /* ColloborationService.swift in Sources */,
 				3D5537C22200ED5F002C1B77 /* SlideUpSegue.swift in Sources */,
 				3D5537C02200E86E002C1B77 /* SlideDownSegue.swift in Sources */,
 				3DC967ED220A09C400FA76CB /* DashboardController.swift in Sources */,
