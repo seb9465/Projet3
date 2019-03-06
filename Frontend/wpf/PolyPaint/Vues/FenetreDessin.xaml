@@ -279,20 +279,21 @@
                                     </Grid.ColumnDefinitions>
 
                                     <ListBox ItemsSource="{Binding Rooms}" Name="roomList" Margin="0,30,-0.333,-0.111" MaxHeight="150" Grid.ColumnSpan="2">
-                                        <ListBox.ItemTemplate>
+                                        <ListBox.ItemTemplate  >
                                             <DataTemplate>
-                                                <Grid Margin="0,2">
-                                                    <TextBlock Text="{Binding Title}" Margin="0,0,50,0"/>
+                                                <Grid Margin="0,2" >
+                                                    <RadioButton GroupName="ChatRooms" Command="{Binding Path=DataContext.ChoisirRoom, ElementName=roomList}" CommandParameter="{Binding Title}" />
+                                                    <TextBlock Text="{Binding Title}" Margin="30,0,50,0"/>
                                                     <Button Background="{Binding Connected, Converter={StaticResource convertisseurRoomCouleurFond}, UpdateSourceTrigger=PropertyChanged}"
-                                                Content="{Binding Connected, Converter={StaticResource convertisseurRoomContent}, UpdateSourceTrigger=PropertyChanged}"
-                                                Width="100" Height="20" FontSize="10" BorderBrush="Transparent" Foreground="Black" Margin="120,0,0,0"
-                                                Command="{Binding Path=DataContext.RoomConnect, ElementName=roomList}" CommandParameter="{Binding Path=.}" />
-                                                    <RadioButton Margin="100,0,0,0" GroupName="ChatRooms"
-                                                Command="{Binding Path=DataContext.ChoisirRoom, ElementName=roomList}"
-                                                CommandParameter="{Binding Title}" />
+                                                        Content="{Binding Connected, Converter={StaticResource convertisseurRoomContent}, UpdateSourceTrigger=PropertyChanged}"
+                                                        Width="100" Height="20" FontSize="10" BorderBrush="Transparent" Foreground="Black" Margin="120,0,0,0"
+                                                        Command="{Binding Path=DataContext.RoomConnect, ElementName=roomList}" CommandParameter="{Binding Path=.}" 
+                                                     />
+                                                    
                                                 </Grid>
                                             </DataTemplate>
                                         </ListBox.ItemTemplate>
+
                                     </ListBox>
                                     <materialDesign:ColorZone Mode="PrimaryMid" Grid.ColumnSpan="2" Margin="0,0,-0.223,0">
                                         <TextBlock  Margin="16">
