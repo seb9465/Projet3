@@ -14,10 +14,13 @@ namespace PolyPaint.Vues
 
         private void BackBtn_Click(object sender, RoutedEventArgs e)
         {
-            this.Content = new Login();
+            Login login = new Login();
+            Application.Current.MainWindow = login;
+            Close();
+            login.Show();
         }
 
-        private void RegisterBtn_Click(object sender, RoutedEventArgs e)
+        private void Register_Click(object sender, RoutedEventArgs e)
         {
 
         }
