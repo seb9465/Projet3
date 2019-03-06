@@ -13,11 +13,9 @@ namespace PolyPaint.Vues
     /// </summary>
     public partial class Login : Window
     {
-        private Register register;
         public Login()
         {
             InitializeComponent();
-            register = new Register();
         }
 
         private void OfflineBtn_Click(object sender, RoutedEventArgs e)
@@ -55,6 +53,14 @@ namespace PolyPaint.Vues
                     fenetreDessin.Show();
                 }
             }
+        }
+
+        private async void RegisterBtn_Click(object sender, RoutedEventArgs e)
+        {
+            Register register = new Register();
+            Application.Current.MainWindow = register;
+            Close();
+            register.Show();
         }
 
         private void Window_PreviewKeyDown(object sender, KeyEventArgs e)

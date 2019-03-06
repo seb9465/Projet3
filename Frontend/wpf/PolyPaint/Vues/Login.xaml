@@ -8,12 +8,26 @@
       PreviewKeyDown="Window_PreviewKeyDown"
       Title="Login" Height="500" Width="700">
     <Grid HorizontalAlignment="Left" Height="490" Margin="0,0,-8,-21" VerticalAlignment="Top" Width="700">
-        <Button Content="Login" Margin="264,355,255,103" Name="loginBtn" Click="LoginBtn_Click" Height="Auto"/>
-        <Button Content="Continuer hors-ligne" Margin="264,392,255,66" x:Name="offlineBtn" Click="OfflineBtn_Click" Height="Auto" Style="{StaticResource MaterialDesignFlatButton}"/>
-        <TextBox Name="usernameBox" HorizontalAlignment="Left" Height="30" Margin="350,165,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="205"/>
-        <PasswordBox Name="passwordBox" HorizontalAlignment="Left" Height="30" Margin="350,240,0,0" VerticalAlignment="Top" Width="205"/>
-        <Label Content="PolyPaint PRO" HorizontalContentAlignment="Center" Margin="156,10,154,0" VerticalAlignment="Top" Width="390" Height="75" FontSize="50"/>
-        <Label Content="Nom d'utilisateur:" HorizontalAlignment="Left" Margin="188,170,0,0" VerticalAlignment="Top"/>
-        <Label Content="Mot de passe:" HorizontalAlignment="Left" Margin="188,247,0,0" VerticalAlignment="Top"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="0*"/>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Orientation="Vertical">
+            <Label Content="PolyPaint PRO" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="390" Height="75" FontSize="50"/>
+            <Button  Content="Register" Width="100px" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,-60,20,0" Name="registerBtn" Click="RegisterBtn_Click" Height="Auto" Style="{StaticResource MaterialDesignFlatButton}" BorderBrush="Red" BorderThickness="1"/>
+            <StackPanel Orientation="Horizontal">
+                <Label Content="Nom d'utilisateur:" HorizontalAlignment="Left" Margin="190,70,0,0" VerticalAlignment="Top"/>
+                <TextBox Name="usernameBox" HorizontalAlignment="Left" Height="30" Margin="10,70,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="205"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label Content="Mot de passe:" HorizontalAlignment="Left" Margin="210,50,0,0" VerticalAlignment="Top"/>
+                <PasswordBox Name="passwordBox" HorizontalAlignment="Left" Height="30" Margin="10,50,0,0" VerticalAlignment="Top" Width="205"/>
+            </StackPanel>
+            <Button Content="Login"  Width="150px" VerticalAlignment="Top" Margin="0,80,0,0" Name="loginBtn" Click="LoginBtn_Click" Height="Auto"/>
+            <Button Content="Continuer hors-ligne"  Width="200px" VerticalAlignment="Top" Margin="0,10,0,0" x:Name="offlineBtn" Click="OfflineBtn_Click"  Height="Auto" Style="{StaticResource MaterialDesignFlatButton}"/>
+
+        </StackPanel>
+
     </Grid>
 </Window>

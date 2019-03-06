@@ -1,4 +1,4 @@
-﻿<Page x:Class="PolyPaint.Vues.Register"
+﻿<Window x:Class="PolyPaint.Vues.Register"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -21,4 +21,4 @@
         <PasswordBox HorizontalAlignment="Left" Margin="341,301,0,0" VerticalAlignment="Top" Width="205" Name="passwordBox"/>
         <Label Content="PolyPaint PRO" HorizontalContentAlignment="Center" Margin="156,10,154,0" VerticalAlignment="Top" Width="390" Height="75" FontSize="50"/>
     </Grid>
-</Page>
+</Window>

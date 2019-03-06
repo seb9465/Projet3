@@ -5,7 +5,7 @@ using System.Windows.Controls;
 
 namespace PolyPaint.Vues
 {
-    public partial class Register : Page
+    public partial class Register : Window
     {
         public Register()
         {
