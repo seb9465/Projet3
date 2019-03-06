@@ -34,8 +34,11 @@ class CanvasController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad();
         
-        self.addTapGestureRecognizer();
+        CollaborationService.shared.connectToHub()
+        CollaborationService.shared.connectToGroup()
         
+        self.addTapGestureRecognizer();
+
         // Color picker parameters.
         let pickerSize = CGSize(width: 200, height: 200);
         let pickerOrigin = CGPoint(x: 200, y: 100);
@@ -67,6 +70,7 @@ class CanvasController: UIViewController {
         
         if (tapPoint.y >= 70 && self.toolState == STATE.DRAW_RECT) {
             self.canvas.addNewFigure(origin: tapPoint, view: self.view);
+            CollaborationService.shared.updateDrawing(message: "je veux ajouter un rectangle")
         } else if (self.toolState == STATE.SELECTION) {
             let res: Bool = self.canvas.selectFigure(tapPoint: tapPoint, view: self.view);
             self.borderButton.isEnabled = res;

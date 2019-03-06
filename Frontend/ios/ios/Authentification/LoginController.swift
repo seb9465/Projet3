@@ -28,12 +28,12 @@ class LoginController: UIViewController, UITextFieldDelegate {
         let sv = UIViewController.displaySpinner(onView: self.view);
 //        let validEmail: Bool = isValidEmail(email: emailField.text!);
         
-        AuthentificationAPI.login(username: "user.2", password: "!12345Aa")
+        let username = "user.3"
+        AuthentificationAPI.login(username: username, password: "!12345Aa")
             .done { (token) in
                 UIViewController.removeSpinner(spinner: sv);
                 self.validationLabel.text = ""
                 self.storeAuthentificationToken(token: token)
-                
                 // Navigate to dashboard
                 let mainController = self.storyboard?.instantiateViewController(withIdentifier: "MainController") as! UINavigationController
                 self.present(mainController, animated: true, completion: nil)
@@ -42,6 +42,8 @@ class LoginController: UIViewController, UITextFieldDelegate {
                 self.validationLabel.text = "Invalid Credentials"
                 print(Error)
         }
+        
+//        CollaborationService
     }
     
     @IBAction func registerPressed(_ sender: UIButton) {
