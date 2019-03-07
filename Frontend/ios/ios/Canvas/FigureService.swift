@@ -16,18 +16,12 @@ enum RESIZING {
     case NO_RESIZING
 }
 
-protocol FigureProtocol {
-    var figureColor: UIColor { get set }
-    var lineWidth: CGFloat { get set }
-    var lineColor: UIColor { get set }
-}
-
-class FigureService: UIView, FigureProtocol {
-    var figureColor: UIColor
-    var lineWidth: CGFloat
-    var lineColor: UIColor
-    private var firstPoint: CGPoint;
-    private var lastPoint: CGPoint;
+class FigureService: UIView {
+//    public var figureColor: UIColor!
+//    public var lineWidth: CGFloat!
+//    public var lineColor: UIColor!
+//    private var firstPoint: CGPoint!;
+//    private var lastPoint: CGPoint!;
     
     public var isSelected: Bool = false;
     private var isDragging: Bool = false;
@@ -44,12 +38,17 @@ class FigureService: UIView, FigureProtocol {
     private var selectedCornerCircle3: CAShapeLayer!;
     private var selectedCornerCircle4: CAShapeLayer!;
     
+    private var currentTool: FigureProtocol
+    
     init(origin: CGPoint) {
-        self.firstPoint = CGPoint(x: origin.x - 50, y: origin.y - 50);
-        self.lastPoint = CGPoint(x: origin.x + 50, y: origin.y + 50);
-        self.figureColor = UIColor.clear;
-        self.lineWidth = 2;
-        self.lineColor = UIColor.black;
+//        self.firstPoint = CGPoint(x: origin.x - 50, y: origin.y - 50);
+//        self.lastPoint = CGPoint(x: origin.x + 50, y: origin.y + 50);
+//        self.figureColor = UIColor.clear;
+//        self.lineWidth = 2;
+//        self.lineColor = UIColor.black;
+        self.currentTool = Rect();
+        self.currentTool.setInitialPoint(xPoint: origin.x - 50, yPoint: origin.y - 50);
+        self.currentTool.setLastPoint(xPoint: origin.x + 50, yPoint: origin.y + 50);
         
         super.init(frame: CGRect(x: origin.x - 50, y: origin.y - 50, width: 103, height: 103));
         
@@ -66,22 +65,23 @@ class FigureService: UIView, FigureProtocol {
 
     public override func draw(_ rect: CGRect) {
         // Redimension and put at the right place the frame of the figure.
-        self.frame = CGRect(x: firstPoint.x, y: firstPoint.y, width: lastPoint.x - firstPoint.x, height: lastPoint.y - firstPoint.y);
+        self.frame = CGRect(x: self.currentTool.firstPoint.x, y: self.currentTool.firstPoint.y, width: self.currentTool.lastPoint.x - self.currentTool.firstPoint.x, height: self.currentTool.lastPoint.y - self.currentTool.firstPoint.y);
         
         // Drawing the figure.
-        let r: CGRect = CGRect(x: 1, y: 1, width: lastPoint.x - firstPoint.x, height: lastPoint.y - firstPoint.y);
-        
-        // Inset to be able to place a border.
-        let insetRect = r.insetBy(dx: 4, dy: 4);
-        
-        let path = UIBezierPath(roundedRect: insetRect, cornerRadius: 10);
-        
-        // Border and fill parameters.
-        self.figureColor.setFill();
-        path.lineWidth = self.lineWidth;
-        self.lineColor.setStroke();
-        path.fill();
-        path.stroke();
+//        let r: CGRect = CGRect(x: 1, y: 1, width: lastPoint.x - firstPoint.x, height: lastPoint.y - firstPoint.y);
+//
+//        // Inset to be able to place a border.
+//        let insetRect = r.insetBy(dx: 4, dy: 4);
+//
+//        let path = UIBezierPath(roundedRect: insetRect, cornerRadius: 10);
+//
+//        // Border and fill parameters.
+//        self.figureColor.setFill();
+//        path.lineWidth = self.lineWidth;
+//        self.lineColor.setStroke();
+//        path.fill();
+//        path.stroke();
+        self.currentTool.draw();
     }
     
     public override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -124,32 +124,31 @@ class FigureService: UIView, FigureProtocol {
             let deltay = currentPoint!.y - previousPoint1!.y;
             
             if (self.isDragging) {
-                self.lastPoint.x += deltax;
-                self.lastPoint.y += deltay;
-                self.firstPoint.x += deltax;
-                self.firstPoint.y += deltay;
+                self.currentTool.lastPoint.x += deltax;
+                self.currentTool.lastPoint.y += deltay;
+                self.currentTool.firstPoint.x += deltax;
+                self.currentTool.firstPoint.y += deltay;
             } else if (self.isResizing) {
                 switch (self.resizingState) {
                 case .FROM_CIRCLE_1:
-                    self.firstPoint.x += deltax;
-                    self.firstPoint.y += deltay;
+                    self.currentTool.firstPoint.x += deltax;
+                    self.currentTool.firstPoint.y += deltay;
                     break;
                 case .FROM_CIRCLE_2:
-                    self.lastPoint.x += deltax;
-                    self.firstPoint.y += deltay;
+                    self.currentTool.lastPoint.x += deltax;
+                    self.currentTool.firstPoint.y += deltay;
                     break;
                 case .FROM_CIRCLE_3:
-                    self.lastPoint.x += deltax;
-                    self.lastPoint.y += deltay;
+                    self.currentTool.lastPoint.x += deltax;
+                    self.currentTool.lastPoint.y += deltay;
                     break;
                 case .FROM_CIRCLE_4:
-                    self.lastPoint.y += deltay;
-                    self.firstPoint.x += deltax;
+                    self.currentTool.lastPoint.y += deltay;
+                    self.currentTool.firstPoint.x += deltax;
                     break;
                 default:
                     break;
                 }
-                
             }
             
             setNeedsDisplay();
@@ -176,12 +175,12 @@ class FigureService: UIView, FigureProtocol {
     }
     
     public func setFillColor(fillColor: UIColor) -> Void {
-        self.figureColor = fillColor;
+        self.currentTool.figureColor = fillColor;
         setNeedsDisplay();
     }
     
     public func setBorderColor(borderColor: UIColor) -> Void {
-        self.lineColor = borderColor;
+        self.currentTool.lineColor = borderColor;
         setNeedsDisplay();
     }
     
@@ -193,17 +192,17 @@ class FigureService: UIView, FigureProtocol {
         
         selectedCornerCircle2 = CAShapeLayer();
         selectedCornerCircle2.path = UIBezierPath(roundedRect: CGRect(x: -5, y: -5, width: 2.0 * self.radius, height: 2.0 * self.radius), cornerRadius: self.radius).cgPath;
-        selectedCornerCircle2.position = CGPoint(x: lastPoint.x - firstPoint.x + 2, y: 0);
+        selectedCornerCircle2.position = CGPoint(x: self.currentTool.lastPoint.x - self.currentTool.firstPoint.x + 2, y: 0);
         selectedCornerCircle2.fillColor = UIColor.blue.cgColor;
         
         selectedCornerCircle3 = CAShapeLayer();
         selectedCornerCircle3.path = UIBezierPath(roundedRect: CGRect(x: -5, y: -5, width: 2.0 * self.radius, height: 2.0 * self.radius), cornerRadius: self.radius).cgPath;
-        selectedCornerCircle3.position = CGPoint(x: lastPoint.x - firstPoint.x + 2, y: lastPoint.y - firstPoint.y + 2);
+        selectedCornerCircle3.position = CGPoint(x: self.currentTool.lastPoint.x - self.currentTool.firstPoint.x + 2, y: self.currentTool.lastPoint.y - self.currentTool.firstPoint.y + 2);
         selectedCornerCircle3.fillColor = UIColor.blue.cgColor;
         
         selectedCornerCircle4 = CAShapeLayer();
         selectedCornerCircle4.path = UIBezierPath(roundedRect: CGRect(x: -5, y: -5, width: 2.0 * self.radius, height: 2.0 * self.radius), cornerRadius: self.radius).cgPath;
-        selectedCornerCircle4.position = CGPoint(x: 0, y: lastPoint.y - firstPoint.y + 2);
+        selectedCornerCircle4.position = CGPoint(x: 0, y: self.currentTool.lastPoint.y - self.currentTool.firstPoint.y + 2);
         selectedCornerCircle4.fillColor = UIColor.blue.cgColor;
     }
     
@@ -234,10 +233,10 @@ class FigureService: UIView, FigureProtocol {
     
     private func adjustSelectedFigureLayers() -> Void {
         selectedDashedBorder.path = UIBezierPath(rect: self.bounds).cgPath;
-        selectedCornerCircle2.position.x = lastPoint.x - firstPoint.x + 2;
-        selectedCornerCircle3.position.x = lastPoint.x - firstPoint.x + 2;
-        selectedCornerCircle3.position.y = lastPoint.y - firstPoint.y + 2;
-        selectedCornerCircle4.position.y = lastPoint.y - firstPoint.y + 2;
+        selectedCornerCircle2.position.x = self.currentTool.lastPoint.x - self.currentTool.firstPoint.x + 2;
+        selectedCornerCircle3.position.x = self.currentTool.lastPoint.x - self.currentTool.firstPoint.x + 2;
+        selectedCornerCircle3.position.y = self.currentTool.lastPoint.y - self.currentTool.firstPoint.y + 2;
+        selectedCornerCircle4.position.y = self.currentTool.lastPoint.y - self.currentTool.firstPoint.y + 2;
         self.addSelectedFigureLayers();
         setNeedsDisplay();
     }

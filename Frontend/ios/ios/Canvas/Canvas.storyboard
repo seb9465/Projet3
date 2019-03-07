@@ -80,7 +80,6 @@
                         <outlet property="borderButton" destination="mdZ-5y-94T" id="FgC-S0-rGV"/>
                         <outlet property="deleteButton" destination="5ld-32-8cy" id="y06-F1-JC8"/>
                         <outlet property="fillButton" destination="QqS-3X-DNp" id="rPk-OW-90X"/>
-                        <outlet property="quitButton" destination="4Er-Gx-QB8" id="xV9-Vr-1ta"/>
                         <outlet property="rectButton" destination="SLY-eP-ACv" id="5wO-L8-aeR"/>
                         <outlet property="selectButton" destination="Lts-nR-qFd" id="AOd-xa-kni"/>
                     </connections>
