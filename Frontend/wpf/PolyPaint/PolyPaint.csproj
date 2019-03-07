@@ -356,11 +356,13 @@
     <Compile Include="Modeles\ChatClient.cs" />
     <Compile Include="Modeles\Editeur.cs" />
     <Compile Include="Modeles\SaveableCanvas.cs" />
+    <Compile Include="Strokes\ICanvasable.cs" />
     <Compile Include="Strokes\RectangleStroke.cs" />
     <Compile Include="Strokes\RoundedRectangleStroke.cs" />
     <Compile Include="Structures\MessageArgs.cs" />
     <Compile Include="Utilitaires\InkCanvasEventManager.cs" />
     <Compile Include="Utilitaires\RelayCommand.cs" />
+    <Compile Include="Utilitaires\Tools.cs" />
     <Compile Include="VueModeles\CanvasViewModel.cs" />
     <Compile Include="VueModeles\LoginViewModel.cs" />
     <Compile Include="VueModeles\VueModele.cs" />

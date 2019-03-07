@@ -18,7 +18,6 @@ namespace PolyPaint.Utilitaires
 
         public void SelectItem(InkCanvas surfaceDessin, Point mouseLeftDownPoint)
         {
-            var all = surfaceDessin.EditingMode;
             StrokeCollection strokes = surfaceDessin.Strokes;
             
             // We travel the StrokeCollection inversely to select the first plan item first
@@ -45,12 +44,14 @@ namespace PolyPaint.Utilitaires
             pts.Add(new StylusPoint(currentPoint.X, currentPoint.Y));
 
             if (DrawingStroke != null)
-                surfaceDessin.Strokes.Remove(DrawingStroke);
+            {
+                (DrawingStroke as ICanvasable).RemoveFromCanvas();
+            }
 
             switch (outilSelectionne)
             {
                 case "rectangle":
-                    DrawingStroke = new RectangleStroke(pts);
+                    DrawingStroke = new RectangleStroke(pts, "Titre", surfaceDessin);
                     DrawingStroke.DrawingAttributes.Color = Colors.LightBlue;
                     surfaceDessin.Strokes.Add(DrawingStroke);
                     break;
@@ -67,8 +68,8 @@ namespace PolyPaint.Utilitaires
             if (DrawingStroke != null && outilSelectionne == "rectangle"
                                       || outilSelectionne == "rounded_rectangle")
             {
-                surfaceDessin.Strokes.Remove(DrawingStroke);
-                surfaceDessin.Strokes.Add(DrawingStroke.Clone());
+                (DrawingStroke as ICanvasable).RemoveFromCanvas();
+                (DrawingStroke as ICanvasable).AddToCanvas();
             }
         }
     }
