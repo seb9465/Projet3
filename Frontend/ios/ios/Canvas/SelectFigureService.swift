@@ -18,7 +18,7 @@ class SelectFigureService: UIView {
     private var selectedCornerCircle4: CAShapeLayer!;
     
     
-    private func setInitialSelectedCornerCirles() -> Void {
+    private func setInitialSelectedCornerCirles(firstPoint: CGPoint, lastPoint: CGPoint) -> Void {
         selectedCornerCircle1 = CAShapeLayer();
         selectedCornerCircle1.path = UIBezierPath(roundedRect: CGRect(x: -5, y: -5, width: 2.0 * self.radius, height: 2.0 * self.radius), cornerRadius: self.radius).cgPath;
         selectedCornerCircle1.position = CGPoint(x: 0, y: 0);
@@ -26,17 +26,17 @@ class SelectFigureService: UIView {
         
         selectedCornerCircle2 = CAShapeLayer();
         selectedCornerCircle2.path = UIBezierPath(roundedRect: CGRect(x: -5, y: -5, width: 2.0 * self.radius, height: 2.0 * self.radius), cornerRadius: self.radius).cgPath;
-        selectedCornerCircle2.position = CGPoint(x: self.currentTool.lastPoint.x - self.currentTool.firstPoint.x + 2, y: 0);
+        selectedCornerCircle2.position = CGPoint(x: lastPoint.x - firstPoint.x + 2, y: 0);
         selectedCornerCircle2.fillColor = UIColor.blue.cgColor;
         
         selectedCornerCircle3 = CAShapeLayer();
         selectedCornerCircle3.path = UIBezierPath(roundedRect: CGRect(x: -5, y: -5, width: 2.0 * self.radius, height: 2.0 * self.radius), cornerRadius: self.radius).cgPath;
-        selectedCornerCircle3.position = CGPoint(x: self.currentTool.lastPoint.x - self.currentTool.firstPoint.x + 2, y: self.currentTool.lastPoint.y - self.currentTool.firstPoint.y + 2);
+        selectedCornerCircle3.position = CGPoint(x: lastPoint.x - firstPoint.x + 2, y: lastPoint.y - firstPoint.y + 2);
         selectedCornerCircle3.fillColor = UIColor.blue.cgColor;
         
         selectedCornerCircle4 = CAShapeLayer();
         selectedCornerCircle4.path = UIBezierPath(roundedRect: CGRect(x: -5, y: -5, width: 2.0 * self.radius, height: 2.0 * self.radius), cornerRadius: self.radius).cgPath;
-        selectedCornerCircle4.position = CGPoint(x: 0, y: self.currentTool.lastPoint.y - self.currentTool.firstPoint.y + 2);
+        selectedCornerCircle4.position = CGPoint(x: 0, y: lastPoint.y - firstPoint.y + 2);
         selectedCornerCircle4.fillColor = UIColor.blue.cgColor;
     }
     
@@ -65,12 +65,12 @@ class SelectFigureService: UIView {
         self.selectedCornerCircle4.removeFromSuperlayer();
     }
     
-    private func adjustSelectedFigureLayers() -> Void {
+    private func adjustSelectedFigureLayers(firstPoint: CGPoint, lastPoint: CGPoint) -> Void {
         selectedDashedBorder.path = UIBezierPath(rect: self.bounds).cgPath;
-        selectedCornerCircle2.position.x = self.currentTool.lastPoint.x - self.currentTool.firstPoint.x + 2;
-        selectedCornerCircle3.position.x = self.currentTool.lastPoint.x - self.currentTool.firstPoint.x + 2;
-        selectedCornerCircle3.position.y = self.currentTool.lastPoint.y - self.currentTool.firstPoint.y + 2;
-        selectedCornerCircle4.position.y = self.currentTool.lastPoint.y - self.currentTool.firstPoint.y + 2;
+        selectedCornerCircle2.position.x = lastPoint.x - firstPoint.x + 2;
+        selectedCornerCircle3.position.x = lastPoint.x - firstPoint.x + 2;
+        selectedCornerCircle3.position.y = lastPoint.y - firstPoint.y + 2;
+        selectedCornerCircle4.position.y = lastPoint.y - firstPoint.y + 2;
         self.addSelectedFigureLayers();
         setNeedsDisplay();
     }
