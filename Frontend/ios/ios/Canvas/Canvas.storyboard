@@ -27,24 +27,27 @@
                                             <action selector="quitButton:" destination="Vts-He-P18" id="KcM-sA-VDA"/>
                                         </connections>
                                     </barButtonItem>
-                                    <barButtonItem title="Rect" id="SLY-eP-ACv">
+                                    <barButtonItem title="New" id="ic3-cN-C5G">
+                                        <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <connections>
-                                            <action selector="drawRectButton:" destination="Vts-He-P18" id="OqV-ma-hpT"/>
+                                            <action selector="clearButton:" destination="Vts-He-P18" id="JlR-Gh-chb"/>
                                         </connections>
                                     </barButtonItem>
-                                    <barButtonItem title="Undo" id="vbj-g9-11e">
+                                    <barButtonItem title="Save" id="Cwu-WP-ULr"/>
+                                    <barButtonItem title="Load" id="8N0-s0-ZU2"/>
+                                    <barButtonItem systemItem="undo" id="vbj-g9-11e">
                                         <connections>
                                             <action selector="undoButton:" destination="Vts-He-P18" id="Q7f-VC-utl"/>
                                         </connections>
                                     </barButtonItem>
-                                    <barButtonItem title="Redo" id="Bmp-bw-401">
+                                    <barButtonItem systemItem="redo" id="Bmp-bw-401">
                                         <connections>
                                             <action selector="redoButton:" destination="Vts-He-P18" id="2RI-2W-Sfy"/>
                                         </connections>
                                     </barButtonItem>
-                                    <barButtonItem title="Clear" id="ic3-cN-C5G">
+                                    <barButtonItem title="Rect" id="SLY-eP-ACv">
                                         <connections>
-                                            <action selector="clearButton:" destination="Vts-He-P18" id="JlR-Gh-chb"/>
+                                            <action selector="drawRectButton:" destination="Vts-He-P18" id="OqV-ma-hpT"/>
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem title="Select" id="Lts-nR-qFd">
@@ -77,6 +80,7 @@
                         <outlet property="borderButton" destination="mdZ-5y-94T" id="FgC-S0-rGV"/>
                         <outlet property="deleteButton" destination="5ld-32-8cy" id="y06-F1-JC8"/>
                         <outlet property="fillButton" destination="QqS-3X-DNp" id="rPk-OW-90X"/>
+                        <outlet property="quitButton" destination="4Er-Gx-QB8" id="xV9-Vr-1ta"/>
                         <outlet property="rectButton" destination="SLY-eP-ACv" id="5wO-L8-aeR"/>
                         <outlet property="selectButton" destination="Lts-nR-qFd" id="AOd-xa-kni"/>
                     </connections>
