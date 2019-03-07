@@ -65,8 +65,8 @@ class MsgChatController: MessagesViewController {
     }
     
     func insertMessage(_ message: Message) -> Void {
-        
         messages.append(message);
+        
         messagesCollectionView.performBatchUpdates({
             messagesCollectionView.insertSections([messages.count - 1]);
         }, completion: { [weak self] _ in
@@ -94,14 +94,10 @@ class MsgChatController: MessagesViewController {
         
         let message = messagesDataSource.messageForItem(at: indexPath, in: messagesCollectionView)
         if case .custom = message.kind {
-            print("ONE");
             let cell = messagesCollectionView.dequeueReusableCell(MyCustomCell.self, for: indexPath)
-            print("TWO");
             cell.configure(with: message, at: indexPath, and: messagesCollectionView)
-            print("THREE");
             return cell
         }
-        print("FOUR");
         return super.collectionView(collectionView, cellForItemAt: indexPath)
     }
 }
