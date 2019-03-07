@@ -14,7 +14,6 @@ open class MyCustomMessagesFlowLayout: MessagesCollectionViewFlowLayout {
     
     override open func cellSizeCalculatorForItem(at indexPath: IndexPath) -> CellSizeCalculator {
         let message = messagesDataSource.messageForItem(at: indexPath, in: messagesCollectionView)
-        print(message.kind);
         if case .custom = message.kind {
             return customMessageSizeCalculator
         }
@@ -23,9 +22,16 @@ open class MyCustomMessagesFlowLayout: MessagesCollectionViewFlowLayout {
 }
 
 open class CustomMessageSizeCalculator: MessageSizeCalculator {
-    open override func messageContainerSize(for message: MessageType) -> CGSize {
-        //TODO - Customize to size your content appropriately. This just returns a constant size.
-        print("CUSTOM MESSAGE SIZE CALCULATOR");
-        return CGSize(width: 50, height: 50)
+    public override init(layout: MessagesCollectionViewFlowLayout? = nil) {
+        super.init()
+        self.layout = layout
     }
+    
+//    open override func sizeForItem(at indexPath: IndexPath) -> CGSize {
+//            guard let layout = layout else { return .zero }
+//            let collectionViewWidth = layout.collectionView?.bounds.width ?? 0
+//            let contentInset = layout.collectionView?.contentInset ?? .zero
+//            let inset = layout.sectionInset.left + layout.sectionInset.right + contentInset.left + contentInset.right
+//            return CGSize(width: collectionViewWidth - inset, height: 44)
+//    }
 }
