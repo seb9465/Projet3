@@ -1,5 +1,5 @@
 //
-//  msgChatCntrlr.swift
+//  ChatController.swift
 //  ios
 //
 //  Created by Sebastien Cadorette on 2019-01-31.
@@ -15,20 +15,24 @@ import JWTDecode
 let USER_TOKEN = UserDefaults.standard.string(forKey: "token");
 
 class MsgChatController: MessagesViewController {
-    var chatService: ChatService!;
-    var messages: [Message] = [];
-    var member: Member!;
+    private var chatService: ChatService!;
+    private var messages: [Message] = [];
+    private var member: Member!;
     
     override func viewDidLoad() {
-        super.viewDidLoad();
-        
         self.chatService = ChatService();
         self.chatService.connectToHub();
         self.setCurrentMemberAttributes();
+        
+        messagesCollectionView = MessagesCollectionView(frame: .zero, collectionViewLayout: MyCustomMessagesFlowLayout())
+        messagesCollectionView.register(MyCustomCell.self)
+        
         self.initDelegate();
         self.chatService.initOnReceivingMessage(currentMemberName: self.member.name, insertMessage: self.insertMessage)
         self.chatService.initOnAnotherUserConnection(insertMessage: self.insertMessage);
         self.chatService.connectToGroup();
+        
+        super.viewDidLoad();
     }
     
     override func viewWillDisappear(_ animated: Bool) -> Void {
@@ -61,8 +65,8 @@ class MsgChatController: MessagesViewController {
     }
     
     func insertMessage(_ message: Message) -> Void {
-        messages.append(message);
         
+        messages.append(message);
         messagesCollectionView.performBatchUpdates({
             messagesCollectionView.insertSections([messages.count - 1]);
         }, completion: { [weak self] _ in
@@ -81,6 +85,24 @@ class MsgChatController: MessagesViewController {
         let lastIndexPath = IndexPath(item: 0, section: messages.count - 1);
         
         return messagesCollectionView.indexPathsForVisibleItems.contains(lastIndexPath);
+    }
+    
+    override open func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let messagesDataSource = messagesCollectionView.messagesDataSource else {
+            fatalError("Ouch. nil data source for messages")
+        }
+        
+        let message = messagesDataSource.messageForItem(at: indexPath, in: messagesCollectionView)
+        if case .custom = message.kind {
+            print("ONE");
+            let cell = messagesCollectionView.dequeueReusableCell(MyCustomCell.self, for: indexPath)
+            print("TWO");
+            cell.configure(with: message, at: indexPath, and: messagesCollectionView)
+            print("THREE");
+            return cell
+        }
+        print("FOUR");
+        return super.collectionView(collectionView, cellForItemAt: indexPath)
     }
 }
 

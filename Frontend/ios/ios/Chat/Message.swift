@@ -27,6 +27,11 @@ extension Message: MessageType {
     }
     
     var kind: MessageKind {
+        if(member.name == "SYSTEM") {
+            print("MESSAGE CUSTOM SYSTEM");
+            return .custom("SYSTEM");
+        }
+        print("MESSAGE NOT CUSTOM");
         return .text(text);
     }
 }

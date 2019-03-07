@@ -43,6 +43,8 @@
 		B7A3A5C42203CF7100031F64 /* Extensions_Chat.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A3A5C32203CF7100031F64 /* Extensions_Chat.swift */; };
 		B7ABD3632231638E00C7A016 /* Rect.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7ABD3622231638E00C7A016 /* Rect.swift */; };
 		B7ABD3672231715C00C7A016 /* SelectFigureService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7ABD3662231715C00C7A016 /* SelectFigureService.swift */; };
+		B7B1B4352231A3FD00BEE17D /* MyCustomMessagesFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B1B4342231A3FD00BEE17D /* MyCustomMessagesFlowLayout.swift */; };
+		B7B1B4372231A41C00BEE17D /* MyCustomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B1B4362231A41C00BEE17D /* MyCustomCell.swift */; };
 		C43102E122132226008F1D80 /* SoundNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43102E022132226008F1D80 /* SoundNotification.swift */; };
 		C5724AD99504D99A25966BB9 /* Pods_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6CD8C54089242A6862A3C2E4 /* Pods_ios.framework */; };
 /* End PBXBuildFile section */
@@ -100,6 +102,8 @@
 		B7A3A5C32203CF7100031F64 /* Extensions_Chat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions_Chat.swift; sourceTree = "<group>"; };
 		B7ABD3622231638E00C7A016 /* Rect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rect.swift; sourceTree = "<group>"; };
 		B7ABD3662231715C00C7A016 /* SelectFigureService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectFigureService.swift; sourceTree = "<group>"; };
+		B7B1B4342231A3FD00BEE17D /* MyCustomMessagesFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyCustomMessagesFlowLayout.swift; sourceTree = "<group>"; };
+		B7B1B4362231A41C00BEE17D /* MyCustomCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyCustomCell.swift; sourceTree = "<group>"; };
 		C43102E022132226008F1D80 /* SoundNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundNotification.swift; sourceTree = "<group>"; };
 		C6C9AA086604975DCA6FF292 /* Pods-iosTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iosTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-iosTests/Pods-iosTests.debug.xcconfig"; sourceTree = "<group>"; };
 		E7966B3EFE20A93B4BE0DB10 /* Pods-ios.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ios.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ios/Pods-ios.debug.xcconfig"; sourceTree = "<group>"; };
@@ -248,6 +252,7 @@
 		B7567944220F330700F80B12 /* Chat */ = {
 			isa = PBXGroup;
 			children = (
+				B7B1B4332231A3DD00BEE17D /* CustomCell */,
 				B7A3A5C32203CF7100031F64 /* Extensions_Chat.swift */,
 				B7A3A5C12203C27600031F64 /* Message.swift */,
 				B7A3A5BF2203BF3B00031F64 /* ChatControler.swift */,
@@ -271,6 +276,15 @@
 				B7ABD3662231715C00C7A016 /* SelectFigureService.swift */,
 			);
 			path = Canvas;
+			sourceTree = "<group>";
+		};
+		B7B1B4332231A3DD00BEE17D /* CustomCell */ = {
+			isa = PBXGroup;
+			children = (
+				B7B1B4342231A3FD00BEE17D /* MyCustomMessagesFlowLayout.swift */,
+				B7B1B4362231A41C00BEE17D /* MyCustomCell.swift */,
+			);
+			path = CustomCell;
 			sourceTree = "<group>";
 		};
 		D66C1DCE238BFD31669CE467 /* Pods */ = {
@@ -493,10 +507,12 @@
 				3D121EDC22209E070074C61C /* PlaceHolderCell.swift in Sources */,
 				3DF6298B221C9FBC0052209A /* CanvasCell.swift in Sources */,
 				B74BE370221F3FCE0001D62A /* FigureService.swift in Sources */,
+				B7B1B4372231A41C00BEE17D /* MyCustomCell.swift in Sources */,
 				C43102E122132226008F1D80 /* SoundNotification.swift in Sources */,
 				B775FE3F22135D6300B2EFE0 /* Extensions.swift in Sources */,
 				B756794C220F608B00F80B12 /* Members.swift in Sources */,
 				3D2565602225BDFE00BCE946 /* GalleryController.swift in Sources */,
+				B7B1B4352231A3FD00BEE17D /* MyCustomMessagesFlowLayout.swift in Sources */,
 				3DC07CC722205B7C0045E7DE /* ContextMenuCell.swift in Sources */,
 				3D9FBC1222248371006BB297 /* MasterViewController.swift in Sources */,
 				B781B95B22132C2F001C1BD8 /* CanvasController.swift in Sources */,
