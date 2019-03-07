@@ -17,12 +17,6 @@ enum RESIZING {
 }
 
 class FigureService: UIView {
-//    public var figureColor: UIColor!
-//    public var lineWidth: CGFloat!
-//    public var lineColor: UIColor!
-//    private var firstPoint: CGPoint!;
-//    private var lastPoint: CGPoint!;
-    
     public var isSelected: Bool = false;
     private var isDragging: Bool = false;
     private var isResizing: Bool = false;
@@ -41,11 +35,6 @@ class FigureService: UIView {
     private var currentTool: FigureProtocol
     
     init(origin: CGPoint) {
-//        self.firstPoint = CGPoint(x: origin.x - 50, y: origin.y - 50);
-//        self.lastPoint = CGPoint(x: origin.x + 50, y: origin.y + 50);
-//        self.figureColor = UIColor.clear;
-//        self.lineWidth = 2;
-//        self.lineColor = UIColor.black;
         self.currentTool = Rect();
         self.currentTool.setInitialPoint(xPoint: origin.x - 50, yPoint: origin.y - 50);
         self.currentTool.setLastPoint(xPoint: origin.x + 50, yPoint: origin.y + 50);
@@ -67,20 +56,6 @@ class FigureService: UIView {
         // Redimension and put at the right place the frame of the figure.
         self.frame = CGRect(x: self.currentTool.firstPoint.x, y: self.currentTool.firstPoint.y, width: self.currentTool.lastPoint.x - self.currentTool.firstPoint.x, height: self.currentTool.lastPoint.y - self.currentTool.firstPoint.y);
         
-        // Drawing the figure.
-//        let r: CGRect = CGRect(x: 1, y: 1, width: lastPoint.x - firstPoint.x, height: lastPoint.y - firstPoint.y);
-//
-//        // Inset to be able to place a border.
-//        let insetRect = r.insetBy(dx: 4, dy: 4);
-//
-//        let path = UIBezierPath(roundedRect: insetRect, cornerRadius: 10);
-//
-//        // Border and fill parameters.
-//        self.figureColor.setFill();
-//        path.lineWidth = self.lineWidth;
-//        self.lineColor.setStroke();
-//        path.fill();
-//        path.stroke();
         self.currentTool.draw();
     }
     
