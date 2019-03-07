@@ -36,7 +36,7 @@ class Rect: FigureProtocol {
     
     func setInitialPoint(xPoint: CGFloat, yPoint: CGFloat) -> Void {
         self.firstPoint.x = xPoint;
-        self.lastPoint.y = yPoint;
+        self.firstPoint.y = yPoint;
     }
     
     func setLastPoint(xPoint: CGFloat, yPoint: CGFloat) -> Void {
