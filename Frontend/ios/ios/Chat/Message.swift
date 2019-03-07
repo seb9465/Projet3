@@ -12,7 +12,7 @@ import MessageKit
 
 struct Message {
     let member: Member;
-    let text: String;
+    public let text: String;
     let timestamp: String;
     let messageId: String;
 }
@@ -28,10 +28,8 @@ extension Message: MessageType {
     
     var kind: MessageKind {
         if(member.name == "SYSTEM") {
-            print("MESSAGE CUSTOM SYSTEM");
-            return .custom("SYSTEM");
+            return .custom(text);
         }
-        print("MESSAGE NOT CUSTOM");
         return .text(text);
     }
 }
