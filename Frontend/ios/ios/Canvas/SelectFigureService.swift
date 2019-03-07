@@ -9,16 +9,24 @@
 import Foundation
 import UIKit
 
-class SelectFigureService: UIView {
+protocol SelectFigureProtocol {
+    var selectedDashedBorder: CAShapeLayer! { get set }
+    var selectedCornerCircle1: CAShapeLayer! { get set }
+    var selectedCornerCircle2: CAShapeLayer! { get set }
+    var selectedCornerCircle3: CAShapeLayer! { get set }
+    var selectedCornerCircle4: CAShapeLayer! { get set }
+}
+
+class SelectFigureService: SelectFigureProtocol {
     private let radius: CGFloat = 5.0;
-    private var selectedDashedBorder: CAShapeLayer!;
-    private var selectedCornerCircle1: CAShapeLayer!;
-    private var selectedCornerCircle2: CAShapeLayer!;
-    private var selectedCornerCircle3: CAShapeLayer!;
-    private var selectedCornerCircle4: CAShapeLayer!;
+    var selectedDashedBorder: CAShapeLayer!;
+    var selectedCornerCircle1: CAShapeLayer!;
+    var selectedCornerCircle2: CAShapeLayer!;
+    var selectedCornerCircle3: CAShapeLayer!;
+    var selectedCornerCircle4: CAShapeLayer!;
     
     
-    private func setInitialSelectedCornerCirles(firstPoint: CGPoint, lastPoint: CGPoint) -> Void {
+    public func setInitialSelectedCornerCirles(firstPoint: CGPoint, lastPoint: CGPoint) -> Void {
         selectedCornerCircle1 = CAShapeLayer();
         selectedCornerCircle1.path = UIBezierPath(roundedRect: CGRect(x: -5, y: -5, width: 2.0 * self.radius, height: 2.0 * self.radius), cornerRadius: self.radius).cgPath;
         selectedCornerCircle1.position = CGPoint(x: 0, y: 0);
@@ -40,24 +48,24 @@ class SelectFigureService: UIView {
         selectedCornerCircle4.fillColor = UIColor.blue.cgColor;
     }
     
-    private func setInitialSelectedDashedBorder() -> Void {
+    public func setInitialSelectedDashedBorder(bounds: CGRect) -> Void {
         selectedDashedBorder = CAShapeLayer();
         selectedDashedBorder.strokeColor = UIColor.black.cgColor;
         selectedDashedBorder.lineDashPattern = [4, 4];
-        selectedDashedBorder.frame = self.bounds;
+        selectedDashedBorder.frame = bounds;
         selectedDashedBorder.fillColor = nil;
-        selectedDashedBorder.path = UIBezierPath(rect: self.bounds).cgPath;
+        selectedDashedBorder.path = UIBezierPath(rect: bounds).cgPath;
     }
     
-    private func addSelectedFigureLayers() -> Void {
-        self.layer.addSublayer(selectedDashedBorder);
-        self.layer.addSublayer(selectedCornerCircle1);
-        self.layer.addSublayer(selectedCornerCircle2);
-        self.layer.addSublayer(selectedCornerCircle3);
-        self.layer.addSublayer(selectedCornerCircle4);
+    public func addSelectedFigureLayers(layer: CALayer) -> Void {
+        layer.addSublayer(selectedDashedBorder);
+        layer.addSublayer(selectedCornerCircle1);
+        layer.addSublayer(selectedCornerCircle2);
+        layer.addSublayer(selectedCornerCircle3);
+        layer.addSublayer(selectedCornerCircle4);
     }
     
-    private func removeSelectedFigureLayers() -> Void {
+    public func removeSelectedFigureLayers() -> Void {
         self.selectedDashedBorder.removeFromSuperlayer();
         self.selectedCornerCircle1.removeFromSuperlayer();
         self.selectedCornerCircle2.removeFromSuperlayer();
@@ -65,13 +73,13 @@ class SelectFigureService: UIView {
         self.selectedCornerCircle4.removeFromSuperlayer();
     }
     
-    private func adjustSelectedFigureLayers(firstPoint: CGPoint, lastPoint: CGPoint) -> Void {
-        selectedDashedBorder.path = UIBezierPath(rect: self.bounds).cgPath;
+    public func adjustSelectedFigureLayers(firstPoint: CGPoint, lastPoint: CGPoint, bounds: CGRect, layer: CALayer) -> Void {
+        selectedDashedBorder.path = UIBezierPath(rect: bounds).cgPath;
         selectedCornerCircle2.position.x = lastPoint.x - firstPoint.x + 2;
         selectedCornerCircle3.position.x = lastPoint.x - firstPoint.x + 2;
         selectedCornerCircle3.position.y = lastPoint.y - firstPoint.y + 2;
         selectedCornerCircle4.position.y = lastPoint.y - firstPoint.y + 2;
-        self.addSelectedFigureLayers();
-        setNeedsDisplay();
+        self.addSelectedFigureLayers(layer: layer);
+//        setNeedsDisplay();
     }
 }
