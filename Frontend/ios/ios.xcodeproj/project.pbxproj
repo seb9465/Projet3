@@ -45,6 +45,10 @@
 		B7ABD3672231715C00C7A016 /* SelectFigureService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7ABD3662231715C00C7A016 /* SelectFigureService.swift */; };
 		B7B1B4352231A3FD00BEE17D /* MyCustomMessagesFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B1B4342231A3FD00BEE17D /* MyCustomMessagesFlowLayout.swift */; };
 		B7B1B4372231A41C00BEE17D /* MyCustomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B1B4362231A41C00BEE17D /* MyCustomCell.swift */; };
+		B7B1B4392231BE8000BEE17D /* MessageDataSourceExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B1B4382231BE8000BEE17D /* MessageDataSourceExtension.swift */; };
+		B7B1B43C2231C00400BEE17D /* MessageInpuBarExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B1B43B2231C00400BEE17D /* MessageInpuBarExtension.swift */; };
+		B7B1B43E2231C03900BEE17D /* MessageDisplayExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B1B43D2231C03900BEE17D /* MessageDisplayExtension.swift */; };
+		B7B1B4402231C06900BEE17D /* MessageLayoutExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B1B43F2231C06900BEE17D /* MessageLayoutExtension.swift */; };
 		C43102E122132226008F1D80 /* SoundNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43102E022132226008F1D80 /* SoundNotification.swift */; };
 		C5724AD99504D99A25966BB9 /* Pods_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6CD8C54089242A6862A3C2E4 /* Pods_ios.framework */; };
 /* End PBXBuildFile section */
@@ -104,6 +108,10 @@
 		B7ABD3662231715C00C7A016 /* SelectFigureService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectFigureService.swift; sourceTree = "<group>"; };
 		B7B1B4342231A3FD00BEE17D /* MyCustomMessagesFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyCustomMessagesFlowLayout.swift; sourceTree = "<group>"; };
 		B7B1B4362231A41C00BEE17D /* MyCustomCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyCustomCell.swift; sourceTree = "<group>"; };
+		B7B1B4382231BE8000BEE17D /* MessageDataSourceExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageDataSourceExtension.swift; sourceTree = "<group>"; };
+		B7B1B43B2231C00400BEE17D /* MessageInpuBarExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageInpuBarExtension.swift; sourceTree = "<group>"; };
+		B7B1B43D2231C03900BEE17D /* MessageDisplayExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageDisplayExtension.swift; sourceTree = "<group>"; };
+		B7B1B43F2231C06900BEE17D /* MessageLayoutExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageLayoutExtension.swift; sourceTree = "<group>"; };
 		C43102E022132226008F1D80 /* SoundNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundNotification.swift; sourceTree = "<group>"; };
 		C6C9AA086604975DCA6FF292 /* Pods-iosTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iosTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-iosTests/Pods-iosTests.debug.xcconfig"; sourceTree = "<group>"; };
 		E7966B3EFE20A93B4BE0DB10 /* Pods-ios.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ios.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ios/Pods-ios.debug.xcconfig"; sourceTree = "<group>"; };
@@ -256,6 +264,7 @@
 				B7A3A5C32203CF7100031F64 /* Extensions_Chat.swift */,
 				B7A3A5C12203C27600031F64 /* Message.swift */,
 				B7A3A5BF2203BF3B00031F64 /* ChatControler.swift */,
+				B7B1B43A2231BFCD00BEE17D /* ChatControllerExtensions */,
 				B7567945220F33CD00F80B12 /* ChatService.swift */,
 				B7567949220F5DC800F80B12 /* Chat.storyboard */,
 				B756794B220F608B00F80B12 /* Members.swift */,
@@ -285,6 +294,17 @@
 				B7B1B4362231A41C00BEE17D /* MyCustomCell.swift */,
 			);
 			path = CustomCell;
+			sourceTree = "<group>";
+		};
+		B7B1B43A2231BFCD00BEE17D /* ChatControllerExtensions */ = {
+			isa = PBXGroup;
+			children = (
+				B7B1B4382231BE8000BEE17D /* MessageDataSourceExtension.swift */,
+				B7B1B43B2231C00400BEE17D /* MessageInpuBarExtension.swift */,
+				B7B1B43D2231C03900BEE17D /* MessageDisplayExtension.swift */,
+				B7B1B43F2231C06900BEE17D /* MessageLayoutExtension.swift */,
+			);
+			path = ChatControllerExtensions;
 			sourceTree = "<group>";
 		};
 		D66C1DCE238BFD31669CE467 /* Pods */ = {
@@ -491,6 +511,7 @@
 				3DC967EB220A067900FA76CB /* LoginController.swift in Sources */,
 				3DE984D322261707004D036C /* AuthentificationAPI.swift in Sources */,
 				B7ABD3672231715C00C7A016 /* SelectFigureService.swift in Sources */,
+				B7B1B43C2231C00400BEE17D /* MessageInpuBarExtension.swift in Sources */,
 				3DF62984221C9FB30052209A /* Canvas.swift in Sources */,
 				3DC61EB92200B44B003FE445 /* RegisterController.swift in Sources */,
 				3D5537C22200ED5F002C1B77 /* SlideUpSegue.swift in Sources */,
@@ -502,7 +523,10 @@
 				B711B5EA21F659A30096BF7F /* AppDelegate.swift in Sources */,
 				B74BE372221F40950001D62A /* CanvasService.swift in Sources */,
 				B7A3A5C22203C27600031F64 /* Message.swift in Sources */,
+				B7B1B43E2231C03900BEE17D /* MessageDisplayExtension.swift in Sources */,
 				3DA9A50122220F870005F3AF /* GalleryHeader.swift in Sources */,
+				B7B1B4392231BE8000BEE17D /* MessageDataSourceExtension.swift in Sources */,
+				B7B1B4402231C06900BEE17D /* MessageLayoutExtension.swift in Sources */,
 				B7A3A5C02203BF3B00031F64 /* ChatControler.swift in Sources */,
 				3D121EDC22209E070074C61C /* PlaceHolderCell.swift in Sources */,
 				3DF6298B221C9FBC0052209A /* CanvasCell.swift in Sources */,
