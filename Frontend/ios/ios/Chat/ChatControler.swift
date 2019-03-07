@@ -47,7 +47,7 @@ class MsgChatController: MessagesViewController, MsgChatProtocol {
         self.chatService.disconnectFromHub();
     }
     
-    func messageInputBar(_ inputBar: MessageInputBar, textViewTextDidChangeTo text: String) {
+    func messageInputBar(_ inputBar: MessageInputBar, textViewTextDidChangeTo text: String) -> Void {
         if(messageInputBar.inputTextView.text.contains("\n")) {
             messageInputBar.inputTextView.text.popLast();
             if(messageInputBar.sendButton.isEnabled) {
@@ -56,7 +56,7 @@ class MsgChatController: MessagesViewController, MsgChatProtocol {
         }
     }
     
-    func initDelegate() -> Void {
+    private func initDelegate() -> Void {
         messagesCollectionView.messagesDataSource = self;
         messagesCollectionView.messagesLayoutDelegate = self;
         messageInputBar.delegate = self;
@@ -83,7 +83,6 @@ class MsgChatController: MessagesViewController, MsgChatProtocol {
     }
     
     func isLastSectionVisible() -> Bool {
-        
         guard !messages.isEmpty else {
             return false;
         }
