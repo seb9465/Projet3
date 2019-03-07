@@ -9,7 +9,6 @@
 import Foundation
 import MessageKit
 
-// Customize this collection view cell with data passed in from message, which is of type .custom
 open class MyCustomCell: UICollectionViewCell {
     let label = UILabel();
     
@@ -44,5 +43,4 @@ open class MyCustomCell: UICollectionViewCell {
             break;
         }
     }
-    
 }
