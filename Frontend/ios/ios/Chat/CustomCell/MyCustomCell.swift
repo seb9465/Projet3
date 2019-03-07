@@ -11,10 +11,38 @@ import MessageKit
 
 // Customize this collection view cell with data passed in from message, which is of type .custom
 open class MyCustomCell: UICollectionViewCell {
+    let label = UILabel();
+    
+    public override init(frame: CGRect) {
+        super.init(frame: frame);
+        setupSubviews();
+    }
+    
+    public required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder);
+        setupSubviews();
+    }
+    
+    open func setupSubviews() {
+        contentView.addSubview(label);
+        label.textAlignment = .center;
+        label.font = UIFont.italicSystemFont(ofSize: 13);
+    }
+    
+    open override func layoutSubviews() {
+        super.layoutSubviews();
+        label.frame = contentView.bounds;
+    }
+    
     open func configure(with message: MessageType, at indexPath: IndexPath, and messagesCollectionView: MessagesCollectionView) {
-        print("MY CUSTOM CELL");
-        self.contentView.backgroundColor = UIColor.red
-        
+        self.contentView.backgroundColor = UIColor.clear
+        switch(message.kind) {
+        case .custom(let data):
+            guard let systemMessage = data as? String else { return }
+            label.text = systemMessage;
+        default:
+            break;
+        }
     }
     
 }
