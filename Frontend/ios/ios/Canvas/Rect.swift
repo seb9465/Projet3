@@ -15,8 +15,8 @@ protocol FigureProtocol {
     var lineColor: UIColor { get set }
     
     func draw()
-    func setInitialPoint(xPoint: CGFloat, yPoint: CGFloat)
-    func setLastPoint(xPoint: CGFloat, yPoint: CGFloat)
+    func setInitialPoint(initialPoint: CGPoint)
+    func setLastPoint(lastPoint: CGPoint)
 }
 
 class Rect: FigureProtocol {
@@ -34,14 +34,12 @@ class Rect: FigureProtocol {
         self.lineColor = UIColor.black;
     }
     
-    func setInitialPoint(xPoint: CGFloat, yPoint: CGFloat) -> Void {
-        self.firstPoint.x = xPoint;
-        self.firstPoint.y = yPoint;
+    func setInitialPoint(initialPoint: CGPoint) -> Void {
+        self.firstPoint = initialPoint;
     }
     
-    func setLastPoint(xPoint: CGFloat, yPoint: CGFloat) -> Void {
-        self.lastPoint.x = xPoint;
-        self.lastPoint.y = yPoint;
+    func setLastPoint(lastPoint: CGPoint) -> Void {
+        self.lastPoint = lastPoint;
     }
     
     func draw() {
