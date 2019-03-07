@@ -42,6 +42,7 @@
 		B7A3A5C22203C27600031F64 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A3A5C12203C27600031F64 /* Message.swift */; };
 		B7A3A5C42203CF7100031F64 /* Extensions_Chat.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A3A5C32203CF7100031F64 /* Extensions_Chat.swift */; };
 		B7ABD3632231638E00C7A016 /* Rect.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7ABD3622231638E00C7A016 /* Rect.swift */; };
+		B7ABD3672231715C00C7A016 /* SelectFigureService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7ABD3662231715C00C7A016 /* SelectFigureService.swift */; };
 		C43102E122132226008F1D80 /* SoundNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43102E022132226008F1D80 /* SoundNotification.swift */; };
 		C5724AD99504D99A25966BB9 /* Pods_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6CD8C54089242A6862A3C2E4 /* Pods_ios.framework */; };
 /* End PBXBuildFile section */
@@ -98,6 +99,7 @@
 		B7A3A5C12203C27600031F64 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		B7A3A5C32203CF7100031F64 /* Extensions_Chat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions_Chat.swift; sourceTree = "<group>"; };
 		B7ABD3622231638E00C7A016 /* Rect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rect.swift; sourceTree = "<group>"; };
+		B7ABD3662231715C00C7A016 /* SelectFigureService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectFigureService.swift; sourceTree = "<group>"; };
 		C43102E022132226008F1D80 /* SoundNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundNotification.swift; sourceTree = "<group>"; };
 		C6C9AA086604975DCA6FF292 /* Pods-iosTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iosTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-iosTests/Pods-iosTests.debug.xcconfig"; sourceTree = "<group>"; };
 		E7966B3EFE20A93B4BE0DB10 /* Pods-ios.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ios.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ios/Pods-ios.debug.xcconfig"; sourceTree = "<group>"; };
@@ -266,6 +268,7 @@
 				B74BE369221C823C0001D62A /* SaveService.swift */,
 				B74BE36F221F3FCE0001D62A /* FigureService.swift */,
 				B7ABD3622231638E00C7A016 /* Rect.swift */,
+				B7ABD3662231715C00C7A016 /* SelectFigureService.swift */,
 			);
 			path = Canvas;
 			sourceTree = "<group>";
@@ -473,6 +476,7 @@
 				B74BE36A221C823C0001D62A /* SaveService.swift in Sources */,
 				3DC967EB220A067900FA76CB /* LoginController.swift in Sources */,
 				3DE984D322261707004D036C /* AuthentificationAPI.swift in Sources */,
+				B7ABD3672231715C00C7A016 /* SelectFigureService.swift in Sources */,
 				3DF62984221C9FB30052209A /* Canvas.swift in Sources */,
 				3DC61EB92200B44B003FE445 /* RegisterController.swift in Sources */,
 				3D5537C22200ED5F002C1B77 /* SlideUpSegue.swift in Sources */,
