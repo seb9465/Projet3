@@ -14,10 +14,16 @@ import JWTDecode
 
 let USER_TOKEN = UserDefaults.standard.string(forKey: "token");
 
-class MsgChatController: MessagesViewController {
-    private var chatService: ChatService!;
-    private var messages: [Message] = [];
-    private var member: Member!;
+protocol MsgChatProtocol {
+    var messages: [Message] { get set }
+    var member: Member! { get set }
+    var chatService: ChatService! { get set }
+}
+
+class MsgChatController: MessagesViewController, MsgChatProtocol {
+    var chatService: ChatService!;
+    var messages: [Message] = [];
+    var member: Member!;
     
     override func viewDidLoad() {
         self.chatService = ChatService();
@@ -99,104 +105,5 @@ class MsgChatController: MessagesViewController {
             return cell
         }
         return super.collectionView(collectionView, cellForItemAt: indexPath)
-    }
-}
-
-// 4 protocoles implementés pour connecter les messages au UI & controler les interactions.
-// MessagesDataSource qui donne le nombre et le contenu des messages
-    
-extension MsgChatController: MessagesDataSource {
-    func numberOfSections( in messagesCollectionView: MessagesCollectionView) -> Int {
-        return messages.count;
-    }
-    
-    func currentSender() -> Sender {
-        return Sender(id: member.name, displayName: member.name);
-    }
-    
-    func messageForItem(
-        at indexPath: IndexPath,
-        in messagesCollectionView: MessagesCollectionView) -> MessageKit.MessageType {
-        
-        return messages[indexPath.section];
-    }
-    
-    func messageTopLabelHeight(
-        for message: MessageKit.MessageType,
-        at indexPath: IndexPath,
-        in messagesCollectionView: MessagesCollectionView) -> CGFloat {
-        
-        return 12;
-    }
-    
-    func messageBottomLabelHeight(
-        for message: MessageKit.MessageType,
-        at indexPath: IndexPath,
-        in messagesCollectionView: MessagesCollectionView) -> CGFloat {
-        
-        return 12;
-    }
-    
-    func messageTopLabelAttributedText(
-        for message: MessageKit.MessageType,
-        at indexPath: IndexPath) -> NSAttributedString? {
-        
-        return NSAttributedString(
-            string: message.sender.displayName,
-            attributes: [.font: UIFont.systemFont(ofSize: 12)]);
-    }
-    
-    func messageBottomLabelAttributedText(for message: MessageKit.MessageType, at indexPath: IndexPath) -> NSAttributedString? {
-        
-        return NSAttributedString(string: messages[indexPath.section].timestamp, attributes: [NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .caption2)]);
-    }
-}
-
-// MessagesLayoutDelegate qui donne la hauteur, le padding et l'alignement des differentes vues.
-extension MsgChatController: MessagesLayoutDelegate {
-    func heightForLocation(message: MessageKit.MessageType,
-                           at indexPath: IndexPath,
-                           with maxWidth: CGFloat,
-                           in messagesCollectionView: MessagesCollectionView) -> CGFloat {
-        
-        return 0;
-    }
-}
-
-// MessagesDisplayDelegate qui donne la couleur, le style et les vues qui definisse l'allure des messages.
-extension MsgChatController: MessagesDisplayDelegate {
-    func configureAvatarView(
-        _ avatarView: AvatarView,
-        for message: MessageKit.MessageType,
-        at indexPath: IndexPath,
-        in messagesCollectionView: MessagesCollectionView) {
-        
-        let message = messages[indexPath.section];
-        let color = message.member.color;
-        avatarView.backgroundColor = color;
-    }
-}
-
-// MessageInputBarDelegate qui permet le controle de l'envoie et de l'ecriture des nouveaux messages.
-extension MsgChatController: MessageInputBarDelegate {
-    func messageInputBar(
-        _ inputBar: MessageInputBar,
-        didPressSendButtonWith text: String) {
-        
-        let date = Date();
-        let dateFormatter = DateFormatter();
-        dateFormatter.dateFormat = "HH:mm:ss";
-        let result = dateFormatter.string(from: date);
-        
-        let newMessage = Message(
-            member: member,
-            text: text,
-            timestamp: result,
-            messageId: UUID().uuidString)
-        
-        self.chatService.sendMessage(message: newMessage, insertMessage: self.insertMessage);
-        inputBar.inputTextView.text = "";
-        self.messagesCollectionView.reloadData();
-        self.messagesCollectionView.scrollToBottom(animated: true);
     }
 }
