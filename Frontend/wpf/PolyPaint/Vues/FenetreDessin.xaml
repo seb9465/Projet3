@@ -301,14 +301,14 @@
                                   Chatrooms
                                         </TextBlock>
                                     </materialDesign:ColorZone>
-                                    <Button Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}" Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}" VerticalAlignment="Top" HorizontalAlignment="Right" Grid.Row="0" Margin="0,20,14.777,0" Grid.Column="1">
+                                    <Button Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}" Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}" VerticalAlignment="Top" HorizontalAlignment="Right" Grid.Row="0" Margin="0,15,15,0" Grid.Column="1">
                                         <materialDesign:PackIcon Kind="Plus" Height="22" Width="22" />
                                     </Button>
                                 </Grid>
                             </Border>
                         </materialDesign:DialogHost>
                         <Grid x:Name="chat" Height="257" x:FieldModifier="public">
-                            <TextBlock Text="{Binding CurrentRoom, StringFormat='Room: {0}'}" Margin="85,0,-85,0" />
+                            <TextBlock Text="{Binding CurrentRoom, StringFormat='Room: {0}'}" Margin="35,-10,0,0" />
                             <ListBox ItemsSource="{Binding MessagesListBox, UpdateSourceTrigger=PropertyChanged}" x:Name="messagesList" HorizontalAlignment="Left" Height="190" Margin="30,10,0,0" VerticalAlignment="Top" Width="400"  BorderThickness="1" BorderBrush="Gainsboro">
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
