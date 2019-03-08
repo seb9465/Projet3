@@ -19,9 +19,6 @@ enum STATE {
 }
 
 class CanvasController: UIViewController {
-    
-    // MARK: - Attributes
-    
     private var toolState: STATE  = STATE.NOTHING_SELECTED;
     private var previousToolState: STATE = STATE.NOTHING_SELECTED;
     public var canvas: CanvasService = CanvasService();
@@ -33,8 +30,6 @@ class CanvasController: UIViewController {
     @IBOutlet var deleteButton: UIBarButtonItem!
     @IBOutlet var borderButton: UIBarButtonItem!
     @IBOutlet var fillButton: UIBarButtonItem!
-    
-    // MARK: - Public Functions
     
     override func viewDidLoad() {
         super.viewDidLoad();
@@ -80,8 +75,6 @@ class CanvasController: UIViewController {
             self.canvas.deleteFigure(tapPoint: tapPoint, view: self.view);
         }
     }
-    
-    // MARK: - Button Action Functions
     
     @IBAction func undoButton(_ sender: Any) {
         self.canvas.undo(view: self.view);
@@ -169,24 +162,13 @@ class CanvasController: UIViewController {
         self.displayColorPickerFor(state: STATE.FILL);
     }
     
-    // MARK: - Private Functions
-    
-    /**
-     Displays the color picker.
-     
-     - parameters:
-        - state: The state for which the color picker picker will be showed.
-     - returns: Nothing
-     - author:
-     Sebastien Cadorette
-    */
     private func displayColorPickerFor(state: STATE) -> Void {
         self.previousToolState = self.toolState;
         self.toolState = state;
         self.view.addSubview(colorPicker)
     }
     
-    private func clear() {
+    public func clear() {
         if (self.canvas.figuresInView()) {
             let alert: UIAlertController = UIAlertController(title: "Alert", message: "Are you sure you want to clear the canvas ?", preferredStyle: .alert);
 

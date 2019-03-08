@@ -360,7 +360,6 @@
     <Compile Include="Modeles\Channel.cs" />
     <Compile Include="Modeles\ChatClient.cs" />
     <Compile Include="Modeles\Editeur.cs" />
-    <Compile Include="Modeles\Messages\BaseMessage.cs" />
     <Compile Include="Modeles\Messages\ChannelMessage.cs" />
     <Compile Include="Modeles\Messages\ChannelsMessage.cs" />
     <Compile Include="Modeles\Messages\ChatMessage.cs" />

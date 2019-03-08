@@ -27,27 +27,24 @@
                                             <action selector="quitButton:" destination="Vts-He-P18" id="KcM-sA-VDA"/>
                                         </connections>
                                     </barButtonItem>
-                                    <barButtonItem title="New" id="ic3-cN-C5G">
-                                        <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <barButtonItem title="Rect" id="SLY-eP-ACv">
                                         <connections>
-                                            <action selector="clearButton:" destination="Vts-He-P18" id="JlR-Gh-chb"/>
+                                            <action selector="drawRectButton:" destination="Vts-He-P18" id="OqV-ma-hpT"/>
                                         </connections>
                                     </barButtonItem>
-                                    <barButtonItem title="Save" id="Cwu-WP-ULr"/>
-                                    <barButtonItem title="Load" id="8N0-s0-ZU2"/>
-                                    <barButtonItem systemItem="undo" id="vbj-g9-11e">
+                                    <barButtonItem title="Undo" id="vbj-g9-11e">
                                         <connections>
                                             <action selector="undoButton:" destination="Vts-He-P18" id="Q7f-VC-utl"/>
                                         </connections>
                                     </barButtonItem>
-                                    <barButtonItem systemItem="redo" id="Bmp-bw-401">
+                                    <barButtonItem title="Redo" id="Bmp-bw-401">
                                         <connections>
                                             <action selector="redoButton:" destination="Vts-He-P18" id="2RI-2W-Sfy"/>
                                         </connections>
                                     </barButtonItem>
-                                    <barButtonItem title="Rect" id="SLY-eP-ACv">
+                                    <barButtonItem title="Clear" id="ic3-cN-C5G">
                                         <connections>
-                                            <action selector="drawRectButton:" destination="Vts-He-P18" id="OqV-ma-hpT"/>
+                                            <action selector="clearButton:" destination="Vts-He-P18" id="JlR-Gh-chb"/>
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem title="Select" id="Lts-nR-qFd">
@@ -86,7 +83,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YaL-1F-IzF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="298" y="-134"/>
+            <point key="canvasLocation" x="-186.328125" y="-75"/>
         </scene>
     </scenes>
     <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

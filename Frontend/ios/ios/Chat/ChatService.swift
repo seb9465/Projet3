@@ -10,7 +10,6 @@ import Foundation
 import SwiftSignalRClient
 import PromiseKit
 import AVFoundation
-
 class ChatService {
     var hubConnection: HubConnection;
     var _members: Members;

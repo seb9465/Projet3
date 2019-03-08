@@ -1,4 +1,4 @@
-public class ConnectionMessage : BaseMessage
+public class ConnectionMessage
 {
     public string Username { get; set; }
     public string CanvasId { get; set; }

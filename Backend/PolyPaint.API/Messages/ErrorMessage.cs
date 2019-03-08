@@ -1,4 +1,4 @@
-public class ErrorMessage : BaseMessage
+public class ErrorMessage
 {
     public string Message { get; set; }
     public ErrorMessage(string message)

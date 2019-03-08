@@ -1,4 +1,4 @@
-public class ChannelMessage : BaseMessage
+public class ChannelMessage
 {
     public Channel Channel { get; set; }
     public ChannelMessage(Channel channel)

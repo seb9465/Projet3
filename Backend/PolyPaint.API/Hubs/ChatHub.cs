@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.SignalR;
-using Newtonsoft.Json;
 using PolyPaint.API.Handlers;
 using PolyPaint.Core;
 using PolyPaint.DataAccess.Services;
@@ -20,9 +19,8 @@ namespace PolyPaint.API.Hubs
             _userService = userService;
         }
 
-        public async Task SendMessage(string message)
+        public async Task SendMessage(ChatMessage chatMessage)
         {
-            var chatMessage = JsonConvert.DeserializeObject<ChatMessage>(message);
             var user = await GetUserFromToken(Context.User);
             if (user != null && chatMessage.Message.Trim().Length != 0)
             {
@@ -31,9 +29,8 @@ namespace PolyPaint.API.Hubs
                 if (UserHandler.UserGroupMap.TryGetValue(chatMessage.ChannelId, out var users) && users.Contains(user.Id))
                 {
                     // Maybe change in a way that it doesnt send back to sender (sender handles his own message in the ui)
-                    var returnMessage = new ChatMessage(user.UserName, chatMessage.Message, chatMessage.ChannelId, timestamp);
                     await Clients.Group(chatMessage.ChannelId).SendAsync("SendMessage",
-                        returnMessage.ToString()
+                        new ChatMessage(user.UserName, chatMessage.Message, chatMessage.ChannelId, timestamp)
                     );
                 }
             }
@@ -46,41 +43,39 @@ namespace PolyPaint.API.Hubs
             {
                 List<Channel> list = UserHandler.UserGroupMap.Select(x => new Channel(x.Key, x.Value.Contains(user.Id))).ToList();
                 ChannelsMessage channelsMessage = new ChannelsMessage(list);
-                await Clients.Caller.SendAsync("FetchChannels", channelsMessage.ToString());
+                await Clients.Caller.SendAsync("FetchChannels", channelsMessage);
             }
         }
 
-        public async Task CreateChannel(string message)
+        public async Task CreateChannel(ChannelMessage channelMessage)
         {
-            var channelMessage = JsonConvert.DeserializeObject<ChannelMessage>(message);
+
             var user = await GetUserFromToken(Context.User);
             if (user != null)
             {
                 UserHandler.AddOrUpdateMap(channelMessage.Channel.Name, user.Id);
-                await Clients.Caller.SendAsync("CreateChannel", channelMessage.ToString());
+                await Clients.Caller.SendAsync("CreateChannel", channelMessage);
             }
         }
 
-        public async Task ConnectToChannel(string message)
+        public async Task ConnectToChannel(ConnectionMessage connectionMessage)
         {
-            var connectionMessage = JsonConvert.DeserializeObject<ConnectionMessage>(message);
             var user = await GetUserFromToken(Context.User);
             if (user != null)
             {
                 await Groups.AddToGroupAsync(Context.ConnectionId, connectionMessage.ChannelId);
                 UserHandler.AddOrUpdateMap(connectionMessage.ChannelId, user.Id);
-                var returnMessage = new ConnectionMessage(user.UserName, channelId: connectionMessage.ChannelId);
+                var message = new ConnectionMessage(user.UserName, channelId: connectionMessage.ChannelId);
                 await Clients.Group(connectionMessage.ChannelId).SendAsync(
                     "ConnectToChannel",
-                    returnMessage.ToString()
+                    message
                 );
-                await Clients.Caller.SendAsync("ConnectToChannelSender", returnMessage.ToString());
+                await Clients.Caller.SendAsync("ConnectToChannelSender", message);
             }
         }
 
-        public async Task DisconnectFromChannel(string message)
+        public async Task DisconnectFromChannel(ConnectionMessage connectionMessage)
         {
-            var connectionMessage = JsonConvert.DeserializeObject<ConnectionMessage>(message);
             var user = await GetUserFromToken(Context.User);
             if (user != null)
             {
@@ -88,12 +83,12 @@ namespace PolyPaint.API.Hubs
                 if (UserHandler.UserGroupMap.TryGetValue(connectionMessage.ChannelId, out var list))
                 {
                     list.Remove(user.Id);
-                    var returnMessage = new ConnectionMessage(username: user.UserName, channelId: connectionMessage.ChannelId);
+                    var message = new ConnectionMessage(username: user.UserName, channelId: connectionMessage.ChannelId);
                     await Clients.Group(connectionMessage.ChannelId).SendAsync(
                         "DisconnectFromChannel",
-                        returnMessage.ToString()
+                        message
                     );
-                    await Clients.Caller.SendAsync("DisconnectFromChannelSender", returnMessage.ToString());
+                    await Clients.Caller.SendAsync("DisconnectFromChannelSender", message);
                 }
             }
         }
@@ -104,7 +99,7 @@ namespace PolyPaint.API.Hubs
             if (user != null)
             {
                 await base.OnConnectedAsync();
-                await ConnectToChannel((new ConnectionMessage(channelId: "general")).ToString());
+                await ConnectToChannel(new ConnectionMessage(channelId: "general"));
                 await Clients.Caller.SendAsync("ClientIsConnected", "You are connected!");
             }
         }
@@ -121,10 +116,9 @@ namespace PolyPaint.API.Hubs
                     if (user != null)
                     {
                         pair.Value.Remove(user.Id);
-                        var message = new ConnectionMessage(username: user.UserName);
                         await Clients.Group(pair.Key).SendAsync(
                             "DisconnectFromChannel",
-                            message.ToString()
+                            new ConnectionMessage(username: user.UserName)
                         );
                     }
                 }
@@ -143,18 +137,16 @@ namespace PolyPaint.API.Hubs
                 }
                 else
                 {
-                    var message = new ErrorMessage("Error occured while looking for user");
                     await Clients.Caller.SendAsync("ErrorMessage",
-                        message.ToString()
+                        new ErrorMessage("Error occured while looking for user")
                     );
                     return null;
                 }
             }
             else
             {
-                var message = new ErrorMessage("Error occured while looking for token");
                 await Clients.Caller.SendAsync("ErrorMessage",
-                    message.ToString()
+                    new ErrorMessage("Error occured while looking for token")
                 );
                 return null;
             }

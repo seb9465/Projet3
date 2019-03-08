@@ -112,9 +112,9 @@ class CanvasService {
         }
     }
     
-//    public func setFillColor(fillColor: UIColor) -> Void {
-//        self.currentlySelectedFigure.setFigureColor(figureColor: fillColor);
-//    }
+    public func setFillColor(fillColor: UIColor) -> Void {
+        self.currentlySelectedFigure.figureColor = fillColor;
+    }
     
     public func setSelectedFigureColor(color: UIColor) -> Void {
         self.currentlySelectedFigure.setFillColor(fillColor: color);
