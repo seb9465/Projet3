@@ -26,10 +26,10 @@ class ConnectionMessage {
     public var canvasId: String;
     public var channelId: String;
     
-    init(username: String?="", canvasId: String?="", channelId: String?="") {
-        self.username = username!;
-        self.canvasId = canvasId!;
-        self.channelId = channelId!;
+    init(Username: String?="", CanvasId: String?="", ChannelId: String?="") {
+        self.username = Username!;
+        self.canvasId = CanvasId!;
+        self.channelId = ChannelId!;
     }
 }
 
@@ -46,6 +46,7 @@ class ChatService {
     }
     
     public func connectToHub() -> Void {
+        print("Connect to hub");
         self.hubConnection.start();
     }
     
@@ -79,8 +80,27 @@ class ChatService {
     }
     
     public func initOnAnotherUserConnection(insertMessage: @escaping (_ message: Message) -> Void) -> Void {
-        self.hubConnection.on(method: "SystemMessage", callback: { args, typeConverter in
-            let message = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self);
+//        self.hubConnection.on(method: "SystemMessage", callback: { args, typeConverter in
+//            let message = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self);
+//
+//            let sysMember = Member(
+//                name: "SYSTEM",
+//                color: .random
+//            );
+//
+//            let newMessage = Message(
+//                member: sysMember,
+//                text: message!,
+//                timestamp: Constants.formatter.string(from: Date()),
+//                messageId: UUID().uuidString
+//            );
+//
+//            insertMessage(newMessage);
+//        });
+        self.hubConnection.on(method: "ConnectToChannelSender", callback: { args, typeConverter in
+            print("On ConnectToChannelSender");
+            print(args);
+            let message: ConnectionMessage = try! typeConverter.convertFromWireType(obj: args[0], targetType: ConnectionMessage.self)!;
             
             let sysMember = Member(
                 name: "SYSTEM",
@@ -89,7 +109,7 @@ class ChatService {
             
             let newMessage = Message(
                 member: sysMember,
-                text: message!,
+                text: message.username + " just connected",
                 timestamp: Constants.formatter.string(from: Date()),
                 messageId: UUID().uuidString
             );
@@ -112,21 +132,21 @@ class ChatService {
                 print("On FetchChannels");
                 let channels: Any = try! typeConverter.convertFromWireType(obj: args[0], targetType: Any.self)!
                 print(channels);
-                
-                self.hubConnection.invoke(method: "ConnectToChannel", arguments: ["general"], invocationDidComplete: { error in
-                    print("Invoked ConnectToChannel avec argument 'general'.");
-                    if let e = error {
-                        print("ERROR while invoking ConnectToChannel.");
-                        print(e);
-                    }
-                })
-                
-                self.hubConnection.on(method: "ConnectToChannel", callback: { args, typeConverter in
-                    print("On ConnectToChannel");
-                    print(args);
-                    print(typeConverter);
-                })
             });
+            
+//            self.hubConnection.invoke(method: "ConnectToChannel", arguments: [ConnectionMessage(ChannelId: "general")], invocationDidComplete: { error in
+//                print("Invoked ConnectToChannel avec argument 'general'.");
+//                if let e = error {
+//                    print("ERROR while invoking ConnectToChannel.");
+//                    print(e);
+//                }
+//            })
+//
+//            self.hubConnection.on(method: "ConnectToChannel", callback: { args, typeConverter in
+//                print("On ConnectToChannel");
+//                print(args);
+//                print(typeConverter);
+//            })
         });
     }
     
