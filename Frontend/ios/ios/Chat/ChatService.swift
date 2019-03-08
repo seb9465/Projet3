@@ -21,6 +21,18 @@ class Channel {
     }
 }
 
+class ConnectionMessage {
+    public var username: String;
+    public var canvasId: String;
+    public var channelId: String;
+    
+    init(username: String?="", canvasId: String?="", channelId: String?="") {
+        self.username = username!;
+        self.canvasId = canvasId!;
+        self.channelId = channelId!;
+    }
+}
+
 class ChatService {
     var hubConnection: HubConnection;
     var _members: Members;
@@ -98,10 +110,22 @@ class ChatService {
             });
             self.hubConnection.on(method: "FetchChannels", callback: { args, typeConverter in
                 print("On FetchChannels");
-                let channels: [String: [Channel]] = try! typeConverter.convertFromWireType(obj: args[0], targetType: [String: [Channel]].self)!
+                let channels: Any = try! typeConverter.convertFromWireType(obj: args[0], targetType: Any.self)!
+                print(channels);
                 
-                let c: [Channel] = channels["channels"] as! [Channel];
-                print(c);
+                self.hubConnection.invoke(method: "ConnectToChannel", arguments: ["general"], invocationDidComplete: { error in
+                    print("Invoked ConnectToChannel avec argument 'general'.");
+                    if let e = error {
+                        print("ERROR while invoking ConnectToChannel.");
+                        print(e);
+                    }
+                })
+                
+                self.hubConnection.on(method: "ConnectToChannel", callback: { args, typeConverter in
+                    print("On ConnectToChannel");
+                    print(args);
+                    print(typeConverter);
+                })
             });
         });
     }
