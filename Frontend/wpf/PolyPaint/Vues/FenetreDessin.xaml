@@ -284,12 +284,12 @@
                                                 <Grid Margin="0,2">
                                                     <TextBlock Text="{Binding Title}" Margin="0,0,50,0"/>
                                                     <Button Background="{Binding Connected, Converter={StaticResource convertisseurRoomCouleurFond}, UpdateSourceTrigger=PropertyChanged}"
-                                                Content="{Binding Connected, Converter={StaticResource convertisseurRoomContent}, UpdateSourceTrigger=PropertyChanged}"
-                                                Width="100" Height="20" FontSize="10" BorderBrush="Transparent" Foreground="Black" Margin="120,0,0,0"
-                                                Command="{Binding Path=DataContext.RoomConnect, ElementName=roomList}" CommandParameter="{Binding Path=.}" />
+                                                        Content="{Binding Connected, Converter={StaticResource convertisseurRoomContent}, UpdateSourceTrigger=PropertyChanged}"
+                                                        Width="100" Height="20" FontSize="10" BorderBrush="Transparent" Foreground="Black" Margin="120,0,0,0"
+                                                        Command="{Binding Path=DataContext.RoomConnect, ElementName=roomList}" CommandParameter="{Binding Path=.}" />
                                                     <RadioButton Margin="100,0,0,0" GroupName="ChatRooms"
-                                                Command="{Binding Path=DataContext.ChoisirRoom, ElementName=roomList}"
-                                                CommandParameter="{Binding Title}" />
+                                                        Command="{Binding Path=DataContext.ChoisirRoom, ElementName=roomList}"
+                                                        CommandParameter="{Binding Title}" />
                                                 </Grid>
                                             </DataTemplate>
                                         </ListBox.ItemTemplate>

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.SignalR.Client;
+using Newtonsoft.Json;
 using PolyPaint.Structures;
 using System;
 using System.Collections.Generic;
@@ -43,45 +44,51 @@ namespace PolyPaint.Modeles
 
         private void HandleMessages()
         {
-            Connection.On<ChatMessage>("SendMessage", (chatMessage) =>
+            Connection.On<string>("SendMessage", (message) =>
             {
+                var chatMessage = JsonConvert.DeserializeObject<ChatMessage>(message);
                 MessageReceived?.Invoke(this, new MessageArgs(chatMessage.Username, chatMessage.Message, chatMessage.Timestamp, chatMessage.ChannelId));
             });
-            Connection.On<ChannelsMessage>("FetchChannels", (channelsMessage) =>
+            Connection.On<string>("FetchChannels", (channelsMessage) =>
             {
-                Channels = channelsMessage.Channels;
+                Channels = JsonConvert.DeserializeObject<ChannelsMessage>(channelsMessage).Channels;
                 ChannelsReceived?.Invoke(this, null);
             });
-            Connection.On<ChannelMessage>("CreateChannel", (channelMessage) =>
+            Connection.On<string>("CreateChannel", (message) =>
             {
+                var channelMessage = JsonConvert.DeserializeObject<ChannelMessage>(message);
                 ChannelCreated?.Invoke(this, new ChannelArgs(channelMessage.Channel));
             });
-            Connection.On<ConnectionMessage>("ConnectToChannel", (connectionMessage) =>
+            Connection.On<string>("ConnectToChannel", (message) =>
             {
+                var connectionMessage = JsonConvert.DeserializeObject<ConnectionMessage>(message);
                 ConnectedToChannel?.Invoke(this, new MessageArgs(username: connectionMessage.Username, message: connectionMessage.ChannelId));
             });
-            Connection.On<ConnectionMessage>("ConnectToChannelSender", (connectionMessage) =>
+            Connection.On<string>("ConnectToChannelSender", (message) =>
             {
+                var connectionMessage = JsonConvert.DeserializeObject<ConnectionMessage>(message);
                 ConnectedToChannelSender?.Invoke(this, new MessageArgs(username: connectionMessage.Username, message: connectionMessage.ChannelId));
             });
-            Connection.On<ConnectionMessage>("DisconnectFromChannel", (connectionMessage) =>
+            Connection.On<string>("DisconnectFromChannel", (message) =>
             {
+                var connectionMessage = JsonConvert.DeserializeObject<ConnectionMessage>(message);
                 DisconnectedFromChannel?.Invoke(this, new MessageArgs(username: connectionMessage.Username, message: connectionMessage.ChannelId));
             });
-            Connection.On<ConnectionMessage>("DisconnectFromChannelSender", (connectionMessage) =>
+            Connection.On<string>("DisconnectFromChannelSender", (message) =>
             {
+                var connectionMessage = JsonConvert.DeserializeObject<ConnectionMessage>(message);
                 DisconnectedFromChannelSender?.Invoke(this, new MessageArgs(username: connectionMessage.Username, message: connectionMessage.ChannelId));
             });
         }
 
         public async void SendMessage(string message, string channel)
         {
-            await Connection.SendAsync("SendMessage", new ChatMessage(message: message, channelId: channel));
+            await Connection.SendAsync("SendMessage", (new ChatMessage(message: message, channelId: channel)).ToString());
         }
 
         public async void CreateChannel(string name)
         {
-            await Connection.SendAsync("CreateChannel", new ChannelMessage(new Channel(name)));
+            await Connection.SendAsync("CreateChannel", (new ChannelMessage(new Channel(name))).ToString());
         }
 
         public async void DisconnectFromChannel(string name)
@@ -91,7 +98,7 @@ namespace PolyPaint.Modeles
 
         public async void ConnectToChannel(string name)
         {
-            await Connection.SendAsync("ConnectToChannel", new ConnectionMessage(channelId: name));
+            await Connection.SendAsync("ConnectToChannel", (new ConnectionMessage(channelId: name)).ToString());
         }
 
         public List<Channel> GetChannels()
