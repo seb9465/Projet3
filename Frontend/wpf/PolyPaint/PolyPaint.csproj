@@ -473,6 +473,14 @@
     <Folder Include="Chat\" />
     <Folder Include="Services\" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="SoundEffects\receive.mp3">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SoundEffects\send.mp3">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
