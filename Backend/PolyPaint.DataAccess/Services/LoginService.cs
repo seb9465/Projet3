@@ -82,8 +82,9 @@ namespace PolyPaint.DataAccess.Services
             }
             else
             {
-                //string email = info.Principal.FindFirstValue(ClaimTypes.Email);
-                //token = _tokenService.GenerateToken(email);
+                string email = info.Principal.FindFirstValue(ClaimTypes.Email);
+                ApplicationUser currentUser = await _userManager.FindByEmailAsync(email);
+                token = _tokenService.GenerateToken(currentUser);
                 return token;
             }
         }

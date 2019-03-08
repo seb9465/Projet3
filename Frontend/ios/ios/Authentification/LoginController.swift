@@ -10,16 +10,53 @@ import UIKit
 import Alamofire
 import PromiseKit
 import AwaitKit
+import FacebookLogin
 
-class LoginController: UIViewController, UITextFieldDelegate {
-    
+class LoginController: UIViewController, UITextFieldDelegate, LoginButtonDelegate {
     @IBOutlet var emailField: UITextField!
     @IBOutlet var passwordField: UITextField!
     @IBOutlet var validationLabel: UILabel!
     @IBOutlet var loginButton: UIButton!
-    
-    var placeHolder = "";
+    @IBOutlet weak var loginView : FBSDKLoginButton!
 
+    var placeHolder = "";
+    
+    override func viewDidLoad() {
+        let url = URL(string: "https://polypaint.me/api/login")!
+        UIApplication.shared.open(url, options: [:], completionHandler: nil)
+
+/*
+        let loginButton = LoginButton(readPermissions: [ .publicProfile, .email ])
+        let screenSize:CGRect = UIScreen.main.bounds
+        let screenHeight = screenSize.height
+        let newCenterY = screenHeight - loginButton.frame.height - 10
+        loginButton.center = CGPoint(x: view.center.x, y: CGFloat(newCenterY))
+        loginButton.delegate = self
+        loginButton.target(forAction: <#T##Selector#>, withSender: <#T##Any?#>)
+        view.addSubview(loginButton)
+ */
+    }
+    
+    func loginButtonDidCompleteLogin(_ loginButton: LoginButton, result: LoginResult) {
+        print(result)
+        switch result {
+        case .failed(let error):
+            print(error)
+        case .cancelled:
+            print("Cancelled")
+        case .success(let grantedPermissions, let declinedPermissions, let accessToken):
+            print("Logged In")
+            let token: String = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6InVzZXIuMyIsIm5hbWVpZCI6Ijg4OTU2NjlhLTYyMmMtNDk2ZS1iZTkwLTI4YTQzMGE3NzhhZSIsImZhbWlseV9uYW1lIjoidXNlcjMiLCJuYmYiOjE1NTA2MDA0NTUsImV4cCI6NjE1NTA2MDAzOTUsImlhdCI6MTU1MDYwMDQ1NSwiaXNzIjoiaHR0cHM6Ly9wb2x5cGFpbnQubWUiLCJhdWQiOiJodHRwczovL3BvbHlwYWludC5tZSJ9.jkOgmk7sdA3hL4YtXWn7a5I-d7nk-EbmrRV_sRR0pb4";
+            
+            UserDefaults.standard.set(token, forKey: "token")
+            self.performSegue(withIdentifier: "goToDashboard", sender: nil)
+        }
+    }
+    
+    func loginButtonDidLogOut(_ loginButton: LoginButton) {
+        //
+    }
+    
     @IBAction func loginButton(_ sender: Any) {
         let sv = UIViewController.displaySpinner(onView: self.view);
         

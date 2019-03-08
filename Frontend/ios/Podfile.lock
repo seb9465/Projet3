@@ -2,6 +2,24 @@ PODS:
   - Alamofire (4.8.1)
   - AwaitKit (5.1.0):
     - PromiseKit (~> 6)
+  - Bolts (1.9.0):
+    - Bolts/AppLinks (= 1.9.0)
+    - Bolts/Tasks (= 1.9.0)
+  - Bolts/AppLinks (1.9.0):
+    - Bolts/Tasks
+  - Bolts/Tasks (1.9.0)
+  - FacebookCore (0.5.0):
+    - Bolts (~> 1.9)
+    - FBSDKCoreKit (~> 4.37)
+  - FacebookLogin (0.5.0):
+    - Bolts (~> 1.9)
+    - FacebookCore (~> 0.5)
+    - FBSDKCoreKit (~> 4.37)
+    - FBSDKLoginKit (~> 4.37)
+  - FBSDKCoreKit (4.40.0):
+    - Bolts (~> 1.9)
+  - FBSDKLoginKit (4.40.0):
+    - FBSDKCoreKit
   - JWTDecode (2.2.0)
   - MessageInputBar (0.4.1):
     - MessageInputBar/Core (= 0.4.1)
@@ -25,6 +43,7 @@ PODS:
 DEPENDENCIES:
   - Alamofire
   - AwaitKit
+  - FacebookLogin
   - JWTDecode
   - MessageInputBar
   - MessageKit
@@ -36,6 +55,11 @@ SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - Alamofire
     - AwaitKit
+    - Bolts
+    - FacebookCore
+    - FacebookLogin
+    - FBSDKCoreKit
+    - FBSDKLoginKit
     - JWTDecode
     - MessageInputBar
     - MessageKit
@@ -45,12 +69,17 @@ SPEC REPOS:
 SPEC CHECKSUMS:
   Alamofire: 16ce2c353fb72865124ddae8a57c5942388f4f11
   AwaitKit: a8a3d8982097ee09ac75f5c5d3952fbcc2f26f1c
+  Bolts: ac6567323eac61e203f6a9763667d0f711be34c8
+  FacebookCore: 74288d0add931d361b1596beae787ab72c438249
+  FacebookLogin: ebcf34714a1cb9f0759d9f071cfb01ed500996cf
+  FBSDKCoreKit: ae214474b25033399c131dc81d258e412582a2ba
+  FBSDKLoginKit: 7a1e411d46acc8834588eca437daf34de42e1d52
   JWTDecode: 85a405ab16d5473e99bd89ded1d535090ebd6a0e
   MessageInputBar: e81c7535347f1f7b923de7080409a535a004b6e4
   MessageKit: 29c1c87e5a396d2ca7a3f712e5171dc9aba42a1e
   PromiseKit: ef376fb8b4e92edfeb66bd403b983eaa07fbde0c
   SwiftSignalRClient: edd4e6e16c87370ca624c6868279483a2ffe4f1d
 
-PODFILE CHECKSUM: dec1b9d9a1355f78cc48d624bbd473e271ea8872
+PODFILE CHECKSUM: 4acf538d282753c89ddd54ecc7646a3f651336a8
 
 COCOAPODS: 1.5.3

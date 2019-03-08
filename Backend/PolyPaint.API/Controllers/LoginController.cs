@@ -55,8 +55,9 @@ namespace PolyPaint.API.Controllers
         [HttpGet]
         public IActionResult FacebookLogin()
         {
+            string redirectUrl = Url.Action(nameof(ExternalLoginCallback), "login");
             var properties = _signInManager
-                .ConfigureExternalAuthenticationProperties("Facebook", Url.Action("ExternalLoginCallback", "login"));
+                .ConfigureExternalAuthenticationProperties("Facebook", redirectUrl);
             return Challenge(properties, "Facebook");
 
         }

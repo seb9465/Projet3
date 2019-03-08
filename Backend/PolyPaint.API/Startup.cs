@@ -63,6 +63,7 @@ namespace PolyPaint.API
             }
             else
             {
+                app.UseDeveloperExceptionPage();
                 app.UseHsts();
             }
 
