@@ -42,10 +42,10 @@ namespace PolyPaint.Strokes
 
             drawingContext.DrawRectangle(brush, null, new Rect(new Point(sp.X, sp.Y), new Point(stp.X, stp.Y)));
             DrawAnchorPoints(drawingContext);
-            SurfaceDessin.Children.Add(Titre);
+            //SurfaceDessin.Children.Add(Titre);
 
-            InkCanvas.SetLeft(Titre, (stp.X + sp.X) / 2);
-            InkCanvas.SetTop(Titre, (stp.Y + sp.Y) / 2);
+            //InkCanvas.SetLeft(Titre, (stp.X + sp.X) / 2);
+            //InkCanvas.SetTop(Titre, (stp.Y + sp.Y) / 2);
         }
 
         private void DrawAnchorPoints(DrawingContext drawingContext)
@@ -66,13 +66,13 @@ namespace PolyPaint.Strokes
         public void AddToCanvas()
         {
             SurfaceDessin.Strokes.Add(Clone());
-            SurfaceDessin.Children.Add(Tools.DeepCopy(Titre));
+            //SurfaceDessin.Children.Add(Tools.DeepCopy(Titre));
         }
 
         public void RemoveFromCanvas()
         {
             SurfaceDessin.Strokes.Remove(this);
-            SurfaceDessin.Children.Remove(Titre);
+            //SurfaceDessin.Children.Remove(Titre);
         }
     }
 }
