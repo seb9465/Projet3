@@ -358,6 +358,7 @@
     <Compile Include="Modeles\SaveableCanvas.cs" />
     <Compile Include="Strokes\ICanvasable.cs" />
     <Compile Include="Strokes\LineStroke.cs" />
+    <Compile Include="Strokes\AnchorPointStroke.cs" />
     <Compile Include="Strokes\RectangleStroke.cs" />
     <Compile Include="Strokes\RoundedRectangleStroke.cs" />
     <Compile Include="Structures\MessageArgs.cs" />

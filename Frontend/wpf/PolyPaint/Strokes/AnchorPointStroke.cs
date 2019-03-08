@@ -8,19 +8,14 @@ using System.Windows.Media;
 
 namespace PolyPaint.Strokes
 {
-    public class RectangleStroke : Stroke, ICanvasable
+    public class AnchorPointStroke : Stroke, ICanvasable
     {
-
-        //public string Titre { get; set; }
-        public TextBox Titre { get; set; }
         public InkCanvas SurfaceDessin { get; set; }
 
-        public RectangleStroke(StylusPointCollection pts, string titre, InkCanvas surfaceDessin)
+        public AnchorPointStroke(StylusPointCollection pts, InkCanvas surfaceDessin)
             : base(pts)
         {
             StylusPoints = pts;
-            Titre = new TextBox();
-            Titre.Text = titre;
 
             SurfaceDessin = surfaceDessin;
         }
@@ -35,22 +30,8 @@ namespace PolyPaint.Strokes
             {
                 throw new ArgumentNullException("drawingAttributes");
             }
-            SolidColorBrush brush = new SolidColorBrush(drawingAttributes.Color);
+            SolidColorBrush brush = new SolidColorBrush(Colors.Red);
             brush.Freeze();
-            StylusPoint stp = StylusPoints[0];
-            StylusPoint sp = StylusPoints[1];
-
-            drawingContext.DrawRectangle(brush, null, new Rect(new Point(sp.X, sp.Y), new Point(stp.X, stp.Y)));
-            DrawAnchorPoints(drawingContext);
-            SurfaceDessin.Children.Add(Titre);
-
-            InkCanvas.SetLeft(Titre, (stp.X + sp.X) / 2);
-            InkCanvas.SetTop(Titre, (stp.Y + sp.Y) / 2);
-        }
-
-        private void DrawAnchorPoints(DrawingContext drawingContext)
-        {
-            SolidColorBrush brush = new SolidColorBrush(Colors.Gray);
 
             Point topLeft = new Point(StylusPoints[0].X, StylusPoints[0].Y);
             double width = (StylusPoints[1].X - StylusPoints[0].X);
@@ -60,19 +41,16 @@ namespace PolyPaint.Strokes
             drawingContext.DrawEllipse(brush, null, new Point(topLeft.X + width / 2, topLeft.Y + height), 2, 2);
             drawingContext.DrawEllipse(brush, null, new Point(topLeft.X + width, topLeft.Y + height / 2), 2, 2);
             drawingContext.DrawEllipse(brush, null, new Point(topLeft.X, topLeft.Y + height / 2), 2, 2);
-
         }
 
         public void AddToCanvas()
         {
             SurfaceDessin.Strokes.Add(Clone());
-            SurfaceDessin.Children.Add(Tools.DeepCopy(Titre));
         }
 
         public void RemoveFromCanvas()
         {
             SurfaceDessin.Strokes.Remove(this);
-            SurfaceDessin.Children.Remove(Titre);
         }
     }
 }

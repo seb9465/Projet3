@@ -50,6 +50,7 @@ namespace PolyPaint.Convertisseurs
                 case "select":
                 case "rectangle":
                 case "rounded_rectangle":
+                case "line":
                     return InkCanvasEditingMode.None;
                 default:
                     return InkCanvasEditingMode.Ink;
