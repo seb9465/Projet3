@@ -1,6 +1,7 @@
 ﻿using PolyPaint.Common;
 using PolyPaint.Strokes;
 using PolyPaint.VueModeles;
+using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Ink;
@@ -95,6 +96,16 @@ namespace PolyPaint.Utilitaires
                 stroke.DrawingAttributes.Color = color;
                 surfaceDessin.Strokes.Remove(stroke);
                 surfaceDessin.Strokes.Add(stroke.Clone());
+            }
+        }
+
+        internal void EndDraw(InkCanvas surfaceDessin, string outilSelectionne)
+        {
+            if (DrawingStroke != null && outilSelectionne == "rectangle"
+                                      || outilSelectionne == "rounded_rectangle")
+            {
+                surfaceDessin.Strokes.Remove(DrawingStroke);
+                surfaceDessin.Strokes.Add(DrawingStroke.Clone());
             }
         }
     }

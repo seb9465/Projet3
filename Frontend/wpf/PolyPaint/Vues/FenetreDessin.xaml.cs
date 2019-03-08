@@ -35,23 +35,37 @@ namespace PolyPaint
         private bool IsDrawing = false;
         private Point currentPoint, mouseLeftDownPoint;
         private HubConnection Connection;
-
         public event EventHandler MessageReceived;
         public event EventHandler SystemMessageReceived;
-
+        private ViewStateEnum ViewState { get; set; } = ViewStateEnum.Offline;
         public FenetreDessin()
         {
             InitializeComponent();
-            object token = Application.Current.Properties["token"];
-            token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6InVzZXIuMyIsIm5hbWVpZCI6ImQwZTA2YTkwLWFjMDEtNDhlZS1iODkwLWE1ZDE1ZTg4NGVjNCIsImZhbWlseV9uYW1lIjoidXNlcjMiLCJuYmYiOjE1NTA3MTc0ODksImV4cCI6NjE1NTA3MTc0MjksImlhdCI6MTU1MDcxNzQ4OSwiaXNzIjoiaHR0cHM6Ly9wb2x5cGFpbnQubWUiLCJhdWQiOiJodHRwczovL3BvbHlwYWludC5tZSJ9.YY6FWiP5h2qY89OG4PoKMQkKRgQJLV0P-IhBDoQozWw";
-            ConnectToCollaborativeServer((string) token);
             DataContext = new VueModele();
-            (DataContext as VueModele).ChatClient.Initialize((string) Application.Current.Properties["token"]);
-            (DataContext as VueModele).ChatClient.MessageReceived += AddMessage;
-            (DataContext as VueModele).ChatClient.SystemMessageReceived += AddSystemMessage;
-            externalChatWindow = new ChatWindow(DataContext);
 
-            Application.Current.Exit += OnClosing;
+            if (ViewState == ViewStateEnum.Online)
+            {
+                object token = Application.Current.Properties["token"];
+                token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6InVzZXIuMyIsIm5hbWVpZCI6ImQwZTA2YTkwLWFjMDEtNDhlZS1iODkwLWE1ZDE1ZTg4NGVjNCIsImZhbWlseV9uYW1lIjoidXNlcjMiLCJuYmYiOjE1NTA3MTc0ODksImV4cCI6NjE1NTA3MTc0MjksImlhdCI6MTU1MDcxNzQ4OSwiaXNzIjoiaHR0cHM6Ly9wb2x5cGFpbnQubWUiLCJhdWQiOiJodHRwczovL3BvbHlwYWludC5tZSJ9.YY6FWiP5h2qY89OG4PoKMQkKRgQJLV0P-IhBDoQozWw";
+                ConnectToCollaborativeServer((string) token);
+                (DataContext as VueModele).ChatClient.Initialize((string) Application.Current.Properties["token"]);
+                (DataContext as VueModele).ChatClient.MessageReceived += AddMessage;
+                (DataContext as VueModele).ChatClient.SystemMessageReceived += AddSystemMessage;
+                externalChatWindow = new ChatWindow(DataContext);
+                Application.Current.Exit += OnClosing;
+
+            }
+            else
+            {
+                sendToCloud.Visibility = Visibility.Collapsed;
+                importFromCloud.Visibility = Visibility.Collapsed;
+                chatWrapper.Visibility = Visibility.Collapsed;
+
+                Thickness margin = surfaceDessin.Margin;
+                margin.Right = -790;
+                margin.Bottom = -260;
+                surfaceDessin.Margin = margin;
+            }
         }
 
         // Pour gérer les points de contrôles.
@@ -82,11 +96,28 @@ namespace PolyPaint
 
         private async void DupliquerSelection(object sender, RoutedEventArgs e)
         {
-            await CollaborativeDuplicateAsync();
+            if (ViewState == ViewStateEnum.Online)
+            {
+                await CollaborativeDuplicateAsync();
+            }
+            else
+            {
+                surfaceDessin.CopySelection();
+                surfaceDessin.Paste();
+            }
         }
 
-        private async void SupprimerSelection(object sender, RoutedEventArgs e) => await CollaborativeDeleteAsync();
-
+        private async void SupprimerSelection(object sender, RoutedEventArgs e)
+        {
+            if (ViewState == ViewStateEnum.Online)
+            {
+                await CollaborativeDeleteAsync();
+            }
+            else
+            {
+                surfaceDessin.CutSelection();
+            }
+        }
         private void SaveImage(object sender, RoutedEventArgs e)
         {
             // Save Strokes on a file.
@@ -301,15 +332,24 @@ namespace PolyPaint
 
             if ((DataContext as VueModele).OutilSelectionne == "select")
             {
-                SelectViewModel selectViewModel = new SelectViewModel
-                {
-                    MouseLeftDownPointX = mouseLeftDownPoint.X,
-                    MouseLeftDownPointY = mouseLeftDownPoint.Y,
-                };
-                await CollaborativeSelectAsync(selectViewModel);
-            }
 
-            IsDrawing = true;
+                if (ViewState == ViewStateEnum.Online)
+                {
+                    SelectViewModel selectViewModel = new SelectViewModel
+                    {
+                        MouseLeftDownPointX = mouseLeftDownPoint.X,
+                        MouseLeftDownPointY = mouseLeftDownPoint.Y,
+                    };
+                    await CollaborativeSelectAsync(selectViewModel);
+                }
+                else
+                {
+                    icEventManager.SelectItem(surfaceDessin, mouseLeftDownPoint);
+                }
+            }
+            else {
+                IsDrawing = true;
+            }
         }
         private void InkCanvas_LeftMouseMove(object sender, MouseEventArgs e)
         {
@@ -322,34 +362,41 @@ namespace PolyPaint
 
         private async void InkCanvas_LeftMouseUp(object sender, MouseButtonEventArgs e)
         {
-            List<PolyPaintStylusPoint> points = new List<PolyPaintStylusPoint>();
-            foreach (StylusPoint point in icEventManager.DrawingStroke.StylusPoints.ToList())
+            if (ViewState == ViewStateEnum.Online)
             {
-                points.Add(new PolyPaintStylusPoint()
+                List<PolyPaintStylusPoint> points = new List<PolyPaintStylusPoint>();
+                foreach (StylusPoint point in icEventManager.DrawingStroke.StylusPoints.ToList())
                 {
-                    PressureFactor = point.PressureFactor,
-                    X = point.X,
-                    Y = point.Y,
-                });
-            }
-            Enum.TryParse<ItemTypeEnum>(icEventManager.DrawingStroke.GetType().ToString(), out ItemTypeEnum itemType);
+                    points.Add(new PolyPaintStylusPoint()
+                    {
+                        PressureFactor = point.PressureFactor,
+                        X = point.X,
+                        Y = point.Y,
+                    });
+                }
+                Enum.TryParse<ItemTypeEnum>(icEventManager.DrawingStroke.GetType().ToString(), out ItemTypeEnum itemType);
 
-            PolyPaintColor color = new PolyPaintColor()
-            {
-                A = icEventManager.DrawingStroke.DrawingAttributes.Color.A,
-                B = icEventManager.DrawingStroke.DrawingAttributes.Color.B,
-                G = icEventManager.DrawingStroke.DrawingAttributes.Color.G,
-                R = icEventManager.DrawingStroke.DrawingAttributes.Color.R,
-            };
-            DrawViewModel drawViewModel = new DrawViewModel
-            {
-                OutilSelectionne = (DataContext as VueModele).OutilSelectionne,
-                StylusPoints = points,
-                ItemType = itemType,
-                Color = color,
-            };
-            await CollaborativeDrawAsync(drawViewModel);
+                PolyPaintColor color = new PolyPaintColor()
+                {
+                    A = icEventManager.DrawingStroke.DrawingAttributes.Color.A,
+                    B = icEventManager.DrawingStroke.DrawingAttributes.Color.B,
+                    G = icEventManager.DrawingStroke.DrawingAttributes.Color.G,
+                    R = icEventManager.DrawingStroke.DrawingAttributes.Color.R,
+                };
+                DrawViewModel drawViewModel = new DrawViewModel
+                {
+                    OutilSelectionne = (DataContext as VueModele).OutilSelectionne,
+                    StylusPoints = points,
+                    ItemType = itemType,
+                    Color = color,
+                };
+                await CollaborativeDrawAsync(drawViewModel);
+            }
+            else {
+                icEventManager.EndDraw(surfaceDessin, (DataContext as VueModele).OutilSelectionne);
+            }
             IsDrawing = false;
+
         }
 
         public async void ConnectToCollaborativeServer(string accessToken)

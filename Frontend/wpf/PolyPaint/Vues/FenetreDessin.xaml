@@ -264,7 +264,7 @@
             </Border>
 
         </Grid>
-        <StackPanel Orientation="Vertical">
+        <StackPanel Orientation="Vertical" x:Name="chatWrapper">
             <StackPanel Orientation="Horizontal">
                 <Button x:Name="chatButton" Content="Open chat in new window" HorizontalAlignment="Left" Margin="10,10,0,0"  Width="200" Click="chatButton_Click" Height="30" />
                 <Button x:Name="chatButtonSameWindow" Content="Open chat in same window" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Bottom" Width="200" Click="chatButtonSameWindow_Click" Height="30" />
