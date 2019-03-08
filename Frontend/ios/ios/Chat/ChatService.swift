@@ -11,6 +11,16 @@ import SwiftSignalRClient
 import PromiseKit
 import AVFoundation
 
+class Channel {
+    public var name: String;
+    public var connected: Bool;
+    
+    init(name: String, connected: Bool) {
+        self.name = name;
+        self.connected = connected;
+    }
+}
+
 class ChatService {
     var hubConnection: HubConnection;
     var _members: Members;
@@ -78,12 +88,20 @@ class ChatService {
     
     public func connectToGroup() -> Void {
         self.hubConnection.on(method: "ClientIsConnected", callback: { args, typeConverter in
-            self.hubConnection.invoke(method: "ConnectToGroup", arguments: [""], invocationDidComplete: { error in
-                if (error != nil) {
-                    print("Error connecting to server!")
-                    print(error as Any);
+            print("Client connected to hub.");
+            self.hubConnection.invoke(method: "FetchChannels", arguments: [], invocationDidComplete: { error in
+                print("Invoked FetchChannels");
+                if let e = error {
+                    print("ERROR while invoking FetchChannels");
+                    print(e);
                 }
-                print("Connected to the group");
+            });
+            self.hubConnection.on(method: "FetchChannels", callback: { args, typeConverter in
+                print("On FetchChannels");
+                let channels: [String: [Channel]] = try! typeConverter.convertFromWireType(obj: args[0], targetType: [String: [Channel]].self)!
+                
+                let c: [Channel] = channels["channels"] as! [Channel];
+                print(c);
             });
         });
     }
