@@ -2,7 +2,7 @@
 
 namespace PolyPaint
 {
-    public class ChannelsMessage
+    public class ChannelsMessage : BaseMessage
     {
         public List<Channel> Channels { get; set; }
         public ChannelsMessage(List<Channel> channels)
