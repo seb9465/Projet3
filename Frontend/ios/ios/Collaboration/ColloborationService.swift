@@ -52,6 +52,7 @@ class CollaborationService {
     
     // Argument nil just to established a connection
     public func updateDrawing(message: String) -> Void {
+        
         self.hubConnection.invoke(method: "Draw", arguments: [nil], invocationDidComplete: { (Error) in
             if (Error != nil) {
                 print(Error!)
