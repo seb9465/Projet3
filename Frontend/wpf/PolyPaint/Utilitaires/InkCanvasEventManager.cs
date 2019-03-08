@@ -81,6 +81,34 @@ namespace PolyPaint.Utilitaires
             else if (DrawingStroke != null && outilSelectionne == "line")
             {
 
+                (DrawingStroke as ICanvasable).RemoveFromCanvas();
+                Point closestToFirst = new Point();
+                Point closestToSecond = new Point();
+                Point firstPoint = new Point(DrawingStroke.StylusPoints[0].X, DrawingStroke.StylusPoints[0].Y);
+                Point secondPoint = new Point(DrawingStroke.StylusPoints[1].X, DrawingStroke.StylusPoints[1].Y);
+                double distanceToFirst = 1000;
+                double distanceToSecond = 1000;
+                for (int i = 0; i < AnchorPoints.Count(); i++)
+                {
+                    double d1 = Point.Subtract(AnchorPoints[i], firstPoint).Length;
+                    double d2 = Point.Subtract(AnchorPoints[i], secondPoint).Length;
+                    if (d1 < distanceToFirst)
+                    {
+                        closestToFirst = AnchorPoints[i];
+                        distanceToFirst = d1;
+                    }
+                    if (d2 < distanceToSecond)
+                    {
+                        closestToSecond = AnchorPoints[i];
+                        distanceToSecond = d2;
+
+                    }
+                }
+                StylusPointCollection points = new StylusPointCollection(new Point[] {closestToFirst, closestToSecond});
+                DrawingStroke = new LineStroke(points, surfaceDessin);
+                DrawingStroke.DrawingAttributes.Color = Colors.Black;
+                surfaceDessin.Strokes.Add(DrawingStroke);
+                (DrawingStroke as ICanvasable).AddToCanvas();
             }
         }
 
