@@ -29,8 +29,9 @@ namespace PolyPaint.API.Hubs
                 if (UserHandler.UserGroupMap.TryGetValue(chatMessage.ChannelId, out var users) && users.Contains(user.Id))
                 {
                     // Maybe change in a way that it doesnt send back to sender (sender handles his own message in the ui)
+                    var message = new ChatMessage(user.UserName, chatMessage.Message, chatMessage.ChannelId, timestamp);
                     await Clients.Group(chatMessage.ChannelId).SendAsync("SendMessage",
-                        new ChatMessage(user.UserName, chatMessage.Message, chatMessage.ChannelId, timestamp)
+                        message.ToString()
                     );
                 }
             }
@@ -43,7 +44,7 @@ namespace PolyPaint.API.Hubs
             {
                 List<Channel> list = UserHandler.UserGroupMap.Select(x => new Channel(x.Key, x.Value.Contains(user.Id))).ToList();
                 ChannelsMessage channelsMessage = new ChannelsMessage(list);
-                await Clients.Caller.SendAsync("FetchChannels", channelsMessage);
+                await Clients.Caller.SendAsync("FetchChannels", channelsMessage.ToString());
             }
         }
 
@@ -54,7 +55,7 @@ namespace PolyPaint.API.Hubs
             if (user != null)
             {
                 UserHandler.AddOrUpdateMap(channelMessage.Channel.Name, user.Id);
-                await Clients.Caller.SendAsync("CreateChannel", channelMessage);
+                await Clients.Caller.SendAsync("CreateChannel", channelMessage.ToString());
             }
         }
 
@@ -68,9 +69,9 @@ namespace PolyPaint.API.Hubs
                 var message = new ConnectionMessage(user.UserName, channelId: connectionMessage.ChannelId);
                 await Clients.Group(connectionMessage.ChannelId).SendAsync(
                     "ConnectToChannel",
-                    message
+                    message.ToString();
                 );
-                await Clients.Caller.SendAsync("ConnectToChannelSender", message);
+                await Clients.Caller.SendAsync("ConnectToChannelSender", message.ToString());
             }
         }
 
@@ -86,9 +87,9 @@ namespace PolyPaint.API.Hubs
                     var message = new ConnectionMessage(username: user.UserName, channelId: connectionMessage.ChannelId);
                     await Clients.Group(connectionMessage.ChannelId).SendAsync(
                         "DisconnectFromChannel",
-                        message
+                        message.ToString()
                     );
-                    await Clients.Caller.SendAsync("DisconnectFromChannelSender", message);
+                    await Clients.Caller.SendAsync("DisconnectFromChannelSender", message.ToString());
                 }
             }
         }
@@ -116,9 +117,10 @@ namespace PolyPaint.API.Hubs
                     if (user != null)
                     {
                         pair.Value.Remove(user.Id);
+                        var message = new ConnectionMessage(username: user.UserName);
                         await Clients.Group(pair.Key).SendAsync(
                             "DisconnectFromChannel",
-                            new ConnectionMessage(username: user.UserName)
+                            message.ToString()
                         );
                     }
                 }
@@ -137,16 +139,18 @@ namespace PolyPaint.API.Hubs
                 }
                 else
                 {
+                    var message = new ErrorMessage("Error occured while looking for user");
                     await Clients.Caller.SendAsync("ErrorMessage",
-                        new ErrorMessage("Error occured while looking for user")
+                        message.ToString()
                     );
                     return null;
                 }
             }
             else
             {
+                var message = new ErrorMessage("Error occured while looking for token");
                 await Clients.Caller.SendAsync("ErrorMessage",
-                    new ErrorMessage("Error occured while looking for token")
+                    message.ToString()
                 );
                 return null;
             }
