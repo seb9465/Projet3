@@ -263,13 +263,13 @@ namespace PolyPaint
             catch { }
         }
         
-        private void addRoom(object sender, DialogClosingEventArgs eventArgs)
+        private void AddRoom(object sender, DialogClosingEventArgs eventArgs)
         {
             if (!Equals(eventArgs.Parameter, true)) return;
 
             if (!string.IsNullOrWhiteSpace(roomTextBox.Text))
             {
-                (DataContext as VueModele).ChatClient.CreateChannel(AnimalTextBox.Text.Trim());
+                (DataContext as VueModele).ChatClient.CreateChannel(roomTextBox.Text.Trim());
             }
             clearRoomName(sender, eventArgs);
         }
