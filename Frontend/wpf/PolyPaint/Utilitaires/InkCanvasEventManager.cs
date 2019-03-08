@@ -60,17 +60,43 @@ namespace PolyPaint.Utilitaires
                     DrawingStroke.DrawingAttributes.Color = Colors.Red;
                     surfaceDessin.Strokes.Add(DrawingStroke);
                     break;
+                case "line":
+                    DrawingStroke = new LineStroke(pts, surfaceDessin);
+                    DrawingStroke.DrawingAttributes.Color = Colors.Black;
+                    surfaceDessin.Strokes.Add(DrawingStroke);
+                    break;
             }
         }
 
         internal void EndDraw(InkCanvas surfaceDessin, string outilSelectionne)
         {
             if (DrawingStroke != null && outilSelectionne == "rectangle"
-                                      || outilSelectionne == "rounded_rectangle")
+                                      || outilSelectionne == "rounded_rectangle" || outilSelectionne == "line")
             {
                 (DrawingStroke as ICanvasable).RemoveFromCanvas();
                 (DrawingStroke as ICanvasable).AddToCanvas();
             }
         }
+
+        //private Stroke GetLineForUMLConnection(StylusPointCollection pts, InkCanvas surfaceDessin)
+        //{
+        //    DrawAnchorPoints(surfaceDessin);
+            
+        //    // logic
+        //    RemoveAnchorPoints(surfaceDessin);
+        //}
+
+        //private void DrawAnchorPoints(InkCanvas surfaceDessin)
+        //{
+        //    foreach (RectangleStroke str in surfaceDessin.Strokes)
+        //    {
+        //    }
+        //    return;
+        //}
+
+        //private void RemoveAnchorPoints(InkCanvas surfaceDessin)
+        //{
+        //    return;
+        //}
     }
 }

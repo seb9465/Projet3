@@ -129,6 +129,19 @@
                 <StackPanel Orientation="Horizontal">
                     <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Width="2" />
                 </StackPanel>
+                <Button Name="line"
+                        Style="{StaticResource MaterialDesignRaisedLightButton}" HorizontalAlignment="Left" ToolTip="MaterialDesignRaisedLightButton" 
+                        BorderBrush="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurBordure}, ConverterParameter=line, UpdateSourceTrigger=PropertyChanged}" 
+                        Background="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurCouleurFond}, ConverterParameter=line, UpdateSourceTrigger=PropertyChanged}" 
+                        Command="{Binding Path=ChoisirOutil}"
+                        CommandParameter="line">
+                    <StackPanel>
+                        <Image Source="/Resources/line.png" Height="25" Width="25"  />
+                    </StackPanel>
+                </Button>
+                <StackPanel Orientation="Horizontal">
+                    <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Width="2" />
+                </StackPanel>
                 <Button Name="crayon"
                         Style="{StaticResource MaterialDesignRaisedLightButton}" HorizontalAlignment="Left" ToolTip="MaterialDesignRaisedLightButton" 
                         BorderBrush="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurBordure}, ConverterParameter=crayon, UpdateSourceTrigger=PropertyChanged}" 

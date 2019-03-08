@@ -357,6 +357,7 @@
     <Compile Include="Modeles\Editeur.cs" />
     <Compile Include="Modeles\SaveableCanvas.cs" />
     <Compile Include="Strokes\ICanvasable.cs" />
+    <Compile Include="Strokes\LineStroke.cs" />
     <Compile Include="Strokes\RectangleStroke.cs" />
     <Compile Include="Strokes\RoundedRectangleStroke.cs" />
     <Compile Include="Structures\MessageArgs.cs" />
@@ -470,6 +471,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\rounded_rectangle.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\line.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
