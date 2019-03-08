@@ -1,6 +1,6 @@
 ﻿namespace PolyPaint
 {
-    public class ConnectionMessage
+    public class ConnectionMessage : BaseMessage
     {
         public string Username { get; set; }
         public string CanvasId { get; set; }

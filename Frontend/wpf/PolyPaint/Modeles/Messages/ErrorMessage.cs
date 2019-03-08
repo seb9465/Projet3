@@ -1,6 +1,6 @@
 ﻿namespace PolyPaint
 {
-    public class ErrorMessage
+    public class ErrorMessage : BaseMessage
     {
         public string Message { get; set; }
         public ErrorMessage(string message)
