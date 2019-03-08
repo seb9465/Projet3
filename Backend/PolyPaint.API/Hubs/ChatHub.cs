@@ -69,7 +69,7 @@ namespace PolyPaint.API.Hubs
                 var message = new ConnectionMessage(user.UserName, channelId: connectionMessage.ChannelId);
                 await Clients.Group(connectionMessage.ChannelId).SendAsync(
                     "ConnectToChannel",
-                    message.ToString();
+                    message.ToString()
                 );
                 await Clients.Caller.SendAsync("ConnectToChannelSender", message.ToString());
             }
