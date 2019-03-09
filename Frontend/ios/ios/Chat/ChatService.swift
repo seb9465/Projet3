@@ -61,32 +61,6 @@ class ChatService {
     }
     
     public func initOnReceivingMessage(currentMemberName: String, insertMessage: @escaping (_ message: Message) -> Void) {
-//        self.hubConnection.on(method: "ReceiveMessage", callback: { args, typeConverter in
-//            let user = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self);
-//            let message = try! typeConverter.convertFromWireType(obj: args[1], targetType: String.self);
-//            let timestamp = try! typeConverter.convertFromWireType(obj: args[2], targetType: String.self);
-//
-//            var memberFromMessage: Member = Member(
-//                name: user!,
-//                color: .random
-//            );
-//
-//            if (!self._members.addMember(member: memberFromMessage)) {
-//                memberFromMessage = self._members.getMemberByName(memberName: user!);
-//            }
-//
-//            let newMessage = Message(
-//                member: memberFromMessage,
-//                text: message!,
-//                timestamp: timestamp!,
-//                messageId: UUID().uuidString
-//            );
-//
-//            if (user != currentMemberName) {
-//                insertMessage(newMessage);
-//                SoundNotification.play(sound: Sound.SendMessage);
-//            }
-//        });
         self.hubConnection.on(method: "SendMessage", callback: { args, typeConverter in
             print("[ CHAT ] On SendMessage");
             let messageJson: String = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self)!;
