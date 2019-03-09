@@ -51,11 +51,23 @@ class CollaborationService {
     }
     
     // Argument nil just to established a connection
-    public func updateDrawing(message: String) -> Void {
+    public func updateDrawing(drawViewModel: DrawViewModel) -> Void {
+        let point: PolyPaintStylusPoint = PolyPaintStylusPoint(X: 10, Y: 10, PressureFactor: 10)
+        let color: PolyPaintColor = PolyPaintColor(A: 1, R: 1, G: 1, B: 1)
+        let model: DrawViewModel = DrawViewModel(
+            ItemType: ItemTypeEnum.RoundedRectangleStroke,
+            StylusPoints: [point],
+            OutilSelectionne: "Rectangle",
+            Color: color
+        )
+        let jsonEncoder = JSONEncoder()
+        let jsonData = try! jsonEncoder.encode(model)
+        let jsonString = String(data: jsonData, encoding: .utf8)
+        print(jsonString)
         
-        self.hubConnection.invoke(method: "Draw", arguments: [nil], invocationDidComplete: { (Error) in
+        self.hubConnection.invoke(method: "Draw", arguments: [jsonString], invocationDidComplete: { (Error) in
             if (Error != nil) {
-                print(Error!)
+                print("Error calling draw", Error!)
                 return
             }
             print("received update from hub!")

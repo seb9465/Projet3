@@ -11,10 +11,8 @@
 		3D2565602225BDFE00BCE946 /* GalleryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D25655F2225BDFE00BCE946 /* GalleryController.swift */; };
 		3D5537C02200E86E002C1B77 /* SlideDownSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D5537BF2200E86E002C1B77 /* SlideDownSegue.swift */; };
 		3D5537C22200ED5F002C1B77 /* SlideUpSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D5537C12200ED5F002C1B77 /* SlideUpSegue.swift */; };
-		3D6E955B2230834900BC7BE7 /* ItemType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D6E955A2230834900BC7BE7 /* ItemType.swift */; };
 		3D6E955D2230839900BC7BE7 /* DrawViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D6E955C2230839900BC7BE7 /* DrawViewModel.swift */; };
 		3D77176921F7C8BC006244A8 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D77176821F7C8BC006244A8 /* Alamofire.framework */; };
-		3D7F332F22331E7B003DD58C /* StylusPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D7F332E22331E7B003DD58C /* StylusPoint.swift */; };
 		3D9FBC1222248371006BB297 /* MasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D9FBC1122248371006BB297 /* MasterViewController.swift */; };
 		3DA9A50122220F870005F3AF /* GalleryHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DA9A50022220F870005F3AF /* GalleryHeader.swift */; };
 		3DC07CC722205B7C0045E7DE /* ContextMenuCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DC07CC622205B7C0045E7DE /* ContextMenuCell.swift */; };
@@ -72,10 +70,8 @@
 		3D25655F2225BDFE00BCE946 /* GalleryController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryController.swift; sourceTree = "<group>"; };
 		3D5537BF2200E86E002C1B77 /* SlideDownSegue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlideDownSegue.swift; sourceTree = "<group>"; };
 		3D5537C12200ED5F002C1B77 /* SlideUpSegue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlideUpSegue.swift; sourceTree = "<group>"; };
-		3D6E955A2230834900BC7BE7 /* ItemType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemType.swift; sourceTree = "<group>"; };
 		3D6E955C2230839900BC7BE7 /* DrawViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawViewModel.swift; sourceTree = "<group>"; };
 		3D77176821F7C8BC006244A8 /* Alamofire.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Alamofire.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		3D7F332E22331E7B003DD58C /* StylusPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StylusPoint.swift; sourceTree = "<group>"; };
 		3D9FBC1122248371006BB297 /* MasterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterViewController.swift; sourceTree = "<group>"; };
 		3DA9A50022220F870005F3AF /* GalleryHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryHeader.swift; sourceTree = "<group>"; };
 		3DC07CC622205B7C0045E7DE /* ContextMenuCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContextMenuCell.swift; sourceTree = "<group>"; };
@@ -168,9 +164,7 @@
 		3D6E95592230833F00BC7BE7 /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				3D6E955A2230834900BC7BE7 /* ItemType.swift */,
 				3D6E955C2230839900BC7BE7 /* DrawViewModel.swift */,
-				3D7F332E22331E7B003DD58C /* StylusPoint.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -550,7 +544,6 @@
 				B7B1B43C2231C00400BEE17D /* MessageInpuBarExtension.swift in Sources */,
 				3DF62984221C9FB30052209A /* Canvas.swift in Sources */,
 				3DC61EB92200B44B003FE445 /* RegisterController.swift in Sources */,
-				3D6E955B2230834900BC7BE7 /* ItemType.swift in Sources */,
 				3DD55D722227208C009D893B /* ColloborationService.swift in Sources */,
 				3D5537C22200ED5F002C1B77 /* SlideUpSegue.swift in Sources */,
 				3D5537C02200E86E002C1B77 /* SlideDownSegue.swift in Sources */,
@@ -579,7 +572,6 @@
 				3DC07CC722205B7C0045E7DE /* ContextMenuCell.swift in Sources */,
 				3D9FBC1222248371006BB297 /* MasterViewController.swift in Sources */,
 				B781B95B22132C2F001C1BD8 /* CanvasController.swift in Sources */,
-				3D7F332F22331E7B003DD58C /* StylusPoint.swift in Sources */,
 				B7567946220F33CD00F80B12 /* ChatService.swift in Sources */,
 				B7567948220F355F00F80B12 /* Constants.swift in Sources */,
 			);
