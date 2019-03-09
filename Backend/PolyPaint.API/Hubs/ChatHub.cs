@@ -63,19 +63,7 @@ namespace PolyPaint.API.Hubs
 
         public async Task ConnectToChannel(string message)
         {
-            Console.WriteLine();
-            Console.WriteLine();
-            Console.WriteLine("MESSAGE");
-            Console.WriteLine(message);
-            Console.WriteLine();
-            Console.WriteLine();
             var connectionMessage = JsonConvert.DeserializeObject<ConnectionMessage>(message);
-            Console.WriteLine();
-            Console.WriteLine();
-            Console.WriteLine("JSON");
-            Console.WriteLine(connectionMessage);
-            Console.WriteLine();
-            Console.WriteLine();
             var user = await GetUserFromToken(Context.User);
             if (user != null)
             {
@@ -116,11 +104,6 @@ namespace PolyPaint.API.Hubs
             if (user != null)
             {
                 await base.OnConnectedAsync();
-                Console.WriteLine();
-                Console.WriteLine();
-                Console.WriteLine("ON CONNECTION");
-                Console.WriteLine();
-                Console.WriteLine();
                 await ConnectToChannel((new ConnectionMessage(channelId: "general")).ToString());
                 await Clients.Caller.SendAsync("ClientIsConnected", "You are connected!");
             }
