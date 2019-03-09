@@ -182,16 +182,19 @@ class ChatService {
                 print(channels);
             });
             
-            let json = try? JSONEncoder().encode(ConnectionMessage(channelId: "general"));
-            let jsondata: String = String(data: json!, encoding: .utf8)!;
+//             A DECOMMENTER LORSQU'IL Y AURA PLUSIEURS CHANNELS.
+//             Pour le moment, le serveur connecte directement au channel GENERAL.
             
-            self.hubConnection.invoke(method: "ConnectToChannel", arguments: [jsondata], invocationDidComplete: { error in
-                print("[ CHAT ] Invoked ConnectToChannel avec argument 'general'.");
-                if let e = error {
-                    print("ERROR while invoking ConnectToChannel.");
-                    print(e);
-                }
-            });
+//            let json = try? JSONEncoder().encode(ConnectionMessage(channelId: "general"));
+//            let jsondata: String = String(data: json!, encoding: .utf8)!;
+//
+//            self.hubConnection.invoke(method: "ConnectToChannel", arguments: [jsondata], invocationDidComplete: { error in
+//                print("[ CHAT ] Invoked ConnectToChannel avec argument 'general'.");
+//                if let e = error {
+//                    print("ERROR while invoking ConnectToChannel.");
+//                    print(e);
+//                }
+//            });
 
             self.hubConnection.on(method: "ConnectToChannel", callback: { args, typeConverter in
                 print("[ CHAT ] On ConnectToChannel");
@@ -212,9 +215,7 @@ class ChatService {
                         messageId: UUID().uuidString
                     );
                     
-                    if (!self._members.isAlreadyInArray(memberName: obj.username)) {
-                        insertMessage(newMessage);
-                    }
+                    insertMessage(newMessage);
                 }
             });
             
