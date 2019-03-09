@@ -84,14 +84,7 @@ class ChatService {
             if let messageJsonData = messageJson.data(using: .utf8) {
                 let message: ChatMessage = try! JSONDecoder().decode(ChatMessage.self, from: messageJsonData);
                 
-                var memberFromMessage: Member = Member(
-                    name: message.username,
-                    color: .random
-                );
-                
-                if (!self._members.addMember(member: memberFromMessage)) {
-                    memberFromMessage = self._members.getMemberByName(memberName: message.username);
-                }
+                let memberFromMessage = self._members.getMemberByName(memberName: message.username);
                 
                 let newMessage = Message(
                     member: memberFromMessage,
@@ -145,6 +138,86 @@ class ChatService {
 //
 //            insertMessage(newMessage);
 //        });
+        
+        self.hubConnection.on(method: "ConnectToChannel", callback: { args, typeConverter in
+            print("[ CHAT ] On ConnectToChannel");
+            
+            let json: String = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self)!;
+            if let jsonData = json.data(using: .utf8) {
+                let obj: ConnectionMessage = try! JSONDecoder().decode(ConnectionMessage.self, from: jsonData);
+                
+                let memberFromMessage: Member = Member(
+                    name: obj.username,
+                    color: .random
+                );
+                
+                self._members.addMember(member: memberFromMessage);
+                
+                let sysMember = Member(
+                    name: "SYSTEM",
+                    color: .random
+                );
+                
+                let newMessage = Message(
+                    member: sysMember,
+                    text: obj.username + " just joined the room",
+                    timestamp: Constants.formatter.string(from: Date()),
+                    messageId: UUID().uuidString
+                );
+                
+                insertMessage(newMessage);
+            }
+        });
+        
+        self.hubConnection.on(method: "ConnectToChannelSender", callback: { args, typeConverter in
+            print("[ CHAT ] On ConnectToChannelSender");
+            
+            let json: String = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self)!;
+            if let jsonData = json.data(using: .utf8) {
+                let obj: ConnectionMessage = try! JSONDecoder().decode(ConnectionMessage.self, from: jsonData);
+                
+                let sysMember = Member(
+                    name: "SYSTEM",
+                    color: .random
+                );
+                
+                let newMessage = Message(
+                    member: sysMember,
+                    text: "You joined the room : " + obj.channelId,
+                    timestamp: Constants.formatter.string(from: Date()),
+                    messageId: UUID().uuidString
+                );
+                
+                insertMessage(newMessage);
+            }
+        });
+        
+        self.hubConnection.on(method: "DisconnectFromChannel", callback: { args, typeConverter in
+            print("[ CHAT ] On DisconnectFromChannel");
+            
+            let json: String = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self)!;
+            if let jsonData = json.data(using: .utf8) {
+                let obj: ConnectionMessage = try! JSONDecoder().decode(ConnectionMessage.self, from: jsonData);
+                
+                let sysMember = Member(
+                    name: "SYSTEM",
+                    color: .random
+                );
+                
+                if (self._members.isAlreadyInArray(memberName: obj.username)) {
+                    self._members.removeFromArray(member: self._members.getMemberByName(memberName: obj.username));
+                }
+                
+                let newMessage = Message(
+                    member: sysMember,
+                    text: obj.username + " just left the room",
+                    timestamp: Constants.formatter.string(from: Date()),
+                    messageId: UUID().uuidString
+                );
+                
+                insertMessage(newMessage);
+            }
+        });
     }
     
     public func connectToGroup(insertMessage: @escaping (_ message: Message) -> Void) -> Void {
@@ -195,52 +268,6 @@ class ChatService {
 //                    print(e);
 //                }
 //            });
-
-            self.hubConnection.on(method: "ConnectToChannel", callback: { args, typeConverter in
-                print("[ CHAT ] On ConnectToChannel");
-                
-                let json: String = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self)!;
-                if let jsonData = json.data(using: .utf8) {
-                    let obj: ConnectionMessage = try! JSONDecoder().decode(ConnectionMessage.self, from: jsonData);
-                    
-                    let sysMember = Member(
-                        name: "SYSTEM",
-                        color: .random
-                    );
-                    
-                    let newMessage = Message(
-                        member: sysMember,
-                        text: obj.username + " just joined the room",
-                        timestamp: Constants.formatter.string(from: Date()),
-                        messageId: UUID().uuidString
-                    );
-                    
-                    insertMessage(newMessage);
-                }
-            });
-            
-            self.hubConnection.on(method: "ConnectToChannelSender", callback: { args, typeConverter in
-                print("[ CHAT ] On ConnectToChannelSender");
-                
-                let json: String = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self)!;
-                if let jsonData = json.data(using: .utf8) {
-                    let obj: ConnectionMessage = try! JSONDecoder().decode(ConnectionMessage.self, from: jsonData);
-                    
-                    let sysMember = Member(
-                        name: "SYSTEM",
-                        color: .random
-                    );
-                    
-                    let newMessage = Message(
-                        member: sysMember,
-                        text: "You joined the room : " + obj.channelId,
-                        timestamp: Constants.formatter.string(from: Date()),
-                        messageId: UUID().uuidString
-                    );
-                    
-                    insertMessage(newMessage);
-                }
-            });
         });
     }
     
