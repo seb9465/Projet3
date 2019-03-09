@@ -83,7 +83,6 @@ class ChatService {
             let messageJson: String = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self)!;
             if let messageJsonData = messageJson.data(using: .utf8) {
                 let message: ChatMessage = try! JSONDecoder().decode(ChatMessage.self, from: messageJsonData);
-                print(message);
                 
                 var memberFromMessage: Member = Member(
                     name: message.username,
@@ -256,9 +255,6 @@ class ChatService {
             }
             SoundNotification.play(sound: Sound.ReceiveMessage);
             insertMessage(message);
-        })
+        });
     }
-    
-    
-    
 }
