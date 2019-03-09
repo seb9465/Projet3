@@ -97,10 +97,32 @@ class ChatService {
 //
 //            insertMessage(newMessage);
 //        });
-        self.hubConnection.on(method: "ConnectToChannelSender", callback: { args, typeConverter in
-            print("On ConnectToChannelSender");
+//        self.hubConnection.on(method: "ConnectToChannelSender", callback: { args, typeConverter in
+//            print("On ConnectToChannelSender");
+//            print(args);
+//            let message: ConnectionMessage = try! typeConverter.convertFromWireType(obj: args[0], targetType: ConnectionMessage.self)!;
+//
+//            let sysMember = Member(
+//                name: "SYSTEM",
+//                color: .random
+//            );
+//
+//            let newMessage = Message(
+//                member: sysMember,
+//                text: message.username + " just connected",
+//                timestamp: Constants.formatter.string(from: Date()),
+//                messageId: UUID().uuidString
+//            );
+//
+//            insertMessage(newMessage);
+//        });
+    }
+    
+    public func connectToGroup(insertMessage: @escaping (_ message: Message) -> Void) -> Void {
+        self.hubConnection.on(method: "ClientIsConnected", callback: { args, typeConverter in
+            print("On ClientIsConnected");
             print(args);
-            let message: ConnectionMessage = try! typeConverter.convertFromWireType(obj: args[0], targetType: ConnectionMessage.self)!;
+            let message: String = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self)!;
             
             let sysMember = Member(
                 name: "SYSTEM",
@@ -109,18 +131,15 @@ class ChatService {
             
             let newMessage = Message(
                 member: sysMember,
-                text: message.username + " just connected",
+                text: message,
                 timestamp: Constants.formatter.string(from: Date()),
                 messageId: UUID().uuidString
             );
             
             insertMessage(newMessage);
-        });
-    }
-    
-    public func connectToGroup() -> Void {
-        self.hubConnection.on(method: "ClientIsConnected", callback: { args, typeConverter in
-            print("Client connected to hub.");
+            
+            
+            
             self.hubConnection.invoke(method: "FetchChannels", arguments: [], invocationDidComplete: { error in
                 print("Invoked FetchChannels");
                 if let e = error {

@@ -36,7 +36,7 @@ class MsgChatController: MessagesViewController, MsgChatProtocol {
         self.initDelegate();
         self.chatService.initOnReceivingMessage(currentMemberName: self.member.name, insertMessage: self.insertMessage)
         self.chatService.initOnAnotherUserConnection(insertMessage: self.insertMessage);
-        self.chatService.connectToGroup();
+        self.chatService.connectToGroup(insertMessage: self.insertMessage);
         
         super.viewDidLoad();
     }
