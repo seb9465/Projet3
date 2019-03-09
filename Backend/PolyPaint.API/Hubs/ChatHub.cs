@@ -70,8 +70,8 @@ namespace PolyPaint.API.Hubs
                 await Groups.AddToGroupAsync(Context.ConnectionId, connectionMessage.ChannelId);
                 UserHandler.AddOrUpdateMap(connectionMessage.ChannelId, user.Id);
                 var returnMessage = new ConnectionMessage(user.UserName, channelId: connectionMessage.ChannelId);
-                await Clients.Group(connectionMessage.ChannelId).SendAsync(
-                    "ConnectToChannelGroup",
+                await Clients.OthersInGroup(connectionMessage.ChannelId).SendAsync(
+                    "ConnectToChannel",
                     returnMessage.ToString()
                 );
                 await Clients.Caller.SendAsync("ConnectToChannelSender", returnMessage.ToString());
