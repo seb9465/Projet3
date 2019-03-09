@@ -190,16 +190,6 @@ class ChatService {
             
             insertMessage(newMessage);
             
-            
-            
-            self.hubConnection.invoke(method: "FetchChannels", arguments: [], invocationDidComplete: { error in
-                print("[ CHAT ] Invoked FetchChannels");
-                if let e = error {
-                    print("ERROR while invoking FetchChannels");
-                    print(e);
-                }
-            });
-            
             self.hubConnection.on(method: "FetchChannels", callback: { args, typeConverter in
                 print("[ CHAT ] On FetchChannels");
                 let channels: Any = try! typeConverter.convertFromWireType(obj: args[0], targetType: Any.self)!
@@ -222,8 +212,14 @@ class ChatService {
         });
     }
     
-    public func fetchChannels() -> Void {
-        
+    public func invokeFetchChannels() -> Void {
+        self.hubConnection.invoke(method: "FetchChannels", arguments: [], invocationDidComplete: { error in
+            print("[ CHAT ] Invoked FetchChannels");
+            if let e = error {
+                print("ERROR while invoking FetchChannels");
+                print(e);
+            }
+        });
     }
     
     public func disconnectFromHub() -> Void {
@@ -244,14 +240,6 @@ class ChatService {
     }
     
     public func sendMessage(currentUser: String, message: Message, insertMessage: @escaping (_ message: Message) -> Void) -> Void {
-//        self.hubConnection.invoke(method: "SendMessage", arguments: [message.text], invocationDidComplete: { error in
-//            if let e = error {
-//                print("ERROR");
-//                print(e);
-//            }
-//            SoundNotification.play(sound: Sound.ReceiveMessage);
-//            insertMessage(message);
-//        });
         let chatMsg: ChatMessage = ChatMessage(user: currentUser, message: message.text, channelId: "general");
         let json = try? JSONEncoder().encode(chatMsg);
         let jsonData: String = String(data: json!, encoding: .utf8)!;
