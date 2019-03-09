@@ -154,13 +154,9 @@ class ChatService {
             });
             
             let json = try? JSONEncoder().encode(ConnectionMessage(channelId: "general"));
-            if let jsondata = String(data: json!, encoding: .utf8) {
-                    print(jsondata);
-            } else {
-                print("Error JSON Encode");
-            }
+            let jsondata: String = String(data: json!, encoding: .utf8)!;
             
-            self.hubConnection.invoke(method: "ConnectToChannel", arguments: [json], invocationDidComplete: { error in
+            self.hubConnection.invoke(method: "ConnectToChannel", arguments: [jsondata], invocationDidComplete: { error in
                 print("Invoked ConnectToChannel avec argument 'general'.");
                 if let e = error {
                     print("ERROR while invoking ConnectToChannel.");
@@ -172,6 +168,21 @@ class ChatService {
                 print("On ConnectToChannel");
                 print(args);
                 print(typeConverter);
+                
+                
+                let sysMember = Member(
+                    name: "SYSTEM",
+                    color: .random
+                );
+                
+                let newMessage = Message(
+                    member: sysMember,
+                    text: "You are now connected to general room",
+                    timestamp: Constants.formatter.string(from: Date()),
+                    messageId: UUID().uuidString
+                );
+                
+                insertMessage(newMessage);
             })
         });
     }

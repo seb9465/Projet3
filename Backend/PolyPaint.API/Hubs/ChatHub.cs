@@ -116,6 +116,11 @@ namespace PolyPaint.API.Hubs
             if (user != null)
             {
                 await base.OnConnectedAsync();
+                Console.WriteLine();
+                Console.WriteLine();
+                Console.WriteLine("ON CONNECTION");
+                Console.WriteLine();
+                Console.WriteLine();
                 await ConnectToChannel((new ConnectionMessage(channelId: "general")).ToString());
                 await Clients.Caller.SendAsync("ClientIsConnected", "You are connected!");
             }
