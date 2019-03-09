@@ -193,8 +193,8 @@ class ChatService {
                 }
             });
 
-            self.hubConnection.on(method: "ConnectToChannelGroup", callback: { args, typeConverter in
-                print("[ CHAT ] On ConnectToChannelGroup");
+            self.hubConnection.on(method: "ConnectToChannel", callback: { args, typeConverter in
+                print("[ CHAT ] On ConnectToChannel");
                 
                 let json: String = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self)!;
                 if let jsonData = json.data(using: .utf8) {
@@ -212,7 +212,9 @@ class ChatService {
                         messageId: UUID().uuidString
                     );
                     
-                    insertMessage(newMessage);
+                    if (!self._members.isAlreadyInArray(memberName: obj.username)) {
+                        insertMessage(newMessage);
+                    }
                 }
             });
             
