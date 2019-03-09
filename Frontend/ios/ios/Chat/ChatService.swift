@@ -85,6 +85,27 @@ class ChatService {
             if let messageJsonData = messageJson.data(using: .utf8) {
                 let message: ChatMessage = try! JSONDecoder().decode(ChatMessage.self, from: messageJsonData);
                 print(message);
+                
+                var memberFromMessage: Member = Member(
+                    name: message.username,
+                    color: .random
+                );
+                
+                if (!self._members.addMember(member: memberFromMessage)) {
+                    memberFromMessage = self._members.getMemberByName(memberName: message.username);
+                }
+                
+                let newMessage = Message(
+                    member: memberFromMessage,
+                    text: message.message,
+                    timestamp: message.timestamp,
+                    messageId: UUID().uuidString
+                );
+                
+                if (message.username != currentMemberName) {
+                    insertMessage(newMessage);
+                    SoundNotification.play(sound: Sound.SendMessage);
+                }
             }
         })
     }
