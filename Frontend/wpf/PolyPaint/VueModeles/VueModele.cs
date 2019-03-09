@@ -30,6 +30,7 @@ namespace PolyPaint.VueModeles
         private string _currentRoom;
         private ObservableCollection<Room> _rooms;
         private ConcurrentDictionary<string, ObservableCollection<string>> _messagesByChannel { get; set; }
+        private MediaPlayer mediaPlayer = new MediaPlayer();
 
         public ChatClient ChatClient { get; set; }
 
@@ -259,6 +260,9 @@ namespace PolyPaint.VueModeles
                 });
             });
             ProprieteModifiee("MessagesListBox");
+            mediaPlayer.Open(new Uri("SoundEffects//receive.mp3", UriKind.Relative));
+            mediaPlayer.Volume = 100;
+            mediaPlayer.Play();
         }
 
         public void ConnectedToRoom(object sender, MessageArgs e)
