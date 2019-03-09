@@ -11,7 +11,7 @@ import SwiftSignalRClient
 import PromiseKit
 import AVFoundation
 
-class Channel {
+class Channel: Codable {
     public var name: String;
     public var connected: Bool;
     
@@ -32,6 +32,15 @@ class ConnectionMessage: Codable {
         self.channelId = channelId!;
     }
 }
+
+class Channels: Codable {
+    public var channels: [Channel];
+    
+    init(channels: [Channel]) {
+        self.channels = channels;
+    }
+}
+
 
 class ChatService {
     var hubConnection: HubConnection;
@@ -274,6 +283,10 @@ class ChatService {
 //                }
 //            });
         });
+    }
+    
+    public func fetchChannels() -> Void {
+        
     }
     
     public func disconnectFromHub() -> Void {

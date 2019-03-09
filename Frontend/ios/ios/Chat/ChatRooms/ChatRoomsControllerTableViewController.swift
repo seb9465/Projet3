@@ -16,6 +16,7 @@ class ChatRoomsControllerTableViewController: UITableViewController {
     override init(style: UITableView.Style) {
         
         self.chatService = ChatService();
+        self.chatService.connectToHub();
         super.init(style: style);
     }
     
@@ -26,7 +27,6 @@ class ChatRoomsControllerTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
