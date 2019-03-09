@@ -84,7 +84,12 @@ class ChatService {
             if let messageJsonData = messageJson.data(using: .utf8) {
                 let message: ChatMessage = try! JSONDecoder().decode(ChatMessage.self, from: messageJsonData);
                 
-                let memberFromMessage = self._members.getMemberByName(memberName: message.username);
+                var memberFromMessage: Member;
+                if (self._members.isAlreadyInArray(memberName: message.username)) {
+                    memberFromMessage = self._members.getMemberByName(memberName: message.username);
+                } else {
+                    memberFromMessage = Member( name: message.username, color: .random );
+                }
                 
                 let newMessage = Message(
                     member: memberFromMessage,
