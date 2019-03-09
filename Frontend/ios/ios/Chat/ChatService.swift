@@ -90,43 +90,6 @@ class ChatService {
     }
     
     public func initOnAnotherUserConnection(insertMessage: @escaping (_ message: Message) -> Void) -> Void {
-//        self.hubConnection.on(method: "SystemMessage", callback: { args, typeConverter in
-//            let message = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self);
-//
-//            let sysMember = Member(
-//                name: "SYSTEM",
-//                color: .random
-//            );
-//
-//            let newMessage = Message(
-//                member: sysMember,
-//                text: message!,
-//                timestamp: Constants.formatter.string(from: Date()),
-//                messageId: UUID().uuidString
-//            );
-//
-//            insertMessage(newMessage);
-//        });
-//        self.hubConnection.on(method: "ConnectToChannelSender", callback: { args, typeConverter in
-//            print("On ConnectToChannelSender");
-//            print(args);
-//            let message: ConnectionMessage = try! typeConverter.convertFromWireType(obj: args[0], targetType: ConnectionMessage.self)!;
-//
-//            let sysMember = Member(
-//                name: "SYSTEM",
-//                color: .random
-//            );
-//
-//            let newMessage = Message(
-//                member: sysMember,
-//                text: message.username + " just connected",
-//                timestamp: Constants.formatter.string(from: Date()),
-//                messageId: UUID().uuidString
-//            );
-//
-//            insertMessage(newMessage);
-//        });
-        
         self.hubConnection.on(method: "ConnectToChannel", callback: { args, typeConverter in
             print("[ CHAT ] On ConnectToChannel");
             
