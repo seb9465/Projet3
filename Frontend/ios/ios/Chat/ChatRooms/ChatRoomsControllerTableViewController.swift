@@ -10,28 +10,28 @@ import UIKit
 
 class ChatRoomsControllerTableViewController: UITableViewController {
     
-    var chatService: ChatService;
-//    var rooms;
-    
-    override init(style: UITableView.Style) {
-        
-        self.chatService = ChatService();
-        self.chatService.connectToHub();
-        super.init(style: style);
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+//    var chatService: ChatService = ChatService();
+    var channels: Channels = Channels();
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        ChatService.shared.onFetchChannels(updateChannelsFct: self.updateChannels);
+        ChatService.shared.invokeChannelsWhenConnected();
+        ChatService.shared.connectToHub();
+        
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cellIdentifier")
         
         // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
+//         self.clearsSelectionOnViewWillAppear = false
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
+         self.navigationItem.rightBarButtonItem = self.editButtonItem
+    }
+    
+    public func updateChannels(channels: [Channel]) -> Void {
+        self.channels.channels = channels;
+        self.tableView.reloadData();
+        self.tableView.endUpdates();
     }
 
     // MARK: - Table view data source
@@ -41,23 +41,20 @@ class ChatRoomsControllerTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        //  A CHANGER QUAND SERA CONNECTÉ AVEC L'API
-        return 1;
+        return self.channels.channels.count;
     }
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        var cell = tableView.dequeueReusableCell(withIdentifier: "cellIdentifier")
+        print("[ CHATROOM ] ");
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cellIdentifier", for: indexPath);
         
-        if cell == nil
-        {
-            cell = UITableViewCell(style: .subtitle, reuseIdentifier: "cellIdentifier")
-        }
+        print("\(#function) --- section = \(indexPath.section), row = \(indexPath.row)");
         
-//        cell!.textLabel?.text = contacts[indexPath.row][0]
+        cell.textLabel?.text = self.channels.channels[indexPath.row].name;
 //        cell!.detailTextLabel?.text = contacts[indexPath.row][1]
         
-        return cell!
+        return cell;
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -65,6 +62,8 @@ class ChatRoomsControllerTableViewController: UITableViewController {
 //        {
 //            UIApplication.shared.open(url)
 //        }
+        
+        
     }
  
 

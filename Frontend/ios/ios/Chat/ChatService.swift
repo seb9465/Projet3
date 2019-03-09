@@ -36,15 +36,17 @@ class ConnectionMessage: Codable {
 class Channels: Codable {
     public var channels: [Channel];
     
-    init(channels: [Channel]) {
-        self.channels = channels;
+    init(channels: [Channel]? = []) {
+        self.channels = channels!;
     }
 }
 
 
 class ChatService {
+    static let shared = ChatService();
     var hubConnection: HubConnection;
     var _members: Members;
+    var currentChannel: Channel!;
     
     
     init() {
@@ -171,6 +173,12 @@ class ChatService {
         });
     }
     
+    public func invokeChannelsWhenConnected() -> Void {
+        self.hubConnection.on(method: "ClientIsConnected", callback: { args, typeConverter in
+            self.invokeFetchChannels();
+        });
+    }
+    
     public func connectToGroup(insertMessage: @escaping (_ message: Message) -> Void) -> Void {
         self.hubConnection.on(method: "ClientIsConnected", callback: { args, typeConverter in
             print("[ CHAT ] On ClientIsConnected");
@@ -189,8 +197,6 @@ class ChatService {
             );
             
             insertMessage(newMessage);
-            
-            
             
 //             A DECOMMENTER LORSQU'IL Y AURA PLUSIEURS CHANNELS.
 //             Pour le moment, le serveur connecte directement au channel GENERAL.
@@ -218,12 +224,15 @@ class ChatService {
         });
     }
     
-    public func onFetchChannels(updateChannelsFct: @escaping (_ channels: Channels) -> Void) -> Void {
+    public func onFetchChannels(updateChannelsFct: @escaping (_ channels: [Channel]) -> Void) -> Void {
         self.hubConnection.on(method: "FetchChannels", callback: { args, typeConverter in
             print("[ CHAT ] On FetchChannels");
-            let channels: Channels = try! typeConverter.convertFromWireType(obj: args[0], targetType: Channels.self)!
-            print(channels);
-            updateChannelsFct(channels);
+            
+            let channelsJson: String = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self)!;
+            if let channelsJsonData = channelsJson.data(using: .utf8) {
+                let channels: Channels = try! JSONDecoder().decode(Channels.self, from: channelsJsonData);
+                updateChannelsFct(channels.channels);
+            }
         });
     }
     
