@@ -56,8 +56,13 @@ class Members {
 }
 
 class Member {
-    private let _name: String;
-    private let _color: UIColor;
+//    enum CodingKeys: String, CodingKey {
+//        case name = "_name"
+//        case color = "_color"
+//    }
+    
+    let _name: String;
+    let _color: UIColor;
     
     var name: String {
         get { return _name }
@@ -70,4 +75,10 @@ class Member {
         self._name = name;
         self._color = color;
     }
+    
+//    required init(from decoder: Decoder) throws {
+//        let values = try decoder.container(keyedBy: CodingKeys.self);
+//        _name = try values.decode(String.self, forKey: .name);
+//        _color = try values.decode(UIColor.self, forKey: .color);
+//    }
 }
