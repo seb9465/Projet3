@@ -190,11 +190,7 @@ class ChatService {
             
             insertMessage(newMessage);
             
-            self.hubConnection.on(method: "FetchChannels", callback: { args, typeConverter in
-                print("[ CHAT ] On FetchChannels");
-                let channels: Any = try! typeConverter.convertFromWireType(obj: args[0], targetType: Any.self)!
-                print(channels);
-            });
+            
             
 //             A DECOMMENTER LORSQU'IL Y AURA PLUSIEURS CHANNELS.
 //             Pour le moment, le serveur connecte directement au channel GENERAL.
@@ -219,6 +215,15 @@ class ChatService {
                 print("ERROR while invoking FetchChannels");
                 print(e);
             }
+        });
+    }
+    
+    public func onFetchChannels(updateChannelsFct: @escaping (_ channels: Channels) -> Void) -> Void {
+        self.hubConnection.on(method: "FetchChannels", callback: { args, typeConverter in
+            print("[ CHAT ] On FetchChannels");
+            let channels: Channels = try! typeConverter.convertFromWireType(obj: args[0], targetType: Channels.self)!
+            print(channels);
+            updateChannelsFct(channels);
         });
     }
     
