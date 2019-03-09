@@ -52,32 +52,32 @@ class ChatService {
     }
     
     public func initOnReceivingMessage(currentMemberName: String, insertMessage: @escaping (_ message: Message) -> Void) {
-        self.hubConnection.on(method: "ReceiveMessage", callback: { args, typeConverter in
-            let user = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self);
-            let message = try! typeConverter.convertFromWireType(obj: args[1], targetType: String.self);
-            let timestamp = try! typeConverter.convertFromWireType(obj: args[2], targetType: String.self);
-
-            var memberFromMessage: Member = Member(
-                name: user!,
-                color: .random
-            );
-            
-            if (!self._members.addMember(member: memberFromMessage)) {
-                memberFromMessage = self._members.getMemberByName(memberName: user!);
-            }
-            
-            let newMessage = Message(
-                member: memberFromMessage,
-                text: message!,
-                timestamp: timestamp!,
-                messageId: UUID().uuidString
-            );
-            
-            if (user != currentMemberName) {
-                insertMessage(newMessage);
-                SoundNotification.play(sound: Sound.SendMessage);
-            }
-        });
+//        self.hubConnection.on(method: "ReceiveMessage", callback: { args, typeConverter in
+//            let user = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self);
+//            let message = try! typeConverter.convertFromWireType(obj: args[1], targetType: String.self);
+//            let timestamp = try! typeConverter.convertFromWireType(obj: args[2], targetType: String.self);
+//
+//            var memberFromMessage: Member = Member(
+//                name: user!,
+//                color: .random
+//            );
+//            
+//            if (!self._members.addMember(member: memberFromMessage)) {
+//                memberFromMessage = self._members.getMemberByName(memberName: user!);
+//            }
+//            
+//            let newMessage = Message(
+//                member: memberFromMessage,
+//                text: message!,
+//                timestamp: timestamp!,
+//                messageId: UUID().uuidString
+//            );
+//            
+//            if (user != currentMemberName) {
+//                insertMessage(newMessage);
+//                SoundNotification.play(sound: Sound.SendMessage);
+//            }
+//        });
     }
     
     public func initOnAnotherUserConnection(insertMessage: @escaping (_ message: Message) -> Void) -> Void {
@@ -192,14 +192,14 @@ class ChatService {
     }
     
     public func sendMessage(message: Message, insertMessage: @escaping (_ message: Message) -> Void) -> Void {
-        self.hubConnection.invoke(method: "SendMessage", arguments: [message.text], invocationDidComplete: { error in
-            if let e = error {
-                print("ERROR");
-                print(e);
-            }
-            SoundNotification.play(sound: Sound.ReceiveMessage);
-            insertMessage(message);
-        });
+//        self.hubConnection.invoke(method: "SendMessage", arguments: [message.text], invocationDidComplete: { error in
+//            if let e = error {
+//                print("ERROR");
+//                print(e);
+//            }
+//            SoundNotification.play(sound: Sound.ReceiveMessage);
+//            insertMessage(message);
+//        });
     }
     
     
