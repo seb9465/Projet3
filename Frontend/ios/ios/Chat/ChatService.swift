@@ -47,7 +47,7 @@ class ChatService {
     }
     
     public func connectToHub() -> Void {
-        print("Connect to hub");
+        print("[ CHAT ] Connect to hub");
         self.hubConnection.start();
     }
     
@@ -81,7 +81,6 @@ class ChatService {
         self.hubConnection.on(method: "SendMessage", callback: { args, typeConverter in
             print("[ CHAT ] On SendMessage");
             let messageJson: String = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self)!;
-            print(messageJson);
             if let messageJsonData = messageJson.data(using: .utf8) {
                 let message: ChatMessage = try! JSONDecoder().decode(ChatMessage.self, from: messageJsonData);
                 print(message);
@@ -151,6 +150,7 @@ class ChatService {
     
     public func connectToGroup(insertMessage: @escaping (_ message: Message) -> Void) -> Void {
         self.hubConnection.on(method: "ClientIsConnected", callback: { args, typeConverter in
+            print("[ CHAT ] On ClientIsConnected");
             let message: String = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self)!;
             
             let sysMember = Member(
@@ -170,7 +170,7 @@ class ChatService {
             
             
             self.hubConnection.invoke(method: "FetchChannels", arguments: [], invocationDidComplete: { error in
-                print("Invoked FetchChannels");
+                print("[ CHAT ] Invoked FetchChannels");
                 if let e = error {
                     print("ERROR while invoking FetchChannels");
                     print(e);
@@ -178,7 +178,7 @@ class ChatService {
             });
             
             self.hubConnection.on(method: "FetchChannels", callback: { args, typeConverter in
-                print("On FetchChannels");
+                print("[ CHAT ] On FetchChannels");
                 let channels: Any = try! typeConverter.convertFromWireType(obj: args[0], targetType: Any.self)!
                 print(channels);
             });
@@ -187,7 +187,7 @@ class ChatService {
             let jsondata: String = String(data: json!, encoding: .utf8)!;
             
             self.hubConnection.invoke(method: "ConnectToChannel", arguments: [jsondata], invocationDidComplete: { error in
-                print("Invoked ConnectToChannel avec argument 'general'.");
+                print("[ CHAT ] Invoked ConnectToChannel avec argument 'general'.");
                 if let e = error {
                     print("ERROR while invoking ConnectToChannel.");
                     print(e);
@@ -195,7 +195,7 @@ class ChatService {
             });
 
             self.hubConnection.on(method: "ConnectToChannel", callback: { args, typeConverter in
-                print("On ConnectToChannel");
+                print("[ CHAT ] On ConnectToChannel");
                 
                 let json: String = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self)!;
                 if let jsonData = json.data(using: .utf8) {
@@ -236,7 +236,7 @@ class ChatService {
         })
     }
     
-    public func sendMessage(message: Message, insertMessage: @escaping (_ message: Message) -> Void) -> Void {
+    public func sendMessage(currentUser: String, message: Message, insertMessage: @escaping (_ message: Message) -> Void) -> Void {
 //        self.hubConnection.invoke(method: "SendMessage", arguments: [message.text], invocationDidComplete: { error in
 //            if let e = error {
 //                print("ERROR");
@@ -245,7 +245,18 @@ class ChatService {
 //            SoundNotification.play(sound: Sound.ReceiveMessage);
 //            insertMessage(message);
 //        });
-        
+        let chatMsg: ChatMessage = ChatMessage(user: currentUser, message: message.text, channelId: "general");
+        let json = try? JSONEncoder().encode(chatMsg);
+        let jsonData: String = String(data: json!, encoding: .utf8)!;
+        self.hubConnection.invoke(method: "SendMessage", arguments: [jsonData], invocationDidComplete: { error in
+            print("[ CHAT ] Invoke SendMessage");
+            if let e = error {
+                print("ERROR");
+                print(e);
+            }
+            SoundNotification.play(sound: Sound.ReceiveMessage);
+            insertMessage(message);
+        })
     }
     
     
