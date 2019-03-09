@@ -190,7 +190,20 @@ class ChatService {
     }
     
     public func disconnectFromHub() -> Void {
+        self.disconnectFromChatRoom();
         self.hubConnection.stop();
+    }
+    
+    public func disconnectFromChatRoom() -> Void {
+        let json = try? JSONEncoder().encode(ConnectionMessage(channelId: "general"));
+        let jsondata: String = String(data: json!, encoding: .utf8)!;
+        self.hubConnection.invoke(method: "DisconnectFromChannel", arguments: [jsondata], invocationDidComplete: { error in
+            print("[ CHAT ] Invoked DisconnectFromChannel avec argument 'general'.");
+            if let e = error {
+                print("ERROR while invoking ConnectToChannel.");
+                print(e);
+            }
+        })
     }
     
     public func sendMessage(message: Message, insertMessage: @escaping (_ message: Message) -> Void) -> Void {
