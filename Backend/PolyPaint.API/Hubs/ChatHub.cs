@@ -32,7 +32,7 @@ namespace PolyPaint.API.Hubs
                 {
                     // Maybe change in a way that it doesnt send back to sender (sender handles his own message in the ui)
                     var returnMessage = new ChatMessage(user.UserName, chatMessage.Message, chatMessage.ChannelId, timestamp);
-                    await Clients.Group(chatMessage.ChannelId).SendAsync("SendMessage",
+                    await Clients.OthersInGroup(chatMessage.ChannelId).SendAsync("SendMessage",
                         returnMessage.ToString()
                     );
                 }
@@ -89,7 +89,7 @@ namespace PolyPaint.API.Hubs
                 {
                     list.Remove(user.Id);
                     var returnMessage = new ConnectionMessage(username: user.UserName, channelId: connectionMessage.ChannelId);
-                    await Clients.Group(connectionMessage.ChannelId).SendAsync(
+                    await Clients.OthersInGroup(connectionMessage.ChannelId).SendAsync(
                         "DisconnectFromChannel",
                         returnMessage.ToString()
                     );
