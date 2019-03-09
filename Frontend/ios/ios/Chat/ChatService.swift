@@ -78,6 +78,15 @@ class ChatService {
 //                SoundNotification.play(sound: Sound.SendMessage);
 //            }
 //        });
+        self.hubConnection.on(method: "SendMessage", callback: { args, typeConverter in
+            print("[ CHAT ] On SendMessage");
+            let messageJson: String = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self)!;
+            print(messageJson);
+            if let messageJsonData = messageJson.data(using: .utf8) {
+                let message: ChatMessage = try! JSONDecoder().decode(ChatMessage.self, from: messageJsonData);
+                print(message);
+            }
+        })
     }
     
     public func initOnAnotherUserConnection(insertMessage: @escaping (_ message: Message) -> Void) -> Void {
@@ -215,6 +224,7 @@ class ChatService {
 //            SoundNotification.play(sound: Sound.ReceiveMessage);
 //            insertMessage(message);
 //        });
+        
     }
     
     
