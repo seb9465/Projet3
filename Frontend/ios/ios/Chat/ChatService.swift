@@ -61,18 +61,18 @@ class ChatService {
 //                name: user!,
 //                color: .random
 //            );
-//            
+//
 //            if (!self._members.addMember(member: memberFromMessage)) {
 //                memberFromMessage = self._members.getMemberByName(memberName: user!);
 //            }
-//            
+//
 //            let newMessage = Message(
 //                member: memberFromMessage,
 //                text: message!,
 //                timestamp: timestamp!,
 //                messageId: UUID().uuidString
 //            );
-//            
+//
 //            if (user != currentMemberName) {
 //                insertMessage(newMessage);
 //                SoundNotification.play(sound: Sound.SendMessage);
@@ -166,23 +166,25 @@ class ChatService {
 
             self.hubConnection.on(method: "ConnectToChannel", callback: { args, typeConverter in
                 print("On ConnectToChannel");
-                print(args);
-                print(typeConverter);
                 
-                
-                let sysMember = Member(
-                    name: "SYSTEM",
-                    color: .random
-                );
-                
-                let newMessage = Message(
-                    member: sysMember,
-                    text: "You are now connected to general room",
-                    timestamp: Constants.formatter.string(from: Date()),
-                    messageId: UUID().uuidString
-                );
-                
-                insertMessage(newMessage);
+                let json: String = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self)!;
+                if let jsonData = json.data(using: .utf8) {
+                    let obj: ConnectionMessage = try! JSONDecoder().decode(ConnectionMessage.self, from: jsonData);
+                    
+                    let sysMember = Member(
+                        name: "SYSTEM",
+                        color: .random
+                    );
+                    
+                    let newMessage = Message(
+                        member: sysMember,
+                        text: "You are now connected to room " + obj.channelId,
+                        timestamp: Constants.formatter.string(from: Date()),
+                        messageId: UUID().uuidString
+                    );
+                    
+                    insertMessage(newMessage);
+                }
             })
         });
     }
