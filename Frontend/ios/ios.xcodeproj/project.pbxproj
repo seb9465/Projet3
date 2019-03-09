@@ -49,6 +49,8 @@
 		B7B1B43C2231C00400BEE17D /* MessageInpuBarExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B1B43B2231C00400BEE17D /* MessageInpuBarExtension.swift */; };
 		B7B1B43E2231C03900BEE17D /* MessageDisplayExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B1B43D2231C03900BEE17D /* MessageDisplayExtension.swift */; };
 		B7B1B4402231C06900BEE17D /* MessageLayoutExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B1B43F2231C06900BEE17D /* MessageLayoutExtension.swift */; };
+		B7B1B4472234725E00BEE17D /* ChatRoomsControllerTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B1B4452234725E00BEE17D /* ChatRoomsControllerTableViewController.swift */; };
+		B7B1B4482234725E00BEE17D /* ChatRoomsControllerTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B7B1B4462234725E00BEE17D /* ChatRoomsControllerTableViewController.xib */; };
 		C43102E122132226008F1D80 /* SoundNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43102E022132226008F1D80 /* SoundNotification.swift */; };
 		C5724AD99504D99A25966BB9 /* Pods_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6CD8C54089242A6862A3C2E4 /* Pods_ios.framework */; };
 /* End PBXBuildFile section */
@@ -112,6 +114,8 @@
 		B7B1B43B2231C00400BEE17D /* MessageInpuBarExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageInpuBarExtension.swift; sourceTree = "<group>"; };
 		B7B1B43D2231C03900BEE17D /* MessageDisplayExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageDisplayExtension.swift; sourceTree = "<group>"; };
 		B7B1B43F2231C06900BEE17D /* MessageLayoutExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageLayoutExtension.swift; sourceTree = "<group>"; };
+		B7B1B4452234725E00BEE17D /* ChatRoomsControllerTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ChatRoomsControllerTableViewController.swift; path = ChatRooms/ChatRoomsControllerTableViewController.swift; sourceTree = "<group>"; };
+		B7B1B4462234725E00BEE17D /* ChatRoomsControllerTableViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ChatRoomsControllerTableViewController.xib; path = ChatRooms/ChatRoomsControllerTableViewController.xib; sourceTree = "<group>"; };
 		C43102E022132226008F1D80 /* SoundNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundNotification.swift; sourceTree = "<group>"; };
 		C6C9AA086604975DCA6FF292 /* Pods-iosTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iosTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-iosTests/Pods-iosTests.debug.xcconfig"; sourceTree = "<group>"; };
 		E7966B3EFE20A93B4BE0DB10 /* Pods-ios.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ios.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ios/Pods-ios.debug.xcconfig"; sourceTree = "<group>"; };
@@ -268,6 +272,8 @@
 				B7567945220F33CD00F80B12 /* ChatService.swift */,
 				B7567949220F5DC800F80B12 /* Chat.storyboard */,
 				B756794B220F608B00F80B12 /* Members.swift */,
+				B7B1B4452234725E00BEE17D /* ChatRoomsControllerTableViewController.swift */,
+				B7B1B4462234725E00BEE17D /* ChatRoomsControllerTableViewController.xib */,
 			);
 			path = Chat;
 			sourceTree = "<group>";
@@ -406,6 +412,7 @@
 				B781B95922132BDB001C1BD8 /* Canvas.storyboard in Resources */,
 				B711B5F121F659A50096BF7F /* Assets.xcassets in Resources */,
 				B756794A220F5DC800F80B12 /* Chat.storyboard in Resources */,
+				B7B1B4482234725E00BEE17D /* ChatRoomsControllerTableViewController.xib in Resources */,
 				B711B5EF21F659A30096BF7F /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -525,6 +532,7 @@
 				B7A3A5C22203C27600031F64 /* Message.swift in Sources */,
 				B7B1B43E2231C03900BEE17D /* MessageDisplayExtension.swift in Sources */,
 				3DA9A50122220F870005F3AF /* GalleryHeader.swift in Sources */,
+				B7B1B4472234725E00BEE17D /* ChatRoomsControllerTableViewController.swift in Sources */,
 				B7B1B4392231BE8000BEE17D /* MessageDataSourceExtension.swift in Sources */,
 				B7B1B4402231C06900BEE17D /* MessageLayoutExtension.swift in Sources */,
 				B7A3A5C02203BF3B00031F64 /* ChatControler.swift in Sources */,
