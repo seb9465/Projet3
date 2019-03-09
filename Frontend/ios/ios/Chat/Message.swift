@@ -30,11 +30,11 @@ class ChatMessage: Codable {
     var channelId: String;
     var timestamp: String;
     
-    init(user: String, message: String, channelId: String, timestamp: String) {
+    init(user: String, message: String, channelId: String, timestamp: String? = "") {
         self.username = user;
         self.message = message;
         self.channelId = channelId;
-        self.timestamp = timestamp;
+        self.timestamp = timestamp!;
     }
 }
 
