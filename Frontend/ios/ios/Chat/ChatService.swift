@@ -193,8 +193,8 @@ class ChatService {
                 }
             });
 
-            self.hubConnection.on(method: "ConnectToChannel", callback: { args, typeConverter in
-                print("[ CHAT ] On ConnectToChannel");
+            self.hubConnection.on(method: "ConnectToChannelGroup", callback: { args, typeConverter in
+                print("[ CHAT ] On ConnectToChannelGroup");
                 
                 let json: String = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self)!;
                 if let jsonData = json.data(using: .utf8) {
