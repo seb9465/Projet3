@@ -21,21 +21,22 @@ class Channel {
     }
 }
 
-class ConnectionMessage {
+class ConnectionMessage: Codable {
     public var username: String;
     public var canvasId: String;
     public var channelId: String;
     
-    init(Username: String?="", CanvasId: String?="", ChannelId: String?="") {
-        self.username = Username!;
-        self.canvasId = CanvasId!;
-        self.channelId = ChannelId!;
+    init(username: String?="", canvasId: String?="", channelId: String?="") {
+        self.username = username!;
+        self.canvasId = canvasId!;
+        self.channelId = channelId!;
     }
 }
 
 class ChatService {
     var hubConnection: HubConnection;
     var _members: Members;
+    
     
     init() {
         self.hubConnection = HubConnectionBuilder(url: URL(string: Constants.CHAT_URL)!)
@@ -120,8 +121,6 @@ class ChatService {
     
     public func connectToGroup(insertMessage: @escaping (_ message: Message) -> Void) -> Void {
         self.hubConnection.on(method: "ClientIsConnected", callback: { args, typeConverter in
-            print("On ClientIsConnected");
-            print(args);
             let message: String = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self)!;
             
             let sysMember = Member(
@@ -147,25 +146,33 @@ class ChatService {
                     print(e);
                 }
             });
+            
             self.hubConnection.on(method: "FetchChannels", callback: { args, typeConverter in
                 print("On FetchChannels");
                 let channels: Any = try! typeConverter.convertFromWireType(obj: args[0], targetType: Any.self)!
                 print(channels);
             });
             
-//            self.hubConnection.invoke(method: "ConnectToChannel", arguments: [ConnectionMessage(ChannelId: "general")], invocationDidComplete: { error in
-//                print("Invoked ConnectToChannel avec argument 'general'.");
-//                if let e = error {
-//                    print("ERROR while invoking ConnectToChannel.");
-//                    print(e);
-//                }
-//            })
-//
-//            self.hubConnection.on(method: "ConnectToChannel", callback: { args, typeConverter in
-//                print("On ConnectToChannel");
-//                print(args);
-//                print(typeConverter);
-//            })
+            let json = try? JSONEncoder().encode(ConnectionMessage(channelId: "general"));
+            if let jsondata = String(data: json!, encoding: .utf8) {
+                    print(jsondata);
+            } else {
+                print("Error JSON Encode");
+            }
+            
+            self.hubConnection.invoke(method: "ConnectToChannel", arguments: [json], invocationDidComplete: { error in
+                print("Invoked ConnectToChannel avec argument 'general'.");
+                if let e = error {
+                    print("ERROR while invoking ConnectToChannel.");
+                    print(e);
+                }
+            });
+
+            self.hubConnection.on(method: "ConnectToChannel", callback: { args, typeConverter in
+                print("On ConnectToChannel");
+                print(args);
+                print(typeConverter);
+            })
         });
     }
     
@@ -183,4 +190,7 @@ class ChatService {
             insertMessage(message);
         });
     }
+    
+    
+    
 }
