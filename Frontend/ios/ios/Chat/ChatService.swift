@@ -207,14 +207,37 @@ class ChatService {
                     
                     let newMessage = Message(
                         member: sysMember,
-                        text: "You are now connected to room " + obj.channelId,
+                        text: obj.username + " just joined the room",
                         timestamp: Constants.formatter.string(from: Date()),
                         messageId: UUID().uuidString
                     );
                     
                     insertMessage(newMessage);
                 }
-            })
+            });
+            
+            self.hubConnection.on(method: "ConnectToChannelSender", callback: { args, typeConverter in
+                print("[ CHAT ] On ConnectToChannelSender");
+                
+                let json: String = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self)!;
+                if let jsonData = json.data(using: .utf8) {
+                    let obj: ConnectionMessage = try! JSONDecoder().decode(ConnectionMessage.self, from: jsonData);
+                    
+                    let sysMember = Member(
+                        name: "SYSTEM",
+                        color: .random
+                    );
+                    
+                    let newMessage = Message(
+                        member: sysMember,
+                        text: "You joined the room : " + obj.channelId,
+                        timestamp: Constants.formatter.string(from: Date()),
+                        messageId: UUID().uuidString
+                    );
+                    
+                    insertMessage(newMessage);
+                }
+            });
         });
     }
     
