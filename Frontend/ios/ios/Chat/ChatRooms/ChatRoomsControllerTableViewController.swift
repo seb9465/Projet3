@@ -9,11 +9,23 @@
 import UIKit
 
 class ChatRoomsControllerTableViewController: UITableViewController {
+    
+    var chatService: ChatService;
+//    var rooms;
+    
+    override init(style: UITableView.Style) {
         
+        self.chatService = ChatService();
+        super.init(style: style);
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cellIdentifier")
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -30,18 +42,31 @@ class ChatRoomsControllerTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         //  A CHANGER QUAND SERA CONNECTÉ AVEC L'API
-        return 1
+        return 1;
     }
 
-    /*
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-
-        // Configure the cell...
-
-        return cell
+        var cell = tableView.dequeueReusableCell(withIdentifier: "cellIdentifier")
+        
+        if cell == nil
+        {
+            cell = UITableViewCell(style: .subtitle, reuseIdentifier: "cellIdentifier")
+        }
+        
+//        cell!.textLabel?.text = contacts[indexPath.row][0]
+//        cell!.detailTextLabel?.text = contacts[indexPath.row][1]
+        
+        return cell!
     }
-    */
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+//        if let url = URL(string: "tel://" + contacts[indexPath.row][1])
+//        {
+//            UIApplication.shared.open(url)
+//        }
+    }
+ 
 
     /*
     // Override to support conditional editing of the table view.
