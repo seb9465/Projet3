@@ -100,29 +100,18 @@ namespace PolyPaint.API.Hubs
 
         public override async Task OnConnectedAsync()
         {
-            Console.WriteLine();
-            Console.WriteLine();
-            Console.WriteLine("ON CONNECTED ASYNC");
-            Console.WriteLine();
-            Console.WriteLine();
             var user = await GetUserFromToken(Context.User);
             if (user != null)
             {
-                Console.WriteLine("MESSAGE CONNECTED SENT");
                 await base.OnConnectedAsync();
-                await ConnectToChannel((new ConnectionMessage(channelId: "general")).ToString());
+                //await ConnectToChannel((new ConnectionMessage(channelId: "general")).ToString());
                 await Clients.Caller.SendAsync("ClientIsConnected", "You are connected!");
             }
         }
 
         public override async Task OnDisconnectedAsync(Exception e)
         {
-            Console.WriteLine();
-            Console.WriteLine();
-            Console.WriteLine("ON DISCONNECTED ASYNC");
-            Console.WriteLine();
-            Console.WriteLine();
-            if (_userService.TryGetUserId(Context.User, out var userId))
+           if (_userService.TryGetUserId(Context.User, out var userId))
             {
                 var user = await _userService.FindByIdAsync(userId);
                 await base.OnDisconnectedAsync(e);
@@ -133,7 +122,6 @@ namespace PolyPaint.API.Hubs
                     {
                         pair.Value.Remove(user.Id);
                         var message = new ConnectionMessage(username: user.UserName);
-                        Console.WriteLine("MESSAGE DISCONNECT SENT");
                         await Clients.Group(pair.Key).SendAsync(
                             "DisconnectFromChannel",
                             message.ToString()
