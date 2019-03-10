@@ -11,43 +11,11 @@ import SwiftSignalRClient
 import PromiseKit
 import AVFoundation
 
-class Channel: Codable {
-    public var name: String;
-    public var connected: Bool;
-    
-    init(name: String, connected: Bool) {
-        self.name = name;
-        self.connected = connected;
-    }
-}
 
-class ChannelMessage: Codable {
-    public var channel: Channel;
-    
-    init(channel: Channel) {
-        self.channel = channel;
-    }
-}
 
-class ConnectionMessage: Codable {
-    public var username: String;
-    public var canvasId: String;
-    public var channelId: String;
-    
-    init(username: String?="", canvasId: String?="", channelId: String?="") {
-        self.username = username!;
-        self.canvasId = canvasId!;
-        self.channelId = channelId!;
-    }
-}
 
-class ChannelsMessage: Codable {
-    public var channels: [Channel];
-    
-    init(channels: [Channel]? = []) {
-        self.channels = channels!;
-    }
-}
+
+
 
 
 class ChatService {

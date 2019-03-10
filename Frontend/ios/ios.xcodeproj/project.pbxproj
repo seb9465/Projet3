@@ -38,6 +38,7 @@
 		B775FE3F22135D6300B2EFE0 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B775FE3E22135D6300B2EFE0 /* Extensions.swift */; };
 		B781B95922132BDB001C1BD8 /* Canvas.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B781B95822132BDB001C1BD8 /* Canvas.storyboard */; };
 		B781B95B22132C2F001C1BD8 /* CanvasController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B781B95A22132C2F001C1BD8 /* CanvasController.swift */; };
+		B79117DF2234AE830008CB4C /* Channel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B79117DE2234AE830008CB4C /* Channel.swift */; };
 		B7A3A5C02203BF3B00031F64 /* ChatControler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A3A5BF2203BF3B00031F64 /* ChatControler.swift */; };
 		B7A3A5C22203C27600031F64 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A3A5C12203C27600031F64 /* Message.swift */; };
 		B7A3A5C42203CF7100031F64 /* Extensions_UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A3A5C32203CF7100031F64 /* Extensions_UIColor.swift */; };
@@ -104,6 +105,7 @@
 		B775FE3E22135D6300B2EFE0 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		B781B95822132BDB001C1BD8 /* Canvas.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Canvas.storyboard; sourceTree = "<group>"; };
 		B781B95A22132C2F001C1BD8 /* CanvasController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasController.swift; sourceTree = "<group>"; };
+		B79117DE2234AE830008CB4C /* Channel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Channel.swift; sourceTree = "<group>"; };
 		B7A3A5BF2203BF3B00031F64 /* ChatControler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatControler.swift; sourceTree = "<group>"; };
 		B7A3A5C12203C27600031F64 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		B7A3A5C32203CF7100031F64 /* Extensions_UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions_UIColor.swift; sourceTree = "<group>"; };
@@ -266,7 +268,7 @@
 		B7567944220F330700F80B12 /* Chat */ = {
 			isa = PBXGroup;
 			children = (
-				B7B1B4332231A3DD00BEE17D /* CustomCell */,
+				B7B1B4332231A3DD00BEE17D /* ChatCustomCell */,
 				B7B1B43A2231BFCD00BEE17D /* ChatControllerExtensions */,
 				B79117DD2234ADB40008CB4C /* Chatrooms */,
 				B7A3A5C32203CF7100031F64 /* Extensions_UIColor.swift */,
@@ -275,6 +277,7 @@
 				B7567945220F33CD00F80B12 /* ChatService.swift */,
 				B7567949220F5DC800F80B12 /* Chat.storyboard */,
 				B756794B220F608B00F80B12 /* Members.swift */,
+				B79117DE2234AE830008CB4C /* Channel.swift */,
 			);
 			path = Chat;
 			sourceTree = "<group>";
@@ -305,13 +308,13 @@
 			path = "New Group";
 			sourceTree = "<group>";
 		};
-		B7B1B4332231A3DD00BEE17D /* CustomCell */ = {
+		B7B1B4332231A3DD00BEE17D /* ChatCustomCell */ = {
 			isa = PBXGroup;
 			children = (
 				B7B1B4342231A3FD00BEE17D /* MyCustomMessagesFlowLayout.swift */,
 				B7B1B4362231A41C00BEE17D /* MyCustomCell.swift */,
 			);
-			path = CustomCell;
+			path = ChatCustomCell;
 			sourceTree = "<group>";
 		};
 		B7B1B43A2231BFCD00BEE17D /* ChatControllerExtensions */ = {
@@ -547,6 +550,7 @@
 				B7B1B4472234725E00BEE17D /* ChatRoomsControllerTableViewController.swift in Sources */,
 				B7B1B4392231BE8000BEE17D /* MessageDataSourceExtension.swift in Sources */,
 				B7B1B4402231C06900BEE17D /* MessageLayoutExtension.swift in Sources */,
+				B79117DF2234AE830008CB4C /* Channel.swift in Sources */,
 				B7A3A5C02203BF3B00031F64 /* ChatControler.swift in Sources */,
 				3D121EDC22209E070074C61C /* PlaceHolderCell.swift in Sources */,
 				3DF6298B221C9FBC0052209A /* CanvasCell.swift in Sources */,
