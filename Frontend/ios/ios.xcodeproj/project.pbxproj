@@ -51,6 +51,7 @@
 		B7B1B4402231C06900BEE17D /* MessageLayoutExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B1B43F2231C06900BEE17D /* MessageLayoutExtension.swift */; };
 		B7B1B4472234725E00BEE17D /* ChatRoomsControllerTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B1B4452234725E00BEE17D /* ChatRoomsControllerTableViewController.swift */; };
 		B7B1B4482234725E00BEE17D /* ChatRoomsControllerTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B7B1B4462234725E00BEE17D /* ChatRoomsControllerTableViewController.xib */; };
+		B7B1B44A22348E9700BEE17D /* AddScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B1B44922348E9700BEE17D /* AddScreenViewController.swift */; };
 		C43102E122132226008F1D80 /* SoundNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43102E022132226008F1D80 /* SoundNotification.swift */; };
 		C5724AD99504D99A25966BB9 /* Pods_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6CD8C54089242A6862A3C2E4 /* Pods_ios.framework */; };
 /* End PBXBuildFile section */
@@ -116,6 +117,7 @@
 		B7B1B43F2231C06900BEE17D /* MessageLayoutExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageLayoutExtension.swift; sourceTree = "<group>"; };
 		B7B1B4452234725E00BEE17D /* ChatRoomsControllerTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ChatRoomsControllerTableViewController.swift; path = ChatRooms/ChatRoomsControllerTableViewController.swift; sourceTree = "<group>"; };
 		B7B1B4462234725E00BEE17D /* ChatRoomsControllerTableViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ChatRoomsControllerTableViewController.xib; path = ChatRooms/ChatRoomsControllerTableViewController.xib; sourceTree = "<group>"; };
+		B7B1B44922348E9700BEE17D /* AddScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddScreenViewController.swift; sourceTree = "<group>"; };
 		C43102E022132226008F1D80 /* SoundNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundNotification.swift; sourceTree = "<group>"; };
 		C6C9AA086604975DCA6FF292 /* Pods-iosTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iosTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-iosTests/Pods-iosTests.debug.xcconfig"; sourceTree = "<group>"; };
 		E7966B3EFE20A93B4BE0DB10 /* Pods-ios.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ios.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ios/Pods-ios.debug.xcconfig"; sourceTree = "<group>"; };
@@ -274,6 +276,7 @@
 				B756794B220F608B00F80B12 /* Members.swift */,
 				B7B1B4452234725E00BEE17D /* ChatRoomsControllerTableViewController.swift */,
 				B7B1B4462234725E00BEE17D /* ChatRoomsControllerTableViewController.xib */,
+				B7B1B44922348E9700BEE17D /* AddScreenViewController.swift */,
 			);
 			path = Chat;
 			sourceTree = "<group>";
@@ -546,6 +549,7 @@
 				3D2565602225BDFE00BCE946 /* GalleryController.swift in Sources */,
 				B7B1B4352231A3FD00BEE17D /* MyCustomMessagesFlowLayout.swift in Sources */,
 				3DC07CC722205B7C0045E7DE /* ContextMenuCell.swift in Sources */,
+				B7B1B44A22348E9700BEE17D /* AddScreenViewController.swift in Sources */,
 				3D9FBC1222248371006BB297 /* MasterViewController.swift in Sources */,
 				B781B95B22132C2F001C1BD8 /* CanvasController.swift in Sources */,
 				B7567946220F33CD00F80B12 /* ChatService.swift in Sources */,
