@@ -44,6 +44,8 @@
 		B7A3A5C42203CF7100031F64 /* Extensions_UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A3A5C32203CF7100031F64 /* Extensions_UIColor.swift */; };
 		B7AADC6822355E8000F7C0EC /* CustomTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AADC6622355E8000F7C0EC /* CustomTableViewCell.swift */; };
 		B7AADC6922355E8000F7C0EC /* CustomTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B7AADC6722355E8000F7C0EC /* CustomTableViewCell.xib */; };
+		B7AADC6E22356FBE00F7C0EC /* CustomHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AADC6C22356FBE00F7C0EC /* CustomHeaderCell.swift */; };
+		B7AADC6F22356FBE00F7C0EC /* CustomHeaderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B7AADC6D22356FBE00F7C0EC /* CustomHeaderCell.xib */; };
 		B7ABD3632231638E00C7A016 /* Rect.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7ABD3622231638E00C7A016 /* Rect.swift */; };
 		B7ABD3672231715C00C7A016 /* SelectFigureService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7ABD3662231715C00C7A016 /* SelectFigureService.swift */; };
 		B7B1B4352231A3FD00BEE17D /* MyCustomMessagesFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B1B4342231A3FD00BEE17D /* MyCustomMessagesFlowLayout.swift */; };
@@ -113,6 +115,8 @@
 		B7A3A5C32203CF7100031F64 /* Extensions_UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions_UIColor.swift; sourceTree = "<group>"; };
 		B7AADC6622355E8000F7C0EC /* CustomTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTableViewCell.swift; sourceTree = "<group>"; };
 		B7AADC6722355E8000F7C0EC /* CustomTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomTableViewCell.xib; sourceTree = "<group>"; };
+		B7AADC6C22356FBE00F7C0EC /* CustomHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomHeaderCell.swift; sourceTree = "<group>"; };
+		B7AADC6D22356FBE00F7C0EC /* CustomHeaderCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomHeaderCell.xib; sourceTree = "<group>"; };
 		B7ABD3622231638E00C7A016 /* Rect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rect.swift; sourceTree = "<group>"; };
 		B7ABD3662231715C00C7A016 /* SelectFigureService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectFigureService.swift; sourceTree = "<group>"; };
 		B7B1B4342231A3FD00BEE17D /* MyCustomMessagesFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyCustomMessagesFlowLayout.swift; sourceTree = "<group>"; };
@@ -309,6 +313,8 @@
 				B7B1B44922348E9700BEE17D /* AddScreenViewController.swift */,
 				B7AADC6622355E8000F7C0EC /* CustomTableViewCell.swift */,
 				B7AADC6722355E8000F7C0EC /* CustomTableViewCell.xib */,
+				B7AADC6C22356FBE00F7C0EC /* CustomHeaderCell.swift */,
+				B7AADC6D22356FBE00F7C0EC /* CustomHeaderCell.xib */,
 			);
 			name = Chatrooms;
 			path = "New Group";
@@ -430,6 +436,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B711B5F421F659A50096BF7F /* LaunchScreen.storyboard in Resources */,
+				B7AADC6F22356FBE00F7C0EC /* CustomHeaderCell.xib in Resources */,
 				B7AADC6922355E8000F7C0EC /* CustomTableViewCell.xib in Resources */,
 				B781B95922132BDB001C1BD8 /* Canvas.storyboard in Resources */,
 				B711B5F121F659A50096BF7F /* Assets.xcassets in Resources */,
@@ -541,6 +548,7 @@
 				3DE984D322261707004D036C /* AuthentificationAPI.swift in Sources */,
 				B7ABD3672231715C00C7A016 /* SelectFigureService.swift in Sources */,
 				B7B1B43C2231C00400BEE17D /* MessageInpuBarExtension.swift in Sources */,
+				B7AADC6E22356FBE00F7C0EC /* CustomHeaderCell.swift in Sources */,
 				3DF62984221C9FB30052209A /* Canvas.swift in Sources */,
 				3DC61EB92200B44B003FE445 /* RegisterController.swift in Sources */,
 				3D5537C22200ED5F002C1B77 /* SlideUpSegue.swift in Sources */,
