@@ -14,7 +14,7 @@ class ChatRoomsControllerTableViewController: UITableViewController {
     var channels: Channels = Channels();
     
     override func viewDidLoad() {
-        super.viewDidLoad()
+        
         ChatService.shared.onFetchChannels(updateChannelsFct: self.updateChannels);
         ChatService.shared.invokeChannelsWhenConnected();
         ChatService.shared.connectToHub();
@@ -26,6 +26,7 @@ class ChatRoomsControllerTableViewController: UITableViewController {
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
 //         self.navigationItem.rightBarButtonItem = self.editButtonItem
+        super.viewDidLoad()
     }
     
     public func updateChannels(channels: [Channel]) -> Void {
