@@ -10,12 +10,11 @@ import UIKit
 
 class ChatRoomsControllerTableViewController: UITableViewController {
     
-//    var chatService: ChatService = ChatService();
     var channels: ChannelsMessage = ChannelsMessage();
     
-    
     @IBAction func backButton(_ sender: Any) {
-        ChatService.shared.disconnectFromHub();
+//        ChatService.shared.disconnectFromHub();
+        
         let storyboard = UIStoryboard(name: "Main", bundle: nil);
         let view = storyboard.instantiateViewController(withIdentifier: "DashboardController");
         navigationController?.pushViewController(view, animated: true);
@@ -23,7 +22,12 @@ class ChatRoomsControllerTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cellIdentifier")
-        
+        print("[ CHATROOM ] View did load");
+        ChatService.shared.onFetchChannels(updateChannelsFct: self.updateChannels);
+        ChatService.shared.invokeChannelsWhenConnected();
+        ChatService.shared.onCreateChannel(updateChannelsFct: self.updateChannels);
+        ChatService.shared.connectToHub();
+        ChatService.shared.invokeFetchChannels();
         // Uncomment the following line to preserve selection between presentations
 //         self.clearsSelectionOnViewWillAppear = false
 
@@ -33,10 +37,7 @@ class ChatRoomsControllerTableViewController: UITableViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        ChatService.shared.onFetchChannels(updateChannelsFct: self.updateChannels);
-        ChatService.shared.invokeChannelsWhenConnected();
-        ChatService.shared.onCreateChannel(updateChannelsFct: self.updateChannels);
-        ChatService.shared.connectToHub();
+        
         super.viewDidAppear(animated);
     }
     
@@ -64,8 +65,6 @@ class ChatRoomsControllerTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         print("[ CHATROOM ] ");
         let cell = tableView.dequeueReusableCell(withIdentifier: "cellIdentifier", for: indexPath);
-        
-        print("\(#function) --- section = \(indexPath.section), row = \(indexPath.row)");
         
         cell.textLabel?.text = self.channels.channels[indexPath.row].name;
 //        cell!.detailTextLabel?.text = contacts[indexPath.row][1]

@@ -16,8 +16,10 @@ class ChatService {
     var hubConnection: HubConnection;
     var _members: Members;
     var currentChannel: Channel!;
+    var connected: Bool = false;
     
     init() {
+        print("[ CHAT ] INIT from ChatService");
         self.hubConnection = HubConnectionBuilder(url: URL(string: Constants.CHAT_URL)!)
             .withHttpConnectionOptions() { httpConnectionOptions in
                 httpConnectionOptions.accessTokenProvider = { return USER_TOKEN; }}
@@ -28,6 +30,7 @@ class ChatService {
     public func connectToHub() -> Void {
         print("[ CHAT ] Connect to hub");
         self.hubConnection.start();
+        self.connected = true;
     }
     
     public func initOnReceivingMessage(currentMemberName: String, insertMessage: @escaping (_ message: Message) -> Void) {
@@ -68,6 +71,7 @@ class ChatService {
     }
     
     public func invokeChannelsWhenConnected() -> Void {
+        print("[ CHAT ] Invoke Channels when Connected");
         self.hubConnection.on(method: "ClientIsConnected", callback: { args, typeConverter in
             self.invokeFetchChannels();
         });
@@ -152,8 +156,10 @@ class ChatService {
     }
     
     public func disconnectFromHub() -> Void {
-        self.disconnectFromChatRoom();
+//        self.disconnectFromChatRoom();
         self.hubConnection.stop();
+        self.connected = false;
+        print("[ CHAT ] Connection stopped");
     }
     
     public func disconnectFromChatRoom() -> Void {
@@ -163,7 +169,7 @@ class ChatService {
         self.hubConnection.invoke(method: "DisconnectFromChannel", arguments: [jsondata], invocationDidComplete: { error in
             print("[ CHAT ] Invoked DisconnectFromChannel avec argument 'general'.");
             self.printPossibleError(error: error!)
-        })
+        });
     }
     
     public func sendMessage(currentUser: String, message: Message, insertMessage: @escaping (_ message: Message) -> Void) -> Void {
