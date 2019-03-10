@@ -1,4 +1,5 @@
 ﻿using PolyPaint.Common;
+using PolyPaint.Common.Collaboration;
 using PolyPaint.Strokes;
 using PolyPaint.VueModeles;
 using System;

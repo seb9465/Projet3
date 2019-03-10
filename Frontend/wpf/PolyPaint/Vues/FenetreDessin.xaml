@@ -267,7 +267,7 @@
             </Border>
 
         </Grid>
-        <StackPanel Orientation="Vertical" Margin="20">
+        <StackPanel Orientation="Vertical" Margin="20" x:Name="chatWrapper">
             <Border BorderThickness="1" BorderBrush="Gray" ClipToBounds="True" HorizontalAlignment="Stretch" Height="314">
                 <StackPanel Orientation="Vertical" Margin="10">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
