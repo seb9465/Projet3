@@ -21,6 +21,14 @@ class Channel: Codable {
     }
 }
 
+class ChannelMessage: Codable {
+    public var channel: Channel;
+    
+    init(channel: Channel) {
+        self.channel = channel;
+    }
+}
+
 class ConnectionMessage: Codable {
     public var username: String;
     public var canvasId: String;
@@ -33,7 +41,7 @@ class ConnectionMessage: Codable {
     }
 }
 
-class Channels: Codable {
+class ChannelsMessage: Codable {
     public var channels: [Channel];
     
     init(channels: [Channel]? = []) {
@@ -180,7 +188,7 @@ class ChatService {
     }
     
     public func createNewChannel(channelName: String) -> Void {
-        let newChannel: Channel = Channel(name: channelName, connected: false);
+        let newChannel: ChannelMessage = ChannelMessage(channel: Channel(name: channelName, connected: false));
         let newChannelJson = try? JSONEncoder().encode(newChannel);
         let newChannelJsonData: String = String(data: newChannelJson!, encoding: .utf8)!;
         
@@ -191,6 +199,16 @@ class ChatService {
                 print(e);
             }
         });
+    }
+    
+    public func onCreateChannel(updateChannelsFct: @escaping (_ channels: [Channel]) -> Void) -> Void {
+            self.hubConnection.on(method: "CreateChannel", callback: { args, typeConverter in
+                let newChannelJson: String = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self)!;
+                if let newChannelJsonData = newChannelJson.data(using: .utf8) {
+                    let newChannel: ChannelMessage = try! JSONDecoder().decode(ChannelMessage.self, from: newChannelJsonData);
+                    updateChannelsFct([newChannel.channel]);
+                }
+            });
     }
     
     public func connectToGroup(insertMessage: @escaping (_ message: Message) -> Void) -> Void {
@@ -244,7 +262,7 @@ class ChatService {
             
             let channelsJson: String = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self)!;
             if let channelsJsonData = channelsJson.data(using: .utf8) {
-                let channels: Channels = try! JSONDecoder().decode(Channels.self, from: channelsJsonData);
+                let channels: ChannelsMessage = try! JSONDecoder().decode(ChannelsMessage.self, from: channelsJsonData);
                 updateChannelsFct(channels.channels);
             }
         });
