@@ -35,9 +35,8 @@ class ChatRoomsControllerTableViewController: UITableViewController {
     override func viewDidAppear(_ animated: Bool) {
         ChatService.shared.onFetchChannels(updateChannelsFct: self.updateChannels);
         ChatService.shared.invokeChannelsWhenConnected();
-        ChatService.shared.connectToHub();
         ChatService.shared.onCreateChannel(updateChannelsFct: self.updateChannels);
-        
+        ChatService.shared.connectToHub();
         super.viewDidAppear(animated);
     }
     
