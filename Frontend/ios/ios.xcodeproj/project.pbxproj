@@ -115,8 +115,8 @@
 		B7B1B43B2231C00400BEE17D /* MessageInpuBarExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageInpuBarExtension.swift; sourceTree = "<group>"; };
 		B7B1B43D2231C03900BEE17D /* MessageDisplayExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageDisplayExtension.swift; sourceTree = "<group>"; };
 		B7B1B43F2231C06900BEE17D /* MessageLayoutExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageLayoutExtension.swift; sourceTree = "<group>"; };
-		B7B1B4452234725E00BEE17D /* ChatRoomsControllerTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ChatRoomsControllerTableViewController.swift; path = ChatRooms/ChatRoomsControllerTableViewController.swift; sourceTree = "<group>"; };
-		B7B1B4462234725E00BEE17D /* ChatRoomsControllerTableViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ChatRoomsControllerTableViewController.xib; path = ChatRooms/ChatRoomsControllerTableViewController.xib; sourceTree = "<group>"; };
+		B7B1B4452234725E00BEE17D /* ChatRoomsControllerTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomsControllerTableViewController.swift; sourceTree = "<group>"; };
+		B7B1B4462234725E00BEE17D /* ChatRoomsControllerTableViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChatRoomsControllerTableViewController.xib; sourceTree = "<group>"; };
 		B7B1B44922348E9700BEE17D /* AddScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddScreenViewController.swift; sourceTree = "<group>"; };
 		C43102E022132226008F1D80 /* SoundNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundNotification.swift; sourceTree = "<group>"; };
 		C6C9AA086604975DCA6FF292 /* Pods-iosTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iosTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-iosTests/Pods-iosTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -267,16 +267,14 @@
 			isa = PBXGroup;
 			children = (
 				B7B1B4332231A3DD00BEE17D /* CustomCell */,
+				B7B1B43A2231BFCD00BEE17D /* ChatControllerExtensions */,
+				B79117DD2234ADB40008CB4C /* Chatrooms */,
 				B7A3A5C32203CF7100031F64 /* Extensions_Chat.swift */,
 				B7A3A5C12203C27600031F64 /* Message.swift */,
 				B7A3A5BF2203BF3B00031F64 /* ChatControler.swift */,
-				B7B1B43A2231BFCD00BEE17D /* ChatControllerExtensions */,
 				B7567945220F33CD00F80B12 /* ChatService.swift */,
 				B7567949220F5DC800F80B12 /* Chat.storyboard */,
 				B756794B220F608B00F80B12 /* Members.swift */,
-				B7B1B4452234725E00BEE17D /* ChatRoomsControllerTableViewController.swift */,
-				B7B1B4462234725E00BEE17D /* ChatRoomsControllerTableViewController.xib */,
-				B7B1B44922348E9700BEE17D /* AddScreenViewController.swift */,
 			);
 			path = Chat;
 			sourceTree = "<group>";
@@ -294,6 +292,17 @@
 				B7ABD3662231715C00C7A016 /* SelectFigureService.swift */,
 			);
 			path = Canvas;
+			sourceTree = "<group>";
+		};
+		B79117DD2234ADB40008CB4C /* Chatrooms */ = {
+			isa = PBXGroup;
+			children = (
+				B7B1B4452234725E00BEE17D /* ChatRoomsControllerTableViewController.swift */,
+				B7B1B4462234725E00BEE17D /* ChatRoomsControllerTableViewController.xib */,
+				B7B1B44922348E9700BEE17D /* AddScreenViewController.swift */,
+			);
+			name = Chatrooms;
+			path = "New Group";
 			sourceTree = "<group>";
 		};
 		B7B1B4332231A3DD00BEE17D /* CustomCell */ = {
