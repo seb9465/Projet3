@@ -10,9 +10,12 @@ import UIKit
 
 class CustomHeaderCell: UITableViewCell {
 
+    @IBOutlet var customHeaderCell: UIView!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        self.customHeaderCell.backgroundColor = UIColor.red;
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

@@ -41,7 +41,9 @@ class ChatRoomsControllerTableViewController: UITableViewController {
     
     private func registerTableViewCells() {
         let textFieldCell = UINib(nibName: "CustomTableViewCell", bundle: nil)
+        let headerCell = UINib(nibName: "CustomHeaderCell", bundle: nil)
         self.tableView.register(textFieldCell, forCellReuseIdentifier: "CustomTableViewCell");
+        self.tableView.register(headerCell, forCellReuseIdentifier: "CustomHeaderCell");
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -73,8 +75,14 @@ class ChatRoomsControllerTableViewController: UITableViewController {
         return 100;
     }
     
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 100;
+    }
+    
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let storyboard = UIStoryboard(name: "ChatRoomTitle", bundle: nil);
+        let headerCell = tableView.dequeueReusableCell(withIdentifier: "CustomHeaderCell") as! CustomHeaderCell;
+        
+        return headerCell;
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
