@@ -10,19 +10,8 @@ import Foundation
 import UIKit
 import MessageKit
 
-class Message {
-    var member: Member;
-    var text: String;
-    var timestamp: String;
-    var messageId: String;
-    
-    init(member: Member, text: String? = "", timestamp: String? = "", messageId: String? = "") {
-        self.member = member;
-        self.text = text!;
-        self.timestamp = timestamp!;
-        self.messageId = messageId!;
-    }
-}
+// MARK: ChatMessage class
+// Used for the frontend-backend communication.
 
 class ChatMessage: Codable {
     var username: String;
@@ -35,6 +24,38 @@ class ChatMessage: Codable {
         self.message = message;
         self.channelId = channelId;
         self.timestamp = timestamp!;
+    }
+}
+
+// MARK: ConnectionMessage class
+// Used for the frontend-backend communication.
+
+class ConnectionMessage: Codable {
+    public var username: String;
+    public var canvasId: String;
+    public var channelId: String;
+    
+    init(username: String?="", canvasId: String?="", channelId: String?="") {
+        self.username = username!;
+        self.canvasId = canvasId!;
+        self.channelId = channelId!;
+    }
+}
+
+// MARK: Message classs
+// Data structure for the messages in the chat view.
+
+class Message {
+    var member: Member;
+    var text: String;
+    var timestamp: String;
+    var messageId: String;
+    
+    init(member: Member, text: String? = "", timestamp: String? = "", messageId: String? = "") {
+        self.member = member;
+        self.text = text!;
+        self.timestamp = timestamp!;
+        self.messageId = messageId!;
     }
 }
 
