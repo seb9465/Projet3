@@ -21,7 +21,7 @@ class ChatRoomsControllerTableViewController: UITableViewController {
     }
     
     override func viewDidLoad() {
-//        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cellIdentifier")
+        self.tableView.separatorStyle = .none;
         self.registerTableViewCells();
         print("[ CHATROOM ] View did load");
         ChatService.shared.onFetchChannels(updateChannelsFct: self.updateChannels);
@@ -29,11 +29,13 @@ class ChatRoomsControllerTableViewController: UITableViewController {
         ChatService.shared.onCreateChannel(updateChannelsFct: self.updateChannels);
         ChatService.shared.connectToHub();
         ChatService.shared.invokeFetchChannels();
+        
         // Uncomment the following line to preserve selection between presentations
 //         self.clearsSelectionOnViewWillAppear = false
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-         self.navigationItem.rightBarButtonItem = self.editButtonItem
+//         self.navigationItem.rightBarButtonItem = self.editButtonItem
+        
         super.viewDidLoad()
     }
     

@@ -21,6 +21,7 @@ class CustomTableViewCell: UITableViewCell {
         self.chatRoomName.textColor = UIColor.white;
         self.tableViewCell.backgroundColor = Constants.RED_COLOR;
         self.tableViewCell.layer.cornerRadius = 10;
+        
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
