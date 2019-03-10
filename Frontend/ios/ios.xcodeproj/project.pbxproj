@@ -42,6 +42,8 @@
 		B7A3A5C02203BF3B00031F64 /* ChatControler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A3A5BF2203BF3B00031F64 /* ChatControler.swift */; };
 		B7A3A5C22203C27600031F64 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A3A5C12203C27600031F64 /* Message.swift */; };
 		B7A3A5C42203CF7100031F64 /* Extensions_UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A3A5C32203CF7100031F64 /* Extensions_UIColor.swift */; };
+		B7AADC6822355E8000F7C0EC /* CustomTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AADC6622355E8000F7C0EC /* CustomTableViewCell.swift */; };
+		B7AADC6922355E8000F7C0EC /* CustomTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B7AADC6722355E8000F7C0EC /* CustomTableViewCell.xib */; };
 		B7ABD3632231638E00C7A016 /* Rect.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7ABD3622231638E00C7A016 /* Rect.swift */; };
 		B7ABD3672231715C00C7A016 /* SelectFigureService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7ABD3662231715C00C7A016 /* SelectFigureService.swift */; };
 		B7B1B4352231A3FD00BEE17D /* MyCustomMessagesFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B1B4342231A3FD00BEE17D /* MyCustomMessagesFlowLayout.swift */; };
@@ -109,6 +111,8 @@
 		B7A3A5BF2203BF3B00031F64 /* ChatControler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatControler.swift; sourceTree = "<group>"; };
 		B7A3A5C12203C27600031F64 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		B7A3A5C32203CF7100031F64 /* Extensions_UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions_UIColor.swift; sourceTree = "<group>"; };
+		B7AADC6622355E8000F7C0EC /* CustomTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTableViewCell.swift; sourceTree = "<group>"; };
+		B7AADC6722355E8000F7C0EC /* CustomTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomTableViewCell.xib; sourceTree = "<group>"; };
 		B7ABD3622231638E00C7A016 /* Rect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rect.swift; sourceTree = "<group>"; };
 		B7ABD3662231715C00C7A016 /* SelectFigureService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectFigureService.swift; sourceTree = "<group>"; };
 		B7B1B4342231A3FD00BEE17D /* MyCustomMessagesFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyCustomMessagesFlowLayout.swift; sourceTree = "<group>"; };
@@ -303,6 +307,8 @@
 				B7B1B4452234725E00BEE17D /* ChatRoomsControllerTableViewController.swift */,
 				B7B1B4462234725E00BEE17D /* ChatRoomsControllerTableViewController.xib */,
 				B7B1B44922348E9700BEE17D /* AddScreenViewController.swift */,
+				B7AADC6622355E8000F7C0EC /* CustomTableViewCell.swift */,
+				B7AADC6722355E8000F7C0EC /* CustomTableViewCell.xib */,
 			);
 			name = Chatrooms;
 			path = "New Group";
@@ -424,6 +430,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B711B5F421F659A50096BF7F /* LaunchScreen.storyboard in Resources */,
+				B7AADC6922355E8000F7C0EC /* CustomTableViewCell.xib in Resources */,
 				B781B95922132BDB001C1BD8 /* Canvas.storyboard in Resources */,
 				B711B5F121F659A50096BF7F /* Assets.xcassets in Resources */,
 				B756794A220F5DC800F80B12 /* Chat.storyboard in Resources */,
@@ -541,6 +548,7 @@
 				B7ABD3632231638E00C7A016 /* Rect.swift in Sources */,
 				3DC967ED220A09C400FA76CB /* DashboardController.swift in Sources */,
 				3DDE25192202B2AF0082E735 /* RoundedCorners.swift in Sources */,
+				B7AADC6822355E8000F7C0EC /* CustomTableViewCell.swift in Sources */,
 				B7A3A5C42203CF7100031F64 /* Extensions_UIColor.swift in Sources */,
 				B711B5EA21F659A30096BF7F /* AppDelegate.swift in Sources */,
 				B74BE372221F40950001D62A /* CanvasService.swift in Sources */,

@@ -21,7 +21,8 @@ class ChatRoomsControllerTableViewController: UITableViewController {
     }
     
     override func viewDidLoad() {
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cellIdentifier")
+//        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cellIdentifier")
+        self.registerTableViewCells();
         print("[ CHATROOM ] View did load");
         ChatService.shared.onFetchChannels(updateChannelsFct: self.updateChannels);
         ChatService.shared.invokeChannelsWhenConnected();
@@ -32,8 +33,13 @@ class ChatRoomsControllerTableViewController: UITableViewController {
 //         self.clearsSelectionOnViewWillAppear = false
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-//         self.navigationItem.rightBarButtonItem = self.editButtonItem
+         self.navigationItem.rightBarButtonItem = self.editButtonItem
         super.viewDidLoad()
+    }
+    
+    private func registerTableViewCells() {
+        let textFieldCell = UINib(nibName: "CustomTableViewCell", bundle: nil)
+        self.tableView.register(textFieldCell, forCellReuseIdentifier: "CustomTableViewCell");
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -63,13 +69,11 @@ class ChatRoomsControllerTableViewController: UITableViewController {
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        print("[ CHATROOM ] ");
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cellIdentifier", for: indexPath);
+        let cell = tableView.dequeueReusableCell(withIdentifier: "CustomTableViewCell") as? CustomTableViewCell;
         
-        cell.textLabel?.text = self.channels.channels[indexPath.row].name;
-//        cell!.detailTextLabel?.text = contacts[indexPath.row][1]
+        cell?.chatRoomName.text = self.channels.channels[indexPath.row].name;
         
-        return cell;
+        return cell!
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
