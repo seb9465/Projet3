@@ -36,6 +36,7 @@
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
                 <outlet property="chatRoomName" destination="jW1-C2-XQL" id="UWB-MZ-5mV"/>
+                <outlet property="tableViewCell" destination="H2p-sc-9uM" id="U7z-Kp-8gc"/>
             </connections>
             <point key="canvasLocation" x="137.59999999999999" y="154.72263868065968"/>
         </tableViewCell>

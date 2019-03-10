@@ -10,11 +10,14 @@ import UIKit
 
 class CustomTableViewCell: UITableViewCell {
 
+    @IBOutlet var tableViewCell: UIView!
     @IBOutlet var chatRoomName: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        self.tableViewCell.layer.borderWidth = 1;
+        self.tableViewCell.layer.borderColor = UIColor(red: 1, green: 0, blue: 0, alpha: 1).cgColor;
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
