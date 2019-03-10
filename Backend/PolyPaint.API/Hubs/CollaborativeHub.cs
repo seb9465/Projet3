@@ -20,14 +20,16 @@ namespace PolyPaint.API.Hubs
         {
         }
 
-        public async Task Draw(DrawViewModel drawViewModel)
+        public async Task Draw(string canvasDrawing)
         {
+            var drawViewModel = JsonConvert.DeserializeObject<DrawViewModel>(canvasDrawing);
+
             var user = await GetUserFromToken(Context.User);
             if (user != null)
             {
                 if (UserHandler.UserGroupMap.TryGetValue(drawViewModel.ChannelId, out var users) && users.Contains(user.Id))
                 {
-                    await Clients.Group(drawViewModel.ChannelId).SendAsync("Draw", drawViewModel);
+                    await Clients.Group(drawViewModel.ChannelId).SendAsync("Draw", JsonConvert.SerializeObject(drawViewModel));
                 }
             }
         }

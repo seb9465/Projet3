@@ -437,7 +437,7 @@ namespace PolyPaint
         }
         private async Task CollaborativeDrawAsync(DrawViewModel drawViewModel)
         {
-            await Connection.InvokeAsync("Draw", drawViewModel);
+            await Connection.InvokeAsync("Draw", JsonConvert.SerializeObject(drawViewModel));
         }
         private async Task CollaborativeSelectAsync(SelectViewModel selectViewModel)
         {
@@ -462,10 +462,11 @@ namespace PolyPaint
             {
                 Console.WriteLine(message);
             });
-            Connection.On<DrawViewModel>("Draw", (drawViewModel) =>
+            Connection.On<string>("Draw", (drawViewModelString) =>
             {
                 Dispatcher.Invoke(() =>
                 {
+                    var drawViewModel = JsonConvert.DeserializeObject<DrawViewModel>(drawViewModelString);
                     icEventManager.EndDraw(surfaceDessin, drawViewModel.OutilSelectionne, drawViewModel);
                 });
             });
