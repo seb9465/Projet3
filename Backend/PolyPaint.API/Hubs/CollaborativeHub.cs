@@ -42,19 +42,20 @@ namespace PolyPaint.API.Hubs
                     await Clients.Group(groupId).SendAsync("Duplicate");
                 }
             }
-
-            public async Task Delete()
+            */
+        public async Task Delete(string channelId)
+        {
+            var user = await GetUserFromToken(Context.User);
+            if (user != null)
             {
-                var user = await GetUserFromToken(Context.User);
-                if (user != null)
+                if (UserHandler.UserGroupMap.TryGetValue(channelId, out var users) && users.Contains(user.Id))
                 {
-                    UserHandler.UserGroupMap.TryGetValue(userId, out var groupId);
-                    var user = await _userService.FindByIdAsync(userId);
-                    await Clients.Group(groupId).SendAsync("Delete");
+                    await Clients.Group(channelId).SendAsync("Delete");
                 }
             }
+        }
 
-                */
+
         public async Task Select(SelectViewModel selectViewModel)
         {
             var user = await GetUserFromToken(Context.User);

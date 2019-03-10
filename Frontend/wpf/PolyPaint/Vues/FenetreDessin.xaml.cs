@@ -50,7 +50,7 @@ namespace PolyPaint
             if (ViewState == ViewStateEnum.Online)
             {
                 object token = Application.Current.Properties["token"];
-                token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6InVzZXIuNCIsIm5hbWVpZCI6ImMyNmYzMWIzLWQ3OGItNDk5Yi05ZmI5LWNmOWNiNjYxMzI5NSIsImZhbWlseV9uYW1lIjoidXNlcjQiLCJuYmYiOjE1NTIyNTM0ODQsImV4cCI6NjE1NTIyNTM0MjQsImlhdCI6MTU1MjI1MzQ4NCwiaXNzIjoiaHR0cHM6Ly9wb2x5cGFpbnQubWUiLCJhdWQiOiJodHRwczovL3BvbHlwYWludC5tZSJ9.dy--s2xLFEao2cZpPT-964SmbQoEeEabxurZVbcRujU";
+                token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6InVzZXIuMyIsIm5hbWVpZCI6Ijg4OTU2NjlhLTYyMmMtNDk2ZS1iZTkwLTI4YTQzMGE3NzhhZSIsImZhbWlseV9uYW1lIjoidXNlcjMiLCJuYmYiOjE1NTIyNTY1ODgsImV4cCI6NjE1NTIyNTY1MjgsImlhdCI6MTU1MjI1NjU4OCwiaXNzIjoiaHR0cHM6Ly9wb2x5cGFpbnQubWUiLCJhdWQiOiJodHRwczovL3BvbHlwYWludC5tZSJ9._CGBRWU961rt14S5FTx9QuzFkTCX86iel2PiMZ_PzMs";
                 ConnectToCollaborativeServer((string) token);
                 (DataContext as VueModele).ChatClient.Initialize((string) Application.Current.Properties["token"]);
                 (DataContext as VueModele).ChatClient.MessageReceived += ScrollDown;
@@ -204,7 +204,7 @@ namespace PolyPaint
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
                 StringContent content = new StringContent(canvasJson, Encoding.UTF8, "application/json");
-                HttpResponseMessage response = await client.PostAsync("https://localhost:44300/api/user/canvas", content);
+                HttpResponseMessage response = await client.PostAsync($"{Config.URL}/api/user/canvas", content);
                 string responseString = await response.Content.ReadAsStringAsync();
             }
         }
@@ -216,7 +216,7 @@ namespace PolyPaint
             {
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6Im9saXZpZXIubGF1em9uIiwibmFtZWlkIjoiMjY5MGYyMjAtN2JiYS00NDViLTgzYWEtMjIwZmVlMDczMTRiIiwiZmFtaWx5X25hbWUiOiJ1c2VyIiwibmJmIjoxNTUwNTkwMjgzLCJleHAiOjYxNTUwNTkwMjIzLCJpYXQiOjE1NTA1OTAyODMsImlzcyI6Imh0dHBzOi8vcG9seXBhaW50Lm1lIiwiYXVkIjoiaHR0cHM6Ly9wb2x5cGFpbnQubWUifQ.7zc5SqJNkJi7q8-SPzJ7Jbz1S5umsMszoJrxyBResVQ");
                 System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
-                HttpResponseMessage response = await client.GetAsync("https://localhost:44300/api/user/canvas");
+                HttpResponseMessage response = await client.GetAsync($"{Config.URL}/api/user/canvas");
                 string responseString = await response.Content.ReadAsStringAsync();
                 strokes = JsonConvert.DeserializeObject<List<SaveableCanvas>>(responseString);
             }
@@ -331,7 +331,7 @@ namespace PolyPaint
                 {
                     client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", (string) Application.Current.Properties["token"]);
                     System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
-                    client.GetAsync("https://localhost:44300/api/user/logout").Wait();
+                    client.GetAsync($"{Config.URL}/api/user/logout").Wait();
                 }
             }
             catch { }
@@ -415,7 +415,7 @@ namespace PolyPaint
         {
             Connection =
                 new HubConnectionBuilder()
-                .WithUrl("https://localhost:44300/signalr/collaborative", options =>
+                .WithUrl($"{Config.URL}/signalr/collaborative", options =>
                 {
                     options.AccessTokenProvider = () => Task.FromResult(accessToken);
                 })
@@ -445,6 +445,8 @@ namespace PolyPaint
         }
         private async Task CollaborativeDuplicateAsync()
         {
+            object o = Clipboard.GetDataObject();
+
             await Connection.InvokeAsync("Duplicate");
         }
         private async Task CollaborativeDeleteAsync()
