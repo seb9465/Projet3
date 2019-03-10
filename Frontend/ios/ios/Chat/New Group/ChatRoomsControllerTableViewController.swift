@@ -22,12 +22,6 @@ class ChatRoomsControllerTableViewController: UITableViewController {
     }
     
     override func viewDidLoad() {
-        
-        ChatService.shared.onFetchChannels(updateChannelsFct: self.updateChannels);
-        ChatService.shared.invokeChannelsWhenConnected();
-        ChatService.shared.connectToHub();
-        ChatService.shared.onCreateChannel(updateChannelsFct: self.updateChannels);
-        
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cellIdentifier")
         
         // Uncomment the following line to preserve selection between presentations
@@ -36,6 +30,15 @@ class ChatRoomsControllerTableViewController: UITableViewController {
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
 //         self.navigationItem.rightBarButtonItem = self.editButtonItem
         super.viewDidLoad()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        ChatService.shared.onFetchChannels(updateChannelsFct: self.updateChannels);
+        ChatService.shared.invokeChannelsWhenConnected();
+        ChatService.shared.connectToHub();
+        ChatService.shared.onCreateChannel(updateChannelsFct: self.updateChannels);
+        
+        super.viewDidAppear(animated);
     }
     
     public func updateChannels(channels: [Channel]) -> Void {
@@ -51,7 +54,7 @@ class ChatRoomsControllerTableViewController: UITableViewController {
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
+        return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
