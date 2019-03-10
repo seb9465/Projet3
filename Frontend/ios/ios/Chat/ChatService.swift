@@ -20,11 +20,12 @@ class ChatService {
     
     init() {
         print("[ CHAT ] INIT from ChatService");
+        self._members = Members();
+        
         self.hubConnection = HubConnectionBuilder(url: URL(string: Constants.CHAT_URL)!)
             .withHttpConnectionOptions() { httpConnectionOptions in
                 httpConnectionOptions.accessTokenProvider = { return USER_TOKEN; }}
             .build();
-        self._members = Members();
     }
     
     public func connectToHub() -> Void {
@@ -34,35 +35,9 @@ class ChatService {
     }
     
     public func initOnReceivingMessage(currentMemberName: String, insertMessage: @escaping (_ message: Message) -> Void) {
-        self.hubConnection.on(method: "SendMessage", callback: { args, typeConverter in
-            print("[ CHAT ] On SendMessage");
-            let messageJson: String = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self)!;
-            if let messageJsonData = messageJson.data(using: .utf8) {
-                let message: ChatMessage = try! JSONDecoder().decode(ChatMessage.self, from: messageJsonData);
-                
-                var memberFromMessage: Member;
-                if (self._members.isAlreadyInArray(memberName: message.username)) {
-                    memberFromMessage = self._members.getMemberByName(memberName: message.username);
-                } else {
-                    memberFromMessage = Member( name: message.username, color: .random );
-                }
-                
-                let newMessage = Message(
-                    member: memberFromMessage,
-                    text: message.message,
-                    timestamp: message.timestamp,
-                    messageId: UUID().uuidString
-                );
-                
-                if (message.username != currentMemberName) {
-                    insertMessage(newMessage);
-                    SoundNotification.play(sound: Sound.SendMessage);
-                }
-            }
-        })
+        self.onSendMessage(currentMemberName: currentMemberName, insertMessage: insertMessage);
     }
     
-
     public func initOnAnotherUserConnection(insertMessage: @escaping (_ message: Message) -> Void) -> Void {
         self.onSelfConnectionToChannel(insertMessage: insertMessage);
         self.onUserConnectionToChannel(insertMessage: insertMessage);
@@ -78,34 +53,21 @@ class ChatService {
     }
     
     public func createNewChannel(channelName: String) -> Void {
-        let newChannel: ChannelMessage = ChannelMessage(channel: Channel(name: channelName, connected: false));
-        let newChannelJson = try? JSONEncoder().encode(newChannel);
-        let newChannelJsonData: String = String(data: newChannelJson!, encoding: .utf8)!;
-        
-        self.hubConnection.invoke(method: "CreateChannel", arguments: [newChannelJsonData], invocationDidComplete: { error in
-            print("[ CHAT ] Invoke CreateChannel");
-            self.printPossibleError(error: error);
-        });
+        self.invokeCreateChannel(channelName: channelName);
     }
     
     public func onCreateChannel(updateChannelsFct: @escaping (_ channels: [Channel]) -> Void) -> Void {
-            self.hubConnection.on(method: "CreateChannel", callback: { args, typeConverter in
-                let newChannelJson: String = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self)!;
-                if let newChannelJsonData = newChannelJson.data(using: .utf8) {
-                    let newChannel: ChannelMessage = try! JSONDecoder().decode(ChannelMessage.self, from: newChannelJsonData);
-                    updateChannelsFct([newChannel.channel]);
-                }
-            });
+        self.hubConnection.on(method: "CreateChannel", callback: { args, typeConverter in
+            let newChannelJson: String = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self)!;
+            if let newChannelJsonData = newChannelJson.data(using: .utf8) {
+                let newChannel: ChannelMessage = try! JSONDecoder().decode(ChannelMessage.self, from: newChannelJsonData);
+                updateChannelsFct([newChannel.channel]);
+            }
+        });
     }
     
     public func connectToGroup(insertMessage: @escaping (_ message: Message) -> Void) -> Void {
-            let json = try? JSONEncoder().encode(ConnectionMessage(channelId: self.currentChannel.name));
-            let jsondata: String = String(data: json!, encoding: .utf8)!;
-
-            self.hubConnection.invoke(method: "ConnectToChannel", arguments: [jsondata], invocationDidComplete: { error in
-                print("[ CHAT ] Invoked ConnectToChannel.");
-                self.printPossibleError(error: error);
-            });
+        self.invokeConnectToChannel(insertMessage: insertMessage);
     }
     
     public func invokeFetchChannels() -> Void {
@@ -130,38 +92,22 @@ class ChatService {
         });
     }
     
+    public func sendMessage(currentUser: String, message: Message, insertMessage: @escaping (_ message: Message) -> Void) -> Void {
+        self.invokeSendMessage(currentUser: currentUser, message: message, insertMessage: insertMessage);
+    }
+    
     public func disconnectFromHub() -> Void {
-//        self.disconnectFromChatRoom();
+        //        self.disconnectFromChatRoom();
         self.hubConnection.stop();
         self.connected = false;
         print("[ CHAT ] Connection stopped");
     }
     
     public func disconnectFromCurrentChatRoom() -> Void {
-        let json = try? JSONEncoder().encode(ConnectionMessage(channelId: self.currentChannel.name));
-        print(self.currentChannel.name);
-        let jsondata: String = String(data: json!, encoding: .utf8)!;
-        print(jsondata);
-        self.hubConnection.invoke(method: "DisconnectFromChannel", arguments: [jsondata], invocationDidComplete: { error in
-            print("[ CHAT ] Invoked DisconnectFromChannel.");
-            if let e = error {
-                print("[ CHAT ] Error Invoking DisconnectFromChannel.");
-                print(e);
-            }
-        });
+        self.invokeDisconnectFromChannel();
     }
     
-    public func sendMessage(currentUser: String, message: Message, insertMessage: @escaping (_ message: Message) -> Void) -> Void {
-        let chatMsg: ChatMessage = ChatMessage(user: currentUser, message: message.text, channelId: "general");
-        let json = try? JSONEncoder().encode(chatMsg);
-        let jsonData: String = String(data: json!, encoding: .utf8)!;
-        self.hubConnection.invoke(method: "SendMessage", arguments: [jsonData], invocationDidComplete: { error in
-            print("[ CHAT ] Invoke SendMessage");
-            self.printPossibleError(error: error);
-            SoundNotification.play(sound: Sound.ReceiveMessage);
-            insertMessage(message);
-        });
-    }
+    // MARK: Private functions
     
     private func onSelfConnectionToChannel(insertMessage: @escaping (_ message: Message) -> Void) -> Void {
         self.hubConnection.on(method: "ConnectToChannelSender", callback: { args, typeConverter in
@@ -246,6 +192,81 @@ class ChatService {
                 
                 insertMessage(newMessage);
             }
+        });
+    }
+    
+    private func onSendMessage(currentMemberName: String, insertMessage: @escaping (_ message: Message) -> Void) -> Void {
+        self.hubConnection.on(method: "SendMessage", callback: { args, typeConverter in
+            print("[ CHAT ] On SendMessage");
+            let messageJson: String = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self)!;
+            if let messageJsonData = messageJson.data(using: .utf8) {
+                let message: ChatMessage = try! JSONDecoder().decode(ChatMessage.self, from: messageJsonData);
+                
+                var memberFromMessage: Member;
+                if (self._members.isAlreadyInArray(memberName: message.username)) {
+                    memberFromMessage = self._members.getMemberByName(memberName: message.username);
+                } else {
+                    memberFromMessage = Member( name: message.username, color: .random );
+                }
+                
+                let newMessage = Message(
+                    member: memberFromMessage,
+                    text: message.message,
+                    timestamp: message.timestamp,
+                    messageId: UUID().uuidString
+                );
+                
+                if (message.username != currentMemberName) {
+                    insertMessage(newMessage);
+                    SoundNotification.play(sound: Sound.SendMessage);
+                }
+            }
+        });
+    }
+    
+    private func invokeCreateChannel(channelName: String) -> Void {
+        let newChannel: ChannelMessage = ChannelMessage(channel: Channel(name: channelName, connected: false));
+        let newChannelJson = try? JSONEncoder().encode(newChannel);
+        let newChannelJsonData: String = String(data: newChannelJson!, encoding: .utf8)!;
+        
+        self.hubConnection.invoke(method: "CreateChannel", arguments: [newChannelJsonData], invocationDidComplete: { error in
+            print("[ CHAT ] Invoke CreateChannel");
+            self.printPossibleError(error: error);
+        });
+    }
+    
+    private func invokeConnectToChannel(insertMessage: @escaping (_ message: Message) -> Void) -> Void {
+        let json = try? JSONEncoder().encode(ConnectionMessage(channelId: self.currentChannel.name));
+        let jsondata: String = String(data: json!, encoding: .utf8)!;
+        
+        self.hubConnection.invoke(method: "ConnectToChannel", arguments: [jsondata], invocationDidComplete: { error in
+            print("[ CHAT ] Invoked ConnectToChannel.");
+            self.printPossibleError(error: error);
+        });
+    }
+    
+    private func invokeDisconnectFromChannel() -> Void {
+        let json = try? JSONEncoder().encode(ConnectionMessage(channelId: self.currentChannel.name));
+        let jsondata: String = String(data: json!, encoding: .utf8)!;
+        
+        self.hubConnection.invoke(method: "DisconnectFromChannel", arguments: [jsondata], invocationDidComplete: { error in
+            print("[ CHAT ] Invoked DisconnectFromChannel.");
+            if let e = error {
+                print("[ CHAT ] Error Invoking DisconnectFromChannel.");
+                print(e);
+            }
+        });
+    }
+    
+    private func invokeSendMessage(currentUser: String, message: Message, insertMessage: @escaping (_ message: Message) -> Void) -> Void {
+        let chatMsg: ChatMessage = ChatMessage(user: currentUser, message: message.text, channelId: "general");
+        let json = try? JSONEncoder().encode(chatMsg);
+        let jsonData: String = String(data: json!, encoding: .utf8)!;
+        self.hubConnection.invoke(method: "SendMessage", arguments: [jsonData], invocationDidComplete: { error in
+            print("[ CHAT ] Invoke SendMessage");
+            self.printPossibleError(error: error);
+            SoundNotification.play(sound: Sound.ReceiveMessage);
+            insertMessage(message);
         });
     }
     
