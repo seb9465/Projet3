@@ -27,7 +27,7 @@ class ChatRoomsControllerTableViewController: UITableViewController {
         ChatService.shared.onFetchChannels(updateChannelsFct: self.updateChannels);
         ChatService.shared.invokeChannelsWhenConnected();
         ChatService.shared.onCreateChannel(updateChannelsFct: self.updateChannels);
-        ChatService.shared.connectToHub();
+        ChatService.shared.connectToHub();  // TODO: Add notification when client is connected.
         ChatService.shared.invokeFetchChannels();
         
         // Uncomment the following line to preserve selection between presentations

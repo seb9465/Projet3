@@ -99,38 +99,13 @@ class ChatService {
     }
     
     public func connectToGroup(insertMessage: @escaping (_ message: Message) -> Void) -> Void {
-        self.hubConnection.on(method: "ClientIsConnected", callback: { args, typeConverter in
-            print("[ CHAT ] On ClientIsConnected");
-            let message: String = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self)!;
-            
-            let sysMember = Member(
-                name: "SYSTEM",
-                color: .random
-            );
-            
-            let newMessage = Message(
-                member: sysMember,
-                text: message,
-                timestamp: Constants.formatter.string(from: Date()),
-                messageId: UUID().uuidString
-            );
-            
-            insertMessage(newMessage);
-            
-//             A DECOMMENTER LORSQU'IL Y AURA PLUSIEURS CHANNELS.
-//             Pour le moment, le serveur connecte directement au channel GENERAL.
-            
-//            let json = try? JSONEncoder().encode(ConnectionMessage(channelId: "general"));
-//            let jsondata: String = String(data: json!, encoding: .utf8)!;
-//
-//            self.hubConnection.invoke(method: "ConnectToChannel", arguments: [jsondata], invocationDidComplete: { error in
-//                print("[ CHAT ] Invoked ConnectToChannel avec argument 'general'.");
-//                if let e = error {
-//                    print("ERROR while invoking ConnectToChannel.");
-//                    print(e);
-//                }
-//            });
-        });
+            let json = try? JSONEncoder().encode(ConnectionMessage(channelId: self.currentChannel.name));
+            let jsondata: String = String(data: json!, encoding: .utf8)!;
+
+            self.hubConnection.invoke(method: "ConnectToChannel", arguments: [jsondata], invocationDidComplete: { error in
+                print("[ CHAT ] Invoked ConnectToChannel.");
+                self.printPossibleError(error: error);
+            });
     }
     
     public func invokeFetchChannels() -> Void {
@@ -162,13 +137,17 @@ class ChatService {
         print("[ CHAT ] Connection stopped");
     }
     
-    public func disconnectFromChatRoom() -> Void {
-        let json = try? JSONEncoder().encode(ConnectionMessage(channelId: "general"));
+    public func disconnectFromCurrentChatRoom() -> Void {
+        let json = try? JSONEncoder().encode(ConnectionMessage(channelId: self.currentChannel.name));
+        print(self.currentChannel.name);
         let jsondata: String = String(data: json!, encoding: .utf8)!;
-        
+        print(jsondata);
         self.hubConnection.invoke(method: "DisconnectFromChannel", arguments: [jsondata], invocationDidComplete: { error in
-            print("[ CHAT ] Invoked DisconnectFromChannel avec argument 'general'.");
-            self.printPossibleError(error: error!)
+            print("[ CHAT ] Invoked DisconnectFromChannel.");
+            if let e = error {
+                print("[ CHAT ] Error Invoking DisconnectFromChannel.");
+                print(e);
+            }
         });
     }
     

@@ -41,7 +41,7 @@ class MsgChatController: MessagesViewController, MsgChatProtocol {
          super.viewWillDisappear(animated);
         
         // TODO: Disconnect from channel only.
-//        ChatService.shared.disconnectFromHub();
+        ChatService.shared.disconnectFromCurrentChatRoom();
     }
     
     func messageInputBar(_ inputBar: MessageInputBar, textViewTextDidChangeTo text: String) -> Void {
