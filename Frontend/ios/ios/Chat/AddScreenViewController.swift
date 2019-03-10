@@ -27,6 +27,7 @@ class AddScreenViewController: UIViewController {
     @IBAction func saveButton(_ sender: Any) {
         // Create group.
         //        ChatService.shared.
+        ChatService.shared.createNewChannel(channelName: channelName.text!);
         self.dismiss(animated: true, completion: nil);
     }
 }

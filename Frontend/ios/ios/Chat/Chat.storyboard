@@ -101,7 +101,6 @@
                         <outlet property="cancelButton" destination="2G4-Nc-e1K" id="yy0-Pq-cOl"/>
                         <outlet property="channelName" destination="pKD-53-YzD" id="I8m-F6-ALy"/>
                         <outlet property="saveButton" destination="0f0-fH-Vkd" id="N2S-kQ-x8q"/>
-                        <outlet property="sddasd" destination="nkS-1A-wtE" id="mSQ-zD-Fu9"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Jus-3e-WG8" userLabel="First Responder" sceneMemberID="firstResponder"/>
