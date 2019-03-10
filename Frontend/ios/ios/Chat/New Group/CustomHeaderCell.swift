@@ -15,6 +15,7 @@ class CustomHeaderCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        self.customHeaderCell.backgroundColor = UIColor.white;
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

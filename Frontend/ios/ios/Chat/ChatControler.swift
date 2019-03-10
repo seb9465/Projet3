@@ -17,26 +17,22 @@ let USER_TOKEN = UserDefaults.standard.string(forKey: "token");
 protocol MsgChatProtocol {
     var messages: [Message] { get set }
     var member: Member! { get set }
-    var chatService: ChatService! { get set }
 }
 
 class MsgChatController: MessagesViewController, MsgChatProtocol {
-    var chatService: ChatService!;
     var messages: [Message] = [];
     var member: Member!;
     
     override func viewDidLoad() {
-        self.chatService = ChatService();
-        self.chatService.connectToHub();
         self.setCurrentMemberAttributes();
         
         messagesCollectionView = MessagesCollectionView(frame: .zero, collectionViewLayout: MyCustomMessagesFlowLayout())
         messagesCollectionView.register(MyCustomCell.self)
         
         self.initDelegate();
-        self.chatService.initOnReceivingMessage(currentMemberName: self.member.name, insertMessage: self.insertMessage)
-        self.chatService.initOnAnotherUserConnection(insertMessage: self.insertMessage);
-        self.chatService.connectToGroup(insertMessage: self.insertMessage);
+        ChatService.shared.initOnReceivingMessage(currentMemberName: self.member.name, insertMessage: self.insertMessage)
+        ChatService.shared.initOnAnotherUserConnection(insertMessage: self.insertMessage);
+        ChatService.shared.connectToGroup(insertMessage: self.insertMessage);
         
         super.viewDidLoad();
     }
@@ -44,7 +40,8 @@ class MsgChatController: MessagesViewController, MsgChatProtocol {
     override func viewWillDisappear(_ animated: Bool) -> Void {
          super.viewWillDisappear(animated);
         
-        self.chatService.disconnectFromHub();
+        // TODO: Disconnect from channel only.
+//        ChatService.shared.disconnectFromHub();
     }
     
     func messageInputBar(_ inputBar: MessageInputBar, textViewTextDidChangeTo text: String) -> Void {
@@ -71,7 +68,7 @@ class MsgChatController: MessagesViewController, MsgChatProtocol {
     }
     
     func insertMessage(_ message: Message) -> Void {
-        messages.append(message);
+        self.messages.append(message);
         
         messagesCollectionView.performBatchUpdates({
             messagesCollectionView.insertSections([messages.count - 1]);
