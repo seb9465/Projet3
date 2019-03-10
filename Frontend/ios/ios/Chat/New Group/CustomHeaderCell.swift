@@ -15,7 +15,6 @@ class CustomHeaderCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
-        self.customHeaderCell.backgroundColor = UIColor.red;
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -23,5 +22,4 @@ class CustomHeaderCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
-    
 }
