@@ -10,6 +10,7 @@ import UIKit
 
 class CustomTableViewCell: UITableViewCell {
 
+    @IBOutlet var cellView: UIView!
     @IBOutlet var tableViewCell: UIView!
     @IBOutlet var chatRoomName: UILabel!
     
@@ -19,9 +20,8 @@ class CustomTableViewCell: UITableViewCell {
 //        self.tableViewCell.layer.borderWidth = 1;
 //        self.tableViewCell.layer.borderColor = UIColor(red: 1, green: 0, blue: 0, alpha: 1).cgColor;
         self.chatRoomName.textColor = UIColor.white;
-        self.tableViewCell.backgroundColor = Constants.RED_COLOR;
-        self.tableViewCell.layer.cornerRadius = 10;
-        
+        self.cellView.backgroundColor = Constants.RED_COLOR;
+        self.cellView.layer.cornerRadius = 5;
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
