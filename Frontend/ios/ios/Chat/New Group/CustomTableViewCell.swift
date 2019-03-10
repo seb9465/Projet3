@@ -16,8 +16,9 @@ class CustomTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
-        self.tableViewCell.layer.borderWidth = 1;
-        self.tableViewCell.layer.borderColor = UIColor(red: 1, green: 0, blue: 0, alpha: 1).cgColor;
+//        self.tableViewCell.layer.borderWidth = 1;
+//        self.tableViewCell.layer.borderColor = UIColor(red: 1, green: 0, blue: 0, alpha: 1).cgColor;
+        self.tableViewCell.backgroundColor = Constants.RED_COLOR;
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
