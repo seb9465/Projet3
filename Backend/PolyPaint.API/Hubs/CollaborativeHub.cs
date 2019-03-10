@@ -16,20 +16,51 @@ namespace PolyPaint.API.Hubs
     public class CollaborativeHub : BaseHub
     {
 
-        public CollaborativeHub(UserService userService): base(userService)
+        public CollaborativeHub(UserService _userService) : base(_userService)
         {
         }
 
-        public async Task Draw(string canvasDrawing)
+        public async Task Draw(DrawViewModel drawViewModel)
         {
-            var drawViewModel = JsonConvert.DeserializeObject<DrawViewModel>(canvasDrawing);
             var user = await GetUserFromToken(Context.User);
             if (user != null)
             {
                 if (UserHandler.UserGroupMap.TryGetValue(drawViewModel.ChannelId, out var users) && users.Contains(user.Id))
                 {
-                    var returnDrawViewModel = new DrawViewModel();
-                    await Clients.Group(drawViewModel.ChannelId).SendAsync("Draw", returnDrawViewModel.ToString());
+                    await Clients.Group(drawViewModel.ChannelId).SendAsync("Draw", drawViewModel);
+                }
+            }
+        }
+
+        /*    public async Task Duplicate()
+            {
+                var user = await GetUserFromToken(Context.User);
+                if (user != null)
+                {
+                    await Clients.Group(groupId).SendAsync("Duplicate");
+                }
+            }
+
+            public async Task Delete()
+            {
+                var user = await GetUserFromToken(Context.User);
+                if (user != null)
+                {
+                    UserHandler.UserGroupMap.TryGetValue(userId, out var groupId);
+                    var user = await _userService.FindByIdAsync(userId);
+                    await Clients.Group(groupId).SendAsync("Delete");
+                }
+            }
+
+                */
+        public async Task Select(SelectViewModel selectViewModel)
+        {
+            var user = await GetUserFromToken(Context.User);
+            if (user != null)
+            {
+                if (UserHandler.UserGroupMap.TryGetValue(selectViewModel.ChannelId, out var users) && users.Contains(user.Id))
+                {
+                    await Clients.Group(selectViewModel.ChannelId).SendAsync("Select", selectViewModel);
                 }
             }
         }

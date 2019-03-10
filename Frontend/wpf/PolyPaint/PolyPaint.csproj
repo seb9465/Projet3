@@ -479,6 +479,9 @@
     <Folder Include="Services\" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\rectangle.png" />
+    <Resource Include="Resources\rounded_rectangle.png" />
+    <Resource Include="Resources\select.png" />
     <Content Include="SoundEffects\receive.mp3">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

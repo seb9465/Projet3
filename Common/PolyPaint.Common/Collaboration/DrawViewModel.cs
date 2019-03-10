@@ -10,6 +10,6 @@ namespace PolyPaint.Common.Collaboration
         public List<PolyPaintStylusPoint> StylusPoints { get; set; }
         public string OutilSelectionne { get; set; }
         public PolyPaintColor Color { get; set; }
-        public string ChannelId { get; set; }
+        public string ChannelId { get; set; } = "general";
     }
 }

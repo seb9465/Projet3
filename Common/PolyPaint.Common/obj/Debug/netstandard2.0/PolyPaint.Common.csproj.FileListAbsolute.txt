@@ -19,3 +19,4 @@ C:\Users\Sebastien Labine\Desktop\log3900-12\Common\PolyPaint.Common\obj\Debug\n
 C:\Users\Sebastien Labine\Desktop\log3900-12\Common\PolyPaint.Common\obj\Debug\netstandard2.0\PolyPaint.Common.csproj.CopyComplete
 C:\Users\Sebastien Labine\Desktop\log3900-12\Common\PolyPaint.Common\obj\Debug\netstandard2.0\PolyPaint.Common.dll
 C:\Users\Sebastien Labine\Desktop\log3900-12\Common\PolyPaint.Common\obj\Debug\netstandard2.0\PolyPaint.Common.pdb
+C:\Users\Sebastien Labine\Desktop\log3900-12\Common\PolyPaint.Common\obj\Debug\netstandard2.0\PolyPaint.Common.csprojAssemblyReference.cache

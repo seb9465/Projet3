@@ -9,5 +9,7 @@ namespace PolyPaint.Common.Collaboration
         // TODO: Add Owner Name
         public double MouseLeftDownPointX { get; set; }
         public double MouseLeftDownPointY { get; set; }
+        public string ChannelId { get; set; } = "general";
+
     }
 }

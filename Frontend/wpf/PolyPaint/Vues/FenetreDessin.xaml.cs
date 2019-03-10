@@ -50,7 +50,7 @@ namespace PolyPaint
             if (ViewState == ViewStateEnum.Online)
             {
                 object token = Application.Current.Properties["token"];
-                token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6InVzZXIuMyIsIm5hbWVpZCI6ImQwZTA2YTkwLWFjMDEtNDhlZS1iODkwLWE1ZDE1ZTg4NGVjNCIsImZhbWlseV9uYW1lIjoidXNlcjMiLCJuYmYiOjE1NTA3MTc0ODksImV4cCI6NjE1NTA3MTc0MjksImlhdCI6MTU1MDcxNzQ4OSwiaXNzIjoiaHR0cHM6Ly9wb2x5cGFpbnQubWUiLCJhdWQiOiJodHRwczovL3BvbHlwYWludC5tZSJ9.YY6FWiP5h2qY89OG4PoKMQkKRgQJLV0P-IhBDoQozWw";
+                token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6InVzZXIuNCIsIm5hbWVpZCI6ImMyNmYzMWIzLWQ3OGItNDk5Yi05ZmI5LWNmOWNiNjYxMzI5NSIsImZhbWlseV9uYW1lIjoidXNlcjQiLCJuYmYiOjE1NTIyNTM0ODQsImV4cCI6NjE1NTIyNTM0MjQsImlhdCI6MTU1MjI1MzQ4NCwiaXNzIjoiaHR0cHM6Ly9wb2x5cGFpbnQubWUiLCJhdWQiOiJodHRwczovL3BvbHlwYWludC5tZSJ9.dy--s2xLFEao2cZpPT-964SmbQoEeEabxurZVbcRujU";
                 ConnectToCollaborativeServer((string) token);
                 (DataContext as VueModele).ChatClient.Initialize((string) Application.Current.Properties["token"]);
                 (DataContext as VueModele).ChatClient.MessageReceived += ScrollDown;

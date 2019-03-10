@@ -15,7 +15,7 @@ namespace PolyPaint.API.Hubs
 {
     public class BaseHub : Hub
     {
-        private readonly UserService _userService;
+        internal readonly UserService _userService;
 
         public BaseHub(UserService userService)
         {
@@ -114,7 +114,7 @@ namespace PolyPaint.API.Hubs
             }
         }
 
-        public async Task<ApplicationUser> GetUserFromToken(ClaimsPrincipal contextUser)
+        internal async Task<ApplicationUser> GetUserFromToken(ClaimsPrincipal contextUser)
         {
             string userId;
             if (_userService.TryGetUserId(contextUser, out userId))
