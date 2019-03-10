@@ -63,7 +63,11 @@ class ChatRoomsControllerTableViewController: UITableViewController {
 //            UIApplication.shared.open(url)
 //        }
         
+        ChatService.shared.currentChannel = self.channels.channels[indexPath.row];
         
+        let storyboard = UIStoryboard(name: "Chat", bundle: nil);
+        let destination = storyboard.instantiateViewController(withIdentifier: "ChatView");
+        navigationController?.pushViewController(destination, animated: true)
     }
  
 

@@ -13,7 +13,7 @@
         <!--Chat Rooms Controller Table View Controller-->
         <scene sceneID="qbW-zX-slY">
             <objects>
-                <tableViewController id="AbL-dl-DlD" customClass="ChatRoomsControllerTableViewController" customModule="ios" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="ChatRoomsView" id="AbL-dl-DlD" customClass="ChatRoomsControllerTableViewController" customModule="ios" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="cxO-c3-Yhe">
                         <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -41,7 +41,7 @@
         <!--Chat View Controller-->
         <scene sceneID="GZJ-Qw-dIr">
             <objects>
-                <viewController title="Chat View Controller" id="hjx-CS-J5Y" customClass="MsgChatController" customModule="ios" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ChatView" title="Chat View Controller" id="hjx-CS-J5Y" customClass="MsgChatController" customModule="ios" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="lcR-1e-tlA">
                         <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
