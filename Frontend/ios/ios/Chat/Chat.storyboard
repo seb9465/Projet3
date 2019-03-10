@@ -34,6 +34,11 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="30o-RZ-lDu">
+                        <barButtonItem key="leftBarButtonItem" title="Back" id="2yi-Jh-1El">
+                            <connections>
+                                <action selector="backButton:" destination="AbL-dl-DlD" id="4b1-ms-ANq"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="4pS-QW-lYR">
                             <connections>
                                 <segue destination="8j1-jM-tlf" kind="presentation" id="Ic5-wv-dDM"/>

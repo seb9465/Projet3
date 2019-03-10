@@ -9,14 +9,6 @@
 import Foundation
 import SwiftSignalRClient
 import PromiseKit
-import AVFoundation
-
-
-
-
-
-
-
 
 class ChatService {
     static let shared = ChatService();
@@ -24,7 +16,6 @@ class ChatService {
     var hubConnection: HubConnection;
     var _members: Members;
     var currentChannel: Channel!;
-    
     
     init() {
         self.hubConnection = HubConnectionBuilder(url: URL(string: Constants.CHAT_URL)!)

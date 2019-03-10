@@ -13,6 +13,14 @@ class ChatRoomsControllerTableViewController: UITableViewController {
 //    var chatService: ChatService = ChatService();
     var channels: ChannelsMessage = ChannelsMessage();
     
+    
+    @IBAction func backButton(_ sender: Any) {
+        ChatService.shared.disconnectFromHub();
+        let storyboard = UIStoryboard(name: "Main", bundle: nil);
+        let view = storyboard.instantiateViewController(withIdentifier: "DashboardController");
+        navigationController?.pushViewController(view, animated: true);
+    }
+    
     override func viewDidLoad() {
         
         ChatService.shared.onFetchChannels(updateChannelsFct: self.updateChannels);
@@ -32,17 +40,18 @@ class ChatRoomsControllerTableViewController: UITableViewController {
     
     public func updateChannels(channels: [Channel]) -> Void {
         for channel in channels {
-            self.channels.channels.append(channel);
+            if (!self.channels.channels.contains(where: { $0.name.elementsEqual(channel.name) })) {
+                self.channels.channels.append(channel);
+            }
         }
         
         self.tableView.reloadData();
-        self.tableView.endUpdates();
     }
 
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return 2
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
