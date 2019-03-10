@@ -179,6 +179,20 @@ class ChatService {
         });
     }
     
+    public func createNewChannel(channelName: String) -> Void {
+        let newChannel: Channel = Channel(name: channelName, connected: false);
+        let newChannelJson = try? JSONEncoder().encode(newChannel);
+        let newChannelJsonData: String = String(data: newChannelJson!, encoding: .utf8)!;
+        
+        self.hubConnection.invoke(method: "CreateChannel", arguments: [newChannelJsonData], invocationDidComplete: { error in
+            print("[ CHAT ] Invoke CreateChannel");
+            if let e = error {
+                print("ERROR while invoking FetchChannels");
+                print(e);
+            }
+        });
+    }
+    
     public func connectToGroup(insertMessage: @escaping (_ message: Message) -> Void) -> Void {
         self.hubConnection.on(method: "ClientIsConnected", callback: { args, typeConverter in
             print("[ CHAT ] On ClientIsConnected");
