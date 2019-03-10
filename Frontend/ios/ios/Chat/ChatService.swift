@@ -52,6 +52,7 @@ class ChannelsMessage: Codable {
 
 class ChatService {
     static let shared = ChatService();
+    
     var hubConnection: HubConnection;
     var _members: Members;
     var currentChannel: Channel!;
@@ -99,86 +100,12 @@ class ChatService {
         })
     }
     
+
     public func initOnAnotherUserConnection(insertMessage: @escaping (_ message: Message) -> Void) -> Void {
-        self.hubConnection.on(method: "ConnectToChannel", callback: { args, typeConverter in
-            print("[ CHAT ] On ConnectToChannel");
-            
-            let json: String = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self)!;
-            if let jsonData = json.data(using: .utf8) {
-                let obj: ConnectionMessage = try! JSONDecoder().decode(ConnectionMessage.self, from: jsonData);
-                
-                let memberFromMessage: Member = Member(
-                    name: obj.username,
-                    color: .random
-                );
-                
-                self._members.addMember(member: memberFromMessage);
-                
-                let sysMember = Member(
-                    name: "SYSTEM",
-                    color: .random
-                );
-                
-                let newMessage = Message(
-                    member: sysMember,
-                    text: obj.username + " just joined the room",
-                    timestamp: Constants.formatter.string(from: Date()),
-                    messageId: UUID().uuidString
-                );
-                
-                insertMessage(newMessage);
-            }
-        });
+        self.onSelfConnectionToChannel(insertMessage: insertMessage);
+        self.onUserConnectionToChannel(insertMessage: insertMessage);
         
-        self.hubConnection.on(method: "ConnectToChannelSender", callback: { args, typeConverter in
-            print("[ CHAT ] On ConnectToChannelSender");
-            
-            let json: String = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self)!;
-            if let jsonData = json.data(using: .utf8) {
-                let obj: ConnectionMessage = try! JSONDecoder().decode(ConnectionMessage.self, from: jsonData);
-                
-                let sysMember = Member(
-                    name: "SYSTEM",
-                    color: .random
-                );
-                
-                let newMessage = Message(
-                    member: sysMember,
-                    text: "You joined the room : " + obj.channelId,
-                    timestamp: Constants.formatter.string(from: Date()),
-                    messageId: UUID().uuidString
-                );
-                
-                insertMessage(newMessage);
-            }
-        });
-        
-        self.hubConnection.on(method: "DisconnectFromChannel", callback: { args, typeConverter in
-            print("[ CHAT ] On DisconnectFromChannel");
-            
-            let json: String = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self)!;
-            if let jsonData = json.data(using: .utf8) {
-                let obj: ConnectionMessage = try! JSONDecoder().decode(ConnectionMessage.self, from: jsonData);
-                
-                let sysMember = Member(
-                    name: "SYSTEM",
-                    color: .random
-                );
-                
-                if (self._members.isAlreadyInArray(memberName: obj.username)) {
-                    self._members.removeFromArray(member: self._members.getMemberByName(memberName: obj.username));
-                }
-                
-                let newMessage = Message(
-                    member: sysMember,
-                    text: obj.username + " just left the room",
-                    timestamp: Constants.formatter.string(from: Date()),
-                    messageId: UUID().uuidString
-                );
-                
-                insertMessage(newMessage);
-            }
-        });
+        self.onUserDisconnectFromChannel(insertMessage: insertMessage);
     }
     
     public func invokeChannelsWhenConnected() -> Void {
@@ -194,10 +121,7 @@ class ChatService {
         
         self.hubConnection.invoke(method: "CreateChannel", arguments: [newChannelJsonData], invocationDidComplete: { error in
             print("[ CHAT ] Invoke CreateChannel");
-            if let e = error {
-                print("ERROR while invoking FetchChannels");
-                print(e);
-            }
+            self.printPossibleError(error: error);
         });
     }
     
@@ -276,12 +200,10 @@ class ChatService {
     public func disconnectFromChatRoom() -> Void {
         let json = try? JSONEncoder().encode(ConnectionMessage(channelId: "general"));
         let jsondata: String = String(data: json!, encoding: .utf8)!;
+        
         self.hubConnection.invoke(method: "DisconnectFromChannel", arguments: [jsondata], invocationDidComplete: { error in
             print("[ CHAT ] Invoked DisconnectFromChannel avec argument 'general'.");
-            if let e = error {
-                print("ERROR while invoking ConnectToChannel.");
-                print(e);
-            }
+            self.printPossibleError(error: error!)
         })
     }
     
@@ -291,12 +213,101 @@ class ChatService {
         let jsonData: String = String(data: json!, encoding: .utf8)!;
         self.hubConnection.invoke(method: "SendMessage", arguments: [jsonData], invocationDidComplete: { error in
             print("[ CHAT ] Invoke SendMessage");
-            if let e = error {
-                print("ERROR");
-                print(e);
-            }
+            self.printPossibleError(error: error);
             SoundNotification.play(sound: Sound.ReceiveMessage);
             insertMessage(message);
         });
+    }
+    
+    private func onSelfConnectionToChannel(insertMessage: @escaping (_ message: Message) -> Void) -> Void {
+        self.hubConnection.on(method: "ConnectToChannelSender", callback: { args, typeConverter in
+            print("[ CHAT ] On ConnectToChannelSender");
+            
+            let json: String = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self)!;
+            if let jsonData = json.data(using: .utf8) {
+                let obj: ConnectionMessage = try! JSONDecoder().decode(ConnectionMessage.self, from: jsonData);
+                
+                let sysMember = Member(
+                    name: "SYSTEM",
+                    color: .random
+                );
+                
+                let newMessage = Message(
+                    member: sysMember,
+                    text: "You joined the room : " + obj.channelId,
+                    timestamp: Constants.formatter.string(from: Date()),
+                    messageId: UUID().uuidString
+                );
+                
+                insertMessage(newMessage);
+            }
+        });
+    }
+    
+    private func onUserConnectionToChannel(insertMessage: @escaping (_ message: Message) -> Void) -> Void {
+        self.hubConnection.on(method: "ConnectToChannel", callback: { args, typeConverter in
+            print("[ CHAT ] On ConnectToChannel");
+            
+            let json: String = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self)!;
+            if let jsonData = json.data(using: .utf8) {
+                let obj: ConnectionMessage = try! JSONDecoder().decode(ConnectionMessage.self, from: jsonData);
+                
+                let memberFromMessage: Member = Member(
+                    name: obj.username,
+                    color: .random
+                );
+                
+                self._members.addMember(member: memberFromMessage);
+                
+                let sysMember = Member(
+                    name: "SYSTEM",
+                    color: .random
+                );
+                
+                let newMessage = Message(
+                    member: sysMember,
+                    text: obj.username + " just joined the room",
+                    timestamp: Constants.formatter.string(from: Date()),
+                    messageId: UUID().uuidString
+                );
+                
+                insertMessage(newMessage);
+            }
+        });
+    }
+    
+    private func onUserDisconnectFromChannel(insertMessage: @escaping (_ message: Message) -> Void) -> Void {
+        self.hubConnection.on(method: "DisconnectFromChannel", callback: { args, typeConverter in
+            print("[ CHAT ] On DisconnectFromChannel");
+            
+            let json: String = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self)!;
+            if let jsonData = json.data(using: .utf8) {
+                let obj: ConnectionMessage = try! JSONDecoder().decode(ConnectionMessage.self, from: jsonData);
+                
+                let sysMember = Member(
+                    name: "SYSTEM",
+                    color: .random
+                );
+                
+                if (self._members.isAlreadyInArray(memberName: obj.username)) {
+                    self._members.removeFromArray(member: self._members.getMemberByName(memberName: obj.username));
+                }
+                
+                let newMessage = Message(
+                    member: sysMember,
+                    text: obj.username + " just left the room",
+                    timestamp: Constants.formatter.string(from: Date()),
+                    messageId: UUID().uuidString
+                );
+                
+                insertMessage(newMessage);
+            }
+        });
+    }
+    
+    private func printPossibleError(error: Error?) -> Void {
+        if let e = error {
+            print(e);
+        }
     }
 }
