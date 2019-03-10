@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 
-namespace PolyPaint.VueModeles
+namespace PolyPaint.Common.Collaboration
 {
     public class DrawViewModel
     {
