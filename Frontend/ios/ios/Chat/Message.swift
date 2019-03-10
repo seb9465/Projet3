@@ -10,11 +10,32 @@ import Foundation
 import UIKit
 import MessageKit
 
-struct Message {
-    let member: Member;
-    let text: String;
-    let timestamp: String;
-    let messageId: String;
+class Message {
+    var member: Member;
+    var text: String;
+    var timestamp: String;
+    var messageId: String;
+    
+    init(member: Member, text: String? = "", timestamp: String? = "", messageId: String? = "") {
+        self.member = member;
+        self.text = text!;
+        self.timestamp = timestamp!;
+        self.messageId = messageId!;
+    }
+}
+
+class ChatMessage: Codable {
+    var username: String;
+    var message: String;
+    var channelId: String;
+    var timestamp: String;
+    
+    init(user: String, message: String, channelId: String, timestamp: String? = "") {
+        self.username = user;
+        self.message = message;
+        self.channelId = channelId;
+        self.timestamp = timestamp!;
+    }
 }
 
 extension Message: MessageType {
@@ -27,6 +48,9 @@ extension Message: MessageType {
     }
     
     var kind: MessageKind {
+        if(member.name == "SYSTEM") {
+            return .custom(text);
+        }
         return .text(text);
     }
 }

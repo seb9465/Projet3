@@ -74,6 +74,7 @@ namespace PolyPaint.API
             {
                 routes.MapHub<PolyPaintHub>(SIGNALR_URL);
                 routes.MapHub<CollaborativeHub>(SIGNALR_COLLABORATIVE_URL);
+                routes.MapHub<ChatHub>(SIGNALR_URL);
             });
             app.UseMvc();
             app.Run(async context => { await context.Response.WriteAsync("Route not found in PolyPaint API"); });

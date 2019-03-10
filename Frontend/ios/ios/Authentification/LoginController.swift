@@ -18,78 +18,63 @@ class LoginController: UIViewController, UITextFieldDelegate {
     @IBOutlet var validationLabel: UILabel!
     @IBOutlet var loginButton: UIButton!
     
-    var placeHolder = "";
-
-    @IBAction func loginButton(_ sender: Any) {
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    @IBAction func loginPressed(_ sender: Any) {
         let sv = UIViewController.displaySpinner(onView: self.view);
+//        let validEmail: Bool = isValidEmail(email: emailField.text!);
         
-        let validEmail: Bool = isValidEmail(testStr: emailField.text!);
-        
-        let parameters = [
-            "username": emailField.text,
-            "password": passwordField.text
-        ]
-        
-        self.authenticateUser(parameters: parameters).done { response in
-            UIViewController.removeSpinner(spinner: sv);
-            if(response == "ERROR") {
-                self.validationLabel.text = "Invalid Credentials"
-            } else {
+        AuthentificationAPI.login(username: emailField.text!, password: passwordField.text!)
+//        AuthentificationAPI.login(username: "seb.cado", password: "!12345Aa")
+            .done { (token) in
+                UIViewController.removeSpinner(spinner: sv);
                 self.validationLabel.text = ""
-                UserDefaults.standard.set(response, forKey: "token")
-                UserDefaults.standard.synchronize();
+                self.storeAuthentificationToken(token: token)
                 
-                print(UserDefaults.standard.string(forKey: "token") ?? "unkwnon");
-                
-                let mainController = self.storyboard?
-                    .instantiateViewController(withIdentifier: "MainController")
-                    as! UINavigationController
+                // Navigate to dashboard
+                let mainController = self.storyboard?.instantiateViewController(withIdentifier: "MainController") as! UINavigationController
                 self.present(mainController, animated: true, completion: nil)
-//                self.performSegue(withIdentifier: "goToDashboard", sender: nil)
-            }
+            }.catch { (Error) in
+                UIViewController.removeSpinner(spinner: sv);
+                self.validationLabel.text = "Invalid Credentials"
+                print(Error)
         }
     }
     
     @IBAction func registerPressed(_ sender: UIButton) {
-        let registerConroller = storyboard?
-            .instantiateViewController(withIdentifier: "RegisterController")
-        as! RegisterController
+        // Navigate to register page
+        let registerConroller = storyboard?.instantiateViewController(withIdentifier: "RegisterController") as! RegisterController
         self.present(registerConroller, animated: true, completion: nil)
-//        self.performSegue(withIdentifier: "goToRegister", sender: nil)
     }
     
-    func authenticateUser(parameters: [String: String?]) -> Promise<String>{
-        return Promise {seal in
-            Alamofire.request(Constants.LOGIN_URL as URLConvertible, method: .post, parameters: parameters, encoding: JSONEncoding.default).validate().responseString{ response in
-                
-                switch response.result {
-                    case .success:
-                        print("Login Successful")
-                        seal.fulfill(response.value!);
-                case .failure( _):
-                        print("Login Failed")
-                        seal.fulfill("ERROR");
-                }
-            };
+    @objc func keyboardWillShow(notification: NSNotification) {
+        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+            if self.view.frame.origin.y == 0 {
+                self.view.frame.origin.y -= keyboardSize.height / 3
+            }
         }
     }
-
-    func isValidEmail(testStr: String) -> Bool {
+    
+    @objc func keyboardWillHide(notification: NSNotification) {
+        if self.view.frame.origin.y != 0 {
+            self.view.frame.origin.y = 0
+        }
+    }
+    
+    
+    func storeAuthentificationToken(token: String) {
+        UserDefaults.standard.set(token, forKey: "token")
+        UserDefaults.standard.synchronize();
+    }
+    
+    func isValidEmail(email: String) -> Bool {
         let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
         let emailTest = NSPredicate(format: "SELF MATCHES %@", emailRegEx)
 
-        return emailTest.evaluate(with: testStr)
-    }
-
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        print("delegated")
-        placeHolder = textField.placeholder ?? ""
-        textField.placeholder = ""
-    }
-    
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        if textField.placeholder == ""{
-            textField.placeholder = placeHolder
-        }
+        return emailTest.evaluate(with: email)
     }
 }

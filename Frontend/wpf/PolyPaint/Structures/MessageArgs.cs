@@ -7,11 +7,13 @@ namespace PolyPaint.Structures
         public string Username { get; private set; }
         public string Message { get; private set; }
         public string Timestamp { get; private set; }
-        public MessageArgs(string username, string message, string timestamp)
+        public string ChannelId { get; private set; }
+        public MessageArgs(string username = "", string message = "", string timestamp = "", string channelId = "")
         {
             Message = message;
             Username = username;
             Timestamp = timestamp;
+            ChannelId = channelId;
         }
     }
 }
