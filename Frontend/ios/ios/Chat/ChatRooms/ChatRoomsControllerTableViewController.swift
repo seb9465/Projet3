@@ -11,13 +11,14 @@ import UIKit
 class ChatRoomsControllerTableViewController: UITableViewController {
     
 //    var chatService: ChatService = ChatService();
-    var channels: Channels = Channels();
+    var channels: ChannelsMessage = ChannelsMessage();
     
     override func viewDidLoad() {
         
         ChatService.shared.onFetchChannels(updateChannelsFct: self.updateChannels);
         ChatService.shared.invokeChannelsWhenConnected();
         ChatService.shared.connectToHub();
+        ChatService.shared.onCreateChannel(updateChannelsFct: self.updateChannels);
         
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cellIdentifier")
         
@@ -30,7 +31,10 @@ class ChatRoomsControllerTableViewController: UITableViewController {
     }
     
     public func updateChannels(channels: [Channel]) -> Void {
-        self.channels.channels = channels;
+        for channel in channels {
+            self.channels.channels.append(channel);
+        }
+        
         self.tableView.reloadData();
         self.tableView.endUpdates();
     }
