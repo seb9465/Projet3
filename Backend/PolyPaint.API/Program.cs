@@ -10,7 +10,7 @@ namespace PolyPaint.API
     {
         public static void Main(string[] args)
         {
-            var host = CreateWebHostBuilder(args).Build();
+            var host = CreateWebHostBuilder(args).UseUrls("http://localhost:3000").Build();
 
             using (var scope = host.Services.CreateScope())
             {

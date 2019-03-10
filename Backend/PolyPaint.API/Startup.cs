@@ -72,7 +72,6 @@ namespace PolyPaint.API
             app.UseAuthentication();
             app.UseSignalR(routes =>
             {
-                routes.MapHub<PolyPaintHub>(SIGNALR_URL);
                 routes.MapHub<CollaborativeHub>(SIGNALR_COLLABORATIVE_URL);
                 routes.MapHub<ChatHub>(SIGNALR_URL);
             });
