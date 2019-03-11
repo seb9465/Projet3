@@ -227,7 +227,7 @@ namespace PolyPaint
         {
             externalChatWindow.Show();
             chat.Visibility = Visibility.Collapsed;
-            ScrollDown(null,null);
+            ScrollDown(null, null);
         }
 
         private void sendButton_Click(object sender, RoutedEventArgs e)
@@ -251,7 +251,7 @@ namespace PolyPaint
                 sendButton_Click(sender, e);
             }
         }
-       
+
 
         private void OnClosing(object sender, EventArgs e)
         {
@@ -266,7 +266,7 @@ namespace PolyPaint
             }
             catch { }
         }
-        
+
         private void AddRoom(object sender, DialogClosingEventArgs eventArgs)
         {
             if (!Equals(eventArgs.Parameter, true)) return;

@@ -41,7 +41,7 @@ namespace PolyPaint.API.Auth
                 options.TokenValidationParameters = tokenValidationParameters;
                 options.SaveToken = true;
                 options.Configuration = new OpenIdConnectConfiguration();
-                
+
                 // for signalr
                 options.Events = new JwtBearerEvents
                 {
