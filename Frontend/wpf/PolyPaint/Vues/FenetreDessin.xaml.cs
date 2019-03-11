@@ -32,6 +32,7 @@ namespace PolyPaint
 
     public partial class FenetreDessin : Window
     {
+        private MediaPlayer mediaPlayer = new MediaPlayer();
         ChatWindow externalChatWindow;
         public FenetreDessin()
         {
@@ -235,6 +236,9 @@ namespace PolyPaint
             {
                 (DataContext as VueModele).ChatClient.SendMessage(messageTextBox.Text, (DataContext as VueModele).CurrentRoom);
             }
+            mediaPlayer.Open(new Uri("SoundEffects//send.mp3", UriKind.Relative));
+            mediaPlayer.Volume = 100;
+            mediaPlayer.Play();
             messageTextBox.Text = String.Empty;
             messageTextBox.Focus();
         }

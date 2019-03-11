@@ -46,6 +46,9 @@
     <Reference Include="MaterialDesignThemes.Wpf, Version=2.5.0.1205, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MaterialDesignThemes.2.5.0.1205\lib\net45\MaterialDesignThemes.Wpf.dll</HintPath>
     </Reference>
+    <Reference Include="MaterialMenu, Version=0.0.4.5, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MaterialMenu.0.0.4.5\lib\net46\MaterialMenu.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.AspNetCore, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNetCore.2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.dll</HintPath>
       <Private>True</Private>
@@ -357,6 +360,7 @@
     <Compile Include="Modeles\Channel.cs" />
     <Compile Include="Modeles\ChatClient.cs" />
     <Compile Include="Modeles\Editeur.cs" />
+    <Compile Include="Modeles\Messages\BaseMessage.cs" />
     <Compile Include="Modeles\Messages\ChannelMessage.cs" />
     <Compile Include="Modeles\Messages\ChannelsMessage.cs" />
     <Compile Include="Modeles\Messages\ChatMessage.cs" />
@@ -470,6 +474,14 @@
   <ItemGroup>
     <Folder Include="Chat\" />
     <Folder Include="Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="SoundEffects\receive.mp3">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SoundEffects\send.mp3">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
