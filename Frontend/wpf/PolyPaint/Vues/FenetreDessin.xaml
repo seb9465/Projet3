@@ -349,8 +349,8 @@
                                     </DataTemplate>
                                 </ListBox.ItemTemplate>
                             </ListBox>
-                            <Button x:Name="sendButton" Content="Send" HorizontalAlignment="left" Margin="350,0,0,10" VerticalAlignment="Bottom" Width="80" Click="sendButton_Click" Height="35" IsEnabled="True"/>
-                            <TextBox x:Name="messageTextBox" HorizontalAlignment="Left" Height="41" Margin="100,0,0,10" TextWrapping="Wrap" VerticalAlignment="Bottom" Width="230"/>
+                            <Button x:Name="sendButton" Content="Send" HorizontalAlignment="left" Margin="350,0,0,10" VerticalAlignment="Bottom" Width="80" Click="sendButton_Click" Height="35" IsEnabled="False"/>
+                            <TextBox x:Name="messageTextBox" HorizontalAlignment="Left" Height="41" Margin="100,0,0,10" TextWrapping="Wrap" VerticalAlignment="Bottom" Width="230" TextChanged="MessageTextBox_TextChanged"/>
                             <Label Content="Message :" HorizontalAlignment="Left" Height="26" Margin="30,0,0,8" VerticalAlignment="Bottom" Width="100"/>
 
                         </Grid>

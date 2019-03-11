@@ -2,7 +2,6 @@ using MaterialDesignThemes.Wpf;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Win32;
 using Newtonsoft.Json;
-using PolyPaint.Common;
 using PolyPaint.Common.Collaboration;
 using PolyPaint.Modeles;
 using PolyPaint.Structures;
@@ -41,13 +40,14 @@ namespace PolyPaint
         private HubConnection Connection;
         public event EventHandler MessageReceived;
         public event EventHandler SystemMessageReceived;
-        private ViewStateEnum ViewState { get; set; } = ViewStateEnum.Online;
-        public FenetreDessin()
+        private ViewStateEnum _viewState { get; set; }
+        public FenetreDessin(ViewStateEnum viewState)
         {
             InitializeComponent();
+            _viewState = viewState;
             DataContext = new VueModele();
 
-            if (ViewState == ViewStateEnum.Online)
+            if (_viewState == ViewStateEnum.Online)
             {
                 object token = Application.Current.Properties["token"];
                 token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6InVzZXIuMyIsIm5hbWVpZCI6Ijg4OTU2NjlhLTYyMmMtNDk2ZS1iZTkwLTI4YTQzMGE3NzhhZSIsImZhbWlseV9uYW1lIjoidXNlcjMiLCJuYmYiOjE1NTIyNTY1ODgsImV4cCI6NjE1NTIyNTY1MjgsImlhdCI6MTU1MjI1NjU4OCwiaXNzIjoiaHR0cHM6Ly9wb2x5cGFpbnQubWUiLCJhdWQiOiJodHRwczovL3BvbHlwYWludC5tZSJ9._CGBRWU961rt14S5FTx9QuzFkTCX86iel2PiMZ_PzMs";
@@ -99,7 +99,7 @@ namespace PolyPaint
 
         private async void DupliquerSelection(object sender, RoutedEventArgs e)
         {
-            if (ViewState == ViewStateEnum.Online)
+            if (_viewState == ViewStateEnum.Online)
             {
                 await CollaborativeDuplicateAsync();
             }
@@ -112,7 +112,7 @@ namespace PolyPaint
 
         private async void SupprimerSelection(object sender, RoutedEventArgs e)
         {
-            if (ViewState == ViewStateEnum.Online)
+            if (_viewState == ViewStateEnum.Online)
             {
                 await CollaborativeDeleteAsync();
             }
@@ -280,7 +280,7 @@ namespace PolyPaint
         }
         private void ScrollDown(object sender, MessageArgs args)
         {
-            this.Dispatcher.Invoke(() =>
+            Dispatcher.Invoke(() =>
             {
                 messagesList.SelectedIndex = messagesList.Items.Count - 1;
                 messagesList.ScrollIntoView(messagesList.SelectedItem);
@@ -319,9 +319,14 @@ namespace PolyPaint
         {
             if (e.Key == Key.Enter)
             {
-                sendButton_Click(sender, e);
+                if (sendButton.IsEnabled)
+                {
+                    sendButton_Click(sender, e);
+                }
             }
         }
+
+
 
         private void OnClosing(object sender, EventArgs e)
         {
@@ -343,7 +348,7 @@ namespace PolyPaint
             if ((DataContext as VueModele).OutilSelectionne == "select")
             {
 
-                if (ViewState == ViewStateEnum.Online)
+                if (_viewState == ViewStateEnum.Online)
                 {
                     SelectViewModel selectViewModel = new SelectViewModel
                     {
@@ -373,7 +378,7 @@ namespace PolyPaint
 
         private async void InkCanvas_LeftMouseUp(object sender, MouseButtonEventArgs e)
         {
-            if (ViewState == ViewStateEnum.Online)
+            if (_viewState == ViewStateEnum.Online)
             {
                 List<PolyPaintStylusPoint> points = new List<PolyPaintStylusPoint>();
                 foreach (StylusPoint point in icEventManager.DrawingStroke.StylusPoints.ToList())
@@ -454,6 +459,17 @@ namespace PolyPaint
             await Connection.InvokeAsync("Delete");
         }
 
+        private void MessageTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (!String.IsNullOrWhiteSpace(messageTextBox.Text))
+            {
+                sendButton.IsEnabled = true;
+            }
+            else {
+                sendButton.IsEnabled = false;
+            }
+        }
+
         private void HandleMessages()
         {
             Connection.On<string, string, string>("ReceiveMessage", (username, message, timestamp) =>
@@ -468,7 +484,8 @@ namespace PolyPaint
             {
                 Dispatcher.Invoke(() =>
                 {
-                    var drawViewModel = JsonConvert.DeserializeObject<DrawViewModel>(drawViewModelString);
+                    Console.WriteLine(drawViewModelString);
+                    DrawViewModel drawViewModel = JsonConvert.DeserializeObject<DrawViewModel>(drawViewModelString);
                     icEventManager.EndDraw(surfaceDessin, drawViewModel.OutilSelectionne, drawViewModel);
                 });
             });
