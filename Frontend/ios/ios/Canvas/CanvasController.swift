@@ -21,10 +21,9 @@ enum STATE {
 class CanvasController: UIViewController {
     
     // MARK: - Attributes
-    
     private var toolState: STATE  = STATE.NOTHING_SELECTED;
     private var previousToolState: STATE = STATE.NOTHING_SELECTED;
-    public var canvas: CanvasService = CanvasService();
+//    public var canvas: CanvasService = CanvasService();
     private var activeButton: UIBarButtonItem!;
     private var colorPicker: ChromaColorPicker!;
     
@@ -38,10 +37,9 @@ class CanvasController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad();
-        
-        CollaborationService.shared.connectToHub()
-        CollaborationService.shared.connectToGroup()
-        
+
+        CollaborationHub.shared.connectToHub()
+
         self.addTapGestureRecognizer();
 
         // Color picker parameters.
@@ -71,28 +69,32 @@ class CanvasController: UIViewController {
     }
     
     @objc func handleTap(sender: UITapGestureRecognizer? = nil) {
+        
         let tapPoint: CGPoint = (sender?.location(in: self.view))!;
         
         if (tapPoint.y >= 70 && self.toolState == STATE.DRAW_RECT) {
-            self.canvas.addNewFigure(origin: tapPoint, view: self.view);
-            CollaborationService.shared.updateDrawing(message: "je veux ajouter un rectangle")
+            self.insertFigure(origin: tapPoint)
         } else if (self.toolState == STATE.SELECTION) {
-            let res: Bool = self.canvas.selectFigure(tapPoint: tapPoint, view: self.view);
+            let res: Bool = CanvasService.shared.selectFigure(tapPoint: tapPoint, view: self.view);
             self.borderButton.isEnabled = res;
             self.fillButton.isEnabled = res;
         } else if (self.toolState == STATE.DELETE) {
-            self.canvas.deleteFigure(tapPoint: tapPoint, view: self.view);
+            CanvasService.shared.deleteFigure(tapPoint: tapPoint, view: self.view);
         }
+    }
+    
+    public func insertFigure(origin: CGPoint) -> Void {
+        CanvasService.shared.addNewFigure(origin: origin, view: self.view);
     }
     
     // MARK: - Button Action Functions
     
     @IBAction func undoButton(_ sender: Any) {
-        self.canvas.undo(view: self.view);
+        CanvasService.shared.undo(view: self.view);
     }
     
     @IBAction func redoButton(_ sender: Any) {
-        self.canvas.redo(view: self.view);
+        CanvasService.shared.redo(view: self.view);
     }
     
     @IBAction func clearButton(_ sender: Any) {
@@ -107,7 +109,7 @@ class CanvasController: UIViewController {
         } else {
             print("DELETE BUTTON SELECTED");
             self.toolState = STATE.DELETE;
-            self.canvas.unselectSelectedFigure();
+            CanvasService.shared.unselectSelectedFigure();
             self.borderButton.isEnabled = false;
             self.fillButton.isEnabled = false;
             self.activeButton?.tintColor = UIColor(red: 0, green: 122/255, blue: 1, alpha: 1);
@@ -138,7 +140,7 @@ class CanvasController: UIViewController {
         } else {
             print("RECT BUTTON SELECTED");
             self.toolState = STATE.DRAW_RECT;
-            self.canvas.unselectSelectedFigure();
+            CanvasService.shared.unselectSelectedFigure();
             self.borderButton.isEnabled = false;
             self.fillButton.isEnabled = false;
             self.activeButton?.tintColor = UIColor(red: 0, green: 122/255, blue: 1, alpha: 1);
@@ -191,11 +193,11 @@ class CanvasController: UIViewController {
     }
     
     private func clear() {
-        if (self.canvas.figuresInView()) {
+        if (CanvasService.shared.figuresInView()) {
             let alert: UIAlertController = UIAlertController(title: "Alert", message: "Are you sure you want to clear the canvas ?", preferredStyle: .alert);
 
             let yesAction: UIAlertAction = UIAlertAction(title: "Yes", style: .default, handler: { (alert: UIAlertAction!) in
-                self.canvas.clear();
+                CanvasService.shared.clear();
             });
             let noAction: UIAlertAction = UIAlertAction(title: "No", style: .default, handler:nil);
 
@@ -216,10 +218,10 @@ extension CanvasController: ChromaColorPickerDelegate {
     func colorPickerDidChooseColor(_ colorPicker: ChromaColorPicker, color: UIColor) {
         switch (self.toolState) {
         case STATE.FILL:
-            self.canvas.setSelectedFigureColor(color: color);
+            CanvasService.shared.setSelectedFigureColor(color: color);
             break;
         case STATE.BORDER_COLOR:
-            self.canvas.setSelectFigureBorderColor(color: color);
+            CanvasService.shared.setSelectFigureBorderColor(color: color);
             break;
         default:
             break;

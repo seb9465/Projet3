@@ -11,6 +11,9 @@ import PromiseKit
 import Alamofire
 
 class CanvasService {
+    // Singleton
+    static let shared = CanvasService()
+
     private var undoArray: [FigureService];
     private var redoArray: [FigureService];
     public var currentlySelectedFigure: FigureService!;

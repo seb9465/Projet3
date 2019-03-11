@@ -37,7 +37,7 @@ class FigureService: UIView {
         let fPoint: CGPoint = CGPoint(x: origin.x - 50, y: origin.y - 50);
         let lPoint: CGPoint = CGPoint(x: origin.x + 50, y: origin.y + 50);
         
-        self.currentTool = Rect();
+        self.currentTool = ClassFigure();
         self.currentTool.setInitialPoint(initialPoint: fPoint);
         self.currentTool.setLastPoint(lastPoint: lPoint);
         
@@ -49,6 +49,20 @@ class FigureService: UIView {
         self.selectFigureService.setInitialSelectedCornerCirles(firstPoint: fPoint, lastPoint: lPoint);
         
         self.backgroundColor = UIColor.clear;
+        
+        let point1 = PolyPaintStylusPoint(X: Double(fPoint.x), Y: Double(fPoint.y), PressureFactor: 1)
+        let point2 = PolyPaintStylusPoint(X: Double(lPoint.x), Y: Double(lPoint.y), PressureFactor: 1)
+        
+        let color: PolyPaintColor = PolyPaintColor(A: 255, R: 255, G: 1, B: 1)
+        let model: DrawViewModel = DrawViewModel(
+            ItemType: ItemTypeEnum.RoundedRectangleStroke,
+            StylusPoints: [point1, point2],
+            OutilSelectionne: "rounded_rectangle",
+            Color: color,
+            ChannelId: "general"
+        )
+        CollaborationHub.shared.updateDrawing(model: model)
+
     }
     
     required init?(coder aDecoder: NSCoder) {

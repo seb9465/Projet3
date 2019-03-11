@@ -7,20 +7,22 @@
 //
 
 struct DrawViewModel: Codable {
-    var ItemType: ItemTypeEnum;
-    var StylusPoints: [PolyPaintStylusPoint];
-    var OutilSelectionne: String;
-    var Color: PolyPaintColor;
+    var ItemType: ItemTypeEnum
+    var StylusPoints: [PolyPaintStylusPoint]
+    var OutilSelectionne: String
+    var Color: PolyPaintColor
+    var ChannelId: String
     
-    init(ItemType: ItemTypeEnum, StylusPoints: [PolyPaintStylusPoint], OutilSelectionne: String, Color: PolyPaintColor) {
+    init(ItemType: ItemTypeEnum, StylusPoints: [PolyPaintStylusPoint], OutilSelectionne: String, Color: PolyPaintColor, ChannelId: String) {
         self.ItemType = ItemType
         self.StylusPoints = StylusPoints
         self.OutilSelectionne = OutilSelectionne
         self.Color = Color
+        self.ChannelId = ChannelId
     }
 }
 
-enum ItemTypeEnum: String, Codable {
+enum ItemTypeEnum: Int, Codable {
     case RoundedRectangleStroke
 }
 
@@ -37,10 +39,10 @@ struct PolyPaintStylusPoint: Codable {
 }
 
 struct PolyPaintColor: Codable {
-    var A: Int;
-    var R: Int;
-    var G: Int;
-    var B: Int;
+    var A: Int
+    var R: Int
+    var G: Int
+    var B: Int
     
     init(A: Int, R: Int, G: Int, B:Int) {
         self.A = A
