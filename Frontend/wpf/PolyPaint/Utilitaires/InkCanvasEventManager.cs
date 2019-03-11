@@ -167,18 +167,33 @@ namespace PolyPaint.Utilitaires
             {
                 if (surfaceDessin.Strokes[i].GetType() == typeof(LineStroke))
                 {
-                    if (affectedAnchorPoints.Contains(surfaceDessin.Strokes[i].StylusPoints[0].ToPoint()))
+                    if (!surfaceDessin.GetSelectedStrokes().Contains(surfaceDessin.Strokes[i]))
                     {
-                        //DrawingStroke = new LineStroke(pts, surfaceDessin);
-                        //DrawingStroke.DrawingAttributes.Color = Colors.Black;
-                        //surfaceDessin.Strokes.Add(DrawingStroke);
+                        StylusPointCollection points = surfaceDessin.Strokes[i].StylusPoints;
+                        if (affectedAnchorPoints.Contains(surfaceDessin.Strokes[i].StylusPoints[0].ToPoint()))
+                        {
+                            points[0] = new StylusPoint(points[0].X + shiftInX, points[0].Y + shiftInY);
 
-                    }
-                    if (affectedAnchorPoints.Contains(surfaceDessin.Strokes[i].StylusPoints[1].ToPoint()))
-                    {
+                            DrawingStroke = new LineStroke(points, surfaceDessin);
+                            DrawingStroke.DrawingAttributes.Color = Colors.Black;
+                            surfaceDessin.Strokes.Add(DrawingStroke);
+                            (surfaceDessin.Strokes[i] as ICanvasable).RemoveFromCanvas();
+                            (DrawingStroke as ICanvasable).AddToCanvas();
+                            i--;
 
+                        }
+                        else if (affectedAnchorPoints.Contains(surfaceDessin.Strokes[i].StylusPoints[1].ToPoint()))
+                        {
+                            points[1] = new StylusPoint(points[1].X + shiftInX, points[1].Y + shiftInY);
+
+                            DrawingStroke = new LineStroke(points, surfaceDessin);
+                            DrawingStroke.DrawingAttributes.Color = Colors.Black;
+                            surfaceDessin.Strokes.Add(DrawingStroke);
+                            (surfaceDessin.Strokes[i] as ICanvasable).RemoveFromCanvas();
+                            (DrawingStroke as ICanvasable).AddToCanvas();
+                            i--;
+                        }
                     }
-                    surfaceDessin.Strokes.Remove(surfaceDessin.Strokes[i]);
                 }
             }
         }
