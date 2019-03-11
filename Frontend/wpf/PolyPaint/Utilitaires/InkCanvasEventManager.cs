@@ -1,9 +1,7 @@
 ﻿using PolyPaint.Strokes;
-using System;
+using PolyPaint.Vues;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Ink;
@@ -37,6 +35,29 @@ namespace PolyPaint.Utilitaires
             }
         }
 
+        public void ChangeText(InkCanvas surfaceDessin, Point mouseLeftDownPoint)
+        {
+            StrokeCollection strokes = surfaceDessin.Strokes;
+
+            // We travel the StrokeCollection inversely to select the first plan item first
+            // if some items overlap.
+            StrokeCollection strokeToSelect = new StrokeCollection();
+            for (int i = strokes.Count - 1; i >= 0; i--)
+            {
+                Rect box = strokes[i].GetBounds();
+                if (mouseLeftDownPoint.X >= box.Left && mouseLeftDownPoint.X <= box.Right &&
+                    mouseLeftDownPoint.Y <= box.Bottom && mouseLeftDownPoint.Y >= box.Top)
+                {
+                    if (strokes[i] is RectangleStroke)
+                    {
+                        var editWindow = new EditUmlWindow(strokes[i] as RectangleStroke, surfaceDessin);
+                        editWindow.Show();
+                    }
+                    break;
+                }
+            }
+        }
+
         public void DrawShape(InkCanvas surfaceDessin, string outilSelectionne, Point currentPoint, Point mouseLeftDownPoint)
         {
             StylusPointCollection pts = new StylusPointCollection();
@@ -52,7 +73,7 @@ namespace PolyPaint.Utilitaires
             switch (outilSelectionne)
             {
                 case "rectangle":
-                    DrawingStroke = new RectangleStroke(pts, "Titre", surfaceDessin);
+                    DrawingStroke = new RectangleStroke(pts, surfaceDessin);
                     DrawingStroke.DrawingAttributes.Color = Colors.LightBlue;
                     surfaceDessin.Strokes.Add(DrawingStroke);
                     break;
@@ -104,7 +125,7 @@ namespace PolyPaint.Utilitaires
 
                     }
                 }
-                StylusPointCollection points = new StylusPointCollection(new Point[] {closestToFirst, closestToSecond});
+                StylusPointCollection points = new StylusPointCollection(new Point[] { closestToFirst, closestToSecond });
                 DrawingStroke = new LineStroke(points, surfaceDessin);
                 DrawingStroke.DrawingAttributes.Color = Colors.Black;
                 surfaceDessin.Strokes.Add(DrawingStroke);

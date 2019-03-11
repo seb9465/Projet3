@@ -302,12 +302,16 @@ namespace PolyPaint
             currentPoint = e.GetPosition((IInputElement)sender);
             if (IsDrawing)
             {
-                icEventManager.DrawShape(surfaceDessin, (DataContext as VueModele).OutilSelectionne, currentPoint, mouseLeftDownPoint);                
+                icEventManager.DrawShape(surfaceDessin, (DataContext as VueModele).OutilSelectionne, currentPoint, mouseLeftDownPoint);
             }
         }
 
         private void InkCanvas_LeftMouseUp(object sender, MouseButtonEventArgs e)
         {
+            if ((DataContext as VueModele).OutilSelectionne == "text")
+            {
+                icEventManager.ChangeText(surfaceDessin, mouseLeftDownPoint);
+            }
             icEventManager.EndDraw(surfaceDessin, (DataContext as VueModele).OutilSelectionne);
             IsDrawing = false;
         }

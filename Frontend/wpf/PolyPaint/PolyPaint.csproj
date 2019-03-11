@@ -368,6 +368,9 @@
     <Compile Include="VueModeles\CanvasViewModel.cs" />
     <Compile Include="VueModeles\LoginViewModel.cs" />
     <Compile Include="VueModeles\VueModele.cs" />
+    <Compile Include="Vues\EditUmlWindow.xaml.cs">
+      <DependentUpon>EditUmlWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Vues\Login.xaml.cs">
       <DependentUpon>Login.xaml</DependentUpon>
     </Compile>
@@ -378,6 +381,10 @@
       <DependentUpon>Gallery.xaml</DependentUpon>
     </Compile>
     <Page Include="Vues\ChatWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Vues\EditUmlWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
