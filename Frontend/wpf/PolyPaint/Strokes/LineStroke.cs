@@ -36,7 +36,8 @@ namespace PolyPaint.Strokes
             StylusPoint stp = StylusPoints[0];
             StylusPoint sp = StylusPoints[1];
 
-            drawingContext.DrawLine(pen, new Point(sp.X, sp.Y), new Point(stp.X, stp.Y));
+            drawingContext.DrawLine(pen, new Point(sp.X, sp.Y), new Point(stp.X, sp.Y));
+            drawingContext.DrawLine(pen, new Point(stp.X, sp.Y), new Point(stp.X, stp.Y));
         }
 
         public void AddToCanvas()

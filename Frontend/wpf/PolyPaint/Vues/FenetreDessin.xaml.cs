@@ -315,5 +315,10 @@ namespace PolyPaint
             icEventManager.EndDraw(surfaceDessin, (DataContext as VueModele).OutilSelectionne);
             IsDrawing = false;
         }
+
+        void InkCanvas_SelectionMoving(object sender, InkCanvasSelectionEditingEventArgs e)
+        {
+            icEventManager.RedrawConnections(surfaceDessin, (DataContext as VueModele).OutilSelectionne, e.OldRectangle, e.NewRectangle);
+        }
     }
 }

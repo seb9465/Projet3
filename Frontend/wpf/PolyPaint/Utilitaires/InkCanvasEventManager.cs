@@ -144,5 +144,79 @@ namespace PolyPaint.Utilitaires
             AnchorPoints.Add(new Point(topLeft.X + width, topLeft.Y + height / 2));
             AnchorPoints.Add(new Point(topLeft.X, topLeft.Y + height / 2));
         }
+        public void RedrawConnections(InkCanvas surfaceDessin, string outilSelectionne, Rect oldRectangle, Rect newRectangle)
+        {
+            UpdateAnchorPointsPosition(surfaceDessin, oldRectangle, newRectangle);
+        }
+
+        private void UpdateAnchorPointsPosition(InkCanvas surfaceDessin, Rect oldRectangle, Rect newRectangle)
+        {
+            double shiftInX = newRectangle.Left - oldRectangle.Left;
+            double shiftInY = newRectangle.Top - oldRectangle.Top;
+            List<Point> affectedAnchorPoints = new List<Point>();
+            var selectedStroke = surfaceDessin.GetSelectedStrokes();
+            foreach (var stroke in selectedStroke)
+            {
+                Point topLeft = new Point(stroke.StylusPoints[0].X, stroke.StylusPoints[0].Y);
+                double width = (stroke.StylusPoints[1].X - stroke.StylusPoints[0].X);
+                double height = (stroke.StylusPoints[1].Y - stroke.StylusPoints[0].Y);
+
+                affectedAnchorPoints.Add(new Point(topLeft.X + width / 2, topLeft.Y));
+                affectedAnchorPoints.Add(new Point(topLeft.X + width / 2, topLeft.Y + height));
+                affectedAnchorPoints.Add(new Point(topLeft.X + width, topLeft.Y + height / 2));
+                affectedAnchorPoints.Add(new Point(topLeft.X, topLeft.Y + height / 2));
+            }
+
+            RedrawLineOnAffectedAnchorPoints(surfaceDessin, affectedAnchorPoints, shiftInX, shiftInY);
+
+            foreach (var point in affectedAnchorPoints)
+            {
+                for (int i = 0; i < AnchorPoints.Count(); ++i)
+                {
+                    if (point == AnchorPoints[i])
+                    {
+                        AnchorPoints[i] = new Point(point.X + shiftInX, point.Y + shiftInY);
+                    }
+                }
+            }
+         }
+
+        private void RedrawLineOnAffectedAnchorPoints(InkCanvas surfaceDessin, List<Point> affectedAnchorPoints, 
+                                                      double shiftInX, double shiftInY)
+        {
+            for (int i = 0; i < surfaceDessin.Strokes.Count(); ++i)
+            {
+                if (surfaceDessin.Strokes[i].GetType() == typeof(LineStroke))
+                {
+                    if (!surfaceDessin.GetSelectedStrokes().Contains(surfaceDessin.Strokes[i]))
+                    {
+                        StylusPointCollection points = surfaceDessin.Strokes[i].StylusPoints;
+                        if (affectedAnchorPoints.Contains(surfaceDessin.Strokes[i].StylusPoints[0].ToPoint()))
+                        {
+                            points[0] = new StylusPoint(points[0].X + shiftInX, points[0].Y + shiftInY);
+
+                            DrawingStroke = new LineStroke(points, surfaceDessin);
+                            DrawingStroke.DrawingAttributes.Color = Colors.Black;
+                            surfaceDessin.Strokes.Add(DrawingStroke);
+                            (surfaceDessin.Strokes[i] as ICanvasable).RemoveFromCanvas();
+                            (DrawingStroke as ICanvasable).AddToCanvas();
+                            i--;
+
+                        }
+                        else if (affectedAnchorPoints.Contains(surfaceDessin.Strokes[i].StylusPoints[1].ToPoint()))
+                        {
+                            points[1] = new StylusPoint(points[1].X + shiftInX, points[1].Y + shiftInY);
+
+                            DrawingStroke = new LineStroke(points, surfaceDessin);
+                            DrawingStroke.DrawingAttributes.Color = Colors.Black;
+                            surfaceDessin.Strokes.Add(DrawingStroke);
+                            (surfaceDessin.Strokes[i] as ICanvasable).RemoveFromCanvas();
+                            (DrawingStroke as ICanvasable).AddToCanvas();
+                            i--;
+                        }
+                    }
+                }
+            }
+        }
     }
 }
