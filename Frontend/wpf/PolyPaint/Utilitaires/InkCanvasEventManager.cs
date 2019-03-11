@@ -1,5 +1,6 @@
 ﻿using PolyPaint.Strokes;
 using PolyPaint.Vues;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -60,6 +61,9 @@ namespace PolyPaint.Utilitaires
 
         public void DrawShape(InkCanvas surfaceDessin, string outilSelectionne, Point currentPoint, Point mouseLeftDownPoint)
         {
+            if (surfaceDessin.Strokes.Count == 0)
+                AnchorPoints.Clear();
+
             StylusPointCollection pts = new StylusPointCollection();
 
             pts.Add(new StylusPoint(mouseLeftDownPoint.X, mouseLeftDownPoint.Y));
@@ -216,6 +220,21 @@ namespace PolyPaint.Utilitaires
                         }
                     }
                 }
+            }
+        }
+
+        internal void DeleteAnchorPoints(InkCanvas surfaceDessin, StrokeCollection deletedStrokes)
+        {
+            foreach (var stroke in deletedStrokes)
+            {
+                Point topLeft = new Point(stroke.StylusPoints[0].X, stroke.StylusPoints[0].Y);
+                double width = (stroke.StylusPoints[1].X - stroke.StylusPoints[0].X);
+                double height = (stroke.StylusPoints[1].Y - stroke.StylusPoints[0].Y);
+
+                AnchorPoints.Remove(new Point(topLeft.X + width / 2, topLeft.Y));
+                AnchorPoints.Remove(new Point(topLeft.X + width / 2, topLeft.Y + height));
+                AnchorPoints.Remove(new Point(topLeft.X + width, topLeft.Y + height / 2));
+                AnchorPoints.Remove(new Point(topLeft.X, topLeft.Y + height / 2));
             }
         }
     }

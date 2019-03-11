@@ -316,6 +316,16 @@ namespace PolyPaint
             IsDrawing = false;
         }
 
+        private void InkCanvas_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Delete)
+            {
+                StrokeCollection deletedStrokes = surfaceDessin.GetSelectedStrokes();
+                icEventManager.DeleteAnchorPoints(surfaceDessin, deletedStrokes);
+            }
+
+        }
+
         void InkCanvas_SelectionMoving(object sender, InkCanvasSelectionEditingEventArgs e)
         {
             icEventManager.RedrawConnections(surfaceDessin, (DataContext as VueModele).OutilSelectionne, e.OldRectangle, e.NewRectangle);
