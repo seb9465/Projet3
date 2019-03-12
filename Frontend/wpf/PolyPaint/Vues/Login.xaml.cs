@@ -64,7 +64,7 @@ namespace PolyPaint.Vues
             }
         }
 
-        private async void RegisterBtn_Click(object sender, RoutedEventArgs e)
+        private void RegisterBtn_Click(object sender, RoutedEventArgs e)
         {
             Register register = new Register();
             Application.Current.MainWindow = register;
