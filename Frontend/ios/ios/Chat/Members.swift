@@ -56,8 +56,8 @@ class Members {
 }
 
 class Member {
-    private let _name: String;
-    private let _color: UIColor;
+    let _name: String;
+    let _color: UIColor;
     
     var name: String {
         get { return _name }

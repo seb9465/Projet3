@@ -14,8 +14,7 @@ target 'ios' do
   pod 'MessageKit'
   pod 'MessageInputBar'
   pod 'JWTDecode'
-  pod 'Canvas'
-  pod 'Sketch'
+  pod 'ChromaColorPicker'
 
   target 'iosTests' do
     inherit! :search_paths

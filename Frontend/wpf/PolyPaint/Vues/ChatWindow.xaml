@@ -12,7 +12,8 @@
             <ColumnDefinition Width="109*"/>
             <ColumnDefinition Width="288*"/>
         </Grid.ColumnDefinitions>
-        <ListBox x:Name="messagesList" HorizontalAlignment="Left" Height="180" Margin="85,50,0,20" VerticalAlignment="Top" Width="500" RenderTransformOrigin="-0.304,0.109" BorderThickness="1" Grid.ColumnSpan="2" BorderBrush="Gainsboro">
+        <TextBlock Text="{Binding CurrentRoom, StringFormat='Room: {0}'}" Margin="85,22,350,-21.667" Grid.ColumnSpan="2" />
+        <ListBox ItemsSource="{Binding MessagesListBox, UpdateSourceTrigger=PropertyChanged}"  x:Name="messagesList" HorizontalAlignment="Left" Height="180" Margin="85,50,0,20" VerticalAlignment="Top" Width="500" RenderTransformOrigin="-0.304,0.109" BorderThickness="1" Grid.ColumnSpan="2" BorderBrush="Gainsboro">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding Path=.}" TextWrapping="Wrap"></TextBlock>

@@ -1,4 +1,5 @@
 ﻿using PolyPaint.Strokes;
+using PolyPaint.Common.Collaboration;
 using PolyPaint.Vues;
 using System;
 using System.Collections.Generic;
@@ -13,10 +14,11 @@ namespace PolyPaint.Utilitaires
 {
     class InkCanvasEventManager
     {
-        Stroke DrawingStroke = null;
+        public Stroke DrawingStroke = null;
 
-        public void SelectItem(InkCanvas surfaceDessin, Point mouseLeftDownPoint)
+        public void SelectItemOffline(InkCanvas surfaceDessin, Point mouseLeftDownPoint)
         {
+            InkCanvasEditingMode all = surfaceDessin.EditingMode;
             StrokeCollection strokes = surfaceDessin.Strokes;
 
             // We travel the StrokeCollection inversely to select the first plan item first
@@ -30,10 +32,39 @@ namespace PolyPaint.Utilitaires
                 {
                     strokeToSelect.Add(strokes[i]);
                     surfaceDessin.Select(strokeToSelect);
+
                     break;
                 }
             }
         }
+
+
+        public void SelectItemOnline(InkCanvas surfaceDessin, SelectViewModel selectViewModel, string username)
+        {
+            InkCanvasEditingMode all = surfaceDessin.EditingMode;
+            StrokeCollection strokes = surfaceDessin.Strokes;
+
+            // We travel the StrokeCollection inversely to select the first plan item first
+            // if some items overlap.
+            StrokeCollection strokeToSelect = new StrokeCollection();
+            for (int i = strokes.Count - 1; i >= 0; i--)
+            {
+                Rect box = strokes[i].GetBounds();
+                if (selectViewModel.MouseLeftDownPointX >= box.Left && selectViewModel.MouseLeftDownPointX <= box.Right &&
+                    selectViewModel.MouseLeftDownPointY <= box.Bottom && selectViewModel.MouseLeftDownPointY >= box.Top)
+                {
+                    if (username == selectViewModel.Owner)
+                    {
+                        //strokes[i].DrawingAttributes.Color = Colors.Black;
+                    }
+                    strokeToSelect.Add(strokes[i]);
+                    surfaceDessin.Select(strokeToSelect);
+
+                    break;
+                }
+            }
+        }
+
 
         public void ChangeText(InkCanvas surfaceDessin, Point mouseLeftDownPoint)
         {
@@ -90,6 +121,45 @@ namespace PolyPaint.Utilitaires
             }
         }
 
+        internal void EndDraw(InkCanvas surfaceDessin, DrawViewModel drawViewModel, string username)
+        {
+            if (DrawingStroke != null && drawViewModel.OutilSelectionne == "rectangle"
+                                      || drawViewModel.OutilSelectionne == "rounded_rectangle")
+            {
+
+
+                StylusPointCollection collection = new StylusPointCollection();
+
+                foreach (PolyPaintStylusPoint point in drawViewModel.StylusPoints)
+                {
+                    collection.Add(new StylusPoint()
+                    {
+                        X = point.X,
+                        Y = point.Y,
+                        PressureFactor = point.PressureFactor,
+                    });
+                }
+
+                Stroke stroke = null;
+                switch (drawViewModel.ItemType)
+                {
+                    case ItemTypeEnum.RectangleStroke:
+                        stroke = new RectangleStroke(collection, surfaceDessin);
+                        break;
+                }
+                Color color = new Color()
+                {
+                    A = drawViewModel.Color.A,
+                    B = drawViewModel.Color.B,
+                    G = drawViewModel.Color.G,
+                    R = drawViewModel.Color.R,
+                };
+                stroke.DrawingAttributes.Color = color;
+                surfaceDessin.Strokes.Remove(stroke);
+                surfaceDessin.Strokes.Add(stroke.Clone());
+            }
+        }
+
         internal void EndDraw(InkCanvas surfaceDessin, string outilSelectionne)
         {
             if (DrawingStroke != null && outilSelectionne == "uml_class"
@@ -133,6 +203,7 @@ namespace PolyPaint.Utilitaires
                 (DrawingStroke as ICanvasable).AddToCanvas();
             }
         }
+
         public void RedrawConnections(InkCanvas surfaceDessin, string outilSelectionne, Rect oldRectangle, Rect newRectangle)
         {
             UpdateAnchorPointsPosition(surfaceDessin, oldRectangle, newRectangle);
@@ -157,9 +228,9 @@ namespace PolyPaint.Utilitaires
             }
 
             RedrawLineOnAffectedAnchorPoints(surfaceDessin, affectedAnchorPoints, shiftInX, shiftInY);
-         }
+        }
 
-        private void RedrawLineOnAffectedAnchorPoints(InkCanvas surfaceDessin, List<Point> affectedAnchorPoints, 
+        private void RedrawLineOnAffectedAnchorPoints(InkCanvas surfaceDessin, List<Point> affectedAnchorPoints,
                                                       double shiftInX, double shiftInY)
         {
             for (int i = 0; i < surfaceDessin.Strokes.Count(); ++i)
@@ -200,7 +271,7 @@ namespace PolyPaint.Utilitaires
         private AbstractStroke[] ToAbstractStrokes(StrokeCollection strokeCollection)
         {
             AbstractStroke[] strokes = new AbstractStroke[strokeCollection.Count];
-            for(int i = 0; i < strokeCollection.Count; ++i)
+            for (int i = 0; i < strokeCollection.Count; ++i)
             {
                 if (!(strokeCollection[i].GetType() == typeof(LineStroke)))
                     strokes[i] = (AbstractStroke)strokeCollection[i];

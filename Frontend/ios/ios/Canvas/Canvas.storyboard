@@ -13,17 +13,81 @@
         <!--Canvas Controller-->
         <scene sceneID="Isk-t8-nkS">
             <objects>
-                <viewController id="Vts-He-P18" customClass="CanvasController" customModule="ios" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="hqe-fa-MVE" customClass="SketchView" customModule="Sketch">
+                <viewController storyboardIdentifier="CanvasView" id="Vts-He-P18" customClass="CanvasController" customModule="ios" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="hqe-fa-MVE" customClass="ConvasController">
                         <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="P0r-rK-G4e">
+                                <rect key="frame" x="0.0" y="20" width="1024" height="50"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                <items>
+                                    <barButtonItem title="Quit" id="4Er-Gx-QB8">
+                                        <connections>
+                                            <action selector="quitButton:" destination="Vts-He-P18" id="KcM-sA-VDA"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem title="New" id="ic3-cN-C5G">
+                                        <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <connections>
+                                            <action selector="clearButton:" destination="Vts-He-P18" id="JlR-Gh-chb"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem title="Save" id="Cwu-WP-ULr"/>
+                                    <barButtonItem title="Load" id="8N0-s0-ZU2"/>
+                                    <barButtonItem systemItem="undo" id="vbj-g9-11e">
+                                        <connections>
+                                            <action selector="undoButton:" destination="Vts-He-P18" id="Q7f-VC-utl"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem systemItem="redo" id="Bmp-bw-401">
+                                        <connections>
+                                            <action selector="redoButton:" destination="Vts-He-P18" id="2RI-2W-Sfy"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem title="Rect" id="SLY-eP-ACv">
+                                        <connections>
+                                            <action selector="drawRectButton:" destination="Vts-He-P18" id="OqV-ma-hpT"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem title="Select" id="Lts-nR-qFd">
+                                        <connections>
+                                            <action selector="selectFigureButton:" destination="Vts-He-P18" id="ZEn-to-nDy"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem title="Delete" id="5ld-32-8cy">
+                                        <connections>
+                                            <action selector="deleteButton:" destination="Vts-He-P18" id="O21-i5-hoW"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem title="Border" id="mdZ-5y-94T">
+                                        <connections>
+                                            <action selector="borderButton:" destination="Vts-He-P18" id="r6O-iM-TLH"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem title="Fill" id="QqS-3X-DNp">
+                                        <connections>
+                                            <action selector="fillButton:" destination="Vts-He-P18" id="lSt-J1-ym8"/>
+                                        </connections>
+                                    </barButtonItem>
+                                </items>
+                            </toolbar>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="h7K-cJ-n3H"/>
                     </view>
+                    <connections>
+                        <outlet property="borderButton" destination="mdZ-5y-94T" id="FgC-S0-rGV"/>
+                        <outlet property="deleteButton" destination="5ld-32-8cy" id="y06-F1-JC8"/>
+                        <outlet property="fillButton" destination="QqS-3X-DNp" id="rPk-OW-90X"/>
+                        <outlet property="rectButton" destination="SLY-eP-ACv" id="5wO-L8-aeR"/>
+                        <outlet property="selectButton" destination="Lts-nR-qFd" id="AOd-xa-kni"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YaL-1F-IzF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-186.328125" y="-75"/>
+            <point key="canvasLocation" x="298" y="-134"/>
         </scene>
     </scenes>
+    <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
 </document>
