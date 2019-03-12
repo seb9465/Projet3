@@ -50,6 +50,7 @@ namespace PolyPaint.Strokes
 
         private void DrawText(DrawingContext drawingContext)
         {
+            drawingContext.DrawText(Title, new Point(TopLeft.X + Width / 2.0 - Title.Width / 2.0, TopLeft.Y + Height / 2.0 - Title.Height / 2.0));
         }
 
         private void DrawAnchorPoints(DrawingContext drawingContext)

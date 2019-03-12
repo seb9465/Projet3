@@ -14,7 +14,7 @@ namespace PolyPaint.Strokes
         public event PropertyChangedEventHandler PropertyChanged;
 
         public PhaseStroke(StylusPointCollection pts, InkCanvas surfaceDessin)
-            : base(pts, surfaceDessin, "Class")
+            : base(pts, surfaceDessin, "Phase")
         { }
 
         protected virtual void ProprieteModifiee([CallerMemberName] string propertyName = null)
@@ -48,7 +48,7 @@ namespace PolyPaint.Strokes
 
         private void DrawText(DrawingContext drawingContext, FormattedText Title)
         {
-
+            drawingContext.DrawText(Title, new Point(TopLeft.X + Width / 2.0 - Title.Width / 2.0, TopLeft.Y + 10));
         }
 
         private void DrawAnchorPoints(DrawingContext drawingContext)
