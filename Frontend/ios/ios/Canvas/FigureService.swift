@@ -8,13 +8,13 @@
 
 import UIKit
 
-enum RESIZING {
-    case FROM_CIRCLE_1
-    case FROM_CIRCLE_2
-    case FROM_CIRCLE_3
-    case FROM_CIRCLE_4
-    case NO_RESIZING
-}
+//enum RESIZING {
+//    case FROM_CIRCLE_1
+//    case FROM_CIRCLE_2
+//    case FROM_CIRCLE_3
+//    case FROM_CIRCLE_4
+//    case NO_RESIZING
+//}
 
 //class FigureService: UIView {
 //

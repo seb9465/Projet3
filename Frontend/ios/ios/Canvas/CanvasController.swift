@@ -81,13 +81,14 @@ class CanvasController: UIViewController, CollaborationHubDelegate {
     }
     
     @objc func handleTap(sender: UITapGestureRecognizer? = nil) {
+        print("touch")
         var tapPoint: CGPoint = (sender?.location(in: self.view))!;
         tapPoint.y = tapPoint.y - 70
+        
         if (tapPoint.y >= 70 && self.toolState == STATE.DRAW_RECT) {
             CollaborationHub.shared.updateDrawing(origin: tapPoint)            
         } else if (self.toolState == STATE.SELECTION) {
             let res: Bool = self.editor.selectFigure(tapPoint: tapPoint);
-            
             self.borderButton.isEnabled = res;
             self.fillButton.isEnabled = res;
             
@@ -97,25 +98,16 @@ class CanvasController: UIViewController, CollaborationHubDelegate {
     }
     
     @objc func handlePan(sender: UIPanGestureRecognizer? = nil) {
-        let translation = sender!.translation(in: self.editor.editorView)
-        self.editor.moveFigure(translation: translation);
-        sender!.setTranslation(CGPoint.zero, in: self.editor.editorView)
+//        print("pan")
+//        let translation = sender!.translation(in: self.editor.editorView)
+////        self.editor.moveFigure(translation: translation);
+//
+//        self.editor.resizeFigure(translation: translation)
+//        sender!.setTranslation(CGPoint.zero, in: self.editor.editorView)
     }
     
     @objc func handlePinch(sender: UIPinchGestureRecognizer? = nil) {
-        if sender!.numberOfTouches < 2 {
-            print("avoided an obscure crash!!")
-            return
-        }
-        
-        let A = sender!.location(ofTouch: 0, in: self.view)
-        let B = sender!.location(ofTouch: 1, in: self.view)
-        
-//        let xD = abs( A.x - B.x )
-//        let yD = abs( A.y - B.y )
-        
-        print("pinch")
-        print(sender!.scale);
+  
     }
     
     

@@ -8,6 +8,14 @@
 
 import UIKit
 
+enum RESIZING {
+    case FROM_CIRCLE_1
+    case FROM_CIRCLE_2
+    case FROM_CIRCLE_3
+    case FROM_CIRCLE_4
+    case NO_RESIZING
+}
+
 class Editor {
 //    private var commands: [EditorCommand] = []
     private var undoArray: [UmlFigure] = []
@@ -17,6 +25,9 @@ class Editor {
     public var editorView: EditorView = EditorView()
     public var selectedFigure: UmlFigure!;
     public var selectionOutline: SelectionOutline!;
+    
+    private var isResizing: Bool = false;
+    private var resizingState: RESIZING = RESIZING.NO_RESIZING;
     
 //    public func insertFigure(origin: CGPoint) -> Void {
 //        let figure = FigureFactory.shared.getFigure(type: ItemTypeEnum.RoundedRectangleStroke, origin: origin)!;
@@ -50,6 +61,7 @@ class Editor {
                 self.selectionOutline.removeFromSuperview()
             }
             self.selectedFigure = figure
+            self.selectedFigure.setIsSelected()
             self.selectionOutline = SelectionOutline(firstPoint: figure.firstPoint, lastPoint: figure.lastPoint)
             self.selectionOutline.addSelectedFigureLayers(layer: self.editorView.layer)
             self.editorView.addSubview(self.selectionOutline)
@@ -76,20 +88,13 @@ class Editor {
 //        }
     }
     
-    public func moveFigure(translation: CGPoint) {
-//        self.selectedFigure.center = CGPoint(
-//            x:self.selectedFigure.center.x + translation.x,
-//            y:self.selectedFigure.center.y + translation.y
-//        )
-    }
-    
     public func undo(view: UIView) -> Void {
         print(undoArray);
         if (undoArray.count > 0) {
-            let figure: UmlFigure = view.subviews.last as! UmlFigure;
+            let figure: UmlFigure = undoArray.popLast()!;
             self.redoArray.append(figure);
             figure.removeFromSuperview();
-            self.undoArray.removeLast();
+//            self.undoArray.removeLast();
         }
     }
     
