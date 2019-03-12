@@ -21,6 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Common\PolyPaint.Common\PolyPaint.Common.csproj" />
     <ProjectReference Include="..\PolyPaint.DataAccess\PolyPaint.DataAccess.csproj" />
   </ItemGroup>
   <ItemGroup>

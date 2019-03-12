@@ -46,12 +46,12 @@
                     <materialDesign:PackIcon Kind="FileUploadOutline" Height="24" Width="24"/>
                 </Button>
 
-                <Button  Style="{StaticResource MaterialDesignRaisedButton}" ToolTip="Resource name: MaterialDesignRaisedButton" 
-                    x:Name="reinitialiser" Width="30" Height="30" Margin="5" Padding="0"  Command="{Binding Reinitialiser}" FontSize="18">
+                <Button  Style="{StaticResource MaterialDesignRaisedButton}" ToolTip="Réinitialiser le canevas" 
+                    x:Name="reinitialiser" Width="30" Height="30" Margin="5" Padding="0" Click="Reinitialiser_Click" FontSize="18">
                     <materialDesign:PackIcon Kind="Recycle" />
                 </Button>
 
-                <Button Style="{StaticResource MaterialDesignRaisedButton}" ToolTip="Resource name: MaterialDesignRaisedButton" 
+                <Button Style="{StaticResource MaterialDesignRaisedButton}" ToolTip="Undo" 
                         x:Name="empiler" Width="30" Height="30" Margin="5" Padding="0"  Command="{Binding Empiler}" FontSize="18">
                     <materialDesign:PackIcon Kind="UndoVariant" />
                 </Button>
@@ -94,6 +94,39 @@
                             CommandParameter="lasso">
                     <StackPanel>
                         <Image Source="/Resources/lasso.png" Width="25" Height="25"/>
+                    </StackPanel>
+                </Button>
+                <Button Name="select"
+                        Style="{StaticResource MaterialDesignRaisedLightButton}" HorizontalAlignment="Left" ToolTip="MaterialDesignRaisedLightButton" 
+                        BorderBrush="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurBordure}, ConverterParameter=select, UpdateSourceTrigger=PropertyChanged}" 
+                            Background="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurCouleurFond}, ConverterParameter=select, UpdateSourceTrigger=PropertyChanged}" 
+                            Command="{Binding Path=ChoisirOutil}"
+                            CommandParameter="select">
+                    <StackPanel>
+                        <Image Source="/Resources/select.png" Width="25" Height="25"/>
+                    </StackPanel>
+                </Button>
+                <StackPanel Orientation="Horizontal">
+                    <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Width="2" />
+                </StackPanel>
+                <Button Name="rectangle"
+                        Style="{StaticResource MaterialDesignRaisedLightButton}" HorizontalAlignment="Left" ToolTip="MaterialDesignRaisedLightButton" 
+                        BorderBrush="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurBordure}, ConverterParameter=rectangle, UpdateSourceTrigger=PropertyChanged}" 
+                        Background="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurCouleurFond}, ConverterParameter=rectangle, UpdateSourceTrigger=PropertyChanged}" 
+                        Command="{Binding Path=ChoisirOutil}"
+                        CommandParameter="rectangle">
+                    <StackPanel>
+                        <Image Source="/Resources/rectangle.png" Height="25" Width="25"  />
+                    </StackPanel>
+                </Button>
+                <Button Name="rounded_rectangle"
+                        Style="{StaticResource MaterialDesignRaisedLightButton}" HorizontalAlignment="Left" ToolTip="MaterialDesignRaisedLightButton" 
+                        BorderBrush="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurBordure}, ConverterParameter=rounded_rectangle, UpdateSourceTrigger=PropertyChanged}" 
+                        Background="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurCouleurFond}, ConverterParameter=rounded_rectangle, UpdateSourceTrigger=PropertyChanged}" 
+                        Command="{Binding Path=ChoisirOutil}"
+                        CommandParameter="rounded_rectangle">
+                    <StackPanel>
+                        <Image Source="/Resources/rounded_rectangle.png" Height="25" Width="25"  />
                     </StackPanel>
                 </Button>
                 <StackPanel Orientation="Horizontal">
@@ -225,7 +258,7 @@
             <Border BorderThickness="5,5,0,0">
                 <InkCanvas ClipToBounds="True" Grid.Column="0" Grid.Row="0" Name="surfaceDessin" Margin="10,11.111,0.222,-19.889"
                            HorizontalAlignment="Stretch" VerticalAlignment="Stretch"                           
-                           MouseLeave="surfaceDessin_MouseLeave" MouseMove="surfaceDessin_MouseMove"                                              
+                           MouseLeave="surfaceDessin_MouseLeave" MouseMove="surfaceDessin_MouseMove" PreviewMouseMove="InkCanvas_LeftMouseMove" PreviewMouseUp="InkCanvas_LeftMouseUp" PreviewMouseDown="InkCanvas_LeftMouseDown"                                   
                            Strokes="{Binding Path=Traits, Mode=OneTime}" EditingMode="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurModeEdition}, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
                            DefaultDrawingAttributes="{Binding Path=AttributsDessin, Mode=OneTime}"/>
                 <Border.Effect>
@@ -234,7 +267,7 @@
             </Border>
 
         </Grid>
-        <StackPanel Orientation="Vertical" Margin="20">
+        <StackPanel Orientation="Vertical" Margin="20" x:Name="chatWrapper">
             <Border BorderThickness="1" BorderBrush="Gray" ClipToBounds="True" HorizontalAlignment="Stretch" Height="314">
                 <StackPanel Orientation="Vertical" Margin="10">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
@@ -316,8 +349,8 @@
                                     </DataTemplate>
                                 </ListBox.ItemTemplate>
                             </ListBox>
-                            <Button x:Name="sendButton" Content="Send" HorizontalAlignment="left" Margin="350,0,0,10" VerticalAlignment="Bottom" Width="80" Click="sendButton_Click" Height="35" IsEnabled="True"/>
-                            <TextBox x:Name="messageTextBox" HorizontalAlignment="Left" Height="41" Margin="100,0,0,10" TextWrapping="Wrap" VerticalAlignment="Bottom" Width="230"/>
+                            <Button x:Name="sendButton" Content="Send" HorizontalAlignment="left" Margin="350,0,0,10" VerticalAlignment="Bottom" Width="80" Click="sendButton_Click" Height="35" IsEnabled="False"/>
+                            <TextBox x:Name="messageTextBox" HorizontalAlignment="Left" Height="41" Margin="100,0,0,10" TextWrapping="Wrap" VerticalAlignment="Bottom" Width="230" TextChanged="MessageTextBox_TextChanged"/>
                             <Label Content="Message :" HorizontalAlignment="Left" Height="26" Margin="30,0,0,8" VerticalAlignment="Bottom" Width="100"/>
 
                         </Grid>

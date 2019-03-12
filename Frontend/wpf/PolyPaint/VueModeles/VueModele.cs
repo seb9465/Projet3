@@ -258,11 +258,11 @@ namespace PolyPaint.VueModeles
                     v.Add(message);
                     return v;
                 });
+                mediaPlayer.Open(new Uri("SoundEffects//receive.mp3", UriKind.Relative));
+                mediaPlayer.Volume = 100;
+                mediaPlayer.Play();
             });
             ProprieteModifiee("MessagesListBox");
-            //mediaPlayer.Open(new Uri("SoundEffects//receive.mp3", UriKind.Relative));
-            //mediaPlayer.Volume = 100;
-            //mediaPlayer.Play();
         }
 
         public void ConnectedToRoom(object sender, MessageArgs e)

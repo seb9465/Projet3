@@ -10,13 +10,11 @@ using System.Threading.Tasks;
 
 namespace PolyPaint.API.Hubs
 {
-    public class ChatHub : Hub
+    public class ChatHub : BaseHub
     {
-        private readonly UserService _userService;
 
-        public ChatHub(UserService userService)
+        public ChatHub(UserService userService): base(userService)
         {
-            _userService = userService;
         }
 
         public async Task SendMessage(ChatMessage chatMessage)

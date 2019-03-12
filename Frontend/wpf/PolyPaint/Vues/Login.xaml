@@ -22,10 +22,11 @@
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <Label Content="Mot de passe:" HorizontalAlignment="Left" Margin="190,50,0,0" VerticalAlignment="Top"/>
-                <PasswordBox Name="passwordBox" HorizontalAlignment="Left" Height="30" Margin="50,50,0,0" VerticalAlignment="Top" Width="205"/>
+        <PasswordBox Name="passwordBox" HorizontalAlignment="Left" Height="30" Margin="350,240,0,0" VerticalAlignment="Top" Width="205" PasswordChanged="FieldsUpdate"/>
             </StackPanel>
             <Button Content="Login"  Width="160px" VerticalAlignment="Top" Margin="0,80,0,0" Name="loginBtn" Click="LoginBtn_Click" Height="Auto"/>
             <Button Content="Continuer hors-ligne"  Width="200px" VerticalAlignment="Top" Margin="0,10,0,0" x:Name="offlineBtn" Click="OfflineBtn_Click"  Height="Auto" Style="{StaticResource MaterialDesignFlatButton}"/>
+        <Label x:Name="errors_label" Content="" HorizontalAlignment="Left" Margin="270,320,0,0" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="181" Height="30" Foreground="#FFF44336"/>
 
         </StackPanel>
 
