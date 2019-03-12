@@ -12,7 +12,7 @@ using System.Linq;
 
 namespace PolyPaint.Strokes
 {
-    public class UmlClassStroke : Stroke, ICanvasable, INotifyPropertyChanged
+    public class UmlClassStroke : AbstractStroke, ICanvasable, INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
         public string Title { get; set; }
@@ -20,6 +20,7 @@ namespace PolyPaint.Strokes
         public ObservableCollection<Method> Methods { get; set; }
 
         public InkCanvas SurfaceDessin { get; set; }
+        public new Point[] AnchorPoints { get; set; }
         public bool IsDrawingDone = false;
 
         public RelayCommand<string> AddProperty { get; set; }
@@ -36,6 +37,7 @@ namespace PolyPaint.Strokes
             Methods = new ObservableCollection<Method>();
 
             SurfaceDessin = surfaceDessin;
+            AnchorPoints = new Point[4];
 
             AddProperty = new RelayCommand<string>(addProperty);
             AddMethod = new RelayCommand<string>(addMethod);
@@ -107,10 +109,15 @@ namespace PolyPaint.Strokes
             double width = (StylusPoints[1].X - StylusPoints[0].X);
             double height = (StylusPoints[1].Y - StylusPoints[0].Y);
 
-            drawingContext.DrawEllipse(brush, null, new Point(topLeft.X + width / 2, topLeft.Y), 2, 2);
-            drawingContext.DrawEllipse(brush, null, new Point(topLeft.X + width / 2, topLeft.Y + height), 2, 2);
-            drawingContext.DrawEllipse(brush, null, new Point(topLeft.X + width, topLeft.Y + height / 2), 2, 2);
-            drawingContext.DrawEllipse(brush, null, new Point(topLeft.X, topLeft.Y + height / 2), 2, 2);
+            AnchorPoints[0] = new Point(topLeft.X + width / 2, topLeft.Y);
+            AnchorPoints[1] = new Point(topLeft.X + width / 2, topLeft.Y + height);
+            AnchorPoints[2] = new Point(topLeft.X + width, topLeft.Y + height / 2);
+            AnchorPoints[3] = new Point(topLeft.X, topLeft.Y + height / 2);
+
+            drawingContext.DrawEllipse(brush, null, AnchorPoints[0], 2, 2);
+            drawingContext.DrawEllipse(brush, null, AnchorPoints[1], 2, 2);
+            drawingContext.DrawEllipse(brush, null, AnchorPoints[2], 2, 2);
+            drawingContext.DrawEllipse(brush, null, AnchorPoints[3], 2, 2);
         }
 
         public void AddToCanvas()
