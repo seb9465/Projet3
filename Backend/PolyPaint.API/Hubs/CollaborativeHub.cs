@@ -15,10 +15,8 @@ namespace PolyPaint.API.Hubs
 {
     public class CollaborativeHub : BaseHub
     {
-
         public CollaborativeHub(UserService _userService) : base(_userService)
-        {
-        }
+        { }
 
         public async Task Draw(string canvasDrawing)
         {
