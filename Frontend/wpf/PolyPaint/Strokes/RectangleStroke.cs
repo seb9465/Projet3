@@ -58,12 +58,11 @@ namespace PolyPaint.Strokes
             {
                 throw new ArgumentNullException("drawingAttributes");
             }
-            SolidColorBrush brush = new SolidColorBrush(drawingAttributes.Color);
-            brush.Freeze();
             StylusPoint stp = StylusPoints[0];
             StylusPoint sp = StylusPoints[1];
 
-            drawingContext.DrawRectangle(brush, null, new Rect(new Point(sp.X, sp.Y), new Point(stp.X, stp.Y)));
+            // CHANGE TO PARAMETERS' COLORS
+            drawingContext.DrawRectangle(Brushes.Blue, new Pen(Brushes.Black, 2), new Rect(new Point(sp.X, sp.Y), new Point(stp.X, stp.Y)));
             if (IsDrawingDone)
                 DrawText(drawingContext);
             DrawAnchorPoints(drawingContext);
