@@ -12,18 +12,21 @@ class FigureFactory {
     
     static let shared = FigureFactory()
     
-    public func getFigure(type: ItemTypeEnum, origin: CGPoint) -> CanvasFigure? {
+    public func getFigure(type: ItemTypeEnum, origin: CGPoint) -> UmlFigure? {
         switch (type) {
             case .RoundedRectangleStroke :
                 return ClassUmlFigure(origin: origin)
         }
     }
     
-    public func getFigure(type: ItemTypeEnum, firstPoint: CGPoint, lastPoint: CGPoint) -> CanvasFigure? {
+    public func getFigure(type: ItemTypeEnum, firstPoint: CGPoint, lastPoint: CGPoint) -> UmlFigure? {
         switch (type) {
         case .RoundedRectangleStroke :
             return ClassUmlFigure(firstPoint: firstPoint, lastPoint: lastPoint)
         }
     }
     
+//    public func getSelectionOutline() -> SelectionOutline {
+//        return SelectionOutline(bounds: <#T##CGRect#>, firstPoint: <#T##CGPoint#>, lastPoint: <#T##CGPoint#>)
+//    }
 }

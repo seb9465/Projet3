@@ -12,10 +12,11 @@
 		3D22681C2236EE8400B2F604 /* Editor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D22681B2236EE8400B2F604 /* Editor.swift */; };
 		3D22681F2236EF2B00B2F604 /* EditorCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D22681E2236EF2B00B2F604 /* EditorCommand.swift */; };
 		3D2268212236F18800B2F604 /* InsertFigure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D2268202236F18800B2F604 /* InsertFigure.swift */; };
-		3D2268252237050F00B2F604 /* CanvasFigure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D2268242237050F00B2F604 /* CanvasFigure.swift */; };
+		3D2268252237050F00B2F604 /* UmlFigure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D2268242237050F00B2F604 /* UmlFigure.swift */; };
 		3D2565602225BDFE00BCE946 /* GalleryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D25655F2225BDFE00BCE946 /* GalleryController.swift */; };
 		3D5537C02200E86E002C1B77 /* SlideDownSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D5537BF2200E86E002C1B77 /* SlideDownSegue.swift */; };
 		3D5537C22200ED5F002C1B77 /* SlideUpSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D5537C12200ED5F002C1B77 /* SlideUpSegue.swift */; };
+		3D66FC77223817E800EB7E93 /* SelectionOutline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D66FC76223817E800EB7E93 /* SelectionOutline.swift */; };
 		3D6E955D2230839900BC7BE7 /* DrawViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D6E955C2230839900BC7BE7 /* DrawViewModel.swift */; };
 		3D73359D223739550021FA3C /* ClassUmlFigure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D73359C223739550021FA3C /* ClassUmlFigure.swift */; };
 		3D73359F22373D5E0021FA3C /* FigureFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D73359E22373D5E0021FA3C /* FigureFactory.swift */; };
@@ -79,10 +80,11 @@
 		3D22681B2236EE8400B2F604 /* Editor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Editor.swift; sourceTree = "<group>"; };
 		3D22681E2236EF2B00B2F604 /* EditorCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorCommand.swift; sourceTree = "<group>"; };
 		3D2268202236F18800B2F604 /* InsertFigure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsertFigure.swift; sourceTree = "<group>"; };
-		3D2268242237050F00B2F604 /* CanvasFigure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasFigure.swift; sourceTree = "<group>"; };
+		3D2268242237050F00B2F604 /* UmlFigure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UmlFigure.swift; sourceTree = "<group>"; };
 		3D25655F2225BDFE00BCE946 /* GalleryController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryController.swift; sourceTree = "<group>"; };
 		3D5537BF2200E86E002C1B77 /* SlideDownSegue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlideDownSegue.swift; sourceTree = "<group>"; };
 		3D5537C12200ED5F002C1B77 /* SlideUpSegue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlideUpSegue.swift; sourceTree = "<group>"; };
+		3D66FC76223817E800EB7E93 /* SelectionOutline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionOutline.swift; sourceTree = "<group>"; };
 		3D6E955C2230839900BC7BE7 /* DrawViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawViewModel.swift; sourceTree = "<group>"; };
 		3D73359C223739550021FA3C /* ClassUmlFigure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassUmlFigure.swift; sourceTree = "<group>"; };
 		3D73359E22373D5E0021FA3C /* FigureFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FigureFactory.swift; sourceTree = "<group>"; };
@@ -187,6 +189,23 @@
 			path = Authentification;
 			sourceTree = "<group>";
 		};
+		3D66FC7422380F9000EB7E93 /* SelectionFigures */ = {
+			isa = PBXGroup;
+			children = (
+				3D66FC76223817E800EB7E93 /* SelectionOutline.swift */,
+			);
+			path = SelectionFigures;
+			sourceTree = "<group>";
+		};
+		3D66FC7522380F9C00EB7E93 /* UmlFigures */ = {
+			isa = PBXGroup;
+			children = (
+				3D2268242237050F00B2F604 /* UmlFigure.swift */,
+				3D73359C223739550021FA3C /* ClassUmlFigure.swift */,
+			);
+			path = UmlFigures;
+			sourceTree = "<group>";
+		};
 		3D6E95582230833300BC7BE7 /* Collaboration */ = {
 			isa = PBXGroup;
 			children = (
@@ -215,9 +234,9 @@
 		3DB1363A2235B2730096FA04 /* Figures */ = {
 			isa = PBXGroup;
 			children = (
+				3D66FC7522380F9C00EB7E93 /* UmlFigures */,
+				3D66FC7422380F9000EB7E93 /* SelectionFigures */,
 				3DB1363D2235B3130096FA04 /* FigureProtocol.swift */,
-				3D2268242237050F00B2F604 /* CanvasFigure.swift */,
-				3D73359C223739550021FA3C /* ClassUmlFigure.swift */,
 				3D73359E22373D5E0021FA3C /* FigureFactory.swift */,
 			);
 			path = Figures;
@@ -586,6 +605,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B74BE36A221C823C0001D62A /* SaveService.swift in Sources */,
+				3D66FC77223817E800EB7E93 /* SelectionOutline.swift in Sources */,
 				3DC967EB220A067900FA76CB /* LoginController.swift in Sources */,
 				3DE984D322261707004D036C /* AuthentificationAPI.swift in Sources */,
 				B7ABD3672231715C00C7A016 /* SelectFigureService.swift in Sources */,
@@ -625,7 +645,7 @@
 				B7B1B4352231A3FD00BEE17D /* MyCustomMessagesFlowLayout.swift in Sources */,
 				3DC07CC722205B7C0045E7DE /* ContextMenuCell.swift in Sources */,
 				3D9FBC1222248371006BB297 /* MasterViewController.swift in Sources */,
-				3D2268252237050F00B2F604 /* CanvasFigure.swift in Sources */,
+				3D2268252237050F00B2F604 /* UmlFigure.swift in Sources */,
 				B781B95B22132C2F001C1BD8 /* CanvasController.swift in Sources */,
 				3D73359F22373D5E0021FA3C /* FigureFactory.swift in Sources */,
 				B7567946220F33CD00F80B12 /* ChatService.swift in Sources */,

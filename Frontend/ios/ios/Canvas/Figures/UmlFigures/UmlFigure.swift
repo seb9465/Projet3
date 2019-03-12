@@ -8,7 +8,7 @@
 
 import UIKit
 
-class CanvasFigure : UIView {
+class UmlFigure : UIView {
     var firstPoint: CGPoint!
     var lastPoint: CGPoint!
     var width: CGFloat!
@@ -152,6 +152,7 @@ class CanvasFigure : UIView {
     
     public func setIsSelected() -> Void {
         self.isSelected = true;
+        let border = SelectionOutline(bounds: self.bounds, firstPoint: self.firstPoint, lastPoint: self.lastPoint)
         self.selectFigureService.addSelectedFigureLayers(layer: self.layer);
         setNeedsDisplay();
     }
