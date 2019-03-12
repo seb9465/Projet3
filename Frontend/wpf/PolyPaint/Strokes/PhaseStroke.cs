@@ -11,16 +11,9 @@ namespace PolyPaint.Strokes
 {
     public class PhaseStroke : AbstractStroke, ICanvasable, INotifyPropertyChanged
     {
-        public event PropertyChangedEventHandler PropertyChanged;
-
         public PhaseStroke(StylusPointCollection pts, InkCanvas surfaceDessin)
             : base(pts, surfaceDessin, "Phase")
         { }
-
-        protected virtual void ProprieteModifiee([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
 
         protected override void DrawCore(DrawingContext drawingContext, DrawingAttributes drawingAttributes)
         {
@@ -65,18 +58,6 @@ namespace PolyPaint.Strokes
             drawingContext.DrawEllipse(brush, null, AnchorPoints[2], 2, 2);
             drawingContext.DrawEllipse(brush, null, AnchorPoints[3], 2, 2);
 
-        }
-
-        public void AddToCanvas()
-        {
-            var clone = Clone();
-            (clone as AbstractStroke).IsDrawingDone = true;
-            SurfaceDessin.Strokes.Add(clone);
-        }
-
-        public void RemoveFromCanvas()
-        {
-            SurfaceDessin.Strokes.Remove(this);
         }
     }
 }

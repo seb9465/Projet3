@@ -6,12 +6,12 @@ using System.Windows.Input;
 namespace PolyPaint.Vues
 {
     /// <summary>
-    /// Interaction logic for EditUmlWindow.xaml
+    /// Interaction logic for EditTitleWindow.xaml
     /// </summary>
-    public partial class EditUmlWindow : Window
+    public partial class EditTitleWindow : Window
     {
         public InkCanvas SurfaceDessin { get; set; }
-        public EditUmlWindow(UmlClassStroke stroke, InkCanvas surfaceDessin)
+        public EditTitleWindow(AbstractStroke stroke, InkCanvas surfaceDessin)
         {
             DataContext = stroke;
             SurfaceDessin = surfaceDessin;
@@ -22,8 +22,8 @@ namespace PolyPaint.Vues
         private void Ok_Click(object sender, RoutedEventArgs e)
         {
             Close();
-            (DataContext as UmlClassStroke).RemoveFromCanvas();
-            (DataContext as UmlClassStroke).AddToCanvas();
+            (DataContext as ICanvasable).RemoveFromCanvas();
+            (DataContext as ICanvasable).AddToCanvas();
         }
 
         private void EnterKeyDown(object sender, KeyEventArgs e)

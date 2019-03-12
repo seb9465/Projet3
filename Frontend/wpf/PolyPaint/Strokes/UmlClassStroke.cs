@@ -12,9 +12,8 @@ using System.Linq;
 
 namespace PolyPaint.Strokes
 {
-    public class UmlClassStroke : AbstractStroke, ICanvasable, INotifyPropertyChanged
+    public class UmlClassStroke : AbstractStroke
     {
-        public event PropertyChangedEventHandler PropertyChanged;
         public ObservableCollection<Property> Properties { get; set; }
         public ObservableCollection<Method> Methods { get; set; }
 
@@ -33,11 +32,6 @@ namespace PolyPaint.Strokes
             AddMethod = new RelayCommand<string>(addMethod);
             RemoveFromProperties = new RelayCommand<string>(removeFromProperties);
             RemoveFromMethods = new RelayCommand<string>(removeFromMethods);
-        }
-
-        protected virtual void ProprieteModifiee([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         protected override void DrawCore(DrawingContext drawingContext, DrawingAttributes drawingAttributes)
@@ -99,18 +93,6 @@ namespace PolyPaint.Strokes
             drawingContext.DrawEllipse(brush, null, AnchorPoints[1], 2, 2);
             drawingContext.DrawEllipse(brush, null, AnchorPoints[2], 2, 2);
             drawingContext.DrawEllipse(brush, null, AnchorPoints[3], 2, 2);
-        }
-
-        public void AddToCanvas()
-        {
-            var clone = Clone();
-            (clone as UmlClassStroke).IsDrawingDone = true;
-            SurfaceDessin.Strokes.Add(clone);
-        }
-
-        public void RemoveFromCanvas()
-        {
-            SurfaceDessin.Strokes.Remove(this);
         }
 
         private void addProperty(string bidon)

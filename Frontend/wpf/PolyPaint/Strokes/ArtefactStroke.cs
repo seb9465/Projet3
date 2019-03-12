@@ -12,18 +12,11 @@ using System.Linq;
 
 namespace PolyPaint.Strokes
 {
-    public class ArtefactStroke : AbstractStroke, ICanvasable, INotifyPropertyChanged
+    public class ArtefactStroke : AbstractStroke
     {
-        public event PropertyChangedEventHandler PropertyChanged;
-
         public ArtefactStroke(StylusPointCollection pts, InkCanvas surfaceDessin)
             : base(pts, surfaceDessin, "Artefact")
         { }
-
-        protected virtual void ProprieteModifiee([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
 
         protected override void DrawCore(DrawingContext drawingContext, DrawingAttributes drawingAttributes)
         {
@@ -89,18 +82,6 @@ namespace PolyPaint.Strokes
             drawingContext.DrawEllipse(brush, null, AnchorPoints[2], 2, 2);
             drawingContext.DrawEllipse(brush, null, AnchorPoints[3], 2, 2);
 
-        }
-
-        public void AddToCanvas()
-        {
-            var clone = Clone();
-            (clone as AbstractStroke).IsDrawingDone = true;
-            SurfaceDessin.Strokes.Add(clone);
-        }
-
-        public void RemoveFromCanvas()
-        {
-            SurfaceDessin.Strokes.Remove(this);
         }
     }
 }

@@ -84,6 +84,15 @@ namespace PolyPaint.Utilitaires
                         var editWindow = new EditUmlWindow(strokes[i] as UmlClassStroke, surfaceDessin);
                         editWindow.Show();
                     }
+                    else if (strokes[i] is ActivityStroke ||
+                        strokes[i] is ArtefactStroke ||
+                        strokes[i] is PhaseStroke ||
+                        strokes[i] is RectangleStroke ||
+                        strokes[i] is RoleStroke)
+                    {
+                        var editWindow = new EditTitleWindow(strokes[i] as AbstractStroke, surfaceDessin);
+                        editWindow.Show();
+                    }
                     break;
                 }
             }

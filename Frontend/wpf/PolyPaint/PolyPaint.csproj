@@ -399,6 +399,9 @@
     <Compile Include="VueModeles\RegistrationViewModel.cs" />
     <Compile Include="VueModeles\LoginViewModel.cs" />
     <Compile Include="VueModeles\VueModele.cs" />
+    <Compile Include="Vues\EditTitleWindow.xaml.cs">
+      <DependentUpon>EditTitleWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Vues\EditUmlWindow.xaml.cs">
       <DependentUpon>EditUmlWindow.xaml</DependentUpon>
     </Compile>
@@ -413,6 +416,10 @@
     </Compile>
     <Compile Include="Vues\ViewStateEnum.cs" />
     <Page Include="Vues\ChatWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Vues\EditTitleWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
