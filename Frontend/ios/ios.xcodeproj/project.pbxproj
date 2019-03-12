@@ -63,6 +63,7 @@
 		C43102E122132226008F1D80 /* SoundNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43102E022132226008F1D80 /* SoundNotification.swift */; };
 		C495FEBE22381BDF006E49F9 /* UMLImageFigure.swift in Sources */ = {isa = PBXBuildFile; fileRef = C495FEBD22381BDF006E49F9 /* UMLImageFigure.swift */; };
 		C495FEC22238248E006E49F9 /* Ressources in Resources */ = {isa = PBXBuildFile; fileRef = C495FEC12238248E006E49F9 /* Ressources */; };
+		C4D6BB2722384F5B00121695 /* AnchorPoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D6BB2622384F5B00121695 /* AnchorPoints.swift */; };
 		C5724AD99504D99A25966BB9 /* Pods_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6CD8C54089242A6862A3C2E4 /* Pods_ios.framework */; };
 /* End PBXBuildFile section */
 
@@ -139,6 +140,7 @@
 		C43102E022132226008F1D80 /* SoundNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundNotification.swift; sourceTree = "<group>"; };
 		C495FEBD22381BDF006E49F9 /* UMLImageFigure.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UMLImageFigure.swift; path = ios/Canvas/Figures/UMLImageFigure.swift; sourceTree = SOURCE_ROOT; };
 		C495FEC12238248E006E49F9 /* Ressources */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Ressources; sourceTree = "<group>"; };
+		C4D6BB2622384F5B00121695 /* AnchorPoints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnchorPoints.swift; sourceTree = "<group>"; };
 		C6C9AA086604975DCA6FF292 /* Pods-iosTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iosTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-iosTests/Pods-iosTests.debug.xcconfig"; sourceTree = "<group>"; };
 		E7966B3EFE20A93B4BE0DB10 /* Pods-ios.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ios.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ios/Pods-ios.debug.xcconfig"; sourceTree = "<group>"; };
 		FF4400EA77DC6188B44EF010 /* Pods-ios.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ios.release.xcconfig"; path = "Pods/Target Support Files/Pods-ios/Pods-ios.release.xcconfig"; sourceTree = "<group>"; };
@@ -196,6 +198,7 @@
 		3D66FC7422380F9000EB7E93 /* SelectionFigures */ = {
 			isa = PBXGroup;
 			children = (
+				C4D6BB2622384F5B00121695 /* AnchorPoints.swift */,
 				3D66FC76223817E800EB7E93 /* SelectionOutline.swift */,
 			);
 			path = SelectionFigures;
@@ -648,6 +651,7 @@
 				C43102E122132226008F1D80 /* SoundNotification.swift in Sources */,
 				B775FE3F22135D6300B2EFE0 /* Extensions.swift in Sources */,
 				B756794C220F608B00F80B12 /* Members.swift in Sources */,
+				C4D6BB2722384F5B00121695 /* AnchorPoints.swift in Sources */,
 				3D2565602225BDFE00BCE946 /* GalleryController.swift in Sources */,
 				B7B1B4352231A3FD00BEE17D /* MyCustomMessagesFlowLayout.swift in Sources */,
 				3DC07CC722205B7C0045E7DE /* ContextMenuCell.swift in Sources */,
