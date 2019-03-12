@@ -20,7 +20,6 @@ namespace PolyPaint.Strokes
         public ObservableCollection<Method> Methods { get; set; }
 
         public InkCanvas SurfaceDessin { get; set; }
-        public new Point[] AnchorPoints { get; set; }
         public bool IsDrawingDone = false;
 
         public RelayCommand<string> AddProperty { get; set; }

@@ -13,7 +13,6 @@ namespace PolyPaint.Utilitaires
 {
     class InkCanvasEventManager
     {
-        List<Point> AnchorPoints = new List<Point>();
         Stroke DrawingStroke = null;
 
         public void SelectItem(InkCanvas surfaceDessin, Point mouseLeftDownPoint)
@@ -61,9 +60,6 @@ namespace PolyPaint.Utilitaires
 
         public void DrawShape(InkCanvas surfaceDessin, string outilSelectionne, Point currentPoint, Point mouseLeftDownPoint)
         {
-            if (surfaceDessin.Strokes.Count == 0)
-                AnchorPoints.Clear();
-
             StylusPointCollection pts = new StylusPointCollection();
 
             pts.Add(new StylusPoint(mouseLeftDownPoint.X, mouseLeftDownPoint.Y));
@@ -101,7 +97,6 @@ namespace PolyPaint.Utilitaires
             {
                 (DrawingStroke as ICanvasable).RemoveFromCanvas();
                 (DrawingStroke as ICanvasable).AddToCanvas();
-                AddAnchorPointsToList(DrawingStroke.StylusPoints);
             }
             else if (DrawingStroke != null && outilSelectionne == "line")
             {
@@ -113,18 +108,20 @@ namespace PolyPaint.Utilitaires
                 Point secondPoint = new Point(DrawingStroke.StylusPoints[1].X, DrawingStroke.StylusPoints[1].Y);
                 double distanceToFirst = 1000;
                 double distanceToSecond = 1000;
-                for (int i = 0; i < AnchorPoints.Count(); i++)
+                AbstractStroke[] strokes = ToAbstractStrokes(surfaceDessin.Strokes);
+                List<Point> anchors = GetAllAnchorPoints(strokes);
+                for (int i = 0; i < anchors.Count; ++i)
                 {
-                    double d1 = Point.Subtract(AnchorPoints[i], firstPoint).Length;
-                    double d2 = Point.Subtract(AnchorPoints[i], secondPoint).Length;
+                    double d1 = Point.Subtract(anchors[i], firstPoint).Length;
+                    double d2 = Point.Subtract(anchors[i], secondPoint).Length;
                     if (d1 < distanceToFirst)
                     {
-                        closestToFirst = AnchorPoints[i];
+                        closestToFirst = anchors[i];
                         distanceToFirst = d1;
                     }
                     if (d2 < distanceToSecond)
                     {
-                        closestToSecond = AnchorPoints[i];
+                        closestToSecond = anchors[i];
                         distanceToSecond = d2;
 
                     }
@@ -135,18 +132,6 @@ namespace PolyPaint.Utilitaires
                 surfaceDessin.Strokes.Add(DrawingStroke);
                 (DrawingStroke as ICanvasable).AddToCanvas();
             }
-        }
-
-        private void AddAnchorPointsToList(StylusPointCollection stylusPoints)
-        {
-            Point topLeft = new Point(stylusPoints[0].X, stylusPoints[0].Y);
-            double width = (stylusPoints[1].X - stylusPoints[0].X);
-            double height = (stylusPoints[1].Y - stylusPoints[0].Y);
-
-            AnchorPoints.Add(new Point(topLeft.X + width / 2, topLeft.Y));
-            AnchorPoints.Add(new Point(topLeft.X + width / 2, topLeft.Y + height));
-            AnchorPoints.Add(new Point(topLeft.X + width, topLeft.Y + height / 2));
-            AnchorPoints.Add(new Point(topLeft.X, topLeft.Y + height / 2));
         }
         public void RedrawConnections(InkCanvas surfaceDessin, string outilSelectionne, Rect oldRectangle, Rect newRectangle)
         {
@@ -173,16 +158,16 @@ namespace PolyPaint.Utilitaires
 
             RedrawLineOnAffectedAnchorPoints(surfaceDessin, affectedAnchorPoints, shiftInX, shiftInY);
 
-            foreach (var point in affectedAnchorPoints)
-            {
-                for (int i = 0; i < AnchorPoints.Count(); ++i)
-                {
-                    if (point == AnchorPoints[i])
-                    {
-                        AnchorPoints[i] = new Point(point.X + shiftInX, point.Y + shiftInY);
-                    }
-                }
-            }
+            //foreach (var point in affectedAnchorPoints)
+            //{
+            //    for (int i = 0; i < AnchorPoints.Count(); ++i)
+            //    {
+            //        if (point == AnchorPoints[i])
+            //        {
+            //            AnchorPoints[i] = new Point(point.X + shiftInX, point.Y + shiftInY);
+            //        }
+            //    }
+            //}
          }
 
         private void RedrawLineOnAffectedAnchorPoints(InkCanvas surfaceDessin, List<Point> affectedAnchorPoints, 
@@ -223,19 +208,27 @@ namespace PolyPaint.Utilitaires
             }
         }
 
-        internal void DeleteAnchorPoints(InkCanvas surfaceDessin, StrokeCollection deletedStrokes)
+        private AbstractStroke[] ToAbstractStrokes(StrokeCollection strokeCollection)
         {
-            foreach (var stroke in deletedStrokes)
+            AbstractStroke[] strokes = new AbstractStroke[strokeCollection.Count];
+            for(int i = 0; i < strokeCollection.Count; ++i)
             {
-                Point topLeft = new Point(stroke.StylusPoints[0].X, stroke.StylusPoints[0].Y);
-                double width = (stroke.StylusPoints[1].X - stroke.StylusPoints[0].X);
-                double height = (stroke.StylusPoints[1].Y - stroke.StylusPoints[0].Y);
-
-                AnchorPoints.Remove(new Point(topLeft.X + width / 2, topLeft.Y));
-                AnchorPoints.Remove(new Point(topLeft.X + width / 2, topLeft.Y + height));
-                AnchorPoints.Remove(new Point(topLeft.X + width, topLeft.Y + height / 2));
-                AnchorPoints.Remove(new Point(topLeft.X, topLeft.Y + height / 2));
+                strokes[i] = (AbstractStroke)strokeCollection[i];
             }
+            return strokes;
+        }
+
+        private List<Point> GetAllAnchorPoints(AbstractStroke[] strokes)
+        {
+            List<Point> anchors = new List<Point>();
+            for (int i = 0; i < strokes.Count(); ++i)
+            {
+                for (int j = 0; j < 4; ++j)
+                {
+                    anchors.Add(strokes[i].AnchorPoints[j]);
+                }
+            }
+            return anchors;
         }
     }
 }
