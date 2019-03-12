@@ -62,9 +62,9 @@ class Editor {
             }
             self.selectedFigure = figure
             self.selectedFigure.setIsSelected()
-//            self.selectionOutline = SelectionOutline(firstPoint: figure.firstPoint, lastPoint: figure.lastPoint)
-//            self.selectionOutline.addSelectedFigureLayers(layer: self.editorView.layer)
-//            self.editorView.addSubview(self.selectionOutline)
+            self.selectionOutline = SelectionOutline(firstPoint: figure.firstPoint, lastPoint: figure.lastPoint)
+            self.selectionOutline.addSelectedFigureLayers(layer: self.editorView.layer)
+            self.editorView.addSubview(self.selectionOutline)
         }
         
         return false
@@ -88,48 +88,13 @@ class Editor {
 //        }
     }
     
-    public func resizeTouchBegin(tapPoint: CGPoint) {
-//        let detectionArea = CGRect(x: tapPoint.x - 75/2, y: tapPoint.y-75/2, width: 75, height: 75)
-        
-//        if (detectionArea.contains(self.selectionOutline.firstPoint)) {
-//            print("Resizing");
-//        }
-    }
-    
-    public func resizeFigure(translation: CGPoint) {
-        if (self.selectedFigure == nil) {
-            return
-        }
-        
-//        self.selectedFigure.resize(translation: translation)
-//        self.selectionOutline.resize(translation: translation)
-//        
-         
-    }
-    
-    public func moveFigure(translation: CGPoint) {
-        if (self.selectedFigure == nil) {
-            return
-        }
-        
-//        self.selectedFigure.center = CGPoint(
-//            x: self.selectedFigure.center.x + translation.x,
-//            y: self.selectedFigure.center.y + translation.y
-//        )
-//        
-//        self.selectionOutline.center = CGPoint(
-//            x: self.selectionOutline.center.x + translation.x,
-//            y: self.selectionOutline.center.y + translation.y
-//        )
-    }
-    
     public func undo(view: UIView) -> Void {
         print(undoArray);
         if (undoArray.count > 0) {
-            let figure: UmlFigure = view.subviews.last as! UmlFigure;
+            let figure: UmlFigure = undoArray.popLast()!;
             self.redoArray.append(figure);
             figure.removeFromSuperview();
-            self.undoArray.removeLast();
+//            self.undoArray.removeLast();
         }
     }
     

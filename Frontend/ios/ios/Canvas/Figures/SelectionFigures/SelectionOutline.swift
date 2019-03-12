@@ -48,8 +48,7 @@ class SelectionOutline: UIView {
     }
     
     public func setInitialSelectedCornerCirles(firstPoint: CGPoint, lastPoint: CGPoint) -> Void {
-//        self.firstPoint = firstPoint
-//        self.lastPoint = lastPoint
+
         selectedCornerCircle1 = CAShapeLayer();
         selectedCornerCircle1.path = UIBezierPath(roundedRect: CGRect(x: -5, y: -5, width: 2.0 * self.radius, height: 2.0 * self.radius), cornerRadius: self.radius).cgPath;
         selectedCornerCircle1.position = CGPoint(x: 0, y: 0);
@@ -79,24 +78,7 @@ class SelectionOutline: UIView {
         selectedDashedBorder.fillColor = nil;
         selectedDashedBorder.path = UIBezierPath(rect: bounds).cgPath;
     }
-    
-    public func resize(translation: CGPoint) {
-        self.lastPoint.x += translation.x;
-        self.lastPoint.y += translation.y;
-//        self.firstPoint.x -= translation.x;
-//        self.firstPoint.y -= translation.y;
-        
-        self.width = abs(firstPoint.x - lastPoint.x)
-        self.height = abs(firstPoint.y - lastPoint.y)
-        let size: CGSize = CGSize(width: width, height: height)
-        self.bounds.size = size
-        
-        self.removeSelectedFigureLayers()
-        self.setInitialSelectedDashedBorder(bounds: self.bounds)
-        self.setInitialSelectedCornerCirles(firstPoint: self.firstPoint, lastPoint: self.lastPoint)
-        self.addSelectedFigureLayers(layer: self.layer)
-    }
-    
+
     public func addSelectedFigureLayers(layer: CALayer) -> Void {
         self.layer.addSublayer(selectedDashedBorder);
         self.layer.addSublayer(selectedCornerCircle1);

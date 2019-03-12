@@ -89,24 +89,21 @@ class CanvasController: UIViewController, CollaborationHubDelegate {
             CollaborationHub.shared.updateDrawing(origin: tapPoint)            
         } else if (self.toolState == STATE.SELECTION) {
             let res: Bool = self.editor.selectFigure(tapPoint: tapPoint);
-            
             self.borderButton.isEnabled = res;
             self.fillButton.isEnabled = res;
             
         } else if (self.toolState == STATE.DELETE) {
             self.editor.deleteFigure(tapPoint: tapPoint);
-        } else {
-            self.editor.resizeTouchBegin(tapPoint: tapPoint)
         }
     }
     
     @objc func handlePan(sender: UIPanGestureRecognizer? = nil) {
-        print("pan")
-        let translation = sender!.translation(in: self.editor.editorView)
-//        self.editor.moveFigure(translation: translation);
-        
-        self.editor.resizeFigure(translation: translation)
-        sender!.setTranslation(CGPoint.zero, in: self.editor.editorView)
+//        print("pan")
+//        let translation = sender!.translation(in: self.editor.editorView)
+////        self.editor.moveFigure(translation: translation);
+//
+//        self.editor.resizeFigure(translation: translation)
+//        sender!.setTranslation(CGPoint.zero, in: self.editor.editorView)
     }
     
     @objc func handlePinch(sender: UIPinchGestureRecognizer? = nil) {

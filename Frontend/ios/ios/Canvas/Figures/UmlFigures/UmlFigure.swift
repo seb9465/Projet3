@@ -70,14 +70,6 @@ class UmlFigure : UIView {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    public func resize(translation: CGPoint) {
-        self.lastPoint.x += translation.x;
-        self.lastPoint.y += translation.y;
-        self.firstPoint.x -= translation.x;
-        self.firstPoint.y -= translation.y;
-        setNeedsDisplay()
-    }
         
     public override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         print("touches began")
@@ -161,7 +153,7 @@ class UmlFigure : UIView {
     
     public func setIsSelected() -> Void {
         self.isSelected = true;
-        self.selectFigureService.addSelectedFigureLayers(layer: self.layer);
+//        self.selectFigureService.addSelectedFigureLayers(layer: self.layer);
 //        let border = SelectionOutline(bounds: self.bounds, firstPoint: self.firstPoint, lastPoint: self.lastPoint)
 //        border.addSelectedFigureLayers(layer: self.layer);
         setNeedsDisplay();
