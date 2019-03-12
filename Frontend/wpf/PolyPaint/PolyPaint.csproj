@@ -382,6 +382,7 @@
     <Compile Include="Modeles\Room.cs" />
     <Compile Include="Modeles\SaveableCanvas.cs" />
     <Compile Include="Strokes\AbstractClass.cs" />
+    <Compile Include="Strokes\ArtefactStroke.cs" />
     <Compile Include="Strokes\ICanvasable.cs" />
     <Compile Include="Strokes\LineStroke.cs" />
     <Compile Include="Strokes\ActivityStroke.cs" />

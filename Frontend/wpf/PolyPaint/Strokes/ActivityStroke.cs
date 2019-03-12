@@ -44,6 +44,11 @@ namespace PolyPaint.Strokes
             {
                 throw new ArgumentNullException("drawingAttributes");
             }
+
+            // CHANGE TO PARAMETERS' COLORS
+            var brush = Brushes.Blue;
+            var pen = new Pen(Brushes.Black, 2);
+
             StylusPoint stp = StylusPoints[0];
             StylusPoint sp = StylusPoints[1];
 
@@ -72,8 +77,7 @@ namespace PolyPaint.Strokes
                 geometryContext.PolyLineTo(points, true, true);
             }
 
-            // CHANGE TO PARAMETERS' COLORS
-            drawingContext.DrawGeometry(Brushes.Blue, new Pen(Brushes.Black, 2), streamGeometry);
+            drawingContext.DrawGeometry(brush, pen, streamGeometry);
 
             if (IsDrawingDone)
                 DrawText(drawingContext);
@@ -133,7 +137,7 @@ namespace PolyPaint.Strokes
         public void AddToCanvas()
         {
             var clone = Clone();
-            (clone as ActivityStroke).IsDrawingDone = true;
+            (clone as AbstractStroke).IsDrawingDone = true;
             SurfaceDessin.Strokes.Add(clone);
         }
 
