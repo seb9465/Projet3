@@ -132,7 +132,7 @@ class CollaborationHub {
     }
     
     public func reset() -> Void {
-        self.hubConnection.invoke(method: "Reset", arguments: [], invocationDidComplete: { (Error) in
+        self.hubConnection.invoke(method: "Reset", arguments: ["general"], invocationDidComplete: { (Error) in
             if (Error != nil) {
                 print("Error calling Reset", Error!)
                 return
