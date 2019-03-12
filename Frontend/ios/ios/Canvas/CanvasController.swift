@@ -84,8 +84,7 @@ class CanvasController: UIViewController, CollaborationHubDelegate {
         var tapPoint: CGPoint = (sender?.location(in: self.view))!;
         tapPoint.y = tapPoint.y - 70
         if (tapPoint.y >= 70 && self.toolState == STATE.DRAW_RECT) {
-            CollaborationHub.shared.updateDrawing(origin: tapPoint)
-            
+            CollaborationHub.shared.updateDrawing(origin: tapPoint)            
         } else if (self.toolState == STATE.SELECTION) {
             let res: Bool = self.editor.selectFigure(tapPoint: tapPoint);
             

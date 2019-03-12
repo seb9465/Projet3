@@ -28,6 +28,12 @@ class Editor {
         self.undoArray.append(figure);
     }
     
+    public func insertActor(firstPoint: CGPoint, lastPoint: CGPoint) -> Void {
+        let figure = FigureFactory.shared.getFigure(type: ItemTypeEnum.Actor, firstPoint: firstPoint, lastPoint: lastPoint)!
+        self.editorView.addSubview(figure);
+        self.undoArray.append(figure);
+    }
+    
     public func moveFigure(translation: CGPoint) {
 //        self.selectedFigure.center = CGPoint(
 //            x:self.selectedFigure.center.x + translation.x,
