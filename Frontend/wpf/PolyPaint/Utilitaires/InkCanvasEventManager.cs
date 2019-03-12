@@ -105,12 +105,26 @@ namespace PolyPaint.Utilitaires
             {
                 case "uml_class":
                     DrawingStroke = new UmlClassStroke(pts, surfaceDessin);
-                    DrawingStroke.DrawingAttributes.Color = Colors.LightBlue;
                     surfaceDessin.Strokes.Add(DrawingStroke);
                     break;
                 case "rectangle":
                     DrawingStroke = new RectangleStroke(pts, surfaceDessin);
-                    DrawingStroke.DrawingAttributes.Color = Colors.LightBlue;
+                    surfaceDessin.Strokes.Add(DrawingStroke);
+                    break;
+                case "artefact":
+                    DrawingStroke = new ArtefactStroke(pts, surfaceDessin);
+                    surfaceDessin.Strokes.Add(DrawingStroke);
+                    break;
+                case "activity":
+                    DrawingStroke = new ActivityStroke(pts, surfaceDessin);
+                    surfaceDessin.Strokes.Add(DrawingStroke);
+                    break;
+                case "phase":
+                    DrawingStroke = new PhaseStroke(pts, surfaceDessin);
+                    surfaceDessin.Strokes.Add(DrawingStroke);
+                    break;
+                case "role":
+                    DrawingStroke = new RoleStroke(pts, surfaceDessin);
                     surfaceDessin.Strokes.Add(DrawingStroke);
                     break;
                 case "line":
@@ -123,11 +137,13 @@ namespace PolyPaint.Utilitaires
 
         internal void EndDraw(InkCanvas surfaceDessin, DrawViewModel drawViewModel, string username)
         {
-            if (DrawingStroke != null && drawViewModel.OutilSelectionne == "rectangle"
-                                      || drawViewModel.OutilSelectionne == "rounded_rectangle")
+            if (DrawingStroke != null && (drawViewModel.OutilSelectionne == "rectangle"
+                                      || drawViewModel.OutilSelectionne == "uml_class"
+                                      || drawViewModel.OutilSelectionne == "activity"
+                                      || drawViewModel.OutilSelectionne == "artefact"
+                                      || drawViewModel.OutilSelectionne == "phase"
+                                      || drawViewModel.OutilSelectionne == "role"))
             {
-
-
                 StylusPointCollection collection = new StylusPointCollection();
 
                 foreach (PolyPaintStylusPoint point in drawViewModel.StylusPoints)
@@ -155,15 +171,19 @@ namespace PolyPaint.Utilitaires
                     R = drawViewModel.Color.R,
                 };
                 stroke.DrawingAttributes.Color = color;
-                surfaceDessin.Strokes.Remove(stroke);
-                surfaceDessin.Strokes.Add(stroke.Clone());
+                (stroke as ICanvasable).RemoveFromCanvas();
+                (stroke as ICanvasable).AddToCanvas();
             }
         }
 
         internal void EndDraw(InkCanvas surfaceDessin, string outilSelectionne)
         {
-            if (DrawingStroke != null && outilSelectionne == "uml_class"
-                                      || outilSelectionne == "rectangle")
+            if (DrawingStroke != null && (outilSelectionne == "rectangle"
+                                      || outilSelectionne == "uml_class"
+                                      || outilSelectionne == "activity"
+                                      || outilSelectionne == "artefact"
+                                      || outilSelectionne == "phase"
+                                      || outilSelectionne == "role"))
             {
                 (DrawingStroke as ICanvasable).RemoveFromCanvas();
                 (DrawingStroke as ICanvasable).AddToCanvas();
@@ -176,8 +196,8 @@ namespace PolyPaint.Utilitaires
                 Point closestToSecond = new Point();
                 Point firstPoint = new Point(DrawingStroke.StylusPoints[0].X, DrawingStroke.StylusPoints[0].Y);
                 Point secondPoint = new Point(DrawingStroke.StylusPoints[1].X, DrawingStroke.StylusPoints[1].Y);
-                double distanceToFirst = 1000;
-                double distanceToSecond = 1000;
+                double distanceToFirst = double.MaxValue;
+                double distanceToSecond = double.MaxValue;
                 AbstractStroke[] strokes = ToAbstractStrokes(surfaceDessin.Strokes);
                 List<Point> anchors = GetAllAnchorPoints(strokes);
                 for (int i = 0; i < anchors.Count; ++i)
@@ -199,7 +219,7 @@ namespace PolyPaint.Utilitaires
                 StylusPointCollection points = new StylusPointCollection(new Point[] { closestToFirst, closestToSecond });
                 DrawingStroke = new LineStroke(points, surfaceDessin);
                 DrawingStroke.DrawingAttributes.Color = Colors.Black;
-                surfaceDessin.Strokes.Add(DrawingStroke);
+                (DrawingStroke as ICanvasable).RemoveFromCanvas();
                 (DrawingStroke as ICanvasable).AddToCanvas();
             }
         }

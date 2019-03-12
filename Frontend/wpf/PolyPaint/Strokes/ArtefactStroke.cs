@@ -12,12 +12,12 @@ using System.Linq;
 
 namespace PolyPaint.Strokes
 {
-    public class RectangleStroke : AbstractStroke, ICanvasable, INotifyPropertyChanged
+    public class ArtefactStroke : AbstractStroke, ICanvasable, INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public RectangleStroke(StylusPointCollection pts, InkCanvas surfaceDessin)
-            : base(pts, surfaceDessin, "Comment")
+        public ArtefactStroke(StylusPointCollection pts, InkCanvas surfaceDessin)
+            : base(pts, surfaceDessin, "Artefact")
         { }
 
         protected virtual void ProprieteModifiee([CallerMemberName] string propertyName = null)
@@ -41,7 +41,29 @@ namespace PolyPaint.Strokes
             Width = Math.Abs(StylusPoints[1].X - StylusPoints[0].X);
             Height = Math.Abs(StylusPoints[1].Y - StylusPoints[0].Y);
 
-            drawingContext.DrawRectangle(Fill, Border, new Rect(TopLeft, new Point(TopLeft.X + Width, TopLeft.Y + Height)));
+            Point point2 = new Point(TopLeft.X + 5.0 / 6.0 * Width, TopLeft.Y);
+            Point point3 = new Point(TopLeft.X + Width, TopLeft.Y + 1.0 / 6.0 * Height);
+            Point point4 = new Point(TopLeft.X + Width, TopLeft.Y + Height);
+            Point point5 = new Point(TopLeft.X, TopLeft.Y + Height);
+            StreamGeometry streamGeometry = new StreamGeometry();
+            using (StreamGeometryContext geometryContext = streamGeometry.Open())
+            {
+                geometryContext.BeginFigure(TopLeft, true, true);
+                PointCollection points = new PointCollection
+                                             {
+                                                 point2,
+                                                 point3,
+                                                 point4,
+                                                 point5
+                                             };
+                geometryContext.PolyLineTo(points, true, true);
+            }
+
+            Point intersection = new Point(TopLeft.X + 5.0 / 6.0 * Width, TopLeft.Y + 1.0 / 6.0 * Height);
+
+            drawingContext.DrawGeometry(Fill, Border, streamGeometry);
+            drawingContext.DrawLine(Border, point2, intersection);
+            drawingContext.DrawLine(Border, point3, intersection);
 
             if (IsDrawingDone)
                 DrawText(drawingContext);
@@ -50,7 +72,7 @@ namespace PolyPaint.Strokes
 
         private void DrawText(DrawingContext drawingContext)
         {
-            drawingContext.DrawText(Title, new Point(TopLeft.X + Width / 2.0 - Title.Width / 2.0, TopLeft.Y + Height / 2.0 - Title.Height / 2.0));
+            drawingContext.DrawText(Title, new Point(TopLeft.X + Width / 2.0 - Title.Width / 2.0, TopLeft.Y + Height + 10));
         }
 
         private void DrawAnchorPoints(DrawingContext drawingContext)
@@ -60,7 +82,7 @@ namespace PolyPaint.Strokes
             AnchorPoints[0] = new Point(TopLeft.X + Width / 2, TopLeft.Y);
             AnchorPoints[1] = new Point(TopLeft.X + Width / 2, TopLeft.Y + Height);
             AnchorPoints[2] = new Point(TopLeft.X + Width, TopLeft.Y + Height / 2);
-            AnchorPoints[3] = new Point(TopLeft.X, TopLeft.Y + Height / 2);
+            AnchorPoints[3] = new Point(TopLeft.X, TopLeft.Y + Height / 2.0);
 
             drawingContext.DrawEllipse(brush, null, AnchorPoints[0], 2, 2);
             drawingContext.DrawEllipse(brush, null, AnchorPoints[1], 2, 2);

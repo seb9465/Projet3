@@ -1,6 +1,4 @@
-﻿using PolyPaint.Utilitaires;
-using System;
-using System.Collections.ObjectModel;
+﻿using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
@@ -8,16 +6,15 @@ using System.Windows.Controls;
 using System.Windows.Ink;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Linq;
 
 namespace PolyPaint.Strokes
 {
-    public class RectangleStroke : AbstractStroke, ICanvasable, INotifyPropertyChanged
+    public class PhaseStroke : AbstractStroke, ICanvasable, INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public RectangleStroke(StylusPointCollection pts, InkCanvas surfaceDessin)
-            : base(pts, surfaceDessin, "Comment")
+        public PhaseStroke(StylusPointCollection pts, InkCanvas surfaceDessin)
+            : base(pts, surfaceDessin, "Phase")
         { }
 
         protected virtual void ProprieteModifiee([CallerMemberName] string propertyName = null)
@@ -41,16 +38,17 @@ namespace PolyPaint.Strokes
             Width = Math.Abs(StylusPoints[1].X - StylusPoints[0].X);
             Height = Math.Abs(StylusPoints[1].Y - StylusPoints[0].Y);
 
-            drawingContext.DrawRectangle(Fill, Border, new Rect(TopLeft, new Point(TopLeft.X + Width, TopLeft.Y + Height)));
+            drawingContext.DrawRectangle(Fill, Border, new Rect(TopLeft, new Point(TopLeft.X + Width, TopLeft.Y + Title.Height + 20)));
+            drawingContext.DrawRectangle(Brushes.Transparent, Border, new Rect(new Point(TopLeft.X, TopLeft.Y + Title.Height + 20), new Point(TopLeft.X + Width, TopLeft.Y + Height)));
 
             if (IsDrawingDone)
-                DrawText(drawingContext);
+                DrawText(drawingContext, Title);
             DrawAnchorPoints(drawingContext);
         }
 
-        private void DrawText(DrawingContext drawingContext)
+        private void DrawText(DrawingContext drawingContext, FormattedText Title)
         {
-            drawingContext.DrawText(Title, new Point(TopLeft.X + Width / 2.0 - Title.Width / 2.0, TopLeft.Y + Height / 2.0 - Title.Height / 2.0));
+            drawingContext.DrawText(Title, new Point(TopLeft.X + Width / 2.0 - Title.Width / 2.0, TopLeft.Y + 10));
         }
 
         private void DrawAnchorPoints(DrawingContext drawingContext)

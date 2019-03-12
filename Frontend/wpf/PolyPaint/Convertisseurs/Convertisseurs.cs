@@ -73,6 +73,10 @@ namespace PolyPaint.Convertisseurs
                 case "select":
                 case "uml_class":
                 case "rectangle":
+                case "phase":
+                case "artefact":
+                case "activity":
+                case "role":
                 case "line":
                     return InkCanvasEditingMode.None;
                 default:
