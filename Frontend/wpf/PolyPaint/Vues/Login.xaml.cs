@@ -31,7 +31,7 @@ namespace PolyPaint.Vues
 
         private async void LoginBtn_Click(object sender, RoutedEventArgs e)
         {
-            errors_label.Content = "";
+           // errors_label.Content = "";
             LoginViewModel loginViewModel = new LoginViewModel()
             {
                 Username = usernameBox.Text,
@@ -59,7 +59,7 @@ namespace PolyPaint.Vues
                 else
                 {
                     string error = await result.Content.ReadAsStringAsync();
-                    errors_label.Content = error.ToString();
+                    //errors_label.Content = error.ToString();
                 }
             }
         }
