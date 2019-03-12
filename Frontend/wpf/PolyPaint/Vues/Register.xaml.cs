@@ -2,11 +2,14 @@
 using System.Data.SqlClient;
 using System.Drawing;
 using System.Net.Http;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using PolyPaint.VueModeles;
 
 namespace PolyPaint.Vues
@@ -26,9 +29,45 @@ namespace PolyPaint.Vues
             login.Show();
         }
 
-        private void Register_Click(object sender, RoutedEventArgs e)
+        private async void Register_Click(object sender, RoutedEventArgs e)
         {
+            registrationSuccessful.Content = "";
+            registrationErrors.Content = "";
+            RegistrationViewModel registrationViewModel = new RegistrationViewModel();
+            registrationViewModel.Email = EmailAddress.Text;
+            registrationViewModel.Username = usernameBox.Text;
+            registrationViewModel.Password = passwordBox.Password;
+            registrationViewModel.FirstName = firstNameBox.Text;
+            registrationViewModel.LastName = LastNameBox.Text;
 
+            string json = JsonConvert.SerializeObject(registrationViewModel);
+
+            using (HttpClient client = new HttpClient())
+            {
+                client.BaseAddress = new System.Uri(Config.URL);
+                client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+                StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
+                HttpResponseMessage result = await client.PostAsync("/api/register", content);
+
+                if (result.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    registrationSuccessful.Content = "Registration Sucessfull";
+                }
+                else
+                {
+                    string error = await result.Content.ReadAsStringAsync();
+                    error = error.Substring(1, error.Length-2);
+                    var jo = JObject.Parse(error);
+                    Console.WriteLine();
+                    var id = jo["code"].ToString();
+                    if (id == "DuplicateEmail") {
+                        registrationErrors.Content = "Email already exists";
+                    } else if (id == "DuplicateUserName")
+                    {
+                        registrationErrors.Content = "Username already exists";
+                    }
+                }
+            }
         }
 
         private void IsEmailValid(object sender, RoutedEventArgs e)
@@ -38,9 +77,12 @@ namespace PolyPaint.Vues
             if (!Regex.IsMatch(input, @"^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$"))
             {
                 InvalidEmail.Opacity = 100;
-            } else
+                RegisterBtn.IsEnabled = false;
+            }
+            else
             {
                 InvalidEmail.Opacity = 0;
+                RegisterBtn.IsEnabled = true;
             }
         }
 
@@ -51,10 +93,12 @@ namespace PolyPaint.Vues
             if (!Regex.IsMatch(input, @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,15}$"))
             {
                 InvalidPassword.Opacity = 100;
+                RegisterBtn.IsEnabled = false;
             }
             else
             {
                 InvalidPassword.Opacity = 0;
+                RegisterBtn.IsEnabled = true;
             }
         }
     }
