@@ -54,7 +54,7 @@
       ]
     },
     "NETStandard.Library/2.0.3": {
-      "sha512": "st47PosZSHrjECdjeIzZQbzivYBJFv6P2nv4cj2ypdI204DO+vZ7l5raGMiX4eXMJ53RfOIg+/s4DHVZ54Nu2A==",
+      "sha512": "xe72MfWB6hpGxDx6SPn8EyllTu5j5E3ZMQ3hMkLLIKbNnDte7smjqDbR7OglLLnSD8FbtAYSpCyroHDHAzmUpQ==",
       "type": "package",
       "path": "netstandard.library/2.0.3",
       "files": [
@@ -228,23 +228,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Sebastien Labine\\.nuget\\packages\\": {},
+    "C:\\Users\\chels\\.nuget\\packages\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Sebastien Labine\\Desktop\\log3900-12\\Common\\PolyPaint.Common\\PolyPaint.Common.csproj",
+      "projectUniqueName": "C:\\Users\\chels\\Documents\\repertoireGit\\log3900-12\\Common\\PolyPaint.Common\\PolyPaint.Common.csproj",
       "projectName": "PolyPaint.Common",
-      "projectPath": "C:\\Users\\Sebastien Labine\\Desktop\\log3900-12\\Common\\PolyPaint.Common\\PolyPaint.Common.csproj",
-      "packagesPath": "C:\\Users\\Sebastien Labine\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Sebastien Labine\\Desktop\\log3900-12\\Common\\PolyPaint.Common\\obj\\",
+      "projectPath": "C:\\Users\\chels\\Documents\\repertoireGit\\log3900-12\\Common\\PolyPaint.Common\\PolyPaint.Common.csproj",
+      "packagesPath": "C:\\Users\\chels\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\chels\\Documents\\repertoireGit\\log3900-12\\Common\\PolyPaint.Common\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\Sebastien Labine\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\chels\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
