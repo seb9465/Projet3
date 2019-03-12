@@ -247,7 +247,7 @@
                 </materialDesign:ToggleButtonAssist.OnContent>
             </ToggleButton>
 
-            <StackPanel Orientation="Vertical" Margin="20" x:Name="chatTab" Visibility="Collapsed">
+            <StackPanel Orientation="Vertical" Margin="20" x:Name="chatTab" Visibility="Collapsed" Background="WhiteSmoke">
                 <Border BorderThickness="1" BorderBrush="Gray" ClipToBounds="True" HorizontalAlignment="Stretch" Height="314">
                     <StackPanel Orientation="Vertical" Margin="10">
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
