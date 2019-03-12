@@ -8,6 +8,14 @@
 
 import UIKit
 
+enum RESIZING {
+    case FROM_CIRCLE_1
+    case FROM_CIRCLE_2
+    case FROM_CIRCLE_3
+    case FROM_CIRCLE_4
+    case NO_RESIZING
+}
+
 class Editor {
 //    private var commands: [EditorCommand] = []
     private var undoArray: [UmlFigure] = []
@@ -17,6 +25,9 @@ class Editor {
     public var editorView: EditorView = EditorView()
     public var selectedFigure: UmlFigure!;
     public var selectionOutline: SelectionOutline!;
+    
+    private var isResizing: Bool = false;
+    private var resizingState: RESIZING = RESIZING.NO_RESIZING;
     
 //    public func insertFigure(origin: CGPoint) -> Void {
 //        let figure = FigureFactory.shared.getFigure(type: ItemTypeEnum.RoundedRectangleStroke, origin: origin)!;
@@ -45,9 +56,10 @@ class Editor {
                 self.selectionOutline.removeFromSuperview()
             }
             self.selectedFigure = figure
-            self.selectionOutline = SelectionOutline(firstPoint: figure.firstPoint, lastPoint: figure.lastPoint)
-            self.selectionOutline.addSelectedFigureLayers(layer: self.editorView.layer)
-            self.editorView.addSubview(self.selectionOutline)
+            self.selectedFigure.setIsSelected()
+//            self.selectionOutline = SelectionOutline(firstPoint: figure.firstPoint, lastPoint: figure.lastPoint)
+//            self.selectionOutline.addSelectedFigureLayers(layer: self.editorView.layer)
+//            self.editorView.addSubview(self.selectionOutline)
         }
         
         return false
@@ -71,10 +83,38 @@ class Editor {
 //        }
     }
     
+    public func resizeTouchBegin(tapPoint: CGPoint) {
+//        let detectionArea = CGRect(x: tapPoint.x - 75/2, y: tapPoint.y-75/2, width: 75, height: 75)
+        
+//        if (detectionArea.contains(self.selectionOutline.firstPoint)) {
+//            print("Resizing");
+//        }
+    }
+    
+    public func resizeFigure(translation: CGPoint) {
+        if (self.selectedFigure == nil) {
+            return
+        }
+        
+//        self.selectedFigure.resize(translation: translation)
+//        self.selectionOutline.resize(translation: translation)
+//        
+         
+    }
+    
     public func moveFigure(translation: CGPoint) {
+        if (self.selectedFigure == nil) {
+            return
+        }
+        
 //        self.selectedFigure.center = CGPoint(
-//            x:self.selectedFigure.center.x + translation.x,
-//            y:self.selectedFigure.center.y + translation.y
+//            x: self.selectedFigure.center.x + translation.x,
+//            y: self.selectedFigure.center.y + translation.y
+//        )
+//        
+//        self.selectionOutline.center = CGPoint(
+//            x: self.selectionOutline.center.x + translation.x,
+//            y: self.selectionOutline.center.y + translation.y
 //        )
     }
     
