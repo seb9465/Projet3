@@ -29,8 +29,8 @@ namespace PolyPaint.Modeles
                 .Build();
 
             HandleMessages();
-            await Connection.StartAsync();
-            await Connection.InvokeAsync("ConnectToGroup", "");
+            //await Connection.StartAsync();
+            //await Connection.InvokeAsync("ConnectToGroup", "");
         }
 
         private void HandleMessages()

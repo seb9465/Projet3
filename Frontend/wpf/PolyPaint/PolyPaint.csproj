@@ -358,7 +358,7 @@
     <Compile Include="Modeles\SaveableCanvas.cs" />
     <Compile Include="Strokes\ICanvasable.cs" />
     <Compile Include="Strokes\LineStroke.cs" />
-    <Compile Include="Strokes\RectangleStroke.cs" />
+    <Compile Include="Strokes\UmlClassStroke.cs" />
     <Compile Include="Strokes\RoundedRectangleStroke.cs" />
     <Compile Include="Structures\MessageArgs.cs" />
     <Compile Include="Utilitaires\InkCanvasEventManager.cs" />
@@ -465,7 +465,7 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\load.png" />
-    <Resource Include="Resources\rectangle.png" />
+    <Resource Include="Resources\uml_class.png" />
     <Resource Include="Resources\save.png" />
   </ItemGroup>
   <ItemGroup>

@@ -12,7 +12,7 @@ using System.Linq;
 
 namespace PolyPaint.Strokes
 {
-    public class RectangleStroke : Stroke, ICanvasable, INotifyPropertyChanged
+    public class UmlClassStroke : Stroke, ICanvasable, INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
         public string Title { get; set; }
@@ -27,7 +27,7 @@ namespace PolyPaint.Strokes
         public RelayCommand<string> RemoveFromProperties { get; set; }
         public RelayCommand<string> RemoveFromMethods { get; set; }
 
-        public RectangleStroke(StylusPointCollection pts, InkCanvas surfaceDessin)
+        public UmlClassStroke(StylusPointCollection pts, InkCanvas surfaceDessin)
             : base(pts)
         {
             StylusPoints = pts;
@@ -111,13 +111,12 @@ namespace PolyPaint.Strokes
             drawingContext.DrawEllipse(brush, null, new Point(topLeft.X + width / 2, topLeft.Y + height), 2, 2);
             drawingContext.DrawEllipse(brush, null, new Point(topLeft.X + width, topLeft.Y + height / 2), 2, 2);
             drawingContext.DrawEllipse(brush, null, new Point(topLeft.X, topLeft.Y + height / 2), 2, 2);
-
         }
 
         public void AddToCanvas()
         {
             var clone = Clone();
-            (clone as RectangleStroke).IsDrawingDone = true;
+            (clone as UmlClassStroke).IsDrawingDone = true;
             SurfaceDessin.Strokes.Add(clone);
         }
 

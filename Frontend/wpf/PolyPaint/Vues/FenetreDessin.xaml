@@ -116,14 +116,14 @@
                 <StackPanel Orientation="Horizontal">
                     <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Width="2" />
                 </StackPanel>
-                <Button Name="rectangle"
+                <Button Name="uml_class"
                         Style="{StaticResource MaterialDesignRaisedLightButton}" HorizontalAlignment="Left" ToolTip="MaterialDesignRaisedLightButton" 
-                        BorderBrush="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurBordure}, ConverterParameter=rectangle, UpdateSourceTrigger=PropertyChanged}" 
-                        Background="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurCouleurFond}, ConverterParameter=rectangle, UpdateSourceTrigger=PropertyChanged}" 
+                        BorderBrush="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurBordure}, ConverterParameter=uml_class, UpdateSourceTrigger=PropertyChanged}" 
+                        Background="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurCouleurFond}, ConverterParameter=uml_class, UpdateSourceTrigger=PropertyChanged}" 
                         Command="{Binding Path=ChoisirOutil}"
-                        CommandParameter="rectangle">
+                        CommandParameter="uml_class">
                     <StackPanel>
-                        <Image Source="/Resources/rectangle.png" Height="25" Width="25"  />
+                        <Image Source="/Resources/uml_class.png" Height="25" Width="25"  />
                     </StackPanel>
                 </Button>
                 <Button Name="rounded_rectangle"

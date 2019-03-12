@@ -49,9 +49,9 @@ namespace PolyPaint.Utilitaires
                 if (mouseLeftDownPoint.X >= box.Left && mouseLeftDownPoint.X <= box.Right &&
                     mouseLeftDownPoint.Y <= box.Bottom && mouseLeftDownPoint.Y >= box.Top)
                 {
-                    if (strokes[i] is RectangleStroke)
+                    if (strokes[i] is UmlClassStroke)
                     {
-                        var editWindow = new EditUmlWindow(strokes[i] as RectangleStroke, surfaceDessin);
+                        var editWindow = new EditUmlWindow(strokes[i] as UmlClassStroke, surfaceDessin);
                         editWindow.Show();
                     }
                     break;
@@ -76,8 +76,8 @@ namespace PolyPaint.Utilitaires
 
             switch (outilSelectionne)
             {
-                case "rectangle":
-                    DrawingStroke = new RectangleStroke(pts, surfaceDessin);
+                case "uml_class":
+                    DrawingStroke = new UmlClassStroke(pts, surfaceDessin);
                     DrawingStroke.DrawingAttributes.Color = Colors.LightBlue;
                     surfaceDessin.Strokes.Add(DrawingStroke);
                     break;
@@ -96,7 +96,7 @@ namespace PolyPaint.Utilitaires
 
         internal void EndDraw(InkCanvas surfaceDessin, string outilSelectionne)
         {
-            if (DrawingStroke != null && outilSelectionne == "rectangle"
+            if (DrawingStroke != null && outilSelectionne == "uml_class"
                                       || outilSelectionne == "rounded_rectangle")
             {
                 (DrawingStroke as ICanvasable).RemoveFromCanvas();

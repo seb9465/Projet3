@@ -48,7 +48,7 @@ namespace PolyPaint.Convertisseurs
                 case "efface_trait":
                     return InkCanvasEditingMode.EraseByStroke;
                 case "select":
-                case "rectangle":
+                case "uml_class":
                 case "rounded_rectangle":
                 case "line":
                     return InkCanvasEditingMode.None;
