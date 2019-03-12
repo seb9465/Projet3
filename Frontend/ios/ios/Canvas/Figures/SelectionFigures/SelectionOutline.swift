@@ -16,7 +16,7 @@ protocol SelectionOutlineProtocol {
     var selectedCornerCircle4: CAShapeLayer! { get set }
 }
 
-class SelectionOutline {
+class SelectionOutline: UIView {
     private let radius: CGFloat = 5.0;
     var selectedDashedBorder: CAShapeLayer!;
     var selectedCornerCircle1: CAShapeLayer!;
@@ -24,9 +24,17 @@ class SelectionOutline {
     var selectedCornerCircle3: CAShapeLayer!;
     var selectedCornerCircle4: CAShapeLayer!;
     
-    init(bounds: CGRect, firstPoint: CGPoint, lastPoint: CGPoint) {
-        self.setInitialSelectedDashedBorder(bounds: bounds);
+    init(firstPoint: CGPoint, lastPoint: CGPoint) {
+        let width = abs(firstPoint.x - lastPoint.x)
+        let height = abs(firstPoint.y - lastPoint.y)
+        let frame : CGRect = CGRect(x: firstPoint.x, y: firstPoint.y, width: width + 5, height: height + 5)
+        super.init(frame: frame);
+        self.setInitialSelectedDashedBorder(bounds: self.bounds);
         self.setInitialSelectedCornerCirles(firstPoint: firstPoint, lastPoint: lastPoint)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     public func setInitialSelectedCornerCirles(firstPoint: CGPoint, lastPoint: CGPoint) -> Void {
@@ -61,11 +69,11 @@ class SelectionOutline {
     }
     
     public func addSelectedFigureLayers(layer: CALayer) -> Void {
-        layer.addSublayer(selectedDashedBorder);
-        layer.addSublayer(selectedCornerCircle1);
-        layer.addSublayer(selectedCornerCircle2);
-        layer.addSublayer(selectedCornerCircle3);
-        layer.addSublayer(selectedCornerCircle4);
+        self.layer.addSublayer(selectedDashedBorder);
+        self.layer.addSublayer(selectedCornerCircle1);
+        self.layer.addSublayer(selectedCornerCircle2);
+        self.layer.addSublayer(selectedCornerCircle3);
+        self.layer.addSublayer(selectedCornerCircle4);
     }
     
     public func removeSelectedFigureLayers() -> Void {

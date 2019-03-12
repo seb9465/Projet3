@@ -151,10 +151,10 @@ class UmlFigure : UIView {
     }
     
     public func setIsSelected() -> Void {
-        self.isSelected = true;
-        let border = SelectionOutline(bounds: self.bounds, firstPoint: self.firstPoint, lastPoint: self.lastPoint)
-        self.selectFigureService.addSelectedFigureLayers(layer: self.layer);
-        setNeedsDisplay();
+//        self.isSelected = true;
+//        let border = SelectionOutline(bounds: self.bounds, firstPoint: self.firstPoint, lastPoint: self.lastPoint)
+//        border.addSelectedFigureLayers(layer: self.layer);
+//        setNeedsDisplay();
     }
     
     public func setIsNotSelected() -> Void {
