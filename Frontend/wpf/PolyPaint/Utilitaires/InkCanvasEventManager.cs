@@ -109,7 +109,7 @@ namespace PolyPaint.Utilitaires
                     surfaceDessin.Strokes.Add(DrawingStroke);
                     break;
                 case "rectangle":
-                    DrawingStroke = new ActivityStroke(pts, surfaceDessin);
+                    DrawingStroke = new RectangleStroke(pts, surfaceDessin);
                     DrawingStroke.DrawingAttributes.Color = Colors.LightBlue;
                     surfaceDessin.Strokes.Add(DrawingStroke);
                     break;

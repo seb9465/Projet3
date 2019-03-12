@@ -16,31 +16,17 @@ namespace PolyPaint.Strokes
     {
         public event PropertyChangedEventHandler PropertyChanged;
         public string Title { get; set; }
-        public ObservableCollection<Property> Properties { get; set; }
-        public ObservableCollection<Method> Methods { get; set; }
 
         public InkCanvas SurfaceDessin { get; set; }
-
-        public RelayCommand<string> AddProperty { get; set; }
-        public RelayCommand<string> AddMethod { get; set; }
-        public RelayCommand<string> RemoveFromProperties { get; set; }
-        public RelayCommand<string> RemoveFromMethods { get; set; }
 
         public ActivityStroke(StylusPointCollection pts, InkCanvas surfaceDessin)
             : base(pts)
         {
             StylusPoints = pts;
             Title = "Class";
-            Properties = new ObservableCollection<Property>();
-            Methods = new ObservableCollection<Method>();
 
             SurfaceDessin = surfaceDessin;
             AnchorPoints = new Point[4];
-
-            AddProperty = new RelayCommand<string>(addProperty);
-            AddMethod = new RelayCommand<string>(addMethod);
-            RemoveFromProperties = new RelayCommand<string>(removeFromProperties);
-            RemoveFromMethods = new RelayCommand<string>(removeFromMethods);
         }
 
         protected virtual void ProprieteModifiee([CallerMemberName] string propertyName = null)
@@ -58,9 +44,6 @@ namespace PolyPaint.Strokes
             {
                 throw new ArgumentNullException("drawingAttributes");
             }
-            SolidColorBrush brush = new SolidColorBrush(drawingAttributes.Color);
-            Pen pen = new Pen(brush, 2);
-            brush.Freeze();
             StylusPoint stp = StylusPoints[0];
             StylusPoint sp = StylusPoints[1];
 
@@ -69,12 +52,28 @@ namespace PolyPaint.Strokes
             double width = Math.Abs(StylusPoints[1].X - StylusPoints[0].X);
             double height = Math.Abs(StylusPoints[1].Y - StylusPoints[0].Y);
 
-            drawingContext.DrawLine(pen, topLeft, new Point(topLeft.X + 5.0 / 6.0 * width, topLeft.Y));
-            drawingContext.DrawLine(pen, new Point(topLeft.X + 5.0 / 6.0 * width, topLeft.Y), new Point(topLeft.X + width, topLeft.Y + height / 2.0));
-            drawingContext.DrawLine(pen, new Point(topLeft.X + width, topLeft.Y + height / 2.0), new Point(topLeft.X + 5.0 / 6.0 * width, topLeft.Y + height));
-            drawingContext.DrawLine(pen, new Point(topLeft.X + 5.0 / 6.0 * width, topLeft.Y + height), new Point(topLeft.X, topLeft.Y + height));
-            drawingContext.DrawLine(pen, new Point(topLeft.X, topLeft.Y + height), new Point(topLeft.X + 1.0 / 6.0 * width, topLeft.Y + height / 2.0));
-            drawingContext.DrawLine(pen, new Point(topLeft.X + 1.0 / 6.0 * width, topLeft.Y + height / 2.0), topLeft);
+            Point point2 = new Point(topLeft.X + 5.0 / 6.0 * width, topLeft.Y);
+            Point point3 = new Point(topLeft.X + width, topLeft.Y + height / 2.0);
+            Point point4 = new Point(topLeft.X + 5.0 / 6.0 * width, topLeft.Y + height);
+            Point point5 = new Point(topLeft.X, topLeft.Y + height);
+            Point point6 = new Point(topLeft.X + 1.0 / 6.0 * width, topLeft.Y + height / 2.0);
+            StreamGeometry streamGeometry = new StreamGeometry();
+            using (StreamGeometryContext geometryContext = streamGeometry.Open())
+            {
+                geometryContext.BeginFigure(topLeft, true, true);
+                PointCollection points = new PointCollection
+                                             {
+                                                 point2,
+                                                 point3,
+                                                 point4,
+                                                 point5,
+                                                 point6
+                                             };
+                geometryContext.PolyLineTo(points, true, true);
+            }
+
+            // CHANGE TO PARAMETERS' COLORS
+            drawingContext.DrawGeometry(Brushes.Blue, new Pen(Brushes.Black, 2), streamGeometry);
 
             if (IsDrawingDone)
                 DrawText(drawingContext);
@@ -122,7 +121,7 @@ namespace PolyPaint.Strokes
             AnchorPoints[0] = new Point(topLeft.X + width / 2, topLeft.Y);
             AnchorPoints[1] = new Point(topLeft.X + width / 2, topLeft.Y + height);
             AnchorPoints[2] = new Point(topLeft.X + width, topLeft.Y + height / 2);
-            AnchorPoints[3] = new Point(topLeft.X, topLeft.Y + height / 2);
+            AnchorPoints[3] = new Point(topLeft.X + 1.0 / 6.0 * width, topLeft.Y + height / 2.0);
 
             drawingContext.DrawEllipse(brush, null, AnchorPoints[0], 2, 2);
             drawingContext.DrawEllipse(brush, null, AnchorPoints[1], 2, 2);
@@ -141,30 +140,6 @@ namespace PolyPaint.Strokes
         public void RemoveFromCanvas()
         {
             SurfaceDessin.Strokes.Remove(this);
-        }
-
-        private void addProperty(string bidon)
-        {
-            Properties.Add(new Property("NewProperty"));
-            ProprieteModifiee("Properties");
-        }
-
-        private void addMethod(string bidon)
-        {
-            Methods.Add(new Method("NewMethod"));
-            ProprieteModifiee("Methods");
-        }
-
-        private void removeFromProperties(string prop)
-        {
-            Properties.Remove(Properties.FirstOrDefault(x => x.Title == prop));
-            ProprieteModifiee("Properties");
-        }
-
-        private void removeFromMethods(string method)
-        {
-            Methods.Remove(Methods.FirstOrDefault(x => x.Title == method));
-            ProprieteModifiee("Methods");
         }
     }
     
