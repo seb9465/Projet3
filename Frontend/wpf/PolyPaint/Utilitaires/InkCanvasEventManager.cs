@@ -157,17 +157,6 @@ namespace PolyPaint.Utilitaires
             }
 
             RedrawLineOnAffectedAnchorPoints(surfaceDessin, affectedAnchorPoints, shiftInX, shiftInY);
-
-            //foreach (var point in affectedAnchorPoints)
-            //{
-            //    for (int i = 0; i < AnchorPoints.Count(); ++i)
-            //    {
-            //        if (point == AnchorPoints[i])
-            //        {
-            //            AnchorPoints[i] = new Point(point.X + shiftInX, point.Y + shiftInY);
-            //        }
-            //    }
-            //}
          }
 
         private void RedrawLineOnAffectedAnchorPoints(InkCanvas surfaceDessin, List<Point> affectedAnchorPoints, 
@@ -213,7 +202,8 @@ namespace PolyPaint.Utilitaires
             AbstractStroke[] strokes = new AbstractStroke[strokeCollection.Count];
             for(int i = 0; i < strokeCollection.Count; ++i)
             {
-                strokes[i] = (AbstractStroke)strokeCollection[i];
+                if (!(strokeCollection[i].GetType() == typeof(LineStroke)))
+                    strokes[i] = (AbstractStroke)strokeCollection[i];
             }
             return strokes;
         }
@@ -223,6 +213,9 @@ namespace PolyPaint.Utilitaires
             List<Point> anchors = new List<Point>();
             for (int i = 0; i < strokes.Count(); ++i)
             {
+                if (strokes[i] == null)
+                    break;
+
                 for (int j = 0; j < 4; ++j)
                 {
                     anchors.Add(strokes[i].AnchorPoints[j]);
