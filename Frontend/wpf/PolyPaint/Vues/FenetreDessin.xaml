@@ -292,7 +292,7 @@
 
         </Grid>
         <StackPanel x:Name="chatMenu" Background="Gainsboro" Width="70"  HorizontalAlignment="Right" Panel.ZIndex="100">
-
+        
             <ToggleButton x:Name="hamburgerMenu" Style="{StaticResource MaterialDesignActionToggleButton}" Foreground="Black" Background="Transparent" Click="hamburgerMenu_Click" Margin="0,10,20,0" HorizontalAlignment="Right">
                 <ToggleButton.Content>
                     <materialDesign:PackIcon Kind="HamburgerMenu" Width="30" Height="30" />

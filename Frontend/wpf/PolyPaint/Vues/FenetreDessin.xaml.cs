@@ -297,14 +297,6 @@ namespace PolyPaint
             ScrollDown(null, null);
         }
 
-
-        private void chatButtonSameWindow_Click(object sender, RoutedEventArgs e)
-        {
-            externalChatWindow.Close();
-            chat.Visibility = Visibility.Visible;
-        }
-
-
         private void sendButton_Click(object sender, RoutedEventArgs e)
         {
             if (!string.IsNullOrWhiteSpace(messageTextBox.Text))
