@@ -15,11 +15,8 @@ namespace PolyPaint.Strokes
     public class UmlClassStroke : AbstractStroke, ICanvasable, INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
-        public string Title { get; set; }
         public ObservableCollection<Property> Properties { get; set; }
         public ObservableCollection<Method> Methods { get; set; }
-
-        public InkCanvas SurfaceDessin { get; set; }
 
         public RelayCommand<string> AddProperty { get; set; }
         public RelayCommand<string> AddMethod { get; set; }
@@ -27,15 +24,10 @@ namespace PolyPaint.Strokes
         public RelayCommand<string> RemoveFromMethods { get; set; }
 
         public UmlClassStroke(StylusPointCollection pts, InkCanvas surfaceDessin)
-            : base(pts)
+            : base(pts, surfaceDessin, "Class")
         {
-            StylusPoints = pts;
-            Title = "Class";
             Properties = new ObservableCollection<Property>();
             Methods = new ObservableCollection<Method>();
-
-            SurfaceDessin = surfaceDessin;
-            AnchorPoints = new Point[4];
 
             AddProperty = new RelayCommand<string>(addProperty);
             AddMethod = new RelayCommand<string>(addMethod);
@@ -58,12 +50,13 @@ namespace PolyPaint.Strokes
             {
                 throw new ArgumentNullException("drawingAttributes");
             }
-            SolidColorBrush brush = new SolidColorBrush(drawingAttributes.Color);
-            brush.Freeze();
-            StylusPoint stp = StylusPoints[0];
-            StylusPoint sp = StylusPoints[1];
 
-            drawingContext.DrawRectangle(brush, null, new Rect(new Point(sp.X, sp.Y), new Point(stp.X, stp.Y)));
+            TopLeft = new Point(StylusPoints[0].X <= StylusPoints[1].X ? StylusPoints[0].X : StylusPoints[1].X,
+                StylusPoints[0].Y <= StylusPoints[1].Y ? StylusPoints[0].Y : StylusPoints[1].Y);
+            Width = Math.Abs(StylusPoints[1].X - StylusPoints[0].X);
+            Height = Math.Abs(StylusPoints[1].Y - StylusPoints[0].Y);
+
+            drawingContext.DrawRectangle(Fill, Border, new Rect(TopLeft, new Point(TopLeft.X + Width, TopLeft.Y + Height)));
             if (IsDrawingDone)
                 DrawText(drawingContext);
             DrawAnchorPoints(drawingContext);
@@ -71,30 +64,24 @@ namespace PolyPaint.Strokes
 
         private void DrawText(DrawingContext drawingContext)
         {
-            var topLeft = new Point(StylusPoints[0].X <= StylusPoints[1].X ? StylusPoints[0].X : StylusPoints[1].X,
-                StylusPoints[0].Y <= StylusPoints[1].Y ? StylusPoints[0].Y : StylusPoints[1].Y);
-            double width = Math.Abs(StylusPoints[1].X - StylusPoints[0].X);
-            double height = Math.Abs(StylusPoints[1].Y - StylusPoints[0].Y);
+            var nextHeight = TopLeft.Y + 10;
 
-            var nextHeight = topLeft.Y + 10;
-
-            var ft = new FormattedText(Title, System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 12, new SolidColorBrush(Colors.Black));
-            drawingContext.DrawText(ft, new Point(topLeft.X + 10, nextHeight));
-            nextHeight += 10 + ft.Height;
-            drawingContext.DrawLine(new Pen(new SolidColorBrush(Colors.Black), 1), new Point(topLeft.X, nextHeight), new Point(topLeft.X + width, nextHeight));
+            drawingContext.DrawText(Title, new Point(TopLeft.X + 10, nextHeight));
+            nextHeight += 10 + Title.Height;
+            drawingContext.DrawLine(new Pen(new SolidColorBrush(Colors.Black), 1), new Point(TopLeft.X, nextHeight), new Point(TopLeft.X + Width, nextHeight));
             nextHeight += 10;
             for (int i = 0; i < Properties.Count; i++)
             {
                 var tempFt = new FormattedText($"{Properties[i].Title}", System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 12, new SolidColorBrush(Colors.Black));
-                drawingContext.DrawText(tempFt, new Point(topLeft.X + 10, nextHeight));
+                drawingContext.DrawText(tempFt, new Point(TopLeft.X + 10, nextHeight));
                 nextHeight += 10 + tempFt.Height;
             }
-            drawingContext.DrawLine(new Pen(new SolidColorBrush(Colors.Black), 1), new Point(topLeft.X, nextHeight), new Point(topLeft.X + width, nextHeight));
+            drawingContext.DrawLine(new Pen(new SolidColorBrush(Colors.Black), 1), new Point(TopLeft.X, nextHeight), new Point(TopLeft.X + Width, nextHeight));
             nextHeight += 10;
             for (int i = 0; i < Methods.Count; i++)
             {
                 var tempFt = new FormattedText($"{Methods[i].Title}", System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 12, new SolidColorBrush(Colors.Black));
-                drawingContext.DrawText(tempFt, new Point(topLeft.X + 10, nextHeight));
+                drawingContext.DrawText(tempFt, new Point(TopLeft.X + 10, nextHeight));
                 nextHeight += 10 + tempFt.Height;
             }
         }
@@ -103,14 +90,10 @@ namespace PolyPaint.Strokes
         {
             SolidColorBrush brush = new SolidColorBrush(Colors.Gray);
 
-            Point topLeft = new Point(StylusPoints[0].X, StylusPoints[0].Y);
-            double width = (StylusPoints[1].X - StylusPoints[0].X);
-            double height = (StylusPoints[1].Y - StylusPoints[0].Y);
-
-            AnchorPoints[0] = new Point(topLeft.X + width / 2, topLeft.Y);
-            AnchorPoints[1] = new Point(topLeft.X + width / 2, topLeft.Y + height);
-            AnchorPoints[2] = new Point(topLeft.X + width, topLeft.Y + height / 2);
-            AnchorPoints[3] = new Point(topLeft.X, topLeft.Y + height / 2);
+            AnchorPoints[0] = new Point(TopLeft.X + Width / 2, TopLeft.Y);
+            AnchorPoints[1] = new Point(TopLeft.X + Width / 2, TopLeft.Y + Height);
+            AnchorPoints[2] = new Point(TopLeft.X + Width, TopLeft.Y + Height / 2);
+            AnchorPoints[3] = new Point(TopLeft.X, TopLeft.Y + Height / 2);
 
             drawingContext.DrawEllipse(brush, null, AnchorPoints[0], 2, 2);
             drawingContext.DrawEllipse(brush, null, AnchorPoints[1], 2, 2);
