@@ -1,6 +1,9 @@
 ﻿using Newtonsoft.Json;
+using PolyPaint.Common;
 using PolyPaint.VueModeles;
 using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Windows;
@@ -45,11 +48,11 @@ namespace PolyPaint.Vues
                 client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
                 StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
                 HttpResponseMessage result = await client.PostAsync("/api/login", content);
-                object token = JsonConvert.DeserializeObject(await result.Content.ReadAsStringAsync());
+                string token = JsonConvert.DeserializeObject<string>(await result.Content.ReadAsStringAsync());
 
                 if (result.StatusCode == System.Net.HttpStatusCode.OK)
                 {
-                    Application.Current.Properties.Add("token", token);
+                    DecodeToken(token);
                     FenetreDessin fenetreDessin = new FenetreDessin(ViewStateEnum.Online);
                     Application.Current.MainWindow = fenetreDessin;
                     Close();
@@ -61,6 +64,13 @@ namespace PolyPaint.Vues
                     errors_label.Content = error.ToString();
                 }
             }
+        }
+
+        private void DecodeToken(string token) {
+            var handler = new JwtSecurityTokenHandler();
+            var userToken = handler.ReadToken(token) as JwtSecurityToken;
+            Application.Current.Properties.Add("token", token);
+            Application.Current.Properties.Add("username", userToken.Claims.First(claim => claim.Type == "unique_name").Value);
         }
 
         private void Window_PreviewKeyDown(object sender, KeyEventArgs e)

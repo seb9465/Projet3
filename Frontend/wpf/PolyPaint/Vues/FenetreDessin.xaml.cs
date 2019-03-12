@@ -40,6 +40,7 @@ namespace PolyPaint
         private HubConnection Connection;
         public event EventHandler MessageReceived;
         public event EventHandler SystemMessageReceived;
+        private string username;
         private ViewStateEnum _viewState { get; set; }
         public FenetreDessin(ViewStateEnum viewState)
         {
@@ -50,7 +51,8 @@ namespace PolyPaint
             if (_viewState == ViewStateEnum.Online)
             {
                 object token = Application.Current.Properties["token"];
-                token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6InVzZXIuMyIsIm5hbWVpZCI6Ijg4OTU2NjlhLTYyMmMtNDk2ZS1iZTkwLTI4YTQzMGE3NzhhZSIsImZhbWlseV9uYW1lIjoidXNlcjMiLCJuYmYiOjE1NTIyNTY1ODgsImV4cCI6NjE1NTIyNTY1MjgsImlhdCI6MTU1MjI1NjU4OCwiaXNzIjoiaHR0cHM6Ly9wb2x5cGFpbnQubWUiLCJhdWQiOiJodHRwczovL3BvbHlwYWludC5tZSJ9._CGBRWU961rt14S5FTx9QuzFkTCX86iel2PiMZ_PzMs";
+                username = Application.Current.Properties["username"].ToString();
+                //token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6InVzZXIuMyIsIm5hbWVpZCI6Ijg4OTU2NjlhLTYyMmMtNDk2ZS1iZTkwLTI4YTQzMGE3NzhhZSIsImZhbWlseV9uYW1lIjoidXNlcjMiLCJuYmYiOjE1NTIyNTY1ODgsImV4cCI6NjE1NTIyNTY1MjgsImlhdCI6MTU1MjI1NjU4OCwiaXNzIjoiaHR0cHM6Ly9wb2x5cGFpbnQubWUiLCJhdWQiOiJodHRwczovL3BvbHlwYWludC5tZSJ9._CGBRWU961rt14S5FTx9QuzFkTCX86iel2PiMZ_PzMs";
                 ConnectToCollaborativeServer((string) token);
                 (DataContext as VueModele).ChatClient.Initialize((string) Application.Current.Properties["token"]);
                 (DataContext as VueModele).ChatClient.MessageReceived += ScrollDown;
@@ -354,12 +356,13 @@ namespace PolyPaint
                     {
                         MouseLeftDownPointX = mouseLeftDownPoint.X,
                         MouseLeftDownPointY = mouseLeftDownPoint.Y,
+                        Owner = username,
                     };
                     await CollaborativeSelectAsync(selectViewModel);
                 }
                 else
                 {
-                    icEventManager.SelectItem(surfaceDessin, mouseLeftDownPoint);
+                    icEventManager.SelectItemOffline(surfaceDessin, mouseLeftDownPoint);
                 }
             }
             else
@@ -405,6 +408,7 @@ namespace PolyPaint
                     StylusPoints = points,
                     ItemType = itemType,
                     Color = color,
+                    Owner = username,
                 };
                 await CollaborativeDrawAsync(drawViewModel);
             }
@@ -459,14 +463,28 @@ namespace PolyPaint
             await Connection.InvokeAsync("Delete");
         }
 
+        private async Task CollaborativeResetAsync()
+        {
+            await Connection.InvokeAsync("Reset", "general");
+        }
+
         private void MessageTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (!String.IsNullOrWhiteSpace(messageTextBox.Text))
             {
                 sendButton.IsEnabled = true;
             }
-            else {
+            else
+            {
                 sendButton.IsEnabled = false;
+            }
+        }
+
+        private async void Reinitialiser_Click(object sender, RoutedEventArgs e)
+        {
+            if (_viewState == ViewStateEnum.Online)
+            {
+                await CollaborativeResetAsync();
             }
         }
 
@@ -484,16 +502,15 @@ namespace PolyPaint
             {
                 Dispatcher.Invoke(() =>
                 {
-                    Console.WriteLine(drawViewModelString);
                     DrawViewModel drawViewModel = JsonConvert.DeserializeObject<DrawViewModel>(drawViewModelString);
-                    icEventManager.EndDraw(surfaceDessin, drawViewModel.OutilSelectionne, drawViewModel);
+                    icEventManager.EndDraw(surfaceDessin, drawViewModel, username);
                 });
             });
             Connection.On<SelectViewModel>("Select", (selectViewModel) =>
             {
                 Dispatcher.Invoke(() =>
                 {
-                    icEventManager.SelectItem(surfaceDessin, new Point(selectViewModel.MouseLeftDownPointX, selectViewModel.MouseLeftDownPointY));
+                    icEventManager.SelectItemOnline(surfaceDessin, selectViewModel, username);
                 });
             });
             Connection.On("Duplicate", () =>
@@ -509,6 +526,14 @@ namespace PolyPaint
                 Dispatcher.Invoke(() =>
                 {
                     surfaceDessin.CutSelection();
+                });
+            });
+            Connection.On("Reset", () =>
+            {
+                Dispatcher.Invoke(() =>
+                {
+                    reinitialiser.Command = (DataContext as VueModele).Reinitialiser;
+                    reinitialiser.Command.Execute(reinitialiser.CommandParameter);
                 });
             });
         }

@@ -1,8 +1,5 @@
-﻿using PolyPaint.Common;
-using PolyPaint.Common.Collaboration;
+﻿using PolyPaint.Common.Collaboration;
 using PolyPaint.Strokes;
-using PolyPaint.VueModeles;
-using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Ink;
@@ -15,7 +12,7 @@ namespace PolyPaint.Utilitaires
     {
         public Stroke DrawingStroke = null;
 
-        public void SelectItem(InkCanvas surfaceDessin, Point mouseLeftDownPoint)
+        public void SelectItemOffline(InkCanvas surfaceDessin, Point mouseLeftDownPoint)
         {
             InkCanvasEditingMode all = surfaceDessin.EditingMode;
             StrokeCollection strokes = surfaceDessin.Strokes;
@@ -31,10 +28,39 @@ namespace PolyPaint.Utilitaires
                 {
                     strokeToSelect.Add(strokes[i]);
                     surfaceDessin.Select(strokeToSelect);
+
                     break;
                 }
             }
         }
+
+
+        public void SelectItemOnline(InkCanvas surfaceDessin, SelectViewModel selectViewModel, string username)
+        {
+            InkCanvasEditingMode all = surfaceDessin.EditingMode;
+            StrokeCollection strokes = surfaceDessin.Strokes;
+
+            // We travel the StrokeCollection inversely to select the first plan item first
+            // if some items overlap.
+            StrokeCollection strokeToSelect = new StrokeCollection();
+            for (int i = strokes.Count - 1; i >= 0; i--)
+            {
+                Rect box = strokes[i].GetBounds();
+                if (selectViewModel.MouseLeftDownPointX >= box.Left && selectViewModel.MouseLeftDownPointX <= box.Right &&
+                    selectViewModel.MouseLeftDownPointY <= box.Bottom && selectViewModel.MouseLeftDownPointY >= box.Top)
+                {
+                    if (username == selectViewModel.Owner)
+                    {
+                        strokes[i].DrawingAttributes.Color = Colors.Black;
+                    }
+                    strokeToSelect.Add(strokes[i]);
+                    surfaceDessin.Select(strokeToSelect);
+
+                    break;
+                }
+            }
+        }
+
 
         public void DrawShape(InkCanvas surfaceDessin, string outilSelectionne, Point currentPoint, Point mouseLeftDownPoint)
         {
@@ -61,43 +87,43 @@ namespace PolyPaint.Utilitaires
             }
         }
 
-        internal void EndDraw(InkCanvas surfaceDessin, string outilSelectionne, DrawViewModel drawViewModel)
+        internal void EndDraw(InkCanvas surfaceDessin, DrawViewModel drawViewModel, string username)
         {
-            if (DrawingStroke != null && outilSelectionne == "rectangle"
-                                      || outilSelectionne == "rounded_rectangle")
-            {
-
-
-                StylusPointCollection collection = new StylusPointCollection();
-
-                foreach (PolyPaintStylusPoint point in drawViewModel.StylusPoints)
+                if (DrawingStroke != null && drawViewModel.OutilSelectionne == "rectangle"
+                                          || drawViewModel.OutilSelectionne == "rounded_rectangle")
                 {
-                    collection.Add(new StylusPoint()
+
+
+                    StylusPointCollection collection = new StylusPointCollection();
+
+                    foreach (PolyPaintStylusPoint point in drawViewModel.StylusPoints)
                     {
-                        X = point.X,
-                        Y = point.Y,
-                        PressureFactor = point.PressureFactor,
-                    });
-                }
+                        collection.Add(new StylusPoint()
+                        {
+                            X = point.X,
+                            Y = point.Y,
+                            PressureFactor = point.PressureFactor,
+                        });
+                    }
 
-                Stroke stroke = null;
-                switch (drawViewModel.ItemType)
-                {
-                    case ItemTypeEnum.RoundedRectangleStroke:
-                        stroke = new RoundedRectangleStroke(collection);
-                        break;
+                    Stroke stroke = null;
+                    switch (drawViewModel.ItemType)
+                    {
+                        case ItemTypeEnum.RoundedRectangleStroke:
+                            stroke = new RoundedRectangleStroke(collection);
+                            break;
+                    }
+                    Color color = new Color()
+                    {
+                        A = drawViewModel.Color.A,
+                        B = drawViewModel.Color.B,
+                        G = drawViewModel.Color.G,
+                        R = drawViewModel.Color.R,
+                    };
+                    stroke.DrawingAttributes.Color = color;
+                    surfaceDessin.Strokes.Remove(stroke);
+                    surfaceDessin.Strokes.Add(stroke.Clone());
                 }
-                Color color = new Color()
-                {
-                    A = drawViewModel.Color.A,
-                    B = drawViewModel.Color.B,
-                    G = drawViewModel.Color.G,
-                    R = drawViewModel.Color.R,
-                };
-                stroke.DrawingAttributes.Color = color;
-                surfaceDessin.Strokes.Remove(stroke);
-                surfaceDessin.Strokes.Add(stroke.Clone());
-            }
         }
 
         internal void EndDraw(InkCanvas surfaceDessin, string outilSelectionne)

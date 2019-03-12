@@ -46,12 +46,12 @@
                     <materialDesign:PackIcon Kind="FileUploadOutline" Height="24" Width="24"/>
                 </Button>
 
-                <Button  Style="{StaticResource MaterialDesignRaisedButton}" ToolTip="Resource name: MaterialDesignRaisedButton" 
-                    x:Name="reinitialiser" Width="30" Height="30" Margin="5" Padding="0"  Command="{Binding Reinitialiser}" FontSize="18">
+                <Button  Style="{StaticResource MaterialDesignRaisedButton}" ToolTip="Réinitialiser le canevas" 
+                    x:Name="reinitialiser" Width="30" Height="30" Margin="5" Padding="0" Click="Reinitialiser_Click" FontSize="18">
                     <materialDesign:PackIcon Kind="Recycle" />
                 </Button>
 
-                <Button Style="{StaticResource MaterialDesignRaisedButton}" ToolTip="Resource name: MaterialDesignRaisedButton" 
+                <Button Style="{StaticResource MaterialDesignRaisedButton}" ToolTip="Undo" 
                         x:Name="empiler" Width="30" Height="30" Margin="5" Padding="0"  Command="{Binding Empiler}" FontSize="18">
                     <materialDesign:PackIcon Kind="UndoVariant" />
                 </Button>

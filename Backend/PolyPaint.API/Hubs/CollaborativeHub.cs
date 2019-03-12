@@ -67,5 +67,17 @@ namespace PolyPaint.API.Hubs
                 }
             }
         }
+
+        public async Task Reset(string channelId)
+        {
+            var user = await GetUserFromToken(Context.User);
+            if (user != null)
+            {
+                if (UserHandler.UserGroupMap.TryGetValue(channelId, out var users) && users.Contains(user.Id))
+                {
+                    await Clients.Group(channelId).SendAsync("Reset");
+                }
+            }
+        }
     }
 }
