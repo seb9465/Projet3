@@ -35,6 +35,11 @@
                                     </barButtonItem>
                                     <barButtonItem title="Save" id="Cwu-WP-ULr"/>
                                     <barButtonItem title="Load" id="8N0-s0-ZU2"/>
+                                    <barButtonItem title="Clear" id="cJl-7R-Nql">
+                                        <connections>
+                                            <action selector="clearButton:" destination="Vts-He-P18" id="Kti-wA-ab9"/>
+                                        </connections>
+                                    </barButtonItem>
                                     <barButtonItem systemItem="undo" id="vbj-g9-11e">
                                         <connections>
                                             <action selector="undoButton:" destination="Vts-He-P18" id="Q7f-VC-utl"/>
