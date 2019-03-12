@@ -230,13 +230,11 @@ namespace PolyPaint
             {
                 chatMenu.Width = 70;
                 chatTab.Visibility = Visibility.Collapsed;
-                hamburgerMenu.Content = "aa";
                 isMenuOpen = false;
             } else
             {
                 chatMenu.Width = 775;
                 chatTab.Visibility = Visibility.Visible;
-                hamburgerMenu.Content = ">";
                 isMenuOpen = true;
             }
         }
