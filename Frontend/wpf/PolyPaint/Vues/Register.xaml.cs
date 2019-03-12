@@ -31,43 +31,61 @@ namespace PolyPaint.Vues
 
         private async void Register_Click(object sender, RoutedEventArgs e)
         {
-            registrationSuccessful.Content = "";
-            registrationErrors.Content = "";
-            RegistrationViewModel registrationViewModel = new RegistrationViewModel();
-            registrationViewModel.Email = EmailAddress.Text;
-            registrationViewModel.Username = usernameBox.Text;
-            registrationViewModel.Password = passwordBox.Password;
-            registrationViewModel.FirstName = firstNameBox.Text;
-            registrationViewModel.LastName = LastNameBox.Text;
 
-            string json = JsonConvert.SerializeObject(registrationViewModel);
-
-            using (HttpClient client = new HttpClient())
+            if (!string.IsNullOrWhiteSpace(firstNameBox.Text) && !string.IsNullOrWhiteSpace(LastNameBox.Text)
+                      && !string.IsNullOrWhiteSpace(usernameBox.Text) && !string.IsNullOrWhiteSpace(passwordBox.Password))
             {
-                client.BaseAddress = new System.Uri(Config.URL);
-                client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-                StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
-                HttpResponseMessage result = await client.PostAsync("/api/register", content);
+                registrationSuccessful.Text = "";
+                registrationErrors.Text = "";
+                RegistrationViewModel registrationViewModel = new RegistrationViewModel();
+                registrationViewModel.Email = EmailAddress.Text;
+                registrationViewModel.Username = usernameBox.Text;
+                registrationViewModel.Password = passwordBox.Password;
+                registrationViewModel.FirstName = firstNameBox.Text;
+                registrationViewModel.LastName = LastNameBox.Text;
 
-                if (result.StatusCode == System.Net.HttpStatusCode.OK)
+                string json = JsonConvert.SerializeObject(registrationViewModel);
+
+                using (HttpClient client = new HttpClient())
                 {
-                    registrationSuccessful.Content = "Registration Sucessfull";
-                }
-                else
-                {
-                    string error = await result.Content.ReadAsStringAsync();
-                    error = error.Substring(1, error.Length-2);
-                    var jo = JObject.Parse(error);
-                    Console.WriteLine();
-                    var id = jo["code"].ToString();
-                    if (id == "DuplicateEmail") {
-                        registrationErrors.Content = "Email already exists";
-                    } else if (id == "DuplicateUserName")
+                    client.BaseAddress = new System.Uri(Config.URL);
+                    client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+                    StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
+                    HttpResponseMessage result = await client.PostAsync("/api/register", content);
+
+                    if (result.StatusCode == System.Net.HttpStatusCode.OK)
                     {
-                        registrationErrors.Content = "Username already exists";
+                        registrationSuccessful.Text = "Registration Sucessfull";
+                    }
+                    else
+                    {
+                        string error = await result.Content.ReadAsStringAsync();
+                        error = error.Substring(1, error.Length - 2);
+                        error = error.Replace("},", "};");
+                        string[] errors = error.Split(';');
+
+                        for(int i = 0; i < errors.Length; i++)
+                        {
+                            var jo = JObject.Parse(errors[i]);
+                            var id = jo["code"].ToString();
+                            if (id == "DuplicateEmail")
+                            {
+                                registrationErrors.Text += " Email already exists";
+                            }
+                            else if (id == "DuplicateUserName")
+                            {
+                                registrationErrors.Text += " Username already exists";
+                            }
+                        }
+                        
                     }
                 }
+            } else
+            {
+                registrationErrors.Text = "All fields are required";
+                
             }
+             
         }
 
         private void IsEmailValid(object sender, RoutedEventArgs e)
@@ -101,5 +119,6 @@ namespace PolyPaint.Vues
                 RegisterBtn.IsEnabled = true;
             }
         }
+
     }
 }
