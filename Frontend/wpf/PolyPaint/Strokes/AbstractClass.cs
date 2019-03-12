@@ -12,6 +12,7 @@ namespace PolyPaint.Strokes
     public abstract class AbstractStroke : Stroke
     {
         public Point[] AnchorPoints;
+        public bool IsDrawingDone = false;
 
         public AbstractStroke(StylusPointCollection stylusPoints) : base(stylusPoints)
         {

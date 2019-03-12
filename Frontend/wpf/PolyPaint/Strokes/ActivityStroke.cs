@@ -12,7 +12,7 @@ using System.Linq;
 
 namespace PolyPaint.Strokes
 {
-    public class RectangleStroke : AbstractStroke, ICanvasable, INotifyPropertyChanged
+    public class ActivityStroke : AbstractStroke, ICanvasable, INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
         public string Title { get; set; }
@@ -26,7 +26,7 @@ namespace PolyPaint.Strokes
         public RelayCommand<string> RemoveFromProperties { get; set; }
         public RelayCommand<string> RemoveFromMethods { get; set; }
 
-        public RectangleStroke(StylusPointCollection pts, InkCanvas surfaceDessin)
+        public ActivityStroke(StylusPointCollection pts, InkCanvas surfaceDessin)
             : base(pts)
         {
             StylusPoints = pts;
@@ -59,11 +59,23 @@ namespace PolyPaint.Strokes
                 throw new ArgumentNullException("drawingAttributes");
             }
             SolidColorBrush brush = new SolidColorBrush(drawingAttributes.Color);
+            Pen pen = new Pen(brush, 2);
             brush.Freeze();
             StylusPoint stp = StylusPoints[0];
             StylusPoint sp = StylusPoints[1];
 
-            drawingContext.DrawRectangle(brush, null, new Rect(new Point(sp.X, sp.Y), new Point(stp.X, stp.Y)));
+            var topLeft = new Point(StylusPoints[0].X <= StylusPoints[1].X ? StylusPoints[0].X : StylusPoints[1].X,
+                StylusPoints[0].Y <= StylusPoints[1].Y ? StylusPoints[0].Y : StylusPoints[1].Y);
+            double width = Math.Abs(StylusPoints[1].X - StylusPoints[0].X);
+            double height = Math.Abs(StylusPoints[1].Y - StylusPoints[0].Y);
+
+            drawingContext.DrawLine(pen, topLeft, new Point(topLeft.X + 5.0 / 6.0 * width, topLeft.Y));
+            drawingContext.DrawLine(pen, new Point(topLeft.X + 5.0 / 6.0 * width, topLeft.Y), new Point(topLeft.X + width, topLeft.Y + height / 2.0));
+            drawingContext.DrawLine(pen, new Point(topLeft.X + width, topLeft.Y + height / 2.0), new Point(topLeft.X + 5.0 / 6.0 * width, topLeft.Y + height));
+            drawingContext.DrawLine(pen, new Point(topLeft.X + 5.0 / 6.0 * width, topLeft.Y + height), new Point(topLeft.X, topLeft.Y + height));
+            drawingContext.DrawLine(pen, new Point(topLeft.X, topLeft.Y + height), new Point(topLeft.X + 1.0 / 6.0 * width, topLeft.Y + height / 2.0));
+            drawingContext.DrawLine(pen, new Point(topLeft.X + 1.0 / 6.0 * width, topLeft.Y + height / 2.0), topLeft);
+
             if (IsDrawingDone)
                 DrawText(drawingContext);
             DrawAnchorPoints(drawingContext);
@@ -122,7 +134,7 @@ namespace PolyPaint.Strokes
         public void AddToCanvas()
         {
             var clone = Clone();
-            (clone as RectangleStroke).IsDrawingDone = true;
+            (clone as ActivityStroke).IsDrawingDone = true;
             SurfaceDessin.Strokes.Add(clone);
         }
 
