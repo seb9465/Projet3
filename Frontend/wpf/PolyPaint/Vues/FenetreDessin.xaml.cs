@@ -374,6 +374,7 @@ namespace PolyPaint
 
         private async void InkCanvas_LeftMouseUp(object sender, MouseButtonEventArgs e)
         {
+            if ((DataContext as VueModele).OutilSelectionne == "") return;
             if (_viewState == ViewStateEnum.Online)
             {
                 List<PolyPaintStylusPoint> points = new List<PolyPaintStylusPoint>();

@@ -15,7 +15,7 @@ namespace PolyPaint.Modeles
         public StrokeCollection traits = new StrokeCollection();
         private StrokeCollection traitsRetires = new StrokeCollection();
         // Outil actif dans l'éditeur
-        private string outilSelectionne = "crayon";
+        private string outilSelectionne = "";
         public string OutilSelectionne
         {
             get { return outilSelectionne; }
