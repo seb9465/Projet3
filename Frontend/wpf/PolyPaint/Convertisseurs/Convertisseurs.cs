@@ -49,7 +49,7 @@ namespace PolyPaint.Convertisseurs
                     return InkCanvasEditingMode.EraseByStroke;
                 case "select":
                 case "uml_class":
-                case "rounded_rectangle":
+                case "rectangle":
                 case "line":
                     return InkCanvasEditingMode.None;
                 default:

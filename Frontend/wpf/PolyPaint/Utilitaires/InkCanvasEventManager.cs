@@ -77,9 +77,9 @@ namespace PolyPaint.Utilitaires
                     DrawingStroke.DrawingAttributes.Color = Colors.LightBlue;
                     surfaceDessin.Strokes.Add(DrawingStroke);
                     break;
-                case "rounded_rectangle":
-                    DrawingStroke = new RoundedRectangleStroke(pts);
-                    DrawingStroke.DrawingAttributes.Color = Colors.Red;
+                case "rectangle":
+                    DrawingStroke = new RectangleStroke(pts, surfaceDessin);
+                    DrawingStroke.DrawingAttributes.Color = Colors.LightBlue;
                     surfaceDessin.Strokes.Add(DrawingStroke);
                     break;
                 case "line":
@@ -93,7 +93,7 @@ namespace PolyPaint.Utilitaires
         internal void EndDraw(InkCanvas surfaceDessin, string outilSelectionne)
         {
             if (DrawingStroke != null && outilSelectionne == "uml_class"
-                                      || outilSelectionne == "rounded_rectangle")
+                                      || outilSelectionne == "rectangle")
             {
                 (DrawingStroke as ICanvasable).RemoveFromCanvas();
                 (DrawingStroke as ICanvasable).AddToCanvas();
