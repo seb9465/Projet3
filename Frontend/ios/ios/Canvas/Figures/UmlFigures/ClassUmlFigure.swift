@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ClassUmlFigure: CanvasFigure {
+class ClassUmlFigure: UmlFigure {
     
     // Constants
     static let BASE_WIDTH: CGFloat = 100
@@ -27,18 +27,17 @@ class ClassUmlFigure: CanvasFigure {
     }
     
     override func draw(_ rect: CGRect) {
-        // Drawing the figure.
         let r: CGRect = CGRect(x: 1, y: 1, width: lastPoint.x - firstPoint.x, height: lastPoint.y - firstPoint.y);
-
-        // Inset to be able to place a border.
         let insetRect = r.insetBy(dx: 4, dy: 4);
-
         let path = UIBezierPath(roundedRect: insetRect, cornerRadius: 10);
-
-        // Border and fill parameters.
         self.figureColor.setFill();
         path.lineWidth = self.lineWidth;
         self.lineColor.setStroke();
+        
+        if (self.isSelected) {
+            
+        }
+        
         path.fill();
         path.stroke();
     }

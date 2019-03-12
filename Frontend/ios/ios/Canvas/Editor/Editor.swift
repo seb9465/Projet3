@@ -9,18 +9,18 @@
 import UIKit
 
 class Editor {
-    private var commands: [EditorCommand] = []
-    private var undoArray: [CanvasFigure] = []
-    private var redoArray: [CanvasFigure] = [];
+//    private var commands: [EditorCommand] = []
+    private var undoArray: [UmlFigure] = []
+    private var redoArray: [UmlFigure] = [];
     
     public var editorView: EditorView = EditorView()
-    public var currentlySelectedFigure: CanvasFigure!;
+    public var selectedFigure: UmlFigure!;
     
-    public func insertFigure(origin: CGPoint) -> Void {
-        let figure = FigureFactory.shared.getFigure(type: ItemTypeEnum.RoundedRectangleStroke, origin: origin)!;
-        self.editorView.addSubview(figure);
-        self.undoArray.append(figure);
-    }
+//    public func insertFigure(origin: CGPoint) -> Void {
+//        let figure = FigureFactory.shared.getFigure(type: ItemTypeEnum.RoundedRectangleStroke, origin: origin)!;
+//        self.editorView.addSubview(figure);
+//        self.undoArray.append(figure);
+//    }
     
     public func insertFigure(firstPoint: CGPoint, lastPoint: CGPoint) -> Void {
         let figure = FigureFactory.shared.getFigure(type: ItemTypeEnum.RoundedRectangleStroke, firstPoint: firstPoint, lastPoint: lastPoint)!
@@ -29,16 +29,16 @@ class Editor {
     }
     
     public func moveFigure(translation: CGPoint) {
-        self.currentlySelectedFigure.center = CGPoint(
-            x:self.currentlySelectedFigure.center.x + translation.x,
-            y:self.currentlySelectedFigure.center.y + translation.y
-        )
+//        self.selectedFigure.center = CGPoint(
+//            x:self.selectedFigure.center.x + translation.x,
+//            y:self.selectedFigure.center.y + translation.y
+//        )
     }
     
     public func undo(view: UIView) -> Void {
         print(undoArray);
         if (undoArray.count > 0) {
-            let figure: CanvasFigure = view.subviews.last as! CanvasFigure;
+            let figure: UmlFigure = view.subviews.last as! UmlFigure;
             self.redoArray.append(figure);
             figure.removeFromSuperview();
             self.undoArray.removeLast();
@@ -47,7 +47,7 @@ class Editor {
     
     public func redo(view: UIView) -> Void {
         if (redoArray.count > 0) {
-            let figure: CanvasFigure = self.redoArray.last!;
+            let figure: UmlFigure = self.redoArray.last!;
             view.addSubview(figure);
             self.undoArray.append(figure);
             self.redoArray.removeLast();
@@ -98,17 +98,17 @@ class Editor {
         
         // CONDITIONS TO BE REVIEWED. DRY.
         if (self.subviewIsInUndoArray(subview: subview!)) {
-            if (self.currentlySelectedFigure != nil) {
-                self.currentlySelectedFigure.setIsNotSelected();
+            if (self.selectedFigure != nil) {
+                self.selectedFigure.setIsNotSelected();
             }
             
-            self.currentlySelectedFigure = subview as? CanvasFigure;
-            self.currentlySelectedFigure.setIsSelected();
+            self.selectedFigure = subview as? UmlFigure;
+            self.selectedFigure.setIsSelected();
             
             return true;
         } else {
-            if (self.currentlySelectedFigure != nil) {
-                self.currentlySelectedFigure.setIsNotSelected();
+            if (self.selectedFigure != nil) {
+                self.selectedFigure.setIsNotSelected();
             }
             
             return false;
@@ -116,8 +116,8 @@ class Editor {
     }
     
     public func unselectSelectedFigure() -> Void {
-        if (self.currentlySelectedFigure != nil) {
-            self.currentlySelectedFigure.setIsNotSelected();
+        if (self.selectedFigure != nil) {
+            self.selectedFigure.setIsNotSelected();
         }
     }
     
@@ -126,10 +126,10 @@ class Editor {
     //    }
     
     public func setSelectedFigureColor(color: UIColor) -> Void {
-        self.currentlySelectedFigure.setFillColor(fillColor: color);
+        self.selectedFigure.setFillColor(fillColor: color);
     }
     
     public func setSelectFigureBorderColor(color: UIColor) -> Void {
-        self.currentlySelectedFigure.setBorderColor(borderColor: color);
+        self.selectedFigure.setBorderColor(borderColor: color);
     }
 }

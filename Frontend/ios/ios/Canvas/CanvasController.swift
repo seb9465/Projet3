@@ -47,6 +47,9 @@ class CanvasController: UIViewController, CollaborationHubDelegate {
         self.addTapGestureRecognizer();
         let pan = UIPanGestureRecognizer(target: self, action: #selector(self.handlePan(sender:)))
         self.view.addGestureRecognizer(pan);
+        
+        let pinch = UIPinchGestureRecognizer(target: self, action: #selector(self.handlePinch(sender:)))
+        self.view.addGestureRecognizer(pinch)
 
         // Color picker parameters.
         let pickerSize = CGSize(width: 200, height: 200);
@@ -78,11 +81,10 @@ class CanvasController: UIViewController, CollaborationHubDelegate {
     }
     
     @objc func handleTap(sender: UITapGestureRecognizer? = nil) {
-        
         var tapPoint: CGPoint = (sender?.location(in: self.view))!;
         tapPoint.y = tapPoint.y - 70
         if (tapPoint.y >= 70 && self.toolState == STATE.DRAW_RECT) {
-            self.insertFigure(origin: tapPoint)
+            CollaborationHub.shared.updateDrawing(origin: tapPoint)
             
         } else if (self.toolState == STATE.SELECTION) {
             let res: Bool = self.editor.selectFigure(tapPoint: tapPoint);
@@ -101,23 +103,22 @@ class CanvasController: UIViewController, CollaborationHubDelegate {
         sender!.setTranslation(CGPoint.zero, in: self.editor.editorView)
     }
     
-    public func insertFigure(origin: CGPoint) -> Void {
-        let figure = FigureFactory.shared.getFigure(type: ItemTypeEnum.RoundedRectangleStroke, origin: origin)!
-
-        let point1 = PolyPaintStylusPoint(X: Double(figure.firstPoint.x), Y: Double(figure.firstPoint.y), PressureFactor: 1)
-        let point2 = PolyPaintStylusPoint(X: Double(figure.lastPoint.x), Y: Double(figure.lastPoint.y), PressureFactor: 1)
-
-        let color: PolyPaintColor = PolyPaintColor(A: 255, R: 255, G: 1, B: 1)
-        let model: DrawViewModel = DrawViewModel(
-            ItemType: ItemTypeEnum.RoundedRectangleStroke,
-            StylusPoints: [point1, point2],
-            OutilSelectionne: "rounded_rectangle",
-            Color: color,
-            ChannelId: "general"
-        )
-        CollaborationHub.shared.updateDrawing(model: model)
-//        self.editor.insertFigure(origin: origin, view: self.editorView);
+    @objc func handlePinch(sender: UIPinchGestureRecognizer? = nil) {
+        if sender!.numberOfTouches < 2 {
+            print("avoided an obscure crash!!")
+            return
+        }
+        
+        let A = sender!.location(ofTouch: 0, in: self.view)
+        let B = sender!.location(ofTouch: 1, in: self.view)
+        
+//        let xD = abs( A.x - B.x )
+//        let yD = abs( A.y - B.y )
+        
+        print("pinch")
+        print(sender!.scale);
     }
+    
     
     func updateCanvas(firsPoint: CGPoint, lastPoint: CGPoint) {
         self.editor.insertFigure(firstPoint: firsPoint, lastPoint: lastPoint)
