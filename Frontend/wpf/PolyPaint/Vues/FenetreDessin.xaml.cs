@@ -41,6 +41,7 @@ namespace PolyPaint
         public event EventHandler MessageReceived;
         public event EventHandler SystemMessageReceived;
         private string username;
+        bool isMenuOpen = false;
         private ViewStateEnum _viewState { get; set; }
 
         public FenetreDessin(ViewStateEnum viewState)
@@ -65,7 +66,7 @@ namespace PolyPaint
             {
                 sendToCloud.Visibility = Visibility.Collapsed;
                 importFromCloud.Visibility = Visibility.Collapsed;
-                chatWrapper.Visibility = Visibility.Collapsed;
+                chatMenu.Visibility = Visibility.Collapsed;
 
                 Thickness margin = surfaceDessin.Margin;
                 margin.Right = -790;
@@ -545,6 +546,22 @@ namespace PolyPaint
         void InkCanvas_SelectionMoving(object sender, InkCanvasSelectionEditingEventArgs e)
         {
             icEventManager.RedrawConnections(surfaceDessin, (DataContext as VueModele).OutilSelectionne, e.OldRectangle, e.NewRectangle);
+        }
+
+        private void hamburgerMenu_Click(object sender, RoutedEventArgs e)
+        {
+            if (isMenuOpen)
+            {
+                chatMenu.Width = 70;
+                chatTab.Visibility = Visibility.Collapsed;
+                isMenuOpen = false;
+            }
+            else
+            {
+                chatMenu.Width = 775;
+                chatTab.Visibility = Visibility.Visible;
+                isMenuOpen = true;
+            }
         }
     }
 }

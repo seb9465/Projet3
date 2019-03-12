@@ -24,7 +24,9 @@
         <TextBlock 
             Text="Your password must have between 8 and 15 characters and contains at least: &#10; - 1 upercase letter &#10; - 1 lowercase letter &#10; - 1 number &#10; - 1 special caracter" 
             TextWrapping="Wrap" x:Name="InvalidPassword" HorizontalAlignment="Right" Margin="0,308,10,0" Width="160" VerticalAlignment="Top" Foreground="OrangeRed" Opacity="0"/>
-        <Button Content="Register" Margin="264,355,255,103" Name="RegisterBtn" Click="Register_Click" Height="Auto"/>
+        <Button Content="Register" Margin="264,365,255,93" Name="RegisterBtn" Click="Register_Click" Height="Auto" />
         <Button Content="Back" Margin="16,416,575,42" x:Name="backBtn" Click="BackBtn_Click" Height="Auto"/>
+        <TextBlock x:Name="registrationSuccessful" Margin="0,0,0,60" HorizontalAlignment="Center" TextAlignment="Center" VerticalAlignment="Bottom" Foreground="#DD43B307" Width="140"/>
+        <TextBlock x:Name="registrationErrors" TextWrapping="Wrap" TextAlignment="Center" Margin="0,400,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="#DDFF0000" Width="140"/>
     </Grid>
 </Window>
