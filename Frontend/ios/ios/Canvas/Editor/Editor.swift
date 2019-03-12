@@ -12,9 +12,11 @@ class Editor {
 //    private var commands: [EditorCommand] = []
     private var undoArray: [UmlFigure] = []
     private var redoArray: [UmlFigure] = [];
+    private var figures: [UmlFigure] = [];
     
     public var editorView: EditorView = EditorView()
     public var selectedFigure: UmlFigure!;
+    public var selectionOutline: SelectionOutline!;
     
 //    public func insertFigure(origin: CGPoint) -> Void {
 //        let figure = FigureFactory.shared.getFigure(type: ItemTypeEnum.RoundedRectangleStroke, origin: origin)!;
@@ -25,7 +27,48 @@ class Editor {
     public func insertFigure(firstPoint: CGPoint, lastPoint: CGPoint) -> Void {
         let figure = FigureFactory.shared.getFigure(type: ItemTypeEnum.RoundedRectangleStroke, firstPoint: firstPoint, lastPoint: lastPoint)!
         self.editorView.addSubview(figure);
+        self.figures.append(figure)
         self.undoArray.append(figure);
+    }
+    
+    public func selectFigure(tapPoint: CGPoint) -> Bool {
+        guard let figure = self.editorView.hitTest(tapPoint, with: nil) as? UmlFigure else {
+            if (self.selectionOutline != nil) {
+                self.selectionOutline.removeFromSuperview()
+            }
+            self.selectedFigure = nil
+            return false
+        }
+        
+        if (!figure.isEqual(self.selectedFigure)) {
+            if (self.selectionOutline != nil) {
+                self.selectionOutline.removeFromSuperview()
+            }
+            self.selectedFigure = figure
+            self.selectionOutline = SelectionOutline(firstPoint: figure.firstPoint, lastPoint: figure.lastPoint)
+            self.selectionOutline.addSelectedFigureLayers(layer: self.editorView.layer)
+            self.editorView.addSubview(self.selectionOutline)
+        }
+        
+        return false
+        
+//        // CONDITIONS TO BE REVIEWED. DRY.
+//        if (self.subviewIsInUndoArray(subview: subview!)) {
+//            if (self.selectedFigure != nil) {
+//                self.selectedFigure.setIsNotSelected();
+//            }
+//
+//            self.selectedFigure = subview as? UmlFigure;
+//            self.selectedFigure.setIsSelected();
+//
+//            return true;
+//        } else {
+//            if (self.selectedFigure != nil) {
+//                self.selectedFigure.setIsNotSelected();
+//            }
+//
+//            return false;
+//        }
     }
     
     public func moveFigure(translation: CGPoint) {
@@ -92,29 +135,7 @@ class Editor {
             }
         }
     }
-    
-    public func selectFigure(tapPoint: CGPoint) -> Bool {
-        let subview = self.editorView.hitTest(tapPoint, with: nil);
-        
-        // CONDITIONS TO BE REVIEWED. DRY.
-        if (self.subviewIsInUndoArray(subview: subview!)) {
-            if (self.selectedFigure != nil) {
-                self.selectedFigure.setIsNotSelected();
-            }
-            
-            self.selectedFigure = subview as? UmlFigure;
-            self.selectedFigure.setIsSelected();
-            
-            return true;
-        } else {
-            if (self.selectedFigure != nil) {
-                self.selectedFigure.setIsNotSelected();
-            }
-            
-            return false;
-        }
-    }
-    
+
     public func unselectSelectedFigure() -> Void {
         if (self.selectedFigure != nil) {
             self.selectedFigure.setIsNotSelected();
