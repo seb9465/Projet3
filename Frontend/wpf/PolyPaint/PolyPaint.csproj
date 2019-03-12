@@ -386,6 +386,8 @@
     <Compile Include="Strokes\ICanvasable.cs" />
     <Compile Include="Strokes\LineStroke.cs" />
     <Compile Include="Strokes\ActivityStroke.cs" />
+    <Compile Include="Strokes\PhaseStroke.cs" />
+    <Compile Include="Strokes\RoleStroke.cs" />
     <Compile Include="Strokes\UmlClassStroke.cs" />
     <Compile Include="Strokes\RectangleStroke.cs" />
     <Compile Include="Structures\ChannelArgs.cs" />
