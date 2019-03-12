@@ -13,6 +13,8 @@ import AwaitKit
 
 class LoginController: UIViewController, UITextFieldDelegate {
     
+    @IBOutlet weak var autologinlabel: UILabel!
+    @IBOutlet weak var serverlabel: UILabel!
     @IBOutlet var emailField: UITextField!
     @IBOutlet var passwordField: UITextField!
     @IBOutlet var validationLabel: UILabel!
@@ -20,6 +22,8 @@ class LoginController: UIViewController, UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.serverlabel.text = "Server: " + Constants.SERVER_BASE_URL
+        self.autologinlabel.text = "Auto-login: true"
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
@@ -29,7 +33,7 @@ class LoginController: UIViewController, UITextFieldDelegate {
 //        let validEmail: Bool = isValidEmail(email: emailField.text!);
         
 //        AuthentificationAPI.login(username: emailField.text!, password: passwordField.text!)
-        AuthentificationAPI.login(username: "user.4", password: "!12345Aa")
+        AuthentificationAPI.login(username: "user.3", password: "!12345Aa")
             .done { (token) in
                 UIViewController.removeSpinner(spinner: sv);
                 self.validationLabel.text = ""

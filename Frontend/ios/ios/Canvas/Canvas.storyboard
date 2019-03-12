@@ -13,7 +13,7 @@
         <!--Canvas Controller-->
         <scene sceneID="Isk-t8-nkS">
             <objects>
-                <viewController storyboardIdentifier="CanvasView" id="Vts-He-P18" customClass="CanvasController" customModule="ios" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController restorationIdentifier="CanvasView" storyboardIdentifier="CanvasView" id="Vts-He-P18" customClass="CanvasController" customModule="ios" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="hqe-fa-MVE">
                         <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -74,6 +74,7 @@
                             </toolbar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <gestureRecognizers/>
                         <viewLayoutGuide key="safeArea" id="h7K-cJ-n3H"/>
                     </view>
                     <connections>

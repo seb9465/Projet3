@@ -9,9 +9,14 @@
 import Foundation
 import SwiftSignalRClient
 
+protocol CollaborationHubDelegate {
+    func updateCanvas(firsPoint: CGPoint, lastPoint: CGPoint)
+}
+
 class CollaborationHub {
     // Singleton
     static let shared = CollaborationHub()
+    var delegate: CollaborationHubDelegate?
     
     var hubConnection: HubConnection;
     var _members: Members;
@@ -43,7 +48,7 @@ class CollaborationHub {
     
     public func onClientIsConnected() -> Void {
         self.hubConnection.on(method: "ClientIsConnected", callback: { (args, typeConverter) in
-            print("[ COLLAB ] On ClientIsConnected")
+            print("[ Collab ] On ClientIsConnected")
 //            self.fetchChannels()
 //            self.connectToChannel()
         })
@@ -53,7 +58,7 @@ class CollaborationHub {
         let json = try? JSONEncoder().encode(ConnectionMessage(channelId: "general"));
         let jsondata: String = String(data: json!, encoding: .utf8)!;
         
-        print("[ COLLAB ] Invoked ConnectToChannel");
+        print("[ Collab ] Invoked ConnectToChannel");
         self.hubConnection.invoke(method: "ConnectToChannel", arguments: [jsondata], invocationDidComplete: { (error) in
             if (error != nil) {
                 print("ERROR while invoking ConnectToChannel.");
@@ -70,7 +75,7 @@ class CollaborationHub {
             let json: String = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self)!;
             if let jsonData = json.data(using: .utf8) {
                 let obj: ConnectionMessage = try! JSONDecoder().decode(ConnectionMessage.self, from: jsonData);
-                print("[ COLLAB ] Connected to channel", obj.channelId)
+                print("[ Collab ] Connected to channel", obj.channelId)
             }
         });
     }
@@ -79,29 +84,27 @@ class CollaborationHub {
             let jsonEncoder = JSONEncoder()
             let jsonData = try! jsonEncoder.encode(model)
             let jsonString = String(data: jsonData, encoding: .utf8)
-            print(jsonString!)
     
             self.hubConnection.invoke(method: "Draw", arguments: [jsonString], invocationDidComplete: { (Error) in
                 if (Error != nil) {
                     print("Error calling draw", Error!)
                     return
                 }
-                print("received update from hub!")
             });
         }
     
     public func onDraw() -> Void {
         self.hubConnection.on(method: "Draw", callback: { (args, typeConverter) in
+            print("[ Collab ] Received new figure")
+
             let jsonString: String = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self)!;
             let jsonData = jsonString.data(using: .utf8)
-            let viewModel: DrawViewModel = try! JSONDecoder().decode(DrawViewModel.self, from: jsonData!);
             
-            print(viewModel)
-            let storyboard: UIStoryboard = UIStoryboard.init(name: "CanvasView", bundle: nil);
-            let canvasController: CanvasController = storyboard.instantiateViewController(withIdentifier: "CanvasView") as! CanvasController;
-            print("[ COLLAB ] DRAW DRAW DRAW")
-            //            self.fetchChannels()
-            //            self.connectToChannel()
+            let viewModel: DrawViewModel = try! JSONDecoder().decode(DrawViewModel.self, from: jsonData!);
+            let fpoint: CGPoint = CGPoint(x: viewModel.StylusPoints[0].X, y: viewModel.StylusPoints[0].Y)
+            let lpoint: CGPoint = CGPoint(x: viewModel.StylusPoints[1].X, y: viewModel.StylusPoints[1].Y)
+
+            self.delegate!.updateCanvas(firsPoint: fpoint, lastPoint: lpoint)
         })
     }
     
