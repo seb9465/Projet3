@@ -68,7 +68,7 @@ namespace PolyPaint.Strokes
 
             drawingContext.DrawText(Title, new Point(TopLeft.X + 10, nextHeight));
             nextHeight += 10 + Title.Height;
-            drawingContext.DrawLine(new Pen(new SolidColorBrush(Colors.Black), 1), new Point(TopLeft.X, nextHeight), new Point(TopLeft.X + Width, nextHeight));
+            drawingContext.DrawLine(Border, new Point(TopLeft.X, nextHeight), new Point(TopLeft.X + Width, nextHeight));
             nextHeight += 10;
             for (int i = 0; i < Properties.Count; i++)
             {
@@ -76,7 +76,7 @@ namespace PolyPaint.Strokes
                 drawingContext.DrawText(tempFt, new Point(TopLeft.X + 10, nextHeight));
                 nextHeight += 10 + tempFt.Height;
             }
-            drawingContext.DrawLine(new Pen(new SolidColorBrush(Colors.Black), 1), new Point(TopLeft.X, nextHeight), new Point(TopLeft.X + Width, nextHeight));
+            drawingContext.DrawLine(Border, new Point(TopLeft.X, nextHeight), new Point(TopLeft.X + Width, nextHeight));
             nextHeight += 10;
             for (int i = 0; i < Methods.Count; i++)
             {

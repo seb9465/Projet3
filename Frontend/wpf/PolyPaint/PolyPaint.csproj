@@ -476,11 +476,15 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\activity.png" />
+    <Resource Include="Resources\artefact.png" />
+    <Resource Include="Resources\phase.png" />
     <Resource Include="Resources\position.png" />
     <Resource Include="Resources\rectangle.png" />
+    <Resource Include="Resources\role.png" />
     <Resource Include="Resources\select.png" />
-    <Resource Include="Resources\uml_class.png" />
     <Resource Include="Resources\line.png" />
+    <Resource Include="Resources\uml_class.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\efface.png" />
