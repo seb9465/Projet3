@@ -293,7 +293,7 @@ namespace PolyPaint
         private void chatButton_Click(object sender, RoutedEventArgs e)
         {
             externalChatWindow.Show();
-            chat.Visibility = Visibility.Collapsed;
+            chatWrapper.Visibility = Visibility.Collapsed;
             ScrollDown(null, null);
         }
 
