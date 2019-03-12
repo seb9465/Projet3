@@ -11,6 +11,7 @@ using System.Windows.Ink;
 using Microsoft.AspNetCore.SignalR.Client;
 using PolyPaint.Structures;
 using System.ComponentModel;
+using MaterialDesignThemes.Wpf;
 
 namespace PolyPaint.Vues
 {
@@ -19,22 +20,14 @@ namespace PolyPaint.Vues
     /// </summary>
     public partial class ChatWindow : Window
     {
+
+        private MediaPlayer mediaPlayer = new MediaPlayer();
         public ChatWindow(object dataContext)
         {
             InitializeComponent();
             DataContext = dataContext;
             (DataContext as VueModele).ChatClient.MessageReceived += ScrollDown;
-        }
-
-        private void sendButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (!string.IsNullOrWhiteSpace(messageTextBox.Text))
-            {
-                (DataContext as VueModele).ChatClient.SendMessage(messageTextBox.Text, (DataContext as VueModele).CurrentRoom);
-            }
-            messageTextBox.Text = String.Empty;
-            messageTextBox.Focus();
-        }
+    }
 
         private void DataWindow_Closing(object sender, CancelEventArgs e)
         {
@@ -44,7 +37,7 @@ namespace PolyPaint.Vues
             {
                 if (window.GetType() == typeof(FenetreDessin))
                 {
-                    (window as FenetreDessin).chat.Visibility = Visibility.Visible;
+                    (window as FenetreDessin).chatWrapper.Visibility = Visibility.Visible;
                 }
             }
         }
@@ -57,6 +50,47 @@ namespace PolyPaint.Vues
             }
         }
 
+        private void AddRoom(object sender, DialogClosingEventArgs eventArgs)
+        {
+            if (!Equals(eventArgs.Parameter, true)) return;
+
+            if (!string.IsNullOrWhiteSpace(roomTextBox.Text))
+            {
+                (DataContext as VueModele).ChatClient.CreateChannel(roomTextBox.Text.Trim());
+            }
+            clearRoomName(sender, eventArgs);
+        }
+
+        private void clearRoomName(object sender, RoutedEventArgs e)
+        {
+            roomTextBox.Text = "";
+        }
+
+        private void sendButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(messageTextBox.Text))
+            {
+                (DataContext as VueModele).ChatClient.SendMessage(messageTextBox.Text, (DataContext as VueModele).CurrentRoom);
+            }
+            mediaPlayer.Open(new Uri("SoundEffects//send.mp3", UriKind.Relative));
+            mediaPlayer.Volume = 100;
+            mediaPlayer.Play();
+            messageTextBox.Text = String.Empty;
+            messageTextBox.Focus();
+        }
+
+
+        private void EnterKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                if (sendButton.IsEnabled)
+                {
+                    sendButton_Click(sender, e);
+                }
+            }
+        }
+
         private void ScrollDown(object sender, MessageArgs args)
         {
             Dispatcher.Invoke(() =>
@@ -65,5 +99,6 @@ namespace PolyPaint.Vues
                 messagesList.ScrollIntoView(messagesList.SelectedItem);
             });
         }
+        
     }
 }

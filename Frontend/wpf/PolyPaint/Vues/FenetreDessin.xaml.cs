@@ -293,17 +293,9 @@ namespace PolyPaint
         private void chatButton_Click(object sender, RoutedEventArgs e)
         {
             externalChatWindow.Show();
-            chat.Visibility = Visibility.Collapsed;
+            chatWrapper.Visibility = Visibility.Collapsed;
             ScrollDown(null, null);
         }
-
-
-        private void chatButtonSameWindow_Click(object sender, RoutedEventArgs e)
-        {
-            externalChatWindow.Close();
-            chat.Visibility = Visibility.Visible;
-        }
-
 
         private void sendButton_Click(object sender, RoutedEventArgs e)
         {
