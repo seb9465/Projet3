@@ -12,6 +12,7 @@ import UIKit
 enum STATE {
     case NOTHING_SELECTED
     case DRAW_RECT
+    case CLEAR
     case SELECTION
     case DELETE
     case FILL
@@ -134,7 +135,7 @@ class CanvasController: UIViewController, CollaborationHubDelegate {
     }
     
     @IBAction func clearButton(_ sender: Any) {
-        self.clear();
+        CollaborationHub.shared.reset();
     }
     
     @IBAction func deleteButton(_ sender: Any) {
@@ -228,20 +229,8 @@ class CanvasController: UIViewController, CollaborationHubDelegate {
         self.view.addSubview(colorPicker)
     }
     
-    private func clear() {
-        if (self.editor.figuresInView()) {
-            let alert: UIAlertController = UIAlertController(title: "Alert", message: "Are you sure you want to clear the canvas ?", preferredStyle: .alert);
-
-            let yesAction: UIAlertAction = UIAlertAction(title: "Yes", style: .default, handler: { (alert: UIAlertAction!) in
-                self.editor.clear();
-            });
-            let noAction: UIAlertAction = UIAlertAction(title: "No", style: .default, handler:nil);
-
-            alert.addAction(yesAction);
-            alert.addAction(noAction);
-
-            self.present(alert, animated: true, completion: nil);
-        }
+    func clear() {
+            self.editor.clear();
     }
     
     private func addTapGestureRecognizer() -> Void {
