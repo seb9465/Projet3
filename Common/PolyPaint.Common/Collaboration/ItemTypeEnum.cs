@@ -6,6 +6,6 @@ namespace PolyPaint.Common.Collaboration
 {
     public enum ItemTypeEnum
     {
-        RoundedRectangleStroke
+        RectangleStroke
     }
 }

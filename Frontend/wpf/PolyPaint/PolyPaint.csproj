@@ -381,16 +381,23 @@
     <Compile Include="Modeles\Messages\ErrorMessage.cs" />
     <Compile Include="Modeles\Room.cs" />
     <Compile Include="Modeles\SaveableCanvas.cs" />
+    <Compile Include="Strokes\AbstractClass.cs" />
+    <Compile Include="Strokes\ICanvasable.cs" />
+    <Compile Include="Strokes\LineStroke.cs" />
+    <Compile Include="Strokes\UmlClassStroke.cs" />
     <Compile Include="Strokes\RectangleStroke.cs" />
-    <Compile Include="Strokes\RoundedRectangleStroke.cs" />
     <Compile Include="Structures\ChannelArgs.cs" />
     <Compile Include="Structures\MessageArgs.cs" />
     <Compile Include="Utilitaires\InkCanvasEventManager.cs" />
     <Compile Include="Utilitaires\RelayCommand.cs" />
+    <Compile Include="Utilitaires\Tools.cs" />
     <Compile Include="VueModeles\CanvasViewModel.cs" />
     <Compile Include="VueModeles\RegistrationViewModel.cs" />
     <Compile Include="VueModeles\LoginViewModel.cs" />
     <Compile Include="VueModeles\VueModele.cs" />
+    <Compile Include="Vues\EditUmlWindow.xaml.cs">
+      <DependentUpon>EditUmlWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Vues\Login.xaml.cs">
       <DependentUpon>Login.xaml</DependentUpon>
     </Compile>
@@ -402,6 +409,10 @@
     </Compile>
     <Compile Include="Vues\ViewStateEnum.cs" />
     <Page Include="Vues\ChatWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Vues\EditUmlWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -449,6 +460,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -461,6 +473,10 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\position.png" />
+    <Resource Include="Resources\rectangle.png" />
+    <Resource Include="Resources\select.png" />
+    <Resource Include="Resources\uml_class.png" />
+    <Resource Include="Resources\line.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\efface.png" />
@@ -493,9 +509,6 @@
     <Folder Include="Services\" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\rectangle.png" />
-    <Resource Include="Resources\rounded_rectangle.png" />
-    <Resource Include="Resources\select.png" />
     <Content Include="SoundEffects\receive.mp3">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

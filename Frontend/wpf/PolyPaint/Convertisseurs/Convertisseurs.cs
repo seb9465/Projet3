@@ -70,6 +70,11 @@ namespace PolyPaint.Convertisseurs
                     return InkCanvasEditingMode.EraseByPoint;
                 case "efface_trait":
                     return InkCanvasEditingMode.EraseByStroke;
+                case "select":
+                case "uml_class":
+                case "rectangle":
+                case "line":
+                    return InkCanvasEditingMode.None;
                 default:
                     return InkCanvasEditingMode.Ink;
             }

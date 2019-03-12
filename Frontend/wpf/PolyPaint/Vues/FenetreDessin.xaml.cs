@@ -42,6 +42,7 @@ namespace PolyPaint
         public event EventHandler SystemMessageReceived;
         private string username;
         private ViewStateEnum _viewState { get; set; }
+
         public FenetreDessin(ViewStateEnum viewState)
         {
             InitializeComponent();
@@ -415,6 +416,11 @@ namespace PolyPaint
             {
                 icEventManager.EndDraw(surfaceDessin, (DataContext as VueModele).OutilSelectionne);
             }
+            if ((DataContext as VueModele).OutilSelectionne == "text")
+            {
+                icEventManager.ChangeText(surfaceDessin, mouseLeftDownPoint);
+            }
+            icEventManager.EndDraw(surfaceDessin, (DataContext as VueModele).OutilSelectionne);
             IsDrawing = false;
 
         }
@@ -535,6 +541,11 @@ namespace PolyPaint
                     reinitialiser.Command.Execute(reinitialiser.CommandParameter);
                 });
             });
+        }
+
+        void InkCanvas_SelectionMoving(object sender, InkCanvasSelectionEditingEventArgs e)
+        {
+            icEventManager.RedrawConnections(surfaceDessin, (DataContext as VueModele).OutilSelectionne, e.OldRectangle, e.NewRectangle);
         }
     }
 }
