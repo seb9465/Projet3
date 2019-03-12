@@ -34,6 +34,7 @@ namespace PolyPaint
     {
         private MediaPlayer mediaPlayer = new MediaPlayer();
         ChatWindow externalChatWindow;
+        bool isMenuOpen = false;
         public FenetreDessin()
         {
             InitializeComponent();
@@ -221,6 +222,23 @@ namespace PolyPaint
                 messagesList.SelectedIndex = messagesList.Items.Count - 1;
                 messagesList.ScrollIntoView(messagesList.SelectedItem);
             });
+        }
+
+        private void hamburgerMenu_Click(object sender, RoutedEventArgs e)
+        {
+            if (isMenuOpen)
+            {
+                chatMenu.Width = 70;
+                chatTab.Visibility = Visibility.Collapsed;
+                hamburgerMenu.Content = "aa";
+                isMenuOpen = false;
+            } else
+            {
+                chatMenu.Width = 775;
+                chatTab.Visibility = Visibility.Visible;
+                hamburgerMenu.Content = ">";
+                isMenuOpen = true;
+            }
         }
 
         private void chatButton_Click(object sender, RoutedEventArgs e)
