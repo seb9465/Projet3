@@ -16,6 +16,9 @@ class FigureFactory {
         switch (type) {
             case .RoundedRectangleStroke :
                 return ClassUmlFigure(origin: origin)
+            case .Actor:
+                return UMLImageFigure(origin: origin, figureType: UMLImageFigureType.actor)
+            
         }
     }
     
@@ -23,6 +26,8 @@ class FigureFactory {
         switch (type) {
         case .RoundedRectangleStroke :
             return ClassUmlFigure(firstPoint: firstPoint, lastPoint: lastPoint)
+        case .Actor:
+            return UMLImageFigure(firstPoint: firstPoint, lastPoint: lastPoint, figureType: UMLImageFigureType.actor)
         }
     }
     

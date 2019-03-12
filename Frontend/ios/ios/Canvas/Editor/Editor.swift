@@ -42,6 +42,11 @@ class Editor {
         self.undoArray.append(figure);
     }
     
+    public func insertActor(firstPoint: CGPoint, lastPoint: CGPoint) -> Void {
+        let figure = FigureFactory.shared.getFigure(type: ItemTypeEnum.Actor, firstPoint: firstPoint, lastPoint: lastPoint)!
+        self.editorView.addSubview(figure);
+        self.undoArray.append(figure);
+    }
     public func selectFigure(tapPoint: CGPoint) -> Bool {
         guard let figure = self.editorView.hitTest(tapPoint, with: nil) as? UmlFigure else {
             if (self.selectionOutline != nil) {
