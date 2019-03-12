@@ -420,7 +420,6 @@ namespace PolyPaint
             {
                 icEventManager.ChangeText(surfaceDessin, mouseLeftDownPoint);
             }
-            icEventManager.EndDraw(surfaceDessin, (DataContext as VueModele).OutilSelectionne);
             IsDrawing = false;
 
         }

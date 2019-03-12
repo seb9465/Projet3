@@ -137,15 +137,13 @@ namespace PolyPaint.Utilitaires
 
         internal void EndDraw(InkCanvas surfaceDessin, DrawViewModel drawViewModel, string username)
         {
-            if (DrawingStroke != null && drawViewModel.OutilSelectionne == "rectangle"
+            if (DrawingStroke != null && (drawViewModel.OutilSelectionne == "rectangle"
                                       || drawViewModel.OutilSelectionne == "uml_class"
                                       || drawViewModel.OutilSelectionne == "activity"
                                       || drawViewModel.OutilSelectionne == "artefact"
                                       || drawViewModel.OutilSelectionne == "phase"
-                                      || drawViewModel.OutilSelectionne == "role")
+                                      || drawViewModel.OutilSelectionne == "role"))
             {
-
-
                 StylusPointCollection collection = new StylusPointCollection();
 
                 foreach (PolyPaintStylusPoint point in drawViewModel.StylusPoints)
@@ -173,19 +171,19 @@ namespace PolyPaint.Utilitaires
                     R = drawViewModel.Color.R,
                 };
                 stroke.DrawingAttributes.Color = color;
-                surfaceDessin.Strokes.Remove(stroke);
-                surfaceDessin.Strokes.Add(stroke.Clone());
+                (stroke as ICanvasable).RemoveFromCanvas();
+                (stroke as ICanvasable).AddToCanvas();
             }
         }
 
         internal void EndDraw(InkCanvas surfaceDessin, string outilSelectionne)
         {
-            if (DrawingStroke != null && outilSelectionne == "rectangle"
+            if (DrawingStroke != null && (outilSelectionne == "rectangle"
                                       || outilSelectionne == "uml_class"
                                       || outilSelectionne == "activity"
                                       || outilSelectionne == "artefact"
                                       || outilSelectionne == "phase"
-                                      || outilSelectionne == "role")
+                                      || outilSelectionne == "role"))
             {
                 (DrawingStroke as ICanvasable).RemoveFromCanvas();
                 (DrawingStroke as ICanvasable).AddToCanvas();
@@ -221,7 +219,7 @@ namespace PolyPaint.Utilitaires
                 StylusPointCollection points = new StylusPointCollection(new Point[] { closestToFirst, closestToSecond });
                 DrawingStroke = new LineStroke(points, surfaceDessin);
                 DrawingStroke.DrawingAttributes.Color = Colors.Black;
-                surfaceDessin.Strokes.Add(DrawingStroke);
+                (DrawingStroke as ICanvasable).RemoveFromCanvas();
                 (DrawingStroke as ICanvasable).AddToCanvas();
             }
         }
