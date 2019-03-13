@@ -15,7 +15,7 @@ class UmlClassFigure: UmlFigure {
     static let BASE_HEIGHT: CGFloat = 100
     
     init(origin: CGPoint) {
-        super.init(origin: origin, width: UmlClassFigure.BASE_WIDTH, height: UmlClassFigure.BASE_HEIGHT)
+        super.init(touchedPoint: origin, width: UmlClassFigure.BASE_WIDTH, height: UmlClassFigure.BASE_HEIGHT)
     }
     
     init(firstPoint: CGPoint, lastPoint: CGPoint) {

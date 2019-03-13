@@ -83,22 +83,9 @@ class CollaborationHub {
     }
     
     public func updateDrawing(origin: CGPoint) -> Void {
-            let figure = FigureFactory.shared.getFigure(type: ItemTypeEnum.RoundedRectangleStroke, origin: origin)!
-        
-            let point1 = PolyPaintStylusPoint(X: Double(figure.firstPoint.x), Y: Double(figure.firstPoint.y), PressureFactor: 1)
-            let point2 = PolyPaintStylusPoint(X: Double(figure.lastPoint.x), Y: Double(figure.lastPoint.y), PressureFactor: 1)
-        
-            let color: PolyPaintColor = PolyPaintColor(A: 255, R: 255, G: 1, B: 1)
-            let model: DrawViewModel = DrawViewModel(
-                ItemType: ItemTypeEnum.RoundedRectangleStroke,
-                StylusPoints: [point1, point2],
-                OutilSelectionne: "rounded_rectangle",
-                Color: color,
-                ChannelId: "general"
-            )
-        
+            let figure = UmlClassFigure(origin: origin)
             let jsonEncoder = JSONEncoder()
-            let jsonData = try! jsonEncoder.encode(model)
+            let jsonData = try! jsonEncoder.encode(figure.exportToViewModel())
             let jsonString = String(data: jsonData, encoding: .utf8)
     
             self.hubConnection.invoke(method: "Draw", arguments: [jsonString], invocationDidComplete: { (Error) in

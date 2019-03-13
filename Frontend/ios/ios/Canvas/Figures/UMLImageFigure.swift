@@ -16,7 +16,7 @@ class UmlImageFigure: UmlFigure {
     
     init(origin: CGPoint, figureType: UMLImageFigureType) {
         self.figureType = figureType
-            super.init(origin: origin, width: UmlImageFigure.BASE_WIDTH, height: UmlImageFigure.BASE_HEIGHT)
+            super.init(touchedPoint: origin, width: UmlImageFigure.BASE_WIDTH, height: UmlImageFigure.BASE_HEIGHT)
         }
         
         init(firstPoint: CGPoint, lastPoint: CGPoint, figureType: UMLImageFigureType) {

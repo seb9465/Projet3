@@ -15,53 +15,50 @@ protocol touchInputDelegate {
 
 class UmlFigure : Figure {
     var delegate: touchInputDelegate?
-    
-    var firstPoint: CGPoint!
-    var lastPoint: CGPoint!
-    var width: CGFloat!
-    var height: CGFloat!
     var figureColor: UIColor!
     var lineWidth: CGFloat!
     var lineColor: UIColor!
         
     var anchorPoints: AnchorPoints?;
-
-    init(origin: CGPoint, width: CGFloat, height: CGFloat) {
-        self.firstPoint = CGPoint(x: origin.x - width/2, y: origin.y - height/2)
-        self.lastPoint = CGPoint(x: origin.x + width/2, y: origin.y + height/2)
-        self.figureColor = UIColor.clear
-        self.lineWidth = 2
-        self.lineColor = UIColor.black
-        self.height = height
-        self.width = width
-        
-        let frame : CGRect = CGRect(x: self.firstPoint.x, y: self.firstPoint.y, width: self.width + 5, height: self.height + 5)
-        super.init(frame: frame);
-        self.backgroundColor = UIColor.clear;
-    }
     
     init(firstPoint: CGPoint, lastPoint: CGPoint, width: CGFloat, height: CGFloat) {
-        self.firstPoint = firstPoint
-        self.lastPoint = lastPoint
-        self.figureColor = UIColor.clear
-        self.lineWidth = 2
-        self.lineColor = UIColor.black
-        
         let frameSize = CGSize(width: abs(firstPoint.x - lastPoint.x), height: abs(firstPoint.y - lastPoint.y))
         let frame = CGRect(origin: firstPoint, size: frameSize)
         super.init(frame: frame)
-        
-        self.backgroundColor = UIColor.clear;
-        
-        self.anchorPoints = AnchorPoints(width: frameSize.width, height: frameSize.height)
-        self.layer.addSublayer((self.anchorPoints?.anchorPointsBottom)!)
-        self.layer.addSublayer((self.anchorPoints?.anchorPointsTop)!)
-        self.layer.addSublayer((self.anchorPoints?.anchorPointsLeft)!)
-        self.layer.addSublayer((self.anchorPoints?.anchorPointsRight)!)
+        self.firstPoint = firstPoint
+        self.lastPoint = lastPoint
+        self.initializeBaseStyle()
+        self.initializeAnchorPoints()
+    }
+    
+    // Alternate init to create UmlFigures on user tap
+    init(touchedPoint: CGPoint, width: CGFloat, height: CGFloat) {
+        let frameSize = CGSize(width: width, height: height)
+        let frame = CGRect(origin: CGPoint(x: touchedPoint.x - width/2, y: touchedPoint.y - height/2), size: frameSize)
+        super.init(frame: frame);
+        self.firstPoint = CGPoint(x: touchedPoint.x - width/2, y: touchedPoint.y - height/2)
+        self.lastPoint = CGPoint(x: touchedPoint.x + width/2, y: touchedPoint.y + height/2)
+        self.initializeBaseStyle()
+        self.initializeAnchorPoints()
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func initializeBaseStyle() {
+        self.figureColor = UIColor.clear
+        self.lineWidth = 2
+        self.lineColor = UIColor.black
+        self.backgroundColor = UIColor.clear;
+    }
+    
+    private func initializeAnchorPoints() {
+        self.anchorPoints = AnchorPoints(width: self.frame.width, height: self.frame.height)
+        self.layer.addSublayer((self.anchorPoints?.anchorPointsBottom)!)
+        self.layer.addSublayer((self.anchorPoints?.anchorPointsTop)!)
+        self.layer.addSublayer((self.anchorPoints?.anchorPointsLeft)!)
+        self.layer.addSublayer((self.anchorPoints?.anchorPointsRight)!)
     }
     
     public func setFillColor(fillColor: UIColor) -> Void {
