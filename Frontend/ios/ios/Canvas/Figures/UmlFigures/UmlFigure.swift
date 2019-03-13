@@ -46,21 +46,18 @@ class UmlFigure : UIView {
         self.figureColor = UIColor.clear
         self.lineWidth = 2
         self.lineColor = UIColor.black
-        self.anchorPoints = AnchorPoints(firstPoint: firstPoint, lastPoint: lastPoint)
-
-        self.height = abs(lastPoint.y - firstPoint.y)
-        self.width = abs(lastPoint.x - firstPoint.x)
         
+        let frameSize = CGSize(width: abs(firstPoint.x - lastPoint.x), height: abs(firstPoint.y - lastPoint.y))
+        let frame = CGRect(origin: firstPoint, size: frameSize)
+        super.init(frame: frame)
         
-        let frame : CGRect = CGRect(x: self.firstPoint.x, y: self.firstPoint.y, width: self.width + 10, height: self.height + 10)
-        super.init(frame: frame);
         self.backgroundColor = UIColor.clear;
         
+        self.anchorPoints = AnchorPoints(width: frameSize.width, height: frameSize.height)
         self.layer.addSublayer((self.anchorPoints?.anchorPointsBottom)!)
         self.layer.addSublayer((self.anchorPoints?.anchorPointsTop)!)
         self.layer.addSublayer((self.anchorPoints?.anchorPointsLeft)!)
         self.layer.addSublayer((self.anchorPoints?.anchorPointsRight)!)
-
     }
     
     required init?(coder aDecoder: NSCoder) {

@@ -18,30 +18,52 @@ protocol AnchorPointsProtocol{
 
 class AnchorPoints {
     
-    var diameter: CGFloat = 10
+    var anchorDiameter: CGFloat = 10
+    var anchorRadius: CGFloat = 5
+    
     var anchorPointsTop: CAShapeLayer!;
     var anchorPointsLeft: CAShapeLayer!;
     var anchorPointsRight: CAShapeLayer!;
     var anchorPointsBottom: CAShapeLayer!;
 
-    init(firstPoint: CGPoint, lastPoint: CGPoint) {
-        let width = abs(firstPoint.x - lastPoint.x)
-        let height = abs(firstPoint.y - lastPoint.y)
-        
+    init(width: CGFloat, height: CGFloat) {
         anchorPointsTop = CAShapeLayer();
-        anchorPointsTop.path = UIBezierPath(ovalIn: CGRect(x: width/2, y: 0, width: 10,height:10)).cgPath
-        anchorPointsTop.fillColor = UIColor.red.cgColor
+        anchorPointsTop.path = UIBezierPath(ovalIn: CGRect(
+            x: width/2 - self.anchorRadius,
+            y: 0,
+            width: self.anchorDiameter,
+            height: self.anchorDiameter
+        )).cgPath
         
+
         anchorPointsRight = CAShapeLayer();
-        anchorPointsRight.path = UIBezierPath(ovalIn: CGRect(x: width, y: height/2, width: 10,height:10)).cgPath
-        anchorPointsRight.fillColor = UIColor.red.cgColor
+        anchorPointsRight.path = UIBezierPath(ovalIn: CGRect(
+            x: width - self.anchorDiameter,
+            y: height/2 - self.anchorRadius,
+            width: self.anchorDiameter,
+            height: self.anchorDiameter
+        )).cgPath
         
         anchorPointsLeft = CAShapeLayer();
-        anchorPointsLeft.path = UIBezierPath(ovalIn: CGRect(x: 0, y: height/2, width: 10,height:10)).cgPath
-        anchorPointsLeft.fillColor = UIColor.red.cgColor
+        anchorPointsLeft.path = UIBezierPath(ovalIn: CGRect(
+            x: 0,
+            y: height/2 - self.anchorRadius,
+            width: self.anchorDiameter,
+            height: self.anchorDiameter
+        )).cgPath
         
         anchorPointsBottom = CAShapeLayer();
-        anchorPointsBottom.path = UIBezierPath(ovalIn: CGRect(x: width/2, y: height, width: 10,height:10)).cgPath
+        anchorPointsBottom.path = UIBezierPath(ovalIn: CGRect(
+            x: width/2 - self.anchorRadius,
+            y: height - self.anchorDiameter,
+            width: self.anchorDiameter,
+            height: self.anchorDiameter
+        )).cgPath
+        
+        
+        anchorPointsTop.fillColor = UIColor.red.cgColor
+        anchorPointsRight.fillColor = UIColor.red.cgColor
+        anchorPointsLeft.fillColor = UIColor.red.cgColor
         anchorPointsBottom.fillColor = UIColor.red.cgColor
     }
     

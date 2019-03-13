@@ -27,9 +27,9 @@ class UmlClassFigure: UmlFigure {
     }
     
     override func draw(_ rect: CGRect) {
-        let r: CGRect = CGRect(x: 5, y: 5, width: lastPoint.x - firstPoint.x, height: lastPoint.y - firstPoint.y);
-//        let insetRect = r.insetBy(dx: 5, dy: 5);
-        let path = UIBezierPath(roundedRect: r, cornerRadius: 10);
+        let rect = CGRect(x: 0, y: 0, width: self.frame.width, height: self.frame.height)
+        let insetRect = rect.insetBy(dx: 5, dy: 5);
+        let path = UIBezierPath(roundedRect: insetRect, cornerRadius: 10);
         self.figureColor.setFill();
         path.lineWidth = self.lineWidth;
         self.lineColor.setStroke();
