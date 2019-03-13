@@ -18,7 +18,8 @@ class FigureFactory {
                 return UmlClassFigure(origin: origin)
             case .Actor:
                 return UmlImageFigure(origin: origin, figureType: UMLImageFigureType.actor)
-            
+        case .Connection:
+            return nil
         }
     }
     
@@ -28,6 +29,9 @@ class FigureFactory {
             return UmlClassFigure(firstPoint: firstPoint, lastPoint: lastPoint)
         case .Actor:
             return UmlImageFigure(firstPoint: firstPoint, lastPoint: lastPoint, figureType: UMLImageFigureType.actor)
+        case.Connection:
+            return nil
+//            return ConnectionFigure(origin: firstPoint, destination: lastPoint)
         }
     }
     

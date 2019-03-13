@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		3D0A917322388F6E002FCB74 /* ConnectionFigure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D0A917222388F6E002FCB74 /* ConnectionFigure.swift */; };
 		3D121EDC22209E070074C61C /* PlaceHolderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D121EDB22209E070074C61C /* PlaceHolderCell.swift */; };
+		3D1622B22239AB4F00B98263 /* Figure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D1622B12239AB4F00B98263 /* Figure.swift */; };
 		3D2268192236E9F500B2F604 /* EditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D2268182236E9F500B2F604 /* EditorView.swift */; };
 		3D22681C2236EE8400B2F604 /* Editor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D22681B2236EE8400B2F604 /* Editor.swift */; };
 		3D22681F2236EF2B00B2F604 /* EditorCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D22681E2236EF2B00B2F604 /* EditorCommand.swift */; };
@@ -81,6 +82,7 @@
 /* Begin PBXFileReference section */
 		3D0A917222388F6E002FCB74 /* ConnectionFigure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionFigure.swift; sourceTree = "<group>"; };
 		3D121EDB22209E070074C61C /* PlaceHolderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceHolderCell.swift; sourceTree = "<group>"; };
+		3D1622B12239AB4F00B98263 /* Figure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Figure.swift; sourceTree = "<group>"; };
 		3D2268182236E9F500B2F604 /* EditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorView.swift; sourceTree = "<group>"; };
 		3D22681B2236EE8400B2F604 /* Editor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Editor.swift; sourceTree = "<group>"; };
 		3D22681E2236EF2B00B2F604 /* EditorCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorCommand.swift; sourceTree = "<group>"; };
@@ -257,6 +259,7 @@
 				3D66FC7422380F9000EB7E93 /* SelectionFigures */,
 				3DB1363D2235B3130096FA04 /* FigureProtocol.swift */,
 				3D73359E22373D5E0021FA3C /* FigureFactory.swift */,
+				3D1622B12239AB4F00B98263 /* Figure.swift */,
 			);
 			path = Figures;
 			sourceTree = "<group>";
@@ -648,6 +651,7 @@
 				B74BE372221F40950001D62A /* CanvasService.swift in Sources */,
 				B7A3A5C22203C27600031F64 /* Message.swift in Sources */,
 				B7B1B43E2231C03900BEE17D /* MessageDisplayExtension.swift in Sources */,
+				3D1622B22239AB4F00B98263 /* Figure.swift in Sources */,
 				3DA9A50122220F870005F3AF /* GalleryHeader.swift in Sources */,
 				B7B1B4392231BE8000BEE17D /* MessageDataSourceExtension.swift in Sources */,
 				B7B1B4402231C06900BEE17D /* MessageLayoutExtension.swift in Sources */,

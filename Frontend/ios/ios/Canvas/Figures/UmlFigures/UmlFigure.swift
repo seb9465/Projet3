@@ -10,10 +10,10 @@ import UIKit
 
 protocol touchInputDelegate {
     func setPointTouched(point: CGPoint)
-    func addLine(destination: CGPoint)
+    func insertFigure(firstPoint: CGPoint, lastPoint: CGPoint, type: ItemTypeEnum)
 }
 
-class UmlFigure : UIView {
+class UmlFigure : Figure {
     var delegate: touchInputDelegate?
     
     var firstPoint: CGPoint!
@@ -99,7 +99,9 @@ class UmlFigure : UIView {
     public override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         let touch = touches.first
         guard let point = touch?.location(in: self.superview) else { return }
-        self.delegate?.addLine(destination: point)
+        
+        // TODO: FirstPoint is position of selected anchor
+        self.delegate?.insertFigure(firstPoint: CGPoint.zero, lastPoint: point, type: .Connection)
     }
     
     public override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {

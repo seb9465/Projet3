@@ -25,6 +25,7 @@ struct DrawViewModel: Codable {
 enum ItemTypeEnum: Int, Codable {
     case RoundedRectangleStroke
     case Actor
+    case Connection
 }
 
 struct PolyPaintStylusPoint: Codable {

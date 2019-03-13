@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ConnectionFigure : UIView {
+class ConnectionFigure : Figure {
     
     var points: [CGPoint] = []
 

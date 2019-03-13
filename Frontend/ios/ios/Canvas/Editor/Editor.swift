@@ -10,9 +10,9 @@ import UIKit
 
 class Editor: touchInputDelegate{
 //    private var commands: [EditorCommand] = []
-    private var undoArray: [UmlFigure] = []
-    private var redoArray: [UmlFigure] = [];
-    private var figures: [UmlFigure] = [];
+    private var undoArray: [Figure] = []
+    private var redoArray: [Figure] = [];
+    private var figures: [Figure] = [];
     
     public var editorView: EditorView = EditorView()
     public var selectedFigure: UmlFigure!;
@@ -26,6 +26,15 @@ class Editor: touchInputDelegate{
 //        self.editorView.addSubview(figure);
 //        self.undoArray.append(figure);
 //    }
+    
+    public func insertFigure(firstPoint: CGPoint, lastPoint: CGPoint, type: ItemTypeEnum) {
+//        let figure = FigureFactory.shared.getFigure(type: type, firstPoint: self.initialPoint, lastPoint: lastPoint)!
+//        figure.delegate = self
+        let figure = ConnectionFigure(origin: self.initialPoint, destination: lastPoint)
+        self.editorView.addSubview(figure);
+        self.figures.append(figure)
+        self.undoArray.append(figure);
+    }
     
     public func insertFigure(firstPoint: CGPoint, lastPoint: CGPoint) -> Void {
         let figure = FigureFactory.shared.getFigure(type: ItemTypeEnum.RoundedRectangleStroke, firstPoint: firstPoint, lastPoint: lastPoint)!
@@ -84,7 +93,7 @@ class Editor: touchInputDelegate{
     public func undo(view: UIView) -> Void {
         print(undoArray);
         if (undoArray.count > 0) {
-            let figure: UmlFigure = undoArray.popLast()!;
+            let figure: Figure = undoArray.popLast()!;
             self.redoArray.append(figure);
             figure.removeFromSuperview();
         }
@@ -92,8 +101,8 @@ class Editor: touchInputDelegate{
     
     public func redo(view: UIView) -> Void {
         if (redoArray.count > 0) {
-            let figure: UmlFigure = self.redoArray.last!;
-            view.addSubview(figure);
+            let figure: Figure = self.redoArray.last!;
+            self.editorView.addSubview(figure);
             self.undoArray.append(figure);
             self.redoArray.removeLast();
         }
@@ -153,10 +162,5 @@ class Editor: touchInputDelegate{
     
     func setPointTouched(point: CGPoint) {
         self.initialPoint = point
-    }
-    
-    func addLine(destination: CGPoint) {
-        let line = ConnectionFigure(origin: self.initialPoint, destination: destination)
-        self.editorView.addSubview(line)
     }
 }
