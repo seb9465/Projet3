@@ -20,7 +20,7 @@ class UmlFigure : UIView {
     public var isSelected: Bool = false;
     private var isDragging: Bool = false;
     private var isResizing: Bool = false;
-    
+    public var anchorPoints: AnchorPoints?;
     private var currentPoint: CGPoint?;
     private var previousPoint1: CGPoint?;
     
@@ -34,7 +34,6 @@ class UmlFigure : UIView {
         self.figureColor = UIColor.clear
         self.lineWidth = 2
         self.lineColor = UIColor.black
-        
         self.height = height
         self.width = width
         
@@ -53,7 +52,8 @@ class UmlFigure : UIView {
         self.figureColor = UIColor.clear
         self.lineWidth = 2
         self.lineColor = UIColor.black
-        
+        self.anchorPoints = AnchorPoints(firstPoint: firstPoint, lastPoint: lastPoint)
+
         self.height = abs(lastPoint.y - firstPoint.y)
         self.width = abs(lastPoint.x - firstPoint.x)
         
@@ -64,6 +64,12 @@ class UmlFigure : UIView {
         self.selectFigureService.setInitialSelectedDashedBorder(bounds: self.bounds);
         self.selectFigureService.setInitialSelectedCornerCirles(firstPoint: self.firstPoint, lastPoint: self.lastPoint);
         self.backgroundColor = UIColor.clear;
+        
+        self.layer.addSublayer((self.anchorPoints?.anchorPointsBottom)!)
+        self.layer.addSublayer((self.anchorPoints?.anchorPointsTop)!)
+        self.layer.addSublayer((self.anchorPoints?.anchorPointsLeft)!)
+        self.layer.addSublayer((self.anchorPoints?.anchorPointsRight)!)
+
     }
     
     required init?(coder aDecoder: NSCoder) {
