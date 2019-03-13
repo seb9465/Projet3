@@ -8,27 +8,49 @@
 
 import UIKit
 
-//class ConnectionFigugure : UIView {
-//    
-//    var points: [CGPoint] = []
-//
-//    init(firstPoint: CGPoint, lastPoint: CGPoint) {
-//        super.init(frame: frame)
-//        self.backgroundColor = UIColor.init(white: 0.0, alpha: 0.0)
-//    }
-//    
-//    required init?(coder aDecoder: NSCoder) {
-//        fatalError("init(coder:) has not been implemented")
-//    }
-//    
-//    override func draw(_ rect: CGRect) {
-//        if let context = UIGraphicsGetCurrentContext() {
-//            context.setStrokeColor(UIColor.blue.cgColor)
-//            context.setLineWidth(3)
-//            context.beginPath()
-//            context.move(to: CGPoint(x: 5.0, y: 5.0)) // This would be oldX, oldY
-//            context.addLine(to: CGPoint(x: 50.0, y: 50.0)) // This would be newX, newY
-//            context.strokePath()
-//        }
-//    }
-//}
+class ConnectionFigure : UIView {
+    
+    var points: [CGPoint] = []
+
+    init(origin: CGPoint, destination: CGPoint) {
+        self.points.append(origin)
+        self.points.append(destination)
+
+        // Initialize the UIView Frame
+        let frameOrigin = CGPoint(x: self.points.map { $0.x }.min()!, y: self.points.map { $0.y }.min()!)
+        let frameSize = CGSize(width: abs(destination.x - origin.x), height: abs(destination.y - origin.y))
+        let frame = CGRect(origin: frameOrigin, size: frameSize)
+        super.init(frame: frame)
+        
+        self.backgroundColor = UIColor.init(white: 0.0, alpha: 0.0)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func draw(_ rect: CGRect) {
+        if let context = UIGraphicsGetCurrentContext() {
+            context.setStrokeColor(UIColor.blue.cgColor)
+            context.setLineWidth(3)
+            context.beginPath()
+            context.move(to: self.getLocalInitialPoint())
+            context.addLine(to: self.getLocalFinalPoint())
+            context.strokePath()
+        }
+    }
+    
+    private func getLocalInitialPoint() -> CGPoint {
+        let x = (self.points[0].x < self.points[1].x) ? self.frame.width : 0
+        let y = (self.points[0].y < self.points[1].y) ? self.frame.height : 0
+        
+        return CGPoint(x: x, y: y)
+    }
+    
+    private func getLocalFinalPoint() -> CGPoint {
+        let x = (self.points[0].x < self.points[1].x) ? 0 : self.frame.width
+        let y = (self.points[0].y < self.points[1].y) ? 0 : self.frame.height
+        
+        return CGPoint(x: x, y: y)
+    }
+}

@@ -18,6 +18,9 @@ class Editor: touchInputDelegate{
     public var selectedFigure: UmlFigure!;
     public var selectionOutline: SelectionOutline!;
     
+    private var initialPoint: CGPoint!;
+    private var finalPoint: CGPoint!;
+    
 //    public func insertFigure(origin: CGPoint) -> Void {
 //        let figure = FigureFactory.shared.getFigure(type: ItemTypeEnum.RoundedRectangleStroke, origin: origin)!;
 //        self.editorView.addSubview(figure);
@@ -149,6 +152,11 @@ class Editor: touchInputDelegate{
     }
     
     func setPointTouched(point: CGPoint) {
-        print(point)
+        self.initialPoint = point
+    }
+    
+    func addLine(destination: CGPoint) {
+        let line = ConnectionFigure(origin: self.initialPoint, destination: destination)
+        self.editorView.addSubview(line)
     }
 }

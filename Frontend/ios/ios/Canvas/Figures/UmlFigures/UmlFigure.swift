@@ -10,6 +10,7 @@ import UIKit
 
 protocol touchInputDelegate {
     func setPointTouched(point: CGPoint)
+    func addLine(destination: CGPoint)
 }
 
 class UmlFigure : UIView {
@@ -101,7 +102,7 @@ class UmlFigure : UIView {
     public override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         let touch = touches.first
         guard let point = touch?.location(in: self.superview) else { return }
-        print("Touche end", point);
+        self.delegate?.addLine(destination: point)
     }
     
     public override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
