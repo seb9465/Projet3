@@ -15,7 +15,10 @@ protocol AnchorPointsProtocol{
     var anchorPointsRight: CAShapeLayer! { get set }
     var anchorPointsBottom: CAShapeLayer! { get set }
 }
+
 class AnchorPoints {
+    
+    var diameter: CGFloat = 10
     var anchorPointsTop: CAShapeLayer!;
     var anchorPointsLeft: CAShapeLayer!;
     var anchorPointsRight: CAShapeLayer!;

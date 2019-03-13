@@ -51,7 +51,6 @@ class Editor {
                 self.selectionOutline.removeFromSuperview()
             }
             self.selectedFigure = figure
-            self.selectedFigure.setIsSelected()
             self.selectionOutline = SelectionOutline(firstPoint: figure.firstPoint, lastPoint: figure.lastPoint)
             self.selectionOutline.addSelectedFigureLayers(layer: self.editorView.layer)
             self.editorView.addSubview(self.selectionOutline)
@@ -135,11 +134,6 @@ class Editor {
         }
     }
 
-    public func unselectSelectedFigure() -> Void {
-        if (self.selectedFigure != nil) {
-            self.selectedFigure.setIsNotSelected();
-        }
-    }
     
     //    public func setFillColor(fillColor: UIColor) -> Void {
     //        self.currentlySelectedFigure.setFigureColor(figureColor: fillColor);

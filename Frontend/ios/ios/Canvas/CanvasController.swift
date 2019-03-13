@@ -149,7 +149,6 @@ class CanvasController: UIViewController, CollaborationHubDelegate {
         } else {
             print("DELETE BUTTON SELECTED");
             self.toolState = STATE.DELETE;
-            self.editor.unselectSelectedFigure();
             self.borderButton.isEnabled = false;
             self.fillButton.isEnabled = false;
             self.activeButton?.tintColor = UIColor(red: 0, green: 122/255, blue: 1, alpha: 1);
@@ -180,7 +179,6 @@ class CanvasController: UIViewController, CollaborationHubDelegate {
         } else {
             print("RECT BUTTON SELECTED");
             self.toolState = STATE.DRAW_RECT;
-            self.editor.unselectSelectedFigure();
             self.borderButton.isEnabled = false;
             self.fillButton.isEnabled = false;
             self.activeButton?.tintColor = UIColor(red: 0, green: 122/255, blue: 1, alpha: 1);
