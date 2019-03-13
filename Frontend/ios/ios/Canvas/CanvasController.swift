@@ -93,7 +93,7 @@ class CanvasController: UIViewController, CollaborationHubDelegate {
                 self.fillButton.isEnabled = res;
                 break
             case .DRAW_RECT:
-                CollaborationHub.shared.updateDrawing(origin: tapPoint)
+                CollaborationHub.shared.postNewFigure(origin: tapPoint)
                 break
             case .CLEAR:
                 break

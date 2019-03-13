@@ -82,10 +82,10 @@ class CollaborationHub {
         });
     }
     
-    public func updateDrawing(origin: CGPoint) -> Void {
-            let figure = UmlClassFigure(origin: origin)
+    public func postNewFigure(origin: CGPoint) -> Void {
+            let model = FigureFactory.shared.getFigureModel(type: .RoundedRectangleStroke, touchedPoint: origin)?.exportToViewModel()
             let jsonEncoder = JSONEncoder()
-            let jsonData = try! jsonEncoder.encode(figure.exportToViewModel())
+            let jsonData = try! jsonEncoder.encode(model)
             let jsonString = String(data: jsonData, encoding: .utf8)
     
             self.hubConnection.invoke(method: "Draw", arguments: [jsonString], invocationDidComplete: { (Error) in

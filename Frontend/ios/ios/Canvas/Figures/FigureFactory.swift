@@ -11,31 +11,29 @@ import UIKit
 class FigureFactory {
     
     static let shared = FigureFactory()
-    
-    public func getFigure(type: ItemTypeEnum, origin: CGPoint) -> UmlFigure? {
-        switch (type) {
-            case .RoundedRectangleStroke :
-                return UmlClassFigure(origin: origin)
-            case .Actor:
-                return UmlImageFigure(origin: origin, figureType: UMLImageFigureType.actor)
-        case .Connection:
-            return nil
-        }
-    }
-    
+
     public func getFigure(type: ItemTypeEnum, firstPoint: CGPoint, lastPoint: CGPoint) -> UmlFigure? {
         switch (type) {
-        case .RoundedRectangleStroke :
-            return UmlClassFigure(firstPoint: firstPoint, lastPoint: lastPoint)
-        case .Actor:
-            return UmlImageFigure(firstPoint: firstPoint, lastPoint: lastPoint, figureType: UMLImageFigureType.actor)
-        case.Connection:
-            return nil
-//            return ConnectionFigure(origin: firstPoint, destination: lastPoint)
+            case .RoundedRectangleStroke :
+                return UmlClassFigure(firstPoint: firstPoint, lastPoint: lastPoint)
+            case .Actor:
+                return UmlImageFigure(firstPoint: firstPoint, lastPoint: lastPoint, figureType: UMLImageFigureType.actor)
+            case.Connection:
+                return nil
+    //            return ConnectionFigure(origin: firstPoint, destination: lastPoint)
         }
     }
     
-//    public func getSelectionOutline() -> SelectionOutline {
-//        return SelectionOutline(bounds: <#T##CGRect#>, firstPoint: <#T##CGPoint#>, lastPoint: <#T##CGPoint#>)
-//    }
+    // Alternate init to create UmlFigures on user tap
+    public func getFigureModel(type: ItemTypeEnum, touchedPoint: CGPoint) -> Figure? {
+        switch (type) {
+            case .RoundedRectangleStroke :
+                return UmlClassFigure(origin: touchedPoint)
+            case .Actor:
+                return UmlImageFigure(origin: touchedPoint, figureType: UMLImageFigureType.actor)
+            case .Connection:
+                return nil
+            }
+    }
+
 }
