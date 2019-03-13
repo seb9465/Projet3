@@ -15,9 +15,9 @@ class FigureFactory {
     public func getFigure(type: ItemTypeEnum, origin: CGPoint) -> UmlFigure? {
         switch (type) {
             case .RoundedRectangleStroke :
-                return ClassUmlFigure(origin: origin)
+                return UmlClassFigure(origin: origin)
             case .Actor:
-                return UMLImageFigure(origin: origin, figureType: UMLImageFigureType.actor)
+                return UmlImageFigure(origin: origin, figureType: UMLImageFigureType.actor)
             
         }
     }
@@ -25,9 +25,9 @@ class FigureFactory {
     public func getFigure(type: ItemTypeEnum, firstPoint: CGPoint, lastPoint: CGPoint) -> UmlFigure? {
         switch (type) {
         case .RoundedRectangleStroke :
-            return ClassUmlFigure(firstPoint: firstPoint, lastPoint: lastPoint)
+            return UmlClassFigure(firstPoint: firstPoint, lastPoint: lastPoint)
         case .Actor:
-            return UMLImageFigure(firstPoint: firstPoint, lastPoint: lastPoint, figureType: UMLImageFigureType.actor)
+            return UmlImageFigure(firstPoint: firstPoint, lastPoint: lastPoint, figureType: UMLImageFigureType.actor)
         }
     }
     

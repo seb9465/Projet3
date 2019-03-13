@@ -8,18 +8,18 @@
 
 import UIKit
 
-class ClassUmlFigure: UmlFigure {
+class UmlClassFigure: UmlFigure {
     
     // Constants
     static let BASE_WIDTH: CGFloat = 100
     static let BASE_HEIGHT: CGFloat = 100
     
     init(origin: CGPoint) {
-        super.init(origin: origin, width: ClassUmlFigure.BASE_WIDTH, height: ClassUmlFigure.BASE_HEIGHT)
+        super.init(origin: origin, width: UmlClassFigure.BASE_WIDTH, height: UmlClassFigure.BASE_HEIGHT)
     }
     
     init(firstPoint: CGPoint, lastPoint: CGPoint) {
-        super.init(firstPoint: firstPoint, lastPoint: lastPoint, width: ClassUmlFigure.BASE_WIDTH, height: ClassUmlFigure.BASE_WIDTH)
+        super.init(firstPoint: firstPoint, lastPoint: lastPoint, width: UmlClassFigure.BASE_WIDTH, height: UmlClassFigure.BASE_WIDTH)
     }
     
     required init?(coder aDecoder: NSCoder) {

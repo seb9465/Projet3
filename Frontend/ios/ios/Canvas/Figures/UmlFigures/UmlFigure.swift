@@ -8,7 +8,13 @@
 
 import UIKit
 
+protocol touchInputDelegate {
+    func setPointTouched(point: CGPoint)
+}
+
 class UmlFigure : UIView {
+    var delegate: touchInputDelegate?
+    
     var firstPoint: CGPoint!
     var lastPoint: CGPoint!
     var width: CGFloat!
@@ -69,6 +75,41 @@ class UmlFigure : UIView {
         self.lineColor = borderColor;
         setNeedsDisplay();
     }
+    
+    public override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        let touch = touches.first
+        
+        guard let point = touch?.location(in: self) else { return }
+        guard let sublayers = self.layer.sublayers as? [CAShapeLayer] else { return }
+        
+        for layer in sublayers{
+            if let path = layer.path, path.contains(point) {
+                print("Touched an anchor")
+                guard let globalPoint = touch?.location(in: self.superview) else { return }
+                self.delegate!.setPointTouched(point: globalPoint)
+            }
+        }
+    }
+    
+    public override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+//        let touch = touches.first
+//        guard let point = touch?.location(in: self) else { return }
+//        let global = convert(point, to: self.superview)
+//        print("Moved", global)
+    }
+    
+    public override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        let touch = touches.first
+        guard let point = touch?.location(in: self.superview) else { return }
+        print("Touche end", point);
+    }
+    
+    public override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
+        let touch = touches.first
+        guard let point = touch?.location(in: self.superview) else { return }
+        print("Touches cancelled", point)
+    }
+    
 
     //    public override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
     //        print("touches began")

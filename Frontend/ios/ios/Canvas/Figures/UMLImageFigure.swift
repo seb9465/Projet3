@@ -9,19 +9,19 @@
 import Foundation
 import CoreGraphics
 import UIKit
-class UMLImageFigure: UmlFigure {
+class UmlImageFigure: UmlFigure {
     static let BASE_WIDTH: CGFloat = 100
     static let BASE_HEIGHT: CGFloat = 100
     private var figureType: UMLImageFigureType
     
     init(origin: CGPoint, figureType: UMLImageFigureType) {
         self.figureType = figureType
-            super.init(origin: origin, width: UMLImageFigure.BASE_WIDTH, height: UMLImageFigure.BASE_HEIGHT)
+            super.init(origin: origin, width: UmlImageFigure.BASE_WIDTH, height: UmlImageFigure.BASE_HEIGHT)
         }
         
         init(firstPoint: CGPoint, lastPoint: CGPoint, figureType: UMLImageFigureType) {
             self.figureType = figureType
-            super.init(firstPoint: firstPoint, lastPoint: lastPoint, width: UMLImageFigure.BASE_WIDTH, height: UMLImageFigure.BASE_WIDTH)
+            super.init(firstPoint: firstPoint, lastPoint: lastPoint, width: UmlImageFigure.BASE_WIDTH, height: UmlImageFigure.BASE_WIDTH)
         }
     
     required init?(coder aDecoder: NSCoder) {

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class Editor {
+class Editor: touchInputDelegate{
 //    private var commands: [EditorCommand] = []
     private var undoArray: [UmlFigure] = []
     private var redoArray: [UmlFigure] = [];
@@ -26,6 +26,7 @@ class Editor {
     
     public func insertFigure(firstPoint: CGPoint, lastPoint: CGPoint) -> Void {
         let figure = FigureFactory.shared.getFigure(type: ItemTypeEnum.RoundedRectangleStroke, firstPoint: firstPoint, lastPoint: lastPoint)!
+        figure.delegate = self
         self.editorView.addSubview(figure);
         self.figures.append(figure)
         self.undoArray.append(figure);
@@ -145,5 +146,9 @@ class Editor {
     
     public func setSelectFigureBorderColor(color: UIColor) -> Void {
         self.selectedFigure.setBorderColor(borderColor: color);
+    }
+    
+    func setPointTouched(point: CGPoint) {
+        print(point)
     }
 }

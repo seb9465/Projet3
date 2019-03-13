@@ -24,4 +24,11 @@ class EditorView: UIView {
     override func draw(_ rect: CGRect) {
         super.draw(rect)
     }
+    
+    public override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        print("Touche began");
+    }
+    
+    public override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+    }
 }

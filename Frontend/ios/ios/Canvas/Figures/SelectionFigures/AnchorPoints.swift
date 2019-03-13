@@ -43,7 +43,6 @@ class AnchorPoints {
         anchorPointsBottom = CAShapeLayer();
         anchorPointsBottom.path = UIBezierPath(ovalIn: CGRect(x: width/2, y: height, width: 10,height:10)).cgPath
         anchorPointsBottom.fillColor = UIColor.red.cgColor
-
     }
     
     required init?(coder aDecoder: NSCoder) {

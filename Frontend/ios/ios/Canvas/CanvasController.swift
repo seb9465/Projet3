@@ -46,10 +46,10 @@ class CanvasController: UIViewController, CollaborationHubDelegate {
 
         self.addTapGestureRecognizer();
         let pan = UIPanGestureRecognizer(target: self, action: #selector(self.handlePan(sender:)))
-        self.view.addGestureRecognizer(pan);
+//        self.view.addGestureRecognizer(pan);
         
         let pinch = UIPinchGestureRecognizer(target: self, action: #selector(self.handlePinch(sender:)))
-        self.view.addGestureRecognizer(pinch)
+//        self.view.addGestureRecognizer(pinch)
 
         // Color picker parameters.
         let pickerSize = CGSize(width: 200, height: 200);
