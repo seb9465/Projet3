@@ -8,14 +8,6 @@
 
 import UIKit
 
-enum RESIZING {
-    case FROM_CIRCLE_1
-    case FROM_CIRCLE_2
-    case FROM_CIRCLE_3
-    case FROM_CIRCLE_4
-    case NO_RESIZING
-}
-
 class Editor {
 //    private var commands: [EditorCommand] = []
     private var undoArray: [UmlFigure] = []
@@ -25,9 +17,6 @@ class Editor {
     public var editorView: EditorView = EditorView()
     public var selectedFigure: UmlFigure!;
     public var selectionOutline: SelectionOutline!;
-    
-    private var isResizing: Bool = false;
-    private var resizingState: RESIZING = RESIZING.NO_RESIZING;
     
 //    public func insertFigure(origin: CGPoint) -> Void {
 //        let figure = FigureFactory.shared.getFigure(type: ItemTypeEnum.RoundedRectangleStroke, origin: origin)!;
@@ -47,6 +36,7 @@ class Editor {
         self.editorView.addSubview(figure);
         self.undoArray.append(figure);
     }
+    
     public func selectFigure(tapPoint: CGPoint) -> Bool {
         guard let figure = self.editorView.hitTest(tapPoint, with: nil) as? UmlFigure else {
             if (self.selectionOutline != nil) {
@@ -94,7 +84,6 @@ class Editor {
             let figure: UmlFigure = undoArray.popLast()!;
             self.redoArray.append(figure);
             figure.removeFromSuperview();
-//            self.undoArray.removeLast();
         }
     }
     

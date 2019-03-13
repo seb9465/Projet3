@@ -22,7 +22,7 @@ enum STATE {
 class CanvasController: UIViewController, CollaborationHubDelegate {
     
     // MARK: - Attributes
-    private var toolState: STATE  = STATE.NOTHING_SELECTED;
+    private var toolState: STATE  = STATE.SELECTION;
     private var previousToolState: STATE = STATE.NOTHING_SELECTED;
 //    public var canvas: CanvasService = CanvasService();
     private var activeButton: UIBarButtonItem!;
@@ -68,7 +68,6 @@ class CanvasController: UIViewController, CollaborationHubDelegate {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated);
-        
         navigationController?.setNavigationBarHidden(true, animated: animated);
         self.borderButton.isEnabled = false;
         self.fillButton.isEnabled = false;
@@ -76,24 +75,37 @@ class CanvasController: UIViewController, CollaborationHubDelegate {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated);
-        
         navigationController?.setNavigationBarHidden(false, animated: animated);
     }
     
     @objc func handleTap(sender: UITapGestureRecognizer? = nil) {
-        print("touch")
-        var tapPoint: CGPoint = (sender?.location(in: self.view))!;
-        tapPoint.y = tapPoint.y - 70
+        // Click coordinates with the editor subview
+        var tapPoint: CGPoint = (sender?.location(in: self.editor.editorView))!;
         
-        if (tapPoint.y >= 70 && self.toolState == STATE.DRAW_RECT) {
-            CollaborationHub.shared.updateDrawing(origin: tapPoint)            
-        } else if (self.toolState == STATE.SELECTION) {
-            let res: Bool = self.editor.selectFigure(tapPoint: tapPoint);
-            self.borderButton.isEnabled = res;
-            self.fillButton.isEnabled = res;
-            
-        } else if (self.toolState == STATE.DELETE) {
-            self.editor.deleteFigure(tapPoint: tapPoint);
+        if (tapPoint.y < 0) {
+            tapPoint.y = 0
+        }
+        
+        switch(self.toolState) {
+            case .SELECTION :
+                let res: Bool = self.editor.selectFigure(tapPoint: tapPoint);
+                self.borderButton.isEnabled = res;
+                self.fillButton.isEnabled = res;
+                break
+            case .DRAW_RECT:
+                CollaborationHub.shared.updateDrawing(origin: tapPoint)
+                break
+            case .CLEAR:
+                break
+            case .DELETE:
+                self.editor.deleteFigure(tapPoint: tapPoint);
+                break
+            case .FILL:
+                break
+            case .BORDER_COLOR:
+                break
+            case .NOTHING_SELECTED:
+                break
         }
     }
     
