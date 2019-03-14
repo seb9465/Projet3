@@ -10,6 +10,7 @@ import UIKit
 
 enum TouchHandleState {
     case SELECT
+    case AREA_SELECT
     case REZISE
     case TRANSLATE
     case CONNECTION
@@ -42,6 +43,19 @@ class Editor {
         self.selectedFigure = figure
         self.selectionOutline = SelectionOutline(firstPoint: figure.firstPoint, lastPoint: figure.lastPoint)
         self.selectionOutline.addSelectedFigureLayers(layer: self.editorView.layer)
+        self.editorView.addSubview(self.selectionOutline)
+    }
+    
+    func selectArea(point: CGPoint) {
+        let points: [CGPoint] = [self.initialTouchPoint, point]
+        let selectionOrigin = CGPoint(x: points.map { $0.x }.min()!, y: points.map { $0.y }.min()!)
+        let selectionDest = CGPoint(x: points.map { $0.x }.max()!, y: points.map { $0.y }.max()!)
+        
+        self.selectionOutline = SelectionOutline(firstPoint: selectionOrigin, lastPoint: selectionDest)
+        self.selectionOutline.addSelectedFigureLayers(layer: self.editorView.layer)
+        if (selectionOutline.frame.width < 10) {
+            return
+        }
         self.editorView.addSubview(self.selectionOutline)
     }
     
@@ -161,8 +175,6 @@ extension Editor {
     public func changeTouchHandleState(to: TouchHandleState) {
         self.touchHandleState = to
     }
-    
-    
 }
 
 extension Editor : touchInputDelegate {
@@ -186,7 +198,7 @@ extension Editor : touchInputDelegate {
             
             if (action == "empty") {
                 self.deselect()
-                self.touchHandleState = .SELECT
+                self.touchHandleState = .AREA_SELECT
                 return
             }
         case .REZISE:
@@ -201,6 +213,8 @@ extension Editor : touchInputDelegate {
         case .DELETE:
             self.deleteFigure(tapPoint: point);
             break
+        case .AREA_SELECT:
+            break
         }
     }
     
@@ -210,6 +224,11 @@ extension Editor : touchInputDelegate {
             (figure as! UmlFigure).translate(by: offset)
             self.selectionOutline.translate(by: offset)
             self.previousTouchPoint = point
+            return
+        }
+        
+        if (self.touchHandleState == .AREA_SELECT) {
+            // Resize the selection shape
         }
     }
     
@@ -218,6 +237,11 @@ extension Editor : touchInputDelegate {
             let lastPoint = self.snap(point: point)
             self.insertConnectionFigure(firstPoint: self.initialTouchPoint, lastPoint: lastPoint, type: .Connection)
         }
+        
+        if (self.touchHandleState == .AREA_SELECT) {
+            self.selectArea(point: point)
+        }
+        
         self.touchHandleState = .SELECT
     }
 }

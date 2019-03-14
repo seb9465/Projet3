@@ -31,4 +31,10 @@ class EditorView: UIView {
         guard let point = touch?.location(in: self) else { return }
         self.delegate?.notifyTouchBegan(action: "empty", point: point, figure: nil)
     }
+    
+    public override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        let touch = touches.first
+        guard let point = touch?.location(in: self) else { return }
+        self.delegate?.notifyTouchEnded(point: point)
+    }
 }
