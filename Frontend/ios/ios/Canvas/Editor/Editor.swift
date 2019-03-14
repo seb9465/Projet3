@@ -146,6 +146,15 @@ class Editor{
     func setPointTouched(point: CGPoint) {
         self.initialPoint = point
     }
+    
+    func snap(point: CGPoint) -> CGPoint{
+        for subview in self.editorView.subviews {
+            if (subview.frame.contains(point)) {
+                return subview.center
+            }
+        }
+        return point
+    }
 }
 
 extension Editor : touchInputDelegate {
@@ -194,7 +203,8 @@ extension Editor : touchInputDelegate {
     
     func notifyTouchEnded(point: CGPoint) {
         if (self.touchHandleState == .CONNECTION) {
-            self.insertConnectionFigure(firstPoint: self.initialTouchPoint, lastPoint: point, type: .Connection)
+            let lastPoint = self.snap(point: point)
+            self.insertConnectionFigure(firstPoint: self.initialTouchPoint, lastPoint: lastPoint, type: .Connection)
         }
         self.touchHandleState = .SELECT
     }
