@@ -96,7 +96,10 @@ class UmlFigure : Figure {
         let editorPoint = convert(point, to: self.superview)
         self.delegate?.notifyTouchBegan(action: "shape", point: editorPoint, figure: self)
     }
-    
+}
+
+// Touch Interaction Logic
+extension UmlFigure {
     public override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         let touch = touches.first
         guard let point = touch?.location(in: self.superview) else { return }
@@ -115,6 +118,9 @@ class UmlFigure : Figure {
         guard let point = touch?.location(in: self.superview) else { return }
         self.delegate?.notifyTouchEnded(point: point)
     }
+}
+    
+    
     
 
     //    public override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -196,5 +202,3 @@ class UmlFigure : Figure {
     //        self.selectFigureService.adjustSelectedFigureLayers(firstPoint: self.firstPoint, lastPoint: self.lastPoint, bounds: self.bounds, layer: self.layer);
     //        setNeedsDisplay();
     //    }
-    
-}

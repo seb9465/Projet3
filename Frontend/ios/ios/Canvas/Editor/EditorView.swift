@@ -25,7 +25,10 @@ class EditorView: UIView {
     override func draw(_ rect: CGRect) {
         super.draw(rect)
     }
-    
+}
+
+// Touch Interaction Logic
+extension EditorView {
     public override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         let touch = touches.first
         guard let point = touch?.location(in: self) else { return }
