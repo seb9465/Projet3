@@ -12,7 +12,7 @@ class EditorView: UIView {
     var delegate: TouchInputDelegate?
     
     init() {
-        var viewFrame : CGRect = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - 70)
+        var viewFrame : CGRect = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width - 250, height: UIScreen.main.bounds.height - 70)
         viewFrame = viewFrame.offsetBy(dx:0, dy: 70)
         super.init(frame: viewFrame)
         self.backgroundColor = UIColor(red: 255, green: 255, blue: 255, alpha: 1.0)

@@ -18,6 +18,8 @@
 		3D5537C22200ED5F002C1B77 /* SlideUpSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D5537C12200ED5F002C1B77 /* SlideUpSegue.swift */; };
 		3D66FC77223817E800EB7E93 /* SelectionOutline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D66FC76223817E800EB7E93 /* SelectionOutline.swift */; };
 		3D6E4C37223AD53300E391D4 /* TouchEventState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D6E4C36223AD53300E391D4 /* TouchEventState.swift */; };
+		3D6E4C3D223ADE7000E391D4 /* BorderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D6E4C3B223ADE7000E391D4 /* BorderCell.swift */; };
+		3D6E4C40223AE17B00E391D4 /* BorderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3D6E4C42223AE17B00E391D4 /* BorderCell.xib */; };
 		3D6E955D2230839900BC7BE7 /* DrawViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D6E955C2230839900BC7BE7 /* DrawViewModel.swift */; };
 		3D73359D223739550021FA3C /* UmlClassFigure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D73359C223739550021FA3C /* UmlClassFigure.swift */; };
 		3D73359F22373D5E0021FA3C /* FigureFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D73359E22373D5E0021FA3C /* FigureFactory.swift */; };
@@ -90,6 +92,8 @@
 		3D5537C12200ED5F002C1B77 /* SlideUpSegue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlideUpSegue.swift; sourceTree = "<group>"; };
 		3D66FC76223817E800EB7E93 /* SelectionOutline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionOutline.swift; sourceTree = "<group>"; };
 		3D6E4C36223AD53300E391D4 /* TouchEventState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchEventState.swift; sourceTree = "<group>"; };
+		3D6E4C3B223ADE7000E391D4 /* BorderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorderCell.swift; sourceTree = "<group>"; };
+		3D6E4C41223AE17B00E391D4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/BorderCell.xib; sourceTree = "<group>"; };
 		3D6E955C2230839900BC7BE7 /* DrawViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawViewModel.swift; sourceTree = "<group>"; };
 		3D73359C223739550021FA3C /* UmlClassFigure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UmlClassFigure.swift; sourceTree = "<group>"; };
 		3D73359E22373D5E0021FA3C /* FigureFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FigureFactory.swift; sourceTree = "<group>"; };
@@ -180,6 +184,7 @@
 		3D22681A2236EE3300B2F604 /* Editor */ = {
 			isa = PBXGroup;
 			children = (
+				3D6E4C3A223ADE5000E391D4 /* SideToolbar */,
 				3D2268182236E9F500B2F604 /* EditorView.swift */,
 				3D22681B2236EE8400B2F604 /* Editor.swift */,
 				3D6E4C36223AD53300E391D4 /* TouchEventState.swift */,
@@ -213,6 +218,23 @@
 				3D73359C223739550021FA3C /* UmlClassFigure.swift */,
 			);
 			path = UmlFigures;
+			sourceTree = "<group>";
+		};
+		3D6E4C3A223ADE5000E391D4 /* SideToolbar */ = {
+			isa = PBXGroup;
+			children = (
+				3D6E4C3F223ADEBC00E391D4 /* BorderCell */,
+			);
+			path = SideToolbar;
+			sourceTree = "<group>";
+		};
+		3D6E4C3F223ADEBC00E391D4 /* BorderCell */ = {
+			isa = PBXGroup;
+			children = (
+				3D6E4C3B223ADE7000E391D4 /* BorderCell.swift */,
+				3D6E4C42223AE17B00E391D4 /* BorderCell.xib */,
+			);
+			path = BorderCell;
 			sourceTree = "<group>";
 		};
 		3D6E95582230833300BC7BE7 /* Collaboration */ = {
@@ -513,6 +535,7 @@
 			files = (
 				B711B5F421F659A50096BF7F /* LaunchScreen.storyboard in Resources */,
 				B781B95922132BDB001C1BD8 /* Canvas.storyboard in Resources */,
+				3D6E4C40223AE17B00E391D4 /* BorderCell.xib in Resources */,
 				B711B5F121F659A50096BF7F /* Assets.xcassets in Resources */,
 				B756794A220F5DC800F80B12 /* Chat.storyboard in Resources */,
 				C495FEC22238248E006E49F9 /* Ressources in Resources */,
@@ -665,6 +688,7 @@
 				C495FEBE22381BDF006E49F9 /* UMLImageFigure.swift in Sources */,
 				3D73359F22373D5E0021FA3C /* FigureFactory.swift in Sources */,
 				B7567946220F33CD00F80B12 /* ChatService.swift in Sources */,
+				3D6E4C3D223ADE7000E391D4 /* BorderCell.swift in Sources */,
 				B7567948220F355F00F80B12 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -688,6 +712,14 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		3D6E4C42223AE17B00E391D4 /* BorderCell.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				3D6E4C41223AE17B00E391D4 /* Base */,
+			);
+			name = BorderCell.xib;
+			sourceTree = "<group>";
+		};
 		B711B5ED21F659A30096BF7F /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (

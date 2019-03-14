@@ -17,6 +17,8 @@ class CanvasController: UIViewController {
     
     public var editor: Editor = Editor()
     
+    @IBOutlet weak var sideTableView: UITableView!
+    
     @IBOutlet var rectButton: UIBarButtonItem!
     @IBOutlet var selectButton: UIBarButtonItem!
     @IBOutlet var deleteButton: UIBarButtonItem!
@@ -29,6 +31,10 @@ class CanvasController: UIViewController {
         super.viewDidLoad();
 
         CollaborationHub.shared.connectToHub()
+        let nib = UINib.init(nibName: "BorderCell", bundle: nil)
+//        self.sideTableView.register(BorderCell.self, forCellReuseIdentifier: "BorderCell")
+//        tableView?.registerClass(customCell.self, forCellReuseIdentifier:"cell")
+        self.sideTableView.register(nib, forCellReuseIdentifier: "BorderCell")
 
         // Color picker parameters.
         let pickerSize = CGSize(width: 200, height: 200);
@@ -142,6 +148,24 @@ class CanvasController: UIViewController {
         print("FILL BUTTON TAPED");
 //        self.displayColorPickerFor(state: STATE.FILL);
     }
+}
+
+extension CanvasController: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 200
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: "BorderCell", for: indexPath) as! BorderCell
+        
+        return cell
+    }
+}
     
     // MARK: - Private Functions
     
@@ -164,7 +188,7 @@ class CanvasController: UIViewController {
 //        let tap = UITapGestureRecognizer(target: self, action: #selector(CanvasController.handleTap(sender:)))
 //        self.view.addGestureRecognizer(tap);
 //    }
-}
+
 
 //extension CanvasController: ChromaColorPickerDelegate {
 //    func colorPickerDidChooseColor(_ colorPicker: ChromaColorPicker, color: UIColor) {

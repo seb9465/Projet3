@@ -77,6 +77,15 @@
                                     </barButtonItem>
                                 </items>
                             </toolbar>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="H3w-zE-PnX">
+                                <rect key="frame" x="774" y="70" width="250" height="698"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="Vts-He-P18" id="EEm-TE-fm2"/>
+                                    <outlet property="delegate" destination="Vts-He-P18" id="hGs-bf-9hz"/>
+                                </connections>
+                            </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <gestureRecognizers/>
@@ -88,11 +97,12 @@
                         <outlet property="fillButton" destination="QqS-3X-DNp" id="rPk-OW-90X"/>
                         <outlet property="rectButton" destination="SLY-eP-ACv" id="5wO-L8-aeR"/>
                         <outlet property="selectButton" destination="Lts-nR-qFd" id="AOd-xa-kni"/>
+                        <outlet property="sideTableView" destination="H3w-zE-PnX" id="x0H-J7-pgW"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YaL-1F-IzF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="298" y="-134"/>
+            <point key="canvasLocation" x="297.65625" y="-134.375"/>
         </scene>
     </scenes>
     <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
