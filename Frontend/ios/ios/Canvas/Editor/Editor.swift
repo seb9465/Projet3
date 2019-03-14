@@ -18,7 +18,6 @@ enum TouchHandleState {
 }
 
 class Editor {
-//    private var commands: [EditorCommand] = []
     private var undoArray: [Figure] = []
     private var redoArray: [Figure] = [];
     private var figures: [Figure] = [];
@@ -36,6 +35,7 @@ class Editor {
     
     init() {
         self.editorView.delegate = self
+        CollaborationHub.shared.delegate = self
     }
     
     func select(figure: Figure) {
@@ -219,5 +219,15 @@ extension Editor : touchInputDelegate {
             self.insertConnectionFigure(firstPoint: self.initialTouchPoint, lastPoint: lastPoint, type: .Connection)
         }
         self.touchHandleState = .SELECT
+    }
+}
+
+extension Editor: CollaborationHubDelegate {
+    func updateCanvas(firsPoint: CGPoint, lastPoint: CGPoint) {
+        self.insertFigure(firstPoint: firsPoint, lastPoint: lastPoint)
+    }
+    
+    func updateClear() {
+        self.clear()
     }
 }

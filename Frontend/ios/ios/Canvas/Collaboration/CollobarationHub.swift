@@ -11,7 +11,7 @@ import SwiftSignalRClient
 
 protocol CollaborationHubDelegate {
     func updateCanvas(firsPoint: CGPoint, lastPoint: CGPoint)
-    func clear();
+    func updateClear();
 }
 
 class CollaborationHub {
@@ -114,7 +114,7 @@ class CollaborationHub {
     public func onReset() -> Void {
         self.hubConnection.on(method: "Reset", callback:{ args, typeConverter in
             print("[ Collab ] Received clear instruction")
-            self.delegate!.clear();
+            self.delegate!.updateClear();
         })
     }
     

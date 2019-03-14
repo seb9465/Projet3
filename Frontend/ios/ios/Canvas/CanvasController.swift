@@ -9,7 +9,7 @@
 import ChromaColorPicker
 import UIKit
 
-class CanvasController: UIViewController, CollaborationHubDelegate {
+class CanvasController: UIViewController {
     
     // MARK: - Attributes
     private var activeButton: UIBarButtonItem!;
@@ -40,8 +40,6 @@ class CanvasController: UIViewController, CollaborationHubDelegate {
         colorPicker.currentAngle = Float.pi
         colorPicker.hexLabel.textColor = UIColor.white
         colorPicker.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.1);
-        
-        CollaborationHub.shared.delegate = self
         self.view.addSubview(self.editor.editorView)
     }
     
@@ -55,10 +53,6 @@ class CanvasController: UIViewController, CollaborationHubDelegate {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated);
         navigationController?.setNavigationBarHidden(false, animated: animated);
-    }
-    
-    func updateCanvas(firsPoint: CGPoint, lastPoint: CGPoint) {
-        self.editor.insertFigure(firstPoint: firsPoint, lastPoint: lastPoint)
     }
     
     // MARK: - Button Action Functions
@@ -165,10 +159,6 @@ class CanvasController: UIViewController, CollaborationHubDelegate {
 //        self.toolState = state;
 //        self.view.addSubview(colorPicker)
 //    }
-    
-    func clear() {
-            self.editor.clear();
-    }
     
 //    private func addTapGestureRecognizer() -> Void {
 //        let tap = UITapGestureRecognizer(target: self, action: #selector(CanvasController.handleTap(sender:)))
