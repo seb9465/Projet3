@@ -10,7 +10,6 @@ import UIKit
 
 protocol touchInputDelegate {
     func setPointTouched(point: CGPoint)
-    func insertFigure(firstPoint: CGPoint, lastPoint: CGPoint, type: ItemTypeEnum)
     func notifyTouchBegan(action: String, point: CGPoint, figure: Figure?)
     func notifyTouchMoved(point: CGPoint, figure: Figure)
     func notifyTouchEnded(point: CGPoint)
