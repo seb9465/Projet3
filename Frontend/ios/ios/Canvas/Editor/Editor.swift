@@ -14,10 +14,10 @@ enum TouchHandleState {
     case TRANSLATE
     case CONNECTION
     case INSERT
-//    case DELETE
+    case DELETE
 }
 
-class Editor{
+class Editor {
 //    private var commands: [EditorCommand] = []
     private var undoArray: [Figure] = []
     private var redoArray: [Figure] = [];
@@ -157,6 +157,14 @@ class Editor{
     }
 }
 
+extension Editor {
+    public func changeTouchHandleState(to: TouchHandleState) {
+        self.touchHandleState = to
+    }
+    
+    
+}
+
 extension Editor : touchInputDelegate {
     func notifyTouchBegan(action: String, point: CGPoint, figure: Figure?) {
         switch (self.touchHandleState) {
@@ -188,6 +196,10 @@ extension Editor : touchInputDelegate {
         case .CONNECTION:
             break
         case .INSERT:
+            CollaborationHub.shared.postNewFigure(origin: point)
+            break
+        case .DELETE:
+            self.deleteFigure(tapPoint: point);
             break
         }
     }
