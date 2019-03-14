@@ -11,6 +11,9 @@ import UIKit
 protocol touchInputDelegate {
     func setPointTouched(point: CGPoint)
     func insertFigure(firstPoint: CGPoint, lastPoint: CGPoint, type: ItemTypeEnum)
+    func notifyTouchBegan(action: String, point: CGPoint, figure: Figure?)
+    func notifyTouchMoved(point: CGPoint, figure: Figure)
+    func notifyTouchEnded(point: CGPoint)
 }
 
 class UmlFigure : Figure {
@@ -18,6 +21,7 @@ class UmlFigure : Figure {
     var figureColor: UIColor!
     var lineWidth: CGFloat!
     var lineColor: UIColor!
+    var oldTouchedPoint: CGPoint!
         
     var anchorPoints: AnchorPoints?;
     
@@ -71,39 +75,47 @@ class UmlFigure : Figure {
         setNeedsDisplay();
     }
     
+    public func translate(by: CGPoint) {
+        let translatedFrame = self.frame.offsetBy(dx: by.x, dy: by.y)
+        self.frame = translatedFrame
+        self.firstPoint = self.frame.origin
+        self.lastPoint = CGPoint(x: self.frame.maxX, y: self.frame.maxY) 
+    }
+    
     public override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         let touch = touches.first
-        
         guard let point = touch?.location(in: self) else { return }
         guard let sublayers = self.layer.sublayers as? [CAShapeLayer] else { return }
-        
+
         for layer in sublayers{
             if let path = layer.path, path.contains(point) {
                 let snapPoint = convert((self.anchorPoints?.anchorPointsSnapEdges[layer.name!])!, to: self.superview)
-                self.delegate!.setPointTouched(point: snapPoint)
+                self.delegate?.notifyTouchBegan(action: "anchor", point: snapPoint, figure: self)
+                return
             }
         }
+        
+        let editorPoint = convert(point, to: self.superview)
+        self.delegate?.notifyTouchBegan(action: "shape", point: editorPoint, figure: self)
     }
     
     public override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        let touch = touches.first
-//        guard let point = touch?.location(in: self) else { return }
-//        let global = convert(point, to: self.superview)
-//        print("Moved", global)
+        let touch = touches.first
+        guard let point = touch?.location(in: self.superview) else { return }
+        
+        self.delegate?.notifyTouchMoved(point: point, figure: self)
     }
     
     public override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         let touch = touches.first
         guard let point = touch?.location(in: self.superview) else { return }
-        
-        // TODO: FirstPoint is position of selected anchor
-        self.delegate?.insertFigure(firstPoint: CGPoint.zero, lastPoint: point, type: .Connection)
+        self.delegate?.notifyTouchEnded(point: point)
     }
     
     public override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
         let touch = touches.first
         guard let point = touch?.location(in: self.superview) else { return }
-        print("Touches cancelled", point)
+        self.delegate?.notifyTouchEnded(point: point)
     }
     
 

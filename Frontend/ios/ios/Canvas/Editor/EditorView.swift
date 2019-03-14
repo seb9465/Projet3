@@ -9,6 +9,7 @@
 import UIKit
 
 class EditorView: UIView {
+    var delegate: touchInputDelegate?
     
     init() {
         var viewFrame : CGRect = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - 70)
@@ -26,9 +27,8 @@ class EditorView: UIView {
     }
     
     public override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        print("Touche began");
-    }
-    
-    public override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        let touch = touches.first
+        guard let point = touch?.location(in: self) else { return }
+        self.delegate?.notifyTouchBegan(action: "empty", point: point, figure: nil)
     }
 }

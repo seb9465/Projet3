@@ -32,7 +32,7 @@ class SelectionOutline: UIView {
         let frameSize = CGSize(width: abs(firstPoint.x - lastPoint.x), height: abs(firstPoint.y - lastPoint.y))
         let frame = CGRect(origin: firstPoint, size: frameSize)
         super.init(frame: frame)
-        
+        self.isUserInteractionEnabled = false
         self.setInitialSelectedDashedBorder(bounds: self.bounds);
         self.setInitialSelectedCornerCirles(firstPoint: firstPoint, lastPoint: lastPoint)
     }
@@ -104,5 +104,14 @@ class SelectionOutline: UIView {
 
         self.addSelectedFigureLayers(layer: layer);
 //        setNeedsDisplay();
+    }
+    
+    public func translate(by: CGPoint) {
+        let translatedFrame = self.frame.offsetBy(dx: by.x, dy: by.y)
+        self.frame = translatedFrame
+    }
+    
+    override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
+        return !(self.border.path?.contains(point))!
     }
 }

@@ -8,6 +8,14 @@
 
 import UIKit
 
+enum TouchHandleState {
+    case SELECT
+    case REZISE
+    case TRANSLATE
+    case CONNECTION
+    case INSERT
+}
+
 class Editor: touchInputDelegate{
 //    private var commands: [EditorCommand] = []
     private var undoArray: [Figure] = []
@@ -15,11 +23,19 @@ class Editor: touchInputDelegate{
     private var figures: [Figure] = [];
     
     public var editorView: EditorView = EditorView()
-    public var selectedFigure: UmlFigure!;
+    public var selectedFigure: Figure! = nil;
     public var selectionOutline: SelectionOutline!;
     
+    private var initialTouchPoint: CGPoint!
+    private var previousTouchPoint: CGPoint!
+    
     private var initialPoint: CGPoint!;
-    private var finalPoint: CGPoint!;
+    
+    private var touchHandleState: TouchHandleState = .SELECT
+    
+    init() {
+        self.editorView.delegate = self
+    }
     
 //    public func insertFigure(origin: CGPoint) -> Void {
 //        let figure = FigureFactory.shared.getFigure(type: ItemTypeEnum.RoundedRectangleStroke, origin: origin)!;
@@ -30,7 +46,7 @@ class Editor: touchInputDelegate{
     public func insertFigure(firstPoint: CGPoint, lastPoint: CGPoint, type: ItemTypeEnum) {
 //        let figure = FigureFactory.shared.getFigure(type: type, firstPoint: self.initialPoint, lastPoint: lastPoint)!
 //        figure.delegate = self
-        let figure = ConnectionFigure(origin: self.initialPoint, destination: lastPoint)
+        let figure = ConnectionFigure(origin: self.initialTouchPoint, destination: lastPoint)
         self.editorView.addSubview(figure);
         self.figures.append(figure)
         self.undoArray.append(figure);
@@ -48,46 +64,6 @@ class Editor: touchInputDelegate{
         let figure = FigureFactory.shared.getFigure(type: ItemTypeEnum.Actor, firstPoint: firstPoint, lastPoint: lastPoint)!
         self.editorView.addSubview(figure);
         self.undoArray.append(figure);
-    }
-    
-    public func selectFigure(tapPoint: CGPoint) -> Bool {
-        guard let figure = self.editorView.hitTest(tapPoint, with: nil) as? UmlFigure else {
-            if (self.selectionOutline != nil) {
-                self.selectionOutline.removeFromSuperview()
-            }
-            self.selectedFigure = nil
-            return false
-        }
-        
-        if (!figure.isEqual(self.selectedFigure)) {
-            if (self.selectionOutline != nil) {
-                self.selectionOutline.removeFromSuperview()
-            }
-            self.selectedFigure = figure
-            self.selectionOutline = SelectionOutline(firstPoint: figure.firstPoint, lastPoint: figure.lastPoint)
-            self.selectionOutline.addSelectedFigureLayers(layer: self.editorView.layer)
-            self.editorView.addSubview(self.selectionOutline)
-        }
-        
-        return false
-        
-//        // CONDITIONS TO BE REVIEWED. DRY.
-//        if (self.subviewIsInUndoArray(subview: subview!)) {
-//            if (self.selectedFigure != nil) {
-//                self.selectedFigure.setIsNotSelected();
-//            }
-//
-//            self.selectedFigure = subview as? UmlFigure;
-//            self.selectedFigure.setIsSelected();
-//
-//            return true;
-//        } else {
-//            if (self.selectedFigure != nil) {
-//                self.selectedFigure.setIsNotSelected();
-//            }
-//
-//            return false;
-//        }
     }
     
     public func undo(view: UIView) -> Void {
@@ -153,14 +129,76 @@ class Editor: touchInputDelegate{
     //    }
     
     public func setSelectedFigureColor(color: UIColor) -> Void {
-        self.selectedFigure.setFillColor(fillColor: color);
+//        self.selectedFigure.setFillColor(fillColor: color);
     }
     
     public func setSelectFigureBorderColor(color: UIColor) -> Void {
-        self.selectedFigure.setBorderColor(borderColor: color);
+//        self.selectedFigure.setBorderColor(borderColor: color);
     }
     
     func setPointTouched(point: CGPoint) {
         self.initialPoint = point
+    }
+    
+    func addSelectionOutline() {
+        
+    }
+    
+    func notifyTouchBegan(action: String, point: CGPoint, figure: Figure?) {
+        switch (self.touchHandleState) {
+        case .SELECT:
+            self.initialTouchPoint = point
+            self.previousTouchPoint = point
+
+            if (action == "anchor") {
+                self.touchHandleState = .CONNECTION
+                return
+            }
+            
+            if (action == "shape") {
+                if (self.selectionOutline != nil) {
+                    self.selectionOutline.removeFromSuperview()
+                }
+                self.touchHandleState = .TRANSLATE
+                self.selectedFigure = figure
+                self.selectionOutline = SelectionOutline(firstPoint: figure!.firstPoint, lastPoint: figure!.lastPoint)
+                self.selectionOutline.addSelectedFigureLayers(layer: self.editorView.layer)
+                self.editorView.addSubview(self.selectionOutline)
+                return
+            }
+            
+            if (action == "empty") {
+                self.touchHandleState = .SELECT
+                if (self.selectionOutline != nil) {
+                    self.selectionOutline.removeFromSuperview()
+                }
+                self.selectedFigure = nil
+                return
+            }
+        case .REZISE:
+            break
+        case .TRANSLATE:
+            break
+        case .CONNECTION:
+            break
+        case .INSERT:
+            break
+        }
+    }
+    
+    func notifyTouchMoved(point: CGPoint, figure: Figure) {
+        if (self.touchHandleState == .TRANSLATE) {
+            let offset = CGPoint(x: point.x - self.previousTouchPoint.x, y: point.y - self.previousTouchPoint.y)
+            (figure as! UmlFigure).translate(by: offset)
+            self.selectionOutline.translate(by: offset)
+            self.previousTouchPoint = point
+        }
+    }
+    
+    func notifyTouchEnded(point: CGPoint) {
+        if (self.touchHandleState == .CONNECTION) {
+            self.insertFigure(firstPoint: CGPoint.zero, lastPoint: point, type: .Connection)
+        }
+        self.touchHandleState = .SELECT
     }
 }

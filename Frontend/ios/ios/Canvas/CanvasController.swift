@@ -88,9 +88,9 @@ class CanvasController: UIViewController, CollaborationHubDelegate {
         
         switch(self.toolState) {
             case .SELECTION :
-                let res: Bool = self.editor.selectFigure(tapPoint: tapPoint);
-                self.borderButton.isEnabled = res;
-                self.fillButton.isEnabled = res;
+//                let res: Bool = self.editor.selectFigure(tapPoint: tapPoint);
+//                self.borderButton.isEnabled = res;
+//                self.fillButton.isEnabled = res;
                 break
             case .DRAW_RECT:
                 CollaborationHub.shared.postNewFigure(origin: tapPoint)
