@@ -8,15 +8,14 @@
 
 import UIKit
 
-protocol touchInputDelegate {
-    func setPointTouched(point: CGPoint)
+protocol TouchInputDelegate {
     func notifyTouchBegan(action: String, point: CGPoint, figure: Figure?)
     func notifyTouchMoved(point: CGPoint, figure: Figure)
     func notifyTouchEnded(point: CGPoint)
 }
 
 class UmlFigure : Figure {
-    var delegate: touchInputDelegate?
+    var delegate: TouchInputDelegate?
     var figureColor: UIColor!
     var lineWidth: CGFloat!
     var lineColor: UIColor!

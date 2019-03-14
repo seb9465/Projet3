@@ -8,31 +8,20 @@
 
 import UIKit
 
-enum TouchHandleState {
-    case SELECT
-    case AREA_SELECT
-    case REZISE
-    case TRANSLATE
-    case CONNECTION
-    case INSERT
-    case DELETE
-}
-
 class Editor {
+    public var editorView: EditorView = EditorView()
+
     private var undoArray: [Figure] = []
     private var redoArray: [Figure] = [];
     private var figures: [Figure] = [];
     
-    public var editorView: EditorView = EditorView()
     public var selectedFigure: Figure! = nil;
     public var selectionOutline: SelectionOutline!;
     
+    // TouchInputDelegate properties
+    private var touchEventState: TouchEventState = .SELECT
     private var initialTouchPoint: CGPoint!
     private var previousTouchPoint: CGPoint!
-    
-    private var initialPoint: CGPoint!;
-    
-    private var touchHandleState: TouchHandleState = .SELECT
     
     init() {
         self.editorView.delegate = self
@@ -42,7 +31,7 @@ class Editor {
     func select(figure: Figure) {
         self.selectedFigure = figure
         self.selectionOutline = SelectionOutline(firstPoint: figure.firstPoint, lastPoint: figure.lastPoint)
-        self.selectionOutline.addSelectedFigureLayers(layer: self.editorView.layer)
+        self.selectionOutline.addSelectedFigureLayers()
         self.editorView.addSubview(self.selectionOutline)
     }
     
@@ -52,7 +41,7 @@ class Editor {
         let selectionDest = CGPoint(x: points.map { $0.x }.max()!, y: points.map { $0.y }.max()!)
         
         self.selectionOutline = SelectionOutline(firstPoint: selectionOrigin, lastPoint: selectionDest)
-        self.selectionOutline.addSelectedFigureLayers(layer: self.editorView.layer)
+        self.selectionOutline.addSelectedFigureLayers()
         if (selectionOutline.frame.width < 10) {
             return
         }
@@ -157,10 +146,6 @@ class Editor {
 //        self.selectedFigure.setBorderColor(borderColor: color);
     }
     
-    func setPointTouched(point: CGPoint) {
-        self.initialPoint = point
-    }
-    
     func snap(point: CGPoint) -> CGPoint{
         for subview in self.editorView.subviews {
             if (subview.frame.contains(point)) {
@@ -172,33 +157,33 @@ class Editor {
 }
 
 extension Editor {
-    public func changeTouchHandleState(to: TouchHandleState) {
-        self.touchHandleState = to
+    public func changeTouchHandleState(to: TouchEventState) {
+        self.touchEventState = to
     }
 }
 
-extension Editor : touchInputDelegate {
+extension Editor : TouchInputDelegate {
     func notifyTouchBegan(action: String, point: CGPoint, figure: Figure?) {
-        switch (self.touchHandleState) {
+        switch (self.touchEventState) {
         case .SELECT:
             self.initialTouchPoint = point
             self.previousTouchPoint = point
             
             if (action == "anchor") {
-                self.touchHandleState = .CONNECTION
+                self.touchEventState = .CONNECTION
                 return
             }
             
             if (action == "shape") {
                 self.deselect()
                 self.select(figure: figure!)
-                self.touchHandleState = .TRANSLATE
+                self.touchEventState = .TRANSLATE
                 return
             }
             
             if (action == "empty") {
                 self.deselect()
-                self.touchHandleState = .AREA_SELECT
+                self.touchEventState = .AREA_SELECT
                 return
             }
         case .REZISE:
@@ -219,7 +204,7 @@ extension Editor : touchInputDelegate {
     }
     
     func notifyTouchMoved(point: CGPoint, figure: Figure) {
-        if (self.touchHandleState == .TRANSLATE) {
+        if (self.touchEventState == .TRANSLATE) {
             let offset = CGPoint(x: point.x - self.previousTouchPoint.x, y: point.y - self.previousTouchPoint.y)
             (figure as! UmlFigure).translate(by: offset)
             self.selectionOutline.translate(by: offset)
@@ -227,22 +212,30 @@ extension Editor : touchInputDelegate {
             return
         }
         
-        if (self.touchHandleState == .AREA_SELECT) {
+        if (self.touchEventState == .AREA_SELECT) {
             // Resize the selection shape
         }
     }
     
     func notifyTouchEnded(point: CGPoint) {
-        if (self.touchHandleState == .CONNECTION) {
+        if (self.touchEventState == .CONNECTION) {
             let lastPoint = self.snap(point: point)
             self.insertConnectionFigure(firstPoint: self.initialTouchPoint, lastPoint: lastPoint, type: .Connection)
+            self.touchEventState = .SELECT
+            return
         }
         
-        if (self.touchHandleState == .AREA_SELECT) {
+        if (self.touchEventState == .AREA_SELECT) {
             self.selectArea(point: point)
+            self.touchEventState = .SELECT
+            return
         }
         
-        self.touchHandleState = .SELECT
+        if (self.touchEventState == .INSERT) {
+            return
+        }
+        
+        self.touchEventState = .SELECT
     }
 }
 

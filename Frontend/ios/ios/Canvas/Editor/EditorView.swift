@@ -9,7 +9,7 @@
 import UIKit
 
 class EditorView: UIView {
-    var delegate: touchInputDelegate?
+    var delegate: TouchInputDelegate?
     
     init() {
         var viewFrame : CGRect = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - 70)

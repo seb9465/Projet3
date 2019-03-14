@@ -77,7 +77,7 @@ class SelectionOutline: UIView {
         border.path = UIBezierPath(rect: bounds).cgPath;
     }
 
-    public func addSelectedFigureLayers(layer: CALayer) -> Void {
+    public func addSelectedFigureLayers() -> Void {
         self.layer.addSublayer(border);
         for cornerAnchor in self.cornerAnchors {
             self.layer.addSublayer(cornerAnchor)
@@ -102,7 +102,7 @@ class SelectionOutline: UIView {
 //        selectedCornerCircle3.position.y = lastPoint.y - firstPoint.y + 2;
 //        selectedCornerCircle4.position.y = lastPoint.y - firstPoint.y + 2;
 
-        self.addSelectedFigureLayers(layer: layer);
+        self.addSelectedFigureLayers();
 //        setNeedsDisplay();
     }
     
