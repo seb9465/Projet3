@@ -165,6 +165,11 @@ extension CanvasController: UITableViewDelegate, UITableViewDataSource {
         
         return cell
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print("change!")
+        (self.editor.selectedFigure as! UmlFigure).setBorderColor(borderColor: UIColor.red)
+    }
 }
     
     // MARK: - Private Functions

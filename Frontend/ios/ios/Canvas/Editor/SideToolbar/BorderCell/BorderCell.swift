@@ -9,6 +9,7 @@
 import UIKit
 
 class BorderCell: UITableViewCell {
+    @IBOutlet weak var buttonBlue: UIButton!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -16,9 +17,15 @@ class BorderCell: UITableViewCell {
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
+        self.selectionStyle = UITableViewCell.SelectionStyle.none
+
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
+    }
+    
+    @IBAction func blueSelected(_ sender: UIButton) {
+        let buttonTag = sender.tag
     }
     
 }
