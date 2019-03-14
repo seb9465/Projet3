@@ -80,8 +80,8 @@ class UmlFigure : Figure {
         for layer in sublayers{
             if let path = layer.path, path.contains(point) {
                 print("Touched an anchor")
-                guard let globalPoint = touch?.location(in: self.superview) else { return }
-                self.delegate!.setPointTouched(point: globalPoint)
+                let snapPoint = convert((self.anchorPoints?.anchorPointsSnapEdges[layer.name!])!, to: self.superview)
+                self.delegate!.setPointTouched(point: snapPoint)
             }
         }
     }

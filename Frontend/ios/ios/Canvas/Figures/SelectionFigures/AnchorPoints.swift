@@ -25,6 +25,7 @@ class AnchorPoints {
     var anchorPointsLeft: CAShapeLayer!;
     var anchorPointsRight: CAShapeLayer!;
     var anchorPointsBottom: CAShapeLayer!;
+    var anchorPointsSnapEdges: [String: CGPoint] = [:]
 
     init(width: CGFloat, height: CGFloat) {
         anchorPointsTop = CAShapeLayer();
@@ -60,6 +61,15 @@ class AnchorPoints {
             height: self.anchorDiameter
         )).cgPath
         
+        anchorPointsTop.name = "top"
+        anchorPointsRight.name = "right"
+        anchorPointsLeft.name = "left"
+        anchorPointsBottom.name = "bottom"
+        
+        self.anchorPointsSnapEdges.updateValue(CGPoint(x: width/2, y: 0), forKey: "top")
+        self.anchorPointsSnapEdges.updateValue(CGPoint(x: width, y: height/2), forKey: "right")
+        self.anchorPointsSnapEdges.updateValue(CGPoint(x: 0, y: height/2), forKey: "left")
+        self.anchorPointsSnapEdges.updateValue(CGPoint(x: width/2, y: height), forKey: "bottom")
         
         anchorPointsTop.fillColor = UIColor.red.cgColor
         anchorPointsRight.fillColor = UIColor.red.cgColor
