@@ -24,6 +24,8 @@ class ClassCell: UITableViewCell {
         self.attributesTableView?.dataSource = self
         let nib = UINib.init(nibName: "ClassMethodCell", bundle: nil)
         self.attributesTableView.register(nib, forCellReuseIdentifier: "ClassMethodCell")
+        let nibAdd = UINib.init(nibName: "AddMethodCell", bundle: nil)
+        self.attributesTableView.register(nibAdd, forCellReuseIdentifier: "AddMethodCell")
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -39,7 +41,7 @@ class ClassCell: UITableViewCell {
 
 extension ClassCell: UITableViewDataSource,UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
+        return 1
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -47,6 +49,11 @@ extension ClassCell: UITableViewDataSource,UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if(indexPath.row == 0) {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "AddMethodCell", for: indexPath) as! AddMethodCell
+            cell.delegate = self.delegate
+            return cell
+        }
         let cell = tableView.dequeueReusableCell(withIdentifier: "ClassMethodCell", for: indexPath)
         return cell
     }

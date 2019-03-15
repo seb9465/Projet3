@@ -11,4 +11,5 @@ import UIKit
 protocol SideToolbarDelegate {
     func setSelectedFigureBorderColor(color: UIColor)
     func setSelectedFigureName(name: String)
+    func addClassMethod(name: String)
 }

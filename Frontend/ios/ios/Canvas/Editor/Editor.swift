@@ -170,6 +170,10 @@ extension Editor: SideToolbarDelegate {
     func setSelectedFigureName(name: String) {
         (self.selectedFigure as! UmlClassFigure).setClassName(name: name)
     }
+    
+    func addClassMethod(name: String) {
+         (self.selectedFigure as! UmlClassFigure).addMethod(name: name)
+    }
 }
 
 extension Editor : TouchInputDelegate {

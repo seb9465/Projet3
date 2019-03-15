@@ -15,6 +15,8 @@ class UmlClassFigure: UmlFigure {
     static let BASE_HEIGHT: CGFloat = 200
     
     private var className: String = "ClassName"
+    private var methods: [String] = []
+
     
     init(origin: CGPoint) {
         super.init(touchedPoint: origin, width: UmlClassFigure.BASE_WIDTH, height: UmlClassFigure.BASE_HEIGHT)
@@ -33,22 +35,34 @@ class UmlClassFigure: UmlFigure {
         setNeedsDisplay();
     }
     
+    public func addMethod(name: String) {
+        self.methods.append(name)
+        setNeedsDisplay();
+    }
+    
     override func draw(_ rect: CGRect) {
         let outerRect = CGRect(x: 0, y: 0, width: self.frame.width, height: self.frame.height).insetBy(dx: 5, dy: 5);
         let nameRect = CGRect(x: 0, y: 0, width: self.frame.width, height: 50).insetBy(dx: 5, dy: 5);
         
         let nameLabel = UILabel(frame: nameRect)
-        
         nameLabel.text = self.className
         nameLabel.textAlignment = .center
         nameLabel.drawText(in: nameRect)
+        
+        
+        for n in 0..<self.methods.count {
+            let methodRect = CGRect(x: 0, y: CGFloat(50 + (16 * n)), width: self.frame.width, height: 16).insetBy(dx: 5, dy: 5);
+            let methodLabel = UILabel(frame: methodRect)
+            methodLabel.text = "  • " + self.methods[n]
+            methodLabel.textAlignment = .left
+            methodLabel.drawText(in: methodRect)
+        }
 
         let outerRectPath = UIBezierPath(rect: outerRect)
         let nameRectPath = UIBezierPath(rect: nameRect)
         
         self.figureColor.setFill()
         self.lineColor.setStroke()
-        
         
         nameRectPath.lineWidth = self.lineWidth
         nameRectPath.fill()
@@ -57,7 +71,5 @@ class UmlClassFigure: UmlFigure {
         outerRectPath.lineWidth = self.lineWidth
         outerRectPath.fill()
         outerRectPath.stroke()
-        
-        
     }
 }

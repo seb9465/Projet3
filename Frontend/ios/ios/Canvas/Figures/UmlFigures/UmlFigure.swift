@@ -20,7 +20,7 @@ class UmlFigure : Figure {
     var lineWidth: CGFloat!
     var lineColor: UIColor!
     var oldTouchedPoint: CGPoint!
-        
+
     var anchorPoints: AnchorPoints?;
     
     init(firstPoint: CGPoint, lastPoint: CGPoint, width: CGFloat, height: CGFloat) {

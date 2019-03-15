@@ -38,6 +38,8 @@
 		3DE8F11A223C43BD0052580B /* ClassCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3DE8F11C223C43BD0052580B /* ClassCell.xib */; };
 		3DE8F120223C44AF0052580B /* ClassMethodCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DE8F11E223C44AF0052580B /* ClassMethodCell.swift */; };
 		3DE8F121223C44AF0052580B /* ClassMethodCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3DE8F11F223C44AF0052580B /* ClassMethodCell.xib */; };
+		3DE8F125223C4AF00052580B /* AddMethodCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DE8F123223C4AF00052580B /* AddMethodCell.swift */; };
+		3DE8F126223C4AF00052580B /* AddMethodCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3DE8F124223C4AF00052580B /* AddMethodCell.xib */; };
 		3DE984D322261707004D036C /* AuthentificationAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DE984D222261707004D036C /* AuthentificationAPI.swift */; };
 		3DF62984221C9FB30052209A /* Canvas.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DF62981221C9FB30052209A /* Canvas.swift */; };
 		3DF6298B221C9FBC0052209A /* CanvasCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DF62988221C9FBC0052209A /* CanvasCell.swift */; };
@@ -117,6 +119,8 @@
 		3DE8F11B223C43BD0052580B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/ClassCell.xib; sourceTree = "<group>"; };
 		3DE8F11E223C44AF0052580B /* ClassMethodCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassMethodCell.swift; sourceTree = "<group>"; };
 		3DE8F11F223C44AF0052580B /* ClassMethodCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ClassMethodCell.xib; sourceTree = "<group>"; };
+		3DE8F123223C4AF00052580B /* AddMethodCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMethodCell.swift; sourceTree = "<group>"; };
+		3DE8F124223C4AF00052580B /* AddMethodCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddMethodCell.xib; sourceTree = "<group>"; };
 		3DE984D222261707004D036C /* AuthentificationAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthentificationAPI.swift; sourceTree = "<group>"; };
 		3DF62981221C9FB30052209A /* Canvas.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Canvas.swift; sourceTree = "<group>"; };
 		3DF62988221C9FBC0052209A /* CanvasCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CanvasCell.swift; sourceTree = "<group>"; };
@@ -315,6 +319,7 @@
 		3DE8F115223C32330052580B /* ClassCell */ = {
 			isa = PBXGroup;
 			children = (
+				3DE8F122223C4AD40052580B /* AddMethodCell */,
 				3DE8F11D223C44820052580B /* ClassMethodCell */,
 				3DE8F116223C32700052580B /* ClassCell.swift */,
 				3DE8F11C223C43BD0052580B /* ClassCell.xib */,
@@ -329,6 +334,15 @@
 				3DE8F11F223C44AF0052580B /* ClassMethodCell.xib */,
 			);
 			path = ClassMethodCell;
+			sourceTree = "<group>";
+		};
+		3DE8F122223C4AD40052580B /* AddMethodCell */ = {
+			isa = PBXGroup;
+			children = (
+				3DE8F123223C4AF00052580B /* AddMethodCell.swift */,
+				3DE8F124223C4AF00052580B /* AddMethodCell.xib */,
+			);
+			path = AddMethodCell;
 			sourceTree = "<group>";
 		};
 		3DE984D422262ECA004D036C /* Cells */ = {
@@ -564,6 +578,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3DE8F126223C4AF00052580B /* AddMethodCell.xib in Resources */,
 				B711B5F421F659A50096BF7F /* LaunchScreen.storyboard in Resources */,
 				B781B95922132BDB001C1BD8 /* Canvas.storyboard in Resources */,
 				3DE8F121223C44AF0052580B /* ClassMethodCell.xib in Resources */,
@@ -675,6 +690,7 @@
 			files = (
 				B74BE36A221C823C0001D62A /* SaveService.swift in Sources */,
 				3D66FC77223817E800EB7E93 /* SelectionOutline.swift in Sources */,
+				3DE8F125223C4AF00052580B /* AddMethodCell.swift in Sources */,
 				3DC967EB220A067900FA76CB /* LoginController.swift in Sources */,
 				3DE984D322261707004D036C /* AuthentificationAPI.swift in Sources */,
 				B7ABD3672231715C00C7A016 /* SelectFigureService.swift in Sources */,
