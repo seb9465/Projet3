@@ -162,6 +162,12 @@ extension Editor {
     }
 }
 
+extension Editor: SideToolbarDelegate {
+    func setSelectedFigureBorderColor(color: UIColor) {
+        (self.selectedFigure as! UmlFigure).setBorderColor(borderColor: color)
+    }
+}
+
 extension Editor : TouchInputDelegate {
     func notifyTouchBegan(action: String, point: CGPoint, figure: Figure?) {
         switch (self.touchEventState) {

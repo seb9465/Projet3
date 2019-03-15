@@ -10,6 +10,7 @@ import UIKit
 
 class BorderCell: UITableViewCell {
     @IBOutlet weak var buttonBlue: UIButton!
+    var delegate: SideToolbarDelegate?
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -25,7 +26,23 @@ class BorderCell: UITableViewCell {
     }
     
     @IBAction func blueSelected(_ sender: UIButton) {
-        let buttonTag = sender.tag
+        self.delegate?.setSelectedFigureBorderColor(color: UIColor.blue)
     }
     
+    @IBAction func redSelected(_ sender: UIButton) {
+        self.delegate?.setSelectedFigureBorderColor(color: UIColor.red)
+    }
+    
+    @IBAction func yellowSelected(_ sender: UIButton) {
+        self.delegate?.setSelectedFigureBorderColor(color: UIColor.yellow)
+    }
+    
+    @IBAction func greenSelected(_ sender: UIButton) {
+        self.delegate?.setSelectedFigureBorderColor(color: UIColor.green)
+    }
+    
+    @IBAction func fullLineSelected(_ sender: UIButton) {
+    }
+    @IBAction func dashedLineSelected(_ sender: UIButton) {
+    }
 }

@@ -162,13 +162,13 @@ extension CanvasController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "BorderCell", for: indexPath) as! BorderCell
-        
+        cell.delegate = self.editor
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("change!")
-        (self.editor.selectedFigure as! UmlFigure).setBorderColor(borderColor: UIColor.red)
+//        print("change!")
+//        (self.editor.selectedFigure as! UmlFigure).setBorderColor(borderColor: UIColor.red)
     }
 }
     

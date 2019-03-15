@@ -33,6 +33,7 @@
 		3DC967ED220A09C400FA76CB /* DashboardController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DC967EC220A09C400FA76CB /* DashboardController.swift */; };
 		3DD55D722227208C009D893B /* CollobarationHub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DD55D712227208C009D893B /* CollobarationHub.swift */; };
 		3DDE25192202B2AF0082E735 /* RoundedCorners.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DDE25182202B2AF0082E735 /* RoundedCorners.swift */; };
+		3DE8F114223C26890052580B /* SideToolbarDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DE8F113223C26880052580B /* SideToolbarDelegate.swift */; };
 		3DE984D322261707004D036C /* AuthentificationAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DE984D222261707004D036C /* AuthentificationAPI.swift */; };
 		3DF62984221C9FB30052209A /* Canvas.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DF62981221C9FB30052209A /* Canvas.swift */; };
 		3DF6298B221C9FBC0052209A /* CanvasCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DF62988221C9FBC0052209A /* CanvasCell.swift */; };
@@ -107,6 +108,7 @@
 		3DC967EC220A09C400FA76CB /* DashboardController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardController.swift; sourceTree = "<group>"; };
 		3DD55D712227208C009D893B /* CollobarationHub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollobarationHub.swift; sourceTree = "<group>"; };
 		3DDE25182202B2AF0082E735 /* RoundedCorners.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedCorners.swift; sourceTree = "<group>"; };
+		3DE8F113223C26880052580B /* SideToolbarDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideToolbarDelegate.swift; sourceTree = "<group>"; };
 		3DE984D222261707004D036C /* AuthentificationAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthentificationAPI.swift; sourceTree = "<group>"; };
 		3DF62981221C9FB30052209A /* Canvas.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Canvas.swift; sourceTree = "<group>"; };
 		3DF62988221C9FBC0052209A /* CanvasCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CanvasCell.swift; sourceTree = "<group>"; };
@@ -224,6 +226,7 @@
 			isa = PBXGroup;
 			children = (
 				3D6E4C3F223ADEBC00E391D4 /* BorderCell */,
+				3DE8F113223C26880052580B /* SideToolbarDelegate.swift */,
 			);
 			path = SideToolbar;
 			sourceTree = "<group>";
@@ -663,6 +666,7 @@
 				B74BE372221F40950001D62A /* CanvasService.swift in Sources */,
 				B7A3A5C22203C27600031F64 /* Message.swift in Sources */,
 				B7B1B43E2231C03900BEE17D /* MessageDisplayExtension.swift in Sources */,
+				3DE8F114223C26890052580B /* SideToolbarDelegate.swift in Sources */,
 				3D1622B22239AB4F00B98263 /* Figure.swift in Sources */,
 				3DA9A50122220F870005F3AF /* GalleryHeader.swift in Sources */,
 				B7B1B4392231BE8000BEE17D /* MessageDataSourceExtension.swift in Sources */,
