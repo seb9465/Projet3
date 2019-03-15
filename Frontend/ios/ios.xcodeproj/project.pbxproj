@@ -34,6 +34,10 @@
 		3DD55D722227208C009D893B /* CollobarationHub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DD55D712227208C009D893B /* CollobarationHub.swift */; };
 		3DDE25192202B2AF0082E735 /* RoundedCorners.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DDE25182202B2AF0082E735 /* RoundedCorners.swift */; };
 		3DE8F114223C26890052580B /* SideToolbarDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DE8F113223C26880052580B /* SideToolbarDelegate.swift */; };
+		3DE8F118223C32700052580B /* ClassCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DE8F116223C32700052580B /* ClassCell.swift */; };
+		3DE8F11A223C43BD0052580B /* ClassCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3DE8F11C223C43BD0052580B /* ClassCell.xib */; };
+		3DE8F120223C44AF0052580B /* ClassMethodCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DE8F11E223C44AF0052580B /* ClassMethodCell.swift */; };
+		3DE8F121223C44AF0052580B /* ClassMethodCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3DE8F11F223C44AF0052580B /* ClassMethodCell.xib */; };
 		3DE984D322261707004D036C /* AuthentificationAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DE984D222261707004D036C /* AuthentificationAPI.swift */; };
 		3DF62984221C9FB30052209A /* Canvas.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DF62981221C9FB30052209A /* Canvas.swift */; };
 		3DF6298B221C9FBC0052209A /* CanvasCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DF62988221C9FBC0052209A /* CanvasCell.swift */; };
@@ -109,6 +113,10 @@
 		3DD55D712227208C009D893B /* CollobarationHub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollobarationHub.swift; sourceTree = "<group>"; };
 		3DDE25182202B2AF0082E735 /* RoundedCorners.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedCorners.swift; sourceTree = "<group>"; };
 		3DE8F113223C26880052580B /* SideToolbarDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideToolbarDelegate.swift; sourceTree = "<group>"; };
+		3DE8F116223C32700052580B /* ClassCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassCell.swift; sourceTree = "<group>"; };
+		3DE8F11B223C43BD0052580B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/ClassCell.xib; sourceTree = "<group>"; };
+		3DE8F11E223C44AF0052580B /* ClassMethodCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassMethodCell.swift; sourceTree = "<group>"; };
+		3DE8F11F223C44AF0052580B /* ClassMethodCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ClassMethodCell.xib; sourceTree = "<group>"; };
 		3DE984D222261707004D036C /* AuthentificationAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthentificationAPI.swift; sourceTree = "<group>"; };
 		3DF62981221C9FB30052209A /* Canvas.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Canvas.swift; sourceTree = "<group>"; };
 		3DF62988221C9FBC0052209A /* CanvasCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CanvasCell.swift; sourceTree = "<group>"; };
@@ -225,6 +233,7 @@
 		3D6E4C3A223ADE5000E391D4 /* SideToolbar */ = {
 			isa = PBXGroup;
 			children = (
+				3DE8F115223C32330052580B /* ClassCell */,
 				3D6E4C3F223ADEBC00E391D4 /* BorderCell */,
 				3DE8F113223C26880052580B /* SideToolbarDelegate.swift */,
 			);
@@ -301,6 +310,25 @@
 				3DDE25182202B2AF0082E735 /* RoundedCorners.swift */,
 			);
 			path = Buttons;
+			sourceTree = "<group>";
+		};
+		3DE8F115223C32330052580B /* ClassCell */ = {
+			isa = PBXGroup;
+			children = (
+				3DE8F11D223C44820052580B /* ClassMethodCell */,
+				3DE8F116223C32700052580B /* ClassCell.swift */,
+				3DE8F11C223C43BD0052580B /* ClassCell.xib */,
+			);
+			path = ClassCell;
+			sourceTree = "<group>";
+		};
+		3DE8F11D223C44820052580B /* ClassMethodCell */ = {
+			isa = PBXGroup;
+			children = (
+				3DE8F11E223C44AF0052580B /* ClassMethodCell.swift */,
+				3DE8F11F223C44AF0052580B /* ClassMethodCell.xib */,
+			);
+			path = ClassMethodCell;
 			sourceTree = "<group>";
 		};
 		3DE984D422262ECA004D036C /* Cells */ = {
@@ -538,9 +566,11 @@
 			files = (
 				B711B5F421F659A50096BF7F /* LaunchScreen.storyboard in Resources */,
 				B781B95922132BDB001C1BD8 /* Canvas.storyboard in Resources */,
+				3DE8F121223C44AF0052580B /* ClassMethodCell.xib in Resources */,
 				3D6E4C40223AE17B00E391D4 /* BorderCell.xib in Resources */,
 				B711B5F121F659A50096BF7F /* Assets.xcassets in Resources */,
 				B756794A220F5DC800F80B12 /* Chat.storyboard in Resources */,
+				3DE8F11A223C43BD0052580B /* ClassCell.xib in Resources */,
 				C495FEC22238248E006E49F9 /* Ressources in Resources */,
 				B711B5EF21F659A30096BF7F /* Main.storyboard in Resources */,
 			);
@@ -664,6 +694,7 @@
 				B711B5EA21F659A30096BF7F /* AppDelegate.swift in Sources */,
 				3D22681C2236EE8400B2F604 /* Editor.swift in Sources */,
 				B74BE372221F40950001D62A /* CanvasService.swift in Sources */,
+				3DE8F118223C32700052580B /* ClassCell.swift in Sources */,
 				B7A3A5C22203C27600031F64 /* Message.swift in Sources */,
 				B7B1B43E2231C03900BEE17D /* MessageDisplayExtension.swift in Sources */,
 				3DE8F114223C26890052580B /* SideToolbarDelegate.swift in Sources */,
@@ -678,6 +709,7 @@
 				3DF6298B221C9FBC0052209A /* CanvasCell.swift in Sources */,
 				B74BE370221F3FCE0001D62A /* FigureService.swift in Sources */,
 				B7B1B4372231A41C00BEE17D /* MyCustomCell.swift in Sources */,
+				3DE8F120223C44AF0052580B /* ClassMethodCell.swift in Sources */,
 				3D2268192236E9F500B2F604 /* EditorView.swift in Sources */,
 				C43102E122132226008F1D80 /* SoundNotification.swift in Sources */,
 				B775FE3F22135D6300B2EFE0 /* Extensions.swift in Sources */,
@@ -722,6 +754,14 @@
 				3D6E4C41223AE17B00E391D4 /* Base */,
 			);
 			name = BorderCell.xib;
+			sourceTree = "<group>";
+		};
+		3DE8F11C223C43BD0052580B /* ClassCell.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				3DE8F11B223C43BD0052580B /* Base */,
+			);
+			name = ClassCell.xib;
 			sourceTree = "<group>";
 		};
 		B711B5ED21F659A30096BF7F /* Main.storyboard */ = {

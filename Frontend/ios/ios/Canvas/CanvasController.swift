@@ -32,9 +32,10 @@ class CanvasController: UIViewController {
 
         CollaborationHub.shared.connectToHub()
         let nib = UINib.init(nibName: "BorderCell", bundle: nil)
-//        self.sideTableView.register(BorderCell.self, forCellReuseIdentifier: "BorderCell")
-//        tableView?.registerClass(customCell.self, forCellReuseIdentifier:"cell")
+        let attributesnib = UINib.init(nibName: "ClassCell", bundle: nil)
         self.sideTableView.register(nib, forCellReuseIdentifier: "BorderCell")
+        self.sideTableView.register(attributesnib, forCellReuseIdentifier: "ClassCell")
+
 
         // Color picker parameters.
         let pickerSize = CGSize(width: 200, height: 200);
@@ -152,18 +153,30 @@ class CanvasController: UIViewController {
 
 extension CanvasController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        return 2
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 150
+        if (indexPath.row == 0) {
+            return 150
+        } else {
+            return 250
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if (indexPath.row == 0) {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "BorderCell", for: indexPath) as! BorderCell
+            cell.delegate = self.editor
+            return cell
+        }
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "BorderCell", for: indexPath) as! BorderCell
-        cell.delegate = self.editor
-        return cell
+        else{
+            let cell = tableView.dequeueReusableCell(withIdentifier: "ClassCell", for: indexPath) as! ClassCell
+            cell.setUpTable()
+            cell.delegate = self.editor
+            return cell
+        }
     }
 }
     

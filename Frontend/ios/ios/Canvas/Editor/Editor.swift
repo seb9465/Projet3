@@ -166,6 +166,10 @@ extension Editor: SideToolbarDelegate {
     func setSelectedFigureBorderColor(color: UIColor) {
         (self.selectedFigure as! UmlFigure).setBorderColor(borderColor: color)
     }
+    
+    func setSelectedFigureName(name: String) {
+        (self.selectedFigure as! UmlClassFigure).setClassName(name: name)
+    }
 }
 
 extension Editor : TouchInputDelegate {

@@ -11,8 +11,10 @@ import UIKit
 class UmlClassFigure: UmlFigure {
     
     // Constants
-    static let BASE_WIDTH: CGFloat = 100
-    static let BASE_HEIGHT: CGFloat = 100
+    static let BASE_WIDTH: CGFloat = 150
+    static let BASE_HEIGHT: CGFloat = 200
+    
+    private var className: String = "ClassName"
     
     init(origin: CGPoint) {
         super.init(touchedPoint: origin, width: UmlClassFigure.BASE_WIDTH, height: UmlClassFigure.BASE_HEIGHT)
@@ -26,14 +28,36 @@ class UmlClassFigure: UmlFigure {
         fatalError("init(coder:) has not been implemented")
     }
     
+    public func setClassName(name: String) -> Void {
+        self.className = name;
+        setNeedsDisplay();
+    }
+    
     override func draw(_ rect: CGRect) {
-        let rect = CGRect(x: 0, y: 0, width: self.frame.width, height: self.frame.height)
-        let insetRect = rect.insetBy(dx: 5, dy: 5);
-        let path = UIBezierPath(roundedRect: insetRect, cornerRadius: 10);
-        self.figureColor.setFill();
-        path.lineWidth = self.lineWidth;
-        self.lineColor.setStroke();
-        path.fill();
-        path.stroke();
+        let outerRect = CGRect(x: 0, y: 0, width: self.frame.width, height: self.frame.height).insetBy(dx: 5, dy: 5);
+        let nameRect = CGRect(x: 0, y: 0, width: self.frame.width, height: 50).insetBy(dx: 5, dy: 5);
+        
+        let nameLabel = UILabel(frame: nameRect)
+        
+        nameLabel.text = self.className
+        nameLabel.textAlignment = .center
+        nameLabel.drawText(in: nameRect)
+
+        let outerRectPath = UIBezierPath(rect: outerRect)
+        let nameRectPath = UIBezierPath(rect: nameRect)
+        
+        self.figureColor.setFill()
+        self.lineColor.setStroke()
+        
+        
+        nameRectPath.lineWidth = self.lineWidth
+        nameRectPath.fill()
+        nameRectPath.stroke()
+        
+        outerRectPath.lineWidth = self.lineWidth
+        outerRectPath.fill()
+        outerRectPath.stroke()
+        
+        
     }
 }
