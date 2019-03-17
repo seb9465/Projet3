@@ -1,6 +1,9 @@
-﻿using System.ComponentModel;
+﻿using PolyPaint.Common.Collaboration;
+using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Ink;
 namespace PolyPaint.Modeles
 {
@@ -14,6 +17,7 @@ namespace PolyPaint.Modeles
         public event PropertyChangedEventHandler PropertyChanged;
         public StrokeCollection traits = new StrokeCollection();
         private StrokeCollection traitsRetires = new StrokeCollection();
+        public StrokeCollection SelectedStrokes { get; set; } = new StrokeCollection();
         // Outil actif dans l'éditeur
         private string outilSelectionne = "";
         public string OutilSelectionne
@@ -114,5 +118,50 @@ namespace PolyPaint.Modeles
 
         // On vide la surface de dessin de tous ses traits.
         public void Reinitialiser(object o) => traits.Clear();
+
+        public void SelectItemOffline(InkCanvas surfaceDessin, Point mouseLeftDownPoint)
+        {
+            InkCanvasEditingMode all = surfaceDessin.EditingMode;
+
+            // We travel the StrokeCollection inversely to select the first plan item first
+            // if some items overlap.
+            StrokeCollection strokeToSelect = new StrokeCollection();
+            for (int i = traits.Count - 1; i >= 0; i--)
+            {
+                Rect box = traits[i].GetBounds();
+                if (mouseLeftDownPoint.X >= box.Left && mouseLeftDownPoint.X <= box.Right &&
+                    mouseLeftDownPoint.Y <= box.Bottom && mouseLeftDownPoint.Y >= box.Top)
+                {
+                    strokeToSelect.Add(traits[i]);
+                    surfaceDessin.Select(strokeToSelect);
+
+                    break;
+                }
+            }
+        }
+
+        public void SelectItemOnline(InkCanvas surfaceDessin, SelectViewModel selectViewModel, string username)
+        {
+            InkCanvasEditingMode all = surfaceDessin.EditingMode;
+
+            // We travel the StrokeCollection inversely to select the first plan item first
+            // if some items overlap.
+            StrokeCollection strokeToSelect = new StrokeCollection();
+            for (int i = traits.Count - 1; i >= 0; i--)
+            {
+                Rect box = traits[i].GetBounds();
+                if (selectViewModel.MouseLeftDownPointX >= box.Left && selectViewModel.MouseLeftDownPointX <= box.Right &&
+                    selectViewModel.MouseLeftDownPointY <= box.Bottom && selectViewModel.MouseLeftDownPointY >= box.Top)
+                {
+                    if (username == selectViewModel.Owner)
+                    {
+                        //strokes[i].DrawingAttributes.Color = Colors.Black;
+                    }
+                    strokeToSelect.Add(traits[i]);
+                    surfaceDessin.Select(strokeToSelect);
+                    break;
+                }
+            }
+        }
     }
 }

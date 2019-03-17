@@ -39,7 +39,6 @@ namespace PolyPaint
         private Point currentPoint, mouseLeftDownPoint;
         private HubConnection Connection;
         public event EventHandler MessageReceived;
-        public event EventHandler SystemMessageReceived;
         private string username;
         bool isMenuOpen = false;
         private ViewStateEnum _viewState { get; set; }
@@ -321,8 +320,7 @@ namespace PolyPaint
                 }
             }
         }
-
-
+        
         private void OnClosing(object sender, EventArgs e)
         {
             try
@@ -355,7 +353,7 @@ namespace PolyPaint
                 }
                 else
                 {
-                    icEventManager.SelectItemOffline(surfaceDessin, mouseLeftDownPoint);
+                    (DataContext as VueModele).SelectItemOffline(surfaceDessin, mouseLeftDownPoint);
                 }
             }
             else
@@ -508,7 +506,7 @@ namespace PolyPaint
             {
                 Dispatcher.Invoke(() =>
                 {
-                    icEventManager.SelectItemOnline(surfaceDessin, selectViewModel, username);
+                    (DataContext as VueModele).SelectItemOnline(surfaceDessin, selectViewModel, username);
                 });
             });
             Connection.On("Duplicate", () =>
@@ -555,6 +553,11 @@ namespace PolyPaint
                 chatTab.Visibility = Visibility.Visible;
                 isMenuOpen = true;
             }
+        }
+
+        private void surfaceDessin_ChangeSelection(object sender, EventArgs e)
+        {
+            (DataContext as VueModele).ChangeSelection((sender as InkCanvas).GetSelectedStrokes());
         }
     }
 }

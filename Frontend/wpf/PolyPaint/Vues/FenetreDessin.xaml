@@ -237,49 +237,49 @@
                             IsEnabled="{Binding Path=IsStrokeSelected}"
                             Command="{Binding Path=ChooseBorder}"
                             CommandParameter="solid">
-                        <Rectangle Width="10" Height="2" Fill="Black" Stroke="Black" StrokeThickness="2" HorizontalAlignment="Center"/>
-                    </Button>
-                    <Button Name="Dash" Width="24" Height="24" Padding="0"
+                            <Rectangle Width="10" Height="2" Fill="Black" Stroke="Black" StrokeThickness="2" HorizontalAlignment="Center"/>
+                        </Button>
+                        <Button Name="Dash" Width="24" Height="24" Padding="0"
                             HorizontalContentAlignment="Center"                            
                             BorderBrush="{Binding Path=SelectedBorder, Converter={StaticResource convertisseurBordure}, ConverterParameter=dash, UpdateSourceTrigger=PropertyChanged}" 
                             Background="{Binding Path=SelectedBorder, Converter={StaticResource convertisseurCouleurFond}, ConverterParameter=dash, UpdateSourceTrigger=PropertyChanged}"
                             IsEnabled="{Binding Path=IsStrokeSelected}"
                             Command="{Binding Path=ChooseBorder}"
                             CommandParameter="dash">
-                        <Grid>
-                            <Rectangle Width="4" Height="2" Fill="Black" Stroke="Black" StrokeThickness="2" HorizontalAlignment="Center" Margin="-1,0,1,0"/>
-                            <Rectangle Width="4" Height="2" Fill="Black" Stroke="Black" StrokeThickness="2" HorizontalAlignment="Center" Margin="5,0,-5,0"/>
-                        </Grid>
-                    </Button>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                    <Button Name="Dot" Width="24" Height="24" Padding="0"
+                            <Grid>
+                                <Rectangle Width="4" Height="2" Fill="Black" Stroke="Black" StrokeThickness="2" HorizontalAlignment="Center" Margin="-4,0,4,0"/>
+                                <Rectangle Width="4" Height="2" Fill="Black" Stroke="Black" StrokeThickness="2" HorizontalAlignment="Right" Margin="0,0,-4,0"/>
+                            </Grid>
+                        </Button>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <Button Name="Dot" Width="24" Height="24" Padding="0"
                             HorizontalContentAlignment="Center"
                             BorderBrush="{Binding Path=SelectedBorder, Converter={StaticResource convertisseurBordure}, ConverterParameter=dot, UpdateSourceTrigger=PropertyChanged}" 
                             Background="{Binding Path=SelectedBorder, Converter={StaticResource convertisseurCouleurFond}, ConverterParameter=dot, UpdateSourceTrigger=PropertyChanged}"   
                             IsEnabled="{Binding Path=IsStrokeSelected}"
                             Command="{Binding Path=ChooseBorder}"
                             CommandParameter="dot">
-                        <Grid>
-                            <Ellipse Width="4" Height="4" Fill="Black" Stroke="Black" StrokeThickness="2" HorizontalAlignment="Center" Margin="3,0,-3,0"/>
-                            <Ellipse Width="4" Height="4" Fill="Black" Stroke="Black" StrokeThickness="2" HorizontalAlignment="Center" Margin="-3,0,3,0"/>
-                        </Grid>
-                    </Button>
-                    <Button Name="DashDot" Width="24" Height="24" Padding="0"
+                            <Grid>
+                                <Ellipse Width="4" Height="4" Fill="Black" Stroke="Black" StrokeThickness="2" HorizontalAlignment="Center" Margin="4,0,-4,0"/>
+                                <Ellipse Width="4" Height="4" Fill="Black" Stroke="Black" StrokeThickness="2" HorizontalAlignment="Center" Margin="-4,0,4,0"/>
+                            </Grid>
+                        </Button>
+                        <Button Name="DashDot" Width="24" Height="24" Padding="0"
                             HorizontalContentAlignment="Center"
                             BorderBrush="{Binding Path=SelectedBorder, Converter={StaticResource convertisseurBordure}, ConverterParameter=dash_dot, UpdateSourceTrigger=PropertyChanged}" 
                             Background="{Binding Path=SelectedBorder, Converter={StaticResource convertisseurCouleurFond}, ConverterParameter=dash_dot, UpdateSourceTrigger=PropertyChanged}"   
-                            IsEnabled="{Binding Path=IsStrokeSelected}"
+                            IsEnabled="{Binding IsStrokeSelected, UpdateSourceTrigger=PropertyChanged}"
                             Command="{Binding Path=ChooseBorder}"
                             CommandParameter="dash_dot">
-                        <Grid>
-                            <Rectangle Width="4" Height="2" Fill="Black" Stroke="Black" StrokeThickness="2" HorizontalAlignment="Center" Margin="-1,0,1,0"/>
-                            <Ellipse Width="4" Height="4" Fill="Black" Stroke="Black" StrokeThickness="2" HorizontalAlignment="Center" Margin="5,0,-5,0"/>
-                        </Grid>
-                    </Button>
+                            <Grid>
+                                <Rectangle Width="4" Height="2" Fill="Black" Stroke="Black" StrokeThickness="2" HorizontalAlignment="Center" Margin="-4,1,4,1"/>
+                                <Ellipse Width="4" Height="4" Fill="Black" Stroke="Black" StrokeThickness="2" HorizontalAlignment="Center" Margin="4,0,-4,0"/>
+                            </Grid>
+                        </Button>
+                    </StackPanel>
                 </StackPanel>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal">
+                <StackPanel Orientation="Horizontal">
                     <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Width="2"  />
                 </StackPanel>
                 <StackPanel Orientation="Vertical" Margin="5,5,5,5" VerticalAlignment="Center">
@@ -375,10 +375,16 @@
             <Border BorderThickness="5,5,0,0">
                 <InkCanvas ClipToBounds="True" Grid.Column="0" Grid.Row="0" Name="surfaceDessin" Margin="10,11.111,0.222,-19.889"
                            HorizontalAlignment="Stretch" VerticalAlignment="Stretch"                           
-                           MouseLeave="surfaceDessin_MouseLeave" MouseMove="surfaceDessin_MouseMove" PreviewMouseMove="InkCanvas_LeftMouseMove" PreviewMouseUp="InkCanvas_LeftMouseUp" PreviewMouseDown="InkCanvas_LeftMouseDown"
+                           MouseLeave="surfaceDessin_MouseLeave"
+                           MouseMove="surfaceDessin_MouseMove"
+                           PreviewMouseMove="InkCanvas_LeftMouseMove"
+                           PreviewMouseUp="InkCanvas_LeftMouseUp"
+                           PreviewMouseDown="InkCanvas_LeftMouseDown"
                            SelectionMoving="InkCanvas_SelectionMoving"               
-                           Strokes="{Binding Path=Traits, Mode=OneTime}" EditingMode="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurModeEdition}, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
-                           DefaultDrawingAttributes="{Binding Path=AttributsDessin, Mode=OneTime}" />
+                           Strokes="{Binding Path=Traits, Mode=OneTime}"
+                           EditingMode="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurModeEdition}, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                           DefaultDrawingAttributes="{Binding Path=AttributsDessin, Mode=OneTime}"
+                           SelectionChanged="surfaceDessin_ChangeSelection" />
                 <Border.Effect>
                     <DropShadowEffect Opacity="0.3" BlurRadius="10"/>
                 </Border.Effect>
@@ -386,7 +392,7 @@
 
         </Grid>
         <StackPanel x:Name="chatMenu" Background="Gainsboro" Width="70"  HorizontalAlignment="Right" Panel.ZIndex="100">
-        
+
             <ToggleButton x:Name="hamburgerMenu" Style="{StaticResource MaterialDesignActionToggleButton}" Foreground="Black" Background="Transparent" Click="hamburgerMenu_Click" Margin="0,10,20,0" HorizontalAlignment="Right">
                 <ToggleButton.Content>
                     <materialDesign:PackIcon Kind="HamburgerMenu" Width="30" Height="30" />

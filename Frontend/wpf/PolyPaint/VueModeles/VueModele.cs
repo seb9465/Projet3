@@ -11,7 +11,9 @@ using System.Windows.Controls;
 using System.Windows.Ink;
 using System.Windows.Media;
 using Microsoft.AspNetCore.SignalR.Client;
+using PolyPaint.Common.Collaboration;
 using PolyPaint.Modeles;
+using PolyPaint.Strokes;
 using PolyPaint.Structures;
 using PolyPaint.Utilitaires;
 
@@ -30,6 +32,7 @@ namespace PolyPaint.VueModeles
         private string _currentRoom;
         private ObservableCollection<Room> _rooms;
         private ConcurrentDictionary<string, ObservableCollection<string>> _messagesByChannel { get; set; }
+        private string _selectedBorder;
         private MediaPlayer mediaPlayer = new MediaPlayer();
 
         public ChatClient ChatClient { get; set; }
@@ -91,6 +94,18 @@ namespace PolyPaint.VueModeles
             set { editeur.TailleTrait = value; }
         }
 
+        public string SelectedBorder
+        {
+            get { return _selectedBorder; }
+            set { _selectedBorder = value; ProprieteModifiee();  }
+        }
+
+        public Boolean IsStrokeSelected
+        {
+            get { return editeur.SelectedStrokes.All(x => x is AbstractStroke) && editeur.SelectedStrokes.Count > 0; }
+            set { ProprieteModifiee(); }
+        }
+
         public StrokeCollection Traits { get; set; }
 
         // Commandes sur lesquels la vue pourra se connecter.
@@ -99,8 +114,12 @@ namespace PolyPaint.VueModeles
         public RelayCommand<string> ChoisirPointe { get; set; }
         public RelayCommand<string> ChoisirOutil { get; set; }
         public RelayCommand<string> ChoisirRoom { get; set; }
+        public RelayCommand<string> ChooseBorder { get; set; }
         public RelayCommand<Room> RoomConnect { get; set; }
         public RelayCommand<object> Reinitialiser { get; set; }
+
+        public void SelectItemOffline(InkCanvas surfaceDessin, Point mouseLeftDownPoint) => editeur.SelectItemOffline(surfaceDessin, mouseLeftDownPoint);
+        public void SelectItemOnline(InkCanvas surfaceDessin, SelectViewModel selectViewModel, string username) => editeur.SelectItemOnline(surfaceDessin, selectViewModel, username);
 
         /// <summary>
         /// Constructeur de VueModele
@@ -129,6 +148,7 @@ namespace PolyPaint.VueModeles
             ChoisirPointe = new RelayCommand<string>(editeur.ChoisirPointe);
             ChoisirOutil = new RelayCommand<string>(editeur.ChoisirOutil);
             ChoisirRoom = new RelayCommand<string>(choisirRoom);
+            ChooseBorder = new RelayCommand<string>(chooseBorder);
             RoomConnect = new RelayCommand<Room>(roomConnect);
             Reinitialiser = new RelayCommand<object>(editeur.Reinitialiser);
 
@@ -142,6 +162,7 @@ namespace PolyPaint.VueModeles
 
             _messagesByChannel = new ConcurrentDictionary<string, ObservableCollection<string>>();
             _rooms = new ObservableCollection<Room>();
+            _selectedBorder = "solid";
         }
 
         /// <summary>
@@ -199,6 +220,17 @@ namespace PolyPaint.VueModeles
         private void choisirRoom(string room)
         {
             CurrentRoom = room;
+        }
+
+        private void chooseBorder(string border)
+        {
+            SelectedBorder = border;
+        }
+
+        public void ChangeSelection(StrokeCollection strokes)
+        {
+            editeur.SelectedStrokes = strokes;
+            ProprieteModifiee("IsStrokeSelected");
         }
 
         private void roomConnect(Room room)

@@ -17,56 +17,6 @@ namespace PolyPaint.Utilitaires
     {
         public Stroke DrawingStroke = null;
 
-        public void SelectItemOffline(InkCanvas surfaceDessin, Point mouseLeftDownPoint)
-        {
-            InkCanvasEditingMode all = surfaceDessin.EditingMode;
-            StrokeCollection strokes = surfaceDessin.Strokes;
-
-            // We travel the StrokeCollection inversely to select the first plan item first
-            // if some items overlap.
-            StrokeCollection strokeToSelect = new StrokeCollection();
-            for (int i = strokes.Count - 1; i >= 0; i--)
-            {
-                Rect box = strokes[i].GetBounds();
-                if (mouseLeftDownPoint.X >= box.Left && mouseLeftDownPoint.X <= box.Right &&
-                    mouseLeftDownPoint.Y <= box.Bottom && mouseLeftDownPoint.Y >= box.Top)
-                {
-                    strokeToSelect.Add(strokes[i]);
-                    surfaceDessin.Select(strokeToSelect);
-
-                    break;
-                }
-            }
-        }
-
-
-        public void SelectItemOnline(InkCanvas surfaceDessin, SelectViewModel selectViewModel, string username)
-        {
-            InkCanvasEditingMode all = surfaceDessin.EditingMode;
-            StrokeCollection strokes = surfaceDessin.Strokes;
-
-            // We travel the StrokeCollection inversely to select the first plan item first
-            // if some items overlap.
-            StrokeCollection strokeToSelect = new StrokeCollection();
-            for (int i = strokes.Count - 1; i >= 0; i--)
-            {
-                Rect box = strokes[i].GetBounds();
-                if (selectViewModel.MouseLeftDownPointX >= box.Left && selectViewModel.MouseLeftDownPointX <= box.Right &&
-                    selectViewModel.MouseLeftDownPointY <= box.Bottom && selectViewModel.MouseLeftDownPointY >= box.Top)
-                {
-                    if (username == selectViewModel.Owner)
-                    {
-                        //strokes[i].DrawingAttributes.Color = Colors.Black;
-                    }
-                    strokeToSelect.Add(strokes[i]);
-                    surfaceDessin.Select(strokeToSelect);
-
-                    break;
-                }
-            }
-        }
-
-
         public void ChangeText(InkCanvas surfaceDessin, Point mouseLeftDownPoint)
         {
             StrokeCollection strokes = surfaceDessin.Strokes;
