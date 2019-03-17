@@ -9,6 +9,7 @@ using System.Windows.Controls;
 using System.Windows.Ink;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Threading;
 
 namespace PolyPaint.Utilitaires
 {
@@ -117,7 +118,7 @@ namespace PolyPaint.Utilitaires
                     surfaceDessin.Strokes.Add(DrawingStroke);
                     break;
                 case "rectangle":
-                    DrawingStroke = new RectangleStroke(pts, surfaceDessin);
+                    DrawingStroke = new RectangleStroke(pts, surfaceDessin); 
                     surfaceDessin.Strokes.Add(DrawingStroke);
                     break;
                 case "artefact":
@@ -180,8 +181,7 @@ namespace PolyPaint.Utilitaires
                     R = drawViewModel.Color.R,
                 };
                 stroke.DrawingAttributes.Color = color;
-                (stroke as ICanvasable).RemoveFromCanvas();
-                (stroke as ICanvasable).AddToCanvas();
+                (stroke as ICanvasable).Redraw();
             }
         }
 
@@ -194,13 +194,10 @@ namespace PolyPaint.Utilitaires
                                       || outilSelectionne == "phase"
                                       || outilSelectionne == "role"))
             {
-                (DrawingStroke as ICanvasable).RemoveFromCanvas();
-                (DrawingStroke as ICanvasable).AddToCanvas();
+                (DrawingStroke as ICanvasable).Redraw();
             }
             else if (DrawingStroke != null && outilSelectionne == "line")
             {
-
-                (DrawingStroke as ICanvasable).RemoveFromCanvas();
                 Point closestToFirst = new Point();
                 Point closestToSecond = new Point();
                 Point firstPoint = new Point(DrawingStroke.StylusPoints[0].X, DrawingStroke.StylusPoints[0].Y);
@@ -228,8 +225,7 @@ namespace PolyPaint.Utilitaires
                 StylusPointCollection points = new StylusPointCollection(new Point[] { closestToFirst, closestToSecond });
                 DrawingStroke = new LineStroke(points, surfaceDessin);
                 DrawingStroke.DrawingAttributes.Color = Colors.Black;
-                (DrawingStroke as ICanvasable).RemoveFromCanvas();
-                (DrawingStroke as ICanvasable).AddToCanvas();
+                (DrawingStroke as ICanvasable).Redraw();
             }
         }
 

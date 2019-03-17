@@ -230,6 +230,60 @@
                 </StackPanel>
                 <StackPanel Orientation="Vertical" Margin="5,5,5,5" VerticalAlignment="Center">
                     <StackPanel Orientation="Horizontal">
+                        <Button Name="Solid" Width="24" Height="24" Padding="0"
+                            BorderBrush="{Binding Path=SelectedBorder, Converter={StaticResource convertisseurBordure}, ConverterParameter=solid, UpdateSourceTrigger=PropertyChanged}" 
+                            Background="{Binding Path=SelectedBorder, Converter={StaticResource convertisseurCouleurFond}, ConverterParameter=solid, UpdateSourceTrigger=PropertyChanged}"                                 
+                            HorizontalContentAlignment="Center"
+                            IsEnabled="{Binding Path=IsStrokeSelected}"
+                            Command="{Binding Path=ChooseBorder}"
+                            CommandParameter="solid">
+                        <Rectangle Width="10" Height="2" Fill="Black" Stroke="Black" StrokeThickness="2" HorizontalAlignment="Center"/>
+                    </Button>
+                    <Button Name="Dash" Width="24" Height="24" Padding="0"
+                            HorizontalContentAlignment="Center"                            
+                            BorderBrush="{Binding Path=SelectedBorder, Converter={StaticResource convertisseurBordure}, ConverterParameter=dash, UpdateSourceTrigger=PropertyChanged}" 
+                            Background="{Binding Path=SelectedBorder, Converter={StaticResource convertisseurCouleurFond}, ConverterParameter=dash, UpdateSourceTrigger=PropertyChanged}"
+                            IsEnabled="{Binding Path=IsStrokeSelected}"
+                            Command="{Binding Path=ChooseBorder}"
+                            CommandParameter="dash">
+                        <Grid>
+                            <Rectangle Width="4" Height="2" Fill="Black" Stroke="Black" StrokeThickness="2" HorizontalAlignment="Center" Margin="-1,0,1,0"/>
+                            <Rectangle Width="4" Height="2" Fill="Black" Stroke="Black" StrokeThickness="2" HorizontalAlignment="Center" Margin="5,0,-5,0"/>
+                        </Grid>
+                    </Button>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Button Name="Dot" Width="24" Height="24" Padding="0"
+                            HorizontalContentAlignment="Center"
+                            BorderBrush="{Binding Path=SelectedBorder, Converter={StaticResource convertisseurBordure}, ConverterParameter=dot, UpdateSourceTrigger=PropertyChanged}" 
+                            Background="{Binding Path=SelectedBorder, Converter={StaticResource convertisseurCouleurFond}, ConverterParameter=dot, UpdateSourceTrigger=PropertyChanged}"   
+                            IsEnabled="{Binding Path=IsStrokeSelected}"
+                            Command="{Binding Path=ChooseBorder}"
+                            CommandParameter="dot">
+                        <Grid>
+                            <Ellipse Width="4" Height="4" Fill="Black" Stroke="Black" StrokeThickness="2" HorizontalAlignment="Center" Margin="3,0,-3,0"/>
+                            <Ellipse Width="4" Height="4" Fill="Black" Stroke="Black" StrokeThickness="2" HorizontalAlignment="Center" Margin="-3,0,3,0"/>
+                        </Grid>
+                    </Button>
+                    <Button Name="DashDot" Width="24" Height="24" Padding="0"
+                            HorizontalContentAlignment="Center"
+                            BorderBrush="{Binding Path=SelectedBorder, Converter={StaticResource convertisseurBordure}, ConverterParameter=dash_dot, UpdateSourceTrigger=PropertyChanged}" 
+                            Background="{Binding Path=SelectedBorder, Converter={StaticResource convertisseurCouleurFond}, ConverterParameter=dash_dot, UpdateSourceTrigger=PropertyChanged}"   
+                            IsEnabled="{Binding Path=IsStrokeSelected}"
+                            Command="{Binding Path=ChooseBorder}"
+                            CommandParameter="dash_dot">
+                        <Grid>
+                            <Rectangle Width="4" Height="2" Fill="Black" Stroke="Black" StrokeThickness="2" HorizontalAlignment="Center" Margin="-1,0,1,0"/>
+                            <Ellipse Width="4" Height="4" Fill="Black" Stroke="Black" StrokeThickness="2" HorizontalAlignment="Center" Margin="5,0,-5,0"/>
+                        </Grid>
+                    </Button>
+                </StackPanel>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                    <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Width="2"  />
+                </StackPanel>
+                <StackPanel Orientation="Vertical" Margin="5,5,5,5" VerticalAlignment="Center">
+                    <StackPanel Orientation="Horizontal">
                         <Button Name="PointeRonde" Width="24" Height="24" Padding="0"
                             BorderBrush="{Binding Path=PointeSelectionnee, Converter={StaticResource convertisseurBordure}, ConverterParameter=ronde, UpdateSourceTrigger=PropertyChanged}" 
                             Background="{Binding Path=PointeSelectionnee, Converter={StaticResource convertisseurCouleurFond}, ConverterParameter=ronde, UpdateSourceTrigger=PropertyChanged}"                                 

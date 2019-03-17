@@ -49,5 +49,11 @@ namespace PolyPaint.Strokes
         {
             SurfaceDessin.Strokes.Remove(this);
         }
+
+        public void Redraw()
+        {
+            RemoveFromCanvas();
+            AddToCanvas();
+        }
     }
 }

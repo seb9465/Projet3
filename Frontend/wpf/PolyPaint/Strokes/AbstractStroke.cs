@@ -67,5 +67,21 @@ namespace PolyPaint.Strokes
         {
             SurfaceDessin.Strokes.Remove(this);
         }
+
+        public void SetBorderStyle(DashStyle style)
+        {
+            Border.DashStyle = style;
+        }
+
+        public void SetBorderThickness(double thickness)
+        {
+            Border.Thickness = thickness;
+        }
+
+        public void Redraw()
+        {
+            RemoveFromCanvas();
+            AddToCanvas();
+        }
     }
 }

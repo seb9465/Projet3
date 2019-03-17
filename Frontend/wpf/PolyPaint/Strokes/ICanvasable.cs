@@ -10,5 +10,6 @@ namespace PolyPaint.Strokes
     {
         void AddToCanvas();
         void RemoveFromCanvas();
+        void Redraw();
     }
 }
