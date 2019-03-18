@@ -22,8 +22,7 @@ namespace PolyPaint.Vues
         private void Ok_Click(object sender, RoutedEventArgs e)
         {
             Close();
-            (DataContext as ICanvasable).RemoveFromCanvas();
-            (DataContext as ICanvasable).AddToCanvas();
+            (DataContext as ICanvasable).Redraw();
         }
 
         private void EnterKeyDown(object sender, KeyEventArgs e)

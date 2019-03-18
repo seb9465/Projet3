@@ -1,7 +1,6 @@
 ﻿using PolyPaint.Strokes;
 using PolyPaint.Common.Collaboration;
 using PolyPaint.Vues;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -9,7 +8,6 @@ using System.Windows.Controls;
 using System.Windows.Ink;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Threading;
 
 namespace PolyPaint.Utilitaires
 {
@@ -68,7 +66,7 @@ namespace PolyPaint.Utilitaires
                     surfaceDessin.Strokes.Add(DrawingStroke);
                     break;
                 case "rectangle":
-                    DrawingStroke = new RectangleStroke(pts, surfaceDessin); 
+                    DrawingStroke = new RectangleStroke(pts, surfaceDessin);
                     surfaceDessin.Strokes.Add(DrawingStroke);
                     break;
                 case "artefact":
@@ -131,7 +129,7 @@ namespace PolyPaint.Utilitaires
                     R = drawViewModel.Color.R,
                 };
                 stroke.DrawingAttributes.Color = color;
-                (stroke as ICanvasable).Redraw();
+                (stroke as ICanvasable).AddToCanvas();
             }
         }
 
@@ -144,38 +142,26 @@ namespace PolyPaint.Utilitaires
                                       || outilSelectionne == "phase"
                                       || outilSelectionne == "role"))
             {
-                (DrawingStroke as ICanvasable).Redraw();
+                (DrawingStroke as ICanvasable).AddToCanvas();
             }
             else if (DrawingStroke != null && outilSelectionne == "line")
             {
-                Point closestToFirst = new Point();
-                Point closestToSecond = new Point();
                 Point firstPoint = new Point(DrawingStroke.StylusPoints[0].X, DrawingStroke.StylusPoints[0].Y);
                 Point secondPoint = new Point(DrawingStroke.StylusPoints[1].X, DrawingStroke.StylusPoints[1].Y);
-                double distanceToFirst = double.MaxValue;
-                double distanceToSecond = double.MaxValue;
-                AbstractStroke[] strokes = ToAbstractStrokes(surfaceDessin.Strokes);
-                List<Point> anchors = GetAllAnchorPoints(strokes);
-                for (int i = 0; i < anchors.Count; ++i)
-                {
-                    double d1 = Point.Subtract(anchors[i], firstPoint).Length;
-                    double d2 = Point.Subtract(anchors[i], secondPoint).Length;
-                    if (d1 < distanceToFirst)
-                    {
-                        closestToFirst = anchors[i];
-                        distanceToFirst = d1;
-                    }
-                    if (d2 < distanceToSecond)
-                    {
-                        closestToSecond = anchors[i];
-                        distanceToSecond = d2;
 
-                    }
+                List<Point> anchors = new List<Point>();
+                foreach (AbstractStroke stroke in surfaceDessin.Strokes.Where(x => x is AbstractStroke))
+                {
+                    anchors.AddRange(stroke.AnchorPoints);
                 }
-                StylusPointCollection points = new StylusPointCollection(new Point[] { closestToFirst, closestToSecond });
-                DrawingStroke = new LineStroke(points, surfaceDessin);
-                DrawingStroke.DrawingAttributes.Color = Colors.Black;
-                (DrawingStroke as ICanvasable).Redraw();
+
+                DrawingStroke.StylusPoints = new StylusPointCollection(new Point[]
+                    {
+                        anchors.OrderBy(x => Point.Subtract(x, firstPoint).Length).First(),
+                        anchors.OrderBy(x => Point.Subtract(x, secondPoint).Length).First()
+                    }
+                );
+                (DrawingStroke as ICanvasable).AddToCanvas();
             }
         }
 
@@ -208,66 +194,20 @@ namespace PolyPaint.Utilitaires
         private void RedrawLineOnAffectedAnchorPoints(InkCanvas surfaceDessin, List<Point> affectedAnchorPoints,
                                                       double shiftInX, double shiftInY)
         {
-            for (int i = 0; i < surfaceDessin.Strokes.Count(); ++i)
+            for (int i = 0; i < 2; i++)
             {
-                if (surfaceDessin.Strokes[i].GetType() == typeof(LineStroke))
-                {
-                    if (!surfaceDessin.GetSelectedStrokes().Contains(surfaceDessin.Strokes[i]))
-                    {
-                        StylusPointCollection points = surfaceDessin.Strokes[i].StylusPoints;
-                        if (affectedAnchorPoints.Contains(surfaceDessin.Strokes[i].StylusPoints[0].ToPoint()))
-                        {
-                            points[0] = new StylusPoint(points[0].X + shiftInX, points[0].Y + shiftInY);
-
-                            DrawingStroke = new LineStroke(points, surfaceDessin);
-                            DrawingStroke.DrawingAttributes.Color = Colors.Black;
-                            surfaceDessin.Strokes.Add(DrawingStroke);
-                            (surfaceDessin.Strokes[i] as ICanvasable).RemoveFromCanvas();
-                            (DrawingStroke as ICanvasable).AddToCanvas();
-                            i--;
-
-                        }
-                        else if (affectedAnchorPoints.Contains(surfaceDessin.Strokes[i].StylusPoints[1].ToPoint()))
-                        {
-                            points[1] = new StylusPoint(points[1].X + shiftInX, points[1].Y + shiftInY);
-
-                            DrawingStroke = new LineStroke(points, surfaceDessin);
-                            DrawingStroke.DrawingAttributes.Color = Colors.Black;
-                            surfaceDessin.Strokes.Add(DrawingStroke);
-                            (surfaceDessin.Strokes[i] as ICanvasable).RemoveFromCanvas();
-                            (DrawingStroke as ICanvasable).AddToCanvas();
-                            i--;
-                        }
-                    }
-                }
+                surfaceDessin.Strokes.Where(x => x is LineStroke &&
+                    !surfaceDessin.GetSelectedStrokes().Contains(x) &&
+                    affectedAnchorPoints.Contains(x.StylusPoints[i].ToPoint()))
+                    .ToList()
+                    .ForEach(x => RedrawPoint(x, i, new Vector(shiftInX, shiftInY)));
             }
         }
 
-        private AbstractStroke[] ToAbstractStrokes(StrokeCollection strokeCollection)
+        private void RedrawPoint(Stroke stroke, int index, Vector shift)
         {
-            AbstractStroke[] strokes = new AbstractStroke[strokeCollection.Count];
-            for (int i = 0; i < strokeCollection.Count; ++i)
-            {
-                if (!(strokeCollection[i].GetType() == typeof(LineStroke)))
-                    strokes[i] = (AbstractStroke)strokeCollection[i];
-            }
-            return strokes;
-        }
-
-        private List<Point> GetAllAnchorPoints(AbstractStroke[] strokes)
-        {
-            List<Point> anchors = new List<Point>();
-            for (int i = 0; i < strokes.Count(); ++i)
-            {
-                if (strokes[i] == null)
-                    break;
-
-                for (int j = 0; j < 4; ++j)
-                {
-                    anchors.Add(strokes[i].AnchorPoints[j]);
-                }
-            }
-            return anchors;
+            stroke.StylusPoints[index] = new StylusPoint(stroke.StylusPoints[index].X + shift.X, stroke.StylusPoints[index].Y + shift.Y);
+            (stroke as ICanvasable).AddToCanvas();
         }
     }
 }

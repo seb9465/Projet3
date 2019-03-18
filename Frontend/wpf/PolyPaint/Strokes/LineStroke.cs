@@ -42,6 +42,7 @@ namespace PolyPaint.Strokes
 
         public void AddToCanvas()
         {
+            RemoveFromCanvas();
             SurfaceDessin.Strokes.Add(Clone());
         }
 
@@ -52,8 +53,7 @@ namespace PolyPaint.Strokes
 
         public void Redraw()
         {
-            RemoveFromCanvas();
-            AddToCanvas();
+            OnInvalidated(new EventArgs());
         }
     }
 }

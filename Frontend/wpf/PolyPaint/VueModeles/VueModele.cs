@@ -5,7 +5,6 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Ink;
@@ -27,6 +26,16 @@ namespace PolyPaint.VueModeles
     /// </summary>
     class VueModele : INotifyPropertyChanged
     {
+        private static ConcurrentDictionary<string, DashStyle> _dashAssociations = new ConcurrentDictionary<string, DashStyle>(
+            new Dictionary<string, DashStyle>()
+            {
+                { "solid", DashStyles.Solid },
+                {"dash", DashStyles.Dash },
+                {"dot", DashStyles.Dot },
+                {"dash_dot", DashStyles.DashDot },
+            }
+        );
+
         public event PropertyChangedEventHandler PropertyChanged;
         private Editeur editeur = new Editeur();
         private string _currentRoom;
@@ -97,7 +106,7 @@ namespace PolyPaint.VueModeles
         public string SelectedBorder
         {
             get { return _selectedBorder; }
-            set { _selectedBorder = value; ProprieteModifiee();  }
+            set { _selectedBorder = value; ProprieteModifiee(); }
         }
 
         public Boolean IsStrokeSelected
@@ -162,7 +171,7 @@ namespace PolyPaint.VueModeles
 
             _messagesByChannel = new ConcurrentDictionary<string, ObservableCollection<string>>();
             _rooms = new ObservableCollection<Room>();
-            _selectedBorder = "solid";
+            _selectedBorder = "";
         }
 
         /// <summary>
@@ -225,12 +234,27 @@ namespace PolyPaint.VueModeles
         private void chooseBorder(string border)
         {
             SelectedBorder = border;
+            
+            foreach (AbstractStroke stroke in editeur.SelectedStrokes)
+            {
+                stroke.SetBorderStyle(_dashAssociations[border]);
+            }
         }
 
         public void ChangeSelection(StrokeCollection strokes)
         {
             editeur.SelectedStrokes = strokes;
             ProprieteModifiee("IsStrokeSelected");
+            if (!strokes.All(x => x is AbstractStroke) ||
+                strokes.Select(x => (x as AbstractStroke).BorderStyle).Distinct().Count() > 1 ||
+                strokes.Count() == 0)
+            {
+                SelectedBorder = "";
+            }
+            else
+            {
+                SelectedBorder = _dashAssociations.First(x => x.Value == (strokes.First() as AbstractStroke).BorderStyle).Key;
+            }
         }
 
         private void roomConnect(Room room)

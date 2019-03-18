@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Media;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System;
 
 namespace PolyPaint.Strokes
 {
@@ -21,6 +22,7 @@ namespace PolyPaint.Strokes
 
         protected Brush Fill { get; set; }
         protected Pen Border { get; set; }
+        public DashStyle BorderStyle { get { return Border.DashStyle; } }
 
         protected InkCanvas SurfaceDessin { get; set; }
         protected FormattedText Title { get; set; }
@@ -58,6 +60,7 @@ namespace PolyPaint.Strokes
 
         public void AddToCanvas()
         {
+            RemoveFromCanvas();
             var clone = Clone();
             (clone as AbstractStroke).IsDrawingDone = true;
             SurfaceDessin.Strokes.Add(clone);
@@ -71,17 +74,18 @@ namespace PolyPaint.Strokes
         public void SetBorderStyle(DashStyle style)
         {
             Border.DashStyle = style;
+            Redraw();
         }
 
         public void SetBorderThickness(double thickness)
         {
             Border.Thickness = thickness;
+            Redraw();
         }
 
         public void Redraw()
         {
-            RemoveFromCanvas();
-            AddToCanvas();
+            OnInvalidated(new EventArgs());
         }
     }
 }
