@@ -11,12 +11,10 @@ namespace PolyPaint.Strokes
     public class LineStroke : Stroke, ICanvasable
     {
         public InkCanvas SurfaceDessin { get; set; }
-        public Point MiddlePoint { get; set; }
         public LineStroke(StylusPointCollection pts, InkCanvas surfaceDessin)
             : base(pts)
         {
             StylusPoints = pts;
-            MiddlePoint = new Point((pts[1].X + pts[0].X) / 2, (pts[1].Y + pts[0].Y) / 2);
 
             SurfaceDessin = surfaceDessin;
         }
@@ -38,9 +36,6 @@ namespace PolyPaint.Strokes
             StylusPoint sp = StylusPoints[1];
 
             drawingContext.DrawLine(pen, new Point(sp.X, sp.Y), new Point(stp.X, stp.Y));
-
-            SolidColorBrush pointBrush = new SolidColorBrush(Colors.Gray);
-            drawingContext.DrawEllipse(pointBrush, null, MiddlePoint, 2, 2);
         }
 
         public void AddToCanvas()
