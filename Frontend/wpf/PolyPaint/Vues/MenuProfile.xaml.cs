@@ -36,7 +36,7 @@ namespace PolyPaint
             DataContext = new VueModele();
 
             username = Application.Current.Properties["username"].ToString();
-            usernameLabel.Content = "Welcome " + username;
+            usernameLabel.Content = username;
 
             object token = Application.Current.Properties["token"];
             username = Application.Current.Properties["username"].ToString();
@@ -47,7 +47,6 @@ namespace PolyPaint
 
         private void CanvasBtn_Click(object sender, RoutedEventArgs e)
         {
-            Console.WriteLine(username);
             FenetreDessin fenetreDessin = new FenetreDessin(ViewStateEnum.Online);
             Application.Current.MainWindow = fenetreDessin;
             Close();
@@ -56,10 +55,7 @@ namespace PolyPaint
 
         private void GalleryBtn_Click(object sender, RoutedEventArgs e)
         {
-            Gallery gallery = new Gallery(strokes, drawingSurface);
-            Application.Current.MainWindow = gallery;
-            Close();
-            gallery.Show();
+           
         }
 
         private void AddRoom(object sender, DialogClosingEventArgs eventArgs)

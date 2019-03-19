@@ -559,5 +559,13 @@ namespace PolyPaint
         {
             (DataContext as VueModele).ChangeSelection((sender as InkCanvas).GetSelectedStrokes());
         }
+
+        private async void GoBack_Click(object sender, RoutedEventArgs e)
+        {
+            MenuProfile menuProfile = new MenuProfile();
+            Application.Current.MainWindow = menuProfile;
+            Close();
+            menuProfile.Show();
+        }
     }
 }

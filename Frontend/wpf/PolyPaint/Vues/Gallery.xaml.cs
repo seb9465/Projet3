@@ -37,11 +37,15 @@ namespace PolyPaint.Vues
         private static List<CanvasViewModel> ConvertStrokesToPNG(List<SaveableCanvas> savedCanvas, InkCanvas drawingSurface)
         {
             List<CanvasViewModel> canvas = new List<CanvasViewModel>();
-            foreach (var item in savedCanvas)
+            if(savedCanvas != null)
             {
-                var bitmapImage = (BitmapSource)new ImageSourceConverter().ConvertFrom(Convert.FromBase64String(item.Base64Image));
-                var strokes = GenerateStrokesFromBytes(Convert.FromBase64String(item.Base64Strokes));
-                canvas.Add(new CanvasViewModel(item.CanvasId, item.Name, bitmapImage, strokes));
+                foreach (var item in savedCanvas)
+                {
+                    var bitmapImage = (BitmapSource)new ImageSourceConverter().ConvertFrom(Convert.FromBase64String(item.Base64Image));
+                    var strokes = GenerateStrokesFromBytes(Convert.FromBase64String(item.Base64Strokes));
+                    canvas.Add(new CanvasViewModel(item.CanvasId, item.Name, bitmapImage, strokes));
+                }
+
             }
             return canvas;
         }
@@ -61,6 +65,14 @@ namespace PolyPaint.Vues
         {
             SelectedCanvas = (CanvasViewModel)ImagePreviews.SelectedItem;
             this.Close();
+        }
+
+        private async void GoBack_Click(object sender, RoutedEventArgs e)
+        {
+            MenuProfile menuProfile = new MenuProfile();
+            Application.Current.MainWindow = menuProfile;
+            Close();
+            menuProfile.Show();
         }
     }
 }

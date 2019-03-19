@@ -25,302 +25,312 @@
         <convertisseurs:ConvertisseurRoomCouleurFond x:Key="convertisseurRoomCouleurFond" />
         <convertisseurs:ConvertisseurRoomContent x:Key="convertisseurRoomContent" />
     </Window.Resources>
-    <DockPanel Margin="0,0,-3.889,2.778">
+    <StackPanel>
+        <StackPanel>
+            
+            <Button Style="{StaticResource MaterialDesignRaisedLightButton}" Click="GoBack_Click"
+             Width="60" Height="40" HorizontalAlignment="Left" Background="Gainsboro" BorderBrush="Gray" Margin="0,0,0,0" >
+                <materialDesign:PackIcon Kind="ArrowBack" Height="24" Width="24"/>
+            </Button>
+        </StackPanel>
 
-        <Border DockPanel.Dock="Top" BorderThickness="0,0,0,0.5" BorderBrush="#77000000">
-            <StackPanel Orientation="Horizontal" Height="60">
-                <StackPanel.Background>
-                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0.01">
-                        <GradientStop Color="Gray"/>
-                        <GradientStop Color="#FFFFFFFF"/>
-                        <GradientStop Color="#FFE0E0E0" Offset="1"/>
-                    </LinearGradientBrush>
-                </StackPanel.Background>
+        <DockPanel Height="640">
 
-                <Button Name="save" Click="SaveImage"
+            <Border DockPanel.Dock="Top" BorderThickness="0,0,0,0.5" BorderBrush="#77000000">
+
+                <StackPanel Orientation="Horizontal" Height="60">
+                    <StackPanel.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0.01">
+                            <GradientStop Color="Transparent"/>
+                            <GradientStop Color="#FFFFFFFF"/>
+                            <GradientStop Color="#FFE0E0E0" Offset="1"/>
+                        </LinearGradientBrush>
+                    </StackPanel.Background>
+
+                    <Button Name="save" Click="SaveImage"
                     Style="{StaticResource MaterialDesignFloatingActionMiniButton}" HorizontalAlignment="Left" Margin="10" ToolTip="MaterialDesignFloatingActionMiniButton">
-                    <materialDesign:PackIcon Kind="ContentSave" Height="24" Width="24" />
-                </Button>
-                <Button Name="load" Click="LoadImage"
+                        <materialDesign:PackIcon Kind="ContentSave" Height="24" Width="24" />
+                    </Button>
+                    <Button Name="load" Click="LoadImage"
                     Style="{StaticResource MaterialDesignFloatingActionMiniButton}" HorizontalAlignment="Left" Margin="10" ToolTip="MaterialDesignFloatingActionMiniButton">
-                    <materialDesign:PackIcon Kind="FileUploadOutline" Height="24" Width="24"/>
-                </Button>
+                        <materialDesign:PackIcon Kind="FileUploadOutline" Height="24" Width="24"/>
+                    </Button>
 
-                <Button  Style="{StaticResource MaterialDesignRaisedButton}" ToolTip="Réinitialiser le canevas" 
+                    <Button  Style="{StaticResource MaterialDesignRaisedButton}" ToolTip="Réinitialiser le canevas" 
                     x:Name="reinitialiser" Width="30" Height="30" Margin="5" Padding="0" Click="Reinitialiser_Click" FontSize="18">
-                    <materialDesign:PackIcon Kind="Recycle" />
-                </Button>
+                        <materialDesign:PackIcon Kind="Recycle" />
+                    </Button>
 
-                <Button Style="{StaticResource MaterialDesignRaisedButton}" ToolTip="Undo" 
+                    <Button Style="{StaticResource MaterialDesignRaisedButton}" ToolTip="Undo" 
                         x:Name="empiler" Width="30" Height="30" Margin="5" Padding="0"  Command="{Binding Empiler}" FontSize="18">
-                    <materialDesign:PackIcon Kind="UndoVariant" />
-                </Button>
-                <Button x:Name="depiler" Width="30" Height="30" Margin="5" Padding="0" Command="{Binding Depiler}" FontSize="18">
-                    <materialDesign:PackIcon Kind="RedoVariant" />
-                </Button>
+                        <materialDesign:PackIcon Kind="UndoVariant" />
+                    </Button>
+                    <Button x:Name="depiler" Width="30" Height="30" Margin="5" Padding="0" Command="{Binding Depiler}" FontSize="18">
+                        <materialDesign:PackIcon Kind="RedoVariant" />
+                    </Button>
 
-                <Button Style="{StaticResource MaterialDesignRaisedButton}" ToolTip="Resource name: MaterialDesignRaisedButton" 
+                    <Button Style="{StaticResource MaterialDesignRaisedButton}" ToolTip="Resource name: MaterialDesignRaisedButton" 
                         x:Name="sendToCloud" Width="30" Height="30" Margin="5" Padding="0"  Click="SendToCloud" FontSize="18">
-                    <materialDesign:PackIcon Kind="CloudUpload" />
-                </Button>
+                        <materialDesign:PackIcon Kind="CloudUpload" />
+                    </Button>
 
-                <Button Style="{StaticResource MaterialDesignRaisedButton}" ToolTip="Resource name: MaterialDesignRaisedButton" 
+                    <Button Style="{StaticResource MaterialDesignRaisedButton}" ToolTip="Resource name: MaterialDesignRaisedButton" 
                         x:Name="importFromCloud" Width="30" Height="30" Margin="5" Padding="0"  Click="ImportFromCloud" FontSize="18">
-                    <materialDesign:PackIcon Kind="CloudDownload" />
-                </Button>
+                        <materialDesign:PackIcon Kind="CloudDownload" />
+                    </Button>
 
-                <StackPanel Orientation="Horizontal">
-                    <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Width="2" />
-                </StackPanel>
-                <StackPanel Orientation="Vertical"  VerticalAlignment="Bottom" Margin="0,-2">
+                    <StackPanel Orientation="Horizontal">
+                        <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Width="2" />
+                    </StackPanel>
+                    <StackPanel Orientation="Vertical"  VerticalAlignment="Bottom" Margin="0,-2">
 
-                    <Button Name="Copier" Click="DupliquerSelection"
+                        <Button Name="Copier" Click="DupliquerSelection"
                         Style="{StaticResource MaterialDesignRaisedLightButton}" HorizontalAlignment="Left" ToolTip="MaterialDesignRaisedLightButton" 
                         Background="Transparent" BorderBrush="Transparent">
-                        <materialDesign:PackIcon Kind="ContentCopy" Height="17" Width="17" />
-                    </Button>
-                    <Button Name="Couper" Click="SupprimerSelection"
+                            <materialDesign:PackIcon Kind="ContentCopy" Height="17" Width="17" />
+                        </Button>
+                        <Button Name="Couper" Click="SupprimerSelection"
                     Style="{StaticResource MaterialDesignRaisedLightButton}" HorizontalAlignment="Left" ToolTip="MaterialDesignRaisedLightButton"
                         Background="Transparent" BorderBrush="Transparent">
-                        <materialDesign:PackIcon Kind="ContentCut" Height="17" Width="17" />
-                    </Button>
+                            <materialDesign:PackIcon Kind="ContentCut" Height="17" Width="17" />
+                        </Button>
 
-                </StackPanel>
-                <Button Name="lasso"
+                    </StackPanel>
+                    <Button Name="lasso"
                         Style="{StaticResource MaterialDesignRaisedLightButton}" HorizontalAlignment="Left" ToolTip="MaterialDesignRaisedLightButton" 
                         BorderBrush="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurBordure}, ConverterParameter=lasso, UpdateSourceTrigger=PropertyChanged}" 
                             Background="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurCouleurFond}, ConverterParameter=lasso, UpdateSourceTrigger=PropertyChanged}" 
                             Command="{Binding Path=ChoisirOutil}"
                             CommandParameter="lasso">
-                    <StackPanel>
-                        <Image Source="/Resources/lasso.png" Width="25" Height="25"/>
-                    </StackPanel>
-                </Button>
-                <Button Name="select"
+                        <StackPanel>
+                            <Image Source="/Resources/lasso.png" Width="25" Height="25"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Name="select"
                         Style="{StaticResource MaterialDesignRaisedLightButton}" HorizontalAlignment="Left" ToolTip="MaterialDesignRaisedLightButton" 
                         BorderBrush="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurBordure}, ConverterParameter=select, UpdateSourceTrigger=PropertyChanged}" 
                             Background="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurCouleurFond}, ConverterParameter=select, UpdateSourceTrigger=PropertyChanged}" 
                             Command="{Binding Path=ChoisirOutil}"
                             CommandParameter="select">
-                    <StackPanel>
-                        <Image Source="/Resources/select.png" Width="25" Height="25"/>
-                    </StackPanel>
-                </Button>
-                <Button Name="text"
+                        <StackPanel>
+                            <Image Source="/Resources/select.png" Width="25" Height="25"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Name="text"
                         Style="{StaticResource MaterialDesignRaisedLightButton}" HorizontalAlignment="Left" ToolTip="MaterialDesignRaisedLightButton" 
                         BorderBrush="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurBordure}, ConverterParameter=text, UpdateSourceTrigger=PropertyChanged}" 
                             Background="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurCouleurFond}, ConverterParameter=text, UpdateSourceTrigger=PropertyChanged}" 
                             Command="{Binding Path=ChoisirOutil}"
                             CommandParameter="text">
-                    <StackPanel>
-                        <materialDesign:PackIcon Kind="FileDocumentOutline" />
+                        <StackPanel>
+                            <materialDesign:PackIcon Kind="FileDocumentOutline" />
+                        </StackPanel>
+                    </Button>
+                    <StackPanel Orientation="Horizontal">
+                        <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Width="2" />
                     </StackPanel>
-                </Button>
-                <StackPanel Orientation="Horizontal">
-                    <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Width="2" />
-                </StackPanel>
-                <Button Name="rectangle"
+                    <Button Name="rectangle"
                         Style="{StaticResource MaterialDesignRaisedLightButton}" HorizontalAlignment="Left" ToolTip="MaterialDesignRaisedLightButton" 
                         BorderBrush="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurBordure}, ConverterParameter=rectangle, UpdateSourceTrigger=PropertyChanged}" 
                         Background="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurCouleurFond}, ConverterParameter=rectangle, UpdateSourceTrigger=PropertyChanged}" 
                         Command="{Binding Path=ChoisirOutil}"
                         CommandParameter="rectangle">
-                    <StackPanel>
-                        <Image Source="/Resources/rectangle.png" Height="25" Width="25"  />
-                    </StackPanel>
-                </Button>
-                <Button Name="activity"
+                        <StackPanel>
+                            <Image Source="/Resources/rectangle.png" Height="25" Width="25"  />
+                        </StackPanel>
+                    </Button>
+                    <Button Name="activity"
                         Style="{StaticResource MaterialDesignRaisedLightButton}" HorizontalAlignment="Left" ToolTip="MaterialDesignRaisedLightButton" 
                         BorderBrush="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurBordure}, ConverterParameter=activity, UpdateSourceTrigger=PropertyChanged}" 
                         Background="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurCouleurFond}, ConverterParameter=activity, UpdateSourceTrigger=PropertyChanged}" 
                         Command="{Binding Path=ChoisirOutil}"
                         CommandParameter="activity">
-                    <StackPanel>
-                        <Image Source="/Resources/activity.png" Height="25" Width="25"  />
-                    </StackPanel>
-                </Button>
-                <Button Name="artefact"
+                        <StackPanel>
+                            <Image Source="/Resources/activity.png" Height="25" Width="25"  />
+                        </StackPanel>
+                    </Button>
+                    <Button Name="artefact"
                         Style="{StaticResource MaterialDesignRaisedLightButton}" HorizontalAlignment="Left" ToolTip="MaterialDesignRaisedLightButton" 
                         BorderBrush="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurBordure}, ConverterParameter=artefact, UpdateSourceTrigger=PropertyChanged}" 
                         Background="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurCouleurFond}, ConverterParameter=artefact, UpdateSourceTrigger=PropertyChanged}" 
                         Command="{Binding Path=ChoisirOutil}"
                         CommandParameter="artefact">
-                    <StackPanel>
-                        <Image Source="/Resources/artefact.png" Height="25" Width="25"  />
-                    </StackPanel>
-                </Button>
-                <Button Name="phase"
+                        <StackPanel>
+                            <Image Source="/Resources/artefact.png" Height="25" Width="25"  />
+                        </StackPanel>
+                    </Button>
+                    <Button Name="phase"
                         Style="{StaticResource MaterialDesignRaisedLightButton}" HorizontalAlignment="Left" ToolTip="MaterialDesignRaisedLightButton" 
                         BorderBrush="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurBordure}, ConverterParameter=phase, UpdateSourceTrigger=PropertyChanged}" 
                         Background="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurCouleurFond}, ConverterParameter=phase, UpdateSourceTrigger=PropertyChanged}" 
                         Command="{Binding Path=ChoisirOutil}"
                         CommandParameter="phase">
-                    <StackPanel>
-                        <Image Source="/Resources/phase.png" Height="25" Width="25"  />
-                    </StackPanel>
-                </Button>
-                <Button Name="role"
+                        <StackPanel>
+                            <Image Source="/Resources/phase.png" Height="25" Width="25"  />
+                        </StackPanel>
+                    </Button>
+                    <Button Name="role"
                         Style="{StaticResource MaterialDesignRaisedLightButton}" HorizontalAlignment="Left" ToolTip="MaterialDesignRaisedLightButton" 
                         BorderBrush="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurBordure}, ConverterParameter=role, UpdateSourceTrigger=PropertyChanged}" 
                         Background="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurCouleurFond}, ConverterParameter=role, UpdateSourceTrigger=PropertyChanged}" 
                         Command="{Binding Path=ChoisirOutil}"
                         CommandParameter="role">
-                    <StackPanel>
-                        <Image Source="/Resources/role.png" Height="25" Width="25"  />
-                    </StackPanel>
-                </Button>
-                <Button Name="uml_class"
+                        <StackPanel>
+                            <Image Source="/Resources/role.png" Height="25" Width="25"  />
+                        </StackPanel>
+                    </Button>
+                    <Button Name="uml_class"
                         Style="{StaticResource MaterialDesignRaisedLightButton}" HorizontalAlignment="Left" ToolTip="MaterialDesignRaisedLightButton" 
                         BorderBrush="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurBordure}, ConverterParameter=uml_class, UpdateSourceTrigger=PropertyChanged}" 
                         Background="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurCouleurFond}, ConverterParameter=uml_class, UpdateSourceTrigger=PropertyChanged}" 
                         Command="{Binding Path=ChoisirOutil}"
                         CommandParameter="uml_class">
-                    <StackPanel>
-                        <Image Source="/Resources/uml_class.png" Height="25" Width="25"  />
+                        <StackPanel>
+                            <Image Source="/Resources/uml_class.png" Height="25" Width="25"  />
+                        </StackPanel>
+                    </Button>
+                    <StackPanel Orientation="Horizontal">
+                        <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Width="2" />
                     </StackPanel>
-                </Button>
-                <StackPanel Orientation="Horizontal">
-                    <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Width="2" />
-                </StackPanel>
-                <Button Name="line"
+                    <Button Name="line"
                         Style="{StaticResource MaterialDesignRaisedLightButton}" HorizontalAlignment="Left" ToolTip="MaterialDesignRaisedLightButton" 
                         BorderBrush="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurBordure}, ConverterParameter=line, UpdateSourceTrigger=PropertyChanged}" 
                         Background="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurCouleurFond}, ConverterParameter=line, UpdateSourceTrigger=PropertyChanged}" 
                         Command="{Binding Path=ChoisirOutil}"
                         CommandParameter="line">
-                    <StackPanel>
-                        <Image Source="/Resources/line.png" Height="25" Width="25"  />
+                        <StackPanel>
+                            <Image Source="/Resources/line.png" Height="25" Width="25"  />
+                        </StackPanel>
+                    </Button>
+                    <StackPanel Orientation="Horizontal">
+                        <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Width="2" />
                     </StackPanel>
-                </Button>
-                <StackPanel Orientation="Horizontal">
-                    <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Width="2" />
-                </StackPanel>
-                <Button Name="crayon"
+                    <Button Name="crayon"
                         Style="{StaticResource MaterialDesignRaisedLightButton}" HorizontalAlignment="Left" ToolTip="MaterialDesignRaisedLightButton" 
                         BorderBrush="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurBordure}, ConverterParameter=crayon, UpdateSourceTrigger=PropertyChanged}" 
                         Background="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurCouleurFond}, ConverterParameter=crayon, UpdateSourceTrigger=PropertyChanged}" 
                         Command="{Binding Path=ChoisirOutil}"
                         CommandParameter="crayon">
-                    <StackPanel>
-                        <Image Source="/Resources/crayon.png" Height="25" Width="25"  />
-                    </StackPanel>
-                </Button>
-                <Button Name="efface_segment"
+                        <StackPanel>
+                            <Image Source="/Resources/crayon.png" Height="25" Width="25"  />
+                        </StackPanel>
+                    </Button>
+                    <Button Name="efface_segment"
                         Style="{StaticResource MaterialDesignRaisedLightButton}" HorizontalAlignment="Left" ToolTip="MaterialDesignRaisedLightButton" 
                         BorderBrush="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurBordure}, ConverterParameter=efface_segment, UpdateSourceTrigger=PropertyChanged}" 
                         Background="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurCouleurFond}, ConverterParameter=efface_segment, UpdateSourceTrigger=PropertyChanged}" 
                         Command="{Binding Path=ChoisirOutil}"
                         CommandParameter="efface_segment">
-                    <StackPanel>
-                        <Image Source="/Resources/efface_crayon.png" Height="25" Width="25"  />
-                    </StackPanel>
-                </Button>
-                <Button Name="efface_trait"
+                        <StackPanel>
+                            <Image Source="/Resources/efface_crayon.png" Height="25" Width="25"  />
+                        </StackPanel>
+                    </Button>
+                    <Button Name="efface_trait"
                         Style="{StaticResource MaterialDesignRaisedLightButton}" HorizontalAlignment="Left" ToolTip="MaterialDesignRaisedLightButton" 
                         BorderBrush="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurBordure}, ConverterParameter=efface_trait, UpdateSourceTrigger=PropertyChanged}" 
                         Background="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurCouleurFond}, ConverterParameter=efface_trait, UpdateSourceTrigger=PropertyChanged}" 
                         Command="{Binding Path=ChoisirOutil}"
                         CommandParameter="efface_trait">
-                    <StackPanel>
-                        <Image Source="/Resources/efface.png" Height="25" Width="25"  />
-                    </StackPanel>
-                </Button>
-                <StackPanel Orientation="Horizontal">
-                    <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Width="2"  />
-                </StackPanel>
-                <StackPanel Orientation="Vertical" Margin="5,5,5,5" VerticalAlignment="Center">
+                        <StackPanel>
+                            <Image Source="/Resources/efface.png" Height="25" Width="25"  />
+                        </StackPanel>
+                    </Button>
                     <StackPanel Orientation="Horizontal">
-                        <Button Name="Solid" Width="24" Height="24" Padding="0"
+                        <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Width="2"  />
+                    </StackPanel>
+                    <StackPanel Orientation="Vertical" Margin="5,5,5,5" VerticalAlignment="Center">
+                        <StackPanel Orientation="Horizontal">
+                            <Button Name="Solid" Width="24" Height="24" Padding="0"
                             BorderBrush="{Binding Path=SelectedBorder, Converter={StaticResource convertisseurBordure}, ConverterParameter=solid, UpdateSourceTrigger=PropertyChanged}" 
                             Background="{Binding Path=SelectedBorder, Converter={StaticResource convertisseurCouleurFond}, ConverterParameter=solid, UpdateSourceTrigger=PropertyChanged}"                                 
                             HorizontalContentAlignment="Center"
                             IsEnabled="{Binding Path=IsStrokeSelected}"
                             Command="{Binding Path=ChooseBorder}"
                             CommandParameter="solid">
-                            <Rectangle Width="10" Height="2" Fill="Black" Stroke="Black" StrokeThickness="2" HorizontalAlignment="Center"/>
-                        </Button>
-                        <Button Name="Dash" Width="24" Height="24" Padding="0"
+                                <Rectangle Width="10" Height="2" Fill="Black" Stroke="Black" StrokeThickness="2" HorizontalAlignment="Center"/>
+                            </Button>
+                            <Button Name="Dash" Width="24" Height="24" Padding="0"
                             HorizontalContentAlignment="Center"                            
                             BorderBrush="{Binding Path=SelectedBorder, Converter={StaticResource convertisseurBordure}, ConverterParameter=dash, UpdateSourceTrigger=PropertyChanged}" 
                             Background="{Binding Path=SelectedBorder, Converter={StaticResource convertisseurCouleurFond}, ConverterParameter=dash, UpdateSourceTrigger=PropertyChanged}"
                             IsEnabled="{Binding Path=IsStrokeSelected}"
                             Command="{Binding Path=ChooseBorder}"
                             CommandParameter="dash">
-                            <Grid>
-                                <Rectangle Width="4" Height="2" Fill="Black" Stroke="Black" StrokeThickness="2" HorizontalAlignment="Center" Margin="-4,0,4,0"/>
-                                <Rectangle Width="4" Height="2" Fill="Black" Stroke="Black" StrokeThickness="2" HorizontalAlignment="Right" Margin="0,0,-4,0"/>
-                            </Grid>
-                        </Button>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <Button Name="Dot" Width="24" Height="24" Padding="0"
+                                <Grid>
+                                    <Rectangle Width="4" Height="2" Fill="Black" Stroke="Black" StrokeThickness="2" HorizontalAlignment="Center" Margin="-4,0,4,0"/>
+                                    <Rectangle Width="4" Height="2" Fill="Black" Stroke="Black" StrokeThickness="2" HorizontalAlignment="Right" Margin="0,0,-4,0"/>
+                                </Grid>
+                            </Button>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Button Name="Dot" Width="24" Height="24" Padding="0"
                             HorizontalContentAlignment="Center"
                             BorderBrush="{Binding Path=SelectedBorder, Converter={StaticResource convertisseurBordure}, ConverterParameter=dot, UpdateSourceTrigger=PropertyChanged}" 
                             Background="{Binding Path=SelectedBorder, Converter={StaticResource convertisseurCouleurFond}, ConverterParameter=dot, UpdateSourceTrigger=PropertyChanged}"   
                             IsEnabled="{Binding Path=IsStrokeSelected}"
                             Command="{Binding Path=ChooseBorder}"
                             CommandParameter="dot">
-                            <Grid>
-                                <Ellipse Width="4" Height="4" Fill="Black" Stroke="Black" StrokeThickness="2" HorizontalAlignment="Center" Margin="4,0,-4,0"/>
-                                <Ellipse Width="4" Height="4" Fill="Black" Stroke="Black" StrokeThickness="2" HorizontalAlignment="Center" Margin="-4,0,4,0"/>
-                            </Grid>
-                        </Button>
-                        <Button Name="DashDot" Width="24" Height="24" Padding="0"
+                                <Grid>
+                                    <Ellipse Width="4" Height="4" Fill="Black" Stroke="Black" StrokeThickness="2" HorizontalAlignment="Center" Margin="4,0,-4,0"/>
+                                    <Ellipse Width="4" Height="4" Fill="Black" Stroke="Black" StrokeThickness="2" HorizontalAlignment="Center" Margin="-4,0,4,0"/>
+                                </Grid>
+                            </Button>
+                            <Button Name="DashDot" Width="24" Height="24" Padding="0"
                             HorizontalContentAlignment="Center"
                             BorderBrush="{Binding Path=SelectedBorder, Converter={StaticResource convertisseurBordure}, ConverterParameter=dash_dot, UpdateSourceTrigger=PropertyChanged}" 
                             Background="{Binding Path=SelectedBorder, Converter={StaticResource convertisseurCouleurFond}, ConverterParameter=dash_dot, UpdateSourceTrigger=PropertyChanged}"   
                             IsEnabled="{Binding IsStrokeSelected, UpdateSourceTrigger=PropertyChanged}"
                             Command="{Binding Path=ChooseBorder}"
                             CommandParameter="dash_dot">
-                            <Grid>
-                                <Rectangle Width="4" Height="2" Fill="Black" Stroke="Black" StrokeThickness="2" HorizontalAlignment="Center" Margin="-4,1,4,1"/>
-                                <Ellipse Width="4" Height="4" Fill="Black" Stroke="Black" StrokeThickness="2" HorizontalAlignment="Center" Margin="4,0,-4,0"/>
-                            </Grid>
-                        </Button>
+                                <Grid>
+                                    <Rectangle Width="4" Height="2" Fill="Black" Stroke="Black" StrokeThickness="2" HorizontalAlignment="Center" Margin="-4,1,4,1"/>
+                                    <Ellipse Width="4" Height="4" Fill="Black" Stroke="Black" StrokeThickness="2" HorizontalAlignment="Center" Margin="4,0,-4,0"/>
+                                </Grid>
+                            </Button>
+                        </StackPanel>
                     </StackPanel>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Width="2"  />
-                </StackPanel>
-                <StackPanel Orientation="Vertical" Margin="5,5,5,5" VerticalAlignment="Center">
                     <StackPanel Orientation="Horizontal">
-                        <Button Name="PointeRonde" Width="24" Height="24" Padding="0"
+                        <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Width="2"  />
+                    </StackPanel>
+                    <StackPanel Orientation="Vertical" Margin="5,5,5,5" VerticalAlignment="Center">
+                        <StackPanel Orientation="Horizontal">
+                            <Button Name="PointeRonde" Width="24" Height="24" Padding="0"
                             BorderBrush="{Binding Path=PointeSelectionnee, Converter={StaticResource convertisseurBordure}, ConverterParameter=ronde, UpdateSourceTrigger=PropertyChanged}" 
                             Background="{Binding Path=PointeSelectionnee, Converter={StaticResource convertisseurCouleurFond}, ConverterParameter=ronde, UpdateSourceTrigger=PropertyChanged}"                                 
                             HorizontalContentAlignment="Center"                                
                             Command="{Binding Path=ChoisirPointe}"
                             CommandParameter="ronde">
-                            <Ellipse Width="8" Height="8" Fill="Black" Stroke="Black" StrokeThickness="2" HorizontalAlignment="Center"/>
-                        </Button>
-                        <Button Name="PointeCarree" Width="24" Height="24" Padding="0"
+                                <Ellipse Width="8" Height="8" Fill="Black" Stroke="Black" StrokeThickness="2" HorizontalAlignment="Center"/>
+                            </Button>
+                            <Button Name="PointeCarree" Width="24" Height="24" Padding="0"
                             HorizontalContentAlignment="Center"                            
                             BorderBrush="{Binding Path=PointeSelectionnee, Converter={StaticResource convertisseurBordure}, ConverterParameter=carree, UpdateSourceTrigger=PropertyChanged}" 
                             Background="{Binding Path=PointeSelectionnee, Converter={StaticResource convertisseurCouleurFond}, ConverterParameter=carree, UpdateSourceTrigger=PropertyChanged}"                                
                             Command="{Binding Path=ChoisirPointe}"
                             CommandParameter="carree">
-                            <Rectangle Width="8" Height="8" Fill="Black" Stroke="Black" StrokeThickness="2" HorizontalAlignment="Center"/>
-                        </Button>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <Button Name="Verticale" Width="24" Height="24" Padding="0"
+                                <Rectangle Width="8" Height="8" Fill="Black" Stroke="Black" StrokeThickness="2" HorizontalAlignment="Center"/>
+                            </Button>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Button Name="Verticale" Width="24" Height="24" Padding="0"
                             HorizontalContentAlignment="Center"
                             BorderBrush="{Binding Path=PointeSelectionnee, Converter={StaticResource convertisseurBordure}, ConverterParameter=verticale, UpdateSourceTrigger=PropertyChanged}" 
                             Background="{Binding Path=PointeSelectionnee, Converter={StaticResource convertisseurCouleurFond}, ConverterParameter=verticale, UpdateSourceTrigger=PropertyChanged}"   
                             Command="{Binding Path=ChoisirPointe}"
                             CommandParameter="verticale">
-                            <Rectangle Width="2" Height="10" Fill="Black" Stroke="Black" StrokeThickness="2" HorizontalAlignment="Center"/>
-                        </Button>
-                        <Button Name="Horizontale" Width="24" Height="24" Padding="0"
+                                <Rectangle Width="2" Height="10" Fill="Black" Stroke="Black" StrokeThickness="2" HorizontalAlignment="Center"/>
+                            </Button>
+                            <Button Name="Horizontale" Width="24" Height="24" Padding="0"
                             HorizontalContentAlignment="Center"
                             BorderBrush="{Binding Path=PointeSelectionnee, Converter={StaticResource convertisseurBordure}, ConverterParameter=horizontale, UpdateSourceTrigger=PropertyChanged}" 
                             Background="{Binding Path=PointeSelectionnee, Converter={StaticResource convertisseurCouleurFond}, ConverterParameter=horizontale, UpdateSourceTrigger=PropertyChanged}"   
                             Command="{Binding Path=ChoisirPointe}"
                             CommandParameter="horizontale">
-                            <Rectangle Width="10" Height="2" Fill="Black" Stroke="Black" StrokeThickness="2" HorizontalAlignment="Center"/>
-                        </Button>
+                                <Rectangle Width="10" Height="2" Fill="Black" Stroke="Black" StrokeThickness="2" HorizontalAlignment="Center"/>
+                            </Button>
+                        </StackPanel>
                     </StackPanel>
-                </StackPanel>
-                <xctk:ColorPicker x:Name="selecteurCouleur"                             
+                    <xctk:ColorPicker x:Name="selecteurCouleur"                             
                   VerticalContentAlignment="Stretch"
                   Background="#00000000"
                   ShowDropDownButton="False"
@@ -334,46 +344,46 @@
                   RecentColorsHeader="Récemment utilisées"
                   UsingAlphaChannel="True"
                   AdvancedButtonHeader="Personnalisé" />
-                <Slider Width="100" Height="26" Minimum="1" Maximum="50"
+                    <Slider Width="100" Height="26" Minimum="1" Maximum="50"
                         Value="{Binding Path=TailleTrait, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                         Margin="12"
                         Foreground="OrangeRed"                        
                         TickFrequency="10" TickPlacement="BottomRight" IsSnapToTickEnabled="False">
-                </Slider>
+                    </Slider>
 
-            </StackPanel>
-        </Border>
+                </StackPanel>
+            </Border>
 
-        <Border DockPanel.Dock="Bottom" Height="25" BorderThickness="0,0.75,0,0.75" BorderBrush="#77000000">
-            <StackPanel Orientation="Horizontal" Background="#FFF0F0F0" HorizontalAlignment="Left" Width="1335" Margin="0,-3.889,0,3.444">
-                <Image Source="/Resources/position.png" Margin="5,5,5,5" VerticalAlignment="Center"/>
-                <TextBlock Name="textBlockPosition" VerticalAlignment="Center" HorizontalAlignment="Left"/>
-            </StackPanel>
-        </Border>
+            <Border DockPanel.Dock="Bottom" Height="25" BorderThickness="0,0.75,0,0.75" BorderBrush="#77000000">
+                <StackPanel Orientation="Horizontal" Background="#FFF0F0F0" HorizontalAlignment="Left" Width="1335" Margin="0,-3.889,0,3.444">
+                    <Image Source="/Resources/position.png" Margin="5,5,5,5" VerticalAlignment="Center"/>
+                    <TextBlock Name="textBlockPosition" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                </StackPanel>
+            </Border>
 
-        <Grid DockPanel.Dock="Left" Margin="0,1,0,0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Name="colonne" Width="550" />
-                <ColumnDefinition Width="6" />
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Name="ligne" Height="310" />
-                <RowDefinition Height="6" />
-            </Grid.RowDefinitions>
-            <Thumb Name="horizontal" Grid.Row="0" Grid.Column="1" Background="White" 
+            <Grid DockPanel.Dock="Left" Margin="0,1,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Name="colonne" Width="550" />
+                    <ColumnDefinition Width="6" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Name="ligne" Height="310" />
+                    <RowDefinition Height="6" />
+                </Grid.RowDefinitions>
+                <Thumb Name="horizontal" Grid.Row="0" Grid.Column="1" Background="White" 
                       Width="6" Height="6" DragDelta="GlisserMouvementRecu" 
                       DragStarted="GlisserCommence" DragCompleted="GlisserTermine"
                       />
-            <Thumb Name="diagonal" Grid.Row="1" Grid.Column="1" Background="White" 
+                <Thumb Name="diagonal" Grid.Row="1" Grid.Column="1" Background="White" 
                       Width="6" Height="6" DragDelta="GlisserMouvementRecu" 
                       DragStarted="GlisserCommence" DragCompleted="GlisserTermine"
                       />
-            <Thumb Name="vertical" Grid.Row="1" Grid.Column="0" Background="White" 
+                <Thumb Name="vertical" Grid.Row="1" Grid.Column="0" Background="White" 
                       Width="6" Height="6" DragDelta="GlisserMouvementRecu" 
                       DragStarted="GlisserCommence" DragCompleted="GlisserTermine"
                       />
-            <Border BorderThickness="5,5,0,0">
-                <InkCanvas ClipToBounds="True" Grid.Column="0" Grid.Row="0" Name="surfaceDessin" Margin="10,11.111,0.222,-19.889"
+                <Border BorderThickness="5,5,0,0">
+                    <InkCanvas ClipToBounds="True" Grid.Column="0" Grid.Row="0" Name="surfaceDessin" Margin="10,11.111,0.222,-19.889"
                            HorizontalAlignment="Stretch" VerticalAlignment="Stretch"                           
                            MouseLeave="surfaceDessin_MouseLeave"
                            MouseMove="surfaceDessin_MouseMove"
@@ -385,115 +395,118 @@
                            EditingMode="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurModeEdition}, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
                            DefaultDrawingAttributes="{Binding Path=AttributsDessin, Mode=OneTime}"
                            SelectionChanged="surfaceDessin_ChangeSelection" />
-                <Border.Effect>
-                    <DropShadowEffect Opacity="0.3" BlurRadius="10"/>
-                </Border.Effect>
-            </Border>
+                    <Border.Effect>
+                        <DropShadowEffect Opacity="0.3" BlurRadius="10"/>
+                    </Border.Effect>
+                </Border>
 
-        </Grid>
-        <StackPanel x:Name="chatMenu" Background="Gainsboro" Width="70"  HorizontalAlignment="Right" Panel.ZIndex="100">
+            </Grid>
+            <StackPanel x:Name="chatMenu" Background="Gainsboro" Width="70"  HorizontalAlignment="Right" Panel.ZIndex="100">
 
-            <ToggleButton x:Name="hamburgerMenu" Style="{StaticResource MaterialDesignActionToggleButton}" Foreground="Black" Background="Transparent" Click="hamburgerMenu_Click" Margin="0,10,20,0" HorizontalAlignment="Right">
-                <ToggleButton.Content>
-                    <materialDesign:PackIcon Kind="HamburgerMenu" Width="30" Height="30" />
-                </ToggleButton.Content>
-                <materialDesign:ToggleButtonAssist.OnContent>
-                    <materialDesign:PackIcon Kind="KeyboardArrowRight"  Width="30" Height="30"  />
-                </materialDesign:ToggleButtonAssist.OnContent>
-            </ToggleButton>
+                <ToggleButton x:Name="hamburgerMenu" Style="{StaticResource MaterialDesignActionToggleButton}" Foreground="Black" Background="Transparent" Click="hamburgerMenu_Click" Margin="0,10,20,0" HorizontalAlignment="Right">
+                    <ToggleButton.Content>
+                        <materialDesign:PackIcon Kind="HamburgerMenu" Width="30" Height="30" />
+                    </ToggleButton.Content>
+                    <materialDesign:ToggleButtonAssist.OnContent>
+                        <materialDesign:PackIcon Kind="KeyboardArrowRight"  Width="30" Height="30"  />
+                    </materialDesign:ToggleButtonAssist.OnContent>
+                </ToggleButton>
 
-            <StackPanel Orientation="Vertical" Margin="20" x:Name="chatTab" Visibility="Collapsed" Background="WhiteSmoke">
-                <Border BorderThickness="1" BorderBrush="Gray" ClipToBounds="True" HorizontalAlignment="Stretch" Height="314">
-                    <StackPanel Orientation="Vertical" Margin="10" x:Name="chatWrapper">
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                            <Button  x:Name="chatButton" HorizontalAlignment="Left" Margin="0,0,10,0"  Width="50" Click="chatButton_Click">
-                                <materialDesign:PackIcon Kind="WindowRestore" />
-                            </Button>
+                <StackPanel Orientation="Vertical" Margin="20" x:Name="chatTab" Visibility="Collapsed" Background="WhiteSmoke">
+                    <Border BorderThickness="1" BorderBrush="Gray" ClipToBounds="True" HorizontalAlignment="Stretch" Height="314">
+                        <StackPanel Orientation="Vertical" Margin="10" x:Name="chatWrapper">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                <Button  x:Name="chatButton" HorizontalAlignment="Left" Margin="0,0,10,0"  Width="50" Click="chatButton_Click">
+                                    <materialDesign:PackIcon Kind="WindowRestore" />
+                                </Button>
 
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal">
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
 
-                            <materialDesign:DialogHost DialogClosing="AddRoom" Style="{StaticResource MaterialDesignEmbeddedDialogHost}" Margin="5,0,0,0" Width="269"  HorizontalAlignment="Left" Height="235">
-                                <materialDesign:DialogHost.DialogContent>
-                                    <StackPanel Margin="15">
-                                        <TextBlock>
+                                <materialDesign:DialogHost DialogClosing="AddRoom" Style="{StaticResource MaterialDesignEmbeddedDialogHost}" Margin="5,0,0,0" Width="269"  HorizontalAlignment="Left" Height="235">
+                                    <materialDesign:DialogHost.DialogContent>
+                                        <StackPanel Margin="15">
+                                            <TextBlock>
                                                 Create a new chatroom
-                                        </TextBlock>
-                                        <TextBox MaxLength="12" Margin="0 8 0 0" HorizontalAlignment="Stretch" x:Name="roomTextBox" />
-                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                                            <Button Style="{StaticResource MaterialDesignFlatButton}" IsDefault="True" Margin="0 8 8 0" Command="materialDesign:DialogHost.CloseDialogCommand">
-                                                <Button.CommandParameter>
-                                                    <system:Boolean xmlns:system="clr-namespace:System;assembly=mscorlib">
-                                                        True
-                                                    </system:Boolean>
-                                                </Button.CommandParameter>
-                                                ADD
-                                            </Button>
-                                            <Button Style="{StaticResource MaterialDesignFlatButton}" IsCancel="True"  Margin="0 8 8 0" Command="materialDesign:DialogHost.CloseDialogCommand" Click="clearRoomName">
-                                                <Button.CommandParameter>
-                                                    <system:Boolean xmlns:system="clr-namespace:System;assembly=mscorlib">
-                                                        False
-                                                    </system:Boolean>
-                                                </Button.CommandParameter>
-                                                CANCEL
-                                            </Button>
+                                            </TextBlock>
+                                            <TextBox MaxLength="12" Margin="0 8 0 0" HorizontalAlignment="Stretch" x:Name="roomTextBox" />
+                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                                <Button Style="{StaticResource MaterialDesignFlatButton}" IsDefault="True" Margin="0 8 8 0" Command="materialDesign:DialogHost.CloseDialogCommand">
+                                                    <Button.CommandParameter>
+                                                        <system:Boolean xmlns:system="clr-namespace:System;assembly=mscorlib">
+                                                            True
+                                                        </system:Boolean>
+                                                    </Button.CommandParameter>
+                                                    ADD
+                                                </Button>
+                                                <Button Style="{StaticResource MaterialDesignFlatButton}" IsCancel="True"  Margin="0 8 8 0" Command="materialDesign:DialogHost.CloseDialogCommand" Click="clearRoomName">
+                                                    <Button.CommandParameter>
+                                                        <system:Boolean xmlns:system="clr-namespace:System;assembly=mscorlib">
+                                                            False
+                                                        </system:Boolean>
+                                                    </Button.CommandParameter>
+                                                    CANCEL
+                                                </Button>
+                                            </StackPanel>
                                         </StackPanel>
-                                    </StackPanel>
-                                </materialDesign:DialogHost.DialogContent>
-                                <Border BorderThickness="1" BorderBrush="{DynamicResource PrimaryHueMidBrush}" ClipToBounds="True" HorizontalAlignment="Stretch">
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="95*"/>
-                                            <ColumnDefinition Width="202*"/>
-                                        </Grid.ColumnDefinitions>
+                                    </materialDesign:DialogHost.DialogContent>
+                                    <Border BorderThickness="1" BorderBrush="{DynamicResource PrimaryHueMidBrush}" ClipToBounds="True" HorizontalAlignment="Stretch">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="95*"/>
+                                                <ColumnDefinition Width="202*"/>
+                                            </Grid.ColumnDefinitions>
 
-                                        <ListBox ItemsSource="{Binding Rooms}" Name="roomList" Margin="0,50,0,5" MaxHeight="190" Grid.ColumnSpan="2">
-                                            <ListBox.ItemTemplate  >
-                                                <DataTemplate>
-                                                    <Grid Margin="0,2" >
-                                                        <RadioButton GroupName="ChatRooms" Command="{Binding Path=DataContext.ChoisirRoom, ElementName=roomList}" CommandParameter="{Binding Title}" />
-                                                        <TextBlock Text="{Binding Title}" Margin="20,0,50,0"/>
-                                                        <Button Background="{Binding Connected, Converter={StaticResource convertisseurRoomCouleurFond}, UpdateSourceTrigger=PropertyChanged}"
+                                            <ListBox ItemsSource="{Binding Rooms}" Name="roomList" Margin="0,50,0,5" MaxHeight="190" Grid.ColumnSpan="2">
+                                                <ListBox.ItemTemplate  >
+                                                    <DataTemplate>
+                                                        <Grid Margin="0,2" >
+                                                            <RadioButton GroupName="ChatRooms" Command="{Binding Path=DataContext.ChoisirRoom, ElementName=roomList}" CommandParameter="{Binding Title}" />
+                                                            <TextBlock Text="{Binding Title}" Margin="20,0,50,0"/>
+                                                            <Button Background="{Binding Connected, Converter={StaticResource convertisseurRoomCouleurFond}, UpdateSourceTrigger=PropertyChanged}"
                                                         Content="{Binding Connected, Converter={StaticResource convertisseurRoomContent}, UpdateSourceTrigger=PropertyChanged}"
                                                         Width="100" Height="20" FontSize="10" BorderBrush="Transparent" Foreground="Black" Margin="120,0,0,0"
                                                         Command="{Binding Path=DataContext.RoomConnect, ElementName=roomList}" CommandParameter="{Binding Path=.}" 
                                                      />
 
-                                                    </Grid>
-                                                </DataTemplate>
-                                            </ListBox.ItemTemplate>
+                                                        </Grid>
+                                                    </DataTemplate>
+                                                </ListBox.ItemTemplate>
 
-                                        </ListBox>
-                                        <materialDesign:ColorZone Mode="PrimaryMid" Grid.ColumnSpan="2" Margin="0,0,-0.223,0">
-                                            <TextBlock  Margin="16">
+                                            </ListBox>
+                                            <materialDesign:ColorZone Mode="PrimaryMid" Grid.ColumnSpan="2" Margin="0,0,-0.223,0">
+                                                <TextBlock  Margin="16">
                                   Chatrooms
-                                            </TextBlock>
-                                        </materialDesign:ColorZone>
-                                        <Button Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}" Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}" VerticalAlignment="Top" HorizontalAlignment="Right" Grid.Row="0" Margin="0,15,15,0" Grid.Column="1">
-                                            <materialDesign:PackIcon Kind="Plus" Height="22" Width="22" />
-                                        </Button>
-                                    </Grid>
-                                </Border>
-                            </materialDesign:DialogHost>
-                            <Grid x:Name="chat" Height="257" x:FieldModifier="public">
-                                <TextBlock Text="{Binding CurrentRoom, StringFormat='Room: {0}'}" Margin="35,-10,0,0" />
-                                <ListBox ItemsSource="{Binding MessagesListBox, UpdateSourceTrigger=PropertyChanged}" x:Name="messagesList" HorizontalAlignment="Left" Height="190" Margin="30,10,0,0" VerticalAlignment="Top" Width="400"  BorderThickness="1" BorderBrush="Gray">
-                                    <ListBox.ItemTemplate>
-                                        <DataTemplate>
-                                            <TextBlock Text="{Binding Path=.}" TextWrapping="Wrap"></TextBlock>
-                                        </DataTemplate>
-                                    </ListBox.ItemTemplate>
-                                </ListBox>
-                                <Button x:Name="sendButton" Content="Send" HorizontalAlignment="left" Margin="350,0,0,10" VerticalAlignment="Bottom" Width="80" Click="sendButton_Click" Height="35" IsEnabled="True"/>
-                                <TextBox x:Name="messageTextBox" HorizontalAlignment="Left" Height="41" Margin="100,0,0,10" TextWrapping="Wrap" VerticalAlignment="Bottom" Width="230"/>
-                                <Label Content="Message :" HorizontalAlignment="Left" Height="26" Margin="30,0,0,8" VerticalAlignment="Bottom" Width="100"/>
+                                                </TextBlock>
+                                            </materialDesign:ColorZone>
+                                            <Button Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}" Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}" VerticalAlignment="Top" HorizontalAlignment="Right" Grid.Row="0" Margin="0,15,15,0" Grid.Column="1">
+                                                <materialDesign:PackIcon Kind="Plus" Height="22" Width="22" />
+                                            </Button>
+                                        </Grid>
+                                    </Border>
+                                </materialDesign:DialogHost>
+                                <Grid x:Name="chat" Height="257" x:FieldModifier="public">
+                                    <TextBlock Text="{Binding CurrentRoom, StringFormat='Room: {0}'}" Margin="35,-10,0,0" />
+                                    <ListBox ItemsSource="{Binding MessagesListBox, UpdateSourceTrigger=PropertyChanged}" x:Name="messagesList" HorizontalAlignment="Left" Height="190" Margin="30,10,0,0" VerticalAlignment="Top" Width="400"  BorderThickness="1" BorderBrush="Gray">
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Path=.}" TextWrapping="Wrap"></TextBlock>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
+                                    <Button x:Name="sendButton" Content="Send" HorizontalAlignment="left" Margin="350,0,0,10" VerticalAlignment="Bottom" Width="80" Click="sendButton_Click" Height="35" IsEnabled="True"/>
+                                    <TextBox x:Name="messageTextBox" HorizontalAlignment="Left" Height="41" Margin="100,0,0,10" TextWrapping="Wrap" VerticalAlignment="Bottom" Width="230"/>
+                                    <Label Content="Message :" HorizontalAlignment="Left" Height="26" Margin="30,0,0,8" VerticalAlignment="Bottom" Width="100"/>
 
-                            </Grid>
+                                </Grid>
+                            </StackPanel>
                         </StackPanel>
-                    </StackPanel>
-                </Border>
-            </StackPanel>
+                    </Border>
+                </StackPanel>
 
-        </StackPanel>
-    </DockPanel>
+            </StackPanel>
+        </DockPanel>
+
+    </StackPanel>
+    
 </Window>
