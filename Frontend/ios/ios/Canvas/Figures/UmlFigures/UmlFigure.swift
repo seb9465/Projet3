@@ -80,11 +80,32 @@ class UmlFigure : Figure {
         self.lastPoint = CGPoint(x: self.frame.maxX, y: self.frame.maxY) 
     }
     
+    private func distance(a: CGPoint, b: CGPoint) -> CGFloat {
+        let xDist = a.x - b.x
+        let yDist = a.y - b.y
+        return CGFloat(sqrt(xDist * xDist + yDist * yDist))
+    }
+    
+    public func getClosestAnchor(point: CGPoint) -> CGPoint {
+        var indexToAnchor : [Int: String] = [0: "top", 1: "left", 2: "right", 3: "bottom"]
+        var distances: [CGFloat] = []
+        distances.append(self.distance(a: point, b: convert((self.anchorPoints?.anchorPointsSnapEdges["top"])!, to: self.superview)))
+        distances.append(self.distance(a: point, b: convert((self.anchorPoints?.anchorPointsSnapEdges["left"])!, to: self.superview)))
+        distances.append(self.distance(a: point, b: convert((self.anchorPoints?.anchorPointsSnapEdges["right"])!, to: self.superview)))
+        distances.append(self.distance(a: point, b: convert((self.anchorPoints?.anchorPointsSnapEdges["bottom"])!, to: self.superview)))
+        
+        let minIndex = distances.firstIndex(of: distances.min()!)
+        return convert((self.anchorPoints?.anchorPointsSnapEdges[indexToAnchor[minIndex!]!])!, to: self.superview)
+    }
+}
+
+// Touch Interaction Logic
+extension UmlFigure {
     public override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         let touch = touches.first
         guard let point = touch?.location(in: self) else { return }
         guard let sublayers = self.layer.sublayers as? [CAShapeLayer] else { return }
-
+        
         for layer in sublayers{
             if let path = layer.path, path.contains(point) {
                 let snapPoint = convert((self.anchorPoints?.anchorPointsSnapEdges[layer.name!])!, to: self.superview)
@@ -96,10 +117,7 @@ class UmlFigure : Figure {
         let editorPoint = convert(point, to: self.superview)
         self.delegate?.notifyTouchBegan(action: "shape", point: editorPoint, figure: self)
     }
-}
-
-// Touch Interaction Logic
-extension UmlFigure {
+    
     public override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         let touch = touches.first
         guard let point = touch?.location(in: self.superview) else { return }

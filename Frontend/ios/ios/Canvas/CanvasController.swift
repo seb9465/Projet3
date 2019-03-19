@@ -171,7 +171,7 @@ extension CanvasController: UITableViewDelegate, UITableViewDataSource {
         if (indexPath.row == 0) {
             return 150
         } else {
-            return 300
+            return 525
         }
     }
     
@@ -187,6 +187,8 @@ extension CanvasController: UITableViewDelegate, UITableViewDataSource {
             cell.delegate = self.editor
             cell.classNameField.text = (self.editor.selectedFigure as! UmlClassFigure).className
             cell.methods = (self.editor.selectedFigure as! UmlClassFigure).methods
+            cell.methodsTableView.reloadData()
+            cell.attributes = (self.editor.selectedFigure as! UmlClassFigure).attributes
             cell.attributesTableView.reloadData()
             return cell
         case 2:

@@ -32,7 +32,7 @@ class ConnectionFigure : Figure {
     override func draw(_ rect: CGRect) {
         if let context = UIGraphicsGetCurrentContext() {
             context.setStrokeColor(UIColor.blue.cgColor)
-            context.setLineWidth(3)
+            context.setLineWidth(2)
             context.beginPath()
             context.move(to: self.getLocalInitialPoint())
             context.addLine(to: self.getLocalFinalPoint())

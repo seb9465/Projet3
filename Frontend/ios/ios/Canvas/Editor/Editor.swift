@@ -149,8 +149,8 @@ class Editor {
     
     func snap(point: CGPoint) -> CGPoint{
         for subview in self.editorView.subviews {
-            if (subview.frame.contains(point)) {
-                return subview.center
+            if (subview.frame.contains(point)) { 
+                return (subview as! UmlFigure).getClosestAnchor(point: point)
             }
         }
         return point
@@ -186,6 +186,16 @@ extension Editor: SideToolbarDelegate {
     
     func removeClassMethod(name: String, index: Int) {
         (self.selectedFigure as! UmlClassFigure).removeMethod(name: name, index: index)
+        sideToolbarController?.update()
+    }
+    
+    func addClassAttribute(name: String) {
+        (self.selectedFigure as! UmlClassFigure).addAttribute(name: name)
+        sideToolbarController?.update()
+    }
+    
+    func removeClassAttribute(name: String, index: Int) {
+        (self.selectedFigure as! UmlClassFigure).removeAttribute(name: name, index: index)
         sideToolbarController?.update()
     }
 }
@@ -238,8 +248,20 @@ extension Editor : TouchInputDelegate {
             (figure as! UmlFigure).translate(by: offset)
             self.selectionOutline.translate(by: offset)
             self.previousTouchPoint = point
+            
             return
         }
+        
+//        if (self.touchEventState == .CONNECTION) {
+//            for subview in self.editorView.subviews {
+//                if (subview.frame.contains(point)) {
+//                    print("Contained")
+//                    let outline = SelectionOutline(firstPoint: subview.frame.origin, lastPoint: CGPoint(x: subview.frame.maxX, y: subview.frame.maxY))
+//                    outline.addSelectedFigureLayers()
+//                    self.editorView.addSubview(outline)
+//                }
+//            }
+//        }
         
         if (self.touchEventState == .AREA_SELECT) {
             // Resize the selection shape
