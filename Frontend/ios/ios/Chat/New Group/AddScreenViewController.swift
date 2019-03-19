@@ -18,8 +18,6 @@ class AddScreenViewController: UIViewController, UITableViewDelegate, UITableVie
     
     private let refreshControl = UIRefreshControl();
     
-    var userChannels: ChannelsMessage = ChannelsMessage();
-    
     @objc private func refreshWeatherData(_ sender: Any) {
         // Fetch Weather Data
         ChatService.shared.invokeFetchChannels();
@@ -60,13 +58,7 @@ class AddScreenViewController: UIViewController, UITableViewDelegate, UITableVie
 //        self.dismiss(animated: true, completion: nil);
     }
     
-    public func updateChannels(channels: [Channel]) -> Void {
-        for channel in channels {
-            if (!self.userChannels.channels.contains(where: { $0.name.elementsEqual(channel.name) }) && !channel.connected) {
-                self.userChannels.channels.append(channel);
-            }
-        }
-        
+    public func updateChannels() -> Void {
         self.tableView.reloadData();
     }
     
@@ -85,19 +77,19 @@ class AddScreenViewController: UIViewController, UITableViewDelegate, UITableVie
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.userChannels.channels.count;
+        return ChatService.shared.userChannels.channels.count;
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "CustomTableViewCell") as? CustomTableViewCell;
         
-        cell?.chatRoomName.text = self.userChannels.channels[indexPath.row].name;
+        cell?.chatRoomName.text = ChatService.shared.userChannels.channels[indexPath.row].name;
         
         return cell!
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        ChatService.shared.currentChannel = self.userChannels.channels[indexPath.row];
+        ChatService.shared.currentChannel = ChatService.shared.userChannels.channels[indexPath.row];
         
         let storyboard = UIStoryboard(name: "Chat", bundle: nil);
         let destination = storyboard.instantiateViewController(withIdentifier: "ChatView");

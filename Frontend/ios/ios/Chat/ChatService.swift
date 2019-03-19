@@ -18,6 +18,9 @@ class ChatService {
     var currentChannel: Channel!;
     var connected: Bool = false;
     
+    var userChannels: ChannelsMessage = ChannelsMessage();
+    var serverChannels: ChannelsMessage = ChannelsMessage();
+    
     init() {
         print("[ CHAT ] INIT from ChatService");
         self._members = Members();
@@ -56,13 +59,14 @@ class ChatService {
         self.invokeCreateChannel(channelName: channelName);
     }
     
-    public func onCreateChannel(updateChannelsFct: @escaping (_ channels: [Channel]) -> Void) -> Void {
+    public func onCreateChannel(updateChannelsFct: @escaping () -> Void) -> Void {
         self.hubConnection.on(method: "CreateChannel", callback: { args, typeConverter in
             let newChannelJson: String = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self)!;
             if let newChannelJsonData = newChannelJson.data(using: .utf8) {
                 let newChannel: ChannelMessage = try! JSONDecoder().decode(ChannelMessage.self, from: newChannelJsonData);
-                updateChannelsFct([newChannel.channel]);
+                self.userChannels.channels.append(newChannel.channel);
             }
+            updateChannelsFct();
         });
     }
     
@@ -80,14 +84,23 @@ class ChatService {
         });
     }
     
-    public func onFetchChannels(updateChannelsFct: @escaping (_ channels: [Channel]) -> Void) -> Void {
+    public func onFetchChannels(updateChannelsFct: @escaping () -> Void) -> Void {
         self.hubConnection.on(method: "FetchChannels", callback: { args, typeConverter in
             print("[ CHAT ] On FetchChannels");
             
             let channelsJson: String = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self)!;
             if let channelsJsonData = channelsJson.data(using: .utf8) {
                 let channels: ChannelsMessage = try! JSONDecoder().decode(ChannelsMessage.self, from: channelsJsonData);
-                updateChannelsFct(channels.channels);
+                self.userChannels.channels = [];
+                self.serverChannels.channels = [];
+                for channel in channels.channels {
+                    if (channel.connected) {
+                        self.userChannels.channels.append(channel);
+                    } else {
+                        self.serverChannels.channels.append(channel);
+                    }
+                }
+                updateChannelsFct();
             }
         });
     }
