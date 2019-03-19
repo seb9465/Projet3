@@ -181,6 +181,16 @@ extension Editor: SideToolbarDelegate {
         (self.selectedFigure as! UmlClassFigure).removeMethod(name: name, index: index)
         sideToolbarController?.update()
     }
+    
+    func addClassAttribute(name: String) {
+        (self.selectedFigure as! UmlClassFigure).addAttribute(name: name)
+        sideToolbarController?.update()
+    }
+    
+    func removeClassAttribute(name: String, index: Int) {
+        (self.selectedFigure as! UmlClassFigure).removeAttribute(name: name, index: index)
+        sideToolbarController?.update()
+    }
 }
 
 extension Editor : TouchInputDelegate {

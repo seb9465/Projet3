@@ -16,6 +16,7 @@ class UmlClassFigure: UmlFigure {
     
     public var className: String = "ClassName"
     public var methods: [String] = []
+    public var attributes: [String] = []
 
     
     init(origin: CGPoint) {
@@ -42,13 +43,23 @@ class UmlClassFigure: UmlFigure {
     
     public func removeMethod(name: String, index: Int) {
         self.methods.remove(at: index)
-//        self.methods.append(name)
+        setNeedsDisplay();
+    }
+    
+    public func addAttribute(name: String) {
+        self.attributes.append(name)
+        setNeedsDisplay();
+    }
+    
+    public func removeAttribute(name: String, index: Int) {
+        self.attributes.remove(at: index)
         setNeedsDisplay();
     }
     
     override func draw(_ rect: CGRect) {
         let outerRect = CGRect(x: 0, y: 0, width: self.frame.width, height: self.frame.height).insetBy(dx: 5, dy: 5);
         let nameRect = CGRect(x: 0, y: 0, width: self.frame.width, height: 50).insetBy(dx: 5, dy: 5);
+        let splitterRect = CGRect(x: 0, y: 0, width: self.frame.width, height: 125).insetBy(dx: 5, dy: 5);
         
         let nameLabel = UILabel(frame: nameRect)
         nameLabel.text = self.className
@@ -63,12 +74,25 @@ class UmlClassFigure: UmlFigure {
             methodLabel.textAlignment = .left
             methodLabel.drawText(in: methodRect)
         }
+        
+        for n in 0..<self.attributes.count {
+            let attributesRect = CGRect(x: 0, y: CGFloat(125 + (16 * n)), width: self.frame.width, height: 16).insetBy(dx: 5, dy: 5);
+            let attributeLabel = UILabel(frame: attributesRect)
+            attributeLabel.text = "  • " + self.attributes[n]
+            attributeLabel.textAlignment = .left
+            attributeLabel.drawText(in: attributesRect)
+        }
 
         let outerRectPath = UIBezierPath(rect: outerRect)
         let nameRectPath = UIBezierPath(rect: nameRect)
+        let splitterRectPath = UIBezierPath(rect: splitterRect)
         
         self.figureColor.setFill()
         self.lineColor.setStroke()
+        
+        splitterRectPath.lineWidth = self.lineWidth
+        splitterRectPath.fill()
+        splitterRectPath.stroke()
         
         nameRectPath.lineWidth = self.lineWidth
         nameRectPath.fill()

@@ -13,4 +13,6 @@ protocol SideToolbarDelegate {
     func setSelectedFigureName(name: String)
     func addClassMethod(name: String)
     func removeClassMethod(name: String, index: Int)
+    func addClassAttribute(name: String)
+    func removeClassAttribute(name: String, index: Int)
 }

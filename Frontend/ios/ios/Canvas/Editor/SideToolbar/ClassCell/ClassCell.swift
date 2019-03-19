@@ -14,7 +14,9 @@ class ClassCell: UITableViewCell {
 
     var delegate: SideToolbarDelegate?
     var methods: [String] = []
+    var attributes: [String] = []
     
+    @IBOutlet weak var methodsTableView: UITableView!
     @IBOutlet weak var attributesTableView: UITableView!
     
     override func awakeFromNib() {
@@ -23,12 +25,19 @@ class ClassCell: UITableViewCell {
     }
     
     func setUpTable(){
+        self.methodsTableView?.delegate = self
+        self.methodsTableView?.dataSource = self
+        let nib = UINib.init(nibName: "ClassMethodCell", bundle: nil)
+        self.methodsTableView.register(nib, forCellReuseIdentifier: "ClassMethodCell")
+        let nibAdd = UINib.init(nibName: "AddMethodCell", bundle: nil)
+        self.methodsTableView.register(nibAdd, forCellReuseIdentifier: "AddMethodCell")
+        
         self.attributesTableView?.delegate = self
         self.attributesTableView?.dataSource = self
-        let nib = UINib.init(nibName: "ClassMethodCell", bundle: nil)
-        self.attributesTableView.register(nib, forCellReuseIdentifier: "ClassMethodCell")
-        let nibAdd = UINib.init(nibName: "AddMethodCell", bundle: nil)
-        self.attributesTableView.register(nibAdd, forCellReuseIdentifier: "AddMethodCell")
+        let attrnib = UINib.init(nibName: "ClassAttributeCell", bundle: nil)
+        self.attributesTableView.register(attrnib, forCellReuseIdentifier: "ClassAttributeCell")
+        let addAttrnib = UINib.init(nibName: "AddAttributeCell", bundle: nil)
+        self.attributesTableView.register(addAttrnib, forCellReuseIdentifier: "AddAttributeCell")
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -44,7 +53,11 @@ class ClassCell: UITableViewCell {
 
 extension ClassCell: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.methods.count + 1
+        if (tableView == self.methodsTableView) {
+            return self.methods.count + 1
+        }
+        
+        return self.attributes.count + 1
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -52,15 +65,28 @@ extension ClassCell: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if(indexPath.row == 0) {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "AddMethodCell", for: indexPath) as! AddMethodCell
+        if (tableView == self.methodsTableView) {
+            if(indexPath.row == 0) {
+                let cell = tableView.dequeueReusableCell(withIdentifier: "AddMethodCell", for: indexPath) as! AddMethodCell
+                cell.delegate = self.delegate
+                return cell
+            }
+            let cell = tableView.dequeueReusableCell(withIdentifier: "ClassMethodCell", for: indexPath) as! ClassMethodCell
+            cell.delegate = self.delegate
+            cell.methodName.text = self.methods[indexPath.row - 1]
+            cell.methodIndex = indexPath.row - 1
+            return cell
+        }
+        
+        if (indexPath.row == 0) {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "AddAttributeCell", for: indexPath) as! AddAttributeCell
             cell.delegate = self.delegate
             return cell
         }
-        let cell = tableView.dequeueReusableCell(withIdentifier: "ClassMethodCell", for: indexPath) as! ClassMethodCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ClassAttributeCell", for: indexPath) as! ClassAttributeCell
         cell.delegate = self.delegate
-        cell.methodName.text = self.methods[indexPath.row - 1]
-        cell.methodIndex = indexPath.row - 1
+        cell.attributeName.text = self.attributes[indexPath.row - 1]
+        cell.attributeIndex = indexPath.row - 1
         return cell
     }
 }
