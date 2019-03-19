@@ -16,11 +16,11 @@ class AddScreenViewController: UIViewController, UITableViewDelegate, UITableVie
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 60;
+        return 100;
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 100;
+        return 1;
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -29,6 +29,10 @@ class AddScreenViewController: UIViewController, UITableViewDelegate, UITableVie
         cell?.chatRoomName.text = "Hellllo";
         
         return cell!
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 100;
     }
     
     @IBOutlet var tableView: UITableView!
@@ -41,6 +45,7 @@ class AddScreenViewController: UIViewController, UITableViewDelegate, UITableVie
         super.viewDidLoad();
         let textFieldCell = UINib(nibName: "CustomTableViewCell", bundle: nil)
         self.tableView.register(textFieldCell, forCellReuseIdentifier: "CustomTableViewCell");
+        self.tableView.separatorStyle = .none;
     }
     
     @IBAction func cancelButton(_ sender: Any) {
