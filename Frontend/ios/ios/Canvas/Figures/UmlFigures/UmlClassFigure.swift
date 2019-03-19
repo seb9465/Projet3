@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import GLKit
 
 class UmlClassFigure: UmlFigure {
     
@@ -16,7 +17,7 @@ class UmlClassFigure: UmlFigure {
     
     public var className: String = "ClassName"
     public var methods: [String] = []
-
+    private var currentAngle: Double = 0
     
     init(origin: CGPoint) {
         super.init(touchedPoint: origin, width: UmlClassFigure.BASE_WIDTH, height: UmlClassFigure.BASE_HEIGHT)
@@ -78,4 +79,18 @@ class UmlClassFigure: UmlFigure {
         outerRectPath.fill()
         outerRectPath.stroke()
     }
+    
+    override public func rotate(orientation: RotateOrientation) -> Void {
+        if(orientation == RotateOrientation.right) {
+            currentAngle += 90
+        } else {
+            currentAngle -= 90
+        }
+        if(abs(currentAngle) == 360) {
+            currentAngle = 0
+        }
+        self.transform = CGAffineTransform.init(rotationAngle: CGFloat(currentAngle * Double.pi/180))
+        setNeedsDisplay();
+    }
+    
 }

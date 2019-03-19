@@ -72,6 +72,8 @@
 		B7B1B43E2231C03900BEE17D /* MessageDisplayExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B1B43D2231C03900BEE17D /* MessageDisplayExtension.swift */; };
 		B7B1B4402231C06900BEE17D /* MessageLayoutExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B1B43F2231C06900BEE17D /* MessageLayoutExtension.swift */; };
 		C43102E122132226008F1D80 /* SoundNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43102E022132226008F1D80 /* SoundNotification.swift */; };
+		C47715C4224149B5008F27E6 /* RotateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47715C2224149B5008F27E6 /* RotateCell.swift */; };
+		C47715C5224149B5008F27E6 /* RotateCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C47715C3224149B5008F27E6 /* RotateCell.xib */; };
 		C495FEBE22381BDF006E49F9 /* UMLImageFigure.swift in Sources */ = {isa = PBXBuildFile; fileRef = C495FEBD22381BDF006E49F9 /* UMLImageFigure.swift */; };
 		C495FEC22238248E006E49F9 /* Ressources in Resources */ = {isa = PBXBuildFile; fileRef = C495FEC12238248E006E49F9 /* Ressources */; };
 		C4D6BB2722384F5B00121695 /* AnchorPoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D6BB2622384F5B00121695 /* AnchorPoints.swift */; };
@@ -160,6 +162,8 @@
 		B7B1B43D2231C03900BEE17D /* MessageDisplayExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageDisplayExtension.swift; sourceTree = "<group>"; };
 		B7B1B43F2231C06900BEE17D /* MessageLayoutExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageLayoutExtension.swift; sourceTree = "<group>"; };
 		C43102E022132226008F1D80 /* SoundNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundNotification.swift; sourceTree = "<group>"; };
+		C47715C2224149B5008F27E6 /* RotateCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RotateCell.swift; sourceTree = "<group>"; };
+		C47715C3224149B5008F27E6 /* RotateCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RotateCell.xib; sourceTree = "<group>"; };
 		C495FEBD22381BDF006E49F9 /* UMLImageFigure.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UMLImageFigure.swift; path = ios/Canvas/Figures/UMLImageFigure.swift; sourceTree = SOURCE_ROOT; };
 		C495FEC12238248E006E49F9 /* Ressources */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Ressources; sourceTree = "<group>"; };
 		C4D6BB2622384F5B00121695 /* AnchorPoints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnchorPoints.swift; sourceTree = "<group>"; };
@@ -239,6 +243,7 @@
 		3D6E4C3A223ADE5000E391D4 /* SideToolbar */ = {
 			isa = PBXGroup;
 			children = (
+				C47715BA22414569008F27E6 /* RotateCell */,
 				3DE8F115223C32330052580B /* ClassCell */,
 				3D6E4C3F223ADEBC00E391D4 /* BorderCell */,
 				3DE8F113223C26880052580B /* SideToolbarDelegate.swift */,
@@ -486,6 +491,15 @@
 			path = ChatControllerExtensions;
 			sourceTree = "<group>";
 		};
+		C47715BA22414569008F27E6 /* RotateCell */ = {
+			isa = PBXGroup;
+			children = (
+				C47715C2224149B5008F27E6 /* RotateCell.swift */,
+				C47715C3224149B5008F27E6 /* RotateCell.xib */,
+			);
+			path = RotateCell;
+			sourceTree = "<group>";
+		};
 		D66C1DCE238BFD31669CE467 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -581,6 +595,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C47715C5224149B5008F27E6 /* RotateCell.xib in Resources */,
 				3DE8F126223C4AF00052580B /* AddMethodCell.xib in Resources */,
 				B711B5F421F659A50096BF7F /* LaunchScreen.storyboard in Resources */,
 				B781B95922132BDB001C1BD8 /* Canvas.storyboard in Resources */,
@@ -709,6 +724,7 @@
 				3DC967ED220A09C400FA76CB /* DashboardController.swift in Sources */,
 				3DB1363E2235B3130096FA04 /* FigureProtocol.swift in Sources */,
 				3DDE25192202B2AF0082E735 /* RoundedCorners.swift in Sources */,
+				C47715C4224149B5008F27E6 /* RotateCell.swift in Sources */,
 				B7A3A5C42203CF7100031F64 /* Extensions_Chat.swift in Sources */,
 				B711B5EA21F659A30096BF7F /* AppDelegate.swift in Sources */,
 				3D0F8D06224062690034DA1A /* SideToolbarController.swift in Sources */,
@@ -925,13 +941,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = Z9SQJM9KY3;
+				DEVELOPMENT_TEAM = PKMXAQ88Q4;
 				INFOPLIST_FILE = ios/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "ca.polymtl.H18-LOG3900";
+				PRODUCT_BUNDLE_IDENTIFIER = "ca.polymtl.H18-LOG3900-1";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = 2;
@@ -944,13 +960,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = Z9SQJM9KY3;
+				DEVELOPMENT_TEAM = PKMXAQ88Q4;
 				INFOPLIST_FILE = ios/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "ca.polymtl.H18-LOG3900";
+				PRODUCT_BUNDLE_IDENTIFIER = "ca.polymtl.H18-LOG3900-1";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = 2;

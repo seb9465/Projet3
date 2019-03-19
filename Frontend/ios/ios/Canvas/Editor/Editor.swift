@@ -164,6 +164,13 @@ extension Editor {
 }
 
 extension Editor: SideToolbarDelegate {
+    func rotate(orientation: RotateOrientation) {
+        let figureSelected = self.selectedFigure;
+        self.selectedFigure.rotate(orientation: orientation)
+        self.deselect()
+        self.select(figure: figureSelected!)
+    }
+    
     func setSelectedFigureBorderColor(color: UIColor) {
         (self.selectedFigure as! UmlFigure).setBorderColor(borderColor: color)
     }

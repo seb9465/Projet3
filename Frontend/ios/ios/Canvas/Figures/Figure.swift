@@ -24,4 +24,5 @@ class Figure: UIView {
             ChannelId: "general"
         )
     }
+    public func rotate(orientation: RotateOrientation) -> Void {}
 }

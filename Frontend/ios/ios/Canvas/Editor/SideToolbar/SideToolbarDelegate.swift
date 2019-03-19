@@ -13,4 +13,5 @@ protocol SideToolbarDelegate {
     func setSelectedFigureName(name: String)
     func addClassMethod(name: String)
     func removeClassMethod(name: String, index: Int)
+    func rotate(orientation: RotateOrientation)
 }

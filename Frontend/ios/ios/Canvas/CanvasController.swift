@@ -33,8 +33,10 @@ class CanvasController: UIViewController {
         CollaborationHub.shared.connectToHub()
         let nib = UINib.init(nibName: "BorderCell", bundle: nil)
         let attributesnib = UINib.init(nibName: "ClassCell", bundle: nil)
+        let rotateNib = UINib.init(nibName: "RotateCell", bundle: nil)
         self.sideTableView.register(nib, forCellReuseIdentifier: "BorderCell")
         self.sideTableView.register(attributesnib, forCellReuseIdentifier: "ClassCell")
+        self.sideTableView.register(rotateNib, forCellReuseIdentifier: "RotateCell")
 
 
         // Color picker parameters.
@@ -162,7 +164,7 @@ extension CanvasController: UITableViewDelegate, UITableViewDataSource {
         if (self.editor.selectedFigure == nil) {
             return 0
         }
-        return 2
+        return 3
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -174,13 +176,12 @@ extension CanvasController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if (indexPath.row == 0) {
+        switch(indexPath.row) {
+        case 0:
             let cell = tableView.dequeueReusableCell(withIdentifier: "BorderCell", for: indexPath) as! BorderCell
             cell.delegate = self.editor
             return cell
-        }
-        
-        else{
+        case 1:
             let cell = tableView.dequeueReusableCell(withIdentifier: "ClassCell", for: indexPath) as! ClassCell
             cell.setUpTable()
             cell.delegate = self.editor
@@ -188,6 +189,12 @@ extension CanvasController: UITableViewDelegate, UITableViewDataSource {
             cell.methods = (self.editor.selectedFigure as! UmlClassFigure).methods
             cell.attributesTableView.reloadData()
             return cell
+        case 2:
+            let cell = tableView.dequeueReusableCell(withIdentifier: "RotateCell", for: indexPath) as! RotateCell
+            cell.delegate = self.editor
+            return cell;
+        default:
+            return UITableViewCell();
         }
     }
 }

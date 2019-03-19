@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import GLKit
 protocol TouchInputDelegate {
     func notifyTouchBegan(action: String, point: CGPoint, figure: Figure?)
     func notifyTouchMoved(point: CGPoint, figure: Figure)
@@ -72,7 +72,7 @@ class UmlFigure : Figure {
         self.lineColor = borderColor;
         setNeedsDisplay();
     }
-    
+
     public func translate(by: CGPoint) {
         let translatedFrame = self.frame.offsetBy(dx: by.x, dy: by.y)
         self.frame = translatedFrame
