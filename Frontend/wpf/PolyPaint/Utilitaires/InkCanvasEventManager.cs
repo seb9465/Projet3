@@ -220,7 +220,11 @@ namespace PolyPaint.Utilitaires
         {
             for (int i = 0; i < 2; i++)
             {
-                surfaceDessin.Strokes.Where(x => x is UnidirectionalAssociationStroke &&
+                surfaceDessin.Strokes.Where(x => (x is UnidirectionalAssociationStroke 
+                                               || x is BidirectionalAssociationStroke
+                                               || x is AgregationStroke
+                                               || x is CompositionStroke
+                                               || x is InheritanceStroke) &&
                     !surfaceDessin.GetSelectedStrokes().Contains(x) &&
                     affectedAnchorPoints.Contains(x.StylusPoints[i].ToPoint()))
                     .ToList()
