@@ -71,7 +71,7 @@ class ChatRoomsControllerTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return ChatService.shared.serverChannels.channels.count;
+        return ChatService.shared.userChannels.channels.count;
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -91,13 +91,13 @@ class ChatRoomsControllerTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "CustomTableViewCell") as? CustomTableViewCell;
         
-        cell?.chatRoomName.text = ChatService.shared.serverChannels.channels[indexPath.row].name;
+        cell?.chatRoomName.text = ChatService.shared.userChannels.channels[indexPath.row].name;
         
         return cell!
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        ChatService.shared.currentChannel = ChatService.shared.serverChannels.channels[indexPath.row];
+        ChatService.shared.currentChannel = ChatService.shared.userChannels.channels[indexPath.row];
         
         let storyboard = UIStoryboard(name: "Chat", bundle: nil);
         let destination = storyboard.instantiateViewController(withIdentifier: "ChatView");

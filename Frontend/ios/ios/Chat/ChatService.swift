@@ -94,6 +94,7 @@ class ChatService {
                 self.userChannels.channels = [];
                 self.serverChannels.channels = [];
                 for channel in channels.channels {
+                    print(channel.name, channel.connected);
                     if (channel.connected) {
                         self.userChannels.channels.append(channel);
                     } else {
@@ -238,7 +239,7 @@ class ChatService {
     }
     
     private func invokeCreateChannel(channelName: String) -> Void {
-        let newChannel: ChannelMessage = ChannelMessage(channel: Channel(name: channelName, connected: false));
+        let newChannel: ChannelMessage = ChannelMessage(channel: Channel(name: channelName, connected: true));
         let newChannelJson = try? JSONEncoder().encode(newChannel);
         let newChannelJsonData: String = String(data: newChannelJson!, encoding: .utf8)!;
         
