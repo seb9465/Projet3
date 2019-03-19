@@ -1,10 +1,13 @@
 ﻿using PolyPaint.Common.Collaboration;
+using PolyPaint.Strokes;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Ink;
+using System.Windows.Media;
+
 namespace PolyPaint.Modeles
 {
     /// <summary>
@@ -34,23 +37,74 @@ namespace PolyPaint.Modeles
             set
             {
                 OutilSelectionne = "crayon";
-                pointeSelectionnee = value;                                
+                pointeSelectionnee = value;
                 ProprieteModifiee();
             }
         }
 
         // Couleur des traits tracés par le crayon.
-        private string couleurSelectionnee = "Black";
-        public string CouleurSelectionnee
+        private string couleurSelectionneeBordure = "#FF000000";
+        public string CouleurSelectionneeBordure
         {
-            get { return couleurSelectionnee; }
+            get { return couleurSelectionneeBordure; }
             // Lorsqu'on sélectionne une couleur c'est généralement pour ensuite dessiner un trait.
             // C'est pourquoi lorsque la couleur est changée, l'outil est automatiquement changé pour le crayon.
             set
             {
-                couleurSelectionnee = value;
+                couleurSelectionneeBordure = value;
                 OutilSelectionne = "crayon";
+
+                if (couleurSelectionneeBordure != "")
+                {
+                    foreach (AbstractStroke stroke in SelectedStrokes.Where(x => x is AbstractStroke))
+                    {
+                        stroke.SetBorderColor(value);
+                    }
+                }
+
                 ProprieteModifiee();
+                ProprieteModifiee("CouleurSelectionneeBordureConverted");
+            }
+        }
+
+        public string CouleurSelectionneeBordureConverted
+        {
+            get
+            {
+                return couleurSelectionneeBordure;
+            }
+        }
+
+        // Couleur des traits tracés par le crayon.
+        private string couleurSelectionneeRemplissage = "#FFFFFFFF";
+        public string CouleurSelectionneeRemplissage
+        {
+            get { return couleurSelectionneeRemplissage; }
+            // Lorsqu'on sélectionne une couleur c'est généralement pour ensuite dessiner un trait.
+            // C'est pourquoi lorsque la couleur est changée, l'outil est automatiquement changé pour le crayon.
+            set
+            {
+                couleurSelectionneeRemplissage = value;
+                OutilSelectionne = "crayon";
+
+                if (couleurSelectionneeRemplissage != "")
+                {
+                    foreach (AbstractStroke stroke in SelectedStrokes.Where(x => x is AbstractStroke))
+                    {
+                        stroke.SetFillColor(value);
+                    }
+                }
+
+                ProprieteModifiee();
+                ProprieteModifiee("CouleurSelectionneeRemplissageConverted");
+            }
+        }
+
+        public string CouleurSelectionneeRemplissageConverted
+        {
+            get
+            {
+                return couleurSelectionneeRemplissage;
             }
         }
 
@@ -82,7 +136,7 @@ namespace PolyPaint.Modeles
         }
 
         // S'il y a au moins 1 trait sur la surface, il est possible d'exécuter Empiler.
-        public bool PeutEmpiler(object o) => (traits.Count > 0); 
+        public bool PeutEmpiler(object o) => (traits.Count > 0);
         // On retire le trait le plus récent de la surface de dessin et on le place sur une pile.
         public void Empiler(object o)
         {
@@ -90,7 +144,7 @@ namespace PolyPaint.Modeles
             {
                 Stroke trait = traits.Last();
                 traitsRetires.Add(trait);
-                traits.Remove(trait);               
+                traits.Remove(trait);
             }
             catch { }
 
@@ -107,9 +161,9 @@ namespace PolyPaint.Modeles
                 traits.Add(trait);
                 traitsRetires.Remove(trait);
             }
-            catch { }         
+            catch { }
         }
-        
+
         // On assigne une nouvelle forme de pointe passée en paramètre.
         public void ChoisirPointe(string pointe) => PointeSelectionnee = pointe;
 

@@ -1,5 +1,4 @@
 <Window
-   
      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
      TextElement.Foreground="{DynamicResource MaterialDesignBody}"
      TextElement.FontWeight="Regular"
@@ -215,39 +214,7 @@
                     <StackPanel Orientation="Horizontal">
                         <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Width="2" />
                     </StackPanel>
-                    <Button Name="crayon"
-                        Style="{StaticResource MaterialDesignRaisedLightButton}" HorizontalAlignment="Left" ToolTip="MaterialDesignRaisedLightButton" 
-                        BorderBrush="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurBordure}, ConverterParameter=crayon, UpdateSourceTrigger=PropertyChanged}" 
-                        Background="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurCouleurFond}, ConverterParameter=crayon, UpdateSourceTrigger=PropertyChanged}" 
-                        Command="{Binding Path=ChoisirOutil}"
-                        CommandParameter="crayon">
-                        <StackPanel>
-                            <Image Source="/Resources/crayon.png" Height="25" Width="25"  />
-                        </StackPanel>
-                    </Button>
-                    <Button Name="efface_segment"
-                        Style="{StaticResource MaterialDesignRaisedLightButton}" HorizontalAlignment="Left" ToolTip="MaterialDesignRaisedLightButton" 
-                        BorderBrush="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurBordure}, ConverterParameter=efface_segment, UpdateSourceTrigger=PropertyChanged}" 
-                        Background="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurCouleurFond}, ConverterParameter=efface_segment, UpdateSourceTrigger=PropertyChanged}" 
-                        Command="{Binding Path=ChoisirOutil}"
-                        CommandParameter="efface_segment">
-                        <StackPanel>
-                            <Image Source="/Resources/efface_crayon.png" Height="25" Width="25"  />
-                        </StackPanel>
-                    </Button>
-                    <Button Name="efface_trait"
-                        Style="{StaticResource MaterialDesignRaisedLightButton}" HorizontalAlignment="Left" ToolTip="MaterialDesignRaisedLightButton" 
-                        BorderBrush="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurBordure}, ConverterParameter=efface_trait, UpdateSourceTrigger=PropertyChanged}" 
-                        Background="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurCouleurFond}, ConverterParameter=efface_trait, UpdateSourceTrigger=PropertyChanged}" 
-                        Command="{Binding Path=ChoisirOutil}"
-                        CommandParameter="efface_trait">
-                        <StackPanel>
-                            <Image Source="/Resources/efface.png" Height="25" Width="25"  />
-                        </StackPanel>
-                    </Button>
-                    <StackPanel Orientation="Horizontal">
-                        <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Width="2"  />
-                    </StackPanel>
+
                     <StackPanel Orientation="Vertical" Margin="5,5,5,5" VerticalAlignment="Center">
                         <StackPanel Orientation="Horizontal">
                             <Button Name="Solid" Width="24" Height="24" Padding="0"
@@ -259,6 +226,8 @@
                             CommandParameter="solid">
                                 <Rectangle Width="10" Height="2" Fill="Black" Stroke="Black" StrokeThickness="2" HorizontalAlignment="Center"/>
                             </Button>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                             <Button Name="Dash" Width="24" Height="24" Padding="0"
                             HorizontalContentAlignment="Center"                            
                             BorderBrush="{Binding Path=SelectedBorder, Converter={StaticResource convertisseurBordure}, ConverterParameter=dash, UpdateSourceTrigger=PropertyChanged}" 
@@ -272,88 +241,37 @@
                                 </Grid>
                             </Button>
                         </StackPanel>
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                            <Button Name="Dot" Width="24" Height="24" Padding="0"
-                            HorizontalContentAlignment="Center"
-                            BorderBrush="{Binding Path=SelectedBorder, Converter={StaticResource convertisseurBordure}, ConverterParameter=dot, UpdateSourceTrigger=PropertyChanged}" 
-                            Background="{Binding Path=SelectedBorder, Converter={StaticResource convertisseurCouleurFond}, ConverterParameter=dot, UpdateSourceTrigger=PropertyChanged}"   
-                            IsEnabled="{Binding Path=IsStrokeSelected}"
-                            Command="{Binding Path=ChooseBorder}"
-                            CommandParameter="dot">
-                                <Grid>
-                                    <Ellipse Width="4" Height="4" Fill="Black" Stroke="Black" StrokeThickness="2" HorizontalAlignment="Center" Margin="4,0,-4,0"/>
-                                    <Ellipse Width="4" Height="4" Fill="Black" Stroke="Black" StrokeThickness="2" HorizontalAlignment="Center" Margin="-4,0,4,0"/>
-                                </Grid>
-                            </Button>
-                            <Button Name="DashDot" Width="24" Height="24" Padding="0"
-                            HorizontalContentAlignment="Center"
-                            BorderBrush="{Binding Path=SelectedBorder, Converter={StaticResource convertisseurBordure}, ConverterParameter=dash_dot, UpdateSourceTrigger=PropertyChanged}" 
-                            Background="{Binding Path=SelectedBorder, Converter={StaticResource convertisseurCouleurFond}, ConverterParameter=dash_dot, UpdateSourceTrigger=PropertyChanged}"   
-                            IsEnabled="{Binding IsStrokeSelected, UpdateSourceTrigger=PropertyChanged}"
-                            Command="{Binding Path=ChooseBorder}"
-                            CommandParameter="dash_dot">
-                                <Grid>
-                                    <Rectangle Width="4" Height="2" Fill="Black" Stroke="Black" StrokeThickness="2" HorizontalAlignment="Center" Margin="-4,1,4,1"/>
-                                    <Ellipse Width="4" Height="4" Fill="Black" Stroke="Black" StrokeThickness="2" HorizontalAlignment="Center" Margin="4,0,-4,0"/>
-                                </Grid>
-                            </Button>
-                        </StackPanel>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Width="2"  />
                     </StackPanel>
-                    <StackPanel Orientation="Vertical" Margin="5,5,5,5" VerticalAlignment="Center">
-                        <StackPanel Orientation="Horizontal">
-                            <Button Name="PointeRonde" Width="24" Height="24" Padding="0"
-                            BorderBrush="{Binding Path=PointeSelectionnee, Converter={StaticResource convertisseurBordure}, ConverterParameter=ronde, UpdateSourceTrigger=PropertyChanged}" 
-                            Background="{Binding Path=PointeSelectionnee, Converter={StaticResource convertisseurCouleurFond}, ConverterParameter=ronde, UpdateSourceTrigger=PropertyChanged}"                                 
-                            HorizontalContentAlignment="Center"                                
-                            Command="{Binding Path=ChoisirPointe}"
-                            CommandParameter="ronde">
-                                <Ellipse Width="8" Height="8" Fill="Black" Stroke="Black" StrokeThickness="2" HorizontalAlignment="Center"/>
-                            </Button>
-                            <Button Name="PointeCarree" Width="24" Height="24" Padding="0"
-                            HorizontalContentAlignment="Center"                            
-                            BorderBrush="{Binding Path=PointeSelectionnee, Converter={StaticResource convertisseurBordure}, ConverterParameter=carree, UpdateSourceTrigger=PropertyChanged}" 
-                            Background="{Binding Path=PointeSelectionnee, Converter={StaticResource convertisseurCouleurFond}, ConverterParameter=carree, UpdateSourceTrigger=PropertyChanged}"                                
-                            Command="{Binding Path=ChoisirPointe}"
-                            CommandParameter="carree">
-                                <Rectangle Width="8" Height="8" Fill="Black" Stroke="Black" StrokeThickness="2" HorizontalAlignment="Center"/>
-                            </Button>
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                            <Button Name="Verticale" Width="24" Height="24" Padding="0"
-                            HorizontalContentAlignment="Center"
-                            BorderBrush="{Binding Path=PointeSelectionnee, Converter={StaticResource convertisseurBordure}, ConverterParameter=verticale, UpdateSourceTrigger=PropertyChanged}" 
-                            Background="{Binding Path=PointeSelectionnee, Converter={StaticResource convertisseurCouleurFond}, ConverterParameter=verticale, UpdateSourceTrigger=PropertyChanged}"   
-                            Command="{Binding Path=ChoisirPointe}"
-                            CommandParameter="verticale">
-                                <Rectangle Width="2" Height="10" Fill="Black" Stroke="Black" StrokeThickness="2" HorizontalAlignment="Center"/>
-                            </Button>
-                            <Button Name="Horizontale" Width="24" Height="24" Padding="0"
-                            HorizontalContentAlignment="Center"
-                            BorderBrush="{Binding Path=PointeSelectionnee, Converter={StaticResource convertisseurBordure}, ConverterParameter=horizontale, UpdateSourceTrigger=PropertyChanged}" 
-                            Background="{Binding Path=PointeSelectionnee, Converter={StaticResource convertisseurCouleurFond}, ConverterParameter=horizontale, UpdateSourceTrigger=PropertyChanged}"   
-                            Command="{Binding Path=ChoisirPointe}"
-                            CommandParameter="horizontale">
-                                <Rectangle Width="10" Height="2" Fill="Black" Stroke="Black" StrokeThickness="2" HorizontalAlignment="Center"/>
-                            </Button>
-                        </StackPanel>
-                    </StackPanel>
-                    <xctk:ColorPicker x:Name="selecteurCouleur"                             
-                  VerticalContentAlignment="Stretch"
-                  Background="#00000000"
-                  ShowDropDownButton="False"
-                  ShowRecentColors="True"
-                  BorderBrush="#80000000"
-                  Margin="5,0,0,0" Width="39" Height="38"
-                  SelectedColor="{Binding Path=CouleurSelectionnee, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                  AvailableColorsHeader="Palette"
-                  StandardColorsHeader="Couleurs de base"
-                  StandardButtonHeader="Standard"
-                  RecentColorsHeader="Récemment utilisées"
-                  UsingAlphaChannel="True"
-                  AdvancedButtonHeader="Personnalisé" />
+                    <xctk:ColorPicker x:Name="selecteurCouleurBordure"                             
+                        VerticalContentAlignment="Stretch"
+                        Background="#00000000"
+                        ShowDropDownButton="False"
+                        BorderBrush="{Binding Path=CouleurSelectionneeBordureConverted, UpdateSourceTrigger=PropertyChanged}"
+                        BorderThickness="3"
+                        Margin="5,0,0,0" Width="39" Height="38"
+                        SelectedColor="{Binding Path=DefaultColor}"
+                        AvailableColorsHeader="Bordure"
+                        UsingAlphaChannel="False"
+                        AvailableColors="{Binding AvailableColors}"
+                        ShowAvailableColors="True"
+                        ShowStandardColors="False"
+                        ShowTabHeaders="False" />
+                    <xctk:ColorPicker x:Name="selecteurCouleurRemplissage"                             
+                        VerticalContentAlignment="Stretch"
+                        Background="#00000000"
+                        ShowDropDownButton="False"
+                        BorderBrush="#80000000"
+                        Margin="5,0,0,0" Width="39" Height="38"
+                        SelectedColor="{Binding Path=CouleurSelectionneeRemplissageConverted, UpdateSourceTrigger=PropertyChanged}"
+                        AvailableColorsHeader="Remplissage"
+                        UsingAlphaChannel="False"
+                        AvailableColors="{Binding AvailableColors}"
+                        ShowAvailableColors="True"
+                        ShowStandardColors="False"
+                        ShowTabHeaders="False" />
                     <Slider Width="100" Height="26" Minimum="1" Maximum="50"
                         Value="{Binding Path=TailleTrait, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                         Margin="12"

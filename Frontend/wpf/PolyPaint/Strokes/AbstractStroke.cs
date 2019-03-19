@@ -23,6 +23,8 @@ namespace PolyPaint.Strokes
         protected Brush Fill { get; set; }
         protected Pen Border { get; set; }
         public DashStyle BorderStyle { get { return Border.DashStyle; } }
+        public Color BorderColor { get { return (Border.Brush as SolidColorBrush).Color;  } }
+        public Color FillColor { get { return (Fill as SolidColorBrush).Color; } }
 
         protected InkCanvas SurfaceDessin { get; set; }
         protected FormattedText Title { get; set; }
@@ -37,14 +39,17 @@ namespace PolyPaint.Strokes
             }
         }
 
-        public AbstractStroke(StylusPointCollection stylusPoints, InkCanvas surfaceDessin, string title) : base(stylusPoints)
+        public AbstractStroke(StylusPointCollection stylusPoints, InkCanvas surfaceDessin, string title, string couleurBordure, string couleurRemplissage) : base(stylusPoints)
         {
             TopLeft = new Point();
             Width = 0;
             Height = 0;
 
-            Fill = Brushes.LightGray;
-            Border = new Pen(Brushes.Black, 2);
+            couleurRemplissage = couleurRemplissage == "" ? "#FFFFFFFF" : couleurRemplissage;
+            couleurBordure = couleurBordure == "" ? "#FF000000" : couleurBordure;
+
+            Fill = new SolidColorBrush((Color)ColorConverter.ConvertFromString(couleurRemplissage));
+            Border = new Pen(new SolidColorBrush((Color)ColorConverter.ConvertFromString(couleurBordure)), 2);
 
             AnchorPoints = new Point[4];
             IsDrawingDone = false;
@@ -80,6 +85,20 @@ namespace PolyPaint.Strokes
         public void SetBorderThickness(double thickness)
         {
             Border.Thickness = thickness;
+            Redraw();
+        }
+
+        public void SetBorderColor(string color)
+        {
+            var dashStyle = Border.DashStyle;
+            Border = new Pen(new SolidColorBrush((Color)ColorConverter.ConvertFromString(color)), Border.Thickness);
+            Border.DashStyle = dashStyle;
+            Redraw();
+        }
+
+        public void SetFillColor(string color)
+        {
+            Fill = new SolidColorBrush((Color)ColorConverter.ConvertFromString(color));
             Redraw();
         }
 

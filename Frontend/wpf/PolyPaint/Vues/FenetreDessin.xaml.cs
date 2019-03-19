@@ -366,7 +366,7 @@ namespace PolyPaint
             currentPoint = e.GetPosition((IInputElement) sender);
             if (IsDrawing)
             {
-                icEventManager.DrawShape(surfaceDessin, (DataContext as VueModele).OutilSelectionne, currentPoint, mouseLeftDownPoint);
+                icEventManager.DrawShape(surfaceDessin, (DataContext as VueModele), currentPoint, mouseLeftDownPoint);
             }
         }
 

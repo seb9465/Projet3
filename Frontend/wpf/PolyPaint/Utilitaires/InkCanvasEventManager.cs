@@ -8,6 +8,7 @@ using System.Windows.Controls;
 using System.Windows.Ink;
 using System.Windows.Input;
 using System.Windows.Media;
+using PolyPaint.VueModeles;
 
 namespace PolyPaint.Utilitaires
 {
@@ -43,7 +44,7 @@ namespace PolyPaint.Utilitaires
             }
         }
 
-        public void DrawShape(InkCanvas surfaceDessin, string outilSelectionne, Point currentPoint, Point mouseLeftDownPoint)
+        public void DrawShape(InkCanvas surfaceDessin, VueModele vm, Point currentPoint, Point mouseLeftDownPoint)
         {
             StylusPointCollection pts = new StylusPointCollection();
 
@@ -55,34 +56,34 @@ namespace PolyPaint.Utilitaires
                 (DrawingStroke as ICanvasable).RemoveFromCanvas();
             }
 
-            switch (outilSelectionne)
+            switch (vm.OutilSelectionne)
             {
                 case "uml_class":
-                    DrawingStroke = new UmlClassStroke(pts, surfaceDessin);
+                    DrawingStroke = new UmlClassStroke(pts, surfaceDessin, vm.CouleurSelectionneeBordure, vm.CouleurSelectionneeRemplissage);
                     surfaceDessin.Strokes.Add(DrawingStroke);
                     break;
                 case "rectangle":
-                    DrawingStroke = new RectangleStroke(pts, surfaceDessin);
+                    DrawingStroke = new RectangleStroke(pts, surfaceDessin, vm.CouleurSelectionneeBordure, vm.CouleurSelectionneeRemplissage);
                     surfaceDessin.Strokes.Add(DrawingStroke);
                     break;
                 case "artefact":
-                    DrawingStroke = new ArtefactStroke(pts, surfaceDessin);
+                    DrawingStroke = new ArtefactStroke(pts, surfaceDessin, vm.CouleurSelectionneeBordure, vm.CouleurSelectionneeRemplissage);
                     surfaceDessin.Strokes.Add(DrawingStroke);
                     break;
                 case "activity":
-                    DrawingStroke = new ActivityStroke(pts, surfaceDessin);
+                    DrawingStroke = new ActivityStroke(pts, surfaceDessin, vm.CouleurSelectionneeBordure, vm.CouleurSelectionneeRemplissage);
                     surfaceDessin.Strokes.Add(DrawingStroke);
                     break;
                 case "phase":
-                    DrawingStroke = new PhaseStroke(pts, surfaceDessin);
+                    DrawingStroke = new PhaseStroke(pts, surfaceDessin, vm.CouleurSelectionneeBordure, vm.CouleurSelectionneeRemplissage);
                     surfaceDessin.Strokes.Add(DrawingStroke);
                     break;
                 case "role":
-                    DrawingStroke = new RoleStroke(pts, surfaceDessin);
+                    DrawingStroke = new RoleStroke(pts, surfaceDessin, vm.CouleurSelectionneeBordure, vm.CouleurSelectionneeRemplissage);
                     surfaceDessin.Strokes.Add(DrawingStroke);
                     break;
                 case "text":
-                    DrawingStroke = new TextStroke(pts, surfaceDessin);
+                    DrawingStroke = new TextStroke(pts, surfaceDessin, vm.CouleurSelectionneeBordure, vm.CouleurSelectionneeRemplissage);
                     surfaceDessin.Strokes.Add(DrawingStroke);
                     break;
                 case "line":
@@ -119,7 +120,7 @@ namespace PolyPaint.Utilitaires
                 switch (drawViewModel.ItemType)
                 {
                     case ItemTypeEnum.RectangleStroke:
-                        stroke = new RectangleStroke(collection, surfaceDessin);
+                        stroke = new RectangleStroke(collection, surfaceDessin, "#FF000000", "#FFFFFFFF");
                         break;
                 }
                 Color color = new Color()
@@ -157,13 +158,20 @@ namespace PolyPaint.Utilitaires
                     anchors.AddRange(stroke.AnchorPoints);
                 }
 
-                DrawingStroke.StylusPoints = new StylusPointCollection(new Point[]
-                    {
+                if (anchors.Count > 0)
+                {
+                    DrawingStroke.StylusPoints = new StylusPointCollection(new Point[]
+                        {
                         anchors.OrderBy(x => Point.Subtract(x, firstPoint).Length).First(),
                         anchors.OrderBy(x => Point.Subtract(x, secondPoint).Length).First()
-                    }
-                );
-                (DrawingStroke as ICanvasable).AddToCanvas();
+                        }
+                    );
+                    (DrawingStroke as ICanvasable).AddToCanvas();
+                }
+                else
+                {
+                    (DrawingStroke as ICanvasable).RemoveFromCanvas();
+                }
             }
         }
 
