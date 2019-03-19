@@ -86,8 +86,7 @@ namespace PolyPaint.API.Hubs
             var user = await GetUserFromToken(Context.User);
             if (user != null)
             {
-                await base.OnConnectedAsync();
-                // await ConnectToChannel((new ConnectionMessage(channelId: "general")).ToString());
+                await base.OnConnectedAsync();await ConnectToChannel((new ConnectionMessage(channelId: "general")).ToString());
                 await Clients.Caller.SendAsync("ClientIsConnected", "You are connected!");
             }
         }
@@ -103,7 +102,6 @@ namespace PolyPaint.API.Hubs
                 {
                     if (user != null)
                     {
-                        pair.Value.Remove(user.Id);
                         var message = new ConnectionMessage(username: user.UserName);
                         await Clients.Group(pair.Key).SendAsync(
                             "DisconnectFromChannel",
