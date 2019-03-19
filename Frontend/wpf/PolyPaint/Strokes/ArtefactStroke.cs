@@ -12,7 +12,7 @@ using System.Linq;
 
 namespace PolyPaint.Strokes
 {
-    public class ArtefactStroke : AbstractStroke
+    public class ArtefactStroke : AbstractShapeStroke
     {
         public ArtefactStroke(StylusPointCollection pts, InkCanvas surfaceDessin, string couleurBordure, string couleurRemplissage)
             : base(pts, surfaceDessin, "Artefact", couleurBordure, couleurRemplissage)

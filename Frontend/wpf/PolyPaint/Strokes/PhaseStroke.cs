@@ -9,7 +9,7 @@ using System.Windows.Media;
 
 namespace PolyPaint.Strokes
 {
-    public class PhaseStroke : AbstractStroke
+    public class PhaseStroke : AbstractShapeStroke
     {
         public PhaseStroke(StylusPointCollection pts, InkCanvas surfaceDessin, string couleurBordure, string couleurRemplissage)
             : base(pts, surfaceDessin, "Phase", couleurBordure, couleurRemplissage)

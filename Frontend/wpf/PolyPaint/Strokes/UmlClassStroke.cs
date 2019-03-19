@@ -12,7 +12,7 @@ using System.Linq;
 
 namespace PolyPaint.Strokes
 {
-    public class UmlClassStroke : AbstractStroke
+    public class UmlClassStroke : AbstractShapeStroke
     {
         public ObservableCollection<Property> Properties { get; set; }
         public ObservableCollection<Method> Methods { get; set; }

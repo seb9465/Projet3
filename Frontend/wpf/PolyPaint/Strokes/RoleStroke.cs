@@ -12,7 +12,7 @@ using System.Linq;
 
 namespace PolyPaint.Strokes
 {
-    public class RoleStroke : AbstractStroke
+    public class RoleStroke : AbstractShapeStroke
     {
         public RoleStroke(StylusPointCollection pts, InkCanvas surfaceDessin, string couleurBordure, string couleurRemplissage)
             : base(pts, surfaceDessin, "Role", couleurBordure, couleurRemplissage)

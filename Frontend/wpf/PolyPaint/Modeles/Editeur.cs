@@ -56,7 +56,11 @@ namespace PolyPaint.Modeles
 
                 if (couleurSelectionneeBordure != "")
                 {
-                    foreach (AbstractStroke stroke in SelectedStrokes.Where(x => x is AbstractStroke))
+                    foreach (AbstractShapeStroke stroke in SelectedStrokes.Where(x => x is AbstractShapeStroke))
+                    {
+                        stroke.SetBorderColor(value);
+                    }
+                    foreach (AbstractLineStroke stroke in SelectedStrokes.Where(x => x is AbstractLineStroke))
                     {
                         stroke.SetBorderColor(value);
                     }
@@ -89,7 +93,7 @@ namespace PolyPaint.Modeles
 
                 if (couleurSelectionneeRemplissage != "")
                 {
-                    foreach (AbstractStroke stroke in SelectedStrokes.Where(x => x is AbstractStroke))
+                    foreach (AbstractShapeStroke stroke in SelectedStrokes.Where(x => x is AbstractShapeStroke))
                     {
                         stroke.SetFillColor(value);
                     }

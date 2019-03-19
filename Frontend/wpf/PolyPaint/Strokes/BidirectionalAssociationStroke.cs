@@ -8,16 +8,11 @@ using System.Windows.Media;
 
 namespace PolyPaint.Strokes
 {
-    public class BidirectionalAssociationStroke : Stroke, ICanvasable
+    public class BidirectionalAssociationStroke : AbstractLineStroke
     {
-        public InkCanvas SurfaceDessin { get; set; }
-        public BidirectionalAssociationStroke(StylusPointCollection pts, InkCanvas surfaceDessin)
-            : base(pts)
-        {
-            StylusPoints = pts;
-
-            SurfaceDessin = surfaceDessin;
-        }
+        public BidirectionalAssociationStroke(StylusPointCollection pts, InkCanvas surfaceDessin, string couleurBordure)
+            : base(pts, surfaceDessin, "0..0", "0..0", couleurBordure, "#FF000000")
+        { }
 
         protected override void DrawCore(DrawingContext drawingContext, DrawingAttributes drawingAttributes)
         {
@@ -29,9 +24,7 @@ namespace PolyPaint.Strokes
             {
                 throw new ArgumentNullException("drawingAttributes");
             }
-            SolidColorBrush brush = new SolidColorBrush(drawingAttributes.Color);
-            Pen pen = new Pen(brush, 2);
-            brush.Freeze();
+
             StylusPoint stp = StylusPoints[0];
             StylusPoint sp = StylusPoints[1];
 
@@ -52,59 +45,51 @@ namespace PolyPaint.Strokes
             double endDx = sp.X - stp.X;
             double endDy = sp.Y - stp.Y;
             double endTheta = Math.Atan2(endDy, endDx);
-            
+
             double endX = sp.X - arrowLength * Math.Cos(endTheta + rad);
             double endY = sp.Y - arrowLength * Math.Sin(endTheta + rad);
 
             double endX2 = sp.X - arrowLength * Math.Cos(endTheta + phi2);
             double endY2 = sp.Y - arrowLength * Math.Sin(endTheta + phi2);
-            
+
             Point point2 = new Point(startX, startY);
             Point point3 = new Point(stp.X, stp.Y);
             Point point4 = new Point(startX2, startY2);
-            Point point5 = new Point(stp.X, stp.Y);
-            Point point6 = new Point(sp.X, sp.Y);
+
+
             Point point7 = new Point(endX, endY);
             Point point8 = new Point(sp.X, sp.Y);
             Point point9 = new Point(endX2, endY2);
-            Point point10 = new Point(sp.X, sp.Y);
 
-            StreamGeometry streamGeometry = new StreamGeometry();
-            using (StreamGeometryContext geometryContext = streamGeometry.Open())
+            StreamGeometry streamGeometry1 = new StreamGeometry();
+            using (StreamGeometryContext geometryContext = streamGeometry1.Open())
             {
                 geometryContext.BeginFigure(stp.ToPoint(), true, true);
                 PointCollection points = new PointCollection
                                              {
                                                  point2,
                                                  point3,
-                                                 point4,
-                                                 point5,
-                                                 point6,
-                                                 point7,
-                                                 point8,
-                                                 point9,
-                                                 point10
+                                                 point4
                                              };
                 geometryContext.PolyLineTo(points, true, true);
             }
 
-                drawingContext.DrawGeometry(brush, pen, streamGeometry);
-        }
+            StreamGeometry streamGeometry2 = new StreamGeometry();
+            using (StreamGeometryContext geometryContext = streamGeometry2.Open())
+            {
+                geometryContext.BeginFigure(sp.ToPoint(), true, true);
+                PointCollection points = new PointCollection
+                                             {
+                                                 point7,
+                                                 point8,
+                                                 point9
+                                             };
+                geometryContext.PolyLineTo(points, true, true);
+            }
 
-        public void AddToCanvas()
-        {
-            RemoveFromCanvas();
-            SurfaceDessin.Strokes.Add(Clone());
-        }
-
-        public void RemoveFromCanvas()
-        {
-            SurfaceDessin.Strokes.Remove(this);
-        }
-
-        public void Redraw()
-        {
-            OnInvalidated(new EventArgs());
+            drawingContext.DrawGeometry(Fill, Border, streamGeometry1);
+            drawingContext.DrawGeometry(Fill, Border, streamGeometry2);
+            drawingContext.DrawLine(Border, stp.ToPoint(), sp.ToPoint());
         }
     }
 }

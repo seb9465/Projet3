@@ -34,9 +34,9 @@ namespace PolyPaint.Utilitaires
                         var editWindow = new EditUmlWindow(strokes[i] as UmlClassStroke, surfaceDessin);
                         editWindow.Show();
                     }
-                    else if (strokes[i] is AbstractStroke)
+                    else if (strokes[i] is AbstractShapeStroke)
                     {
-                        var editWindow = new EditTitleWindow(strokes[i] as AbstractStroke, surfaceDessin);
+                        var editWindow = new EditTitleWindow(strokes[i] as AbstractShapeStroke, surfaceDessin);
                         editWindow.Show();
                     }
                     break;
@@ -87,28 +87,23 @@ namespace PolyPaint.Utilitaires
                     surfaceDessin.Strokes.Add(DrawingStroke);
                     break;
                 case "asso_uni":
-                    DrawingStroke = new UnidirectionalAssociationStroke(pts, surfaceDessin);
-                    DrawingStroke.DrawingAttributes.Color = Colors.Black;
+                    DrawingStroke = new UnidirectionalAssociationStroke(pts, surfaceDessin, vm.CouleurSelectionneeBordure);
                     surfaceDessin.Strokes.Add(DrawingStroke);
                     break;
                 case "asso_bi":
-                    DrawingStroke = new BidirectionalAssociationStroke(pts, surfaceDessin);
-                    DrawingStroke.DrawingAttributes.Color = Colors.Black;
+                    DrawingStroke = new BidirectionalAssociationStroke(pts, surfaceDessin, vm.CouleurSelectionneeBordure);
                     surfaceDessin.Strokes.Add(DrawingStroke);
                     break;
                 case "composition":
-                    DrawingStroke = new CompositionStroke(pts, surfaceDessin);
-                    DrawingStroke.DrawingAttributes.Color = Colors.Black;
+                    DrawingStroke = new CompositionStroke(pts, surfaceDessin, vm.CouleurSelectionneeBordure);
                     surfaceDessin.Strokes.Add(DrawingStroke);
                     break;
                 case "heritage":
-                    DrawingStroke = new InheritanceStroke(pts, surfaceDessin);
-                    DrawingStroke.DrawingAttributes.Color = Colors.Black;
+                    DrawingStroke = new InheritanceStroke(pts, surfaceDessin, vm.CouleurSelectionneeBordure);
                     surfaceDessin.Strokes.Add(DrawingStroke);
                     break;
                 case "agregation":
-                    DrawingStroke = new AgregationStroke(pts, surfaceDessin);
-                    DrawingStroke.DrawingAttributes.Color = Colors.Black;
+                    DrawingStroke = new AgregationStroke(pts, surfaceDessin, vm.CouleurSelectionneeBordure);
                     surfaceDessin.Strokes.Add(DrawingStroke);
                     break;
             }
@@ -177,7 +172,7 @@ namespace PolyPaint.Utilitaires
                 Point secondPoint = new Point(DrawingStroke.StylusPoints[1].X, DrawingStroke.StylusPoints[1].Y);
 
                 List<Point> anchors = new List<Point>();
-                foreach (AbstractStroke stroke in surfaceDessin.Strokes.Where(x => x is AbstractStroke))
+                foreach (AbstractShapeStroke stroke in surfaceDessin.Strokes.Where(x => x is AbstractShapeStroke))
                 {
                     anchors.AddRange(stroke.AnchorPoints);
                 }

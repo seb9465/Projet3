@@ -11,7 +11,7 @@ namespace PolyPaint.Vues
     public partial class EditTitleWindow : Window
     {
         public InkCanvas SurfaceDessin { get; set; }
-        public EditTitleWindow(AbstractStroke stroke, InkCanvas surfaceDessin)
+        public EditTitleWindow(AbstractShapeStroke stroke, InkCanvas surfaceDessin)
         {
             DataContext = stroke;
             SurfaceDessin = surfaceDessin;

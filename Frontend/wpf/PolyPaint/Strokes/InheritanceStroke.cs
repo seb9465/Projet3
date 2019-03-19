@@ -8,16 +8,11 @@ using System.Windows.Media;
 
 namespace PolyPaint.Strokes
 {
-    public class InheritanceStroke : Stroke, ICanvasable
+    public class InheritanceStroke : AbstractLineStroke
     {
-        public InkCanvas SurfaceDessin { get; set; }
-        public InheritanceStroke(StylusPointCollection pts, InkCanvas surfaceDessin)
-            : base(pts)
-        {
-            StylusPoints = pts;
-
-            SurfaceDessin = surfaceDessin;
-        }
+        public InheritanceStroke(StylusPointCollection pts, InkCanvas surfaceDessin, string couleurBordure)
+            : base(pts, surfaceDessin, "0..0", "0..0", couleurBordure, "#00000000")
+        { }
 
         protected override void DrawCore(DrawingContext drawingContext, DrawingAttributes drawingAttributes)
         {
@@ -29,10 +24,7 @@ namespace PolyPaint.Strokes
             {
                 throw new ArgumentNullException("drawingAttributes");
             }
-            SolidColorBrush transparentBrush = new SolidColorBrush(Colors.Transparent);
-            SolidColorBrush brush = new SolidColorBrush(drawingAttributes.Color);
-            Pen pen = new Pen(brush, 2);
-            brush.Freeze();
+
             StylusPoint stp = StylusPoints[0];
             StylusPoint sp = StylusPoints[1];
 
@@ -58,10 +50,9 @@ namespace PolyPaint.Strokes
             StreamGeometry streamGeometry = new StreamGeometry();
             using (StreamGeometryContext geometryContext = streamGeometry.Open())
             {
-                geometryContext.BeginFigure(stp.ToPoint(), true, true);
+                geometryContext.BeginFigure(point2, true, true);
                 PointCollection points = new PointCollection
                                              {
-                                                 point2,
                                                  point3,
                                                  point4,
                                                  point5,
@@ -70,23 +61,8 @@ namespace PolyPaint.Strokes
                 geometryContext.PolyLineTo(points, true, true);
             }
 
-            drawingContext.DrawGeometry(transparentBrush, pen, streamGeometry);
-        }
-
-        public void AddToCanvas()
-        {
-            RemoveFromCanvas();
-            SurfaceDessin.Strokes.Add(Clone());
-        }
-
-        public void RemoveFromCanvas()
-        {
-            SurfaceDessin.Strokes.Remove(this);
-        }
-
-        public void Redraw()
-        {
-            OnInvalidated(new EventArgs());
+            drawingContext.DrawGeometry(Fill, Border, streamGeometry);
+            drawingContext.DrawLine(Border, stp.ToPoint(), point2);
         }
     }
 }

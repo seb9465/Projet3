@@ -35,22 +35,6 @@ namespace PolyPaint.VueModeles
             }
         );
 
-        public ObservableCollection<ColorItem> AvailableColors
-        {
-            get
-            {
-                return new ObservableCollection<ColorItem>()
-                {
-                    new ColorItem(Colors.Red, "Red"),
-                    new ColorItem(Colors.Yellow, "Jaune"),
-                    new ColorItem(Colors.Blue, "Bleu"),
-                    new ColorItem(Colors.Green, "Vert"),
-                    new ColorItem(Colors.Black, "Noir"),
-                    new ColorItem(Colors.White, "Blanc"),
-                };
-            }
-        }
-
         public event PropertyChangedEventHandler PropertyChanged;
         private Editeur editeur = new Editeur();
         private string _currentRoom;
