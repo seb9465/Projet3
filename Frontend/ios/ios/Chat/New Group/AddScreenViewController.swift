@@ -45,7 +45,7 @@ class AddScreenViewController: UIViewController, UITableViewDelegate, UITableVie
     
     public func updateChannels(channels: [Channel]) -> Void {
         for channel in channels {
-            if (!self.userChannels.channels.contains(where: { $0.name.elementsEqual(channel.name) })) {
+            if (!self.userChannels.channels.contains(where: { $0.name.elementsEqual(channel.name) }) && !channel.connected) {
                 self.userChannels.channels.append(channel);
             }
         }

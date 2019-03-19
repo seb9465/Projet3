@@ -54,7 +54,7 @@ class ChatRoomsControllerTableViewController: UITableViewController {
     
     public func updateChannels(channels: [Channel]) -> Void {
         for channel in channels {
-            if (!self.channels.channels.contains(where: { $0.name.elementsEqual(channel.name) })) {
+            if (!self.channels.channels.contains(where: { $0.name.elementsEqual(channel.name) }) && channel.connected) {
                 self.channels.channels.append(channel);
             }
         }
