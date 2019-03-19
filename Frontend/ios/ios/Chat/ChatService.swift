@@ -21,6 +21,8 @@ class ChatService {
     var userChannels: ChannelsMessage = ChannelsMessage();
     var serverChannels: ChannelsMessage = ChannelsMessage();
     
+    // TODO: Ajouter un attributs permettant de conserver les messages lorsque le CHAT est fermé.
+    
     init() {
         print("[ CHAT ] INIT from ChatService");
         self._members = Members();
