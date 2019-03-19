@@ -1,5 +1,6 @@
 ﻿using PolyPaint.Utilitaires;
 using System;
+using System.Drawing.Drawing2D;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Ink;
@@ -31,14 +32,27 @@ namespace PolyPaint.Strokes
             }
             SolidColorBrush brush = new SolidColorBrush(drawingAttributes.Color);
             Pen pen = new Pen(brush, 2);
-            brush.Freeze();
             StylusPoint stp = StylusPoints[0];
             StylusPoint sp = StylusPoints[1];
-            
+
+            int arrowLength = 10;
+            double dx = sp.X - stp.X;
+            double dy = sp.Y - stp.Y;
+
+            double theta = Math.Atan2(dy, dx);
+
+            double rad = (Math.PI / 180) * 35;
+            double x = sp.X - arrowLength * Math.Cos(theta + rad);
+            double y = sp.Y - arrowLength * Math.Sin(theta + rad);
+
+            double phi2 = (Math.PI / 180) * -35;
+            double x2 = sp.X - arrowLength * Math.Cos(theta + phi2);
+            double y2 = sp.Y - arrowLength * Math.Sin(theta + phi2);
+
             Point point2 = new Point(sp.X, sp.Y);
-            Point point3 = new Point(sp.X - 10, sp.Y - 10);
+            Point point3 = new Point(x, y);
             Point point4 = new Point(sp.X, sp.Y);
-            Point point5 = new Point(sp.X - 10, sp.Y + 10);
+            Point point5 = new Point(x2, y2);
             Point point6 = new Point(sp.X, sp.Y);
             StreamGeometry streamGeometry = new StreamGeometry();
             using (StreamGeometryContext geometryContext = streamGeometry.Open())

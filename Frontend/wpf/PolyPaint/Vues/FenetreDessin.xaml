@@ -316,6 +316,12 @@
                   RecentColorsHeader="Récemment utilisées"
                   UsingAlphaChannel="True"
                   AdvancedButtonHeader="Personnalisé" />
+                    <Slider Width="100" Height="26" Minimum="1" Maximum="50"
+                        Value="{Binding Path=TailleTrait, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                        Margin="12"
+                        Foreground="OrangeRed"                        
+                        TickFrequency="10" TickPlacement="BottomRight" IsSnapToTickEnabled="False">
+                    </Slider>
                 </StackPanel>
             </Border>
 
