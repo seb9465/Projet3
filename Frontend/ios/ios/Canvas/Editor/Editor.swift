@@ -149,8 +149,8 @@ class Editor {
     
     func snap(point: CGPoint) -> CGPoint{
         for subview in self.editorView.subviews {
-            if (subview.frame.contains(point)) {
-                return subview.center
+            if (subview.frame.contains(point)) { 
+                return (subview as! UmlFigure).getClosestAnchor(point: point)
             }
         }
         return point
@@ -241,8 +241,20 @@ extension Editor : TouchInputDelegate {
             (figure as! UmlFigure).translate(by: offset)
             self.selectionOutline.translate(by: offset)
             self.previousTouchPoint = point
+            
             return
         }
+        
+//        if (self.touchEventState == .CONNECTION) {
+//            for subview in self.editorView.subviews {
+//                if (subview.frame.contains(point)) {
+//                    print("Contained")
+//                    let outline = SelectionOutline(firstPoint: subview.frame.origin, lastPoint: CGPoint(x: subview.frame.maxX, y: subview.frame.maxY))
+//                    outline.addSelectedFigureLayers()
+//                    self.editorView.addSubview(outline)
+//                }
+//            }
+//        }
         
         if (self.touchEventState == .AREA_SELECT) {
             // Resize the selection shape

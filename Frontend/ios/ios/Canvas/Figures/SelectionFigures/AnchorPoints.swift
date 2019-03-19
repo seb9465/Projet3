@@ -71,10 +71,10 @@ class AnchorPoints {
         self.anchorPointsSnapEdges.updateValue(CGPoint(x: 0, y: height/2), forKey: "left")
         self.anchorPointsSnapEdges.updateValue(CGPoint(x: width/2, y: height), forKey: "bottom")
         
-        anchorPointsTop.fillColor = UIColor.red.cgColor
-        anchorPointsRight.fillColor = UIColor.red.cgColor
-        anchorPointsLeft.fillColor = UIColor.red.cgColor
-        anchorPointsBottom.fillColor = UIColor.red.cgColor
+        anchorPointsTop.fillColor = UIColor.gray.cgColor
+        anchorPointsRight.fillColor = UIColor.gray.cgColor
+        anchorPointsLeft.fillColor = UIColor.gray.cgColor
+        anchorPointsBottom.fillColor = UIColor.gray.cgColor
     }
     
     required init?(coder aDecoder: NSCoder) {
