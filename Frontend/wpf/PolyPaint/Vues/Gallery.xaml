@@ -7,24 +7,26 @@
         xmlns:local="clr-namespace:PolyPaint.Vues"
         mc:Ignorable="d"
         Title="Gallery" Height="720" Width="1280">
-
-    <StackPanel>
-        <Button Style="{StaticResource MaterialDesignRaisedLightButton}" Click="GoBack_Click"
+    <ScrollViewer>
+        <StackPanel>
+            <Button Style="{StaticResource MaterialDesignRaisedLightButton}" Click="GoBack_Click"
              Width="60" Height="40" HorizontalAlignment="Left" Background="Gainsboro" BorderBrush="Gray" Margin="0,0,0,0" >
-            <materialDesign:PackIcon Kind="ArrowBack" Height="24" Width="24"/>
-        </Button>
-        <ListBox Name="ImagePreviews" SelectionChanged="OnSelectionChanged" ItemsSource="{Binding}">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <Image Source="{Binding ImagePreview}" Height="250" Width="250" Margin="5" />
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-            <ListBox.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <WrapPanel />
-                </ItemsPanelTemplate>
-            </ListBox.ItemsPanel>
-        </ListBox>
-    </StackPanel>
+                <materialDesign:PackIcon Kind="ArrowBack" Height="24" Width="24"/>
+            </Button>
+            <ListBox Name="ImagePreviews" SelectionChanged="OnSelectionChanged" ItemsSource="{Binding}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Image Source="{Binding ImagePreview}" Height="250" Width="250" Margin="5" />
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel />
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+            </ListBox>
+        </StackPanel>
+    </ScrollViewer>
+    
    
 </Window>

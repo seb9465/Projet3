@@ -67,7 +67,7 @@ namespace PolyPaint.Vues
             this.Close();
         }
 
-        private async void GoBack_Click(object sender, RoutedEventArgs e)
+        private void GoBack_Click(object sender, RoutedEventArgs e)
         {
             MenuProfile menuProfile = new MenuProfile();
             Application.Current.MainWindow = menuProfile;

@@ -55,7 +55,12 @@ namespace PolyPaint
 
         private void GalleryBtn_Click(object sender, RoutedEventArgs e)
         {
-           
+            FenetreDessin fenetreDessin = new FenetreDessin(ViewStateEnum.Online);
+            externalChatWindow.Close();
+            //Gallery gallery = new Gallery(strokes,fenetreDessin.surfaceDessin);
+            //Application.Current.MainWindow = gallery;
+            Close();
+            //gallery.Show();
         }
 
         private void OnClosing(object sender, EventArgs e)

@@ -214,6 +214,7 @@ namespace PolyPaint
 
         private async void ImportFromCloud(object sender, RoutedEventArgs e)
         {
+            progressBar.Visibility = Visibility.Visible;
             List<SaveableCanvas> strokes;
             using (HttpClient client = new HttpClient())
             {
@@ -223,7 +224,9 @@ namespace PolyPaint
                 string responseString = await response.Content.ReadAsStringAsync();
                 strokes = JsonConvert.DeserializeObject<List<SaveableCanvas>>(responseString);
             }
+            progressBar.Visibility = Visibility.Collapsed;
             Gallery gallery = new Gallery(strokes, surfaceDessin);
+           
             surfaceDessin.Strokes.Clear();
             surfaceDessin.Strokes.Add(gallery.SelectedCanvas.Strokes);
         }
@@ -334,6 +337,8 @@ namespace PolyPaint
             }
             catch { }
         }
+       
+
         private async void InkCanvas_LeftMouseDown(object sender, MouseButtonEventArgs e)
         {
             mouseLeftDownPoint = e.GetPosition((IInputElement) sender);
@@ -560,9 +565,10 @@ namespace PolyPaint
             (DataContext as VueModele).ChangeSelection((sender as InkCanvas).GetSelectedStrokes());
         }
 
-        private async void GoBack_Click(object sender, RoutedEventArgs e)
+        private void GoBack_Click(object sender, RoutedEventArgs e)
         {
-            externalChatWindow.Close();
+            if (_viewState == ViewStateEnum.Online)
+                externalChatWindow.Close();
             MenuProfile menuProfile = new MenuProfile();
             Application.Current.MainWindow = menuProfile;
             Close();
