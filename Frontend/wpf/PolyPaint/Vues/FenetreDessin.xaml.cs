@@ -408,7 +408,7 @@ namespace PolyPaint
             {
                 icEventManager.EndDraw(surfaceDessin, (DataContext as VueModele).OutilSelectionne);
             }
-            if ((DataContext as VueModele).OutilSelectionne == "text")
+            if ((DataContext as VueModele).OutilSelectionne == "change_text")
             {
                 icEventManager.ChangeText(surfaceDessin, mouseLeftDownPoint);
             }
@@ -562,6 +562,7 @@ namespace PolyPaint
 
         private async void GoBack_Click(object sender, RoutedEventArgs e)
         {
+            externalChatWindow.Close();
             MenuProfile menuProfile = new MenuProfile();
             Application.Current.MainWindow = menuProfile;
             Close();
