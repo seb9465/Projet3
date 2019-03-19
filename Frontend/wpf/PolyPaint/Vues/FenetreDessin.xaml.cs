@@ -194,11 +194,15 @@ namespace PolyPaint
 
         private async void SendToCloud(object sender, RoutedEventArgs e)
         {
+
+            UploadToCloud uploadToCloud = new UploadToCloud();
             byte[] strokesBytes = GetBytesForStrokes();
             byte[] imageBytes = GetBytesForImage();
             string strokesToSend = Convert.ToBase64String(strokesBytes);
             string imageToSend = Convert.ToBase64String(imageBytes);
-            SaveableCanvas canvas = new SaveableCanvas("NameNotImplementedYet", strokesToSend, imageToSend);
+            string CanvasName = uploadToCloud.CanvasName;
+            string CanvasVisibility = uploadToCloud.CanvasVisibility;
+            SaveableCanvas canvas = new SaveableCanvas(CanvasName, strokesToSend, imageToSend, CanvasVisibility);
 
             string canvasJson = JsonConvert.SerializeObject(canvas);
             using (HttpClient client = new HttpClient())
@@ -210,6 +214,7 @@ namespace PolyPaint
                 HttpResponseMessage response = await client.PostAsync($"{Config.URL}/api/user/canvas", content);
                 string responseString = await response.Content.ReadAsStringAsync();
             }
+
         }
 
         private async void ImportFromCloud(object sender, RoutedEventArgs e)
@@ -435,16 +440,7 @@ namespace PolyPaint
             await Connection.StartAsync();
         }
 
-
-        private void DialogHost_DialogClosing(object sender, MaterialDesignThemes.Wpf.DialogClosingEventArgs eventArgs)
-        {
-
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
+       
         private async Task CollaborativeDrawAsync(DrawViewModel drawViewModel)
         {
             await Connection.InvokeAsync("Draw", JsonConvert.SerializeObject(drawViewModel));
