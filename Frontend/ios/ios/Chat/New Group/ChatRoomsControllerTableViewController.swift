@@ -12,6 +12,7 @@ class ChatRoomsControllerTableViewController: UITableViewController {
     
     var channels: ChannelsMessage = ChannelsMessage();
     
+    
     @IBAction func backButton(_ sender: Any) {
 //        ChatService.shared.disconnectFromHub();
         
