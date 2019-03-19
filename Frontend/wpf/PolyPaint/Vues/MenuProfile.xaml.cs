@@ -46,6 +46,7 @@ namespace PolyPaint
 
         private void CanvasBtn_Click(object sender, RoutedEventArgs e)
         {
+            externalChatWindow.Close();
             FenetreDessin fenetreDessin = new FenetreDessin(ViewStateEnum.Online);
             Application.Current.MainWindow = fenetreDessin;
             Close();

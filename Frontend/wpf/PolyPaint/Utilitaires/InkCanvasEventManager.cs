@@ -33,11 +33,7 @@ namespace PolyPaint.Utilitaires
                         var editWindow = new EditUmlWindow(strokes[i] as UmlClassStroke, surfaceDessin);
                         editWindow.Show();
                     }
-                    else if (strokes[i] is ActivityStroke ||
-                        strokes[i] is ArtefactStroke ||
-                        strokes[i] is PhaseStroke ||
-                        strokes[i] is RectangleStroke ||
-                        strokes[i] is RoleStroke)
+                    else if (strokes[i] is AbstractStroke)
                     {
                         var editWindow = new EditTitleWindow(strokes[i] as AbstractStroke, surfaceDessin);
                         editWindow.Show();
@@ -110,6 +106,10 @@ namespace PolyPaint.Utilitaires
                     DrawingStroke.DrawingAttributes.Color = Colors.Black;
                     surfaceDessin.Strokes.Add(DrawingStroke);
                     break;
+                case "text":
+                    DrawingStroke = new TextStroke(pts, surfaceDessin);
+                    surfaceDessin.Strokes.Add(DrawingStroke);
+                    break;
             }
         }
 
@@ -120,7 +120,8 @@ namespace PolyPaint.Utilitaires
                                       || drawViewModel.OutilSelectionne == "activity"
                                       || drawViewModel.OutilSelectionne == "artefact"
                                       || drawViewModel.OutilSelectionne == "phase"
-                                      || drawViewModel.OutilSelectionne == "role"))
+                                      || drawViewModel.OutilSelectionne == "role"
+                                      || drawViewModel.OutilSelectionne == "text"))
             {
                 StylusPointCollection collection = new StylusPointCollection();
 
@@ -160,7 +161,8 @@ namespace PolyPaint.Utilitaires
                                       || outilSelectionne == "activity"
                                       || outilSelectionne == "artefact"
                                       || outilSelectionne == "phase"
-                                      || outilSelectionne == "role"))
+                                      || outilSelectionne == "role"
+                                      || outilSelectionne == "text"))
             {
                 (DrawingStroke as ICanvasable).AddToCanvas();
             }

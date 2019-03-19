@@ -103,7 +103,6 @@ namespace PolyPaint.API.Hubs
                 {
                     if (user != null)
                     {
-                        pair.Value.Remove(user.Id);
                         var message = new ConnectionMessage(username: user.UserName);
                         await Clients.Group(pair.Key).SendAsync(
                             "DisconnectFromChannel",
