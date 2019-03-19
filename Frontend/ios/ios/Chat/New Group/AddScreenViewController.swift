@@ -16,13 +16,24 @@ class AddScreenViewController: UIViewController, UITableViewDelegate, UITableVie
     @IBOutlet var saveButton: UIBarButtonItem!
     @IBOutlet var channelName: UITextField!
     
+    private let refreshControl = UIRefreshControl();
+    
     var userChannels: ChannelsMessage = ChannelsMessage();
+    
+    @objc private func refreshWeatherData(_ sender: Any) {
+        // Fetch Weather Data
+        ChatService.shared.invokeFetchChannels();
+        self.refreshControl.endRefreshing();
+        
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad();
         let textFieldCell = UINib(nibName: "CustomTableViewCell", bundle: nil)
         self.tableView.register(textFieldCell, forCellReuseIdentifier: "CustomTableViewCell");
         self.tableView.separatorStyle = .none;
+        refreshControl.addTarget(self, action: #selector(refreshWeatherData(_:)), for: .valueChanged)
+        self.tableView.addSubview(self.refreshControl);
         
         ChatService.shared.onFetchChannels(updateChannelsFct: self.updateChannels);
         ChatService.shared.invokeChannelsWhenConnected();
@@ -32,7 +43,10 @@ class AddScreenViewController: UIViewController, UITableViewDelegate, UITableVie
     }
     
     @IBAction func cancelButton(_ sender: Any) {
-        self.dismiss(animated: true, completion: nil);
+        let storyboard = UIStoryboard(name: "Chat", bundle: nil);
+        let view = storyboard.instantiateViewController(withIdentifier: "ChatRoomsView");
+        navigationController?.pushViewController(view, animated: true);
+//        self.dismiss(animated: true, completion: nil);
     }
     
     
@@ -40,7 +54,10 @@ class AddScreenViewController: UIViewController, UITableViewDelegate, UITableVie
         // Create group.
         //        ChatService.shared.
         ChatService.shared.createNewChannel(channelName: channelName.text!);
-        self.dismiss(animated: true, completion: nil);
+        let storyboard = UIStoryboard(name: "Chat", bundle: nil);
+        let view = storyboard.instantiateViewController(withIdentifier: "ChatRoomsView");
+        navigationController?.pushViewController(view, animated: true);
+//        self.dismiss(animated: true, completion: nil);
     }
     
     public func updateChannels(channels: [Channel]) -> Void {
@@ -77,5 +94,13 @@ class AddScreenViewController: UIViewController, UITableViewDelegate, UITableVie
         cell?.chatRoomName.text = self.userChannels.channels[indexPath.row].name;
         
         return cell!
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        ChatService.shared.currentChannel = self.userChannels.channels[indexPath.row];
+        
+        let storyboard = UIStoryboard(name: "Chat", bundle: nil);
+        let destination = storyboard.instantiateViewController(withIdentifier: "ChatView");
+        navigationController?.pushViewController(destination, animated: true)
     }
 }
