@@ -118,12 +118,10 @@ class ChatRoomsControllerTableViewController: UITableViewController {
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            // Delete the row from the data source
-            print(ChatService.shared.userChannels.channels[indexPath.row].name);
-//            tableView.deleteRows(at: [indexPath], with: .fade)
-            ChatService.shared.userChannels.channels.remove(at: indexPath.row);
+            ChatService.shared.currentChannel = ChatService.shared.userChannels.channels[indexPath.row];
+            ChatService.shared.disconnectFromCurrentChatRoom();
+            ChatService.shared.invokeFetchChannels();
             self.tableView.reloadData();
-            
         } else if editingStyle == .insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
         }    
