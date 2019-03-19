@@ -32,7 +32,7 @@ class MsgChatController: MessagesViewController, MsgChatProtocol {
         self.initDelegate();
         ChatService.shared.initOnReceivingMessage(currentMemberName: self.member.name, insertMessage: self.insertMessage)
         ChatService.shared.initOnAnotherUserConnection(insertMessage: self.insertMessage);
-        ChatService.shared.connectToGroup(insertMessage: self.insertMessage);
+        ChatService.shared.connectToGroup();
         
         super.viewDidLoad();
     }
@@ -41,7 +41,7 @@ class MsgChatController: MessagesViewController, MsgChatProtocol {
          super.viewWillDisappear(animated);
         
         // TODO: Disconnect from channel only.
-        ChatService.shared.disconnectFromCurrentChatRoom();
+//        ChatService.shared.disconnectFromCurrentChatRoom();
     }
     
     func messageInputBar(_ inputBar: MessageInputBar, textViewTextDidChangeTo text: String) -> Void {

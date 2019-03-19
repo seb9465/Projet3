@@ -86,8 +86,28 @@ namespace PolyPaint.Utilitaires
                     DrawingStroke = new TextStroke(pts, surfaceDessin, vm.CouleurSelectionneeBordure, vm.CouleurSelectionneeRemplissage);
                     surfaceDessin.Strokes.Add(DrawingStroke);
                     break;
-                case "line":
-                    DrawingStroke = new LineStroke(pts, surfaceDessin);
+                case "asso_uni":
+                    DrawingStroke = new UnidirectionalAssociationStroke(pts, surfaceDessin);
+                    DrawingStroke.DrawingAttributes.Color = Colors.Black;
+                    surfaceDessin.Strokes.Add(DrawingStroke);
+                    break;
+                case "asso_bi":
+                    DrawingStroke = new BidirectionalAssociationStroke(pts, surfaceDessin);
+                    DrawingStroke.DrawingAttributes.Color = Colors.Black;
+                    surfaceDessin.Strokes.Add(DrawingStroke);
+                    break;
+                case "composition":
+                    DrawingStroke = new CompositionStroke(pts, surfaceDessin);
+                    DrawingStroke.DrawingAttributes.Color = Colors.Black;
+                    surfaceDessin.Strokes.Add(DrawingStroke);
+                    break;
+                case "heritage":
+                    DrawingStroke = new InheritanceStroke(pts, surfaceDessin);
+                    DrawingStroke.DrawingAttributes.Color = Colors.Black;
+                    surfaceDessin.Strokes.Add(DrawingStroke);
+                    break;
+                case "agregation":
+                    DrawingStroke = new AgregationStroke(pts, surfaceDessin);
                     DrawingStroke.DrawingAttributes.Color = Colors.Black;
                     surfaceDessin.Strokes.Add(DrawingStroke);
                     break;
@@ -147,7 +167,11 @@ namespace PolyPaint.Utilitaires
             {
                 (DrawingStroke as ICanvasable).AddToCanvas();
             }
-            else if (DrawingStroke != null && outilSelectionne == "line")
+            else if (DrawingStroke != null && (outilSelectionne == "asso_uni"
+                                           || outilSelectionne == "asso_bi"
+                                           || outilSelectionne == "composition"
+                                           || outilSelectionne == "heritage"
+                                           || outilSelectionne == "agregation"))
             {
                 Point firstPoint = new Point(DrawingStroke.StylusPoints[0].X, DrawingStroke.StylusPoints[0].Y);
                 Point secondPoint = new Point(DrawingStroke.StylusPoints[1].X, DrawingStroke.StylusPoints[1].Y);
@@ -206,7 +230,11 @@ namespace PolyPaint.Utilitaires
         {
             for (int i = 0; i < 2; i++)
             {
-                surfaceDessin.Strokes.Where(x => x is LineStroke &&
+                surfaceDessin.Strokes.Where(x => (x is UnidirectionalAssociationStroke 
+                                               || x is BidirectionalAssociationStroke
+                                               || x is AgregationStroke
+                                               || x is CompositionStroke
+                                               || x is InheritanceStroke) &&
                     !surfaceDessin.GetSelectedStrokes().Contains(x) &&
                     affectedAnchorPoints.Contains(x.StylusPoints[i].ToPoint()))
                     .ToList()

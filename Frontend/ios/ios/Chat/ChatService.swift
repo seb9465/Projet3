@@ -18,6 +18,11 @@ class ChatService {
     var currentChannel: Channel!;
     var connected: Bool = false;
     
+    var userChannels: ChannelsMessage = ChannelsMessage();
+    var serverChannels: ChannelsMessage = ChannelsMessage();
+    
+    // TODO: Ajouter un attributs permettant de conserver les messages lorsque le CHAT est fermé.
+    
     init() {
         print("[ CHAT ] INIT from ChatService");
         self._members = Members();
@@ -56,18 +61,19 @@ class ChatService {
         self.invokeCreateChannel(channelName: channelName);
     }
     
-    public func onCreateChannel(updateChannelsFct: @escaping (_ channels: [Channel]) -> Void) -> Void {
+    public func onCreateChannel(updateChannelsFct: @escaping () -> Void) -> Void {
         self.hubConnection.on(method: "CreateChannel", callback: { args, typeConverter in
             let newChannelJson: String = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self)!;
             if let newChannelJsonData = newChannelJson.data(using: .utf8) {
                 let newChannel: ChannelMessage = try! JSONDecoder().decode(ChannelMessage.self, from: newChannelJsonData);
-                updateChannelsFct([newChannel.channel]);
+                self.userChannels.channels.append(newChannel.channel);
             }
+            updateChannelsFct();
         });
     }
     
-    public func connectToGroup(insertMessage: @escaping (_ message: Message) -> Void) -> Void {
-        self.invokeConnectToChannel(insertMessage: insertMessage);
+    public func connectToGroup() -> Void {
+        self.invokeConnectToChannel();
     }
     
     public func invokeFetchChannels() -> Void {
@@ -80,14 +86,23 @@ class ChatService {
         });
     }
     
-    public func onFetchChannels(updateChannelsFct: @escaping (_ channels: [Channel]) -> Void) -> Void {
+    public func onFetchChannels(updateChannelsFct: @escaping () -> Void) -> Void {
         self.hubConnection.on(method: "FetchChannels", callback: { args, typeConverter in
             print("[ CHAT ] On FetchChannels");
             
             let channelsJson: String = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self)!;
             if let channelsJsonData = channelsJson.data(using: .utf8) {
                 let channels: ChannelsMessage = try! JSONDecoder().decode(ChannelsMessage.self, from: channelsJsonData);
-                updateChannelsFct(channels.channels);
+                self.userChannels.channels = [];
+                self.serverChannels.channels = [];
+                for channel in channels.channels {
+                    if (channel.connected) {
+                        self.userChannels.channels.append(channel);
+                    } else {
+                        self.serverChannels.channels.append(channel);
+                    }
+                }
+                updateChannelsFct();
             }
         });
     }
@@ -225,7 +240,7 @@ class ChatService {
     }
     
     private func invokeCreateChannel(channelName: String) -> Void {
-        let newChannel: ChannelMessage = ChannelMessage(channel: Channel(name: channelName, connected: false));
+        let newChannel: ChannelMessage = ChannelMessage(channel: Channel(name: channelName, connected: true));
         let newChannelJson = try? JSONEncoder().encode(newChannel);
         let newChannelJsonData: String = String(data: newChannelJson!, encoding: .utf8)!;
         
@@ -235,7 +250,7 @@ class ChatService {
         });
     }
     
-    private func invokeConnectToChannel(insertMessage: @escaping (_ message: Message) -> Void) -> Void {
+    private func invokeConnectToChannel() -> Void {
         let json = try? JSONEncoder().encode(ConnectionMessage(channelId: self.currentChannel.name));
         let jsondata: String = String(data: json!, encoding: .utf8)!;
         

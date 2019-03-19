@@ -384,7 +384,11 @@
     <Compile Include="Strokes\AbstractStroke.cs" />
     <Compile Include="Strokes\ArtefactStroke.cs" />
     <Compile Include="Strokes\ICanvasable.cs" />
-    <Compile Include="Strokes\LineStroke.cs" />
+    <Compile Include="Strokes\AgregationStroke.cs" />
+    <Compile Include="Strokes\CompositionStroke.cs" />
+    <Compile Include="Strokes\InheritanceStroke.cs" />
+    <Compile Include="Strokes\BidirectionalAssociationStroke.cs" />
+    <Compile Include="Strokes\UnidirectionalAssociationStroke.cs" />
     <Compile Include="Strokes\ActivityStroke.cs" />
     <Compile Include="Strokes\PhaseStroke.cs" />
     <Compile Include="Strokes\RoleStroke.cs" />
@@ -532,6 +536,11 @@
     <Folder Include="Services\" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\agregation.png" />
+    <Resource Include="Resources\bi_asso.png" />
+    <Resource Include="Resources\composition.png" />
+    <Resource Include="Resources\inheritance.png" />
+    <Resource Include="Resources\uni_asso.png" />
     <Resource Include="Resources\a.png" />
     <Content Include="SoundEffects\receive.mp3">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

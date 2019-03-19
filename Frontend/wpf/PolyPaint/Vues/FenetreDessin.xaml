@@ -1,4 +1,5 @@
 <Window
+   
      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
      TextElement.Foreground="{DynamicResource MaterialDesignBody}"
      TextElement.FontWeight="Regular"
@@ -199,22 +200,8 @@
                         </StackPanel>
                     </Button>
                     <StackPanel Orientation="Horizontal">
-                        <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Width="2" />
+                        <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Width="2"  />
                     </StackPanel>
-                    <Button Name="line"
-                        Style="{StaticResource MaterialDesignRaisedLightButton}" HorizontalAlignment="Left" ToolTip="MaterialDesignRaisedLightButton" 
-                        BorderBrush="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurBordure}, ConverterParameter=line, UpdateSourceTrigger=PropertyChanged}" 
-                        Background="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurCouleurFond}, ConverterParameter=line, UpdateSourceTrigger=PropertyChanged}" 
-                        Command="{Binding Path=ChoisirOutil}"
-                        CommandParameter="line">
-                        <StackPanel>
-                            <Image Source="/Resources/line.png" Height="25" Width="25"  />
-                        </StackPanel>
-                    </Button>
-                    <StackPanel Orientation="Horizontal">
-                        <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Width="2" />
-                    </StackPanel>
-
                     <StackPanel Orientation="Vertical" Margin="5,5,5,5" VerticalAlignment="Center">
                         <StackPanel Orientation="Horizontal">
                             <Button Name="Solid" Width="24" Height="24" Padding="0"
@@ -245,7 +232,63 @@
                     <StackPanel Orientation="Horizontal">
                         <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Width="2"  />
                     </StackPanel>
-                    <xctk:ColorPicker x:Name="selecteurCouleurBordure"                             
+                    <StackPanel Orientation="Vertical" Margin="5,5,5,5" VerticalAlignment="Center">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                            <Button Name="AssoUni" Width="24" Height="24" Padding="0"
+                            BorderBrush="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurBordure}, ConverterParameter=asso_uni, UpdateSourceTrigger=PropertyChanged}" 
+                            Background="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurCouleurFond}, ConverterParameter=asso_uni, UpdateSourceTrigger=PropertyChanged}"                                 
+                            HorizontalContentAlignment="Center"                                
+                            Command="{Binding Path=ChoisirOutil}"
+                            CommandParameter="asso_uni">
+                            <StackPanel>
+                                <Image Source="/Resources/uni_asso.png" Height="24" Width="24"  />
+                            </StackPanel>
+                            </Button>
+                            <Button Name="AssoBi" Width="24" Height="24" Padding="0"
+                            HorizontalContentAlignment="Center"                            
+                            BorderBrush="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurBordure}, ConverterParameter=asso_bi, UpdateSourceTrigger=PropertyChanged}" 
+                            Background="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurCouleurFond}, ConverterParameter=asso_bi, UpdateSourceTrigger=PropertyChanged}"                                
+                            Command="{Binding Path=ChoisirOutil}"
+                            CommandParameter="asso_bi">
+                            <StackPanel>
+                                <Image Source="/Resources/bi_asso.png" Height="24" Width="24"  />
+                            </StackPanel>
+                            </Button>
+                            <Button Name="Composition" Width="24" Height="24" Padding="0"
+                            HorizontalContentAlignment="Center"                            
+                            BorderBrush="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurBordure}, ConverterParameter=composition, UpdateSourceTrigger=PropertyChanged}" 
+                            Background="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurCouleurFond}, ConverterParameter=composition, UpdateSourceTrigger=PropertyChanged}"                                
+                            Command="{Binding Path=ChoisirOutil}"
+                            CommandParameter="composition">
+                                <StackPanel>
+                                    <Image Source="/Resources/composition.png" Height="24" Width="24"  />
+                                </StackPanel>
+                            </Button>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                            <Button Name="Heritage" Width="24" Height="24" Padding="0"
+                            BorderBrush="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurBordure}, ConverterParameter=heritage, UpdateSourceTrigger=PropertyChanged}" 
+                            Background="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurCouleurFond}, ConverterParameter=heritage, UpdateSourceTrigger=PropertyChanged}"                                 
+                            HorizontalContentAlignment="Center"                                
+                            Command="{Binding Path=ChoisirOutil}"
+                            CommandParameter="heritage">
+                            <StackPanel>
+                                <Image Source="/Resources/inheritance.png" Height="24" Width="24"  />
+                            </StackPanel>
+                            </Button>
+                            <Button Name="Agregation" Width="24" Height="24" Padding="0"
+                            BorderBrush="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurBordure}, ConverterParameter=agregation, UpdateSourceTrigger=PropertyChanged}" 
+                            Background="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurCouleurFond}, ConverterParameter=agregation, UpdateSourceTrigger=PropertyChanged}"                                 
+                            HorizontalContentAlignment="Center"                                
+                            Command="{Binding Path=ChoisirOutil}"
+                            CommandParameter="agregation">
+                            <StackPanel>
+                                    <Image Source="/Resources/agregation.png" Height="24" Width="24"  />
+                            </StackPanel>
+                            </Button>
+                        </StackPanel>
+                    </StackPanel>
+                            <xctk:ColorPicker x:Name="selecteurCouleurBordure"                             
                         VerticalContentAlignment="Stretch"
                         Background="#00000000"
                         ShowDropDownButton="False"
@@ -278,7 +321,6 @@
                         Foreground="OrangeRed"                        
                         TickFrequency="10" TickPlacement="BottomRight" IsSnapToTickEnabled="False">
                     </Slider>
-
                 </StackPanel>
             </Border>
 
