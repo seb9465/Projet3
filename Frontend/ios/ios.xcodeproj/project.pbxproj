@@ -32,6 +32,9 @@
 		3DABD3E02241433C00707D86 /* ClassAttributeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DABD3DE2241433C00707D86 /* ClassAttributeCell.swift */; };
 		3DABD3E12241433C00707D86 /* ClassAttributeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3DABD3DF2241433C00707D86 /* ClassAttributeCell.xib */; };
 		3DABD3F222418FC300707D86 /* StyleTableController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DABD3F122418FC300707D86 /* StyleTableController.swift */; };
+		3DABD3F52241975C00707D86 /* FigureTableController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DABD3F42241975C00707D86 /* FigureTableController.swift */; };
+		3DABD3F92241988500707D86 /* FigureSelectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DABD3F72241988500707D86 /* FigureSelectionCell.swift */; };
+		3DABD3FA2241988500707D86 /* FigureSelectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3DABD3F82241988500707D86 /* FigureSelectionCell.xib */; };
 		3DB1363E2235B3130096FA04 /* FigureProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DB1363D2235B3130096FA04 /* FigureProtocol.swift */; };
 		3DC07CC722205B7C0045E7DE /* ContextMenuCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DC07CC622205B7C0045E7DE /* ContextMenuCell.swift */; };
 		3DC61EB92200B44B003FE445 /* RegisterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DC61EB82200B44B003FE445 /* RegisterController.swift */; };
@@ -117,6 +120,9 @@
 		3DABD3DE2241433C00707D86 /* ClassAttributeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassAttributeCell.swift; sourceTree = "<group>"; };
 		3DABD3DF2241433C00707D86 /* ClassAttributeCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ClassAttributeCell.xib; sourceTree = "<group>"; };
 		3DABD3F122418FC300707D86 /* StyleTableController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleTableController.swift; sourceTree = "<group>"; };
+		3DABD3F42241975C00707D86 /* FigureTableController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FigureTableController.swift; sourceTree = "<group>"; };
+		3DABD3F72241988500707D86 /* FigureSelectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FigureSelectionCell.swift; sourceTree = "<group>"; };
+		3DABD3F82241988500707D86 /* FigureSelectionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FigureSelectionCell.xib; sourceTree = "<group>"; };
 		3DB1363D2235B3130096FA04 /* FigureProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FigureProtocol.swift; sourceTree = "<group>"; };
 		3DC07CC622205B7C0045E7DE /* ContextMenuCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContextMenuCell.swift; sourceTree = "<group>"; };
 		3DC61EB82200B44B003FE445 /* RegisterController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterController.swift; sourceTree = "<group>"; };
@@ -245,6 +251,7 @@
 		3D6E4C3A223ADE5000E391D4 /* SideToolbar */ = {
 			isa = PBXGroup;
 			children = (
+				3DABD3F3224196E800707D86 /* FigureTable */,
 				3DABD3EE22418DEC00707D86 /* StyleTable */,
 				C47715BA22414569008F27E6 /* RotateCell */,
 				3DE8F115223C32330052580B /* ClassCell */,
@@ -313,6 +320,24 @@
 				3DABD3F122418FC300707D86 /* StyleTableController.swift */,
 			);
 			path = StyleTable;
+			sourceTree = "<group>";
+		};
+		3DABD3F3224196E800707D86 /* FigureTable */ = {
+			isa = PBXGroup;
+			children = (
+				3DABD3F62241987000707D86 /* FigureSelectionCell */,
+				3DABD3F42241975C00707D86 /* FigureTableController.swift */,
+			);
+			path = FigureTable;
+			sourceTree = "<group>";
+		};
+		3DABD3F62241987000707D86 /* FigureSelectionCell */ = {
+			isa = PBXGroup;
+			children = (
+				3DABD3F72241988500707D86 /* FigureSelectionCell.swift */,
+				3DABD3F82241988500707D86 /* FigureSelectionCell.xib */,
+			);
+			path = FigureSelectionCell;
 			sourceTree = "<group>";
 		};
 		3DB1363A2235B2730096FA04 /* Figures */ = {
@@ -626,6 +651,7 @@
 				3DE8F126223C4AF00052580B /* AddMethodCell.xib in Resources */,
 				B711B5F421F659A50096BF7F /* LaunchScreen.storyboard in Resources */,
 				B781B95922132BDB001C1BD8 /* Canvas.storyboard in Resources */,
+				3DABD3FA2241988500707D86 /* FigureSelectionCell.xib in Resources */,
 				3DE8F121223C44AF0052580B /* ClassMethodCell.xib in Resources */,
 				3D6E4C40223AE17B00E391D4 /* BorderCell.xib in Resources */,
 				B711B5F121F659A50096BF7F /* Assets.xcassets in Resources */,
@@ -747,6 +773,7 @@
 				3D73359D223739550021FA3C /* UmlClassFigure.swift in Sources */,
 				3D5537C02200E86E002C1B77 /* SlideDownSegue.swift in Sources */,
 				3D6E4C37223AD53300E391D4 /* TouchEventState.swift in Sources */,
+				3DABD3F52241975C00707D86 /* FigureTableController.swift in Sources */,
 				3DC967ED220A09C400FA76CB /* DashboardController.swift in Sources */,
 				3DABD3E02241433C00707D86 /* ClassAttributeCell.swift in Sources */,
 				3DB1363E2235B3130096FA04 /* FigureProtocol.swift in Sources */,
@@ -763,6 +790,7 @@
 				B7B1B43E2231C03900BEE17D /* MessageDisplayExtension.swift in Sources */,
 				3DE8F114223C26890052580B /* SideToolbarDelegate.swift in Sources */,
 				3DABD3F222418FC300707D86 /* StyleTableController.swift in Sources */,
+				3DABD3F92241988500707D86 /* FigureSelectionCell.swift in Sources */,
 				3D1622B22239AB4F00B98263 /* Figure.swift in Sources */,
 				3DA9A50122220F870005F3AF /* GalleryHeader.swift in Sources */,
 				B7B1B4392231BE8000BEE17D /* MessageDataSourceExtension.swift in Sources */,
