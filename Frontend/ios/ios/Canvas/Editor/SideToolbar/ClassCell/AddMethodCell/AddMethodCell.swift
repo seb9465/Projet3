@@ -24,6 +24,7 @@ class AddMethodCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
+    
     @IBAction func addButtonPressed(_ sender: UIButton) {
         if (self.methodNameField.text == "") {
             return

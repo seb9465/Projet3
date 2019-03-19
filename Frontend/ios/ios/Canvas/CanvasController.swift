@@ -29,7 +29,7 @@ class CanvasController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad();
-
+        self.editor.sideToolbarController = self
         CollaborationHub.shared.connectToHub()
         let nib = UINib.init(nibName: "BorderCell", bundle: nil)
         let attributesnib = UINib.init(nibName: "ClassCell", bundle: nil)
@@ -151,8 +151,17 @@ class CanvasController: UIViewController {
     }
 }
 
+extension CanvasController: SideToolbarController {
+    func update() {
+        self.sideTableView.reloadData()
+    }
+}
+
 extension CanvasController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if (self.editor.selectedFigure == nil) {
+            return 0
+        }
         return 2
     }
     
@@ -160,7 +169,7 @@ extension CanvasController: UITableViewDelegate, UITableViewDataSource {
         if (indexPath.row == 0) {
             return 150
         } else {
-            return 250
+            return 300
         }
     }
     
@@ -175,6 +184,9 @@ extension CanvasController: UITableViewDelegate, UITableViewDataSource {
             let cell = tableView.dequeueReusableCell(withIdentifier: "ClassCell", for: indexPath) as! ClassCell
             cell.setUpTable()
             cell.delegate = self.editor
+            cell.classNameField.text = (self.editor.selectedFigure as! UmlClassFigure).className
+            cell.methods = (self.editor.selectedFigure as! UmlClassFigure).methods
+            cell.attributesTableView.reloadData()
             return cell
         }
     }

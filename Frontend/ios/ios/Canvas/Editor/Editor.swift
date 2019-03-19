@@ -10,7 +10,8 @@ import UIKit
 
 class Editor {
     public var editorView: EditorView = EditorView()
-
+    public var sideToolbarController: SideToolbarController?
+    
     private var undoArray: [Figure] = []
     private var redoArray: [Figure] = [];
     private var figures: [Figure] = [];
@@ -172,7 +173,13 @@ extension Editor: SideToolbarDelegate {
     }
     
     func addClassMethod(name: String) {
-         (self.selectedFigure as! UmlClassFigure).addMethod(name: name)
+        (self.selectedFigure as! UmlClassFigure).addMethod(name: name)
+        sideToolbarController?.update()
+    }
+    
+    func removeClassMethod(name: String, index: Int) {
+        (self.selectedFigure as! UmlClassFigure).removeMethod(name: name, index: index)
+        sideToolbarController?.update()
     }
 }
 
@@ -191,6 +198,7 @@ extension Editor : TouchInputDelegate {
             if (action == "shape") {
                 self.deselect()
                 self.select(figure: figure!)
+                self.sideToolbarController?.update()
                 self.touchEventState = .TRANSLATE
                 return
             }

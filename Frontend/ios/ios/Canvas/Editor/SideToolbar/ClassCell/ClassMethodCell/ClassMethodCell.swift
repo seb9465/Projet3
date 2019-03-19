@@ -9,7 +9,11 @@
 import UIKit
 
 class ClassMethodCell: UITableViewCell {
+    var delegate: SideToolbarDelegate?
+    var methodIndex: Int!
 
+    @IBOutlet weak var methodName: UILabel!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -22,4 +26,7 @@ class ClassMethodCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
+    @IBAction func removeButtonPressed(_ sender: UIButton) {
+        self.delegate?.removeClassMethod(name: "not implemented", index: self.methodIndex)
+    }
 }

@@ -14,8 +14,8 @@ class UmlClassFigure: UmlFigure {
     static let BASE_WIDTH: CGFloat = 150
     static let BASE_HEIGHT: CGFloat = 200
     
-    private var className: String = "ClassName"
-    private var methods: [String] = []
+    public var className: String = "ClassName"
+    public var methods: [String] = []
 
     
     init(origin: CGPoint) {
@@ -37,6 +37,12 @@ class UmlClassFigure: UmlFigure {
     
     public func addMethod(name: String) {
         self.methods.append(name)
+        setNeedsDisplay();
+    }
+    
+    public func removeMethod(name: String, index: Int) {
+        self.methods.remove(at: index)
+//        self.methods.append(name)
         setNeedsDisplay();
     }
     

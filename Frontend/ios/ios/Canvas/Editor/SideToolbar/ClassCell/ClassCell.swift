@@ -10,7 +10,10 @@ import UIKit
 
 class ClassCell: UITableViewCell {
 
+    @IBOutlet weak var classNameField: UITextField!
+
     var delegate: SideToolbarDelegate?
+    var methods: [String] = []
     
     @IBOutlet weak var attributesTableView: UITableView!
     
@@ -39,9 +42,9 @@ class ClassCell: UITableViewCell {
     }
 }
 
-extension ClassCell: UITableViewDataSource,UITableViewDelegate {
+extension ClassCell: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        return self.methods.count + 1
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -54,7 +57,10 @@ extension ClassCell: UITableViewDataSource,UITableViewDelegate {
             cell.delegate = self.delegate
             return cell
         }
-        let cell = tableView.dequeueReusableCell(withIdentifier: "ClassMethodCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ClassMethodCell", for: indexPath) as! ClassMethodCell
+        cell.delegate = self.delegate
+        cell.methodName.text = self.methods[indexPath.row - 1]
+        cell.methodIndex = indexPath.row - 1
         return cell
     }
 }
