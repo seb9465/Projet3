@@ -51,10 +51,10 @@ namespace PolyPaint.Vues
                 if (result.StatusCode == System.Net.HttpStatusCode.OK)
                 {
                     DecodeToken(token);
-                    FenetreDessin fenetreDessin = new FenetreDessin(ViewStateEnum.Online);
-                    Application.Current.MainWindow = fenetreDessin;
+                    MenuProfile menuProfile = new MenuProfile();
+                    Application.Current.MainWindow = menuProfile;
                     Close();
-                    fenetreDessin.Show();
+                    menuProfile.Show();
                 }
                 else
                 {
