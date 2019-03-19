@@ -408,7 +408,7 @@ namespace PolyPaint
             {
                 icEventManager.EndDraw(surfaceDessin, (DataContext as VueModele).OutilSelectionne);
             }
-            if ((DataContext as VueModele).OutilSelectionne == "text")
+            if ((DataContext as VueModele).OutilSelectionne == "change_text")
             {
                 icEventManager.ChangeText(surfaceDessin, mouseLeftDownPoint);
             }

@@ -388,6 +388,7 @@
     <Compile Include="Strokes\ActivityStroke.cs" />
     <Compile Include="Strokes\PhaseStroke.cs" />
     <Compile Include="Strokes\RoleStroke.cs" />
+    <Compile Include="Strokes\TextStroke.cs" />
     <Compile Include="Strokes\UmlClassStroke.cs" />
     <Compile Include="Strokes\RectangleStroke.cs" />
     <Compile Include="Structures\ChannelArgs.cs" />
@@ -531,6 +532,7 @@
     <Folder Include="Services\" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\a.png" />
     <Content Include="SoundEffects\receive.mp3">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
