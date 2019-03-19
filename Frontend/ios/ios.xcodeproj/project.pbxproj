@@ -75,6 +75,7 @@
 		C43102E122132226008F1D80 /* SoundNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43102E022132226008F1D80 /* SoundNotification.swift */; };
 		C47715C4224149B5008F27E6 /* RotateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47715C2224149B5008F27E6 /* RotateCell.swift */; };
 		C47715C5224149B5008F27E6 /* RotateCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C47715C3224149B5008F27E6 /* RotateCell.xib */; };
+		C47715C92241969F008F27E6 /* PropertiesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47715C82241969F008F27E6 /* PropertiesController.swift */; };
 		C495FEBE22381BDF006E49F9 /* UMLImageFigure.swift in Sources */ = {isa = PBXBuildFile; fileRef = C495FEBD22381BDF006E49F9 /* UMLImageFigure.swift */; };
 		C495FEC22238248E006E49F9 /* Ressources in Resources */ = {isa = PBXBuildFile; fileRef = C495FEC12238248E006E49F9 /* Ressources */; };
 		C4D6BB2722384F5B00121695 /* AnchorPoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D6BB2622384F5B00121695 /* AnchorPoints.swift */; };
@@ -166,6 +167,7 @@
 		C43102E022132226008F1D80 /* SoundNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundNotification.swift; sourceTree = "<group>"; };
 		C47715C2224149B5008F27E6 /* RotateCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RotateCell.swift; sourceTree = "<group>"; };
 		C47715C3224149B5008F27E6 /* RotateCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RotateCell.xib; sourceTree = "<group>"; };
+		C47715C82241969F008F27E6 /* PropertiesController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PropertiesController.swift; sourceTree = "<group>"; };
 		C495FEBD22381BDF006E49F9 /* UMLImageFigure.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UMLImageFigure.swift; path = ios/Canvas/Figures/UMLImageFigure.swift; sourceTree = SOURCE_ROOT; };
 		C495FEC12238248E006E49F9 /* Ressources */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Ressources; sourceTree = "<group>"; };
 		C4D6BB2622384F5B00121695 /* AnchorPoints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnchorPoints.swift; sourceTree = "<group>"; };
@@ -245,6 +247,7 @@
 		3D6E4C3A223ADE5000E391D4 /* SideToolbar */ = {
 			isa = PBXGroup;
 			children = (
+				C47715C72241959D008F27E6 /* PropertiesTable */,
 				3DABD3EE22418DEC00707D86 /* StyleTable */,
 				C47715BA22414569008F27E6 /* RotateCell */,
 				3DE8F115223C32330052580B /* ClassCell */,
@@ -527,6 +530,14 @@
 			path = RotateCell;
 			sourceTree = "<group>";
 		};
+		C47715C72241959D008F27E6 /* PropertiesTable */ = {
+			isa = PBXGroup;
+			children = (
+				C47715C82241969F008F27E6 /* PropertiesController.swift */,
+			);
+			path = PropertiesTable;
+			sourceTree = "<group>";
+		};
 		D66C1DCE238BFD31669CE467 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -783,6 +794,7 @@
 				B7B1B4352231A3FD00BEE17D /* MyCustomMessagesFlowLayout.swift in Sources */,
 				3DC07CC722205B7C0045E7DE /* ContextMenuCell.swift in Sources */,
 				3D9FBC1222248371006BB297 /* MasterViewController.swift in Sources */,
+				C47715C92241969F008F27E6 /* PropertiesController.swift in Sources */,
 				3D2268252237050F00B2F604 /* UmlFigure.swift in Sources */,
 				B781B95B22132C2F001C1BD8 /* CanvasController.swift in Sources */,
 				C495FEBE22381BDF006E49F9 /* UMLImageFigure.swift in Sources */,
