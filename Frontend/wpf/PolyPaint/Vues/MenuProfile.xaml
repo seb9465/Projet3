@@ -20,20 +20,22 @@
         <convertisseurs:ConvertisseurRoomContent x:Key="convertisseurRoomContent" />
     </Window.Resources>
 
+    <StackPanel Orientation="Horizontal">
+        <StackPanel Margin="50,50,0,0">
+            <Label Content="Polypaint Pro 1.0" FontSize="20"></Label>
+            <StackPanel Orientation="Horizontal">
+                <Label Content="Welcome" FontSize="30" FontWeight="Bold"></Label>
+                <Label Name="usernameLabel" Content="chelsy.binet" Foreground="OrangeRed" FontSize="30" FontWeight="Bold"></Label>
+            </StackPanel>
 
-    <StackPanel Margin="40">
-        <Label Content="Polypaint Pro 1.0" FontSize="20"></Label>
-        <StackPanel Orientation="Horizontal">
-            <Label Content="Welcome" FontSize="30" FontWeight="Bold"></Label>
-            <Label Name="usernameLabel" Content="chelsy.binet" Foreground="OrangeRed" FontSize="30" FontWeight="Bold"></Label>
+            <StackPanel  Orientation="Horizontal" VerticalAlignment="Center">
+                <Button Content="Canvas"  Width="160px" Height="160px" VerticalAlignment="Top" Margin="0,30,50,0" Name="canvasButton" Click="CanvasBtn_Click" FontSize="25"/>
+                <Button Content="Gallery"  Width="160px" Height="160px" VerticalAlignment="Top" Margin="0,30,50,0"  Name="galleryButton" Click="GalleryBtn_Click" FontSize="25"/>
+            </StackPanel>
         </StackPanel>
+    
 
-        <StackPanel  Orientation="Horizontal" VerticalAlignment="Center">
-            <Button Content="Canvas"  Width="160px" Height="160px" VerticalAlignment="Top" Margin="0,30,50,0" Name="canvasButton" Click="CanvasBtn_Click" FontSize="25"/>
-            <Button Content="Gallery"  Width="160px" Height="160px" VerticalAlignment="Top" Margin="0,30,50,0"  Name="galleryButton" Click="GalleryBtn_Click" FontSize="25"/>
-        </StackPanel>
-
-        <StackPanel x:Name="chatMenu" Background="Gainsboro" Width="70"  HorizontalAlignment="Right" Panel.ZIndex="100">
+        <StackPanel x:Name="chatMenu" Background="Gainsboro" Width="70" Margin="740,0,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" Height="700">
 
             <ToggleButton x:Name="hamburgerMenu" Style="{StaticResource MaterialDesignActionToggleButton}" Foreground="Black" Background="Transparent" Click="hamburgerMenu_Click" Margin="0,10,20,0" HorizontalAlignment="Right">
                 <ToggleButton.Content>
