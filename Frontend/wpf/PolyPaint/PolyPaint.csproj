@@ -535,6 +535,11 @@
     <Folder Include="Services\" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\agregation.png" />
+    <Resource Include="Resources\bi_asso.png" />
+    <Resource Include="Resources\composition.png" />
+    <Resource Include="Resources\inheritance.png" />
+    <Resource Include="Resources\uni_asso.png" />
     <Content Include="SoundEffects\receive.mp3">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

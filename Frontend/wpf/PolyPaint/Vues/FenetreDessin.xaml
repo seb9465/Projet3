@@ -255,7 +255,7 @@
                             Command="{Binding Path=ChoisirOutil}"
                             CommandParameter="asso_uni">
                             <StackPanel>
-                                <Image Source="/Resources/line.png" Height="24" Width="24"  />
+                                <Image Source="/Resources/uni_asso.png" Height="24" Width="24"  />
                             </StackPanel>
                             </Button>
                             <Button Name="AssoBi" Width="24" Height="24" Padding="0"
@@ -265,7 +265,7 @@
                             Command="{Binding Path=ChoisirOutil}"
                             CommandParameter="asso_bi">
                             <StackPanel>
-                                <Image Source="/Resources/line.png" Height="24" Width="24"  />
+                                <Image Source="/Resources/bi_asso.png" Height="24" Width="24"  />
                             </StackPanel>
                             </Button>
                             <Button Name="Composition" Width="24" Height="24" Padding="0"
@@ -275,7 +275,7 @@
                             Command="{Binding Path=ChoisirOutil}"
                             CommandParameter="composition">
                                 <StackPanel>
-                                    <Image Source="/Resources/line.png" Height="24" Width="24"  />
+                                    <Image Source="/Resources/composition.png" Height="24" Width="24"  />
                                 </StackPanel>
                             </Button>
                         </StackPanel>
@@ -287,7 +287,7 @@
                             Command="{Binding Path=ChoisirOutil}"
                             CommandParameter="heritage">
                             <StackPanel>
-                                <Image Source="/Resources/line.png" Height="24" Width="24"  />
+                                <Image Source="/Resources/inheritance.png" Height="24" Width="24"  />
                             </StackPanel>
                             </Button>
                             <Button Name="Agregation" Width="24" Height="24" Padding="0"
@@ -297,7 +297,7 @@
                             Command="{Binding Path=ChoisirOutil}"
                             CommandParameter="agregation">
                             <StackPanel>
-                                <Image Source="/Resources/line.png" Height="24" Width="24"  />
+                                    <Image Source="/Resources/agregation.png" Height="24" Width="24"  />
                             </StackPanel>
                             </Button>
                         </StackPanel>
