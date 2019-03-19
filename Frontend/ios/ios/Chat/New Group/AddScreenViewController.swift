@@ -9,7 +9,21 @@
 import Foundation
 import UIKit
 
-class AddScreenViewController: UIViewController {
+class AddScreenViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        <#code#>
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "CustomTableViewCell") as? CustomTableViewCell;
+        
+        cell?.chatRoomName.text = "Hellllo";
+        
+        return cell!
+    }
+    
+    @IBOutlet var tableView: UITableView!
     
     @IBOutlet var cancelButton: UIBarButtonItem!
     @IBOutlet var saveButton: UIBarButtonItem!
@@ -17,6 +31,8 @@ class AddScreenViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad();
+        let textFieldCell = UINib(nibName: "CustomTableViewCell", bundle: nil)
+        self.tableView.register(textFieldCell, forCellReuseIdentifier: "CustomTableViewCell");
     }
     
     @IBAction func cancelButton(_ sender: Any) {

@@ -90,6 +90,9 @@
                                 <rect key="frame" x="20" y="423" width="984" height="325"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="hHY-Lh-5Ti" id="rhI-R4-PGN"/>
+                                </connections>
                             </tableView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Add an existing" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4IH-Ao-qPY">
                                 <rect key="frame" x="279" y="316" width="357" height="63"/>
@@ -99,7 +102,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="room" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tpj-b8-afL">
-                                <rect key="frame" x="636" y="321" width="109" height="58"/>
+                                <rect key="frame" x="644" y="321" width="109" height="58"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="48"/>
                                 <color key="textColor" red="1" green="0.41960784309999999" blue="0.41960784309999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -125,6 +128,7 @@
                         <outlet property="cancelButton" destination="2G4-Nc-e1K" id="yy0-Pq-cOl"/>
                         <outlet property="channelName" destination="pKD-53-YzD" id="I8m-F6-ALy"/>
                         <outlet property="saveButton" destination="0f0-fH-Vkd" id="N2S-kQ-x8q"/>
+                        <outlet property="tableView" destination="EmW-bz-58n" id="3jZ-oB-kTd"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Jus-3e-WG8" userLabel="First Responder" sceneMemberID="firstResponder"/>
