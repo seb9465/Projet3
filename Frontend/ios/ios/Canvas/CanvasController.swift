@@ -17,8 +17,6 @@ class CanvasController: UIViewController {
     
     public var editor: Editor = Editor()
     
-    @IBOutlet weak var sideTableView: UITableView!
-    
     @IBOutlet var rectButton: UIBarButtonItem!
     @IBOutlet var selectButton: UIBarButtonItem!
     @IBOutlet var deleteButton: UIBarButtonItem!
@@ -29,14 +27,7 @@ class CanvasController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad();
-        self.editor.sideToolbarController = self
         CollaborationHub.shared.connectToHub()
-        let nib = UINib.init(nibName: "BorderCell", bundle: nil)
-        let attributesnib = UINib.init(nibName: "ClassCell", bundle: nil)
-        let rotateNib = UINib.init(nibName: "RotateCell", bundle: nil)
-        self.sideTableView.register(nib, forCellReuseIdentifier: "BorderCell")
-        self.sideTableView.register(attributesnib, forCellReuseIdentifier: "ClassCell")
-        self.sideTableView.register(rotateNib, forCellReuseIdentifier: "RotateCell")
 
         // Color picker parameters.
         let pickerSize = CGSize(width: 200, height: 200);
@@ -78,51 +69,14 @@ class CanvasController: UIViewController {
     
     @IBAction func deleteButton(_ sender: Any) {
         self.editor.changeTouchHandleState(to: .DELETE)
-//        if (self.toolState == STATE.DELETE) {
-//            self.toolState = STATE.NOTHING_SELECTED;
-//            self.activeButton = nil;
-//            self.deleteButton.tintColor = UIColor(red: 0, green: 122/255, blue: 1, alpha: 1);
-//        } else {
-//            print("DELETE BUTTON SELECTED");
-//            self.toolState = STATE.DELETE;
-//            self.borderButton.isEnabled = false;
-//            self.fillButton.isEnabled = false;
-//            self.activeButton?.tintColor = UIColor(red: 0, green: 122/255, blue: 1, alpha: 1);
-//            self.activeButton = self.deleteButton;
-//            self.deleteButton.tintColor = UIColor(red: 0, green: 0, blue: 0, alpha: 1);
-//        }
     }
     
     @IBAction func selectFigureButton(_ sender: Any) {
         self.editor.changeTouchHandleState(to: .SELECT)
-//        if (self.toolState == STATE.SELECTION) {
-//            self.toolState = STATE.NOTHING_SELECTED;
-//            self.activeButton = nil;
-//            self.selectButton.tintColor = UIColor(red: 0, green: 122/255, blue: 1, alpha: 1);
-//        } else {
-//            print("SLECT BUTTON SELECTED");
-//            self.toolState = STATE.SELECTION;
-//            self.activeButton?.tintColor = UIColor(red: 0, green: 122/255, blue: 1, alpha: 1);
-//            self.activeButton = self.selectButton;
-//            self.selectButton.tintColor = UIColor(red: 0, green: 0, blue: 0, alpha: 1);
-//        }
     }
     
     @IBAction func drawRectButton(_ sender: Any) {
         self.editor.changeTouchHandleState(to: .INSERT)
-//        if (self.toolState == STATE.DRAW_RECT) {
-//            self.toolState = STATE.NOTHING_SELECTED;
-//            self.activeButton = nil;
-//            self.rectButton.tintColor = UIColor(red:0,green:122/255,blue:1,alpha:1);
-//        } else {
-//            print("RECT BUTTON SELECTED");
-//            self.toolState = STATE.DRAW_RECT;
-//            self.borderButton.isEnabled = false;
-//            self.fillButton.isEnabled = false;
-//            self.activeButton?.tintColor = UIColor(red: 0, green: 122/255, blue: 1, alpha: 1);
-//            self.activeButton = self.rectButton;
-//            self.rectButton.tintColor = UIColor(red:0,green:0,blue:0,alpha:1);
-//        }
     }
     
     @IBAction func quitButton(_ sender: Any) {
@@ -149,54 +103,6 @@ class CanvasController: UIViewController {
     @IBAction func fillButton(_ sender: Any) {
         print("FILL BUTTON TAPED");
 //        self.displayColorPickerFor(state: STATE.FILL);
-    }
-}
-
-extension CanvasController: SideToolbarController {
-    func update() {
-        self.sideTableView.reloadData()
-    }
-}
-
-extension CanvasController: UITableViewDelegate, UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if (self.editor.selectedFigure == nil) {
-            return 0
-        }
-        return 3
-    }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if (indexPath.row == 0) {
-            return 150
-        } else {
-            return 525
-        }
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        switch(indexPath.row) {
-        case 0:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "BorderCell", for: indexPath) as! BorderCell
-            cell.delegate = self.editor
-            return cell
-        case 1:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "ClassCell", for: indexPath) as! ClassCell
-            cell.setUpTable()
-            cell.delegate = self.editor
-            cell.classNameField.text = (self.editor.selectedFigure as! UmlClassFigure).className
-            cell.methods = (self.editor.selectedFigure as! UmlClassFigure).methods
-            cell.methodsTableView.reloadData()
-            cell.attributes = (self.editor.selectedFigure as! UmlClassFigure).attributes
-            cell.attributesTableView.reloadData()
-            return cell
-        case 2:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "RotateCell", for: indexPath) as! RotateCell
-            cell.delegate = self.editor
-            return cell;
-        default:
-            return UITableViewCell();
-        }
     }
 }
     
