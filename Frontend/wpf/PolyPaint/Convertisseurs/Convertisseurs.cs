@@ -77,7 +77,11 @@ namespace PolyPaint.Convertisseurs
                 case "artefact":
                 case "activity":
                 case "role":
-                case "line":
+                case "asso_uni":
+                case "asso_bi":
+                case "composition":
+                case "heritage":
+                case "agregation":
                     return InkCanvasEditingMode.None;
                 default:
                     return InkCanvasEditingMode.Ink;
