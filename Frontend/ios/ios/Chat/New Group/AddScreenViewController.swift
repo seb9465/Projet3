@@ -56,11 +56,11 @@ class AddScreenViewController: UIViewController, UITableViewDelegate, UITableVie
     // MARK: Table View
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 0;
+        return 1;
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 100;
+        return 0;
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
