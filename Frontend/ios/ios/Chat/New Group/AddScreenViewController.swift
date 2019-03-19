@@ -10,29 +10,37 @@ import Foundation
 import UIKit
 
 class AddScreenViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
-    @IBOutlet var tableView: UITableView!
     
+    // MARK: Class Attributes
+    
+    private let refreshControl = UIRefreshControl();
+    
+    @IBOutlet var tableView: UITableView!
     @IBOutlet var cancelButton: UIBarButtonItem!
     @IBOutlet var saveButton: UIBarButtonItem!
     @IBOutlet var channelName: UITextField!
     
-    private let refreshControl = UIRefreshControl();
-    
-    @objc private func refreshWeatherData(_ sender: Any) {
-        // Fetch Weather Data
-        ChatService.shared.invokeFetchChannels();
-        self.refreshControl.endRefreshing();
-        
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad();
+        
+        self.tableView.separatorStyle = .none;
+        self.customCellRegistration();
+        self.initRefreshControl();
+        self.initChatServiceCommunication();
+    }
+    
+    public func updateChannels() -> Void {
+        self.tableView.reloadData();
+    }
+    
+    // MARK: Private functions
+    
+    private func customCellRegistration() -> Void {
         let textFieldCell = UINib(nibName: "CustomTableViewCell", bundle: nil)
         self.tableView.register(textFieldCell, forCellReuseIdentifier: "CustomTableViewCell");
-        self.tableView.separatorStyle = .none;
-        refreshControl.addTarget(self, action: #selector(refreshWeatherData(_:)), for: .valueChanged)
-        self.tableView.addSubview(self.refreshControl);
-        
+    }
+    
+    private func initChatServiceCommunication() -> Void {
         ChatService.shared.onFetchChannels(updateChannelsFct: self.updateChannels);
         ChatService.shared.invokeChannelsWhenConnected();
         ChatService.shared.onCreateChannel(updateChannelsFct: self.updateChannels);
@@ -40,26 +48,35 @@ class AddScreenViewController: UIViewController, UITableViewDelegate, UITableVie
         ChatService.shared.invokeFetchChannels();
     }
     
+    @objc private func refreshRooms(_ sender: Any) {
+        ChatService.shared.invokeFetchChannels();
+        self.refreshControl.endRefreshing();
+        
+    }
+    
+    private func initRefreshControl() -> Void {
+        refreshControl.addTarget(self, action: #selector(refreshRooms(_:)), for: .valueChanged)
+        self.tableView.addSubview(self.refreshControl);
+    }
+    
+    // MARK: Actions
+    
     @IBAction func cancelButton(_ sender: Any) {
+        // Going back to the ChatRoom.
         let storyboard = UIStoryboard(name: "Chat", bundle: nil);
         let view = storyboard.instantiateViewController(withIdentifier: "ChatRoomsView");
-        navigationController?.pushViewController(view, animated: true);
-//        self.dismiss(animated: true, completion: nil);
+        navigationController?.pushViewController(view, animated: false); // TODO: Adjust the animation transition.
     }
     
     
     @IBAction func saveButton(_ sender: Any) {
-        // Create group.
-        //        ChatService.shared.
+        // Adding the channel on the server.
         ChatService.shared.createNewChannel(channelName: channelName.text!);
+        
+        // Back to the ChatRoom.
         let storyboard = UIStoryboard(name: "Chat", bundle: nil);
         let view = storyboard.instantiateViewController(withIdentifier: "ChatRoomsView");
         navigationController?.pushViewController(view, animated: true);
-//        self.dismiss(animated: true, completion: nil);
-    }
-    
-    public func updateChannels() -> Void {
-        self.tableView.reloadData();
     }
     
     // MARK: Table View
