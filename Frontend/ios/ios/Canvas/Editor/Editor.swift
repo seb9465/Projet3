@@ -101,6 +101,7 @@ class Editor {
         }
         self.undoArray.removeAll();
         self.redoArray.removeAll();
+        self.deselect();
     }
     
     public func figuresInView() -> Bool {
