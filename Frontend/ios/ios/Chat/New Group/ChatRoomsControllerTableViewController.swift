@@ -44,6 +44,7 @@ class ChatRoomsControllerTableViewController: UITableViewController {
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
 //         self.navigationItem.rightBarButtonItem = self.editButtonItem
+        self.navigationItem.rightBarButtonItems?.append(self.editButtonItem);
         
         super.viewDidLoad()
     }
@@ -63,6 +64,10 @@ class ChatRoomsControllerTableViewController: UITableViewController {
     public func updateChannels() -> Void {
         self.tableView.reloadData();
     }
+    
+//    @objc private func swipedLeft(sender: UIGestureRecognizer) {
+//        print("SWIPED LEFT");
+//    }
 
     // MARK: - Table view data source
 
@@ -92,6 +97,10 @@ class ChatRoomsControllerTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "CustomTableViewCell") as? CustomTableViewCell;
         
         cell?.chatRoomName.text = ChatService.shared.userChannels.channels[indexPath.row].name;
+        
+//        cell?.isUserInteractionEnabled = true;
+//        let swipeLeft = UISwipeGestureRecognizer(target: self, action: #selector(self.swipedLeft(sender:)));
+//        cell?.textLabel?.addGestureRecognizer(swipeLeft);
         
         return cell!
     }
