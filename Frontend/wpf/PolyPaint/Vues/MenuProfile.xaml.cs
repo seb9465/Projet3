@@ -7,6 +7,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -21,10 +23,7 @@ namespace PolyPaint
     public partial class MenuProfile : Window
     {
         private string username;
-        List<SaveableCanvas> strokes;
-        InkCanvas drawingSurface;
         private ChatWindow externalChatWindow;
-        public event EventHandler MessageReceived;
         bool isMenuOpen = false;
         private ViewStateEnum _viewState { get; set; }
         private MediaPlayer mediaPlayer = new MediaPlayer();
@@ -32,9 +31,7 @@ namespace PolyPaint
         public MenuProfile()
         {
             InitializeComponent();
-
             DataContext = new VueModele();
-
             username = Application.Current.Properties["username"].ToString();
             usernameLabel.Content = username;
 
@@ -43,6 +40,8 @@ namespace PolyPaint
             (DataContext as VueModele).ChatClient.Initialize((string)Application.Current.Properties["token"]);
             (DataContext as VueModele).ChatClient.MessageReceived += ScrollDown;
             externalChatWindow = new ChatWindow(DataContext);
+
+            Application.Current.Exit += OnClosing;
         }
 
         private void CanvasBtn_Click(object sender, RoutedEventArgs e)
@@ -56,6 +55,20 @@ namespace PolyPaint
         private void GalleryBtn_Click(object sender, RoutedEventArgs e)
         {
            
+        }
+
+        private void OnClosing(object sender, EventArgs e)
+        {
+            try
+            {
+                using (HttpClient client = new HttpClient())
+                {
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", (string)Application.Current.Properties["token"]);
+                    System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
+                    client.GetAsync($"{Config.URL}/api/user/logout").Wait();
+                }
+            }
+            catch { }
         }
 
         private void AddRoom(object sender, DialogClosingEventArgs eventArgs)
