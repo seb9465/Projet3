@@ -38,7 +38,6 @@ class CanvasController: UIViewController {
         self.sideTableView.register(attributesnib, forCellReuseIdentifier: "ClassCell")
         self.sideTableView.register(rotateNib, forCellReuseIdentifier: "RotateCell")
 
-
         // Color picker parameters.
         let pickerSize = CGSize(width: 200, height: 200);
         let pickerOrigin = CGPoint(x: 200, y: 100);

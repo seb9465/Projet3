@@ -2,9 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:/Users/sebastienlabine/Desktop/Projet 3 Code/log3900-12/Frontend/ios/ios/Canvas/Editor/SideToolbar/RotateCell/RotateCell.xib">
-   </FileRef>
-   <FileRef
       location = "group:ios.xcodeproj">
    </FileRef>
    <FileRef

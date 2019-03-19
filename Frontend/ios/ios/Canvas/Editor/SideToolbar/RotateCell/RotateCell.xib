@@ -26,18 +26,26 @@
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DxG-3R-wx5">
-                        <rect key="frame" x="23" y="66" width="76" height="30"/>
+                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DxG-3R-wx5" customClass="RoundedCorners" customModule="ios" customModuleProvider="target">
+                        <rect key="frame" x="23" y="66" width="100" height="30"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <state key="normal" title="Rotate Left"/>
+                        <color key="backgroundColor" red="1" green="0.41960784309999999" blue="0.41960784309999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
+                        <state key="normal" title="Rotate Left">
+                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </state>
                         <connections>
                             <action selector="RotateLeft:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="Z8T-Cc-E50"/>
                         </connections>
                     </button>
-                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AqS-Hj-TbT">
-                        <rect key="frame" x="149" y="66" width="85" height="30"/>
+                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AqS-Hj-TbT" customClass="RoundedCorners" customModule="ios" customModuleProvider="target">
+                        <rect key="frame" x="131" y="66" width="100" height="30"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <state key="normal" title="Rotate Right"/>
+                        <color key="backgroundColor" red="1" green="0.41960784309999999" blue="0.41960784309999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
+                        <state key="normal" title="Rotate Right">
+                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </state>
                         <connections>
                             <action selector="RotateRight:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="kda-j2-FN8"/>
                         </connections>
@@ -45,6 +53,7 @@
                 </subviews>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <point key="canvasLocation" x="137.59999999999999" y="153.82308845577214"/>
         </tableViewCell>
     </objects>
 </document>

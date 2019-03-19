@@ -31,7 +31,7 @@ class Editor {
     
     func select(figure: Figure) {
         self.selectedFigure = figure
-        self.selectionOutline = SelectionOutline(firstPoint: figure.firstPoint, lastPoint: figure.lastPoint)
+        self.selectionOutline = SelectionOutline(firstPoint: figure.frame.origin, lastPoint: CGPoint(x: figure.frame.maxX, y: figure.frame.maxY))
         self.selectionOutline.addSelectedFigureLayers()
         self.editorView.addSubview(self.selectionOutline)
     }
@@ -164,13 +164,6 @@ extension Editor {
 }
 
 extension Editor: SideToolbarDelegate {
-    func rotate(orientation: RotateOrientation) {
-        let figureSelected = self.selectedFigure;
-        self.selectedFigure.rotate(orientation: orientation)
-        self.deselect()
-        self.select(figure: figureSelected!)
-    }
-    
     func setSelectedFigureBorderColor(color: UIColor) {
         (self.selectedFigure as! UmlFigure).setBorderColor(borderColor: color)
     }
@@ -197,6 +190,13 @@ extension Editor: SideToolbarDelegate {
     func removeClassAttribute(name: String, index: Int) {
         (self.selectedFigure as! UmlClassFigure).removeAttribute(name: name, index: index)
         sideToolbarController?.update()
+    }
+    
+    func rotate(orientation: RotateOrientation) {
+        let figureSelected = self.selectedFigure;
+        self.selectedFigure.rotate(orientation: orientation)
+        self.deselect()
+        self.select(figure: figureSelected!)
     }
 }
 

@@ -12,8 +12,8 @@ import GLKit
 class UmlClassFigure: UmlFigure {
     
     // Constants
-    static let BASE_WIDTH: CGFloat = 150
-    static let BASE_HEIGHT: CGFloat = 200
+    let BASE_WIDTH: CGFloat = 150
+    let BASE_HEIGHT: CGFloat = 200
     
     public var className: String = "ClassName"
     public var methods: [String] = []
@@ -21,11 +21,11 @@ class UmlClassFigure: UmlFigure {
     private var currentAngle: Double = 0
     
     init(origin: CGPoint) {
-        super.init(touchedPoint: origin, width: UmlClassFigure.BASE_WIDTH, height: UmlClassFigure.BASE_HEIGHT)
+        super.init(touchedPoint: origin, width: BASE_WIDTH, height: BASE_HEIGHT)
     }
     
     init(firstPoint: CGPoint, lastPoint: CGPoint) {
-        super.init(firstPoint: firstPoint, lastPoint: lastPoint, width: UmlClassFigure.BASE_WIDTH, height: UmlClassFigure.BASE_WIDTH)
+        super.init(firstPoint: firstPoint, lastPoint: lastPoint, width: BASE_WIDTH, height: BASE_WIDTH)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -57,10 +57,25 @@ class UmlClassFigure: UmlFigure {
         setNeedsDisplay();
     }
     
+    override public func rotate(orientation: RotateOrientation) -> Void {
+        if (orientation == RotateOrientation.right) {
+            currentAngle += 90
+        } else {
+            currentAngle -= 90
+        }
+        
+        if (abs(currentAngle) == 360) {
+            currentAngle = 0
+        }
+        
+        self.transform = CGAffineTransform.init(rotationAngle: CGFloat(currentAngle * Double.pi/180))
+        setNeedsDisplay()
+    }
+    
     override func draw(_ rect: CGRect) {
-        let outerRect = CGRect(x: 0, y: 0, width: self.frame.width, height: self.frame.height).insetBy(dx: 5, dy: 5);
-        let nameRect = CGRect(x: 0, y: 0, width: self.frame.width, height: 50).insetBy(dx: 5, dy: 5);
-        let splitterRect = CGRect(x: 0, y: 0, width: self.frame.width, height: 125).insetBy(dx: 5, dy: 5);
+        let outerRect = CGRect(x: 0, y: 0, width: BASE_WIDTH, height: BASE_HEIGHT).insetBy(dx: 5, dy: 5);
+        let nameRect = CGRect(x: 0, y: 0, width: BASE_WIDTH, height: 50).insetBy(dx: 5, dy: 5);
+        let splitterRect = CGRect(x: 0, y: 0, width: BASE_WIDTH, height: 125).insetBy(dx: 5, dy: 5);
         
         let nameLabel = UILabel(frame: nameRect)
         nameLabel.text = self.className
@@ -103,18 +118,4 @@ class UmlClassFigure: UmlFigure {
         outerRectPath.fill()
         outerRectPath.stroke()
     }
-    
-    override public func rotate(orientation: RotateOrientation) -> Void {
-        if(orientation == RotateOrientation.right) {
-            currentAngle += 90
-        } else {
-            currentAngle -= 90
-        }
-        if(abs(currentAngle) == 360) {
-            currentAngle = 0
-        }
-        self.transform = CGAffineTransform.init(rotationAngle: CGFloat(currentAngle * Double.pi/180))
-        setNeedsDisplay();
-    }
-    
 }
