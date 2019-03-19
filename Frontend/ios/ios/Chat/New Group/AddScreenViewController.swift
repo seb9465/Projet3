@@ -110,7 +110,7 @@ class AddScreenViewController: UIViewController, UITableViewDelegate, UITableVie
         ChatService.shared.connectToGroup();
 
         let storyboard = UIStoryboard(name: "Chat", bundle: nil);
-        let destination = storyboard.instantiateViewController(withIdentifier: "ChatView");
+        let destination = storyboard.instantiateViewController(withIdentifier: "ChatRoomsView");
         navigationController?.pushViewController(destination, animated: true);
     }
 }
