@@ -94,7 +94,6 @@ class ChatService {
                 self.userChannels.channels = [];
                 self.serverChannels.channels = [];
                 for channel in channels.channels {
-                    print(channel.name, channel.connected);
                     if (channel.connected) {
                         self.userChannels.channels.append(channel);
                     } else {
