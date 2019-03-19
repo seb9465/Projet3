@@ -90,6 +90,7 @@ class AddScreenViewController: UIViewController, UITableViewDelegate, UITableVie
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         ChatService.shared.currentChannel = ChatService.shared.serverChannels.channels[indexPath.row];
+        ChatService.shared.connectToGroup();
 
         let storyboard = UIStoryboard(name: "Chat", bundle: nil);
         let destination = storyboard.instantiateViewController(withIdentifier: "ChatView");

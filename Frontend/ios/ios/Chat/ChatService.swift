@@ -70,8 +70,8 @@ class ChatService {
         });
     }
     
-    public func connectToGroup(insertMessage: @escaping (_ message: Message) -> Void) -> Void {
-        self.invokeConnectToChannel(insertMessage: insertMessage);
+    public func connectToGroup() -> Void {
+        self.invokeConnectToChannel();
     }
     
     public func invokeFetchChannels() -> Void {
@@ -249,7 +249,7 @@ class ChatService {
         });
     }
     
-    private func invokeConnectToChannel(insertMessage: @escaping (_ message: Message) -> Void) -> Void {
+    private func invokeConnectToChannel() -> Void {
         let json = try? JSONEncoder().encode(ConnectionMessage(channelId: self.currentChannel.name));
         let jsondata: String = String(data: json!, encoding: .utf8)!;
         
