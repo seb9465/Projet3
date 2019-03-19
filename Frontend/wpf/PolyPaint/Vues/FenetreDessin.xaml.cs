@@ -562,6 +562,7 @@ namespace PolyPaint
 
         private async void GoBack_Click(object sender, RoutedEventArgs e)
         {
+            externalChatWindow.Close();
             MenuProfile menuProfile = new MenuProfile();
             Application.Current.MainWindow = menuProfile;
             Close();
