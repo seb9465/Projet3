@@ -44,7 +44,6 @@ class AddScreenViewController: UIViewController, UITableViewDelegate, UITableVie
         ChatService.shared.onFetchChannels(updateChannelsFct: self.updateChannels);
         ChatService.shared.invokeChannelsWhenConnected();
         ChatService.shared.onCreateChannel(updateChannelsFct: self.updateChannels);
-        ChatService.shared.connectToHub();  // TODO: Add notification when client is connected.
         ChatService.shared.invokeFetchChannels();
     }
     
@@ -104,8 +103,6 @@ class AddScreenViewController: UIViewController, UITableViewDelegate, UITableVie
         
         return cell!
     }
-    
-    
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         ChatService.shared.currentChannel = ChatService.shared.serverChannels.channels[indexPath.row];
