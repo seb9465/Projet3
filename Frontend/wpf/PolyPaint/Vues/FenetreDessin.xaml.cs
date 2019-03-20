@@ -4,11 +4,13 @@ using Microsoft.Win32;
 using Newtonsoft.Json;
 using PolyPaint.Common.Collaboration;
 using PolyPaint.Modeles;
+using PolyPaint.Strokes;
 using PolyPaint.Structures;
 using PolyPaint.Utilitaires;
 using PolyPaint.VueModeles;
 using PolyPaint.Vues;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -33,6 +35,24 @@ namespace PolyPaint
     /// </summary>
     public partial class FenetreDessin : Window
     {
+        private static ConcurrentDictionary<Type, ItemTypeEnum> _strokeTypes = new ConcurrentDictionary<Type, ItemTypeEnum>(
+               new Dictionary<Type, ItemTypeEnum>()
+               {
+                { typeof(ActivityStroke), ItemTypeEnum.ActivityStroke },
+                { typeof(ArtefactStroke), ItemTypeEnum.ArtefactStroke },
+                { typeof(PhaseStroke), ItemTypeEnum.PhaseStroke },
+                { typeof(RectangleStroke), ItemTypeEnum.RectangleStroke },
+                { typeof(RoleStroke), ItemTypeEnum.RoleStroke },
+                { typeof(UmlClassStroke), ItemTypeEnum.UmlClassStroke },
+                { typeof(TextStroke), ItemTypeEnum.TextStroke },
+                { typeof(AgregationStroke), ItemTypeEnum.AgregationStroke },
+                { typeof(BidirectionalAssociationStroke), ItemTypeEnum.BidirectionalAssociationStroke },
+                { typeof(CompositionStroke), ItemTypeEnum.CompositionStroke},
+                { typeof(InheritanceStroke), ItemTypeEnum.InheritanceStroke },
+                { typeof(UnidirectionalAssociationStroke), ItemTypeEnum.UnidirectionalAssociationStroke }
+               }
+           );
+
         private ChatWindow externalChatWindow;
         private MediaPlayer mediaPlayer = new MediaPlayer();
         private InkCanvasEventManager icEventManager = new InkCanvasEventManager();
@@ -140,11 +160,33 @@ namespace PolyPaint
 
                 if (surfaceDessin.Strokes.Count > 0)
                 {
-                    List<SaveableElement> strokes = new List<SaveableElement>();
+                    List<DrawViewModel> strokes = new List<DrawViewModel>();
 
                     foreach (var stroke in surfaceDessin.Strokes)
                     {
-                        strokes.Add(new SaveableElement(stroke.GetType().ToString(), stroke.StylusPoints[0].ToPoint(), stroke.StylusPoints[1].ToPoint()));
+                        DrawViewModel drawingStroke = new DrawViewModel();
+                        drawingStroke.Owner = "allo";
+                        drawingStroke.ItemType = _strokeTypes[stroke.GetType()];
+                        List<PolyPaintStylusPoint> points = new List<PolyPaintStylusPoint>();
+                        foreach (StylusPoint point in stroke.StylusPoints.ToList())
+                        {
+                            points.Add(new PolyPaintStylusPoint()
+                            {
+                                PressureFactor = point.PressureFactor,
+                                X = point.X,
+                                Y = point.Y,
+                            });
+                        }
+                        drawingStroke.StylusPoints = points;
+                        drawingStroke.OutilSelectionne = "onsencriss";
+                        PolyPaintColor color = new PolyPaintColor()
+                        {
+                            A = stroke.DrawingAttributes.Color.A,
+                            B = stroke.DrawingAttributes.Color.B,
+                            G = stroke.DrawingAttributes.Color.G,
+                            R = stroke.DrawingAttributes.Color.R,
+                        };
+                        strokes.Add(drawingStroke);
                     }
 
                     //Serialize our "strokes"
@@ -174,9 +216,10 @@ namespace PolyPaint
             FileStream fs = null;
             fs = new FileStream(openFileDialog.FileName, FileMode.Open, FileAccess.Read);
 
-            List<SaveableElement> customStrokes = bf.Deserialize(fs) as List<SaveableElement>;
+            List<DrawViewModel> customStrokes = bf.Deserialize(fs) as List<DrawViewModel>;
 
-            //rebuilt it
+            // Rebuild it
+
             //for (int i = 0; i < customStrokes.StrokeCollection.Length; i++)
             //{
             //    if (customStrokes.StrokeCollection[i] != null)

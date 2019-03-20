@@ -1,9 +1,11 @@
 ﻿using PolyPaint.Common;
+using System;
 using System.Collections.Generic;
 
 
 namespace PolyPaint.Common.Collaboration
 {
+    [Serializable]
     public class DrawViewModel
     {
         public string Owner { get; set; }
