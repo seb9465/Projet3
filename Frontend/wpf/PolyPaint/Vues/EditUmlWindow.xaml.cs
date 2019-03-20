@@ -22,8 +22,7 @@ namespace PolyPaint.Vues
         private void Ok_Click(object sender, RoutedEventArgs e)
         {
             Close();
-            (DataContext as UmlClassStroke).RemoveFromCanvas();
-            (DataContext as UmlClassStroke).AddToCanvas();
+            (DataContext as UmlClassStroke).Redraw();
         }
 
         private void EnterKeyDown(object sender, KeyEventArgs e)

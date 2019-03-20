@@ -53,59 +53,61 @@ namespace PolyPaint.Utilitaires
 
             if (DrawingStroke != null)
             {
-                (DrawingStroke as ICanvasable).RemoveFromCanvas();
+                (DrawingStroke as AbstractStroke).StylusPoints = pts;
             }
-
-            switch (vm.OutilSelectionne)
+            else
             {
-                case "uml_class":
-                    DrawingStroke = new UmlClassStroke(pts, surfaceDessin, vm.CouleurSelectionneeBordure, vm.CouleurSelectionneeRemplissage);
-                    surfaceDessin.Strokes.Add(DrawingStroke);
-                    break;
-                case "rectangle":
-                    DrawingStroke = new RectangleStroke(pts, surfaceDessin, vm.CouleurSelectionneeBordure, vm.CouleurSelectionneeRemplissage);
-                    surfaceDessin.Strokes.Add(DrawingStroke);
-                    break;
-                case "artefact":
-                    DrawingStroke = new ArtefactStroke(pts, surfaceDessin, vm.CouleurSelectionneeBordure, vm.CouleurSelectionneeRemplissage);
-                    surfaceDessin.Strokes.Add(DrawingStroke);
-                    break;
-                case "activity":
-                    DrawingStroke = new ActivityStroke(pts, surfaceDessin, vm.CouleurSelectionneeBordure, vm.CouleurSelectionneeRemplissage);
-                    surfaceDessin.Strokes.Add(DrawingStroke);
-                    break;
-                case "phase":
-                    DrawingStroke = new PhaseStroke(pts, surfaceDessin, vm.CouleurSelectionneeBordure, vm.CouleurSelectionneeRemplissage);
-                    surfaceDessin.Strokes.Add(DrawingStroke);
-                    break;
-                case "role":
-                    DrawingStroke = new RoleStroke(pts, surfaceDessin, vm.CouleurSelectionneeBordure, vm.CouleurSelectionneeRemplissage);
-                    surfaceDessin.Strokes.Add(DrawingStroke);
-                    break;
-                case "text":
-                    DrawingStroke = new TextStroke(pts, surfaceDessin, vm.CouleurSelectionneeBordure, vm.CouleurSelectionneeRemplissage);
-                    surfaceDessin.Strokes.Add(DrawingStroke);
-                    break;
-                case "asso_uni":
-                    DrawingStroke = new UnidirectionalAssociationStroke(pts, surfaceDessin, vm.CouleurSelectionneeBordure);
-                    surfaceDessin.Strokes.Add(DrawingStroke);
-                    break;
-                case "asso_bi":
-                    DrawingStroke = new BidirectionalAssociationStroke(pts, surfaceDessin, vm.CouleurSelectionneeBordure);
-                    surfaceDessin.Strokes.Add(DrawingStroke);
-                    break;
-                case "composition":
-                    DrawingStroke = new CompositionStroke(pts, surfaceDessin, vm.CouleurSelectionneeBordure);
-                    surfaceDessin.Strokes.Add(DrawingStroke);
-                    break;
-                case "heritage":
-                    DrawingStroke = new InheritanceStroke(pts, surfaceDessin, vm.CouleurSelectionneeBordure);
-                    surfaceDessin.Strokes.Add(DrawingStroke);
-                    break;
-                case "agregation":
-                    DrawingStroke = new AgregationStroke(pts, surfaceDessin, vm.CouleurSelectionneeBordure);
-                    surfaceDessin.Strokes.Add(DrawingStroke);
-                    break;
+                switch (vm.OutilSelectionne)
+                {
+                    case "uml_class":
+                        DrawingStroke = new UmlClassStroke(pts, surfaceDessin, vm.CouleurSelectionneeBordure, vm.CouleurSelectionneeRemplissage);
+                        surfaceDessin.Strokes.Add(DrawingStroke);
+                        break;
+                    case "rectangle":
+                        DrawingStroke = new RectangleStroke(pts, surfaceDessin, vm.CouleurSelectionneeBordure, vm.CouleurSelectionneeRemplissage);
+                        surfaceDessin.Strokes.Add(DrawingStroke);
+                        break;
+                    case "artefact":
+                        DrawingStroke = new ArtefactStroke(pts, surfaceDessin, vm.CouleurSelectionneeBordure, vm.CouleurSelectionneeRemplissage);
+                        surfaceDessin.Strokes.Add(DrawingStroke);
+                        break;
+                    case "activity":
+                        DrawingStroke = new ActivityStroke(pts, surfaceDessin, vm.CouleurSelectionneeBordure, vm.CouleurSelectionneeRemplissage);
+                        surfaceDessin.Strokes.Add(DrawingStroke);
+                        break;
+                    case "phase":
+                        DrawingStroke = new PhaseStroke(pts, surfaceDessin, vm.CouleurSelectionneeBordure, vm.CouleurSelectionneeRemplissage);
+                        surfaceDessin.Strokes.Add(DrawingStroke);
+                        break;
+                    case "role":
+                        DrawingStroke = new RoleStroke(pts, surfaceDessin, vm.CouleurSelectionneeBordure, vm.CouleurSelectionneeRemplissage);
+                        surfaceDessin.Strokes.Add(DrawingStroke);
+                        break;
+                    case "text":
+                        DrawingStroke = new TextStroke(pts, surfaceDessin, vm.CouleurSelectionneeBordure, vm.CouleurSelectionneeRemplissage);
+                        surfaceDessin.Strokes.Add(DrawingStroke);
+                        break;
+                    case "asso_uni":
+                        DrawingStroke = new UnidirectionalAssociationStroke(pts, surfaceDessin, vm.CouleurSelectionneeBordure);
+                        surfaceDessin.Strokes.Add(DrawingStroke);
+                        break;
+                    case "asso_bi":
+                        DrawingStroke = new BidirectionalAssociationStroke(pts, surfaceDessin, vm.CouleurSelectionneeBordure);
+                        surfaceDessin.Strokes.Add(DrawingStroke);
+                        break;
+                    case "composition":
+                        DrawingStroke = new CompositionStroke(pts, surfaceDessin, vm.CouleurSelectionneeBordure);
+                        surfaceDessin.Strokes.Add(DrawingStroke);
+                        break;
+                    case "heritage":
+                        DrawingStroke = new InheritanceStroke(pts, surfaceDessin, vm.CouleurSelectionneeBordure);
+                        surfaceDessin.Strokes.Add(DrawingStroke);
+                        break;
+                    case "agregation":
+                        DrawingStroke = new AgregationStroke(pts, surfaceDessin, vm.CouleurSelectionneeBordure);
+                        surfaceDessin.Strokes.Add(DrawingStroke);
+                        break;
+                }
             }
         }
 
@@ -155,6 +157,7 @@ namespace PolyPaint.Utilitaires
             if (DrawingStroke != null)
             {
                 (DrawingStroke as ICanvasable).AddToCanvas();
+                DrawingStroke = null;
             }
         }
 
@@ -189,7 +192,7 @@ namespace PolyPaint.Utilitaires
         {
             for (int i = 0; i < 2; i++)
             {
-                surfaceDessin.Strokes.Where(x => (x is UnidirectionalAssociationStroke 
+                surfaceDessin.Strokes.Where(x => (x is UnidirectionalAssociationStroke
                                                || x is BidirectionalAssociationStroke
                                                || x is AgregationStroke
                                                || x is CompositionStroke

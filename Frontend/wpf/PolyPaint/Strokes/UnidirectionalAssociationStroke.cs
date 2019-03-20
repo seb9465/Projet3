@@ -26,10 +26,10 @@ namespace PolyPaint.Strokes
                 throw new ArgumentNullException("drawingAttributes");
             }
 
-            AttachToAnchors();
+            var pts = AttachToAnchors();
 
-            StylusPoint stp = StylusPoints[0];
-            StylusPoint sp = StylusPoints[1];
+            StylusPoint stp = pts[0];
+            StylusPoint sp = pts[1];
 
             int arrowLength = 10;
             double dx = sp.X - stp.X;

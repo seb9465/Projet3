@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Controls;
 using System.Windows.Ink;
@@ -19,6 +20,8 @@ namespace PolyPaint.Strokes
         public DashStyle BorderStyle { get { return Border.DashStyle; } }
         public Color BorderColor { get { return (Border.Brush as SolidColorBrush).Color; } }
         public Color FillColor { get { return (Fill as SolidColorBrush).Color; } }
+
+        public Guid Guid { get; set; } = Guid.NewGuid();
 
         protected InkCanvas SurfaceDessin { get; set; }
 
@@ -51,7 +54,11 @@ namespace PolyPaint.Strokes
 
         public void RemoveFromCanvas()
         {
-            SurfaceDessin.Strokes.Remove(this);
+            var stroke = SurfaceDessin.Strokes.FirstOrDefault(x => x is AbstractStroke && (x as AbstractStroke).Guid == Guid);
+            if (stroke != null)
+            {
+                SurfaceDessin.Strokes.Remove(stroke);
+            }
         }
 
         public void SetBorderStyle(DashStyle style)

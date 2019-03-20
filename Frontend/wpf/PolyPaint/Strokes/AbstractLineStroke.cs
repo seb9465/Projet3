@@ -40,8 +40,8 @@ namespace PolyPaint.Strokes
             Destination = new FormattedText(to, System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 12, Brushes.Black);
         }
 
-        private readonly double MIN_DISTANCE = 30;
-        protected void AttachToAnchors()
+        private readonly double MIN_DISTANCE = 10;
+        protected StylusPointCollection AttachToAnchors()
         {
             Point firstPoint = new Point(StylusPoints[0].X, StylusPoints[0].Y);
             Point secondPoint = new Point(StylusPoints[1].X, StylusPoints[1].Y);
@@ -62,7 +62,11 @@ namespace PolyPaint.Strokes
                 var secondDistance = Vector.Subtract(secondCloseVector, (Vector)secondPoint).Length;
                 var newSecondPoint = secondDistance < MIN_DISTANCE ? (Point)secondCloseVector : StylusPoints[1].ToPoint();
 
-                StylusPoints = new StylusPointCollection(new Point[] { newFirstPoint, newSecondPoint });
+                return new StylusPointCollection(new Point[] { newFirstPoint, newSecondPoint });
+            }
+            else
+            {
+                return StylusPoints;
             }
         }
     }
