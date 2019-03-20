@@ -21,6 +21,7 @@ class FigureSelectionCell: UITableViewCell {
         self.StraightLineButton.layer.borderWidth = 1.0
     }
     override func setSelected(_ selected: Bool, animated: Bool) {
+        self.selectionStyle = UITableViewCell.SelectionStyle.none
         super.setSelected(selected, animated: animated)
     }
     
