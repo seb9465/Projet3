@@ -50,9 +50,9 @@
                                             <action selector="redoButton:" destination="Vts-He-P18" id="2RI-2W-Sfy"/>
                                         </connections>
                                     </barButtonItem>
-                                    <barButtonItem title="Rect" id="SLY-eP-ACv">
+                                    <barButtonItem title="Insert" id="SLY-eP-ACv" userLabel="Insert Button">
                                         <connections>
-                                            <action selector="drawRectButton:" destination="Vts-He-P18" id="OqV-ma-hpT"/>
+                                            <action selector="insertButtonPressed:" destination="Vts-He-P18" id="ZLI-eA-O5s"/>
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem title="Select" id="Lts-nR-qFd">
@@ -93,7 +93,7 @@
                         <outlet property="borderButton" destination="mdZ-5y-94T" id="FgC-S0-rGV"/>
                         <outlet property="deleteButton" destination="5ld-32-8cy" id="y06-F1-JC8"/>
                         <outlet property="fillButton" destination="QqS-3X-DNp" id="rPk-OW-90X"/>
-                        <outlet property="rectButton" destination="SLY-eP-ACv" id="5wO-L8-aeR"/>
+                        <outlet property="insertButton" destination="SLY-eP-ACv" id="oPa-Hm-WsF"/>
                         <outlet property="selectButton" destination="Lts-nR-qFd" id="AOd-xa-kni"/>
                     </connections>
                 </viewController>

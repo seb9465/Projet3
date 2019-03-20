@@ -8,16 +8,22 @@
 
 import UIKit
 
-class FigureTableController: UIViewController {
-
+class FigureTableController: UIViewController, FigureCellProtocol {
     @IBOutlet weak var figureTable: UITableView!
-    
+    private var editor: Editor!
     override func viewDidLoad() {
         super.viewDidLoad()
 
         let nib = UINib.init(nibName: "FigureSelectionCell", bundle: nil)
         self.figureTable.register(nib, forCellReuseIdentifier: "FigureSelectionCell")
+        self.editor = (self.parent?.parent as! CanvasController).editor
         // Do any additional setup after loading the view.
+    }
+    func setSelectedFigureType(itemType: ItemTypeEnum) -> Void {
+        self.editor.currentFigureType = itemType
+    }
+    func setSelectedLineType(itemType: ItemTypeEnum) -> Void {
+        self.editor.currentLineType = itemType
     }
 }
 
@@ -31,7 +37,8 @@ extension FigureTableController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "FigureSelectionCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "FigureSelectionCell", for: indexPath) as! FigureSelectionCell
+        cell.delegate = self
         return cell
     }
 }

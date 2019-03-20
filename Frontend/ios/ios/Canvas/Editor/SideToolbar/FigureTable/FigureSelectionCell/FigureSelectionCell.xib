@@ -34,15 +34,9 @@
                         <state key="normal" title="Class">
                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </state>
-                    </button>
-                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yUv-hm-jV2" customClass="RoundedCorners" customModule="ios" customModuleProvider="target">
-                        <rect key="frame" x="134" y="67" width="100" height="100"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" red="1" green="0.41960784309999999" blue="0.41960784309999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
-                        <state key="normal" title="Activity">
-                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        </state>
+                        <connections>
+                            <action selector="UMLClassSelected:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="BXi-G6-G0c"/>
+                        </connections>
                     </button>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Lines" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="99F-5E-6r9">
                         <rect key="frame" x="16" y="384" width="43" height="21"/>
@@ -60,7 +54,7 @@
                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </state>
                         <connections>
-                            <action selector="setSelectedLineDashed:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="Ssn-UZ-gIg"/>
+                            <action selector="setSelectedLineStraigth:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="TQS-uN-t5x"/>
                         </connections>
                     </button>
                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" restorationIdentifier="DashedLineButton" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MNO-Dq-1SA" customClass="RoundedCorners" customModule="ios" customModuleProvider="target">
@@ -71,12 +65,30 @@
                         <state key="normal" title="Dashed">
                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </state>
+                        <connections>
+                            <action selector="setSelectedLineDashed:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="znF-hm-gEG"/>
+                        </connections>
+                    </button>
+                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yUv-hm-jV2" customClass="RoundedCorners" customModule="ios" customModuleProvider="target">
+                        <rect key="frame" x="134" y="67" width="100" height="100"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" red="1" green="0.41960784309999999" blue="0.41960784309999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
+                        <state key="normal" title="Activity">
+                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </state>
+                        <connections>
+                            <action selector="ActivitySelected:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="WVr-2d-ZbX"/>
+                        </connections>
                     </button>
                 </subviews>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
+                <outlet property="ActivityClassButton" destination="yUv-hm-jV2" id="xri-rZ-ckn"/>
+                <outlet property="DashedLineButton" destination="MNO-Dq-1SA" id="7hi-6t-cMB"/>
                 <outlet property="StraightLineButton" destination="pBb-bz-p33" id="XqP-NQ-aUm"/>
+                <outlet property="UMLClassButton" destination="d6U-ym-IfC" id="zfv-Ep-6Sc"/>
             </connections>
             <point key="canvasLocation" x="160" y="48.575712143928037"/>
         </tableViewCell>

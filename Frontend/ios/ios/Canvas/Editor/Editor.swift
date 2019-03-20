@@ -18,9 +18,11 @@ class Editor {
     
     public var selectedFigure: Figure! = nil;
     public var selectionOutline: SelectionOutline!;
+    public var currentFigureType: ItemTypeEnum = ItemTypeEnum.UMLClass;
     
+    public var currentLineType: ItemTypeEnum = ItemTypeEnum.StraightLine
     // TouchInputDelegate properties
-    private var touchEventState: TouchEventState = .SELECT
+    public var touchEventState: TouchEventState = .SELECT
     private var initialTouchPoint: CGPoint!
     private var previousTouchPoint: CGPoint!
     
@@ -56,27 +58,21 @@ class Editor {
         self.selectedFigure = nil
     }
     
-    public func insertConnectionFigure(firstPoint: CGPoint, lastPoint: CGPoint, type: ItemTypeEnum) {
-        let figure = ConnectionFigure(origin: self.initialTouchPoint, destination: lastPoint)
+    public func insertConnectionFigure(firstPoint: CGPoint, lastPoint: CGPoint, itemType: ItemTypeEnum) {
+        let figure = ConnectionFigure(origin: self.initialTouchPoint, destination: lastPoint, itemType: itemType)
         self.editorView.addSubview(figure);
         self.figures.append(figure)
         self.undoArray.append(figure);
     }
     
-    public func insertFigure(firstPoint: CGPoint, lastPoint: CGPoint) -> Void {
-        let figure = FigureFactory.shared.getFigure(type: ItemTypeEnum.RoundedRectangleStroke, firstPoint: firstPoint, lastPoint: lastPoint)!
+    public func insertFigure(itemType: ItemTypeEnum, firstPoint: CGPoint, lastPoint: CGPoint) -> Void {
+        let figure = FigureFactory.shared.getFigure(itemType: itemType, firstPoint: firstPoint, lastPoint: lastPoint)!
         figure.delegate = self
         self.editorView.addSubview(figure);
         self.figures.append(figure)
         self.undoArray.append(figure);
     }
-    
-    public func insertActor(firstPoint: CGPoint, lastPoint: CGPoint) -> Void {
-        let figure = FigureFactory.shared.getFigure(type: ItemTypeEnum.Actor, firstPoint: firstPoint, lastPoint: lastPoint)!
-        self.editorView.addSubview(figure);
-        self.undoArray.append(figure);
-    }
-    
+
     public func undo(view: UIView) -> Void {
         print(undoArray);
         if (undoArray.count > 0) {
@@ -150,7 +146,7 @@ class Editor {
     
     func snap(point: CGPoint) -> CGPoint{
         for subview in self.editorView.subviews {
-            if (subview.frame.contains(point)) { 
+            if (subview.frame.contains(point)) {
                 return (subview as! UmlFigure).getClosestAnchor(point: point)
             }
         }
@@ -230,16 +226,17 @@ extension Editor : TouchInputDelegate {
             break
         case .TRANSLATE:
             break
-        case .CONNECTION:
-            break
         case .INSERT:
-            CollaborationHub.shared.postNewFigure(origin: point)
+        CollaborationHub.shared.postNewFigure(origin: point, itemType: currentFigureType)
+            break
+        case .CONNECTION:
             break
         case .DELETE:
             self.deleteFigure(tapPoint: point);
             break
         case .AREA_SELECT:
             break
+
         }
     }
     
@@ -272,7 +269,7 @@ extension Editor : TouchInputDelegate {
     func notifyTouchEnded(point: CGPoint) {
         if (self.touchEventState == .CONNECTION) {
             let lastPoint = self.snap(point: point)
-            self.insertConnectionFigure(firstPoint: self.initialTouchPoint, lastPoint: lastPoint, type: .Connection)
+            self.insertConnectionFigure(firstPoint: self.initialTouchPoint, lastPoint: lastPoint, itemType: currentFigureType)
             self.touchEventState = .SELECT
             return
         }
@@ -292,8 +289,8 @@ extension Editor : TouchInputDelegate {
 }
 
 extension Editor: CollaborationHubDelegate {
-    func updateCanvas(firsPoint: CGPoint, lastPoint: CGPoint) {
-        self.insertFigure(firstPoint: firsPoint, lastPoint: lastPoint)
+    func updateCanvas(itemType: ItemTypeEnum, firstPoint: CGPoint, lastPoint: CGPoint) {
+        self.insertFigure(itemType: itemType, firstPoint: firstPoint, lastPoint: lastPoint)
     }
     
     func updateClear() {

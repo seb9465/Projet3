@@ -11,15 +11,15 @@ class Figure: UIView {
     var firstPoint: CGPoint!
     var lastPoint: CGPoint!
     
-    public func exportToViewModel() -> DrawViewModel {
+    public func exportToViewModel(itemType: ItemTypeEnum) -> DrawViewModel {
         let point1 = PolyPaintStylusPoint(X: Double(self.firstPoint.x), Y: Double(self.firstPoint.y), PressureFactor: 1)
         let point2 = PolyPaintStylusPoint(X: Double(self.lastPoint.x), Y: Double(self.lastPoint.y), PressureFactor: 1)
         let color: PolyPaintColor = PolyPaintColor(A: 255, R: 255, G: 1, B: 1)
         
         return DrawViewModel(
-            ItemType: ItemTypeEnum.RoundedRectangleStroke,
+            ItemType: itemType,
             StylusPoints: [point1, point2],
-            OutilSelectionne: "rounded_rectangle",
+            OutilSelectionne: "",
             Color: color,
             ChannelId: "general"
         )

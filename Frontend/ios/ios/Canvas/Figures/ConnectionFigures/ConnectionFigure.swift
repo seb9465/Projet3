@@ -11,11 +11,12 @@ import UIKit
 class ConnectionFigure : Figure {
     
     var points: [CGPoint] = []
-
-    init(origin: CGPoint, destination: CGPoint) {
+    var itemType: ItemTypeEnum = ItemTypeEnum.StraightLine
+    init(origin: CGPoint, destination: CGPoint, itemType: ItemTypeEnum) {
         self.points.append(origin)
         self.points.append(destination)
-
+        self.itemType = itemType
+        
         // Initialize the UIView Frame
         let frameOrigin = CGPoint(x: self.points.map { $0.x }.min()!, y: self.points.map { $0.y }.min()!)
         let frameSize = CGSize(width: abs(destination.x - origin.x), height: abs(destination.y - origin.y))
@@ -36,7 +37,10 @@ class ConnectionFigure : Figure {
             context.beginPath()
             context.move(to: self.getLocalInitialPoint())
             context.addLine(to: self.getLocalFinalPoint())
-            context.strokePath()
+            if(itemType == ItemTypeEnum.DashedLine) {
+                context.setLineDash(phase: 0, lengths: [4,4])
+            }
+             context.strokePath()
         }
     }
     

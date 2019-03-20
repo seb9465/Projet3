@@ -10,7 +10,7 @@ import Foundation
 import SwiftSignalRClient
 
 protocol CollaborationHubDelegate {
-    func updateCanvas(firsPoint: CGPoint, lastPoint: CGPoint)
+    func updateCanvas(itemType: ItemTypeEnum, firstPoint: CGPoint, lastPoint: CGPoint)
     func updateClear();
 }
 
@@ -82,8 +82,8 @@ class CollaborationHub {
         });
     }
     
-    public func postNewFigure(origin: CGPoint) -> Void {
-            let model = FigureFactory.shared.getFigureModel(type: .RoundedRectangleStroke, touchedPoint: origin)?.exportToViewModel()
+    public func postNewFigure(origin: CGPoint, itemType: ItemTypeEnum) -> Void {
+        let model = FigureFactory.shared.getFigure(type: itemType, touchedPoint: origin)?.exportToViewModel(itemType: itemType)
             let jsonEncoder = JSONEncoder()
             let jsonData = try! jsonEncoder.encode(model)
             let jsonString = String(data: jsonData, encoding: .utf8)
@@ -107,7 +107,7 @@ class CollaborationHub {
             let fpoint: CGPoint = CGPoint(x: viewModel.StylusPoints[0].X, y: viewModel.StylusPoints[0].Y)
             let lpoint: CGPoint = CGPoint(x: viewModel.StylusPoints[1].X, y: viewModel.StylusPoints[1].Y)
 
-            self.delegate!.updateCanvas(firsPoint: fpoint, lastPoint: lpoint)
+            self.delegate!.updateCanvas(itemType: viewModel.ItemType, firstPoint: fpoint, lastPoint: lpoint)
         })
     }
     

@@ -10,19 +10,37 @@ import UIKit
 
 class FigureSelectionCell: UITableViewCell {
     @IBOutlet weak var StraightLineButton: RoundedCorners!
+    @IBOutlet weak var UMLClassButton: RoundedCorners!
     
+    @IBOutlet weak var DashedLineButton: RoundedCorners!
+    weak var delegate: FigureCellProtocol?
+    
+    @IBOutlet weak var ActivityClassButton: RoundedCorners!
     override func awakeFromNib() {
         super.awakeFromNib()
         self.selectionStyle = UITableViewCell.SelectionStyle.none
-    }
-
-    @IBAction func setSelectedLineDashed(_ sender: Any) {
-        self.StraightLineButton.layer.borderColor = UIColor.blue.cgColor
-        self.StraightLineButton.layer.borderWidth = 1.0
     }
     override func setSelected(_ selected: Bool, animated: Bool) {
         self.selectionStyle = UITableViewCell.SelectionStyle.none
         super.setSelected(selected, animated: animated)
     }
     
+    @IBAction func UMLClassSelected(_ sender: Any) {
+        self.delegate?.setSelectedFigureType(itemType: ItemTypeEnum.UMLClass)
+    }
+    @IBAction func ActivitySelected(_ sender: Any) {
+        self.delegate?.setSelectedFigureType(itemType: ItemTypeEnum.Actor)
+    }
+    
+    @IBAction func setSelectedLineStraigth(_ sender: Any) {
+        self.StraightLineButton.layer.borderColor = UIColor.blue.cgColor
+        self.StraightLineButton.layer.borderWidth = 1.0
+        self.delegate?.setSelectedLineType(itemType: ItemTypeEnum.StraightLine)
+        
+    }
+    @IBAction func setSelectedLineDashed(_ sender: Any) {
+        self.DashedLineButton.layer.borderColor = UIColor.blue.cgColor
+        self.DashedLineButton.layer.borderWidth = 1.0
+        self.delegate?.setSelectedFigureType(itemType: ItemTypeEnum.DashedLine)
+    }
 }

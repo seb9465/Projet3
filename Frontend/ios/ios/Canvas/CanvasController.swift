@@ -17,7 +17,7 @@ class CanvasController: UIViewController {
     
     public var editor: Editor = Editor()
     
-    @IBOutlet var rectButton: UIBarButtonItem!
+    @IBOutlet weak var insertButton: UIBarButtonItem!
     @IBOutlet var selectButton: UIBarButtonItem!
     @IBOutlet var deleteButton: UIBarButtonItem!
     @IBOutlet var borderButton: UIBarButtonItem!
@@ -75,7 +75,7 @@ class CanvasController: UIViewController {
         self.editor.changeTouchHandleState(to: .SELECT)
     }
     
-    @IBAction func drawRectButton(_ sender: Any) {
+    @IBAction func insertButtonPressed(_ sender: Any) {
         self.editor.changeTouchHandleState(to: .INSERT)
     }
     

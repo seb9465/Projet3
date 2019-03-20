@@ -9,7 +9,7 @@
 import UIKit
 
 class PropertiesTableController: UIViewController {
-
+    
     @IBOutlet weak var propertiesTable: UITableView!
     private var editor: Editor!
     
@@ -24,7 +24,7 @@ class PropertiesTableController: UIViewController {
 
 extension PropertiesTableController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if (self.editor.selectedFigure == nil) {
+        if (self.editor.selectedFigure == nil ||  !self.editor.selectedFigure.isKind(of: UmlClassFigure.self)) {
             return 0
         }
         return 1
@@ -35,20 +35,25 @@ extension PropertiesTableController: UITableViewDelegate, UITableViewDataSource 
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        switch(indexPath.row) {
-        case 0:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "ClassCell", for: indexPath) as! ClassCell
-            cell.setUpTable()
-            cell.delegate = self.editor
-            cell.classNameField.text = (self.editor.selectedFigure as! UmlClassFigure).className
-            cell.methods = (self.editor.selectedFigure as! UmlClassFigure).methods
-            cell.methodsTableView.reloadData()
-            cell.attributes = (self.editor.selectedFigure as! UmlClassFigure).attributes
-            cell.attributesTableView.reloadData()
-            return cell
-        default:
-            return UITableViewCell();
+        if(self.editor.selectedFigure.isKind(of: UmlClassFigure.self)) {
+            switch(indexPath.row) {
+            case 0:
+                let cell = tableView.dequeueReusableCell(withIdentifier: "ClassCell", for: indexPath) as! ClassCell
+                cell.setUpTable()
+                cell.delegate = self.editor
+                cell.classNameField.text = (self.editor.selectedFigure as! UmlClassFigure).className
+                cell.methods = (self.editor.selectedFigure as! UmlClassFigure).methods
+                cell.methodsTableView.reloadData()
+                cell.attributes = (self.editor.selectedFigure as! UmlClassFigure).attributes
+                cell.attributesTableView.reloadData()
+                return cell
+                
+            default:
+                return UITableViewCell();
+            }
+            
         }
+        return UITableViewCell();
     }
 }
 
