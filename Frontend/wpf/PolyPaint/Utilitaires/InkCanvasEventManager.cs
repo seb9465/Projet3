@@ -152,45 +152,9 @@ namespace PolyPaint.Utilitaires
 
         internal void EndDraw(InkCanvas surfaceDessin, string outilSelectionne)
         {
-            if (DrawingStroke != null && (outilSelectionne == "rectangle"
-                                      || outilSelectionne == "uml_class"
-                                      || outilSelectionne == "activity"
-                                      || outilSelectionne == "artefact"
-                                      || outilSelectionne == "phase"
-                                      || outilSelectionne == "role"
-                                      || outilSelectionne == "text"))
+            if (DrawingStroke != null)
             {
                 (DrawingStroke as ICanvasable).AddToCanvas();
-            }
-            else if (DrawingStroke != null && (outilSelectionne == "asso_uni"
-                                           || outilSelectionne == "asso_bi"
-                                           || outilSelectionne == "composition"
-                                           || outilSelectionne == "heritage"
-                                           || outilSelectionne == "agregation"))
-            {
-                Point firstPoint = new Point(DrawingStroke.StylusPoints[0].X, DrawingStroke.StylusPoints[0].Y);
-                Point secondPoint = new Point(DrawingStroke.StylusPoints[1].X, DrawingStroke.StylusPoints[1].Y);
-
-                List<Point> anchors = new List<Point>();
-                foreach (AbstractShapeStroke stroke in surfaceDessin.Strokes.Where(x => x is AbstractShapeStroke))
-                {
-                    anchors.AddRange(stroke.AnchorPoints);
-                }
-
-                if (anchors.Count > 0)
-                {
-                    DrawingStroke.StylusPoints = new StylusPointCollection(new Point[]
-                        {
-                        anchors.OrderBy(x => Point.Subtract(x, firstPoint).Length).First(),
-                        anchors.OrderBy(x => Point.Subtract(x, secondPoint).Length).First()
-                        }
-                    );
-                    (DrawingStroke as ICanvasable).AddToCanvas();
-                }
-                else
-                {
-                    (DrawingStroke as ICanvasable).RemoveFromCanvas();
-                }
             }
         }
 

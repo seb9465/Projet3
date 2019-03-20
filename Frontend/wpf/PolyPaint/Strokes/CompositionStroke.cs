@@ -24,6 +24,8 @@ namespace PolyPaint.Strokes
                 throw new ArgumentNullException("drawingAttributes");
             }
 
+            AttachToAnchors();
+
             StylusPoint stp = StylusPoints[0];
             StylusPoint sp = StylusPoints[1];
 
