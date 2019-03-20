@@ -9,16 +9,19 @@
 import UIKit
 
 class FigureSelectionCell: UITableViewCell {
-
+    @IBOutlet weak var StraightLineButton: RoundedCorners!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+        self.selectionStyle = UITableViewCell.SelectionStyle.none
     }
 
+    @IBAction func setSelectedLineDashed(_ sender: Any) {
+        self.StraightLineButton.layer.borderColor = UIColor.blue.cgColor
+        self.StraightLineButton.layer.borderWidth = 1.0
+    }
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
     }
     
 }
