@@ -380,6 +380,7 @@
     <Compile Include="Modeles\Messages\ConnectionMessage.cs" />
     <Compile Include="Modeles\Messages\ErrorMessage.cs" />
     <Compile Include="Modeles\Room.cs" />
+    <Compile Include="Modeles\SaveableElement.cs" />
     <Compile Include="Modeles\SaveableCanvas.cs" />
     <Compile Include="Strokes\AbstractStroke.cs" />
     <Compile Include="Strokes\ArtefactStroke.cs" />

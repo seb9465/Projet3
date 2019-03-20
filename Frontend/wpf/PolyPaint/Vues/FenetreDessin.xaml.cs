@@ -14,6 +14,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -137,19 +138,20 @@ namespace PolyPaint
                 // Show save file dialog box
                 Nullable<bool> result = saveFileDialog.ShowDialog();
 
-                FileStream fs = null;
+                if (surfaceDessin.Strokes.Count > 0)
+                {
+                    List<SaveableElement> strokes = new List<SaveableElement>();
 
-                try
-                {
-                    fs = new FileStream(saveFileDialog.FileName, FileMode.Create);
-                    surfaceDessin.Strokes.Save(fs);
-                }
-                catch
-                {
-                    if (fs != null)
+                    foreach (var stroke in surfaceDessin.Strokes)
                     {
-                        fs.Close();
+                        strokes.Add(new SaveableElement(stroke.GetType().ToString(), stroke.StylusPoints[0].ToPoint(), stroke.StylusPoints[1].ToPoint()));
                     }
+
+                    //Serialize our "strokes"
+                    FileStream fs = null;
+                    BinaryFormatter bf = new BinaryFormatter();
+                    fs = new FileStream(saveFileDialog.FileName, FileMode.Create);
+                    bf.Serialize(fs, strokes);
                 }
 
             }
@@ -167,29 +169,28 @@ namespace PolyPaint
             // Show save file dialog box
             Nullable<bool> result = openFileDialog.ShowDialog();
 
+            // Deserialize it
+            BinaryFormatter bf = new BinaryFormatter();
             FileStream fs = null;
+            fs = new FileStream(openFileDialog.FileName, FileMode.Open, FileAccess.Read);
 
-            if (!File.Exists(openFileDialog.FileName))
-            {
-                MessageBox.Show("The file you requested does not exist." + " Save the StrokeCollection before loading it.");
-                return;
-            }
+            List<SaveableElement> customStrokes = bf.Deserialize(fs) as List<SaveableElement>;
 
-            try
-            {
-                // Put the strokes from the file onto the InkCanvas.
-                fs = new FileStream(openFileDialog.FileName, FileMode.Open, FileAccess.Read);
-                StrokeCollection importedStrokes = new StrokeCollection(fs);
-                surfaceDessin.Strokes.Clear();
-                surfaceDessin.Strokes.Add(importedStrokes);
-            }
-            catch
-            {
-                if (fs != null)
-                {
-                    fs.Close();
-                }
-            }
+            //rebuilt it
+            //for (int i = 0; i < customStrokes.StrokeCollection.Length; i++)
+            //{
+            //    if (customStrokes.StrokeCollection[i] != null)
+            //    {
+            //        StylusPointCollection stylusCollection = new
+            //          StylusPointCollection(customStrokes.StrokeCollection[i]);
+
+            //        Stroke stroke = new Stroke(stylusCollection);
+            //        StrokeCollection strokes = new StrokeCollection();
+            //        strokes.Add(stroke);
+
+            //        this.MyInkPresenter.Strokes.Add(strokes);
+            //    }
+            //}
         }
 
         private async void SendToCloud(object sender, RoutedEventArgs e)
