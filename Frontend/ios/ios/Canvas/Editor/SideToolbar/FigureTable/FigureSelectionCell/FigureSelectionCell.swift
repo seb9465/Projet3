@@ -18,6 +18,7 @@ class FigureSelectionCell: UITableViewCell {
     
     @IBOutlet weak var ActivityButton: RoundedCorners!
     @IBOutlet weak var UMLCommentButton: RoundedCorners!
+    @IBOutlet weak var ArtefactButton: RoundedCorners!
     
     private var lastButtonSelected: RoundedCorners!
     private var lastLineSelected: RoundedCorners!
@@ -55,6 +56,10 @@ class FigureSelectionCell: UITableViewCell {
         self.setSelectedButton(button: self.ActorButton)
     }
     
+    @IBAction func ArtefactPressed(_ sender: Any) {
+        self.delegate?.setSelectedFigureType(itemType: ItemTypeEnum.Artefact)
+        self.setSelectedButton(button: self.ArtefactButton)
+    }
     
     @IBAction func setSelectedLineStraigth(_ sender: Any) {
         self.delegate?.setSelectedLineType(itemType: ItemTypeEnum.StraightLine)

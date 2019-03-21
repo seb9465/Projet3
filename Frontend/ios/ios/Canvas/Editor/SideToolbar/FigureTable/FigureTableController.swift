@@ -19,9 +19,11 @@ class FigureTableController: UIViewController, FigureCellProtocol {
         self.editor = (self.parent?.parent as! CanvasController).editor
         // Do any additional setup after loading the view.
     }
+    
     func setSelectedFigureType(itemType: ItemTypeEnum) -> Void {
         self.editor.currentFigureType = itemType
     }
+    
     func setSelectedLineType(itemType: ItemTypeEnum) -> Void {
         self.editor.currentLineType = itemType
     }

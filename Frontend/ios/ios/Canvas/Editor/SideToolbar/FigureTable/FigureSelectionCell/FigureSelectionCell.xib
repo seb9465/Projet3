@@ -102,7 +102,7 @@
                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </state>
                         <connections>
-                            <action selector="ActivitySelected:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="CkR-Iv-jDq"/>
+                            <action selector="ArtefactPressed:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="q06-o9-mgi"/>
                         </connections>
                     </button>
                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ma6-j4-cf9" customClass="RoundedCorners" customModule="ios" customModuleProvider="target">
@@ -135,6 +135,7 @@
             <connections>
                 <outlet property="ActivityButton" destination="yUv-hm-jV2" id="l5j-nH-K5x"/>
                 <outlet property="ActorButton" destination="zbb-AP-8pZ" id="wD1-2V-vuc"/>
+                <outlet property="ArtefactButton" destination="h3j-eq-Kdt" id="SCD-8z-VmA"/>
                 <outlet property="DashedLineButton" destination="MNO-Dq-1SA" id="7hi-6t-cMB"/>
                 <outlet property="StraightLineButton" destination="pBb-bz-p33" id="XqP-NQ-aUm"/>
                 <outlet property="UMLClassButton" destination="d6U-ym-IfC" id="zfv-Ep-6Sc"/>

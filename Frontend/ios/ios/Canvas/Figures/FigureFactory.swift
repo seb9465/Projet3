@@ -28,7 +28,7 @@ class FigureFactory {
             return nil
         //            return ConnectionFigure(origin: firstPoint, destination: lastPoint)
         case .Artefact:
-            return nil
+            return UmlArtefactFigure(firstPoint: firstPoint, lastPoint: lastPoint)
         case .Phase:
             return nil
         }
@@ -48,8 +48,8 @@ class FigureFactory {
         case.DashedLine:
             return nil
         case .Artefact:
-            return nil
-            
+            return UmlArtefactFigure(origin: touchedPoint)
+
         case .Phase:
             return nil
             
