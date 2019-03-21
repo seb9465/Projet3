@@ -18,8 +18,9 @@ class Editor {
     
     public var selectedFigure: Figure! = nil;
     public var selectionOutline: SelectionOutline!;
-    public var currentFigureType: ItemTypeEnum = ItemTypeEnum.UMLClass;
+    public var connectionPreview: ConnectionFigure!;
     
+    public var currentFigureType: ItemTypeEnum = ItemTypeEnum.UMLClass;
     public var currentLineType: ItemTypeEnum = ItemTypeEnum.StraightLine
     // TouchInputDelegate properties
     public var touchEventState: TouchEventState = .SELECT
@@ -210,6 +211,8 @@ extension Editor : TouchInputDelegate {
             
             if (action == "anchor") {
                 self.touchEventState = .CONNECTION
+                self.connectionPreview = ConnectionFigure(origin: self.initialTouchPoint, destination: self.initialTouchPoint, itemType: .StraightLine)
+                self.editorView.addSubview(connectionPreview)
                 return
             }
             
@@ -254,16 +257,11 @@ extension Editor : TouchInputDelegate {
             return
         }
         
-//        if (self.touchEventState == .CONNECTION) {
-//            for subview in self.editorView.subviews {
-//                if (subview.frame.contains(point)) {
-//                    print("Contained")
-//                    let outline = SelectionOutline(firstPoint: subview.frame.origin, lastPoint: CGPoint(x: subview.frame.maxX, y: subview.frame.maxY))
-//                    outline.addSelectedFigureLayers()
-//                    self.editorView.addSubview(outline)
-//                }
-//            }
-//        }
+        if (self.touchEventState == .CONNECTION) {
+            self.connectionPreview.removeFromSuperview()
+            self.connectionPreview = ConnectionFigure(origin: self.initialTouchPoint, destination: point, itemType: .StraightLine)
+            self.editorView.addSubview(self.connectionPreview)
+        }
         
         if (self.touchEventState == .AREA_SELECT) {
             // Resize the selection shape
@@ -272,6 +270,7 @@ extension Editor : TouchInputDelegate {
     
     func notifyTouchEnded(point: CGPoint) {
         if (self.touchEventState == .CONNECTION) {
+            self.connectionPreview.removeFromSuperview()
             let lastPoint = self.snap(point: point)
             self.insertConnectionFigure(firstPoint: self.initialTouchPoint, lastPoint: lastPoint, itemType: currentFigureType)
             self.touchEventState = .SELECT

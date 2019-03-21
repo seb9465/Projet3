@@ -16,6 +16,8 @@ class FigureTableController: UIViewController, FigureCellProtocol {
 
         let nib = UINib.init(nibName: "FigureSelectionCell", bundle: nil)
         self.figureTable.register(nib, forCellReuseIdentifier: "FigureSelectionCell")
+        let connectionsNib = UINib.init(nibName: "ConnectionSelectionCell", bundle: nil)
+        self.figureTable.register(connectionsNib, forCellReuseIdentifier: "ConnectionSelectionCell")
         self.editor = (self.parent?.parent as! CanvasController).editor
         // Do any additional setup after loading the view.
     }
@@ -31,16 +33,24 @@ class FigureTableController: UIViewController, FigureCellProtocol {
 
 extension FigureTableController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        return 2
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-       return 600
+        if (indexPath.row == 0) {
+            return 550
+        }
+    
+        return 400
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "FigureSelectionCell", for: indexPath) as! FigureSelectionCell
-        cell.delegate = self
+         if (indexPath.row == 0) {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "FigureSelectionCell", for: indexPath) as! FigureSelectionCell
+            cell.delegate = self
+            return cell
+        }
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ConnectionSelectionCell", for: indexPath)
         return cell
     }
 }

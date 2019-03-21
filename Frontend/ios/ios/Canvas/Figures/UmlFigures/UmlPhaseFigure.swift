@@ -10,7 +10,6 @@ import UIKit
 
 class UmlPhaseFigure: UmlFigure {
     public var phaseName: String = "PhaseName"
-    private var currentAngle: Double = 0
     let BASE_WIDTH: CGFloat = 400
     let BASE_HEIGHT: CGFloat = 250
     
@@ -29,22 +28,6 @@ class UmlPhaseFigure: UmlFigure {
     public func setPhaseName(phaseName: String) -> Void {
         self.phaseName = phaseName;
         setNeedsDisplay();
-    }
-    
-    
-    override public func rotate(orientation: RotateOrientation) -> Void {
-        if (orientation == RotateOrientation.right) {
-            currentAngle += 90
-        } else {
-            currentAngle -= 90
-        }
-        
-        if (abs(currentAngle) == 360) {
-            currentAngle = 0
-        }
-        
-        self.transform = CGAffineTransform.init(rotationAngle: CGFloat(currentAngle * Double.pi/180))
-        setNeedsDisplay()
     }
     
     override func draw(_ rect: CGRect) {

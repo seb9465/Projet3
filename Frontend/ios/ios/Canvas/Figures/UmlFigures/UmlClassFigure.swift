@@ -18,7 +18,6 @@ class UmlClassFigure: UmlFigure {
     public var className: String = "ClassName"
     public var methods: [String] = []
     public var attributes: [String] = []
-    private var currentAngle: Double = 0
     
     init(origin: CGPoint) {
         super.init(touchedPoint: origin, width: BASE_WIDTH, height: BASE_HEIGHT)
@@ -55,21 +54,6 @@ class UmlClassFigure: UmlFigure {
     public func removeAttribute(name: String, index: Int) {
         self.attributes.remove(at: index)
         setNeedsDisplay();
-    }
-    
-    override public func rotate(orientation: RotateOrientation) -> Void {
-        if (orientation == RotateOrientation.right) {
-            currentAngle += 90
-        } else {
-            currentAngle -= 90
-        }
-        
-        if (abs(currentAngle) == 360) {
-            currentAngle = 0
-        }
-        
-        self.transform = CGAffineTransform.init(rotationAngle: CGFloat(currentAngle * Double.pi/180))
-        setNeedsDisplay()
     }
     
     override func draw(_ rect: CGRect) {

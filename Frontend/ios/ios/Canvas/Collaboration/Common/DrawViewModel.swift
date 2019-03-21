@@ -29,6 +29,7 @@ enum ItemTypeEnum: Int, Codable {
     case Actor
     case Artefact
     case Phase
+    case Activity
     case StraightLine
     case DashedLine
 }

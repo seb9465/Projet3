@@ -30,31 +30,38 @@ class ConnectionFigure : Figure {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func draw(_ rect: CGRect) {
-        if let context = UIGraphicsGetCurrentContext() {
-            context.setStrokeColor(UIColor.blue.cgColor)
-            context.setLineWidth(2)
-            context.beginPath()
-            context.move(to: self.getLocalInitialPoint())
-            context.addLine(to: self.getLocalFinalPoint())
-            if(itemType == ItemTypeEnum.DashedLine) {
-                context.setLineDash(phase: 0, lengths: [4,4])
-            }
-             context.strokePath()
-        }
-    }
-    
-    private func getLocalInitialPoint() -> CGPoint {
+    public func getLocalInitialPoint() -> CGPoint {
         let x = (self.points[0].x < self.points[1].x) ? self.frame.width : 0
         let y = (self.points[0].y < self.points[1].y) ? self.frame.height : 0
         
         return CGPoint(x: x, y: y)
     }
     
-    private func getLocalFinalPoint() -> CGPoint {
+    public func getLocalFinalPoint() -> CGPoint {
         let x = (self.points[0].x < self.points[1].x) ? 0 : self.frame.width
         let y = (self.points[0].y < self.points[1].y) ? 0 : self.frame.height
         
         return CGPoint(x: x, y: y)
+    }
+    
+    override func draw(_ rect: CGRect) {
+        //// Bezier Drawing
+        let bezierPath = UIBezierPath()
+        bezierPath.move(to: self.getLocalInitialPoint())
+        bezierPath.addLine(to: self.getLocalFinalPoint())
+        UIColor.black.setStroke()
+        bezierPath.lineWidth = 2
+        bezierPath.stroke()
+//        if let context = UIGraphicsGetCurrentContext() {
+//            context.setStrokeColor(UIColor.blue.cgColor)
+//            context.setLineWidth(2)
+//            context.beginPath()
+//            context.move(to: self.getLocalInitialPoint())
+//            context.addLine(to: self.getLocalFinalPoint())
+//            if(itemType == ItemTypeEnum.DashedLine) {
+//                context.setLineDash(phase: 0, lengths: [4,4])
+//            }
+//            context.strokePath()
+//        }
     }
 }

@@ -10,7 +10,6 @@ import UIKit
 
 class UmlCommentFigure: UmlFigure {
     public var comment: String = "comment"
-    private var currentAngle: Double = 0
     let BASE_WIDTH: CGFloat = 150
     let BASE_HEIGHT: CGFloat = 50
     
@@ -29,22 +28,6 @@ class UmlCommentFigure: UmlFigure {
     public func setComment(comment: String) -> Void {
         self.comment = comment;
         setNeedsDisplay();
-    }
-    
-    
-    override public func rotate(orientation: RotateOrientation) -> Void {
-        if (orientation == RotateOrientation.right) {
-            currentAngle += 90
-        } else {
-            currentAngle -= 90
-        }
-        
-        if (abs(currentAngle) == 360) {
-            currentAngle = 0
-        }
-        
-        self.transform = CGAffineTransform.init(rotationAngle: CGFloat(currentAngle * Double.pi/180))
-        setNeedsDisplay()
     }
     
     override func draw(_ rect: CGRect) {

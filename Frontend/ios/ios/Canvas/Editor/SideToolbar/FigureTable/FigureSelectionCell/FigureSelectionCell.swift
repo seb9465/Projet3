@@ -52,8 +52,7 @@ class FigureSelectionCell: UITableViewCell {
         self.setSelectedButton(button: self.UMLClassButton)
     }
     @IBAction func ActivitySelected(_ sender: Any) {
-        self.delegate?.setSelectedFigureType(itemType: ItemTypeEnum.Actor)
-        
+        self.delegate?.setSelectedFigureType(itemType: ItemTypeEnum.Activity)
         self.setSelectedButton(button: self.ActivityButton)
     }
     

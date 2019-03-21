@@ -9,7 +9,6 @@
 import UIKit
 
 class UmlArtefactFigure: UmlFigure {
-    private var currentAngle: Double = 0
     let BASE_WIDTH: CGFloat = 75
     let BASE_HEIGHT: CGFloat = 100
     
@@ -23,21 +22,6 @@ class UmlArtefactFigure: UmlFigure {
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    override public func rotate(orientation: RotateOrientation) -> Void {
-        if (orientation == RotateOrientation.right) {
-            currentAngle += 90
-        } else {
-            currentAngle -= 90
-        }
-        
-        if (abs(currentAngle) == 360) {
-            currentAngle = 0
-        }
-        
-        self.transform = CGAffineTransform.init(rotationAngle: CGFloat(currentAngle * Double.pi/180))
-        setNeedsDisplay()
     }
     
     override func draw(_ rect: CGRect) {

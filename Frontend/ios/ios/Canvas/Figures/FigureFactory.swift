@@ -17,7 +17,8 @@ class FigureFactory {
         case .UMLClass :
             return UmlClassFigure(firstPoint: firstPoint, lastPoint: lastPoint)
         case .Actor:
-            return UmlImageFigure(firstPoint: firstPoint, lastPoint: lastPoint, figureType: UMLImageFigureType.actor)
+            return UmlActorFigure(firstPoint: firstPoint, lastPoint: lastPoint)
+//            return UmlImageFigure(firstPoint: firstPoint, lastPoint: lastPoint, figureType: UMLImageFigureType.actor)
         
         case .UMLComment:
             return UmlCommentFigure(firstPoint: firstPoint, lastPoint: lastPoint)
@@ -32,6 +33,8 @@ class FigureFactory {
             return UmlArtefactFigure(firstPoint: firstPoint, lastPoint: lastPoint)
         case .Phase:
             return nil
+        case .Activity:
+            return UmlActivityFigure(firstPoint: firstPoint, lastPoint: lastPoint)
         }
     }
     
@@ -41,7 +44,8 @@ class FigureFactory {
         case .UMLClass :
             return UmlClassFigure(origin: touchedPoint)
         case .Actor:
-            return UmlImageFigure(origin: touchedPoint, figureType: UMLImageFigureType.actor)
+            return UmlActorFigure(origin: touchedPoint)
+//            return UmlImageFigure(origin: touchedPoint, figureType: UMLImageFigureType.actor)
         case .UMLComment:
             return UmlCommentFigure(origin: touchedPoint)
         case .UMLPhaseFigure:
@@ -52,10 +56,10 @@ class FigureFactory {
             return nil
         case .Artefact:
             return UmlArtefactFigure(origin: touchedPoint)
-
         case .Phase:
             return nil
-            
+        case .Activity:
+            return UmlActivityFigure(origin: touchedPoint)
         }
     }
     

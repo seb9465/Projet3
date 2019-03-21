@@ -20,6 +20,8 @@ class UmlFigure : Figure {
     var lineWidth: CGFloat!
     var lineColor: UIColor!
     var oldTouchedPoint: CGPoint!
+    
+    private var currentAngle: Double = 0
 
     var anchorPoints: AnchorPoints?;
     
@@ -78,6 +80,21 @@ class UmlFigure : Figure {
         self.frame = translatedFrame
         self.firstPoint = self.frame.origin
         self.lastPoint = CGPoint(x: self.frame.maxX, y: self.frame.maxY) 
+    }
+    
+    override public func rotate(orientation: RotateOrientation) -> Void {
+        if (orientation == RotateOrientation.right) {
+            currentAngle += 90
+        } else {
+            currentAngle -= 90
+        }
+        
+        if (abs(currentAngle) == 360) {
+            currentAngle = 0
+        }
+        
+        self.transform = CGAffineTransform.init(rotationAngle: CGFloat(currentAngle * Double.pi/180))
+        setNeedsDisplay()
     }
     
     private func distance(a: CGPoint, b: CGPoint) -> CGFloat {

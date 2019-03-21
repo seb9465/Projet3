@@ -28,6 +28,15 @@
 		3DA5CA43224414D200087298 /* PublicGalleryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DA5CA42224414D200087298 /* PublicGalleryController.swift */; };
 		3DA5CA4722441A9200087298 /* GalleryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DA5CA4522441A9200087298 /* GalleryCell.swift */; };
 		3DA5CA4822441A9200087298 /* GalleryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3DA5CA4622441A9200087298 /* GalleryCell.xib */; };
+		3DA5CA4A2244395500087298 /* UmlActorFigure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DA5CA492244395500087298 /* UmlActorFigure.swift */; };
+		3DA5CA4C22443C4E00087298 /* UmlActivityFigure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DA5CA4B22443C4E00087298 /* UmlActivityFigure.swift */; };
+		3DA5CA502244406700087298 /* ConnectionSelectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DA5CA4E2244406700087298 /* ConnectionSelectionCell.swift */; };
+		3DA5CA512244406700087298 /* ConnectionSelectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3DA5CA4F2244406700087298 /* ConnectionSelectionCell.xib */; };
+		3DA5CA532244449900087298 /* ConnectionAssociationUni.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DA5CA522244449900087298 /* ConnectionAssociationUni.swift */; };
+		3DA5CA55224444B100087298 /* ConnectionAssociationBi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DA5CA54224444B100087298 /* ConnectionAssociationBi.swift */; };
+		3DA5CA57224444C100087298 /* ConnectionHeritage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DA5CA56224444C100087298 /* ConnectionHeritage.swift */; };
+		3DA5CA59224444D000087298 /* ConnectionComposition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DA5CA58224444D000087298 /* ConnectionComposition.swift */; };
+		3DA5CA5B224444DD00087298 /* ConnectionAggregation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DA5CA5A224444DD00087298 /* ConnectionAggregation.swift */; };
 		3DABD3DB224141DE00707D86 /* AddAttributeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DABD3D9224141DE00707D86 /* AddAttributeCell.swift */; };
 		3DABD3DC224141DE00707D86 /* AddAttributeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3DABD3DA224141DE00707D86 /* AddAttributeCell.xib */; };
 		3DABD3E02241433C00707D86 /* ClassAttributeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DABD3DE2241433C00707D86 /* ClassAttributeCell.swift */; };
@@ -124,6 +133,15 @@
 		3DA5CA42224414D200087298 /* PublicGalleryController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicGalleryController.swift; sourceTree = "<group>"; };
 		3DA5CA4522441A9200087298 /* GalleryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryCell.swift; sourceTree = "<group>"; };
 		3DA5CA4622441A9200087298 /* GalleryCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GalleryCell.xib; sourceTree = "<group>"; };
+		3DA5CA492244395500087298 /* UmlActorFigure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UmlActorFigure.swift; sourceTree = "<group>"; };
+		3DA5CA4B22443C4E00087298 /* UmlActivityFigure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UmlActivityFigure.swift; sourceTree = "<group>"; };
+		3DA5CA4E2244406700087298 /* ConnectionSelectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionSelectionCell.swift; sourceTree = "<group>"; };
+		3DA5CA4F2244406700087298 /* ConnectionSelectionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ConnectionSelectionCell.xib; sourceTree = "<group>"; };
+		3DA5CA522244449900087298 /* ConnectionAssociationUni.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionAssociationUni.swift; sourceTree = "<group>"; };
+		3DA5CA54224444B100087298 /* ConnectionAssociationBi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionAssociationBi.swift; sourceTree = "<group>"; };
+		3DA5CA56224444C100087298 /* ConnectionHeritage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionHeritage.swift; sourceTree = "<group>"; };
+		3DA5CA58224444D000087298 /* ConnectionComposition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionComposition.swift; sourceTree = "<group>"; };
+		3DA5CA5A224444DD00087298 /* ConnectionAggregation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionAggregation.swift; sourceTree = "<group>"; };
 		3DABD3D9224141DE00707D86 /* AddAttributeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAttributeCell.swift; sourceTree = "<group>"; };
 		3DABD3DA224141DE00707D86 /* AddAttributeCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddAttributeCell.xib; sourceTree = "<group>"; };
 		3DABD3DE2241433C00707D86 /* ClassAttributeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassAttributeCell.swift; sourceTree = "<group>"; };
@@ -221,6 +239,11 @@
 			isa = PBXGroup;
 			children = (
 				3D0A917222388F6E002FCB74 /* ConnectionFigure.swift */,
+				3DA5CA522244449900087298 /* ConnectionAssociationUni.swift */,
+				3DA5CA54224444B100087298 /* ConnectionAssociationBi.swift */,
+				3DA5CA56224444C100087298 /* ConnectionHeritage.swift */,
+				3DA5CA58224444D000087298 /* ConnectionComposition.swift */,
+				3DA5CA5A224444DD00087298 /* ConnectionAggregation.swift */,
 			);
 			path = ConnectionFigures;
 			sourceTree = "<group>";
@@ -263,6 +286,8 @@
 				C4D12705224418F3004B3641 /* UmlCommentFigure.swift */,
 				C4D1270D224424E1004B3641 /* UmlArtefactFigure.swift */,
 				C4D1270F224424FC004B3641 /* UmlPhaseFigure.swift */,
+				3DA5CA492244395500087298 /* UmlActorFigure.swift */,
+				3DA5CA4B22443C4E00087298 /* UmlActivityFigure.swift */,
 			);
 			path = UmlFigures;
 			sourceTree = "<group>";
@@ -318,6 +343,15 @@
 			path = GalleryCell;
 			sourceTree = "<group>";
 		};
+		3DA5CA4D2244404900087298 /* ConnectionSelectionCell */ = {
+			isa = PBXGroup;
+			children = (
+				3DA5CA4E2244406700087298 /* ConnectionSelectionCell.swift */,
+				3DA5CA4F2244406700087298 /* ConnectionSelectionCell.xib */,
+			);
+			path = ConnectionSelectionCell;
+			sourceTree = "<group>";
+		};
 		3DABD3D8224141B400707D86 /* AddAttributeCell */ = {
 			isa = PBXGroup;
 			children = (
@@ -347,6 +381,7 @@
 		3DABD3F3224196E800707D86 /* FigureTable */ = {
 			isa = PBXGroup;
 			children = (
+				3DA5CA4D2244404900087298 /* ConnectionSelectionCell */,
 				3DABD3F62241987000707D86 /* FigureSelectionCell */,
 				3DABD3F42241975C00707D86 /* FigureTableController.swift */,
 			);
@@ -695,6 +730,7 @@
 				3DE8F121223C44AF0052580B /* ClassMethodCell.xib in Resources */,
 				3D6E4C40223AE17B00E391D4 /* BorderCell.xib in Resources */,
 				B711B5F121F659A50096BF7F /* Assets.xcassets in Resources */,
+				3DA5CA512244406700087298 /* ConnectionSelectionCell.xib in Resources */,
 				B756794A220F5DC800F80B12 /* Chat.storyboard in Resources */,
 				3DE8F11A223C43BD0052580B /* ClassCell.xib in Resources */,
 				3DA5CA4822441A9200087298 /* GalleryCell.xib in Resources */,
@@ -803,6 +839,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3DA5CA502244406700087298 /* ConnectionSelectionCell.swift in Sources */,
 				3D66FC77223817E800EB7E93 /* SelectionOutline.swift in Sources */,
 				3DE8F125223C4AF00052580B /* AddMethodCell.swift in Sources */,
 				3DC967EB220A067900FA76CB /* LoginController.swift in Sources */,
@@ -811,6 +848,7 @@
 				3DF62984221C9FB30052209A /* Canvas.swift in Sources */,
 				3DC61EB92200B44B003FE445 /* RegisterController.swift in Sources */,
 				3DD55D722227208C009D893B /* CollobarationHub.swift in Sources */,
+				3DA5CA57224444C100087298 /* ConnectionHeritage.swift in Sources */,
 				3D5537C22200ED5F002C1B77 /* SlideUpSegue.swift in Sources */,
 				3D73359D223739550021FA3C /* UmlClassFigure.swift in Sources */,
 				C47715CB2241C729008F27E6 /* FigureCellProtocol.swift in Sources */,
@@ -822,6 +860,7 @@
 				3DB1363E2235B3130096FA04 /* FigureProtocol.swift in Sources */,
 				3DDE25192202B2AF0082E735 /* RoundedCorners.swift in Sources */,
 				C47715C4224149B5008F27E6 /* RotateCell.swift in Sources */,
+				3DA5CA55224444B100087298 /* ConnectionAssociationBi.swift in Sources */,
 				B7A3A5C42203CF7100031F64 /* Extensions_Chat.swift in Sources */,
 				B711B5EA21F659A30096BF7F /* AppDelegate.swift in Sources */,
 				3D0F8D06224062690034DA1A /* SideToolbarController.swift in Sources */,
@@ -834,6 +873,7 @@
 				3DA5CA4722441A9200087298 /* GalleryCell.swift in Sources */,
 				3DE8F114223C26890052580B /* SideToolbarDelegate.swift in Sources */,
 				C4D1270E224424E1004B3641 /* UmlArtefactFigure.swift in Sources */,
+				3DA5CA532244449900087298 /* ConnectionAssociationUni.swift in Sources */,
 				3DABD3F222418FC300707D86 /* StyleTableController.swift in Sources */,
 				3DABD3F92241988500707D86 /* FigureSelectionCell.swift in Sources */,
 				3D1622B22239AB4F00B98263 /* Figure.swift in Sources */,
@@ -841,9 +881,12 @@
 				B7B1B4402231C06900BEE17D /* MessageLayoutExtension.swift in Sources */,
 				B7A3A5C02203BF3B00031F64 /* ChatControler.swift in Sources */,
 				3DA5CA43224414D200087298 /* PublicGalleryController.swift in Sources */,
+				3DA5CA59224444D000087298 /* ConnectionComposition.swift in Sources */,
+				3DA5CA5B224444DD00087298 /* ConnectionAggregation.swift in Sources */,
 				3D121EDC22209E070074C61C /* PlaceHolderCell.swift in Sources */,
 				3D0A917322388F6E002FCB74 /* ConnectionFigure.swift in Sources */,
 				3D6E955D2230839900BC7BE7 /* DrawViewModel.swift in Sources */,
+				3DA5CA4C22443C4E00087298 /* UmlActivityFigure.swift in Sources */,
 				C4D1270B22441D85004B3641 /* CommentCell.swift in Sources */,
 				3DF6298B221C9FBC0052209A /* CanvasCell.swift in Sources */,
 				C4D12710224424FC004B3641 /* UmlPhaseFigure.swift in Sources */,
@@ -859,6 +902,7 @@
 				3DC07CC722205B7C0045E7DE /* ContextMenuCell.swift in Sources */,
 				C47715C92241969F008F27E6 /* PropertiesController.swift in Sources */,
 				3D2268252237050F00B2F604 /* UmlFigure.swift in Sources */,
+				3DA5CA4A2244395500087298 /* UmlActorFigure.swift in Sources */,
 				B781B95B22132C2F001C1BD8 /* CanvasController.swift in Sources */,
 				C495FEBE22381BDF006E49F9 /* UMLImageFigure.swift in Sources */,
 				3D73359F22373D5E0021FA3C /* FigureFactory.swift in Sources */,
