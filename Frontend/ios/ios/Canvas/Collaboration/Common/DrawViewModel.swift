@@ -25,6 +25,7 @@ struct DrawViewModel: Codable {
 enum ItemTypeEnum: Int, Codable {
     case UMLClass
     case UMLComment
+    case UMLPhaseFigure
     case Actor
     case Artefact
     case Phase
