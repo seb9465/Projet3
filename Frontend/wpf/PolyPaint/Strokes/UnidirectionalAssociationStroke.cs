@@ -32,8 +32,8 @@ namespace PolyPaint.Strokes
             StylusPoint sp = pts[1];
 
             int arrowLength = 10;
-            double dx = sp.X - stp.X;
-            double dy = sp.Y - stp.Y;
+            double dx = sp.X - LastElbowPosition.X;
+            double dy = sp.Y - LastElbowPosition.Y;
 
             double theta = Math.Atan2(dy, dx);
 
@@ -65,7 +65,8 @@ namespace PolyPaint.Strokes
             }
 
             drawingContext.DrawGeometry(Fill, Border, streamGeometry);
-            drawingContext.DrawLine(Border, stp.ToPoint(), point2);
+            drawingContext.DrawLine(Border, stp.ToPoint(), LastElbowPosition);
+            drawingContext.DrawLine(Border, LastElbowPosition, point2);
         }
     }
 }

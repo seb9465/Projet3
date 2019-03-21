@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Ink;
 using System.Windows.Input;
@@ -14,6 +15,10 @@ namespace PolyPaint.Strokes
         public event PropertyChangedEventHandler PropertyChanged;
 
         public bool IsDrawingDone { get; set; }
+
+        public Point TopLeft { get; set; }
+        public double Width { get; set; }
+        public double Height { get; set; }
 
         protected Brush Fill { get; set; }
         protected Pen Border { get; set; }
@@ -28,6 +33,10 @@ namespace PolyPaint.Strokes
         public AbstractStroke(StylusPointCollection pts, InkCanvas surfaceDessin, string couleurBordure, string couleurRemplissage)
             : base(pts)
         {
+            TopLeft = new Point();
+            Width = 0;
+            Height = 0;
+
             couleurBordure = couleurBordure == "" ? "#FF000000" : couleurBordure;
             couleurRemplissage = couleurRemplissage == "" ? "#FFFFFFFF" : couleurRemplissage;
 

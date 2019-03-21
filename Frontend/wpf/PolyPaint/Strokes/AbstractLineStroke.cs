@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -33,11 +34,19 @@ namespace PolyPaint.Strokes
             }
         }
 
+        public Point LastElbowPosition { get; set; }
+
         public AbstractLineStroke(StylusPointCollection stylusPoints, InkCanvas surfaceDessin, string from, string to, string couleurBordure, string couleurRemplissage)
             : base(stylusPoints, surfaceDessin, couleurBordure, couleurRemplissage)
         {
+            LastElbowPosition = new Point();
             Source = new FormattedText(from, System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 12, Brushes.Black);
             Destination = new FormattedText(to, System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 12, Brushes.Black);
+
+            Invalidated += (object sender, EventArgs e) =>
+            {
+                LastElbowPosition = new Point((StylusPoints[0].X + StylusPoints[1].X) / 2, (StylusPoints[0].Y + StylusPoints[1].Y) / 2);
+            };
         }
 
         private readonly double MIN_DISTANCE = 10;

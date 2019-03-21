@@ -9,10 +9,6 @@ namespace PolyPaint.Strokes
     {
         public Point[] AnchorPoints { get; set; }
 
-        protected Point TopLeft { get; set; }
-        protected double Width { get; set; }
-        protected double Height { get; set; }
-
         protected FormattedText Title { get; set; }
         public string TitleString
         {
@@ -28,10 +24,6 @@ namespace PolyPaint.Strokes
         public AbstractShapeStroke(StylusPointCollection stylusPoints, InkCanvas surfaceDessin, string title, string couleurBordure, string couleurRemplissage)
             : base(stylusPoints, surfaceDessin, couleurBordure, couleurRemplissage)
         {
-            TopLeft = new Point();
-            Width = 0;
-            Height = 0;
-
             AnchorPoints = new Point[4];
 
             Title = new FormattedText(title, System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 12, Brushes.Black);

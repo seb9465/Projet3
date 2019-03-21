@@ -7,6 +7,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Ink;
 using System.Windows.Media;
 using Microsoft.AspNetCore.SignalR.Client;
@@ -259,15 +260,15 @@ namespace PolyPaint.VueModeles
             }
         }
 
-        public void ChangeSelection(StrokeCollection strokes)
+        public void ChangeSelection(InkCanvas surfaceDessin)
         {
+            var strokes = surfaceDessin.GetSelectedStrokes();
             editeur.SelectedStrokes = strokes;
             ProprieteModifiee("IsStrokeSelected");
 
             HandleBorderColorChange(strokes);
             HandleFillColorChange(strokes);
             HandleBorderStyleChange(strokes);
-
         }
 
         private void HandleBorderColorChange(StrokeCollection strokes)

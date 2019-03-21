@@ -34,8 +34,8 @@ namespace PolyPaint.Strokes
             double rad = (Math.PI / 180) * 35;
             double phi2 = (Math.PI / 180) * -35;
 
-            double startDx = stp.X - sp.X;
-            double startDy = stp.Y - sp.Y;
+            double startDx = stp.X - LastElbowPosition.X;
+            double startDy = stp.Y - LastElbowPosition.Y;
             double startTheta = Math.Atan2(startDy, startDx);
 
             double startX = stp.X - arrowLength * Math.Cos(startTheta + rad);
@@ -44,8 +44,8 @@ namespace PolyPaint.Strokes
             double startX2 = stp.X - arrowLength * Math.Cos(startTheta + phi2);
             double startY2 = stp.Y - arrowLength * Math.Sin(startTheta + phi2);
 
-            double endDx = sp.X - stp.X;
-            double endDy = sp.Y - stp.Y;
+            double endDx = sp.X - LastElbowPosition.X;
+            double endDy = sp.Y - LastElbowPosition.Y;
             double endTheta = Math.Atan2(endDy, endDx);
 
             double endX = sp.X - arrowLength * Math.Cos(endTheta + rad);
@@ -91,7 +91,8 @@ namespace PolyPaint.Strokes
 
             drawingContext.DrawGeometry(Fill, Border, streamGeometry1);
             drawingContext.DrawGeometry(Fill, Border, streamGeometry2);
-            drawingContext.DrawLine(Border, stp.ToPoint(), sp.ToPoint());
+            drawingContext.DrawLine(Border, stp.ToPoint(), LastElbowPosition);
+            drawingContext.DrawLine(Border, LastElbowPosition, sp.ToPoint());
         }
     }
 }

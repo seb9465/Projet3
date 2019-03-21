@@ -190,17 +190,16 @@ namespace PolyPaint.Utilitaires
         private void RedrawLineOnAffectedAnchorPoints(InkCanvas surfaceDessin, List<Point> affectedAnchorPoints,
                                                       double shiftInX, double shiftInY)
         {
-            for (int i = 0; i < 2; i++)
+            foreach (Point pt in affectedAnchorPoints)
             {
-                surfaceDessin.Strokes.Where(x => (x is UnidirectionalAssociationStroke
-                                               || x is BidirectionalAssociationStroke
-                                               || x is AgregationStroke
-                                               || x is CompositionStroke
-                                               || x is InheritanceStroke) &&
-                    !surfaceDessin.GetSelectedStrokes().Contains(x) &&
-                    affectedAnchorPoints.Contains(x.StylusPoints[i].ToPoint()))
-                    .ToList()
-                    .ForEach(x => RedrawPoint(x, i, new Vector(shiftInX, shiftInY)));
+                for (int i = 0; i < 2; i++)
+                {
+                    surfaceDessin.Strokes.Where(x => x is AbstractLineStroke &&
+                        !surfaceDessin.GetSelectedStrokes().Contains(x) &&
+                        Point.Subtract(x.StylusPoints[i].ToPoint(), pt).Length <= 10)
+                        .ToList()
+                        .ForEach(x => RedrawPoint(x, i, new Vector(shiftInX, shiftInY)));
+                }
             }
         }
 

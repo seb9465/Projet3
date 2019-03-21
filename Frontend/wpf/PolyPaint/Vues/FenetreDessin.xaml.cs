@@ -19,6 +19,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Documents;
 using System.Windows.Ink;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -32,6 +33,9 @@ namespace PolyPaint
     /// </summary>
     public partial class FenetreDessin : Window
     {
+        private AdornerLayer adornerLayer;
+        private RotatingStrokesAdorner adorner;
+
         private ChatWindow externalChatWindow;
         private MediaPlayer mediaPlayer = new MediaPlayer();
         private InkCanvasEventManager icEventManager = new InkCanvasEventManager();
@@ -557,7 +561,15 @@ namespace PolyPaint
 
         private void surfaceDessin_ChangeSelection(object sender, EventArgs e)
         {
-            (DataContext as VueModele).ChangeSelection((sender as InkCanvas).GetSelectedStrokes());
+            (DataContext as VueModele).ChangeSelection((sender as InkCanvas));
+            // Add the rotating strokes adorner to the InkPresenter.
+            if (adorner != null)
+                adornerLayer.Remove(adorner);
+
+            adornerLayer = AdornerLayer.GetAdornerLayer(surfaceDessin);
+            adorner = new RotatingStrokesAdorner(surfaceDessin);
+
+            adornerLayer.Add(adorner);
         }
 
         private async void GoBack_Click(object sender, RoutedEventArgs e)
@@ -567,6 +579,9 @@ namespace PolyPaint
             Application.Current.MainWindow = menuProfile;
             Close();
             menuProfile.Show();
+        }
+        void Window_Loaded(object sender, RoutedEventArgs e)
+        {
         }
     }
 }
