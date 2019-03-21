@@ -25,8 +25,9 @@
 		3D73359D223739550021FA3C /* UmlClassFigure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D73359C223739550021FA3C /* UmlClassFigure.swift */; };
 		3D73359F22373D5E0021FA3C /* FigureFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D73359E22373D5E0021FA3C /* FigureFactory.swift */; };
 		3D77176921F7C8BC006244A8 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D77176821F7C8BC006244A8 /* Alamofire.framework */; };
-		3D9FBC1222248371006BB297 /* MasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D9FBC1122248371006BB297 /* MasterViewController.swift */; };
-		3DA9A50122220F870005F3AF /* GalleryHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DA9A50022220F870005F3AF /* GalleryHeader.swift */; };
+		3DA5CA43224414D200087298 /* PublicGalleryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DA5CA42224414D200087298 /* PublicGalleryController.swift */; };
+		3DA5CA4722441A9200087298 /* GalleryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DA5CA4522441A9200087298 /* GalleryCell.swift */; };
+		3DA5CA4822441A9200087298 /* GalleryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3DA5CA4622441A9200087298 /* GalleryCell.xib */; };
 		3DABD3DB224141DE00707D86 /* AddAttributeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DABD3D9224141DE00707D86 /* AddAttributeCell.swift */; };
 		3DABD3DC224141DE00707D86 /* AddAttributeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3DABD3DA224141DE00707D86 /* AddAttributeCell.xib */; };
 		3DABD3E02241433C00707D86 /* ClassAttributeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DABD3DE2241433C00707D86 /* ClassAttributeCell.swift */; };
@@ -118,8 +119,9 @@
 		3D73359C223739550021FA3C /* UmlClassFigure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UmlClassFigure.swift; sourceTree = "<group>"; };
 		3D73359E22373D5E0021FA3C /* FigureFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FigureFactory.swift; sourceTree = "<group>"; };
 		3D77176821F7C8BC006244A8 /* Alamofire.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Alamofire.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		3D9FBC1122248371006BB297 /* MasterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterViewController.swift; sourceTree = "<group>"; };
-		3DA9A50022220F870005F3AF /* GalleryHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryHeader.swift; sourceTree = "<group>"; };
+		3DA5CA42224414D200087298 /* PublicGalleryController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicGalleryController.swift; sourceTree = "<group>"; };
+		3DA5CA4522441A9200087298 /* GalleryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryCell.swift; sourceTree = "<group>"; };
+		3DA5CA4622441A9200087298 /* GalleryCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GalleryCell.xib; sourceTree = "<group>"; };
 		3DABD3D9224141DE00707D86 /* AddAttributeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAttributeCell.swift; sourceTree = "<group>"; };
 		3DABD3DA224141DE00707D86 /* AddAttributeCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddAttributeCell.xib; sourceTree = "<group>"; };
 		3DABD3DE2241433C00707D86 /* ClassAttributeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassAttributeCell.swift; sourceTree = "<group>"; };
@@ -301,12 +303,13 @@
 			path = Common;
 			sourceTree = "<group>";
 		};
-		3D9FBC102224834D006BB297 /* Dashboard */ = {
+		3DA5CA4422441A6F00087298 /* GalleryCell */ = {
 			isa = PBXGroup;
 			children = (
-				3D9FBC1122248371006BB297 /* MasterViewController.swift */,
+				3DA5CA4522441A9200087298 /* GalleryCell.swift */,
+				3DA5CA4622441A9200087298 /* GalleryCell.xib */,
 			);
-			path = Dashboard;
+			path = GalleryCell;
 			sourceTree = "<group>";
 		};
 		3DABD3D8224141B400707D86 /* AddAttributeCell */ = {
@@ -436,9 +439,10 @@
 		3DF62985221C9FBC0052209A /* Gallery */ = {
 			isa = PBXGroup;
 			children = (
+				3DA5CA4422441A6F00087298 /* GalleryCell */,
 				3DE984D422262ECA004D036C /* Cells */,
 				3D25655F2225BDFE00BCE946 /* GalleryController.swift */,
-				3DA9A50022220F870005F3AF /* GalleryHeader.swift */,
+				3DA5CA42224414D200087298 /* PublicGalleryController.swift */,
 			);
 			name = Gallery;
 			path = ios/Gallery;
@@ -480,7 +484,6 @@
 			children = (
 				C495FEC12238248E006E49F9 /* Ressources */,
 				3DD55D6E22271E90009D893B /* API */,
-				3D9FBC102224834D006BB297 /* Dashboard */,
 				B781B95722132671001C1BD8 /* Canvas */,
 				B7567944220F330700F80B12 /* Chat */,
 				3DF62985221C9FBC0052209A /* Gallery */,
@@ -688,6 +691,7 @@
 				B711B5F121F659A50096BF7F /* Assets.xcassets in Resources */,
 				B756794A220F5DC800F80B12 /* Chat.storyboard in Resources */,
 				3DE8F11A223C43BD0052580B /* ClassCell.xib in Resources */,
+				3DA5CA4822441A9200087298 /* GalleryCell.xib in Resources */,
 				3DABD3DC224141DE00707D86 /* AddAttributeCell.xib in Resources */,
 				3DABD3E12241433C00707D86 /* ClassAttributeCell.xib in Resources */,
 				C495FEC22238248E006E49F9 /* Ressources in Resources */,
@@ -821,14 +825,15 @@
 				3DE8F118223C32700052580B /* ClassCell.swift in Sources */,
 				B7A3A5C22203C27600031F64 /* Message.swift in Sources */,
 				B7B1B43E2231C03900BEE17D /* MessageDisplayExtension.swift in Sources */,
+				3DA5CA4722441A9200087298 /* GalleryCell.swift in Sources */,
 				3DE8F114223C26890052580B /* SideToolbarDelegate.swift in Sources */,
 				3DABD3F222418FC300707D86 /* StyleTableController.swift in Sources */,
 				3DABD3F92241988500707D86 /* FigureSelectionCell.swift in Sources */,
 				3D1622B22239AB4F00B98263 /* Figure.swift in Sources */,
-				3DA9A50122220F870005F3AF /* GalleryHeader.swift in Sources */,
 				B7B1B4392231BE8000BEE17D /* MessageDataSourceExtension.swift in Sources */,
 				B7B1B4402231C06900BEE17D /* MessageLayoutExtension.swift in Sources */,
 				B7A3A5C02203BF3B00031F64 /* ChatControler.swift in Sources */,
+				3DA5CA43224414D200087298 /* PublicGalleryController.swift in Sources */,
 				3D121EDC22209E070074C61C /* PlaceHolderCell.swift in Sources */,
 				3D0A917322388F6E002FCB74 /* ConnectionFigure.swift in Sources */,
 				3D6E955D2230839900BC7BE7 /* DrawViewModel.swift in Sources */,
@@ -844,7 +849,6 @@
 				3D2565602225BDFE00BCE946 /* GalleryController.swift in Sources */,
 				B7B1B4352231A3FD00BEE17D /* MyCustomMessagesFlowLayout.swift in Sources */,
 				3DC07CC722205B7C0045E7DE /* ContextMenuCell.swift in Sources */,
-				3D9FBC1222248371006BB297 /* MasterViewController.swift in Sources */,
 				C47715C92241969F008F27E6 /* PropertiesController.swift in Sources */,
 				3D2268252237050F00B2F604 /* UmlFigure.swift in Sources */,
 				B781B95B22132C2F001C1BD8 /* CanvasController.swift in Sources */,
