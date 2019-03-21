@@ -53,7 +53,7 @@ class UmlCommentFigure: UmlFigure {
         let commentLabel = UILabel(frame: commentRect)
         commentLabel.text = self.comment
         commentLabel.textAlignment = .center
-        commentLabel.drawText(in: nameRect)
+        commentLabel.drawText(in: commentRect)
         
         let commentRectPath = UIBezierPath(rect: commentRect)
         

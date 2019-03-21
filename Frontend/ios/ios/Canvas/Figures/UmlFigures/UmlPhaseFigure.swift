@@ -27,7 +27,7 @@ class UmlPhaseFigure: UmlFigure {
     }
     
     public func setPhaseName(phaseName: String) -> Void {
-        self.phaseName = phase;
+        self.phaseName = phaseName;
         setNeedsDisplay();
     }
     
@@ -48,14 +48,15 @@ class UmlPhaseFigure: UmlFigure {
     }
     
     override func draw(_ rect: CGRect) {
-        let commentRect = CGRect(x: 0, y: 0, width: BASE_WIDTH, height: BASE_HEIGHT).insetBy(dx: 5, dy: 5);
+         let outerRect = CGRect(x: 0, y: 0, width: BASE_WIDTH, height: BASE_HEIGHT).insetBy(dx: 5, dy: 5);
+        let phaneNameRect = CGRect(x: 0, y: 0, width: BASE_WIDTH, height: BASE_HEIGHT).insetBy(dx: 5, dy: 5);
         
-        let commentLabel = UILabel(frame: commentRect)
-        commentLabel.text = self.comment
-        commentLabel.textAlignment = .center
-        commentLabel.drawText(in: nameRect)
+        let phaseNameLabel = UILabel(frame: phaneNameRect)
+        phaseNameLabel.text = self.phaseName
+        phaseNameLabel.textAlignment = .center
+        phaseNameLabel.drawText(in: phaneNameRect)
         
-        let commentRectPath = UIBezierPath(rect: commentRect)
+        let commentRectPath = UIBezierPath(rect: phaneNameRect)
         
         self.figureColor.setFill()
         self.lineColor.setStroke()
