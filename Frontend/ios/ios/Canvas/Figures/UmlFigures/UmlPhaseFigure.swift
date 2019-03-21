@@ -52,7 +52,7 @@ class UmlPhaseFigure: UmlFigure {
         let phaneNameRect = CGRect(x: 0, y: 0, width: BASE_WIDTH, height: 50).insetBy(dx: 5, dy: 5);
         
         let phaseNameLabel = UILabel(frame: phaneNameRect)
-        UIRectFill()
+//        UIRectFill()
         phaseNameLabel.text = self.phaseName
         phaseNameLabel.textAlignment = .center
         phaseNameLabel.drawText(in: phaneNameRect)
