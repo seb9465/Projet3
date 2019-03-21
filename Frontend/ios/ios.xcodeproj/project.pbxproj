@@ -86,6 +86,8 @@
 		C4D12706224418F3004B3641 /* UmlCommentFigure.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D12705224418F3004B3641 /* UmlCommentFigure.swift */; };
 		C4D1270B22441D85004B3641 /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D1270922441D85004B3641 /* CommentCell.swift */; };
 		C4D1270C22441D85004B3641 /* CommentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4D1270A22441D85004B3641 /* CommentCell.xib */; };
+		C4D1270E224424E1004B3641 /* UmlArtefactFigure.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D1270D224424E1004B3641 /* UmlArtefactFigure.swift */; };
+		C4D12710224424FC004B3641 /* UmlPhaseFigure.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D1270F224424FC004B3641 /* UmlPhaseFigure.swift */; };
 		C4D6BB2722384F5B00121695 /* AnchorPoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D6BB2622384F5B00121695 /* AnchorPoints.swift */; };
 		C5724AD99504D99A25966BB9 /* Pods_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6CD8C54089242A6862A3C2E4 /* Pods_ios.framework */; };
 /* End PBXBuildFile section */
@@ -186,6 +188,8 @@
 		C4D12705224418F3004B3641 /* UmlCommentFigure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UmlCommentFigure.swift; sourceTree = "<group>"; };
 		C4D1270922441D85004B3641 /* CommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCell.swift; sourceTree = "<group>"; };
 		C4D1270A22441D85004B3641 /* CommentCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CommentCell.xib; sourceTree = "<group>"; };
+		C4D1270D224424E1004B3641 /* UmlArtefactFigure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UmlArtefactFigure.swift; sourceTree = "<group>"; };
+		C4D1270F224424FC004B3641 /* UmlPhaseFigure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UmlPhaseFigure.swift; sourceTree = "<group>"; };
 		C4D6BB2622384F5B00121695 /* AnchorPoints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnchorPoints.swift; sourceTree = "<group>"; };
 		C6C9AA086604975DCA6FF292 /* Pods-iosTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iosTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-iosTests/Pods-iosTests.debug.xcconfig"; sourceTree = "<group>"; };
 		E7966B3EFE20A93B4BE0DB10 /* Pods-ios.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ios.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ios/Pods-ios.debug.xcconfig"; sourceTree = "<group>"; };
@@ -257,6 +261,8 @@
 				3D2268242237050F00B2F604 /* UmlFigure.swift */,
 				3D73359C223739550021FA3C /* UmlClassFigure.swift */,
 				C4D12705224418F3004B3641 /* UmlCommentFigure.swift */,
+				C4D1270D224424E1004B3641 /* UmlArtefactFigure.swift */,
+				C4D1270F224424FC004B3641 /* UmlPhaseFigure.swift */,
 			);
 			path = UmlFigures;
 			sourceTree = "<group>";
@@ -827,6 +833,7 @@
 				B7B1B43E2231C03900BEE17D /* MessageDisplayExtension.swift in Sources */,
 				3DA5CA4722441A9200087298 /* GalleryCell.swift in Sources */,
 				3DE8F114223C26890052580B /* SideToolbarDelegate.swift in Sources */,
+				C4D1270E224424E1004B3641 /* UmlArtefactFigure.swift in Sources */,
 				3DABD3F222418FC300707D86 /* StyleTableController.swift in Sources */,
 				3DABD3F92241988500707D86 /* FigureSelectionCell.swift in Sources */,
 				3D1622B22239AB4F00B98263 /* Figure.swift in Sources */,
@@ -839,6 +846,7 @@
 				3D6E955D2230839900BC7BE7 /* DrawViewModel.swift in Sources */,
 				C4D1270B22441D85004B3641 /* CommentCell.swift in Sources */,
 				3DF6298B221C9FBC0052209A /* CanvasCell.swift in Sources */,
+				C4D12710224424FC004B3641 /* UmlPhaseFigure.swift in Sources */,
 				B7B1B4372231A41C00BEE17D /* MyCustomCell.swift in Sources */,
 				3DE8F120223C44AF0052580B /* ClassMethodCell.swift in Sources */,
 				3D2268192236E9F500B2F604 /* EditorView.swift in Sources */,

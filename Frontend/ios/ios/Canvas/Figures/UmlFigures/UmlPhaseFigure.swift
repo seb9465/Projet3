@@ -1,5 +1,5 @@
 //
-//  CommentFigure.swift
+//  UMLPhaseFigure.swift
 //  ios
 //
 //  Created by Sébastien Labine on 19-03-21.
@@ -8,8 +8,8 @@
 
 import UIKit
 
-class UmlCommentFigure: UmlFigure {
-    public var comment: String = "comment"
+class UmlPhaseFigure: UmlFigure {
+    public var phaseName: String = "PhaseName"
     private var currentAngle: Double = 0
     let BASE_WIDTH: CGFloat = 150
     let BASE_HEIGHT: CGFloat = 50
@@ -26,8 +26,8 @@ class UmlCommentFigure: UmlFigure {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public func setComment(comment: String) -> Void {
-        self.comment = comment;
+    public func setPhaseName(phaseName: String) -> Void {
+        self.phaseName = phase;
         setNeedsDisplay();
     }
     
@@ -59,7 +59,7 @@ class UmlCommentFigure: UmlFigure {
         
         self.figureColor.setFill()
         self.lineColor.setStroke()
-
+        
         commentRectPath.lineWidth = self.lineWidth
         commentRectPath.fill()
         commentRectPath.stroke()
