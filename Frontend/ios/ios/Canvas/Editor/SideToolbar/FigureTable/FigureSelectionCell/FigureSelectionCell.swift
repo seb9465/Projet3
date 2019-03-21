@@ -11,36 +11,62 @@ import UIKit
 class FigureSelectionCell: UITableViewCell {
     @IBOutlet weak var StraightLineButton: RoundedCorners!
     @IBOutlet weak var UMLClassButton: RoundedCorners!
+    @IBOutlet weak var ActorButton: RoundedCorners!
     
     @IBOutlet weak var DashedLineButton: RoundedCorners!
     weak var delegate: FigureCellProtocol?
     
-    @IBOutlet weak var ActivityClassButton: RoundedCorners!
+    @IBOutlet weak var ActivityButton: RoundedCorners!
+    @IBOutlet weak var UMLCommentButton: RoundedCorners!
+    
+    private var lastButtonSelected: RoundedCorners!
+    private var lastLineSelected: RoundedCorners!
     override func awakeFromNib() {
         super.awakeFromNib()
         self.selectionStyle = UITableViewCell.SelectionStyle.none
+        self.lastButtonSelected = UMLClassButton
+        self.setSelectedButton(button: lastButtonSelected)
     }
     override func setSelected(_ selected: Bool, animated: Bool) {
         self.selectionStyle = UITableViewCell.SelectionStyle.none
         super.setSelected(selected, animated: animated)
     }
     
+    func setSelectedButton(button: RoundedCorners) -> Void {
+        self.lastButtonSelected.layer.borderWidth = 0.0
+        self.lastButtonSelected = button
+        self.lastButtonSelected.layer.borderColor = UIColor.blue.cgColor
+        self.lastButtonSelected.layer.borderWidth = 1.0
+    }
+    
     @IBAction func UMLClassSelected(_ sender: Any) {
         self.delegate?.setSelectedFigureType(itemType: ItemTypeEnum.UMLClass)
+        
+        self.setSelectedButton(button: self.UMLClassButton)
     }
     @IBAction func ActivitySelected(_ sender: Any) {
         self.delegate?.setSelectedFigureType(itemType: ItemTypeEnum.Actor)
+        
+        self.setSelectedButton(button: self.ActivityButton)
     }
     
+    @IBAction func ActorSelected(_ sender: Any) {
+        self.delegate?.setSelectedFigureType(itemType: ItemTypeEnum.Actor)
+        self.setSelectedButton(button: self.ActorButton)
+    }
+    
+    
     @IBAction func setSelectedLineStraigth(_ sender: Any) {
-        self.StraightLineButton.layer.borderColor = UIColor.blue.cgColor
-        self.StraightLineButton.layer.borderWidth = 1.0
         self.delegate?.setSelectedLineType(itemType: ItemTypeEnum.StraightLine)
-        
     }
     @IBAction func setSelectedLineDashed(_ sender: Any) {
         self.DashedLineButton.layer.borderColor = UIColor.blue.cgColor
         self.DashedLineButton.layer.borderWidth = 1.0
         self.delegate?.setSelectedFigureType(itemType: ItemTypeEnum.DashedLine)
+    }
+    @IBAction func UMLCommentSelected(_ sender: Any) {
+        self.delegate?.setSelectedFigureType(itemType: ItemTypeEnum.UMLComment)
+        
+        self.setSelectedButton(button: self.UMLCommentButton)
     }
 }
