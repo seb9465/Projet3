@@ -51,6 +51,24 @@ extension PropertiesTableController: UITableViewDelegate, UITableViewDataSource 
             default:
                 return UITableViewCell();
             }
+        }
+        
+        if(self.editor.selectedFigure.isKind(of: UmlCommentFigure.self)) {
+            switch(indexPath.row) {
+            case 0:
+                let cell = tableView.dequeueReusableCell(withIdentifier: "ClassCell", for: indexPath) as! ClassCell
+                cell.setUpTable()
+                cell.delegate = self.editor
+                cell.classNameField.text = (self.editor.selectedFigure as! UmlClassFigure).className
+                cell.methods = (self.editor.selectedFigure as! UmlClassFigure).methods
+                cell.methodsTableView.reloadData()
+                cell.attributes = (self.editor.selectedFigure as! UmlClassFigure).attributes
+                cell.attributesTableView.reloadData()
+                return cell
+                
+            default:
+                return UITableViewCell();
+            }
             
         }
         return UITableViewCell();

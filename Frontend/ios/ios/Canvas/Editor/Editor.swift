@@ -169,6 +169,10 @@ extension Editor: SideToolbarDelegate {
         (self.selectedFigure as! UmlClassFigure).setClassName(name: name)
     }
     
+    func setSelectedComment(comment: String) {
+        (self.selectedFigure as! UmlCommentFigure).setComment(comment: comment)
+    }
+    
     func addClassMethod(name: String) {
         (self.selectedFigure as! UmlClassFigure).addMethod(name: name)
         sideToolbarController?.update()

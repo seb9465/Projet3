@@ -83,6 +83,8 @@
 		C495FEBE22381BDF006E49F9 /* UMLImageFigure.swift in Sources */ = {isa = PBXBuildFile; fileRef = C495FEBD22381BDF006E49F9 /* UMLImageFigure.swift */; };
 		C495FEC22238248E006E49F9 /* Ressources in Resources */ = {isa = PBXBuildFile; fileRef = C495FEC12238248E006E49F9 /* Ressources */; };
 		C4D12706224418F3004B3641 /* UmlCommentFigure.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D12705224418F3004B3641 /* UmlCommentFigure.swift */; };
+		C4D1270B22441D85004B3641 /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D1270922441D85004B3641 /* CommentCell.swift */; };
+		C4D1270C22441D85004B3641 /* CommentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4D1270A22441D85004B3641 /* CommentCell.xib */; };
 		C4D6BB2722384F5B00121695 /* AnchorPoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D6BB2622384F5B00121695 /* AnchorPoints.swift */; };
 		C5724AD99504D99A25966BB9 /* Pods_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6CD8C54089242A6862A3C2E4 /* Pods_ios.framework */; };
 /* End PBXBuildFile section */
@@ -180,6 +182,8 @@
 		C495FEBD22381BDF006E49F9 /* UMLImageFigure.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UMLImageFigure.swift; path = ios/Canvas/Figures/UMLImageFigure.swift; sourceTree = SOURCE_ROOT; };
 		C495FEC12238248E006E49F9 /* Ressources */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Ressources; sourceTree = "<group>"; };
 		C4D12705224418F3004B3641 /* UmlCommentFigure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UmlCommentFigure.swift; sourceTree = "<group>"; };
+		C4D1270922441D85004B3641 /* CommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCell.swift; sourceTree = "<group>"; };
+		C4D1270A22441D85004B3641 /* CommentCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CommentCell.xib; sourceTree = "<group>"; };
 		C4D6BB2622384F5B00121695 /* AnchorPoints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnchorPoints.swift; sourceTree = "<group>"; };
 		C6C9AA086604975DCA6FF292 /* Pods-iosTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iosTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-iosTests/Pods-iosTests.debug.xcconfig"; sourceTree = "<group>"; };
 		E7966B3EFE20A93B4BE0DB10 /* Pods-ios.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ios.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ios/Pods-ios.debug.xcconfig"; sourceTree = "<group>"; };
@@ -261,6 +265,7 @@
 				3DABD3F3224196E800707D86 /* FigureTable */,
 				C47715C72241959D008F27E6 /* PropertiesTable */,
 				3DABD3EE22418DEC00707D86 /* StyleTable */,
+				C4D1270822441D67004B3641 /* CommentCell */,
 				C47715BA22414569008F27E6 /* RotateCell */,
 				3DE8F115223C32330052580B /* ClassCell */,
 				3D6E4C3F223ADEBC00E391D4 /* BorderCell */,
@@ -569,6 +574,15 @@
 			path = PropertiesTable;
 			sourceTree = "<group>";
 		};
+		C4D1270822441D67004B3641 /* CommentCell */ = {
+			isa = PBXGroup;
+			children = (
+				C4D1270922441D85004B3641 /* CommentCell.swift */,
+				C4D1270A22441D85004B3641 /* CommentCell.xib */,
+			);
+			path = CommentCell;
+			sourceTree = "<group>";
+		};
 		D66C1DCE238BFD31669CE467 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -678,6 +692,7 @@
 				3DABD3E12241433C00707D86 /* ClassAttributeCell.xib in Resources */,
 				C495FEC22238248E006E49F9 /* Ressources in Resources */,
 				B711B5EF21F659A30096BF7F /* Main.storyboard in Resources */,
+				C4D1270C22441D85004B3641 /* CommentCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -817,6 +832,7 @@
 				3D121EDC22209E070074C61C /* PlaceHolderCell.swift in Sources */,
 				3D0A917322388F6E002FCB74 /* ConnectionFigure.swift in Sources */,
 				3D6E955D2230839900BC7BE7 /* DrawViewModel.swift in Sources */,
+				C4D1270B22441D85004B3641 /* CommentCell.swift in Sources */,
 				3DF6298B221C9FBC0052209A /* CanvasCell.swift in Sources */,
 				B7B1B4372231A41C00BEE17D /* MyCustomCell.swift in Sources */,
 				3DE8F120223C44AF0052580B /* ClassMethodCell.swift in Sources */,
