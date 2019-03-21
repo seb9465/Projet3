@@ -34,7 +34,7 @@ namespace PolyPaint
     public partial class FenetreDessin : Window
     {
         private AdornerLayer adornerLayer;
-        private RotatingStrokesAdorner adorner;
+        private LineStrokeAdorner adorner;
 
         private ChatWindow externalChatWindow;
         private MediaPlayer mediaPlayer = new MediaPlayer();
@@ -567,7 +567,7 @@ namespace PolyPaint
                 adornerLayer.Remove(adorner);
 
             adornerLayer = AdornerLayer.GetAdornerLayer(surfaceDessin);
-            adorner = new RotatingStrokesAdorner(surfaceDessin);
+            adorner = new LineStrokeAdorner(surfaceDessin);
 
             adornerLayer.Add(adorner);
         }
