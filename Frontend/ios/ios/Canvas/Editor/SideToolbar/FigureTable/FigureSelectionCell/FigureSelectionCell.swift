@@ -20,8 +20,14 @@ class FigureSelectionCell: UITableViewCell {
     @IBOutlet weak var UMLCommentButton: RoundedCorners!
     @IBOutlet weak var ArtefactButton: RoundedCorners!
     
+    @IBOutlet weak var PhaseButton: RoundedCorners!
+    
+    
+    
     private var lastButtonSelected: RoundedCorners!
     private var lastLineSelected: RoundedCorners!
+    
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         self.selectionStyle = UITableViewCell.SelectionStyle.none
@@ -73,5 +79,9 @@ class FigureSelectionCell: UITableViewCell {
         self.delegate?.setSelectedFigureType(itemType: ItemTypeEnum.UMLComment)
         
         self.setSelectedButton(button: self.UMLCommentButton)
+    }
+    @IBAction func PhaseSelected(_ sender: Any) {
+    self.delegate?.setSelectedFigureType(itemType: ItemTypeEnum.UMLPhaseFigure)
+        self.setSelectedButton(button: self.PhaseButton)
     }
 }

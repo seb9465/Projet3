@@ -21,7 +21,8 @@ class FigureFactory {
         
         case .UMLComment:
             return UmlCommentFigure(firstPoint: firstPoint, lastPoint: lastPoint)
-            
+        case .UMLPhaseFigure:
+            return UmlPhaseFigure(firstPoint: firstPoint, lastPoint: lastPoint)
         case.StraightLine:
             return nil
         case.DashedLine:
@@ -43,6 +44,8 @@ class FigureFactory {
             return UmlImageFigure(origin: touchedPoint, figureType: UMLImageFigureType.actor)
         case .UMLComment:
             return UmlCommentFigure(origin: touchedPoint)
+        case .UMLPhaseFigure:
+            return UmlPhaseFigure(origin: touchedPoint)
         case.StraightLine:
             return nil
         case.DashedLine:
