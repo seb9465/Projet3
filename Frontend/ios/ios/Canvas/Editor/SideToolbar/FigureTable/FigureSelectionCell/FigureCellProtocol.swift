@@ -11,5 +11,4 @@ import UIKit
 protocol FigureCellProtocol: class {
     func setSelectedFigureType(itemType: ItemTypeEnum) -> Void
     func setSelectedLineType(itemType: ItemTypeEnum) -> Void
-
 }

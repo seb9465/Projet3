@@ -83,6 +83,7 @@
 		C47715CB2241C729008F27E6 /* FigureCellProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47715CA2241C729008F27E6 /* FigureCellProtocol.swift */; };
 		C495FEBE22381BDF006E49F9 /* UMLImageFigure.swift in Sources */ = {isa = PBXBuildFile; fileRef = C495FEBD22381BDF006E49F9 /* UMLImageFigure.swift */; };
 		C495FEC22238248E006E49F9 /* Ressources in Resources */ = {isa = PBXBuildFile; fileRef = C495FEC12238248E006E49F9 /* Ressources */; };
+		C4D12706224418F3004B3641 /* UmlCommentFigure.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D12705224418F3004B3641 /* UmlCommentFigure.swift */; };
 		C4D6BB2722384F5B00121695 /* AnchorPoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D6BB2622384F5B00121695 /* AnchorPoints.swift */; };
 		C5724AD99504D99A25966BB9 /* Pods_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6CD8C54089242A6862A3C2E4 /* Pods_ios.framework */; };
 /* End PBXBuildFile section */
@@ -180,6 +181,7 @@
 		C47715CA2241C729008F27E6 /* FigureCellProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FigureCellProtocol.swift; sourceTree = "<group>"; };
 		C495FEBD22381BDF006E49F9 /* UMLImageFigure.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UMLImageFigure.swift; path = ios/Canvas/Figures/UMLImageFigure.swift; sourceTree = SOURCE_ROOT; };
 		C495FEC12238248E006E49F9 /* Ressources */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Ressources; sourceTree = "<group>"; };
+		C4D12705224418F3004B3641 /* UmlCommentFigure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UmlCommentFigure.swift; sourceTree = "<group>"; };
 		C4D6BB2622384F5B00121695 /* AnchorPoints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnchorPoints.swift; sourceTree = "<group>"; };
 		C6C9AA086604975DCA6FF292 /* Pods-iosTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iosTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-iosTests/Pods-iosTests.debug.xcconfig"; sourceTree = "<group>"; };
 		E7966B3EFE20A93B4BE0DB10 /* Pods-ios.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ios.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ios/Pods-ios.debug.xcconfig"; sourceTree = "<group>"; };
@@ -250,6 +252,7 @@
 				C495FEBD22381BDF006E49F9 /* UMLImageFigure.swift */,
 				3D2268242237050F00B2F604 /* UmlFigure.swift */,
 				3D73359C223739550021FA3C /* UmlClassFigure.swift */,
+				C4D12705224418F3004B3641 /* UmlCommentFigure.swift */,
 			);
 			path = UmlFigures;
 			sourceTree = "<group>";
@@ -838,6 +841,7 @@
 				B7567946220F33CD00F80B12 /* ChatService.swift in Sources */,
 				3D6E4C3D223ADE7000E391D4 /* BorderCell.swift in Sources */,
 				B7567948220F355F00F80B12 /* Constants.swift in Sources */,
+				C4D12706224418F3004B3641 /* UmlCommentFigure.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
