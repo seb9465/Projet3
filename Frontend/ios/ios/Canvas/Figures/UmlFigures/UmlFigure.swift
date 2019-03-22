@@ -31,6 +31,7 @@ class UmlFigure : Figure {
     init(firstPoint: CGPoint, lastPoint: CGPoint, width: CGFloat, height: CGFloat) {
         let frameSize = CGSize(width: abs(firstPoint.x - lastPoint.x), height: abs(firstPoint.y - lastPoint.y))
         let frame = CGRect(origin: firstPoint, size: frameSize)
+        
         super.init(frame: frame)
         self.firstPoint = firstPoint
         self.lastPoint = lastPoint
@@ -117,6 +118,7 @@ class UmlFigure : Figure {
         setNeedsDisplay()
     }
     
+    
     private func distance(a: CGPoint, b: CGPoint) -> CGFloat {
         let xDist = a.x - b.x
         let yDist = a.y - b.y
@@ -173,6 +175,8 @@ extension UmlFigure {
         guard let point = touch?.location(in: self.superview) else { return }
         self.delegate?.notifyTouchEnded(point: point)
     }
+    
+
 }
     
     

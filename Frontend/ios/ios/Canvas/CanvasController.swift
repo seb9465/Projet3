@@ -27,6 +27,8 @@ class CanvasController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad();
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
         CollaborationHub.shared.connectToHub()
 
         // Color picker parameters.
@@ -94,54 +96,18 @@ class CanvasController: UIViewController {
         
         self.present(alert, animated: true, completion: nil);
     }
-    
-    @IBAction func borderButton(_ sender: Any) {
-        print("BORDER BUTTON TAPED");
-//        self.displayColorPickerFor(state: STATE.BORDER_COLOR);
+    @objc func keyboardWillShow(notification: NSNotification) {
+        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+            if self.view.frame.origin.y == 0 {
+                self.view.frame.origin.y -= keyboardSize.height
+            }
+        }
     }
     
-    @IBAction func fillButton(_ sender: Any) {
-        print("FILL BUTTON TAPED");
-//        self.displayColorPickerFor(state: STATE.FILL);
+    @objc func keyboardWillHide(notification: NSNotification) {
+        if self.view.frame.origin.y != 0 {
+            self.view.frame.origin.y = 0
+        }
     }
 }
-    
-    // MARK: - Private Functions
-    
-    /**
-     Displays the color picker.
-     
-     - parameters:
-        - state: The state for which the color picker picker will be showed.
-     - returns: Nothing
-     - author:
-     Sebastien Cadorette
-    */
-//    private func displayColorPickerFor(state: STATE) -> Void {
-//        self.previousToolState = self.toolState;
-//        self.toolState = state;
-//        self.view.addSubview(colorPicker)
-//    }
-    
-//    private func addTapGestureRecognizer() -> Void {
-//        let tap = UITapGestureRecognizer(target: self, action: #selector(CanvasController.handleTap(sender:)))
-//        self.view.addGestureRecognizer(tap);
-//    }
 
-
-//extension CanvasController: ChromaColorPickerDelegate {
-//    func colorPickerDidChooseColor(_ colorPicker: ChromaColorPicker, color: UIColor) {
-//        switch (self.toolState) {
-//        case STATE.FILL:
-//           self.editor.setSelectedFigureColor(color: color);
-//            break;
-//        case STATE.BORDER_COLOR:
-//            self.editor.setSelectFigureBorderColor(color: color);
-//            break;
-//        default:
-//            break;
-//        }
-//        self.toolState = self.previousToolState;
-//        self.colorPicker.removeFromSuperview();
-//    }
-//}

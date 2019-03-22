@@ -15,7 +15,7 @@ class Editor {
     private var undoArray: [Figure] = []
     private var redoArray: [Figure] = [];
     private var figures: [Figure] = [];
-    
+    private var oldRotationAngle: Int = 0
     
     public var selectedFigure: Figure! = nil;
     public var selectionOutline: SelectionOutline!
@@ -33,6 +33,8 @@ class Editor {
     init() {
         self.editorView.delegate = self
         CollaborationHub.shared.delegate = self
+        let rotation = UIRotationGestureRecognizer(target: self, action: #selector(self.rotatedView(_:)))
+        self.editorView.addGestureRecognizer(rotation)
     }
     
     func select(figure: Figure) {
@@ -205,6 +207,31 @@ extension Editor: SideToolbarDelegate {
         self.selectedFigure.rotate(orientation: orientation)
         self.deselect()
         self.select(figure: figureSelected!)
+    }
+    @objc private func rotatedView(_ sender: UIRotationGestureRecognizer) {
+
+        if(self.selectedFigure != nil && sender.state == .changed) {
+            let figureSelected = self.selectedFigure;
+            let currentRotationAngle = Int(rad2deg(sender.rotation))
+            // 45 degree pour faciliter la gesture
+            if(currentRotationAngle % 45 == 0) {
+                // pour le sense de la rotation
+                if(self.oldRotationAngle < currentRotationAngle) {
+                    self.selectedFigure.rotate(orientation: .right)
+                } else {
+                    self.selectedFigure.rotate(orientation: .left)
+                }
+                self.deselect()
+                self.select(figure: figureSelected!)
+            }
+            oldRotationAngle = currentRotationAngle
+
+        }
+        print("rotation gesture is detected")
+        }
+    
+    func rad2deg(_ number: CGFloat) -> CGFloat {
+        return number * 180 / .pi
     }
 }
 
