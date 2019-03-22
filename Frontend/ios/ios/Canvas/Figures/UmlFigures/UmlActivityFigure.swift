@@ -10,7 +10,7 @@ import UIKit
 
 class UmlActivityFigure: UmlFigure {
     let BASE_WIDTH: CGFloat = 125
-    let BASE_HEIGHT: CGFloat = 100
+    let BASE_HEIGHT: CGFloat = 80
     
     init(firstPoint: CGPoint, lastPoint: CGPoint) {
         super.init(firstPoint: firstPoint, lastPoint: lastPoint, width: BASE_WIDTH, height: BASE_WIDTH)
