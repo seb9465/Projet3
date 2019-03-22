@@ -21,6 +21,9 @@ class UmlFigure : Figure {
     var lineColor: UIColor!
     var oldTouchedPoint: CGPoint!
     
+    var incomingConnections : [ConnectionFigure] = []
+    var outgoingConnections : [ConnectionFigure] = []
+    
     private var currentAngle: Double = 0
 
     var anchorPoints: AnchorPoints?;
@@ -79,7 +82,24 @@ class UmlFigure : Figure {
         let translatedFrame = self.frame.offsetBy(dx: by.x, dy: by.y)
         self.frame = translatedFrame
         self.firstPoint = self.frame.origin
-        self.lastPoint = CGPoint(x: self.frame.maxX, y: self.frame.maxY) 
+        self.lastPoint = CGPoint(x: self.frame.maxX, y: self.frame.maxY)
+        for connection in incomingConnections {
+            connection.lastPoint = convert((self.anchorPoints?.anchorPointsSnapEdges["left"])!, to: self.superview)
+            connection.setNeedsDisplay()
+        }
+        
+        for connection in outgoingConnections {
+            connection.points[0] = convert((self.anchorPoints?.anchorPointsSnapEdges["left"])!, to: self.superview)
+            connection.setNeedsDisplay()
+        }
+    }
+    
+    public func addIncomingConnection(connection: ConnectionFigure) {
+        self.incomingConnections.append(connection)
+    }
+    
+    public func addOutgoingConnection(connection: ConnectionFigure) {
+        self.outgoingConnections.append(connection)
     }
     
     override public func rotate(orientation: RotateOrientation) -> Void {

@@ -12,14 +12,17 @@ class ConnectionFigure : Figure {
     
     var points: [CGPoint] = []
     var itemType: ItemTypeEnum = ItemTypeEnum.StraightLine
+    
     init(origin: CGPoint, destination: CGPoint, itemType: ItemTypeEnum) {
         self.points.append(origin)
         self.points.append(destination)
         self.itemType = itemType
         
         // Initialize the UIView Frame
-        let frameOrigin = CGPoint(x: self.points.map { $0.x }.min()!, y: self.points.map { $0.y }.min()!)
-        let frameSize = CGSize(width: abs(destination.x - origin.x), height: abs(destination.y - origin.y))
+//        let frameOrigin = CGPoint(x: self.points.map { $0.x }.min()!, y: self.points.map { $0.y }.min()!)
+//        let frameSize = CGSize(width: abs(destination.x - origin.x), height: abs(destination.y - origin.y))
+        let frameOrigin = CGPoint(x: 0, y: 0)
+        let frameSize = CGSize(width: 774, height: 698)
         let frame = CGRect(origin: frameOrigin, size: frameSize)
         super.init(frame: frame)
         
@@ -47,8 +50,8 @@ class ConnectionFigure : Figure {
     override func draw(_ rect: CGRect) {
         //// Bezier Drawing
         let bezierPath = UIBezierPath()
-        bezierPath.move(to: self.getLocalInitialPoint())
-        bezierPath.addLine(to: self.getLocalFinalPoint())
+        bezierPath.move(to: points[0])
+        bezierPath.addLine(to: points[1])
         UIColor.black.setStroke()
         bezierPath.lineWidth = 2
         bezierPath.stroke()
@@ -63,5 +66,9 @@ class ConnectionFigure : Figure {
 //            }
 //            context.strokePath()
 //        }
+    }
+    
+    override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
+        return false
     }
 }

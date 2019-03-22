@@ -16,12 +16,15 @@ class Editor {
     private var redoArray: [Figure] = [];
     private var figures: [Figure] = [];
     
+    
     public var selectedFigure: Figure! = nil;
-    public var selectionOutline: SelectionOutline!;
-    public var connectionPreview: ConnectionFigure!;
+    public var selectionOutline: SelectionOutline!
+    public var connectionPreview: ConnectionFigure!
+    public var connectionSourceFigure: Figure!
     
     public var currentFigureType: ItemTypeEnum = ItemTypeEnum.UMLClass;
     public var currentLineType: ItemTypeEnum = ItemTypeEnum.StraightLine
+    
     // TouchInputDelegate properties
     public var touchEventState: TouchEventState = .SELECT
     private var initialTouchPoint: CGPoint!
@@ -61,6 +64,7 @@ class Editor {
     
     public func insertConnectionFigure(firstPoint: CGPoint, lastPoint: CGPoint, itemType: ItemTypeEnum) {
         let figure = ConnectionFigure(origin: self.initialTouchPoint, destination: lastPoint, itemType: itemType)
+        (self.connectionSourceFigure as! UmlFigure).addOutgoingConnection(connection: figure)
         self.editorView.addSubview(figure);
         self.figures.append(figure)
         self.undoArray.append(figure);
@@ -147,8 +151,10 @@ class Editor {
     
     func snap(point: CGPoint) -> CGPoint{
         for subview in self.editorView.subviews {
-            if (subview.frame.contains(point)) {
-                return (subview as! UmlFigure).getClosestAnchor(point: point)
+            if let figure = subview as? UmlFigure {
+                if (figure.frame.contains(point)) {
+                    return figure.getClosestAnchor(point: point)
+                }
             }
         }
         return point
@@ -210,6 +216,7 @@ extension Editor : TouchInputDelegate {
             self.previousTouchPoint = point
             
             if (action == "anchor") {
+                self.connectionSourceFigure = figure
                 self.touchEventState = .CONNECTION
                 self.connectionPreview = ConnectionFigure(origin: self.initialTouchPoint, destination: self.initialTouchPoint, itemType: .StraightLine)
                 self.editorView.addSubview(connectionPreview)
@@ -229,6 +236,7 @@ extension Editor : TouchInputDelegate {
                 self.touchEventState = .AREA_SELECT
                 return
             }
+
         case .REZISE:
             break
         case .TRANSLATE:
@@ -272,6 +280,7 @@ extension Editor : TouchInputDelegate {
         if (self.touchEventState == .CONNECTION) {
             self.connectionPreview.removeFromSuperview()
             let lastPoint = self.snap(point: point)
+            let connection =
             self.insertConnectionFigure(firstPoint: self.initialTouchPoint, lastPoint: lastPoint, itemType: currentFigureType)
             self.touchEventState = .SELECT
             return
