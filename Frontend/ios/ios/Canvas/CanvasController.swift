@@ -81,6 +81,9 @@ class CanvasController: UIViewController {
         self.editor.changeTouchHandleState(to: .INSERT)
     }
     
+    @IBAction func saveButton(_ sender: Any) {
+        self.editor.save();
+    }
     @IBAction func quitButton(_ sender: Any) {
         let alert = UIAlertController(title: "Alert", message: "Would you like to quit ?", preferredStyle: .alert);
         

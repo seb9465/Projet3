@@ -84,8 +84,6 @@
 		B7AADC6922355E8000F7C0EC /* CustomTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B7AADC6722355E8000F7C0EC /* CustomTableViewCell.xib */; };
 		B7AADC6E22356FBE00F7C0EC /* CustomHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AADC6C22356FBE00F7C0EC /* CustomHeaderCell.swift */; };
 		B7AADC6F22356FBE00F7C0EC /* CustomHeaderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B7AADC6D22356FBE00F7C0EC /* CustomHeaderCell.xib */; };
-		B7ABD3632231638E00C7A016 /* Rect.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7ABD3622231638E00C7A016 /* Rect.swift */; };
-		B7ABD3672231715C00C7A016 /* SelectFigureService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7ABD3662231715C00C7A016 /* SelectFigureService.swift */; };
 		B7B1B4352231A3FD00BEE17D /* MyCustomMessagesFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B1B4342231A3FD00BEE17D /* MyCustomMessagesFlowLayout.swift */; };
 		B7B1B4372231A41C00BEE17D /* MyCustomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B1B4362231A41C00BEE17D /* MyCustomCell.swift */; };
 		B7B1B4392231BE8000BEE17D /* MessageDataSourceExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B1B4382231BE8000BEE17D /* MessageDataSourceExtension.swift */; };
@@ -107,6 +105,7 @@
 		C4D1270C22441D85004B3641 /* CommentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4D1270A22441D85004B3641 /* CommentCell.xib */; };
 		C4D1270E224424E1004B3641 /* UmlArtefactFigure.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D1270D224424E1004B3641 /* UmlArtefactFigure.swift */; };
 		C4D12710224424FC004B3641 /* UmlPhaseFigure.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D1270F224424FC004B3641 /* UmlPhaseFigure.swift */; };
+		C4D1271222457750004B3641 /* LocalGalleryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D1271122457750004B3641 /* LocalGalleryController.swift */; };
 		C4D6BB2722384F5B00121695 /* AnchorPoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D6BB2622384F5B00121695 /* AnchorPoints.swift */; };
 		C5724AD99504D99A25966BB9 /* Pods_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6CD8C54089242A6862A3C2E4 /* Pods_ios.framework */; };
 /* End PBXBuildFile section */
@@ -205,8 +204,6 @@
 		B7AADC6722355E8000F7C0EC /* CustomTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomTableViewCell.xib; sourceTree = "<group>"; };
 		B7AADC6C22356FBE00F7C0EC /* CustomHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomHeaderCell.swift; sourceTree = "<group>"; };
 		B7AADC6D22356FBE00F7C0EC /* CustomHeaderCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomHeaderCell.xib; sourceTree = "<group>"; };
-		B7ABD3622231638E00C7A016 /* Rect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rect.swift; sourceTree = "<group>"; };
-		B7ABD3662231715C00C7A016 /* SelectFigureService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectFigureService.swift; sourceTree = "<group>"; };
 		B7B1B4342231A3FD00BEE17D /* MyCustomMessagesFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyCustomMessagesFlowLayout.swift; sourceTree = "<group>"; };
 		B7B1B4362231A41C00BEE17D /* MyCustomCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyCustomCell.swift; sourceTree = "<group>"; };
 		B7B1B4382231BE8000BEE17D /* MessageDataSourceExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageDataSourceExtension.swift; sourceTree = "<group>"; };
@@ -228,6 +225,7 @@
 		C4D1270A22441D85004B3641 /* CommentCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CommentCell.xib; sourceTree = "<group>"; };
 		C4D1270D224424E1004B3641 /* UmlArtefactFigure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UmlArtefactFigure.swift; sourceTree = "<group>"; };
 		C4D1270F224424FC004B3641 /* UmlPhaseFigure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UmlPhaseFigure.swift; sourceTree = "<group>"; };
+		C4D1271122457750004B3641 /* LocalGalleryController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalGalleryController.swift; sourceTree = "<group>"; };
 		C4D6BB2622384F5B00121695 /* AnchorPoints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnchorPoints.swift; sourceTree = "<group>"; };
 		C6C9AA086604975DCA6FF292 /* Pods-iosTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iosTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-iosTests/Pods-iosTests.debug.xcconfig"; sourceTree = "<group>"; };
 		E7966B3EFE20A93B4BE0DB10 /* Pods-ios.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ios.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ios/Pods-ios.debug.xcconfig"; sourceTree = "<group>"; };
@@ -504,6 +502,9 @@
 				3DE984D422262ECA004D036C /* Cells */,
 				3D25655F2225BDFE00BCE946 /* GalleryController.swift */,
 				3DA5CA42224414D200087298 /* PublicGalleryController.swift */,
+				C4D1271122457750004B3641 /* LocalGalleryController.swift */,
+				B74BE371221F40950001D62A /* CanvasService.swift */,
+				3DF62981221C9FB30052209A /* Canvas.swift */,
 			);
 			name = Gallery;
 			path = ios/Gallery;
@@ -595,10 +596,8 @@
 				3D6E95582230833300BC7BE7 /* Collaboration */,
 				3D22681A2236EE3300B2F604 /* Editor */,
 				3DB1363A2235B2730096FA04 /* Figures */,
-				3DF62981221C9FB30052209A /* Canvas.swift */,
 				B781B95822132BDB001C1BD8 /* Canvas.storyboard */,
 				B781B95A22132C2F001C1BD8 /* CanvasController.swift */,
-				B74BE371221F40950001D62A /* CanvasService.swift */,
 			);
 			path = Canvas;
 			sourceTree = "<group>";
@@ -912,7 +911,6 @@
 				3DE8F118223C32700052580B /* ClassCell.swift in Sources */,
 				B7A3A5C22203C27600031F64 /* Message.swift in Sources */,
 				B7B1B43E2231C03900BEE17D /* MessageDisplayExtension.swift in Sources */,
-				3DA9A50122220F870005F3AF /* GalleryHeader.swift in Sources */,
 				B7B1B4472234725E00BEE17D /* ChatRoomsControllerTableViewController.swift in Sources */,
 				3DA5CA4722441A9200087298 /* GalleryCell.swift in Sources */,
 				3DE8F114223C26890052580B /* SideToolbarDelegate.swift in Sources */,
@@ -931,6 +929,7 @@
 				3D121EDC22209E070074C61C /* PlaceHolderCell.swift in Sources */,
 				3D0A917322388F6E002FCB74 /* ConnectionFigure.swift in Sources */,
 				3D6E955D2230839900BC7BE7 /* DrawViewModel.swift in Sources */,
+				C4D1271222457750004B3641 /* LocalGalleryController.swift in Sources */,
 				3DA5CA4C22443C4E00087298 /* UmlActivityFigure.swift in Sources */,
 				C4D1270B22441D85004B3641 /* CommentCell.swift in Sources */,
 				3DF6298B221C9FBC0052209A /* CanvasCell.swift in Sources */,
@@ -946,7 +945,6 @@
 				B7B1B4352231A3FD00BEE17D /* MyCustomMessagesFlowLayout.swift in Sources */,
 				3DC07CC722205B7C0045E7DE /* ContextMenuCell.swift in Sources */,
 				B7B1B44A22348E9700BEE17D /* AddScreenViewController.swift in Sources */,
-				3D9FBC1222248371006BB297 /* MasterViewController.swift in Sources */,
 				C47715C92241969F008F27E6 /* PropertiesController.swift in Sources */,
 				3D2268252237050F00B2F604 /* UmlFigure.swift in Sources */,
 				3DA5CA4A2244395500087298 /* UmlActorFigure.swift in Sources */,

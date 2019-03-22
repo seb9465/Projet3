@@ -202,6 +202,9 @@ extension Editor: SideToolbarDelegate {
         sideToolbarController?.update()
     }
     
+    func save() {
+        CanvasService.SaveCanvas(name: "TestSaveCanva")
+    }
     func rotate(orientation: RotateOrientation) {
         let figureSelected = self.selectedFigure;
         self.selectedFigure.rotate(orientation: orientation)
@@ -275,6 +278,7 @@ extension Editor : TouchInputDelegate {
             break
         case .DELETE:
             self.deleteFigure(tapPoint: point);
+            self.deselect();
             break
         case .AREA_SELECT:
             break

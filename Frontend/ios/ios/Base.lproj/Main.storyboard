@@ -10,6 +10,43 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
+        <!--Local-->
+        <scene sceneID="kZu-YQ-3ca">
+            <objects>
+                <viewController title="Local" id="U2L-m9-b64" customClass="LocalGalleryController" customModule="ios" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="pdM-y6-B6o">
+                        <rect key="frame" x="0.0" y="0.0" width="1024" height="620"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Gce-9P-YX9">
+                                <rect key="frame" x="0.0" y="0.0" width="1024" height="570"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="rh3-4e-DXJ">
+                                    <size key="itemSize" width="50" height="50"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells/>
+                                <connections>
+                                    <outlet property="dataSource" destination="U2L-m9-b64" id="mNb-o3-EYD"/>
+                                    <outlet property="delegate" destination="U2L-m9-b64" id="baw-wT-5Ob"/>
+                                </connections>
+                            </collectionView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="Rtb-eP-UFt"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Local" id="h5P-8a-FRm"/>
+                    <connections>
+                        <outlet property="collectionView" destination="Gce-9P-YX9" id="RO9-lM-7gg"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="rlA-y3-sf3" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2864.6484375" y="1935.9375"/>
+        </scene>
         <!--Login Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
@@ -537,6 +574,7 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </tabBar>
                     <connections>
+                        <segue destination="U2L-m9-b64" kind="relationship" relationship="viewControllers" id="Q36-AK-JA0"/>
                         <segue destination="Mrs-wb-JuW" kind="relationship" relationship="viewControllers" id="h1t-Ku-paS"/>
                         <segue destination="TCj-WZ-9Fu" kind="relationship" relationship="viewControllers" id="SKb-gU-fxW"/>
                     </connections>
