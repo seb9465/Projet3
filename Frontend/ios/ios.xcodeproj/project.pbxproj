@@ -106,6 +106,7 @@
 		C4D1270E224424E1004B3641 /* UmlArtefactFigure.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D1270D224424E1004B3641 /* UmlArtefactFigure.swift */; };
 		C4D12710224424FC004B3641 /* UmlPhaseFigure.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D1270F224424FC004B3641 /* UmlPhaseFigure.swift */; };
 		C4D1271222457750004B3641 /* LocalGalleryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D1271122457750004B3641 /* LocalGalleryController.swift */; };
+		C4D1271422459521004B3641 /* UMLTextFigure.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D1271322459521004B3641 /* UMLTextFigure.swift */; };
 		C4D6BB2722384F5B00121695 /* AnchorPoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D6BB2622384F5B00121695 /* AnchorPoints.swift */; };
 		C5724AD99504D99A25966BB9 /* Pods_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6CD8C54089242A6862A3C2E4 /* Pods_ios.framework */; };
 /* End PBXBuildFile section */
@@ -226,6 +227,7 @@
 		C4D1270D224424E1004B3641 /* UmlArtefactFigure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UmlArtefactFigure.swift; sourceTree = "<group>"; };
 		C4D1270F224424FC004B3641 /* UmlPhaseFigure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UmlPhaseFigure.swift; sourceTree = "<group>"; };
 		C4D1271122457750004B3641 /* LocalGalleryController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalGalleryController.swift; sourceTree = "<group>"; };
+		C4D1271322459521004B3641 /* UMLTextFigure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UMLTextFigure.swift; sourceTree = "<group>"; };
 		C4D6BB2622384F5B00121695 /* AnchorPoints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnchorPoints.swift; sourceTree = "<group>"; };
 		C6C9AA086604975DCA6FF292 /* Pods-iosTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iosTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-iosTests/Pods-iosTests.debug.xcconfig"; sourceTree = "<group>"; };
 		E7966B3EFE20A93B4BE0DB10 /* Pods-ios.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ios.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ios/Pods-ios.debug.xcconfig"; sourceTree = "<group>"; };
@@ -306,6 +308,7 @@
 				C4D1270F224424FC004B3641 /* UmlPhaseFigure.swift */,
 				3DA5CA492244395500087298 /* UmlActorFigure.swift */,
 				3DA5CA4B22443C4E00087298 /* UmlActivityFigure.swift */,
+				C4D1271322459521004B3641 /* UMLTextFigure.swift */,
 			);
 			path = UmlFigures;
 			sourceTree = "<group>";
@@ -727,6 +730,11 @@
 				TargetAttributes = {
 					B711B5E521F659A30096BF7F = {
 						CreatedOnToolsVersion = 10.1;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 0;
+							};
+						};
 					};
 					B711B5F921F659A50096BF7F = {
 						CreatedOnToolsVersion = 10.1;
@@ -947,6 +955,7 @@
 				B7B1B44A22348E9700BEE17D /* AddScreenViewController.swift in Sources */,
 				C47715C92241969F008F27E6 /* PropertiesController.swift in Sources */,
 				3D2268252237050F00B2F604 /* UmlFigure.swift in Sources */,
+				C4D1271422459521004B3641 /* UMLTextFigure.swift in Sources */,
 				3DA5CA4A2244395500087298 /* UmlActorFigure.swift in Sources */,
 				B781B95B22132C2F001C1BD8 /* CanvasController.swift in Sources */,
 				C495FEBE22381BDF006E49F9 /* UMLImageFigure.swift in Sources */,

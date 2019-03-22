@@ -154,6 +154,18 @@
                                 <color key="textColor" red="0.016804177310000001" green="0.19835099580000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gq9-Om-dXf" customClass="RoundedCorners" customModule="ios" customModuleProvider="target">
+                                <rect key="frame" x="446" y="636" width="143" height="24"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="1" green="0.41960784309999999" blue="0.41960784309999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="15"/>
+                                <state key="normal" title="Continue Offline">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <segue destination="eTb-Zs-q24" kind="show" id="04t-QQ-4uf"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
@@ -163,6 +175,7 @@
                         <outlet property="autologinlabel" destination="BE3-Ul-UOe" id="auq-BN-z0s"/>
                         <outlet property="emailField" destination="q3t-iV-2tu" id="TtP-fc-GZh"/>
                         <outlet property="loginButton" destination="Hrm-z5-RNa" id="dpS-kU-zbE"/>
+                        <outlet property="offlineButton" destination="Gq9-Om-dXf" id="G2b-H9-EdF"/>
                         <outlet property="passwordField" destination="Q8W-2o-jAM" id="fIx-n1-Fs4"/>
                         <outlet property="serverlabel" destination="Qs7-Nw-GU5" id="eNO-CJ-Gq7"/>
                         <outlet property="validationLabel" destination="xyw-KZ-w3f" id="g6P-Eu-5FF"/>
@@ -584,4 +597,7 @@
             <point key="canvasLocation" x="2865" y="1155"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="04t-QQ-4uf"/>
+    </inferredMetricsTieBreakers>
 </document>

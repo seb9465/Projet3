@@ -20,6 +20,7 @@ class LoginController: UIViewController, UITextFieldDelegate {
     @IBOutlet var validationLabel: UILabel!
     @IBOutlet var loginButton: UIButton!
     
+    @IBOutlet weak var offlineButton: RoundedCorners!
     override func viewDidLoad() {
         super.viewDidLoad()
         self.serverlabel.text = "Server: " + Constants.SERVER_BASE_URL

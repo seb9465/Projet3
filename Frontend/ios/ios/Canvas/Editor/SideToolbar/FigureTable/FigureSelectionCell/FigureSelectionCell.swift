@@ -22,6 +22,7 @@ class FigureSelectionCell: UITableViewCell {
     
     @IBOutlet weak var PhaseButton: RoundedCorners!
     
+    @IBOutlet weak var textButton: RoundedCorners!
     
     
     private var lastButtonSelected: RoundedCorners!
@@ -80,7 +81,13 @@ class FigureSelectionCell: UITableViewCell {
         self.setSelectedButton(button: self.UMLCommentButton)
     }
     @IBAction func PhaseSelected(_ sender: Any) {
-    self.delegate?.setSelectedFigureType(itemType: ItemTypeEnum.UMLPhaseFigure)
+        self.delegate?.setSelectedFigureType(itemType: ItemTypeEnum.UMLPhaseFigure)
         self.setSelectedButton(button: self.PhaseButton)
+    }
+    
+    
+    @IBAction func textSelected(_ sender: Any) {
+        self.delegate?.setSelectedFigureType(itemType: ItemTypeEnum.Text)
+        self.setSelectedButton(button: self.textButton)
     }
 }

@@ -202,9 +202,10 @@ extension Editor: SideToolbarDelegate {
         sideToolbarController?.update()
     }
     
-    func save() {
+    func save() -> Void{
         CanvasService.SaveCanvas(name: "TestSaveCanva")
     }
+    
     func rotate(orientation: RotateOrientation) {
         let figureSelected = self.selectedFigure;
         self.selectedFigure.rotate(orientation: orientation)

@@ -38,6 +38,11 @@
                                             <action selector="saveButton:" destination="Vts-He-P18" id="hnc-dA-amp"/>
                                         </connections>
                                     </barButtonItem>
+                                    <barButtonItem title="Export" id="yqP-yF-mGn" userLabel="Export">
+                                        <connections>
+                                            <action selector="exportButtonPressed:" destination="Vts-He-P18" id="c5G-3f-Ps3"/>
+                                        </connections>
+                                    </barButtonItem>
                                     <barButtonItem title="Load" id="8N0-s0-ZU2"/>
                                     <barButtonItem title="Clear" id="cJl-7R-Nql">
                                         <connections>
@@ -96,6 +101,7 @@
                     <connections>
                         <outlet property="borderButton" destination="mdZ-5y-94T" id="FgC-S0-rGV"/>
                         <outlet property="deleteButton" destination="5ld-32-8cy" id="y06-F1-JC8"/>
+                        <outlet property="exportButton" destination="yqP-yF-mGn" id="ydc-eg-QxN"/>
                         <outlet property="fillButton" destination="QqS-3X-DNp" id="rPk-OW-90X"/>
                         <outlet property="insertButton" destination="SLY-eP-ACv" id="oPa-Hm-WsF"/>
                         <outlet property="selectButton" destination="Lts-nR-qFd" id="AOd-xa-kni"/>

@@ -23,19 +23,19 @@ class CanvasController: UIViewController {
     @IBOutlet var borderButton: UIBarButtonItem!
     @IBOutlet var fillButton: UIBarButtonItem!
     
-    // MARK: - Public Functions
+    @IBOutlet weak var exportButton: UIBarButtonItem!
     
     override func viewDidLoad() {
         super.viewDidLoad();
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
         CollaborationHub.shared.connectToHub()
-
+        
         // Color picker parameters.
         let pickerSize = CGSize(width: 200, height: 200);
         let pickerOrigin = CGPoint(x: 200, y: 100);
         colorPicker = ChromaColorPicker(frame: CGRect(origin: pickerOrigin, size: pickerSize))
-//        colorPicker.delegate = self as ChromaColorPickerDelegate;
+        //        colorPicker.delegate = self as ChromaColorPickerDelegate;
         colorPicker.padding = 10
         colorPicker.stroke = 3 //stroke of the rainbow circle
         colorPicker.currentAngle = Float.pi
@@ -80,7 +80,27 @@ class CanvasController: UIViewController {
     @IBAction func insertButtonPressed(_ sender: Any) {
         self.editor.changeTouchHandleState(to: .INSERT)
     }
+    @IBAction func exportButtonPressed(_ sender: Any) {
+        UIGraphicsBeginImageContextWithOptions(self.editor.editorView.bounds.size, false, 0.0)
+        self.editor.editorView.drawHierarchy(in: self.editor.editorView.bounds, afterScreenUpdates: true)
+        let image = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+        UIImageWriteToSavedPhotosAlbum(image!, self, #selector(image(_:didFinishSavingWithError:contextInfo:)), nil)
+        
+    }
     
+    @objc private func image(_ image: UIImage, didFinishSavingWithError error: Error?, contextInfo: UnsafeRawPointer) {
+        if let error = error {
+            let ac = UIAlertController(title: "Exportation error", message: error.localizedDescription, preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: "OK", style: .default))
+            
+            present(ac, animated: true)
+        } else {
+            let ac = UIAlertController(title: "Saved!", message: "Your canvas has been saved to your photos.", preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: "OK", style: .default))
+            present(ac, animated: true)
+        }
+    }
     @IBAction func saveButton(_ sender: Any) {
         self.editor.save();
     }

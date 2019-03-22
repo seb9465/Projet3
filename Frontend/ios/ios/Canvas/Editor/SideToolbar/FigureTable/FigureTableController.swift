@@ -38,7 +38,7 @@ extension FigureTableController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if (indexPath.row == 0) {
-            return 550
+            return 731
         }
     
         return 400
