@@ -100,6 +100,7 @@
                     </view>
                     <connections>
                         <outlet property="borderButton" destination="mdZ-5y-94T" id="FgC-S0-rGV"/>
+                        <outlet property="container" destination="oVb-fS-ct1" id="Z1e-kc-cFC"/>
                         <outlet property="deleteButton" destination="5ld-32-8cy" id="y06-F1-JC8"/>
                         <outlet property="exportButton" destination="yqP-yF-mGn" id="ydc-eg-QxN"/>
                         <outlet property="fillButton" destination="QqS-3X-DNp" id="rPk-OW-90X"/>

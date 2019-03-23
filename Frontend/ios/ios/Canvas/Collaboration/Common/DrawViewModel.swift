@@ -31,6 +31,7 @@ enum ItemTypeEnum: Int, Codable {
     case Phase
     case Activity
     case Text
+    case Image
     case StraightLine
     case DashedLine
 }

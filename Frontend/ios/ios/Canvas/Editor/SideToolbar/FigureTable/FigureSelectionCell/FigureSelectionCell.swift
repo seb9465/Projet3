@@ -24,6 +24,7 @@ class FigureSelectionCell: UITableViewCell {
     
     @IBOutlet weak var textButton: RoundedCorners!
     
+    @IBOutlet weak var imageButton: RoundedCorners!
     
     private var lastButtonSelected: RoundedCorners!
     private var lastLineSelected: RoundedCorners!
@@ -40,7 +41,7 @@ class FigureSelectionCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
     }
     
-    func setSelectedButton(button: RoundedCorners) -> Void {
+    public func setSelectedButton(button: RoundedCorners) -> Void {
         self.lastButtonSelected.layer.borderWidth = 0.0
         self.lastButtonSelected = button
         self.lastButtonSelected.layer.borderColor = UIColor.blue.cgColor
@@ -89,5 +90,12 @@ class FigureSelectionCell: UITableViewCell {
     @IBAction func textSelected(_ sender: Any) {
         self.delegate?.setSelectedFigureType(itemType: ItemTypeEnum.Text)
         self.setSelectedButton(button: self.textButton)
+    }
+    
+    @IBAction func imageSelected(_ sender: Any) {
+        
+        self.delegate?.presentImagePicker()
+        self.delegate?.setSelectedFigureType(itemType: ItemTypeEnum.Image)
+        self.setSelectedButton(button: self.imageButton)
     }
 }
