@@ -68,11 +68,8 @@ namespace PolyPaint.Utilitaires
                 switch (stroke.ItemType)
                 {
                     case ItemTypeEnum.RectangleStroke:
-                        DrawingStroke = new RectangleStroke(pts, surfaceDessin);
-                        (DrawingStroke as AbstractStroke).Fill = new SolidColorBrush(fillColor);
-                        (DrawingStroke as AbstractStroke).Border = new Pen(new SolidColorBrush(borderColor), stroke.BorderThickness);
-                        (DrawingStroke as AbstractStroke).TitleString = stroke.Title;
-
+                        DrawingStroke = new RectangleStroke(pts, surfaceDessin, borderColor.ToString(), fillColor.ToString());
+                        (DrawingStroke as AbstractShapeStroke).TitleString = stroke.Title;
                         (DrawingStroke as ICanvasable).AddToCanvas();
                         break;
 
@@ -116,7 +113,7 @@ namespace PolyPaint.Utilitaires
                     R = ((stroke as AbstractStroke).Border.Brush as SolidColorBrush).Color.R,
                 };
                 drawingStroke.BorderThickness = (stroke as AbstractStroke).Border.Thickness;
-                drawingStroke.Title = (stroke as AbstractStroke).TitleString;
+                drawingStroke.Title = (stroke as AbstractShapeStroke).TitleString;
                 viewModels.Add(drawingStroke);
             }
             return viewModels;
