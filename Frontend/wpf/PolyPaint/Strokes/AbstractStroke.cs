@@ -25,7 +25,7 @@ namespace PolyPaint.Strokes
         public DashStyle BorderStyle { get { return Border.DashStyle; } }
 
         protected InkCanvas SurfaceDessin { get; set; }
-        public FormattedText Title { get; set; }
+        protected FormattedText Title { get; set; }
         public string TitleString
         {
             get { return Title.Text; }
