@@ -28,14 +28,6 @@ namespace PolyPaint.VueModeles
     /// </summary>
     class VueModele : INotifyPropertyChanged
     {
-        private static ConcurrentDictionary<string, DashStyle> _dashAssociations = new ConcurrentDictionary<string, DashStyle>(
-            new Dictionary<string, DashStyle>()
-            {
-                { "solid", DashStyles.Solid },
-                {"dash", DashStyles.Dash }
-            }
-        );
-
         public event PropertyChangedEventHandler PropertyChanged;
         private Editeur editeur = new Editeur();
         private string _currentRoom;
@@ -256,7 +248,7 @@ namespace PolyPaint.VueModeles
 
             foreach (AbstractStroke stroke in editeur.SelectedStrokes.Where(x => x is AbstractStroke))
             {
-                stroke.SetBorderStyle(_dashAssociations[border]);
+                stroke.SetBorderStyle(Tools.DashAssociations[border]);
             }
         }
 
@@ -307,7 +299,7 @@ namespace PolyPaint.VueModeles
             }
             else
             {
-                SelectedBorder = _dashAssociations.First(x => x.Value == (strokes.First() as AbstractStroke).BorderStyle).Key;
+                SelectedBorder = Tools.DashAssociations.First(x => x.Value == (strokes.First() as AbstractStroke).BorderStyle).Key;
             }
         }
 
