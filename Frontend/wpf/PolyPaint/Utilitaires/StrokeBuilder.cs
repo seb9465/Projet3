@@ -69,7 +69,62 @@ namespace PolyPaint.Utilitaires
                 {
                     case ItemTypeEnum.RectangleStroke:
                         DrawingStroke = new RectangleStroke(pts, surfaceDessin, borderColor.ToString(), fillColor.ToString());
-                        (DrawingStroke as AbstractShapeStroke).TitleString = stroke.Title;
+                        (DrawingStroke as AbstractShapeStroke).TitleString = stroke.ShapeTitle;
+                        (DrawingStroke as ICanvasable).AddToCanvas();
+                        break;
+                    case ItemTypeEnum.ActivityStroke:
+                        DrawingStroke = new ActivityStroke(pts, surfaceDessin, borderColor.ToString(), fillColor.ToString());
+                        (DrawingStroke as AbstractShapeStroke).TitleString = stroke.ShapeTitle;
+                        (DrawingStroke as ICanvasable).AddToCanvas();
+                        break;
+                    case ItemTypeEnum.ArtefactStroke:
+                        DrawingStroke = new ArtefactStroke(pts, surfaceDessin, borderColor.ToString(), fillColor.ToString());
+                        (DrawingStroke as AbstractShapeStroke).TitleString = stroke.ShapeTitle;
+                        (DrawingStroke as ICanvasable).AddToCanvas();
+                        break;
+                    case ItemTypeEnum.PhaseStroke:
+                        DrawingStroke = new PhaseStroke(pts, surfaceDessin, borderColor.ToString(), fillColor.ToString());
+                        (DrawingStroke as AbstractShapeStroke).TitleString = stroke.ShapeTitle;
+                        (DrawingStroke as ICanvasable).AddToCanvas();
+                        break;
+                    case ItemTypeEnum.RoleStroke:
+                        DrawingStroke = new RoleStroke(pts, surfaceDessin, borderColor.ToString(), fillColor.ToString());
+                        (DrawingStroke as AbstractShapeStroke).TitleString = stroke.ShapeTitle;
+                        (DrawingStroke as ICanvasable).AddToCanvas();
+                        break;
+                    case ItemTypeEnum.UmlClassStroke:
+                        DrawingStroke = new UmlClassStroke(pts, surfaceDessin, borderColor.ToString(), fillColor.ToString());
+                        (DrawingStroke as AbstractShapeStroke).TitleString = stroke.ShapeTitle;
+                        (DrawingStroke as ICanvasable).AddToCanvas();
+                        break;
+                    case ItemTypeEnum.AgregationStroke:
+                        DrawingStroke = new AgregationStroke(pts, surfaceDessin, borderColor.ToString());
+                        (DrawingStroke as AbstractLineStroke).SourceString = stroke.SourceTitle;
+                        (DrawingStroke as AbstractLineStroke).DestinationString = stroke.DestinationTitle;
+                        (DrawingStroke as ICanvasable).AddToCanvas();
+                        break;
+                    case ItemTypeEnum.CompositionStroke:
+                        DrawingStroke = new CompositionStroke(pts, surfaceDessin, borderColor.ToString());
+                        (DrawingStroke as AbstractLineStroke).SourceString = stroke.SourceTitle;
+                        (DrawingStroke as AbstractLineStroke).DestinationString = stroke.DestinationTitle;
+                        (DrawingStroke as ICanvasable).AddToCanvas();
+                        break;
+                    case ItemTypeEnum.InheritanceStroke:
+                        DrawingStroke = new InheritanceStroke(pts, surfaceDessin, borderColor.ToString());
+                        (DrawingStroke as AbstractLineStroke).SourceString = stroke.SourceTitle;
+                        (DrawingStroke as AbstractLineStroke).DestinationString = stroke.DestinationTitle;
+                        (DrawingStroke as ICanvasable).AddToCanvas();
+                        break;
+                    case ItemTypeEnum.BidirectionalAssociationStroke:
+                        DrawingStroke = new BidirectionalAssociationStroke(pts, surfaceDessin, borderColor.ToString());
+                        (DrawingStroke as AbstractLineStroke).SourceString = stroke.SourceTitle;
+                        (DrawingStroke as AbstractLineStroke).DestinationString = stroke.DestinationTitle;
+                        (DrawingStroke as ICanvasable).AddToCanvas();
+                        break;
+                    case ItemTypeEnum.UnidirectionalAssociationStroke:
+                        DrawingStroke = new UnidirectionalAssociationStroke(pts, surfaceDessin, borderColor.ToString());
+                        (DrawingStroke as AbstractLineStroke).SourceString = stroke.SourceTitle;
+                        (DrawingStroke as AbstractLineStroke).DestinationString = stroke.DestinationTitle;
                         (DrawingStroke as ICanvasable).AddToCanvas();
                         break;
 
@@ -113,7 +168,17 @@ namespace PolyPaint.Utilitaires
                     R = ((stroke as AbstractStroke).Border.Brush as SolidColorBrush).Color.R,
                 };
                 drawingStroke.BorderThickness = (stroke as AbstractStroke).Border.Thickness;
-                drawingStroke.Title = (stroke as AbstractShapeStroke).TitleString;
+
+                if ((stroke as AbstractShapeStroke != null))
+                {
+                    drawingStroke.ShapeTitle = (stroke as AbstractShapeStroke).TitleString;
+                }
+
+                if ((stroke as AbstractLineStroke != null))
+                {
+                    drawingStroke.SourceTitle = (stroke as AbstractLineStroke).SourceString;
+                    drawingStroke.DestinationTitle = (stroke as AbstractLineStroke).DestinationString;
+                }
                 viewModels.Add(drawingStroke);
             }
             return viewModels;
