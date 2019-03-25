@@ -466,7 +466,31 @@ namespace PolyPaint
                 sendButton.IsEnabled = false;
             }
         }
+        private void AddImageToCanvas(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            Nullable<bool> result = openFileDialog.ShowDialog();
 
+            ImageBrush ib = new ImageBrush
+            {
+                ImageSource = new BitmapImage(new Uri(openFileDialog.FileName, UriKind.Relative))
+            };
+            double ratio = ib.ImageSource.Width / ib.ImageSource.Height;
+            double imageWidth = Math.Min(ib.ImageSource.Width, surfaceDessin.ActualWidth);
+            double imageHeight = Math.Min(ib.ImageSource.Height, surfaceDessin.ActualHeight);
+
+            double finalWidth = Math.Min(imageWidth, imageHeight * ratio);
+            double finalHeight = Math.Min(imageHeight, imageWidth / ratio);
+
+            StylusPointCollection collection = new StylusPointCollection
+            {
+                new StylusPoint(0, 0),
+                new StylusPoint(finalWidth, finalHeight)
+            };
+
+            ImageStroke image = new ImageStroke(collection, surfaceDessin, ib);
+            (image as ICanvasable).AddToCanvas();
+        }
         private async void Reinitialiser_Click(object sender, RoutedEventArgs e)
         {
             if (_viewState == ViewStateEnum.Online)

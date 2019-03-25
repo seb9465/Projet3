@@ -49,12 +49,16 @@
                     </StackPanel.Background>
 
                     <Button Name="save" Click="SaveImage"
-                    Style="{StaticResource MaterialDesignFloatingActionMiniButton}" HorizontalAlignment="Left" Margin="10" ToolTip="MaterialDesignFloatingActionMiniButton">
+                    Style="{StaticResource MaterialDesignFloatingActionMiniButton}" HorizontalAlignment="Left" Margin="10" ToolTip="Sauvegarder le canevas">
                         <materialDesign:PackIcon Kind="ContentSave" Height="24" Width="24" />
                     </Button>
                     <Button Name="load" Click="LoadImage"
-                    Style="{StaticResource MaterialDesignFloatingActionMiniButton}" HorizontalAlignment="Left" Margin="10" ToolTip="MaterialDesignFloatingActionMiniButton">
+                    Style="{StaticResource MaterialDesignFloatingActionMiniButton}" HorizontalAlignment="Left" Margin="10" ToolTip="Charger un canevas">
                         <materialDesign:PackIcon Kind="FileUploadOutline" Height="24" Width="24"/>
+                    </Button>
+                    <Button  Style="{StaticResource MaterialDesignRaisedButton}" ToolTip="Ajouter une image au canevas" 
+                    x:Name="AddImage" Width="30" Height="30" Margin="5" Padding="0" Click="AddImageToCanvas" FontSize="18">
+                        <materialDesign:PackIcon Kind="FileImage" />
                     </Button>
 
                     <Button  Style="{StaticResource MaterialDesignRaisedButton}" ToolTip="Réinitialiser le canevas" 
