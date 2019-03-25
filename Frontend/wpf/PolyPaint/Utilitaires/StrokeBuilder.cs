@@ -93,6 +93,11 @@ namespace PolyPaint.Utilitaires
                         (DrawingStroke as AbstractShapeStroke).TitleString = stroke.ShapeTitle;
                         (DrawingStroke as ICanvasable).AddToCanvas();
                         break;
+                    case ItemTypeEnum.TextStroke:
+                        DrawingStroke = new TextStroke(pts, surfaceDessin, borderColor.ToString(), fillColor.ToString());
+                        (DrawingStroke as AbstractShapeStroke).TitleString = stroke.ShapeTitle;
+                        (DrawingStroke as ICanvasable).AddToCanvas();
+                        break;
                     case ItemTypeEnum.UmlClassStroke:
                         DrawingStroke = new UmlClassStroke(pts, surfaceDessin, borderColor.ToString(), fillColor.ToString());
                         (DrawingStroke as AbstractShapeStroke).TitleString = stroke.ShapeTitle;
