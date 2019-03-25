@@ -21,5 +21,6 @@ namespace PolyPaint.Common.Collaboration
         public string DestinationTitle { get; set; }
         public string ChannelId { get; set; } = "general";
         public string OutilSelectionne { get; set; }
+        public PolyPaintStylusPoint LastElbowPosition { get; set; }
     }
 }

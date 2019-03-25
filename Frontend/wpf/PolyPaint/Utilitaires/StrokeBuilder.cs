@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Ink;
 using System.Windows.Input;
@@ -108,30 +109,40 @@ namespace PolyPaint.Utilitaires
                         DrawingStroke = new AgregationStroke(pts, surfaceDessin, borderColor.ToString());
                         (DrawingStroke as AbstractLineStroke).SourceString = stroke.SourceTitle;
                         (DrawingStroke as AbstractLineStroke).DestinationString = stroke.DestinationTitle;
+                        (DrawingStroke as AbstractLineStroke).LastElbowPosition = new Point(stroke.LastElbowPosition.X,
+                                                                                            stroke.LastElbowPosition.Y);
                         (DrawingStroke as ICanvasable).AddToCanvas();
                         break;
                     case ItemTypeEnum.CompositionStroke:
                         DrawingStroke = new CompositionStroke(pts, surfaceDessin, borderColor.ToString());
                         (DrawingStroke as AbstractLineStroke).SourceString = stroke.SourceTitle;
                         (DrawingStroke as AbstractLineStroke).DestinationString = stroke.DestinationTitle;
+                        (DrawingStroke as AbstractLineStroke).LastElbowPosition = new Point(stroke.LastElbowPosition.X,
+                                                                                            stroke.LastElbowPosition.Y);
                         (DrawingStroke as ICanvasable).AddToCanvas();
                         break;
                     case ItemTypeEnum.InheritanceStroke:
                         DrawingStroke = new InheritanceStroke(pts, surfaceDessin, borderColor.ToString());
                         (DrawingStroke as AbstractLineStroke).SourceString = stroke.SourceTitle;
                         (DrawingStroke as AbstractLineStroke).DestinationString = stroke.DestinationTitle;
+                        (DrawingStroke as AbstractLineStroke).LastElbowPosition = new Point(stroke.LastElbowPosition.X,
+                                                                                            stroke.LastElbowPosition.Y);
                         (DrawingStroke as ICanvasable).AddToCanvas();
                         break;
                     case ItemTypeEnum.BidirectionalAssociationStroke:
                         DrawingStroke = new BidirectionalAssociationStroke(pts, surfaceDessin, borderColor.ToString());
                         (DrawingStroke as AbstractLineStroke).SourceString = stroke.SourceTitle;
                         (DrawingStroke as AbstractLineStroke).DestinationString = stroke.DestinationTitle;
+                        (DrawingStroke as AbstractLineStroke).LastElbowPosition = new Point(stroke.LastElbowPosition.X,
+                                                                                            stroke.LastElbowPosition.Y);
                         (DrawingStroke as ICanvasable).AddToCanvas();
                         break;
                     case ItemTypeEnum.UnidirectionalAssociationStroke:
                         DrawingStroke = new UnidirectionalAssociationStroke(pts, surfaceDessin, borderColor.ToString());
                         (DrawingStroke as AbstractLineStroke).SourceString = stroke.SourceTitle;
                         (DrawingStroke as AbstractLineStroke).DestinationString = stroke.DestinationTitle;
+                        (DrawingStroke as AbstractLineStroke).LastElbowPosition = new Point(stroke.LastElbowPosition.X,
+                                                                                            stroke.LastElbowPosition.Y);
                         (DrawingStroke as ICanvasable).AddToCanvas();
                         break;
 
@@ -195,6 +206,11 @@ namespace PolyPaint.Utilitaires
                 {
                     drawingStroke.SourceTitle = (stroke as AbstractLineStroke).SourceString;
                     drawingStroke.DestinationTitle = (stroke as AbstractLineStroke).DestinationString;
+                    drawingStroke.LastElbowPosition = new PolyPaintStylusPoint()
+                    {
+                        X = (stroke as AbstractLineStroke).LastElbowPosition.X,
+                        Y = (stroke as AbstractLineStroke).LastElbowPosition.Y,
+                    };
                 }
                 viewModels.Add(drawingStroke);
             }
