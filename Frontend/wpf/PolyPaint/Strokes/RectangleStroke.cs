@@ -34,16 +34,23 @@ namespace PolyPaint.Strokes
             Width = Math.Abs(StylusPoints[1].X - StylusPoints[0].X);
             Height = Math.Abs(StylusPoints[1].Y - StylusPoints[0].Y);
 
+            RotateTransform RT = new RotateTransform(Rotation, Center.X, Center.Y);
+            drawingContext.PushTransform(RT);
+
             drawingContext.DrawRectangle(Fill, Border, new Rect(TopLeft, new Point(TopLeft.X + Width, TopLeft.Y + Height)));
 
             if (IsDrawingDone)
+            {
                 DrawText(drawingContext);
+            }
+
             DrawAnchorPoints(drawingContext);
         }
 
         private void DrawText(DrawingContext drawingContext)
         {
-            drawingContext.DrawText(Title, new Point(TopLeft.X + Width / 2.0 - Title.Width / 2.0, TopLeft.Y + Height / 2.0 - Title.Height / 2.0));
+            var point = new Point(TopLeft.X + Width / 2.0 - Title.Width / 2.0, TopLeft.Y + Height / 2.0 - Title.Height / 2.0);
+            drawingContext.DrawText(Title, point);
         }
 
         private void DrawAnchorPoints(DrawingContext drawingContext)

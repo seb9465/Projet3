@@ -34,6 +34,9 @@ namespace PolyPaint.Strokes
             Width = Math.Abs(StylusPoints[1].X - StylusPoints[0].X);
             Height = Math.Abs(StylusPoints[1].Y - StylusPoints[0].Y);
 
+            RotateTransform RT = new RotateTransform(Rotation, Center.X, Center.Y);
+            drawingContext.PushTransform(RT);
+
             drawingContext.DrawEllipse(Fill, Border, new Point(TopLeft.X + Width / 2.0, TopLeft.Y + 1.0 / 8.0 * Height), 1.0 / 4.0 * Width, 1.0 / 8.0 * Height);
             drawingContext.DrawLine(Border, new Point(TopLeft.X + Width / 2.0, TopLeft.Y + 1.0 / 4.0 * Height), new Point(TopLeft.X + Width / 2.0, TopLeft.Y + 3.0 / 4.0 * Height));
             drawingContext.DrawLine(Border, new Point(TopLeft.X, TopLeft.Y + 3.0 / 8.0 * Height), new Point(TopLeft.X + Width, TopLeft.Y + 3.0 / 8.0 * Height));

@@ -34,6 +34,9 @@ namespace PolyPaint.Strokes
             Width = Math.Abs(StylusPoints[1].X - StylusPoints[0].X);
             Height = Math.Abs(StylusPoints[1].Y - StylusPoints[0].Y);
 
+            RotateTransform RT = new RotateTransform(Rotation, Center.X, Center.Y);
+            drawingContext.PushTransform(RT);
+
             if (IsDrawingDone)
                 DrawText(drawingContext);
             DrawAnchorPoints(drawingContext);

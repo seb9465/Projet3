@@ -25,6 +25,11 @@ namespace PolyPaint.Strokes
                 throw new ArgumentNullException("drawingAttributes");
             }
 
+            TopLeft = new Point(StylusPoints[0].X <= StylusPoints[1].X ? StylusPoints[0].X : StylusPoints[1].X,
+                StylusPoints[0].Y <= StylusPoints[1].Y ? StylusPoints[0].Y : StylusPoints[1].Y);
+            Width = Math.Abs(StylusPoints[1].X - StylusPoints[0].X);
+            Height = Math.Abs(StylusPoints[1].Y - StylusPoints[0].Y);
+
             var pts = AttachToAnchors();
 
             StylusPoint stp = pts[0];
@@ -88,6 +93,9 @@ namespace PolyPaint.Strokes
                                              };
                 geometryContext.PolyLineTo(points, true, true);
             }
+
+            RotateTransform RT = new RotateTransform(Rotation, Center.X, Center.Y);
+            drawingContext.PushTransform(RT);
 
             drawingContext.DrawGeometry(Fill, Border, streamGeometry1);
             drawingContext.DrawGeometry(Fill, Border, streamGeometry2);

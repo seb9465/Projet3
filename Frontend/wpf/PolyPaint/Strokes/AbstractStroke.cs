@@ -17,8 +17,11 @@ namespace PolyPaint.Strokes
         public bool IsDrawingDone { get; set; }
 
         public Point TopLeft { get; set; }
+        public Point Center { get { return new Point(TopLeft.X + Width / 2.0, TopLeft.Y + Height / 2.0); } }
         public double Width { get; set; }
         public double Height { get; set; }
+
+        public double Rotation { get; set; }
 
         public Brush Fill { get; set; }
         public Pen Border { get; set; }
