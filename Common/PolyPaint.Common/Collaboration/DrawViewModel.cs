@@ -15,8 +15,8 @@ namespace PolyPaint.Common.Collaboration
         public PolyPaintColor BorderColor { get; set; }
         public double BorderThickness { get; set; }
         public string ShapeTitle { get; set; }
-        public string[] Methods { get; set; }
-        public string[] Properties { get; set; }
+        public List<string> Methods { get; set; }
+        public List<string> Properties { get; set; }
         public string SourceTitle { get; set; }
         public string DestinationTitle { get; set; }
         public string ChannelId { get; set; } = "general";

@@ -95,6 +95,13 @@ namespace PolyPaint.Utilitaires
                     case ItemTypeEnum.UmlClassStroke:
                         DrawingStroke = new UmlClassStroke(pts, surfaceDessin, borderColor.ToString(), fillColor.ToString());
                         (DrawingStroke as AbstractShapeStroke).TitleString = stroke.ShapeTitle;
+
+                        foreach (var method in stroke.Methods)
+                            (DrawingStroke as UmlClassStroke).Methods.Add(new Method(method));
+
+                        foreach (var property in stroke.Properties)
+                            (DrawingStroke as UmlClassStroke).Properties.Add(new Property(property));
+
                         (DrawingStroke as ICanvasable).AddToCanvas();
                         break;
                     case ItemTypeEnum.AgregationStroke:
@@ -172,6 +179,16 @@ namespace PolyPaint.Utilitaires
                 if ((stroke as AbstractShapeStroke != null))
                 {
                     drawingStroke.ShapeTitle = (stroke as AbstractShapeStroke).TitleString;
+                    if (stroke as UmlClassStroke != null)
+                    {
+                        drawingStroke.Methods = new List<string>();
+                        foreach (var method in (stroke as UmlClassStroke).Methods)
+                            drawingStroke.Methods.Add(method.Title);
+
+                        drawingStroke.Properties = new List<string>();
+                        foreach (var property in (stroke as UmlClassStroke).Properties)
+                            drawingStroke.Properties.Add(property.Title);
+                    }
                 }
 
                 if ((stroke as AbstractLineStroke != null))
