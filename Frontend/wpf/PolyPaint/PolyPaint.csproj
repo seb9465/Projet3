@@ -400,6 +400,7 @@
     <Compile Include="Structures\MessageArgs.cs" />
     <Compile Include="Utilitaires\InkCanvasEventManager.cs" />
     <Compile Include="Utilitaires\RelayCommand.cs" />
+    <Compile Include="Utilitaires\StrokeBuilder.cs" />
     <Compile Include="Utilitaires\Tools.cs" />
     <Compile Include="VueModeles\CanvasViewModel.cs" />
     <Compile Include="VueModeles\RegistrationViewModel.cs" />

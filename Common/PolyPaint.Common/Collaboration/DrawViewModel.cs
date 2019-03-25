@@ -12,7 +12,8 @@ namespace PolyPaint.Common.Collaboration
         public ItemTypeEnum ItemType { get; set; }
         public List<PolyPaintStylusPoint> StylusPoints { get; set; }
         public string OutilSelectionne { get; set; }
-        public PolyPaintColor Color { get; set; }
+        public PolyPaintColor FillColor { get; set; }
+        public PolyPaintColor BorderColor { get; set; }
         public string ChannelId { get; set; } = "general";
     }
 }

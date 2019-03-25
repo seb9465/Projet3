@@ -20,12 +20,12 @@ namespace PolyPaint.Strokes
         protected double Width { get; set; }
         protected double Height { get; set; }
 
-        protected Brush Fill { get; set; }
-        protected Pen Border { get; set; }
+        public Brush Fill { get; set; }
+        public Pen Border { get; set; }
         public DashStyle BorderStyle { get { return Border.DashStyle; } }
 
         protected InkCanvas SurfaceDessin { get; set; }
-        protected FormattedText Title { get; set; }
+        public FormattedText Title { get; set; }
         public string TitleString
         {
             get { return Title.Text; }

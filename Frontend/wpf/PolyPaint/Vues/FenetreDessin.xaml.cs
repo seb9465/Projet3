@@ -35,24 +35,7 @@ namespace PolyPaint
     /// </summary>
     public partial class FenetreDessin : Window
     {
-        private static ConcurrentDictionary<Type, ItemTypeEnum> _strokeTypes = new ConcurrentDictionary<Type, ItemTypeEnum>(
-               new Dictionary<Type, ItemTypeEnum>()
-               {
-                { typeof(ActivityStroke), ItemTypeEnum.ActivityStroke },
-                { typeof(ArtefactStroke), ItemTypeEnum.ArtefactStroke },
-                { typeof(PhaseStroke), ItemTypeEnum.PhaseStroke },
-                { typeof(RectangleStroke), ItemTypeEnum.RectangleStroke },
-                { typeof(RoleStroke), ItemTypeEnum.RoleStroke },
-                { typeof(UmlClassStroke), ItemTypeEnum.UmlClassStroke },
-                { typeof(TextStroke), ItemTypeEnum.TextStroke },
-                { typeof(AgregationStroke), ItemTypeEnum.AgregationStroke },
-                { typeof(BidirectionalAssociationStroke), ItemTypeEnum.BidirectionalAssociationStroke },
-                { typeof(CompositionStroke), ItemTypeEnum.CompositionStroke},
-                { typeof(InheritanceStroke), ItemTypeEnum.InheritanceStroke },
-                { typeof(UnidirectionalAssociationStroke), ItemTypeEnum.UnidirectionalAssociationStroke }
-               }
-           );
-
+        private StrokeBuilder rebuilder = new StrokeBuilder();
         private ChatWindow externalChatWindow;
         private MediaPlayer mediaPlayer = new MediaPlayer();
         private InkCanvasEventManager icEventManager = new InkCanvasEventManager();
@@ -160,35 +143,9 @@ namespace PolyPaint
 
             if (surfaceDessin.Strokes.Count > 0)
             {
-                List<DrawViewModel> strokes = new List<DrawViewModel>();
-
-                foreach (var stroke in surfaceDessin.Strokes)
-                {
-                    DrawViewModel drawingStroke = new DrawViewModel();
-                    drawingStroke.Owner = "allo";
-                    drawingStroke.ItemType = _strokeTypes[stroke.GetType()];
-                    List<PolyPaintStylusPoint> points = new List<PolyPaintStylusPoint>();
-                    foreach (StylusPoint point in stroke.StylusPoints.ToList())
-                    {
-                        points.Add(new PolyPaintStylusPoint()
-                        {
-                            PressureFactor = point.PressureFactor,
-                            X = point.X,
-                            Y = point.Y,
-                        });
-                    }
-                    drawingStroke.StylusPoints = points;
-                    drawingStroke.OutilSelectionne = "onsencriss";
-                    PolyPaintColor color = new PolyPaintColor()
-                    {
-                        A = stroke.DrawingAttributes.Color.A,
-                        B = stroke.DrawingAttributes.Color.B,
-                        G = stroke.DrawingAttributes.Color.G,
-                        R = stroke.DrawingAttributes.Color.R,
-                    };
-                    strokes.Add(drawingStroke);
-                }
-
+                // Change strokes into DrawViewModels
+                List<DrawViewModel> strokes = rebuilder.GetDrawViewModelsFromStrokes(surfaceDessin.Strokes);
+                
                 //Serialize our "strokes"
                 FileStream fs = null;
                 BinaryFormatter bf = new BinaryFormatter();
@@ -217,22 +174,9 @@ namespace PolyPaint
             fs = new FileStream(openFileDialog.FileName, FileMode.Open, FileAccess.Read);
 
             List<DrawViewModel> customStrokes = bf.Deserialize(fs) as List<DrawViewModel>;
-
-            // Rebuild it
-            //for (int i = 0; i < customStrokes.StrokeCollection.Length; i++)
-            //{
-            //    if (customStrokes.StrokeCollection[i] != null)
-            //    {
-            //        StylusPointCollection stylusCollection = new
-            //          StylusPointCollection(customStrokes.StrokeCollection[i]);
-
-                //        Stroke stroke = new Stroke(stylusCollection);
-                //        StrokeCollection strokes = new StrokeCollection();
-                //        strokes.Add(stroke);
-
-                //        this.MyInkPresenter.Strokes.Add(strokes);
-                //    }
-                //}
+            
+            // Rebuild the strokes
+            rebuilder.BuildStrokesFromDrawViewModels(customStrokes, surfaceDessin);
         }
 
         private async void SendToCloud(object sender, RoutedEventArgs e)
@@ -442,7 +386,7 @@ namespace PolyPaint
                     OutilSelectionne = (DataContext as VueModele).OutilSelectionne,
                     StylusPoints = points,
                     ItemType = itemType,
-                    Color = color,
+                    FillColor = color,
                     Owner = username,
                 };
                 await CollaborativeDrawAsync(drawViewModel);
