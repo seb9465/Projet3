@@ -17,6 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        ChatService.shared.connectToHub();  // TODO: Add notification when client is connected.
         return true
     }
 
@@ -28,13 +29,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationDidEnterBackground(_ application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
-        let headers = [
-            "Authorization": "Bearer " + UserDefaults.standard.string(forKey: "token")!
-        ];
         
-        Alamofire.request(Constants.LOGOUT_URL as URLConvertible, method: .get, encoding: JSONEncoding.default, headers: headers).responseString{ response in
-            print(response);
-        };
+        AuthentificationAPI.logout()
         UserDefaults.standard.removePersistentDomain(forName: "token");
         
         let mainView: UIStoryboard = UIStoryboard(name: "Main", bundle: nil);
@@ -52,13 +48,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-        let headers = [
-            "Authorization": "Bearer " + UserDefaults.standard.string(forKey: "token")!
-        ];
-        
-        Alamofire.request(Constants.LOGOUT_URL as URLConvertible, method: .get, encoding: JSONEncoding.default, headers: headers).responseString{ response in
-            print(response);
-        };
+        AuthentificationAPI.logout()
         UserDefaults.standard.removePersistentDomain(forName: "token");
         sleep(10);
         print("terminated");

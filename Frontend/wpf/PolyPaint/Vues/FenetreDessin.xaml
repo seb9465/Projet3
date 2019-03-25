@@ -8,6 +8,7 @@
      TextOptions.TextRenderingMode="Auto"
      Background="{DynamicResource MaterialDesignPaper}"
      FontFamily="{DynamicResource MaterialDesignFont}"
+     Loaded="Window_Loaded"
      PreviewKeyDown="EnterKeyDown"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -213,6 +214,8 @@
                             CommandParameter="solid">
                                 <Rectangle Width="10" Height="2" Fill="Black" Stroke="Black" StrokeThickness="2" HorizontalAlignment="Center"/>
                             </Button>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                             <Button Name="Dash" Width="24" Height="24" Padding="0"
                             HorizontalContentAlignment="Center"                            
                             BorderBrush="{Binding Path=SelectedBorder, Converter={StaticResource convertisseurBordure}, ConverterParameter=dash, UpdateSourceTrigger=PropertyChanged}" 
@@ -223,32 +226,6 @@
                                 <Grid>
                                     <Rectangle Width="4" Height="2" Fill="Black" Stroke="Black" StrokeThickness="2" HorizontalAlignment="Center" Margin="-4,0,4,0"/>
                                     <Rectangle Width="4" Height="2" Fill="Black" Stroke="Black" StrokeThickness="2" HorizontalAlignment="Right" Margin="0,0,-4,0"/>
-                                </Grid>
-                            </Button>
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                            <Button Name="Dot" Width="24" Height="24" Padding="0"
-                            HorizontalContentAlignment="Center"
-                            BorderBrush="{Binding Path=SelectedBorder, Converter={StaticResource convertisseurBordure}, ConverterParameter=dot, UpdateSourceTrigger=PropertyChanged}" 
-                            Background="{Binding Path=SelectedBorder, Converter={StaticResource convertisseurCouleurFond}, ConverterParameter=dot, UpdateSourceTrigger=PropertyChanged}"   
-                            IsEnabled="{Binding Path=IsStrokeSelected}"
-                            Command="{Binding Path=ChooseBorder}"
-                            CommandParameter="dot">
-                                <Grid>
-                                    <Ellipse Width="4" Height="4" Fill="Black" Stroke="Black" StrokeThickness="2" HorizontalAlignment="Center" Margin="4,0,-4,0"/>
-                                    <Ellipse Width="4" Height="4" Fill="Black" Stroke="Black" StrokeThickness="2" HorizontalAlignment="Center" Margin="-4,0,4,0"/>
-                                </Grid>
-                            </Button>
-                            <Button Name="DashDot" Width="24" Height="24" Padding="0"
-                            HorizontalContentAlignment="Center"
-                            BorderBrush="{Binding Path=SelectedBorder, Converter={StaticResource convertisseurBordure}, ConverterParameter=dash_dot, UpdateSourceTrigger=PropertyChanged}" 
-                            Background="{Binding Path=SelectedBorder, Converter={StaticResource convertisseurCouleurFond}, ConverterParameter=dash_dot, UpdateSourceTrigger=PropertyChanged}"   
-                            IsEnabled="{Binding IsStrokeSelected, UpdateSourceTrigger=PropertyChanged}"
-                            Command="{Binding Path=ChooseBorder}"
-                            CommandParameter="dash_dot">
-                                <Grid>
-                                    <Rectangle Width="4" Height="2" Fill="Black" Stroke="Black" StrokeThickness="2" HorizontalAlignment="Center" Margin="-4,1,4,1"/>
-                                    <Ellipse Width="4" Height="4" Fill="Black" Stroke="Black" StrokeThickness="2" HorizontalAlignment="Center" Margin="4,0,-4,0"/>
                                 </Grid>
                             </Button>
                         </StackPanel>
@@ -312,20 +289,31 @@
                             </Button>
                         </StackPanel>
                     </StackPanel>
-                    <xctk:ColorPicker x:Name="selecteurCouleur"                             
-                  VerticalContentAlignment="Stretch"
-                  Background="#00000000"
-                  ShowDropDownButton="False"
-                  ShowRecentColors="True"
-                  BorderBrush="#80000000"
-                  Margin="5,0,0,0" Width="39" Height="38"
-                  SelectedColor="{Binding Path=CouleurSelectionnee, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                  AvailableColorsHeader="Palette"
-                  StandardColorsHeader="Couleurs de base"
-                  StandardButtonHeader="Standard"
-                  RecentColorsHeader="Récemment utilisées"
-                  UsingAlphaChannel="True"
-                  AdvancedButtonHeader="Personnalisé" />
+                            <xctk:ColorPicker x:Name="selecteurCouleurBordure"                             
+                        VerticalContentAlignment="Stretch"
+                        Background="#00000000"
+                        ShowDropDownButton="False"
+                        BorderBrush="{Binding Path=CouleurSelectionneeBordureConverted, UpdateSourceTrigger=PropertyChanged}"
+                        BorderThickness="3"
+                        Margin="5,0,0,0" Width="39" Height="38"
+                        SelectedColor="{Binding Path=DefaultColor}"
+                        AvailableColorsHeader="Palette"
+                        UsingAlphaChannel="False"
+                        ShowAvailableColors="True"
+                        ShowStandardColors="True"
+                        ShowTabHeaders="False" />
+                    <xctk:ColorPicker x:Name="selecteurCouleurRemplissage"                             
+                        VerticalContentAlignment="Stretch"
+                        Background="#00000000"
+                        ShowDropDownButton="False"
+                        BorderBrush="#80000000"
+                        Margin="5,0,0,0" Width="39" Height="38"
+                        SelectedColor="{Binding Path=CouleurSelectionneeRemplissageConverted, UpdateSourceTrigger=PropertyChanged}"
+                        AvailableColorsHeader="Palette"
+                        UsingAlphaChannel="False"
+                        ShowAvailableColors="True"
+                        ShowStandardColors="True"
+                        ShowTabHeaders="False" />
                     <Slider Width="100" Height="26" Minimum="1" Maximum="50"
                         Value="{Binding Path=TailleTrait, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                         Margin="12"

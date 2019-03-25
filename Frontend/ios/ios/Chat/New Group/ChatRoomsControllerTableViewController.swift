@@ -9,8 +9,14 @@
 import UIKit
 
 class ChatRoomsControllerTableViewController: UITableViewController {
+    private let refreshTable = UIRefreshControl();
     
-    var channels: ChannelsMessage = ChannelsMessage();
+    @objc private func refreshWeatherData(_ sender: Any) {
+        // Fetch Weather Data
+        ChatService.shared.invokeFetchChannels();
+        self.refreshTable.endRefreshing();
+        
+    }
     
     @IBAction func backButton(_ sender: Any) {
 //        ChatService.shared.disconnectFromHub();
@@ -25,16 +31,20 @@ class ChatRoomsControllerTableViewController: UITableViewController {
         self.registerTableViewCells();
         print("[ CHATROOM ] View did load");
         ChatService.shared.onFetchChannels(updateChannelsFct: self.updateChannels);
-        ChatService.shared.invokeChannelsWhenConnected();
+//        ChatService.shared.invokeChannelsWhenConnected();
         ChatService.shared.onCreateChannel(updateChannelsFct: self.updateChannels);
-        ChatService.shared.connectToHub();  // TODO: Add notification when client is connected.
+        
         ChatService.shared.invokeFetchChannels();
+        
+        self.refreshTable.addTarget(self, action: #selector(refreshWeatherData(_:)), for: .valueChanged)
+        self.tableView.addSubview(self.refreshTable);
         
         // Uncomment the following line to preserve selection between presentations
 //         self.clearsSelectionOnViewWillAppear = false
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
 //         self.navigationItem.rightBarButtonItem = self.editButtonItem
+        self.navigationItem.rightBarButtonItems?.append(self.editButtonItem);
         
         super.viewDidLoad()
     }
@@ -51,13 +61,7 @@ class ChatRoomsControllerTableViewController: UITableViewController {
         super.viewDidAppear(animated);
     }
     
-    public func updateChannels(channels: [Channel]) -> Void {
-        for channel in channels {
-            if (!self.channels.channels.contains(where: { $0.name.elementsEqual(channel.name) })) {
-                self.channels.channels.append(channel);
-            }
-        }
-        
+    public func updateChannels() -> Void {
         self.tableView.reloadData();
     }
 
@@ -68,7 +72,7 @@ class ChatRoomsControllerTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.channels.channels.count;
+        return ChatService.shared.userChannels.channels.count;
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -88,63 +92,27 @@ class ChatRoomsControllerTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "CustomTableViewCell") as? CustomTableViewCell;
         
-        cell?.chatRoomName.text = self.channels.channels[indexPath.row].name;
+        cell?.chatRoomName.text = ChatService.shared.userChannels.channels[indexPath.row].name;
         
         return cell!
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        ChatService.shared.currentChannel = self.channels.channels[indexPath.row];
+        ChatService.shared.currentChannel = ChatService.shared.userChannels.channels[indexPath.row];
         
         let storyboard = UIStoryboard(name: "Chat", bundle: nil);
         let destination = storyboard.instantiateViewController(withIdentifier: "ChatView");
         navigationController?.pushViewController(destination, animated: true)
     }
  
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
+            ChatService.shared.currentChannel = ChatService.shared.userChannels.channels[indexPath.row];
+            ChatService.shared.disconnectFromCurrentChatRoom();
+            ChatService.shared.invokeFetchChannels();
+            self.tableView.reloadData();
         } else if editingStyle == .insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
         }    
     }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-    
 }

@@ -22,6 +22,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Documents;
 using System.Windows.Ink;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -36,6 +37,9 @@ namespace PolyPaint
     public partial class FenetreDessin : Window
     {
         private StrokeBuilder rebuilder = new StrokeBuilder();
+        private AdornerLayer adornerLayer;
+        private LineStrokeAdorner adorner;
+
         private ChatWindow externalChatWindow;
         private MediaPlayer mediaPlayer = new MediaPlayer();
         private InkCanvasEventManager icEventManager = new InkCanvasEventManager();
@@ -353,7 +357,7 @@ namespace PolyPaint
             currentPoint = e.GetPosition((IInputElement)sender);
             if (IsDrawing)
             {
-                icEventManager.DrawShape(surfaceDessin, (DataContext as VueModele).OutilSelectionne, currentPoint, mouseLeftDownPoint);
+                icEventManager.DrawShape(surfaceDessin, (DataContext as VueModele), currentPoint, mouseLeftDownPoint);
             }
         }
 
@@ -544,7 +548,15 @@ namespace PolyPaint
 
         private void surfaceDessin_ChangeSelection(object sender, EventArgs e)
         {
-            (DataContext as VueModele).ChangeSelection((sender as InkCanvas).GetSelectedStrokes());
+            (DataContext as VueModele).ChangeSelection((sender as InkCanvas));
+            // Add the rotating strokes adorner to the InkPresenter.
+            if (adorner != null)
+                adornerLayer.Remove(adorner);
+
+            adornerLayer = AdornerLayer.GetAdornerLayer(surfaceDessin);
+            adorner = new LineStrokeAdorner(surfaceDessin);
+
+            adornerLayer.Add(adorner);
         }
 
         private async void GoBack_Click(object sender, RoutedEventArgs e)
@@ -554,6 +566,9 @@ namespace PolyPaint
             Application.Current.MainWindow = menuProfile;
             Close();
             menuProfile.Show();
+        }
+        void Window_Loaded(object sender, RoutedEventArgs e)
+        {
         }
     }
 }
