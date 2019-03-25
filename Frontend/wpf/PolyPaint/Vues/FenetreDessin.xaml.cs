@@ -491,6 +491,26 @@ namespace PolyPaint
             ImageStroke image = new ImageStroke(collection, surfaceDessin, ib);
             (image as ICanvasable).AddToCanvas();
         }
+        private void DownloadCanvasAsJPG(object sender, RoutedEventArgs e)
+        {
+            byte[] bitmap = GetBytesForImage();
+
+            SaveFileDialog saveFileDialog = new SaveFileDialog
+            {
+                DefaultExt = ".png",
+                Filter = "Image (.png)|*.png"
+            };
+
+            // Show save file dialog box
+            Nullable<bool> result = saveFileDialog.ShowDialog();
+            MemoryStream ms = new MemoryStream(bitmap);
+            System.Drawing.Image returnImage = System.Drawing.Image.FromStream(ms);
+            using (System.Drawing.Image image = System.Drawing.Image.FromStream(new MemoryStream(bitmap)))
+            {
+                image.Save(saveFileDialog.FileName, System.Drawing.Imaging.ImageFormat.Png);
+            }
+
+        }
         private async void Reinitialiser_Click(object sender, RoutedEventArgs e)
         {
             if (_viewState == ViewStateEnum.Online)
