@@ -265,8 +265,8 @@
       <HintPath>..\packages\Microsoft.Net.Http.Headers.2.2.0\lib\netstandard2.0\Microsoft.Net.Http.Headers.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
@@ -370,15 +370,8 @@
     </ApplicationDefinition>
     <Compile Include="Config.cs" />
     <Compile Include="Convertisseurs\Convertisseurs.cs" />
-    <Compile Include="Modeles\Channel.cs" />
     <Compile Include="Modeles\ChatClient.cs" />
     <Compile Include="Modeles\Editeur.cs" />
-    <Compile Include="Modeles\Messages\BaseMessage.cs" />
-    <Compile Include="Modeles\Messages\ChannelMessage.cs" />
-    <Compile Include="Modeles\Messages\ChannelsMessage.cs" />
-    <Compile Include="Modeles\Messages\ChatMessage.cs" />
-    <Compile Include="Modeles\Messages\ConnectionMessage.cs" />
-    <Compile Include="Modeles\Messages\ErrorMessage.cs" />
     <Compile Include="Modeles\Room.cs" />
     <Compile Include="Modeles\SaveableElement.cs" />
     <Compile Include="Modeles\SaveableCanvas.cs" />

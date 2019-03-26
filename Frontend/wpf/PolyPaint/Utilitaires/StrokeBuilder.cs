@@ -3,8 +3,6 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Ink;
@@ -74,36 +72,43 @@ namespace PolyPaint.Utilitaires
                     case ItemTypeEnum.RectangleStroke:
                         DrawingStroke = new RectangleStroke(pts, surfaceDessin, borderColor.ToString(), fillColor.ToString());
                         (DrawingStroke as AbstractShapeStroke).TitleString = stroke.ShapeTitle;
+                        (DrawingStroke as AbstractStroke).SetBorderStyle(Tools.DashAssociations[stroke.BorderStyle]);
                         (DrawingStroke as ICanvasable).AddToCanvas();
                         break;
                     case ItemTypeEnum.ActivityStroke:
                         DrawingStroke = new ActivityStroke(pts, surfaceDessin, borderColor.ToString(), fillColor.ToString());
                         (DrawingStroke as AbstractShapeStroke).TitleString = stroke.ShapeTitle;
+                        (DrawingStroke as AbstractStroke).SetBorderStyle(Tools.DashAssociations[stroke.BorderStyle]);
                         (DrawingStroke as ICanvasable).AddToCanvas();
                         break;
                     case ItemTypeEnum.ArtefactStroke:
                         DrawingStroke = new ArtefactStroke(pts, surfaceDessin, borderColor.ToString(), fillColor.ToString());
                         (DrawingStroke as AbstractShapeStroke).TitleString = stroke.ShapeTitle;
+                        (DrawingStroke as AbstractStroke).SetBorderStyle(Tools.DashAssociations[stroke.BorderStyle]);
                         (DrawingStroke as ICanvasable).AddToCanvas();
                         break;
                     case ItemTypeEnum.PhaseStroke:
                         DrawingStroke = new PhaseStroke(pts, surfaceDessin, borderColor.ToString(), fillColor.ToString());
                         (DrawingStroke as AbstractShapeStroke).TitleString = stroke.ShapeTitle;
+                        (DrawingStroke as AbstractStroke).SetBorderStyle(Tools.DashAssociations[stroke.BorderStyle]);
                         (DrawingStroke as ICanvasable).AddToCanvas();
                         break;
                     case ItemTypeEnum.RoleStroke:
                         DrawingStroke = new RoleStroke(pts, surfaceDessin, borderColor.ToString(), fillColor.ToString());
                         (DrawingStroke as AbstractShapeStroke).TitleString = stroke.ShapeTitle;
+                        (DrawingStroke as AbstractStroke).SetBorderStyle(Tools.DashAssociations[stroke.BorderStyle]);
                         (DrawingStroke as ICanvasable).AddToCanvas();
                         break;
                     case ItemTypeEnum.TextStroke:
                         DrawingStroke = new TextStroke(pts, surfaceDessin, borderColor.ToString(), fillColor.ToString());
                         (DrawingStroke as AbstractShapeStroke).TitleString = stroke.ShapeTitle;
+                        (DrawingStroke as AbstractStroke).SetBorderStyle(Tools.DashAssociations[stroke.BorderStyle]);
                         (DrawingStroke as ICanvasable).AddToCanvas();
                         break;
                     case ItemTypeEnum.UmlClassStroke:
                         DrawingStroke = new UmlClassStroke(pts, surfaceDessin, borderColor.ToString(), fillColor.ToString());
                         (DrawingStroke as AbstractShapeStroke).TitleString = stroke.ShapeTitle;
+                        (DrawingStroke as AbstractStroke).SetBorderStyle(Tools.DashAssociations[stroke.BorderStyle]);
 
                         foreach (var method in stroke.Methods)
                             (DrawingStroke as UmlClassStroke).Methods.Add(new Method(method));
@@ -117,6 +122,7 @@ namespace PolyPaint.Utilitaires
                         DrawingStroke = new AgregationStroke(pts, surfaceDessin, borderColor.ToString());
                         (DrawingStroke as AbstractLineStroke).SourceString = stroke.SourceTitle;
                         (DrawingStroke as AbstractLineStroke).DestinationString = stroke.DestinationTitle;
+                        (DrawingStroke as AbstractStroke).SetBorderStyle(Tools.DashAssociations[stroke.BorderStyle]);
                         (DrawingStroke as AbstractLineStroke).LastElbowPosition = new Point(stroke.LastElbowPosition.X,
                                                                                             stroke.LastElbowPosition.Y);
                         (DrawingStroke as ICanvasable).AddToCanvas();
@@ -125,6 +131,7 @@ namespace PolyPaint.Utilitaires
                         DrawingStroke = new CompositionStroke(pts, surfaceDessin, borderColor.ToString());
                         (DrawingStroke as AbstractLineStroke).SourceString = stroke.SourceTitle;
                         (DrawingStroke as AbstractLineStroke).DestinationString = stroke.DestinationTitle;
+                        (DrawingStroke as AbstractStroke).SetBorderStyle(Tools.DashAssociations[stroke.BorderStyle]);
                         (DrawingStroke as AbstractLineStroke).LastElbowPosition = new Point(stroke.LastElbowPosition.X,
                                                                                             stroke.LastElbowPosition.Y);
                         (DrawingStroke as ICanvasable).AddToCanvas();
@@ -133,6 +140,7 @@ namespace PolyPaint.Utilitaires
                         DrawingStroke = new InheritanceStroke(pts, surfaceDessin, borderColor.ToString());
                         (DrawingStroke as AbstractLineStroke).SourceString = stroke.SourceTitle;
                         (DrawingStroke as AbstractLineStroke).DestinationString = stroke.DestinationTitle;
+                        (DrawingStroke as AbstractStroke).SetBorderStyle(Tools.DashAssociations[stroke.BorderStyle]);
                         (DrawingStroke as AbstractLineStroke).LastElbowPosition = new Point(stroke.LastElbowPosition.X,
                                                                                             stroke.LastElbowPosition.Y);
                         (DrawingStroke as ICanvasable).AddToCanvas();
@@ -141,6 +149,7 @@ namespace PolyPaint.Utilitaires
                         DrawingStroke = new BidirectionalAssociationStroke(pts, surfaceDessin, borderColor.ToString());
                         (DrawingStroke as AbstractLineStroke).SourceString = stroke.SourceTitle;
                         (DrawingStroke as AbstractLineStroke).DestinationString = stroke.DestinationTitle;
+                        (DrawingStroke as AbstractStroke).SetBorderStyle(Tools.DashAssociations[stroke.BorderStyle]);
                         (DrawingStroke as AbstractLineStroke).LastElbowPosition = new Point(stroke.LastElbowPosition.X,
                                                                                             stroke.LastElbowPosition.Y);
                         (DrawingStroke as ICanvasable).AddToCanvas();
@@ -149,6 +158,7 @@ namespace PolyPaint.Utilitaires
                         DrawingStroke = new UnidirectionalAssociationStroke(pts, surfaceDessin, borderColor.ToString());
                         (DrawingStroke as AbstractLineStroke).SourceString = stroke.SourceTitle;
                         (DrawingStroke as AbstractLineStroke).DestinationString = stroke.DestinationTitle;
+                        (DrawingStroke as AbstractStroke).SetBorderStyle(Tools.DashAssociations[stroke.BorderStyle]);
                         (DrawingStroke as AbstractLineStroke).LastElbowPosition = new Point(stroke.LastElbowPosition.X,
                                                                                             stroke.LastElbowPosition.Y);
                         (DrawingStroke as ICanvasable).AddToCanvas();
@@ -176,7 +186,7 @@ namespace PolyPaint.Utilitaires
         public List<DrawViewModel> GetDrawViewModelsFromStrokes(StrokeCollection strokes)
         {
             List<DrawViewModel> viewModels = new List<DrawViewModel>();
-            foreach (var stroke in strokes)
+            foreach (AbstractStroke stroke in strokes)
             {
                 DrawViewModel drawingStroke = new DrawViewModel();
                 drawingStroke.Owner = "Utilisateur";
@@ -194,19 +204,20 @@ namespace PolyPaint.Utilitaires
                 drawingStroke.StylusPoints = points;
                 drawingStroke.FillColor = new PolyPaintColor()
                 {
-                    A = ((stroke as AbstractStroke).Fill as SolidColorBrush).Color.A,
-                    B = ((stroke as AbstractStroke).Fill as SolidColorBrush).Color.B,
-                    G = ((stroke as AbstractStroke).Fill as SolidColorBrush).Color.G,
-                    R = ((stroke as AbstractStroke).Fill as SolidColorBrush).Color.R,
+                    A = (stroke.Fill as SolidColorBrush).Color.A,
+                    B = (stroke.Fill as SolidColorBrush).Color.B,
+                    G = (stroke.Fill as SolidColorBrush).Color.G,
+                    R = (stroke.Fill as SolidColorBrush).Color.R,
                 };
                 drawingStroke.BorderColor = new PolyPaintColor()
                 {
-                    A = ((stroke as AbstractStroke).Border.Brush as SolidColorBrush).Color.A,
-                    B = ((stroke as AbstractStroke).Border.Brush as SolidColorBrush).Color.B,
-                    G = ((stroke as AbstractStroke).Border.Brush as SolidColorBrush).Color.G,
-                    R = ((stroke as AbstractStroke).Border.Brush as SolidColorBrush).Color.R,
+                    A = (stroke.Border.Brush as SolidColorBrush).Color.A,
+                    B = (stroke.Border.Brush as SolidColorBrush).Color.B,
+                    G = (stroke.Border.Brush as SolidColorBrush).Color.G,
+                    R = (stroke.Border.Brush as SolidColorBrush).Color.R,
                 };
-                drawingStroke.BorderThickness = (stroke as AbstractStroke).Border.Thickness;
+                drawingStroke.BorderThickness = stroke.Border.Thickness;
+                drawingStroke.BorderStyle = Tools.DashAssociations.First(x => x.Value == stroke.BorderStyle).Key;
 
                 if ((stroke as AbstractShapeStroke != null))
                 {
@@ -233,6 +244,7 @@ namespace PolyPaint.Utilitaires
                         Y = (stroke as AbstractLineStroke).LastElbowPosition.Y,
                     };
                 }
+                
                 if ((stroke as ImageStroke) != null)
                 {
                     byte[] bytes = null;

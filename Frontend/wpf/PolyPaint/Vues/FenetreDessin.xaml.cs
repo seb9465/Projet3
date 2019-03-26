@@ -138,8 +138,8 @@ namespace PolyPaint
 
             SaveFileDialog saveFileDialog = new SaveFileDialog
             {
-                DefaultExt = ".stro",
-                Filter = "Strokes (.stro)|*.stro"
+                DefaultExt = ".json",
+                Filter = "JSON (.json)|*.json"
             };
 
             // Show save file dialog box
@@ -152,12 +152,10 @@ namespace PolyPaint
                 
                 //Serialize our "strokes"
                 FileStream fs = null;
-                BinaryFormatter bf = new BinaryFormatter();
                 fs = new FileStream(saveFileDialog.FileName, FileMode.Create);
-                bf.Serialize(fs, strokes);
+                var jsons = JsonConvert.SerializeObject(strokes);
+                fs.Write(Encoding.UTF8.GetBytes(jsons), 0, Encoding.UTF8.GetByteCount(jsons));
             }
-
-
         }
 
         private void LoadImage(object sender, RoutedEventArgs e)
@@ -165,19 +163,20 @@ namespace PolyPaint
             // Load the strokes file.
             OpenFileDialog openFileDialog = new OpenFileDialog
             {
-                DefaultExt = ".stro",
-                Filter = "Strokes (.stro)|*.stro"
+                DefaultExt = ".json",
+                Filter = "JSON (.json)|*.json"
             };
 
             // Show save file dialog box
             Nullable<bool> result = openFileDialog.ShowDialog();
 
             // Deserialize it
-            BinaryFormatter bf = new BinaryFormatter();
             FileStream fs = null;
             fs = new FileStream(openFileDialog.FileName, FileMode.Open, FileAccess.Read);
+            byte[] jsons = new byte[fs.Length];
+            fs.Read(jsons, 0, (int)fs.Length);
 
-            List<DrawViewModel> customStrokes = bf.Deserialize(fs) as List<DrawViewModel>;
+            List<DrawViewModel> customStrokes = JsonConvert.DeserializeObject<List<DrawViewModel>>(Encoding.UTF8.GetString(jsons));
             
             // Rebuild the strokes
             rebuilder.BuildStrokesFromDrawViewModels(customStrokes, surfaceDessin);
