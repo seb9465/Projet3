@@ -9,6 +9,7 @@ namespace PolyPaint.Common.Collaboration
     [Serializable]
     public class DrawViewModel
     {
+        public string Guid { get; set; }
         public string Owner { get; set; }
         public ItemTypeEnum ItemType { get; set; }
         public List<PolyPaintStylusPoint> StylusPoints { get; set; }
@@ -29,7 +30,7 @@ namespace PolyPaint.Common.Collaboration
         [JsonIgnore]
         private readonly JsonSerializerSettings SerializerSettings = new JsonSerializerSettings
         {
-            ContractResolver = new CamelCasePropertyNamesContractResolver(),
+            ContractResolver = new DefaultContractResolver(),
             NullValueHandling = NullValueHandling.Ignore
         };
 

@@ -136,7 +136,7 @@ namespace PolyPaint.Utilitaires
                 Stroke stroke = null;
                 switch (drawViewModel.ItemType)
                 {
-                    case ItemTypeEnum.RectangleStroke:
+                    case ItemTypeEnum.Comment:
                         stroke = new RectangleStroke(collection, surfaceDessin, "#FF000000", "#FFFFFFFF");
                         break;
                 }
