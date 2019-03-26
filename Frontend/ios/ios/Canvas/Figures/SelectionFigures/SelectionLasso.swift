@@ -79,11 +79,11 @@ class SelectionLasso: UIView, SelectionLassoProtocol {
         var points: [CGPoint] = [];
         points.append(CGPoint(x: firstPoint.x, y: firstPoint.y));   // Upper left corner
         points.append(CGPoint(x: firstPoint.x, y: lastPoint.y));     // Lower left corner
-        points.append(CGPoint(x: lastPoint.x, y: firstPoint.x));    // Upper right corner
+        points.append(CGPoint(x: lastPoint.x, y: firstPoint.y));    // Upper right corner
         points.append(CGPoint(x: lastPoint.x, y: lastPoint.y));     // Lower right corner
         
         for point in points {
-            if (!self.shape.contains(point)) {
+            if (!self.shape.path!.contains(point)) {
                 return false;
             }
         }
@@ -95,13 +95,13 @@ class SelectionLasso: UIView, SelectionLassoProtocol {
     
     private func clearShapePath() -> Void {
         self.shapePath.removeAllPoints();
-        self.shapePath.move(to: CGPoint(x: 0, y: 0));
+        self.shapePath.move(to: CGPoint(x: self.firstPoint.x, y: self.firstPoint.y));
     }
     
     private func addLineToShapePath(touchPoint: CGPoint) -> Void {
         self.shapePath.addLine(to: CGPoint(
-            x: touchPoint.x - self.firstPoint.x,
-            y: touchPoint.y - self.firstPoint.y
+            x: touchPoint.x,
+            y: touchPoint.y
         ));
     }
     
@@ -110,10 +110,10 @@ class SelectionLasso: UIView, SelectionLassoProtocol {
     }
     
     private func setShapeProperties() -> Void {
-        self.shapePath.move(to: CGPoint(x: 0, y: 0));
+        self.shapePath.move(to: CGPoint(x: self.firstPoint.x, y: self.firstPoint.y));
         self.shape.fillColor = nil;
         self.shape.lineWidth = 4;
-        self.shape.position = self.firstPoint;
+        self.shape.position = CGPoint(x: 0, y: 0);
         self.shape.strokeColor = UIColor.black.cgColor;
         self.shape.lineDashPattern = [4, 4];
     }

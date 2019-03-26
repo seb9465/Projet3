@@ -47,13 +47,9 @@ class Editor {
     }
     
     func selectLasso(touchPoint: CGPoint) {
-        if (self.selectionLasso == nil) {
-            self.selectionLasso = SelectionLasso(size: self.editorView.frame.size, touchPoint: touchPoint);
-            
-            self.editorView.addSubview(self.selectionLasso);
-        } else {
-            
-        }
+        self.selectionLasso = SelectionLasso(size: self.editorView.frame.size, touchPoint: touchPoint);
+        
+        self.editorView.addSubview(self.selectionLasso);
     }
     
     func selectArea(point: CGPoint) {
@@ -73,11 +69,15 @@ class Editor {
         if (self.selectionOutline != nil) {
             self.selectionOutline.removeFromSuperview()
         }
+        self.deselectLasso();
+        self.selectedFigure = nil
+    }
+    
+    func deselectLasso() -> Void {
         if (self.selectionLasso != nil) {
             self.selectionLasso.removeFromSuperview();
             self.selectionLasso = nil;
         }
-        self.selectedFigure = nil
     }
     
     public func insertConnectionFigure(firstPoint: CGPoint, lastPoint: CGPoint, itemType: ItemTypeEnum) {
@@ -359,6 +359,8 @@ extension Editor : TouchInputDelegate {
                         self.select(figure: figure);
                     }
                 }
+                self.deselectLasso();
+                self.touchEventState = .SELECT;
             }
             return
         } else if (self.touchEventState == .INSERT) {
