@@ -56,6 +56,10 @@ namespace PolyPaint
             InitializeComponent();
             _viewState = viewState;
             DataContext = new VueModele();
+            DispatcherTimer dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
+            dispatcherTimer.Tick += new EventHandler(SaveImage);
+            dispatcherTimer.Interval = new TimeSpan(0, 1, 0);
+            dispatcherTimer.Start();
 
             if (_viewState == ViewStateEnum.Online)
             {
@@ -132,18 +136,10 @@ namespace PolyPaint
                 surfaceDessin.CutSelection();
             }
         }
-        private void SaveImage(object sender, RoutedEventArgs e)
+        private void SaveImage(object sender, EventArgs e)
         {
-            // Save Strokes on a file.
-
-            SaveFileDialog saveFileDialog = new SaveFileDialog
-            {
-                DefaultExt = ".json",
-                Filter = "JSON (.json)|*.json"
-            };
-
-            // Show save file dialog box
-            Nullable<bool> result = saveFileDialog.ShowDialog();
+            // Save in temporary folder
+            string filePath = Path.Combine(Path.GetTempPath(), "POLYPAINT_" + DateTime.Now.ToFileTime() + ".json");
 
             if (surfaceDessin.Strokes.Count > 0)
             {
@@ -152,7 +148,7 @@ namespace PolyPaint
                 
                 //Serialize our "strokes"
                 FileStream fs = null;
-                fs = new FileStream(saveFileDialog.FileName, FileMode.Create);
+                fs = new FileStream(filePath, FileMode.Create);
                 var jsons = JsonConvert.SerializeObject(strokes);
                 fs.Write(Encoding.UTF8.GetBytes(jsons), 0, Encoding.UTF8.GetByteCount(jsons));
             }

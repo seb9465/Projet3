@@ -47,11 +47,6 @@
                             <GradientStop Color="#FFE0E0E0" Offset="1"/>
                         </LinearGradientBrush>
                     </StackPanel.Background>
-
-                    <Button Name="save" Click="SaveImage"
-                    Style="{StaticResource MaterialDesignFloatingActionMiniButton}" HorizontalAlignment="Left" Margin="10" ToolTip="Sauvegarder le canevas">
-                        <materialDesign:PackIcon Kind="ContentSave" Height="24" Width="24" />
-                    </Button>
                     <Button Name="load" Click="LoadImage"
                     Style="{StaticResource MaterialDesignFloatingActionMiniButton}" HorizontalAlignment="Left" Margin="10" ToolTip="Charger un canevas">
                         <materialDesign:PackIcon Kind="FileUploadOutline" Height="24" Width="24"/>
