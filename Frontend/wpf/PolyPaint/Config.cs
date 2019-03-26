@@ -8,6 +8,6 @@ namespace PolyPaint
 {
     public static class Config
     {
-        public static string URL = "https://localhost:44300";
+        public static string URL = "https://polypaint.me/";
     }
 }
