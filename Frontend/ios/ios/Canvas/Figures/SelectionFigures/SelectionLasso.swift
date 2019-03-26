@@ -25,6 +25,7 @@ class SelectionLasso: UIView {
         super.init(frame: frame);
         
         self.setInitialBorderLayer();
+        self.addPoint(touchPoint: touchPoint);
     }
     
     required init?(coder aDecoder: NSCoder) {

@@ -343,20 +343,14 @@ extension Editor : TouchInputDelegate {
                 itemType: currentFigureType
             )
             self.touchEventState = .SELECT
-            return
-        }
-        
-        if (self.touchEventState == .AREA_SELECT) {
+        } else if (self.touchEventState == .AREA_SELECT) {
 //            self.selectArea(point: point)
-            self.touchEventState = .SELECT
+            // TODO: Retourne a .SELECT seulement si la selection au lasso est completer
+//            self.touchEventState = .SELECT
+            return
+        } else if (self.touchEventState == .INSERT) {
             return
         }
-        
-        if (self.touchEventState == .INSERT) {
-            return
-        }
-        
-        self.touchEventState = .SELECT
     }
 }
 
