@@ -97,9 +97,9 @@ class CanvasController: UIViewController {
     }
     
     private func resetButtonColor() -> Void {
-        self.selectButton.tintColor = Constants.DEFAULT_BLUE_COLOR;
-        self.deleteButton.tintColor = Constants.DEFAULT_BLUE_COLOR;
-        self.insertButton.tintColor = Constants.DEFAULT_BLUE_COLOR;
+        self.selectButton.tintColor = UIColor.black;
+        self.deleteButton.tintColor = UIColor.black;
+        self.insertButton.tintColor = UIColor.black;
     }
     
     @objc private func image(_ image: UIImage, didFinishSavingWithError error: Error?, contextInfo: UnsafeRawPointer) {

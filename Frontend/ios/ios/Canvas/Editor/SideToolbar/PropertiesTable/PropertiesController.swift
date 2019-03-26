@@ -43,7 +43,7 @@ extension PropertiesTableController: UITableViewDelegate, UITableViewDataSource 
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if (self.editor.selectedFigures.count > 1) {
+        if (self.editor.selectedFigures.count > 1 || self.editor.selectedFigures.count == 0) {
             return UITableViewCell();
         }
         
