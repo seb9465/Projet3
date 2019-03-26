@@ -47,8 +47,9 @@ class Editor {
     }
     
     func selectLasso() {
-        self.selectionLasso = SelectionLasso();
-        self.selectionLasso.addSelectedFigureLayers();
+        self.selectionLasso = SelectionLasso(self.editorView.frame.size);
+        
+        self.editorView.addSubview(self.selectionLasso);
     }
     
     func selectArea(point: CGPoint) {
@@ -282,6 +283,7 @@ extension Editor : TouchInputDelegate {
             if (action == "empty") {
                 self.deselect()
                 self.touchEventState = .AREA_SELECT
+                self.selectLasso();
                 return
             }
             
@@ -299,6 +301,7 @@ extension Editor : TouchInputDelegate {
             self.deselect();
             break
         case .AREA_SELECT:
+            self.selectLasso();
             break
             
         }
@@ -340,7 +343,6 @@ extension Editor : TouchInputDelegate {
         
         if (self.touchEventState == .AREA_SELECT) {
 //            self.selectArea(point: point)
-            self.selectLasso();
             self.touchEventState = .SELECT
             return
         }

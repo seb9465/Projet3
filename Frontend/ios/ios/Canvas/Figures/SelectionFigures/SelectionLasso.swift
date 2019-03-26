@@ -12,11 +12,12 @@ import UIKit
 class SelectionLasso: UIView {
     var border: CAShapeLayer!;
     
-    init() {
-        let frame: CGRect = CGRect(origin: CGPoint(x: 0, y: 0), size: CGSize(width: 100, height: 100));
+    init(size: CGSize) {
+        let frame: CGRect = CGRect(origin: CGPoint(x: 0, y: 0), size: size);
         super.init(frame: frame);
         
         self.setInitialSelectedDashedBorder();
+        self.addSelectedFigureLayers();
     }
     
     required init?(coder aDecoder: NSCoder) {
