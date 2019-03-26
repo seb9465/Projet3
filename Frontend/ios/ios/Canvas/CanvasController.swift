@@ -70,16 +70,23 @@ class CanvasController: UIViewController {
     }
     
     @IBAction func deleteButton(_ sender: Any) {
+        self.resetButtonColor();
+        self.deleteButton.tintColor = UIColor.black;
         self.editor.changeTouchHandleState(to: .DELETE)
     }
     
     @IBAction func selectFigureButton(_ sender: Any) {
+        self.resetButtonColor();
+        self.selectButton.tintColor = UIColor.black;
         self.editor.changeTouchHandleState(to: .SELECT)
     }
     
     @IBAction func insertButtonPressed(_ sender: Any) {
+        self.resetButtonColor();
+        self.insertButton.tintColor = UIColor.black;
         self.editor.changeTouchHandleState(to: .INSERT)
     }
+    
     @IBAction func exportButtonPressed(_ sender: Any) {
         UIGraphicsBeginImageContextWithOptions(self.editor.editorView.bounds.size, false, 0.0)
         self.editor.editorView.drawHierarchy(in: self.editor.editorView.bounds, afterScreenUpdates: true)
@@ -87,6 +94,12 @@ class CanvasController: UIViewController {
         UIGraphicsEndImageContext();
         UIImageWriteToSavedPhotosAlbum(image!, self, #selector(image(_:didFinishSavingWithError:contextInfo:)), nil)
         
+    }
+    
+    private func resetButtonColor() -> Void {
+        self.selectButton.tintColor = Constants.DEFAULT_BLUE_COLOR;
+        self.deleteButton.tintColor = Constants.DEFAULT_BLUE_COLOR;
+        self.insertButton.tintColor = Constants.DEFAULT_BLUE_COLOR;
     }
     
     @objc private func image(_ image: UIImage, didFinishSavingWithError error: Error?, contextInfo: UnsafeRawPointer) {
