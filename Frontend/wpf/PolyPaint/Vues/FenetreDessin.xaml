@@ -61,7 +61,7 @@
                         <materialDesign:PackIcon Kind="FileImage" />
                     </Button>
 
-                    <Button  Style="{StaticResource MaterialDesignRaisedButton}" ToolTip="Télécharger le canevas en image JPG." 
+                    <Button  Style="{StaticResource MaterialDesignRaisedButton}" ToolTip="Télécharger le canevas en image PNG." 
                     x:Name="DownloadJPG" Width="30" Height="30" Margin="5" Padding="0" Click="DownloadCanvasAsJPG" FontSize="18">
                         <materialDesign:PackIcon Kind="FileDownload" />
                     </Button>

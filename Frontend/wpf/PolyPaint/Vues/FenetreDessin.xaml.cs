@@ -505,7 +505,8 @@ namespace PolyPaint
             System.Drawing.Image returnImage = System.Drawing.Image.FromStream(ms);
             using (System.Drawing.Image image = System.Drawing.Image.FromStream(new MemoryStream(bitmap)))
             {
-                image.Save(saveFileDialog.FileName, System.Drawing.Imaging.ImageFormat.Png);
+                if (saveFileDialog.FileName != "")
+                    image.Save(saveFileDialog.FileName, System.Drawing.Imaging.ImageFormat.Png);
             }
 
         }
