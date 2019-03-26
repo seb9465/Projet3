@@ -232,20 +232,18 @@ namespace PolyPaint
         {
             // Get the dimensions of the ink canvas
             Size size = new Size(surfaceDessin.ActualWidth, surfaceDessin.ActualHeight);
-            surfaceDessin.Margin = new Thickness(0, 0, 0, 0);
-            surfaceDessin.Measure(size);
-            surfaceDessin.Arrange(new Rect(size));
+            surfaceDessin.Measure(new Size((int)surfaceDessin.ActualWidth, (int)surfaceDessin.ActualHeight));
 
             int margin = (int)surfaceDessin.Margin.Left;
-            int width = (int)surfaceDessin.ActualWidth - margin;
-            int height = (int)surfaceDessin.ActualHeight - margin;
+            int width = (int)surfaceDessin.ActualWidth + 2 * margin;
+            int height = (int)surfaceDessin.ActualHeight + 2 * margin;
 
             // Convert the strokes from the canvas to a bitmap
-            RenderTargetBitmap rtb = new RenderTargetBitmap(width, height, 96d, 96d, PixelFormats.Default);
+            RenderTargetBitmap rtb = new RenderTargetBitmap(width, height, 96d, 96d, PixelFormats.Pbgra32);
             rtb.Render(surfaceDessin);
 
             // Save the bitmap to a memory stream
-            BmpBitmapEncoder encoder = new BmpBitmapEncoder();
+            PngBitmapEncoder encoder = new PngBitmapEncoder();
             encoder.Frames.Add(BitmapFrame.Create(rtb));
             byte[] bitmapBytes;
             using (MemoryStream ms = new MemoryStream())
