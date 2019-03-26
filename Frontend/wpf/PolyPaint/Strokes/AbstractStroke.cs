@@ -1,11 +1,12 @@
-﻿using System.Windows.Ink;
-using System.Windows.Input;
-using System.Windows.Controls;
-using System.Windows;
-using System.Windows.Media;
+﻿using System;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
-using System;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Ink;
+using System.Windows.Input;
+using System.Windows.Media;
 
 namespace PolyPaint.Strokes
 {
@@ -13,44 +14,38 @@ namespace PolyPaint.Strokes
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public Point[] AnchorPoints { get; set; }
         public bool IsDrawingDone { get; set; }
 
-        protected Point TopLeft { get; set; }
-        protected double Width { get; set; }
-        protected double Height { get; set; }
+        public Point TopLeft { get; set; }
+        public double Width { get; set; }
+        public double Height { get; set; }
 
-        protected Brush Fill { get; set; }
-        protected Pen Border { get; set; }
+        public Brush Fill { get; set; }
+        public Pen Border { get; set; }
         public DashStyle BorderStyle { get { return Border.DashStyle; } }
+        public Color BorderColor { get { return (Border.Brush as SolidColorBrush).Color; } }
+        public Color FillColor { get { return (Fill as SolidColorBrush).Color; } }
+
+        public Guid Guid { get; set; } = Guid.NewGuid();
 
         protected InkCanvas SurfaceDessin { get; set; }
-        protected FormattedText Title { get; set; }
-        public string TitleString
-        {
-            get { return Title.Text; }
-            set
-            {
-                Title = new FormattedText(value, System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 12, Brushes.Black);
-                ProprieteModifiee("Title");
-                ProprieteModifiee();
-            }
-        }
 
-        public AbstractStroke(StylusPointCollection stylusPoints, InkCanvas surfaceDessin, string title) : base(stylusPoints)
+        public AbstractStroke(StylusPointCollection pts, InkCanvas surfaceDessin, string couleurBordure, string couleurRemplissage)
+            : base(pts)
         {
             TopLeft = new Point();
             Width = 0;
             Height = 0;
 
-            Fill = Brushes.LightGray;
-            Border = new Pen(Brushes.Black, 2);
+            couleurBordure = couleurBordure == "" ? "#FF000000" : couleurBordure;
+            couleurRemplissage = couleurRemplissage == "" ? "#FFFFFFFF" : couleurRemplissage;
 
-            AnchorPoints = new Point[4];
+            Border = new Pen(new SolidColorBrush((Color)ColorConverter.ConvertFromString(couleurBordure)), 2);
+            Fill = new SolidColorBrush((Color)ColorConverter.ConvertFromString(couleurRemplissage));
+
             IsDrawingDone = false;
 
             SurfaceDessin = surfaceDessin;
-            Title = new FormattedText(title, System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 12, Brushes.Black);
         }
 
         protected virtual void ProprieteModifiee([CallerMemberName] string propertyName = null)
@@ -68,7 +63,11 @@ namespace PolyPaint.Strokes
 
         public void RemoveFromCanvas()
         {
-            SurfaceDessin.Strokes.Remove(this);
+            var stroke = SurfaceDessin.Strokes.FirstOrDefault(x => x is AbstractStroke && (x as AbstractStroke).Guid == Guid);
+            if (stroke != null)
+            {
+                SurfaceDessin.Strokes.Remove(stroke);
+            }
         }
 
         public void SetBorderStyle(DashStyle style)
@@ -80,6 +79,20 @@ namespace PolyPaint.Strokes
         public void SetBorderThickness(double thickness)
         {
             Border.Thickness = thickness;
+            Redraw();
+        }
+
+        public void SetBorderColor(string color)
+        {
+            var dashStyle = Border.DashStyle;
+            Border = new Pen(new SolidColorBrush((Color)ColorConverter.ConvertFromString(color)), Border.Thickness);
+            Border.DashStyle = dashStyle;
+            Redraw();
+        }
+
+        public void SetFillColor(string color)
+        {
+            Fill = new SolidColorBrush((Color)ColorConverter.ConvertFromString(color));
             Redraw();
         }
 

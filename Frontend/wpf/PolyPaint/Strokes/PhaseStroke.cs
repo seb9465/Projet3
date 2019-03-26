@@ -9,10 +9,10 @@ using System.Windows.Media;
 
 namespace PolyPaint.Strokes
 {
-    public class PhaseStroke : AbstractStroke, ICanvasable, INotifyPropertyChanged
+    public class PhaseStroke : AbstractShapeStroke
     {
-        public PhaseStroke(StylusPointCollection pts, InkCanvas surfaceDessin)
-            : base(pts, surfaceDessin, "Phase")
+        public PhaseStroke(StylusPointCollection pts, InkCanvas surfaceDessin, string couleurBordure, string couleurRemplissage)
+            : base(pts, surfaceDessin, "Phase", couleurBordure, couleurRemplissage)
         { }
 
         protected override void DrawCore(DrawingContext drawingContext, DrawingAttributes drawingAttributes)

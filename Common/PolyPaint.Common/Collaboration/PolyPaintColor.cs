@@ -1,5 +1,8 @@
-﻿namespace PolyPaint.Common.Collaboration
+﻿using System;
+
+namespace PolyPaint.Common.Collaboration
 {
+    [Serializable]
     public class PolyPaintColor
     {
         public byte A { get; set; }

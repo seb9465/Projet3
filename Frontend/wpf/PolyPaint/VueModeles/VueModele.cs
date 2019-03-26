@@ -7,6 +7,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Ink;
 using System.Windows.Media;
 using Microsoft.AspNetCore.SignalR.Client;
@@ -15,6 +16,7 @@ using PolyPaint.Modeles;
 using PolyPaint.Strokes;
 using PolyPaint.Structures;
 using PolyPaint.Utilitaires;
+using Xceed.Wpf.Toolkit;
 
 namespace PolyPaint.VueModeles
 {
@@ -26,16 +28,6 @@ namespace PolyPaint.VueModeles
     /// </summary>
     class VueModele : INotifyPropertyChanged
     {
-        private static ConcurrentDictionary<string, DashStyle> _dashAssociations = new ConcurrentDictionary<string, DashStyle>(
-            new Dictionary<string, DashStyle>()
-            {
-                { "solid", DashStyles.Solid },
-                {"dash", DashStyles.Dash },
-                {"dot", DashStyles.Dot },
-                {"dash_dot", DashStyles.DashDot },
-            }
-        );
-
         public event PropertyChangedEventHandler PropertyChanged;
         private Editeur editeur = new Editeur();
         private string _currentRoom;
@@ -85,10 +77,33 @@ namespace PolyPaint.VueModeles
             set { ProprieteModifiee(); }
         }
 
-        public string CouleurSelectionnee
+        public string DefaultColor
         {
-            get { return editeur.CouleurSelectionnee; }
-            set { editeur.CouleurSelectionnee = value; }
+            get { return "#00000000"; }
+            set { editeur.CouleurSelectionneeBordure = value; ProprieteModifiee("CouleurSelectionneeBordureConverted"); }
+        }
+
+        public string CouleurSelectionneeBordure
+        {
+            get { return editeur.CouleurSelectionneeBordure; }
+            set { editeur.CouleurSelectionneeBordure = value; ProprieteModifiee("CouleurSelectionneeBordureConverted"); }
+        }
+
+        public string CouleurSelectionneeBordureConverted
+        {
+            get { return editeur.CouleurSelectionneeBordureConverted; }
+        }
+
+        public string CouleurSelectionneeRemplissage
+        {
+            get { return editeur.CouleurSelectionneeRemplissage; }
+            set { editeur.CouleurSelectionneeRemplissage = value; ProprieteModifiee("CouleurSelectionneeRemplissageConverted"); }
+        }
+
+        public string CouleurSelectionneeRemplissageConverted
+        {
+            get { return editeur.CouleurSelectionneeRemplissageConverted; }
+            set { editeur.CouleurSelectionneeRemplissage = value; ProprieteModifiee("CouleurSelectionneeRemplissageConverted"); }
         }
 
         public string PointeSelectionnee
@@ -111,7 +126,7 @@ namespace PolyPaint.VueModeles
 
         public Boolean IsStrokeSelected
         {
-            get { return editeur.SelectedStrokes.All(x => x is AbstractStroke) && editeur.SelectedStrokes.Count > 0; }
+            get { return editeur.SelectedStrokes.Any(x => x is AbstractStroke) && editeur.SelectedStrokes.Count > 0; }
             set { ProprieteModifiee(); }
         }
 
@@ -144,7 +159,7 @@ namespace PolyPaint.VueModeles
 
             // On initialise les attributs de dessin avec les valeurs de départ du modèle.
             AttributsDessin = new DrawingAttributes();
-            AttributsDessin.Color = (Color)ColorConverter.ConvertFromString(editeur.CouleurSelectionnee);
+            AttributsDessin.Color = (Color)ColorConverter.ConvertFromString(editeur.CouleurSelectionneeBordure);
             AjusterPointe();
 
             Traits = editeur.traits;
@@ -195,11 +210,7 @@ namespace PolyPaint.VueModeles
         /// Il indique quelle propriété a été modifiée dans le modèle.</param>
         private void EditeurProprieteModifiee(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == "CouleurSelectionnee")
-            {
-                AttributsDessin.Color = (Color)ColorConverter.ConvertFromString(editeur.CouleurSelectionnee);
-            }
-            else if (e.PropertyName == "OutilSelectionne")
+            if (e.PropertyName == "OutilSelectionne")
             {
                 OutilSelectionne = editeur.OutilSelectionne;
             }
@@ -234,17 +245,52 @@ namespace PolyPaint.VueModeles
         private void chooseBorder(string border)
         {
             SelectedBorder = border;
-            
-            foreach (AbstractStroke stroke in editeur.SelectedStrokes)
+
+            foreach (AbstractStroke stroke in editeur.SelectedStrokes.Where(x => x is AbstractStroke))
             {
-                stroke.SetBorderStyle(_dashAssociations[border]);
+                stroke.SetBorderStyle(Tools.DashAssociations[border]);
             }
         }
 
-        public void ChangeSelection(StrokeCollection strokes)
+        public void ChangeSelection(InkCanvas surfaceDessin)
         {
+            var strokes = surfaceDessin.GetSelectedStrokes();
             editeur.SelectedStrokes = strokes;
             ProprieteModifiee("IsStrokeSelected");
+
+            HandleBorderColorChange(strokes);
+            HandleFillColorChange(strokes);
+            HandleBorderStyleChange(strokes);
+        }
+
+        private void HandleBorderColorChange(StrokeCollection strokes)
+        {
+            if (strokes.Where(x => x is AbstractStroke).Select(x => (x as AbstractStroke).BorderColor).Distinct().Count() > 1 ||
+                strokes.Count() == 0)
+            {
+                CouleurSelectionneeBordure = "";
+            }
+            else
+            {
+                CouleurSelectionneeBordure = (strokes.First(x => x is AbstractStroke) as AbstractStroke).BorderColor.ToString();
+            }
+        }
+
+        private void HandleFillColorChange(StrokeCollection strokes)
+        {
+            if (strokes.Where(x => x is AbstractStroke).Select(x => (x as AbstractStroke).FillColor).Distinct().Count() > 1 ||
+                strokes.Count() == 0)
+            {
+                CouleurSelectionneeRemplissage = "";
+            }
+            else
+            {
+                CouleurSelectionneeRemplissage = (strokes.First(x => x is AbstractStroke) as AbstractStroke).FillColor.ToString();
+            }
+        }
+
+        private void HandleBorderStyleChange(StrokeCollection strokes)
+        {
             if (!strokes.All(x => x is AbstractStroke) ||
                 strokes.Select(x => (x as AbstractStroke).BorderStyle).Distinct().Count() > 1 ||
                 strokes.Count() == 0)
@@ -253,7 +299,7 @@ namespace PolyPaint.VueModeles
             }
             else
             {
-                SelectedBorder = _dashAssociations.First(x => x.Value == (strokes.First() as AbstractStroke).BorderStyle).Key;
+                SelectedBorder = Tools.DashAssociations.First(x => x.Value == (strokes.First() as AbstractStroke).BorderStyle).Key;
             }
         }
 
