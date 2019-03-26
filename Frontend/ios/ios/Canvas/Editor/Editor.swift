@@ -74,7 +74,7 @@ class Editor {
             self.selectionOutline.removeFromSuperview()
         }
         if (self.selectionLasso != nil) {
-            self.selectionLasso.removeSelectedFigureLayers();
+            self.selectionLasso.removeFromSuperview();
             self.selectionLasso = nil;
         }
         self.selectedFigure = nil
