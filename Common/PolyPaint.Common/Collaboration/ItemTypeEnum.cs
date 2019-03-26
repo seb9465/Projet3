@@ -17,6 +17,7 @@ namespace PolyPaint.Common.Collaboration
         BidirectionalAssociationStroke,
         CompositionStroke,
         InheritanceStroke,
-        UnidirectionalAssociationStroke
+        UnidirectionalAssociationStroke,
+        ImageStroke
     }
 }
