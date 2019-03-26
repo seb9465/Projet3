@@ -222,8 +222,8 @@ extension Editor: SideToolbarDelegate {
         self.deselect()
         self.select(figure: figureSelected!)
     }
+    
     @objc private func rotatedView(_ sender: UIRotationGestureRecognizer) {
-
         if(self.selectedFigure != nil && sender.state == .changed) {
             let figureSelected = self.selectedFigure;
             let currentRotationAngle = Int(rad2deg(sender.rotation))
@@ -242,7 +242,7 @@ extension Editor: SideToolbarDelegate {
 
         }
         print("rotation gesture is detected")
-        }
+    }
     
     func rad2deg(_ number: CGFloat) -> CGFloat {
         return number * 180 / .pi
