@@ -30,7 +30,7 @@ namespace PolyPaint.Vues
         private void Ok_Click(object sender, RoutedEventArgs e)
         {
             CanvasName = nameTextBox.Text;
-            CanvasVisibility = nameTextBox.Text;
+            CanvasVisibility = visibilityComboBox.Text;
             Close();
         }
     }
