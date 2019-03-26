@@ -99,6 +99,10 @@
 		C489A46A224A7CB500492CCB /* ClassAttributeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C489A46C224A7CB500492CCB /* ClassAttributeCell.xib */; };
 		C489A46D224A7CBB00492CCB /* AddAttributeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C489A46F224A7CBB00492CCB /* AddAttributeCell.xib */; };
 		C489A470224A7CC000492CCB /* AddMethodCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C489A472224A7CC000492CCB /* AddMethodCell.xib */; };
+		C489A476224A7F9700492CCB /* TextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C489A474224A7F9700492CCB /* TextCell.swift */; };
+		C489A478224A811200492CCB /* TextCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C489A47A224A811200492CCB /* TextCell.xib */; };
+		C489A47E224A982200492CCB /* PhaseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C489A47C224A982200492CCB /* PhaseCell.swift */; };
+		C489A47F224A982200492CCB /* PhaseCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C489A47D224A982200492CCB /* PhaseCell.xib */; };
 		C495FEBE22381BDF006E49F9 /* UMLImageFigure.swift in Sources */ = {isa = PBXBuildFile; fileRef = C495FEBD22381BDF006E49F9 /* UMLImageFigure.swift */; };
 		C495FEC22238248E006E49F9 /* Ressources in Resources */ = {isa = PBXBuildFile; fileRef = C495FEC12238248E006E49F9 /* Ressources */; };
 		C4D12706224418F3004B3641 /* UmlCommentFigure.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D12705224418F3004B3641 /* UmlCommentFigure.swift */; };
@@ -220,6 +224,10 @@
 		C489A46B224A7CB500492CCB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/ClassAttributeCell.xib; sourceTree = "<group>"; };
 		C489A46E224A7CBB00492CCB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/AddAttributeCell.xib; sourceTree = "<group>"; };
 		C489A471224A7CC000492CCB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/AddMethodCell.xib; sourceTree = "<group>"; };
+		C489A474224A7F9700492CCB /* TextCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextCell.swift; sourceTree = "<group>"; };
+		C489A479224A811200492CCB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/TextCell.xib; sourceTree = "<group>"; };
+		C489A47C224A982200492CCB /* PhaseCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhaseCell.swift; sourceTree = "<group>"; };
+		C489A47D224A982200492CCB /* PhaseCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PhaseCell.xib; sourceTree = "<group>"; };
 		C495FEBD22381BDF006E49F9 /* UMLImageFigure.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UMLImageFigure.swift; path = ios/Canvas/Figures/UMLImageFigure.swift; sourceTree = SOURCE_ROOT; };
 		C495FEC12238248E006E49F9 /* Ressources */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Ressources; sourceTree = "<group>"; };
 		C4D12705224418F3004B3641 /* UmlCommentFigure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UmlCommentFigure.swift; sourceTree = "<group>"; };
@@ -648,6 +656,8 @@
 		C47715C72241959D008F27E6 /* PropertiesTable */ = {
 			isa = PBXGroup;
 			children = (
+				C489A47B224A959500492CCB /* PhaseCell */,
+				C489A473224A7F7E00492CCB /* TextCell */,
 				3D6E4C3F223ADEBC00E391D4 /* BorderCell */,
 				3DE8F115223C32330052580B /* ClassCell */,
 				C47715BA22414569008F27E6 /* RotateCell */,
@@ -655,6 +665,24 @@
 				C47715C82241969F008F27E6 /* PropertiesController.swift */,
 			);
 			path = PropertiesTable;
+			sourceTree = "<group>";
+		};
+		C489A473224A7F7E00492CCB /* TextCell */ = {
+			isa = PBXGroup;
+			children = (
+				C489A474224A7F9700492CCB /* TextCell.swift */,
+				C489A47A224A811200492CCB /* TextCell.xib */,
+			);
+			path = TextCell;
+			sourceTree = "<group>";
+		};
+		C489A47B224A959500492CCB /* PhaseCell */ = {
+			isa = PBXGroup;
+			children = (
+				C489A47C224A982200492CCB /* PhaseCell.swift */,
+				C489A47D224A982200492CCB /* PhaseCell.xib */,
+			);
+			path = PhaseCell;
 			sourceTree = "<group>";
 		};
 		C4D1270822441D67004B3641 /* CommentCell */ = {
@@ -778,8 +806,10 @@
 				B711B5F121F659A50096BF7F /* Assets.xcassets in Resources */,
 				3DA5CA512244406700087298 /* ConnectionSelectionCell.xib in Resources */,
 				B756794A220F5DC800F80B12 /* Chat.storyboard in Resources */,
+				C489A478224A811200492CCB /* TextCell.xib in Resources */,
 				B7B1B4482234725E00BEE17D /* ChatRoomsControllerTableViewController.xib in Resources */,
 				3DE8F11A223C43BD0052580B /* ClassCell.xib in Resources */,
+				C489A47F224A982200492CCB /* PhaseCell.xib in Resources */,
 				3DA5CA4822441A9200087298 /* GalleryCell.xib in Resources */,
 				C489A46D224A7CBB00492CCB /* AddAttributeCell.xib in Resources */,
 				C489A46A224A7CB500492CCB /* ClassAttributeCell.xib in Resources */,
@@ -929,6 +959,7 @@
 				3D1622B22239AB4F00B98263 /* Figure.swift in Sources */,
 				B7B1B4392231BE8000BEE17D /* MessageDataSourceExtension.swift in Sources */,
 				B7B1B4402231C06900BEE17D /* MessageLayoutExtension.swift in Sources */,
+				C489A47E224A982200492CCB /* PhaseCell.swift in Sources */,
 				B79117DF2234AE830008CB4C /* Channel.swift in Sources */,
 				B7A3A5C02203BF3B00031F64 /* ChatControler.swift in Sources */,
 				3DA5CA43224414D200087298 /* PublicGalleryController.swift in Sources */,
@@ -961,6 +992,7 @@
 				C495FEBE22381BDF006E49F9 /* UMLImageFigure.swift in Sources */,
 				3D73359F22373D5E0021FA3C /* FigureFactory.swift in Sources */,
 				B7567946220F33CD00F80B12 /* ChatService.swift in Sources */,
+				C489A476224A7F9700492CCB /* TextCell.swift in Sources */,
 				3D6E4C3D223ADE7000E391D4 /* BorderCell.swift in Sources */,
 				B7567948220F355F00F80B12 /* Constants.swift in Sources */,
 				C4D12706224418F3004B3641 /* UmlCommentFigure.swift in Sources */,
@@ -1056,6 +1088,14 @@
 				C489A471224A7CC000492CCB /* Base */,
 			);
 			name = AddMethodCell.xib;
+			sourceTree = "<group>";
+		};
+		C489A47A224A811200492CCB /* TextCell.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C489A479224A811200492CCB /* Base */,
+			);
+			name = TextCell.xib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
