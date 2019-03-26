@@ -371,6 +371,7 @@
     <Compile Include="Config.cs" />
     <Compile Include="Convertisseurs\Convertisseurs.cs" />
     <Compile Include="Modeles\ChatClient.cs" />
+    <Compile Include="Modeles\CollaborationClient.cs" />
     <Compile Include="Modeles\Editeur.cs" />
     <Compile Include="Modeles\Room.cs" />
     <Compile Include="Modeles\SaveableElement.cs" />

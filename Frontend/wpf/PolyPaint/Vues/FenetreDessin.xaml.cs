@@ -10,15 +10,11 @@ using PolyPaint.Utilitaires;
 using PolyPaint.VueModeles;
 using PolyPaint.Vues;
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -55,35 +51,19 @@ namespace PolyPaint
         {
             InitializeComponent();
             _viewState = viewState;
-            DataContext = new VueModele();
+            DataContext = new VueModele(viewState);
+
+            (DataContext as VueModele).CollaborationClient.Initialize((string)Application.Current.Properties["token"]);
+            (DataContext as VueModele).CollaborationClient.DrawReceived += ReceiveDraw;
+            (DataContext as VueModele).CollaborationClient.SelectReceived += ReceiveSelect;
+            (DataContext as VueModele).CollaborationClient.DuplicateReceived += ReceiveDuplicate;
+            (DataContext as VueModele).CollaborationClient.DeleteReceived += ReceiveDelete;
+            (DataContext as VueModele).CollaborationClient.ResetReceived += ReceiveReset;
+
             DispatcherTimer dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
             dispatcherTimer.Tick += new EventHandler(SaveImage);
             dispatcherTimer.Interval = new TimeSpan(0, 1, 0);
             dispatcherTimer.Start();
-
-            if (_viewState == ViewStateEnum.Online)
-            {
-                object token = Application.Current.Properties["token"];
-                username = Application.Current.Properties["username"].ToString();
-                //token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6InVzZXIuMyIsIm5hbWVpZCI6Ijg4OTU2NjlhLTYyMmMtNDk2ZS1iZTkwLTI4YTQzMGE3NzhhZSIsImZhbWlseV9uYW1lIjoidXNlcjMiLCJuYmYiOjE1NTIyNTY1ODgsImV4cCI6NjE1NTIyNTY1MjgsImlhdCI6MTU1MjI1NjU4OCwiaXNzIjoiaHR0cHM6Ly9wb2x5cGFpbnQubWUiLCJhdWQiOiJodHRwczovL3BvbHlwYWludC5tZSJ9._CGBRWU961rt14S5FTx9QuzFkTCX86iel2PiMZ_PzMs";
-                ConnectToCollaborativeServer((string)token);
-                (DataContext as VueModele).ChatClient.Initialize((string)Application.Current.Properties["token"]);
-                (DataContext as VueModele).ChatClient.MessageReceived += ScrollDown;
-                externalChatWindow = new ChatWindow(DataContext);
-                Application.Current.Exit += OnClosing;
-
-            }
-            else
-            {
-                sendToCloud.Visibility = Visibility.Collapsed;
-                importFromCloud.Visibility = Visibility.Collapsed;
-                chatMenu.Visibility = Visibility.Collapsed;
-
-                Thickness margin = surfaceDessin.Margin;
-                margin.Right = -790;
-                margin.Bottom = -260;
-                surfaceDessin.Margin = margin;
-            }
         }
 
         // Pour gérer les points de contrôles.
@@ -114,27 +94,17 @@ namespace PolyPaint
 
         private async void DupliquerSelection(object sender, RoutedEventArgs e)
         {
-            if (_viewState == ViewStateEnum.Online)
-            {
-                await CollaborativeDuplicateAsync();
-            }
-            else
-            {
-                surfaceDessin.CopySelection();
-                surfaceDessin.Paste();
-            }
+            await (DataContext as VueModele).CollaborationClient.CollaborativeDuplicateAsync();
+
+            surfaceDessin.CopySelection();
+            surfaceDessin.Paste();
         }
 
         private async void SupprimerSelection(object sender, RoutedEventArgs e)
         {
-            if (_viewState == ViewStateEnum.Online)
-            {
-                await CollaborativeDeleteAsync();
-            }
-            else
-            {
-                surfaceDessin.CutSelection();
-            }
+            await (DataContext as VueModele).CollaborationClient.CollaborativeDeleteAsync();
+            surfaceDessin.CutSelection();
+
         }
         private void SaveImage(object sender, EventArgs e)
         {
@@ -145,7 +115,7 @@ namespace PolyPaint
             {
                 // Change strokes into DrawViewModels
                 List<DrawViewModel> strokes = rebuilder.GetDrawViewModelsFromStrokes(surfaceDessin.Strokes);
-                
+
                 //Serialize our "strokes"
                 FileStream fs = null;
                 fs = new FileStream(filePath, FileMode.Create);
@@ -173,7 +143,7 @@ namespace PolyPaint
             fs.Read(jsons, 0, (int)fs.Length);
 
             List<DrawViewModel> customStrokes = JsonConvert.DeserializeObject<List<DrawViewModel>>(Encoding.UTF8.GetString(jsons));
-            
+
             // Rebuild the strokes
             rebuilder.BuildStrokesFromDrawViewModels(customStrokes, surfaceDessin);
         }
@@ -217,7 +187,7 @@ namespace PolyPaint
             }
             progressBar.Visibility = Visibility.Collapsed;
             Gallery gallery = new Gallery(strokes, surfaceDessin);
-           
+
             surfaceDessin.Strokes.Clear();
             surfaceDessin.Strokes.Add(gallery.SelectedCanvas.Strokes);
         }
@@ -326,7 +296,7 @@ namespace PolyPaint
             }
             catch { }
         }
-       
+
 
         private async void InkCanvas_LeftMouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -334,21 +304,15 @@ namespace PolyPaint
 
             if ((DataContext as VueModele).OutilSelectionne == "select")
             {
+                SelectViewModel selectViewModel = new SelectViewModel
+                {
+                    MouseLeftDownPointX = mouseLeftDownPoint.X,
+                    MouseLeftDownPointY = mouseLeftDownPoint.Y,
+                    Owner = username,
+                };
+                await (DataContext as VueModele).CollaborationClient.CollaborativeSelectAsync(selectViewModel);
 
-                if (_viewState == ViewStateEnum.Online)
-                {
-                    SelectViewModel selectViewModel = new SelectViewModel
-                    {
-                        MouseLeftDownPointX = mouseLeftDownPoint.X,
-                        MouseLeftDownPointY = mouseLeftDownPoint.Y,
-                        Owner = username,
-                    };
-                    await CollaborativeSelectAsync(selectViewModel);
-                }
-                else
-                {
-                    (DataContext as VueModele).SelectItemOffline(surfaceDessin, mouseLeftDownPoint);
-                }
+                (DataContext as VueModele).SelectItemOffline(surfaceDessin, mouseLeftDownPoint);
             }
             else
             {
@@ -367,69 +331,26 @@ namespace PolyPaint
         private async void InkCanvas_LeftMouseUp(object sender, MouseButtonEventArgs e)
         {
             if ((DataContext as VueModele).OutilSelectionne == "") return;
-            if (_viewState == ViewStateEnum.Online)
+            if (icEventManager.DrawingStroke != null)
             {
                 StrokeCollection alloA = new StrokeCollection
                 {
                     icEventManager.DrawingStroke
                 };
                 List<DrawViewModel> allo = rebuilder.GetDrawViewModelsFromStrokes(alloA);
-                await CollaborativeDrawAsync(allo[0]);
+                await (DataContext as VueModele).CollaborationClient.CollaborativeDrawAsync(allo[0]);
             }
-            else
-            {
-                icEventManager.EndDraw(surfaceDessin, (DataContext as VueModele).OutilSelectionne);
-            }
+            icEventManager.EndDraw(surfaceDessin, (DataContext as VueModele).OutilSelectionne);
             if ((DataContext as VueModele).OutilSelectionne == "change_text")
             {
                 icEventManager.ChangeText(surfaceDessin, mouseLeftDownPoint);
             }
             IsDrawing = false;
-
-        }
-
-        public async void ConnectToCollaborativeServer(string accessToken)
-        {
-            Connection =
-                new HubConnectionBuilder()
-                .WithUrl($"{Config.URL}/signalr/collaborative", options =>
-                {
-                    options.AccessTokenProvider = () => Task.FromResult(accessToken);
-                })
-                .Build();
-
-            HandleMessages();
-            await Connection.StartAsync();
-        }
-
-       
-        private async Task CollaborativeDrawAsync(DrawViewModel drawViewModel)
-        {
-            await Connection.InvokeAsync("Draw", JsonConvert.SerializeObject(drawViewModel));
-        }
-        private async Task CollaborativeSelectAsync(SelectViewModel selectViewModel)
-        {
-            await Connection.InvokeAsync("Select", selectViewModel);
-        }
-        private async Task CollaborativeDuplicateAsync()
-        {
-            object o = Clipboard.GetDataObject();
-
-            await Connection.InvokeAsync("Duplicate");
-        }
-        private async Task CollaborativeDeleteAsync()
-        {
-            await Connection.InvokeAsync("Delete");
-        }
-
-        private async Task CollaborativeResetAsync()
-        {
-            await Connection.InvokeAsync("Reset", "general");
         }
 
         private void MessageTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (!String.IsNullOrWhiteSpace(messageTextBox.Text))
+            if (!string.IsNullOrWhiteSpace(messageTextBox.Text))
             {
                 sendButton.IsEnabled = true;
             }
@@ -441,7 +362,7 @@ namespace PolyPaint
         private void AddImageToCanvas(object sender, RoutedEventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
-            Nullable<bool> result = openFileDialog.ShowDialog();
+            bool? result = openFileDialog.ShowDialog();
 
             ImageBrush ib = new ImageBrush
             {
@@ -474,7 +395,7 @@ namespace PolyPaint
             };
 
             // Show save file dialog box
-            Nullable<bool> result = saveFileDialog.ShowDialog();
+            bool? result = saveFileDialog.ShowDialog();
             MemoryStream ms = new MemoryStream(bitmap);
             System.Drawing.Image returnImage = System.Drawing.Image.FromStream(ms);
             using (System.Drawing.Image image = System.Drawing.Image.FromStream(new MemoryStream(bitmap)))
@@ -486,60 +407,35 @@ namespace PolyPaint
         }
         private async void Reinitialiser_Click(object sender, RoutedEventArgs e)
         {
-            if (_viewState == ViewStateEnum.Online)
-            {
-                await CollaborativeResetAsync();
-            }
+            await (DataContext as VueModele).CollaborationClient.CollaborativeResetAsync();
         }
 
-        private void HandleMessages()
+        private void ReceiveDraw(object sender, MessageArgs args)
         {
-            Connection.On<string, string, string>("ReceiveMessage", (username, message, timestamp) =>
-            {
-                MessageReceived?.Invoke(this, new MessageArgs(username, message, timestamp));
-            });
-            Connection.On<string>("SystemMessage", (message) =>
-            {
-                Console.WriteLine(message);
-            });
-            Connection.On<string>("Draw", (drawViewModelString) =>
-            {
-                Dispatcher.Invoke(() =>
-                {
-                    DrawViewModel drawViewModel = JsonConvert.DeserializeObject<DrawViewModel>(drawViewModelString);
-                    icEventManager.EndDraw(surfaceDessin, drawViewModel, username);
-                });
-            });
-            Connection.On<SelectViewModel>("Select", (selectViewModel) =>
-            {
-                Dispatcher.Invoke(() =>
-                {
-                    (DataContext as VueModele).SelectItemOnline(surfaceDessin, selectViewModel, username);
-                });
-            });
-            Connection.On("Duplicate", () =>
-            {
-                Dispatcher.Invoke(() =>
-                {
-                    surfaceDessin.CopySelection();
-                    surfaceDessin.Paste();
-                });
-            });
-            Connection.On("Delete", () =>
-            {
-                Dispatcher.Invoke(() =>
-                {
-                    surfaceDessin.CutSelection();
-                });
-            });
-            Connection.On("Reset", () =>
-            {
-                Dispatcher.Invoke(() =>
-                {
-                    reinitialiser.Command = (DataContext as VueModele).Reinitialiser;
-                    reinitialiser.Command.Execute(reinitialiser.CommandParameter);
-                });
-            });
+            DrawViewModel drawViewModel = JsonConvert.DeserializeObject<DrawViewModel>(args.Message);
+            icEventManager.EndDraw(surfaceDessin, drawViewModel, username);
+        }
+
+        private void ReceiveSelect(object sender, MessageArgs args)
+        {
+            (DataContext as VueModele).SelectItemOnline(surfaceDessin, JsonConvert.DeserializeObject<SelectViewModel>(args.Message), username);
+        }
+
+        private void ReceiveDuplicate(object sender, MessageArgs args)
+        {
+            surfaceDessin.CopySelection();
+            surfaceDessin.Paste();
+        }
+
+        private void ReceiveDelete(object sender, MessageArgs args)
+        {
+            surfaceDessin.CutSelection();
+        }
+
+        private void ReceiveReset(object sender, EventArgs args)
+        {
+            reinitialiser.Command = (DataContext as VueModele).Reinitialiser;
+            reinitialiser.Command.Execute(reinitialiser.CommandParameter);
         }
 
         void InkCanvas_SelectionMoving(object sender, InkCanvasSelectionEditingEventArgs e)

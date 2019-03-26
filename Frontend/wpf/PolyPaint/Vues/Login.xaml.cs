@@ -31,7 +31,7 @@ namespace PolyPaint.Vues
 
         private async void LoginBtn_Click(object sender, RoutedEventArgs e)
         {
-           // errors_label.Content = "";
+            // errors_label.Content = "";
             LoginViewModel loginViewModel = new LoginViewModel()
             {
                 Username = usernameBox.Text,
@@ -46,7 +46,15 @@ namespace PolyPaint.Vues
                 client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
                 StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
                 HttpResponseMessage result = await client.PostAsync("/api/login", content);
-                string token = JsonConvert.DeserializeObject<string>(await result.Content.ReadAsStringAsync());
+                string token = "";
+                try
+                {
+                    token = JsonConvert.DeserializeObject<string>(await result.Content.ReadAsStringAsync());
+                }
+                catch (JsonReaderException exc)
+                {
+                    Console.WriteLine(exc.Message);
+                }
 
                 if (result.StatusCode == System.Net.HttpStatusCode.OK)
                 {
@@ -71,7 +79,8 @@ namespace PolyPaint.Vues
             Close();
             register.Show();
         }
-        private void DecodeToken(string token) {
+        private void DecodeToken(string token)
+        {
             var handler = new JwtSecurityTokenHandler();
             var userToken = handler.ReadToken(token) as JwtSecurityToken;
             Application.Current.Properties.Add("token", token);

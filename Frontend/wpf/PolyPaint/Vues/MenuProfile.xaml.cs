@@ -31,7 +31,7 @@ namespace PolyPaint
         public MenuProfile()
         {
             InitializeComponent();
-            DataContext = new VueModele();
+            DataContext = new VueModele(_viewState);
             username = Application.Current.Properties["username"].ToString();
             usernameLabel.Content = username;
 
