@@ -77,6 +77,7 @@
 		B781B95922132BDB001C1BD8 /* Canvas.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B781B95822132BDB001C1BD8 /* Canvas.storyboard */; };
 		B781B95B22132C2F001C1BD8 /* CanvasController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B781B95A22132C2F001C1BD8 /* CanvasController.swift */; };
 		B79117DF2234AE830008CB4C /* Channel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B79117DE2234AE830008CB4C /* Channel.swift */; };
+		B79D8449224A7AC100537981 /* SelectionLasso.swift in Sources */ = {isa = PBXBuildFile; fileRef = B79D8448224A7AC100537981 /* SelectionLasso.swift */; };
 		B7A3A5C02203BF3B00031F64 /* ChatControler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A3A5BF2203BF3B00031F64 /* ChatControler.swift */; };
 		B7A3A5C22203C27600031F64 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A3A5C12203C27600031F64 /* Message.swift */; };
 		B7A3A5C42203CF7100031F64 /* Extensions_UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A3A5C32203CF7100031F64 /* Extensions_UIColor.swift */; };
@@ -198,6 +199,7 @@
 		B781B95822132BDB001C1BD8 /* Canvas.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Canvas.storyboard; sourceTree = "<group>"; };
 		B781B95A22132C2F001C1BD8 /* CanvasController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasController.swift; sourceTree = "<group>"; };
 		B79117DE2234AE830008CB4C /* Channel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Channel.swift; sourceTree = "<group>"; };
+		B79D8448224A7AC100537981 /* SelectionLasso.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionLasso.swift; sourceTree = "<group>"; };
 		B7A3A5BF2203BF3B00031F64 /* ChatControler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatControler.swift; sourceTree = "<group>"; };
 		B7A3A5C12203C27600031F64 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		B7A3A5C32203CF7100031F64 /* Extensions_UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions_UIColor.swift; sourceTree = "<group>"; };
@@ -293,6 +295,7 @@
 			children = (
 				C4D6BB2622384F5B00121695 /* AnchorPoints.swift */,
 				3D66FC76223817E800EB7E93 /* SelectionOutline.swift */,
+				B79D8448224A7AC100537981 /* SelectionLasso.swift */,
 			);
 			path = SelectionFigures;
 			sourceTree = "<group>";
@@ -954,6 +957,7 @@
 				3DC07CC722205B7C0045E7DE /* ContextMenuCell.swift in Sources */,
 				B7B1B44A22348E9700BEE17D /* AddScreenViewController.swift in Sources */,
 				C47715C92241969F008F27E6 /* PropertiesController.swift in Sources */,
+				B79D8449224A7AC100537981 /* SelectionLasso.swift in Sources */,
 				3D2268252237050F00B2F604 /* UmlFigure.swift in Sources */,
 				C4D1271422459521004B3641 /* UMLTextFigure.swift in Sources */,
 				3DA5CA4A2244395500087298 /* UmlActorFigure.swift in Sources */,
@@ -1143,14 +1147,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = PKMXAQ88Q4;
+				DEVELOPMENT_TEAM = Z9SQJM9KY3;
 				INFOPLIST_FILE = ios/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3.3;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "ca.polymtl.H18-LOG3900-1";
+				PRODUCT_BUNDLE_IDENTIFIER = "ca.polymtl.H18-LOG3900-122";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = 2;
@@ -1163,14 +1167,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = PKMXAQ88Q4;
+				DEVELOPMENT_TEAM = Z9SQJM9KY3;
 				INFOPLIST_FILE = ios/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3.3;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "ca.polymtl.H18-LOG3900-1";
+				PRODUCT_BUNDLE_IDENTIFIER = "ca.polymtl.H18-LOG3900-122";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = 2;
