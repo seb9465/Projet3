@@ -369,12 +369,12 @@ namespace PolyPaint
             if ((DataContext as VueModele).OutilSelectionne == "") return;
             if (_viewState == ViewStateEnum.Online)
             {
-                StrokeCollection alloA = new StrokeCollection
+                StrokeCollection strokeInACollection = new StrokeCollection
                 {
                     icEventManager.DrawingStroke
                 };
-                List<DrawViewModel> allo = rebuilder.GetDrawViewModelsFromStrokes(alloA);
-                await CollaborativeDrawAsync(allo[0]);
+                List<DrawViewModel> drawViewModel = rebuilder.GetDrawViewModelsFromStrokes(strokeInACollection);
+                await CollaborativeDrawAsync(drawViewModel[0]);
             }
             else
             {
