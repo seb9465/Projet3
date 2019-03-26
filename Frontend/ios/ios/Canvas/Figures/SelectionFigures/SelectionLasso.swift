@@ -9,7 +9,11 @@
 import Foundation
 import UIKit
 
-class SelectionLasso: UIView {
+protocol SelectionLassoProtocol {
+    var shapeIsClosed: Bool { get }
+}
+
+class SelectionLasso: UIView, SelectionLassoProtocol {
     private let radius: CGFloat = 5.0;
     
     private var firstPoint: CGPoint;
@@ -17,7 +21,7 @@ class SelectionLasso: UIView {
     
     private var shape: CAShapeLayer;
     private var shapePath: UIBezierPath;
-    private var shapeIsClosed: Bool;
+    var shapeIsClosed: Bool;
     
     init(size: CGSize, touchPoint: CGPoint) {
         self.firstPoint = touchPoint;
