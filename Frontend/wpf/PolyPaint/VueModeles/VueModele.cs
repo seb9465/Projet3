@@ -9,6 +9,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Ink;
+using System.Windows.Input;
 using System.Windows.Media;
 using Microsoft.AspNetCore.SignalR.Client;
 using PolyPaint.Common.Collaboration;
@@ -260,12 +261,10 @@ namespace PolyPaint.VueModeles
             foreach (AbstractStroke stroke in editeur.SelectedStrokes.Where(x => x is AbstractStroke))
             {
                 stroke.Rotation = (stroke.Rotation + increment) % 360;
-                //if (stroke is AbstractLineStroke)
-                //{
-                //    var pos = (stroke as AbstractLineStroke).LastElbowPosition;
-                //    (stroke as AbstractLineStroke).LastElbowPosition = Tools.RotatePoint(pos, stroke.Center, stroke.Rotation);
-                //}
-                stroke.Redraw();
+                var stylusPoint0 = Tools.RotatePoint(stroke.StylusPoints[0].ToPoint(), stroke.Center, increment);
+                var stylusPoint1 = Tools.RotatePoint(stroke.StylusPoints[1].ToPoint(), stroke.Center, increment);
+                stroke.StylusPoints[0] = new StylusPoint(stylusPoint0.X, stylusPoint0.Y);
+                stroke.StylusPoints[1] = new StylusPoint(stylusPoint1.X, stylusPoint1.Y);
             }
         }
 

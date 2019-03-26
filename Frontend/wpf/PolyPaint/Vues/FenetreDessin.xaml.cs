@@ -67,18 +67,12 @@ namespace PolyPaint
                 (DataContext as VueModele).ChatClient.MessageReceived += ScrollDown;
                 externalChatWindow = new ChatWindow(DataContext);
                 Application.Current.Exit += OnClosing;
-
             }
             else
             {
                 sendToCloud.Visibility = Visibility.Collapsed;
                 importFromCloud.Visibility = Visibility.Collapsed;
                 chatMenu.Visibility = Visibility.Collapsed;
-
-                Thickness margin = surfaceDessin.Margin;
-                margin.Right = -790;
-                margin.Bottom = -260;
-                surfaceDessin.Margin = margin;
             }
         }
 

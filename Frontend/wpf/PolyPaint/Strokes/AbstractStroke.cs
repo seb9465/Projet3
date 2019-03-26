@@ -1,4 +1,6 @@
-﻿using System;
+﻿using PolyPaint.Utilitaires;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -21,6 +23,23 @@ namespace PolyPaint.Strokes
         public double Width { get; set; }
         public double Height { get; set; }
 
+        public List<Point> UnrotatedStylusPoints
+        {
+            get
+            {
+                return StylusPoints.ToList().Select(x => Tools.RotatePoint(x.ToPoint(), Center, -Rotation)).ToList();
+            }
+        }
+        public Point UnrotatedTopLeft
+        {
+            get
+            {
+                return new Point(UnrotatedStylusPoints[0].X <= UnrotatedStylusPoints[1].X ? UnrotatedStylusPoints[0].X : UnrotatedStylusPoints[1].X,
+                UnrotatedStylusPoints[0].Y <= UnrotatedStylusPoints[1].Y ? UnrotatedStylusPoints[0].Y : UnrotatedStylusPoints[1].Y);
+            }
+        }
+        public double UnrotatedWidth { get { return Math.Abs(UnrotatedStylusPoints[1].X - UnrotatedStylusPoints[0].X); } }
+        public double UnrotatedHeight { get { return Math.Abs(UnrotatedStylusPoints[1].Y - UnrotatedStylusPoints[0].Y); } }
         public double Rotation { get; set; }
 
         public Brush Fill { get; set; }

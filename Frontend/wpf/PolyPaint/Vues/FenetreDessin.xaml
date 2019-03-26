@@ -376,8 +376,8 @@
                       Width="6" Height="6" DragDelta="GlisserMouvementRecu" 
                       DragStarted="GlisserCommence" DragCompleted="GlisserTermine"
                       />
-                <Border BorderThickness="5,5,0,0">
-                    <InkCanvas ClipToBounds="True" Grid.Column="0" Grid.Row="0" Name="surfaceDessin" Margin="10,11.111,0.222,-19.889"
+                <Border BorderThickness="5,5,0,0" Grid.ColumnSpan="2" Margin="0,0,-696,-236" Grid.RowSpan="2">
+                    <InkCanvas ClipToBounds="True" Grid.Column="0" Grid.Row="0" Name="surfaceDessin" Margin="10,11,10,51"
                            HorizontalAlignment="Stretch" VerticalAlignment="Stretch"                           
                            MouseLeave="surfaceDessin_MouseLeave"
                            MouseMove="surfaceDessin_MouseMove"
