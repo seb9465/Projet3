@@ -12,10 +12,13 @@ import UIKit
 class SelectionLasso: UIView {
     var border: CAShapeLayer!;
     
-    init(size: CGSize) {
+    public var firstPoint: CGPoint!;
+    
+    init(size: CGSize, touchPoint: CGPoint) {
         let frame: CGRect = CGRect(origin: CGPoint(x: 0, y: 0), size: size);
         super.init(frame: frame);
         
+        self.firstPoint = touchPoint;
         self.setInitialSelectedDashedBorder();
         self.addSelectedFigureLayers();
     }
