@@ -26,12 +26,15 @@ namespace PolyPaint.Vues
         public List<CanvasViewModel> Canvas { get; set; }
         public CanvasViewModel SelectedCanvas { get; set; }
         private ImageProtection imageProtection;
+        private string username;
 
         public Gallery(List<SaveableCanvas> strokes, InkCanvas drawingSurface)
         {
             InitializeComponent();
             Canvas = ConvertStrokesToPNG(strokes, drawingSurface);
             DataContext = Canvas;
+            username = Application.Current.Properties["username"].ToString();
+            usernameLabel.Content = username;
             this.ShowDialog();
         }
 
@@ -46,6 +49,7 @@ namespace PolyPaint.Vues
                     var strokes = GenerateStrokesFromBytes(Convert.FromBase64String(item.Base64Strokes));
                     canvas.Add(new CanvasViewModel(item.CanvasId, item.Name, bitmapImage, strokes, item.CanvasVisibility, item.CanvasProtection));
                 }
+                
             }
             return canvas;
         }
