@@ -307,7 +307,7 @@ extension Editor : TouchInputDelegate {
         case .AREA_SELECT:
 //            self.selectLasso(touchPoint: point);
             // TODO: Add point to the selectionlasso
-            self.selectionLasso.addPoint(touchPoint: point);
+            self.selectionLasso.addNewTouchPoint(touchPoint: point);
             break
         }
     }
