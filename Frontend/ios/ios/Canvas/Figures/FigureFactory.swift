@@ -16,7 +16,7 @@ class FigureFactory {
         switch (itemType) {
         case .UmlClass :
             return UmlClassFigure(firstPoint: firstPoint, lastPoint: lastPoint)
-        case .Actor:
+        case .Role:
             return UmlActorFigure(firstPoint: firstPoint, lastPoint: lastPoint)
 //            return UmlImageFigure(firstPoint: firstPoint, lastPoint: lastPoint, figureType: UMLImageFigureType.actor)
         
@@ -35,7 +35,7 @@ class FigureFactory {
             return UmlActivityFigure(firstPoint: firstPoint, lastPoint: lastPoint)
         case .Agregation:
             return nil
-        case .BidrectionalAssociation:
+        case .BidirectionalAssociation:
             return nil
         case .UniderectionalAssoication:
             return nil
@@ -51,7 +51,7 @@ class FigureFactory {
         switch (type) {
         case .UmlClass :
             return UmlClassFigure(origin: touchedPoint)
-        case .Actor:
+        case .Role:
             return UmlActorFigure(origin: touchedPoint)
 //            return UmlImageFigure(origin: touchedPoint, figureType: UMLImageFigureType.actor)
         case .Artefact:
@@ -69,7 +69,7 @@ class FigureFactory {
 
         case .Agregation:
             return nil
-        case .BidrectionalAssociation:
+        case .BidirectionalAssociation:
             return nil
         case .UniderectionalAssoication:
             return nil

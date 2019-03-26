@@ -22,8 +22,8 @@ class ChatRoomsControllerTableViewController: UITableViewController {
 //        ChatService.shared.disconnectFromHub();
         
         let storyboard = UIStoryboard(name: "Main", bundle: nil);
-        let view = storyboard.instantiateViewController(withIdentifier: "DashboardController");
-        navigationController?.pushViewController(view, animated: true);
+        let view = storyboard.instantiateViewController(withIdentifier: "MainController");
+        self.present(view, animated: true, completion: nil);
     }
     
     override func viewDidLoad() {

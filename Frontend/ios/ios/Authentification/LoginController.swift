@@ -40,8 +40,8 @@ class LoginController: UIViewController, UITextFieldDelegate {
                 self.validationLabel.text = ""
                 self.storeAuthentificationToken(token: token)
                 // Navigate to dashboard
-                let mainController = self.storyboard?.instantiateViewController(withIdentifier: "MainController") as! UINavigationController
-                self.present(mainController, animated: true, completion: nil)
+                let mainController = self.storyboard?.instantiateViewController(withIdentifier: "MainController")
+                self.present(mainController!, animated: true, completion: nil)
             }.catch { (Error) in
                 UIViewController.removeSpinner(spinner: sv);
                 self.validationLabel.text = "Invalid Credentials"

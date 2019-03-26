@@ -109,7 +109,7 @@ class CanvasController: UIViewController {
         
         let yesAction: UIAlertAction = UIAlertAction(title: "Yes", style: .default) { _ in
             let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil);
-            let viewController: UIViewController = mainStoryboard.instantiateViewController(withIdentifier: "DashboardController");
+            let viewController: UIViewController = mainStoryboard.instantiateViewController(withIdentifier: "MainController");
             self.present(viewController, animated: true, completion: nil);
         }
         let noAction: UIAlertAction = UIAlertAction(title: "No", style: .default, handler: nil);
