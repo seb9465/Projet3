@@ -290,7 +290,7 @@ extension Editor : TouchInputDelegate {
                 self.selectLasso(touchPoint: point);
                 return
             }
-            
+            break;
         case .REZISE:
             break
         case .TRANSLATE:
@@ -307,8 +307,8 @@ extension Editor : TouchInputDelegate {
         case .AREA_SELECT:
 //            self.selectLasso(touchPoint: point);
             // TODO: Add point to the selectionlasso
+            self.selectionLasso.addPoint(touchPoint: point);
             break
-            
         }
     }
     
@@ -328,9 +328,9 @@ extension Editor : TouchInputDelegate {
             self.editorView.addSubview(self.connectionPreview)
         }
         
-        if (self.touchEventState == .AREA_SELECT) {
-            // Resize the selection shape
-        }
+//        if (self.touchEventState == .AREA_SELECT) {
+//            // Resize the selection shape
+//        }
     }
     
     func notifyTouchEnded(point: CGPoint) {
