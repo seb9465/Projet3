@@ -313,8 +313,6 @@ extension Editor : TouchInputDelegate {
             self.deselect();
             break
         case .AREA_SELECT:
-//            self.selectLasso(touchPoint: point);
-            // TODO: Add point to the selectionlasso
             self.selectionLasso.addNewTouchPoint(touchPoint: point);
             break
         }
@@ -355,6 +353,13 @@ extension Editor : TouchInputDelegate {
 //            self.selectArea(point: point)
             // TODO: Retourne a .SELECT seulement si la selection au lasso est completer
 //            self.touchEventState = .SELECT
+            if (self.selectionLasso.shapeIsClosed) {
+                for figure in self.figures {
+                    if (self.selectionLasso.contains(figure: figure)) {
+                        self.select(figure: figure);
+                    }
+                }
+            }
             return
         } else if (self.touchEventState == .INSERT) {
             return

@@ -72,6 +72,25 @@ class SelectionLasso: UIView, SelectionLassoProtocol {
         self.layer.addSublayer(self.shape);
     }
     
+    public func contains(figure: Figure) -> Bool {
+        let firstPoint: CGPoint = figure.firstPoint;
+        let lastPoint: CGPoint = figure.lastPoint;
+        
+        var points: [CGPoint] = [];
+        points.append(CGPoint(x: firstPoint.x, y: firstPoint.y));   // Upper left corner
+        points.append(CGPoint(x: firstPoint.x, y: lastPoint.y));     // Lower left corner
+        points.append(CGPoint(x: lastPoint.x, y: firstPoint.x));    // Upper right corner
+        points.append(CGPoint(x: lastPoint.x, y: lastPoint.y));     // Lower right corner
+        
+        for point in points {
+            if (!self.shape.contains(point)) {
+                return false;
+            }
+        }
+        
+        return true;
+    }
+    
     // MARK: Private functions
     
     private func clearShapePath() -> Void {
