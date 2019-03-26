@@ -374,33 +374,6 @@ namespace PolyPaint
                     icEventManager.DrawingStroke
                 };
                 List<DrawViewModel> allo = rebuilder.GetDrawViewModelsFromStrokes(alloA);
-                //List<PolyPaintStylusPoint> points = new List<PolyPaintStylusPoint>();
-                //foreach (StylusPoint point in icEventManager.DrawingStroke.StylusPoints.ToList())
-                //{
-                //    points.Add(new PolyPaintStylusPoint()
-                //    {
-                //        PressureFactor = point.PressureFactor,
-                //        X = point.X,
-                //        Y = point.Y,
-                //    });
-                //}
-                //Enum.TryParse<ItemTypeEnum>(icEventManager.DrawingStroke.GetType().ToString(), out ItemTypeEnum itemType);
-
-                //PolyPaintColor color = new PolyPaintColor()
-                //{
-                //    A = icEventManager.DrawingStroke.DrawingAttributes.Color.A,
-                //    B = icEventManager.DrawingStroke.DrawingAttributes.Color.B,
-                //    G = icEventManager.DrawingStroke.DrawingAttributes.Color.G,
-                //    R = icEventManager.DrawingStroke.DrawingAttributes.Color.R,
-                //};
-                //DrawViewModel drawViewModel = new DrawViewModel
-                //{
-                //    OutilSelectionne = (DataContext as VueModele).OutilSelectionne,
-                //    StylusPoints = points,
-                //    ItemType = itemType,
-                //    FillColor = color,
-                //    Owner = username,
-                //};
                 await CollaborativeDrawAsync(allo[0]);
             }
             else
