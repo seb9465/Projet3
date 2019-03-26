@@ -188,7 +188,8 @@ namespace PolyPaint
             string imageToSend = Convert.ToBase64String(imageBytes);
             string CanvasName = uploadToCloud.CanvasName;
             string CanvasVisibility = uploadToCloud.CanvasVisibility;
-            SaveableCanvas canvas = new SaveableCanvas(CanvasName, strokesToSend, imageToSend, CanvasVisibility);
+            string CanvasProtection = uploadToCloud.CanvasProtection;
+            SaveableCanvas canvas = new SaveableCanvas(CanvasName, strokesToSend, imageToSend, CanvasVisibility, CanvasProtection);
 
             string canvasJson = JsonConvert.SerializeObject(canvas);
             using (HttpClient client = new HttpClient())

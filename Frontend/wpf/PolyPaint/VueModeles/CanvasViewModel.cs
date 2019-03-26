@@ -11,18 +11,20 @@ namespace PolyPaint.VueModeles
 {
     public class CanvasViewModel
     {
-        public CanvasViewModel(string canvasId, string name, BitmapSource imagePreview, StrokeCollection strokes, string canvasVisibility)
+        public CanvasViewModel(string canvasId, string name, BitmapSource imagePreview, StrokeCollection strokes, string canvasVisibility, string canvasProtection)
         {
             CanvasId = canvasId;
             Name = name;
             ImagePreview = imagePreview;
             Strokes = strokes;
             CanvasVisibility = canvasVisibility;
+            CanvasProtection = canvasProtection;
         }
         public string CanvasId { get; set; }
         public string Name { get; set; }
         public BitmapSource ImagePreview { get; set; }
         public StrokeCollection Strokes { get; set; }
         public string CanvasVisibility { get; set; }
+        public string CanvasProtection { get; set; }
     }
 }

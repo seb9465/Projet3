@@ -25,6 +25,7 @@ namespace PolyPaint.Vues
     {
         public List<CanvasViewModel> Canvas { get; set; }
         public CanvasViewModel SelectedCanvas { get; set; }
+        private ImageProtection imageProtection;
 
         public Gallery(List<SaveableCanvas> strokes, InkCanvas drawingSurface)
         {
@@ -34,7 +35,7 @@ namespace PolyPaint.Vues
             this.ShowDialog();
         }
 
-        private static List<CanvasViewModel> ConvertStrokesToPNG(List<SaveableCanvas> savedCanvas, InkCanvas drawingSurface)
+        private List<CanvasViewModel> ConvertStrokesToPNG(List<SaveableCanvas> savedCanvas, InkCanvas drawingSurface)
         {
             List<CanvasViewModel> canvas = new List<CanvasViewModel>();
             if(savedCanvas != null)
@@ -43,9 +44,8 @@ namespace PolyPaint.Vues
                 {
                     var bitmapImage = (BitmapSource)new ImageSourceConverter().ConvertFrom(Convert.FromBase64String(item.Base64Image));
                     var strokes = GenerateStrokesFromBytes(Convert.FromBase64String(item.Base64Strokes));
-                    canvas.Add(new CanvasViewModel(item.CanvasId, item.Name, bitmapImage, strokes, item.CanvasVisibility));
+                    canvas.Add(new CanvasViewModel(item.CanvasId, item.Name, bitmapImage, strokes, item.CanvasVisibility, item.CanvasProtection));
                 }
-
             }
             return canvas;
         }
@@ -63,7 +63,12 @@ namespace PolyPaint.Vues
 
         private void OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            
             SelectedCanvas = (CanvasViewModel)ImagePreviews.SelectedItem;
+            if (SelectedCanvas.CanvasProtection != null)
+            {
+                imageProtection = new ImageProtection();
+            }
             this.Close();
         }
 
