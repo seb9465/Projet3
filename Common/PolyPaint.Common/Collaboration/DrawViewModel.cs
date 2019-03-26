@@ -24,6 +24,7 @@ namespace PolyPaint.Common.Collaboration
         public string ChannelId { get; set; } = "general";
         public string OutilSelectionne { get; set; }
         public PolyPaintStylusPoint LastElbowPosition { get; set; }
+        public byte[] ImageBytes { get; set; }
 
         [JsonIgnore]
         private readonly JsonSerializerSettings SerializerSettings = new JsonSerializerSettings

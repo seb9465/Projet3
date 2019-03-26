@@ -56,6 +56,10 @@ namespace PolyPaint
             InitializeComponent();
             _viewState = viewState;
             DataContext = new VueModele();
+            DispatcherTimer dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
+            dispatcherTimer.Tick += new EventHandler(SaveImage);
+            dispatcherTimer.Interval = new TimeSpan(0, 1, 0);
+            dispatcherTimer.Start();
 
             if (_viewState == ViewStateEnum.Online)
             {
@@ -132,18 +136,10 @@ namespace PolyPaint
                 surfaceDessin.CutSelection();
             }
         }
-        private void SaveImage(object sender, RoutedEventArgs e)
+        private void SaveImage(object sender, EventArgs e)
         {
-            // Save Strokes on a file.
-
-            SaveFileDialog saveFileDialog = new SaveFileDialog
-            {
-                DefaultExt = ".json",
-                Filter = "JSON (.json)|*.json"
-            };
-
-            // Show save file dialog box
-            Nullable<bool> result = saveFileDialog.ShowDialog();
+            // Save in temporary folder
+            string filePath = Path.Combine(Path.GetTempPath(), "POLYPAINT_" + DateTime.Now.ToFileTime() + ".json");
 
             if (surfaceDessin.Strokes.Count > 0)
             {
@@ -152,7 +148,7 @@ namespace PolyPaint
                 
                 //Serialize our "strokes"
                 FileStream fs = null;
-                fs = new FileStream(saveFileDialog.FileName, FileMode.Create);
+                fs = new FileStream(filePath, FileMode.Create);
                 var jsons = JsonConvert.SerializeObject(strokes);
                 fs.Write(Encoding.UTF8.GetBytes(jsons), 0, Encoding.UTF8.GetByteCount(jsons));
             }
@@ -239,20 +235,18 @@ namespace PolyPaint
         {
             // Get the dimensions of the ink canvas
             Size size = new Size(surfaceDessin.ActualWidth, surfaceDessin.ActualHeight);
-            surfaceDessin.Margin = new Thickness(0, 0, 0, 0);
-            surfaceDessin.Measure(size);
-            surfaceDessin.Arrange(new Rect(size));
+            surfaceDessin.Measure(new Size((int)surfaceDessin.ActualWidth, (int)surfaceDessin.ActualHeight));
 
             int margin = (int)surfaceDessin.Margin.Left;
-            int width = (int)surfaceDessin.ActualWidth - margin;
-            int height = (int)surfaceDessin.ActualHeight - margin;
+            int width = (int)surfaceDessin.ActualWidth + 2 * margin;
+            int height = (int)surfaceDessin.ActualHeight + 2 * margin;
 
             // Convert the strokes from the canvas to a bitmap
-            RenderTargetBitmap rtb = new RenderTargetBitmap(width, height, 96d, 96d, PixelFormats.Default);
+            RenderTargetBitmap rtb = new RenderTargetBitmap(width, height, 96d, 96d, PixelFormats.Pbgra32);
             rtb.Render(surfaceDessin);
 
             // Save the bitmap to a memory stream
-            BmpBitmapEncoder encoder = new BmpBitmapEncoder();
+            PngBitmapEncoder encoder = new PngBitmapEncoder();
             encoder.Frames.Add(BitmapFrame.Create(rtb));
             byte[] bitmapBytes;
             using (MemoryStream ms = new MemoryStream())
@@ -466,7 +460,52 @@ namespace PolyPaint
                 sendButton.IsEnabled = false;
             }
         }
+        private void AddImageToCanvas(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            Nullable<bool> result = openFileDialog.ShowDialog();
 
+            ImageBrush ib = new ImageBrush
+            {
+                ImageSource = new BitmapImage(new Uri(openFileDialog.FileName, UriKind.Relative))
+            };
+            double ratio = ib.ImageSource.Width / ib.ImageSource.Height;
+            double imageWidth = Math.Min(ib.ImageSource.Width, surfaceDessin.ActualWidth);
+            double imageHeight = Math.Min(ib.ImageSource.Height, surfaceDessin.ActualHeight);
+
+            double finalWidth = Math.Min(imageWidth, imageHeight * ratio);
+            double finalHeight = Math.Min(imageHeight, imageWidth / ratio);
+
+            StylusPointCollection collection = new StylusPointCollection
+            {
+                new StylusPoint(0, 0),
+                new StylusPoint(finalWidth, finalHeight)
+            };
+
+            ImageStroke image = new ImageStroke(collection, surfaceDessin, ib);
+            (image as ICanvasable).AddToCanvas();
+        }
+        private void DownloadCanvasAsJPG(object sender, RoutedEventArgs e)
+        {
+            byte[] bitmap = GetBytesForImage();
+
+            SaveFileDialog saveFileDialog = new SaveFileDialog
+            {
+                DefaultExt = ".png",
+                Filter = "Image (.png)|*.png"
+            };
+
+            // Show save file dialog box
+            Nullable<bool> result = saveFileDialog.ShowDialog();
+            MemoryStream ms = new MemoryStream(bitmap);
+            System.Drawing.Image returnImage = System.Drawing.Image.FromStream(ms);
+            using (System.Drawing.Image image = System.Drawing.Image.FromStream(new MemoryStream(bitmap)))
+            {
+                if (saveFileDialog.FileName != "")
+                    image.Save(saveFileDialog.FileName, System.Drawing.Imaging.ImageFormat.Png);
+            }
+
+        }
         private async void Reinitialiser_Click(object sender, RoutedEventArgs e)
         {
             if (_viewState == ViewStateEnum.Online)
