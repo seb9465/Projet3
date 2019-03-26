@@ -18,6 +18,7 @@ class Editor {
     private var oldRotationAngle: Int = 0
     
     public var selectedFigure: Figure! = nil;
+    public var selectionLasso: SelectionLasso! = nil;
     public var selectionOutline: SelectionOutline!
     public var connectionPreview: ConnectionFigure!
     public var connectionSourceFigure: Figure!
@@ -44,6 +45,11 @@ class Editor {
         self.editorView.addSubview(self.selectionOutline)
     }
     
+    func selectLasso() {
+        self.selectionLasso = SelectionLasso();
+        self.selectionLasso.addSelectedFigureLayers();
+    }
+    
     func selectArea(point: CGPoint) {
         let points: [CGPoint] = [self.initialTouchPoint, point]
         let selectionOrigin = CGPoint(x: points.map { $0.x }.min()!, y: points.map { $0.y }.min()!)
@@ -60,6 +66,10 @@ class Editor {
     func deselect() {
         if (self.selectionOutline != nil) {
             self.selectionOutline.removeFromSuperview()
+        }
+        if (self.selectionLasso != nil) {
+            self.selectionLasso.removeSelectedFigureLayers();
+            self.selectionLasso = nil;
         }
         self.selectedFigure = nil
     }
@@ -319,7 +329,8 @@ extension Editor : TouchInputDelegate {
         }
         
         if (self.touchEventState == .AREA_SELECT) {
-            self.selectArea(point: point)
+//            self.selectArea(point: point)
+            self.selectLasso();
             self.touchEventState = .SELECT
             return
         }
