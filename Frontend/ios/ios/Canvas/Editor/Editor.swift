@@ -398,8 +398,8 @@ extension Editor : TouchInputDelegate {
                 firstPoint: self.initialTouchPoint,
                 lastPoint: lastPoint,
                 itemType: currentFigureType
-            )
-            self.touchEventState = .SELECT
+            );
+            self.touchEventState = .SELECT;
         } else if (self.touchEventState == .AREA_SELECT) {
 //            self.selectArea(point: point)
             // TODO: Retourne a .SELECT seulement si la selection au lasso est completer

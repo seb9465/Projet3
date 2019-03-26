@@ -83,7 +83,7 @@ class CanvasController: UIViewController {
     
     @IBAction func insertButtonPressed(_ sender: Any) {
         self.resetButtonColor();
-        self.insertButton.tintColor = UIColor.black;
+        self.insertButton.tintColor = Constants.RED_COLOR;
         self.editor.changeTouchHandleState(to: .INSERT)
     }
     
