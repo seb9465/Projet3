@@ -16,7 +16,7 @@ class ConnectionAssociationUni: ConnectionFigure {
             context.beginPath()
             context.move(to: self.getLocalInitialPoint())
             context.addLine(to: self.getLocalFinalPoint())
-            if (itemType == ItemTypeEnum.DashedLine) {
+            if (itemType == ItemTypeEnum.UniderectionalAssoication) {
                 context.setLineDash(phase: 0, lengths: [4,4])
             }
             context.strokePath()

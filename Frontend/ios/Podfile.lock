@@ -21,6 +21,7 @@ PODS:
     - PromiseKit/CorePromise
   - PromiseKit/UIKit (6.7.1):
     - PromiseKit/CorePromise
+  - SwiftHUEColorPicker (0.4.1)
   - SwiftSignalRClient (0.4.1)
 
 DEPENDENCIES:
@@ -32,6 +33,7 @@ DEPENDENCIES:
   - MessageKit
   - PromiseKit
   - PromiseKit/Alamofire
+  - SwiftHUEColorPicker
   - SwiftSignalRClient
 
 SPEC REPOS:
@@ -43,6 +45,7 @@ SPEC REPOS:
     - MessageInputBar
     - MessageKit
     - PromiseKit
+    - SwiftHUEColorPicker
     - SwiftSignalRClient
 
 SPEC CHECKSUMS:
@@ -53,8 +56,9 @@ SPEC CHECKSUMS:
   MessageInputBar: e81c7535347f1f7b923de7080409a535a004b6e4
   MessageKit: 29c1c87e5a396d2ca7a3f712e5171dc9aba42a1e
   PromiseKit: ef376fb8b4e92edfeb66bd403b983eaa07fbde0c
+  SwiftHUEColorPicker: f3184dad471b5f05703a565a63e228426cb8fdbf
   SwiftSignalRClient: edd4e6e16c87370ca624c6868279483a2ffe4f1d
 
-PODFILE CHECKSUM: 8ccc76d1f6ef9760885a95bb46ccdf20baee92ba
+PODFILE CHECKSUM: 30fc61f968c1975d3a811c03c1a7ecfce580a60a
 
 COCOAPODS: 1.5.3

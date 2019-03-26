@@ -22,7 +22,7 @@ class PropertiesTableController: UIViewController {
         
         let commentAttributesnib = UINib.init(nibName: "CommentCell", bundle: nil)
         self.propertiesTable.register(commentAttributesnib, forCellReuseIdentifier: "CommentCell")
-        
+
         let textAttributesnib = UINib.init(nibName: "TextCell", bundle: nil)
         self.propertiesTable.register(textAttributesnib, forCellReuseIdentifier: "TextCell")
         

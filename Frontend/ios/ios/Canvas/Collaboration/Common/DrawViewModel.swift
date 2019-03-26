@@ -23,17 +23,19 @@ struct DrawViewModel: Codable {
 }
 
 enum ItemTypeEnum: Int, Codable {
-    case UMLClass
-    case UMLComment
-    case UMLPhaseFigure
+    case UmlClass
+    case Comment
     case Actor
     case Artefact
     case Phase
     case Activity
     case Text
     case Image
-    case StraightLine
-    case DashedLine
+    case Agregation
+    case BidrectionalAssociation
+    case UniderectionalAssoication
+    case Composition
+    case Inheritance
 }
 
 struct PolyPaintStylusPoint: Codable {
