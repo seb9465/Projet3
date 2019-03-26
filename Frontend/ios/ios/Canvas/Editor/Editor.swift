@@ -273,8 +273,9 @@ extension Editor: SideToolbarDelegate {
     
     func rotate(orientation: RotateOrientation) {
         for figure in self.selectedFigures {
+            let tempFigure: Figure = figure;
             figure.rotate(orientation: orientation)
-            self.deselectFigure(figure: figure);
+            self.deselectFigure(figure: tempFigure);
             self.select(figure: figure);
         }
 //        let figureSelected = self.selectedFigure;
@@ -292,12 +293,13 @@ extension Editor: SideToolbarDelegate {
             if(currentRotationAngle % 45 == 0) {
                 // pour le sense de la rotation
                 for figure in self.selectedFigures {
+                    let tempFigure: Figure = figure;
                     if(self.oldRotationAngle < currentRotationAngle) {
                         figure.rotate(orientation: .right)
                     } else {
                         figure.rotate(orientation: .left)
                     }
-                    self.deselectFigure(figure: figure)
+                    self.deselectFigure(figure: tempFigure)
                     self.select(figure: figure)
                 }
 //                if(self.oldRotationAngle < currentRotationAngle) {
@@ -311,7 +313,6 @@ extension Editor: SideToolbarDelegate {
             oldRotationAngle = currentRotationAngle
             
         }
-        print("rotation gesture is detected")
     }
     
     func rad2deg(_ number: CGFloat) -> CGFloat {
