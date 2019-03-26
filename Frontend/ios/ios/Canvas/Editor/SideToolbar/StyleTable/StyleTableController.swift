@@ -16,8 +16,8 @@ class StyleTableController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.editor = (self.parent?.parent as! CanvasController).editor
-        self.editor.sideToolbarController = self
-        
+        self.editor.sideToolbatControllers.append(self)
+
         let nib = UINib.init(nibName: "BorderCell", bundle: nil)
         let rotateNib = UINib.init(nibName: "RotateCell", bundle: nil)
         self.styleTable.register(nib, forCellReuseIdentifier: "BorderCell")

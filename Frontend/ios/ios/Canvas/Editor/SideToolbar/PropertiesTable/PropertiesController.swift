@@ -16,7 +16,7 @@ class PropertiesTableController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.editor = (self.parent?.parent as! CanvasController).editor
-        self.editor.sideToolbarController = self
+        self.editor.sideToolbatControllers.append(self)
         let attributesnib = UINib.init(nibName: "ClassCell", bundle: nil)
         self.propertiesTable.register(attributesnib, forCellReuseIdentifier: "ClassCell")
     }
