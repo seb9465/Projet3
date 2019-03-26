@@ -47,7 +47,7 @@ class Editor {
     }
     
     func selectLasso() {
-        self.selectionLasso = SelectionLasso(self.editorView.frame.size);
+        self.selectionLasso = SelectionLasso(size: self.editorView.frame.size);
         
         self.editorView.addSubview(self.selectionLasso);
     }
