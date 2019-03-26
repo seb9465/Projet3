@@ -33,7 +33,7 @@ class PropertiesTableController: UIViewController {
 
 extension PropertiesTableController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if (self.editor.selectedFigure == nil){
+        if (self.editor.selectedFigures.isEmpty){
         }
         return 1
     }
@@ -43,17 +43,21 @@ extension PropertiesTableController: UITableViewDelegate, UITableViewDataSource 
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        switch(self.editor.selectedFigure) {
+        if (self.editor.selectedFigures.count > 1) {
+            return UITableViewCell();
+        }
+        
+        switch(self.editor.selectedFigures[0]) {
         case is UmlClassFigure:
             switch(indexPath.row) {
             case 0:
                 let cell = tableView.dequeueReusableCell(withIdentifier: "ClassCell", for: indexPath) as! ClassCell
                 cell.setUpTable()
                 cell.delegate = self.editor
-                cell.classNameField.text = (self.editor.selectedFigure as! UmlClassFigure).className
-                cell.methods = (self.editor.selectedFigure as! UmlClassFigure).methods
+                cell.classNameField.text = (self.editor.selectedFigures[0] as! UmlClassFigure).className
+                cell.methods = (self.editor.selectedFigures[0] as! UmlClassFigure).methods
                 cell.methodsTableView.reloadData()
-                cell.attributes = (self.editor.selectedFigure as! UmlClassFigure).attributes
+                cell.attributes = (self.editor.selectedFigures[0] as! UmlClassFigure).attributes
                 cell.attributesTableView.reloadData()
                 return cell
             default:
@@ -64,7 +68,7 @@ extension PropertiesTableController: UITableViewDelegate, UITableViewDataSource 
                 case 0:
                     let cell = tableView.dequeueReusableCell(withIdentifier: "CommentCell", for: indexPath) as! CommentCell
                     cell.delegate = self.editor
-                    cell.commentTextbox.text = (self.editor.selectedFigure as! UmlCommentFigure).comment
+                    cell.commentTextbox.text = (self.editor.selectedFigures[0] as! UmlCommentFigure).comment
                     return cell
                 default:
                     return UITableViewCell();
@@ -74,7 +78,7 @@ extension PropertiesTableController: UITableViewDelegate, UITableViewDataSource 
             case 0:
                 let cell = tableView.dequeueReusableCell(withIdentifier: "TextCell", for: indexPath) as! TextCell
                 cell.delegate = self.editor
-                cell.TextBoxField.text = (self.editor.selectedFigure as! UMLTextFigure).text
+                cell.TextBoxField.text = (self.editor.selectedFigures[0] as! UMLTextFigure).text
                 return cell
             default:
                 return UITableViewCell();
@@ -85,7 +89,7 @@ extension PropertiesTableController: UITableViewDelegate, UITableViewDataSource 
             case 0:
                 let cell = tableView.dequeueReusableCell(withIdentifier: "PhaseCell", for: indexPath) as! PhaseCell
                 cell.delegate = self.editor
-                cell.phaseNameTextField.text = (self.editor.selectedFigure as! UmlPhaseFigure).phaseName
+                cell.phaseNameTextField.text = (self.editor.selectedFigures[0] as! UmlPhaseFigure).phaseName
                 return cell
             default:
                 return UITableViewCell();

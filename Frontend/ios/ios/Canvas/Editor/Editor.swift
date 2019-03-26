@@ -18,7 +18,7 @@ class Editor {
     private var figures: [Figure] = [];
     private var oldRotationAngle: Int = 0
     
-    public var selectedFigure: Figure! = nil;
+    public var selectedFigures: [Figure]! = [];
     public var selectionLasso: SelectionLasso! = nil;
     public var selectionOutline: SelectionOutline!
     public var connectionPreview: ConnectionFigure!
@@ -40,7 +40,7 @@ class Editor {
     }
     
     func select(figure: Figure) {
-        self.selectedFigure = figure
+        self.selectedFigures.append(figure);
         self.selectionOutline = SelectionOutline(firstPoint: figure.frame.origin, lastPoint: CGPoint(x: figure.frame.maxX, y: figure.frame.maxY))
         self.selectionOutline.addSelectedFigureLayers()
         self.editorView.addSubview(self.selectionOutline)
@@ -70,7 +70,15 @@ class Editor {
             self.selectionOutline.removeFromSuperview()
         }
         self.deselectLasso();
-        self.selectedFigure = nil
+        self.selectedFigures.removeAll();
+    }
+    
+    func deselectFigure(figure: Figure) {
+        if (self.selectionOutline != nil) {
+            self.selectionOutline.removeFromSuperview()
+        }
+        self.deselectLasso();
+        self.selectedFigures.remove(at: self.selectedFigures.firstIndex(of: figure)!);
     }
     
     func deselectLasso() -> Void {
@@ -187,42 +195,69 @@ extension Editor {
 
 extension Editor: SideToolbarDelegate {
     func setSelectedFigureBorderColor(color: UIColor) {
-        (self.selectedFigure as! UmlFigure).setBorderColor(borderColor: color)
+        for figure in self.selectedFigures {
+            (figure as! UmlFigure).setBorderColor(borderColor: color);
+        }
+//        (self.selectedFigure as! UmlFigure).setBorderColor(borderColor: color)
     }
     
     func setSelectedFigureName(name: String) {
-        (self.selectedFigure as! UmlClassFigure).setClassName(name: name)
+        for figure in self.selectedFigures {
+            (figure as! UmlClassFigure).setClassName(name: name);
+        }
+//        (self.selectedFigure as! UmlClassFigure).setClassName(name: name)
     }
     
     func setSelectedComment(comment: String) {
-        (self.selectedFigure as! UmlCommentFigure).setComment(comment: comment)
+        for figure in self.selectedFigures {
+            (figure as! UmlCommentFigure).setComment(comment: comment);
+        }
+//        (self.selectedFigure as! UmlCommentFigure).setComment(comment: comment)
     }
     
     func setSelectedPhase(phaseName: String) {
-        (self.selectedFigure as! UmlPhaseFigure).setPhaseName(phaseName: phaseName)
+        for figure in self.selectedFigures {
+            (figure as! UmlPhaseFigure).setPhaseName(phaseName: phaseName);
+        }
+//        (self.selectedFigure as! UmlPhaseFigure).setPhaseName(phaseName: phaseName)
     }
     
     func setSelectedText(text: String) {
-        (self.selectedFigure as! UMLTextFigure).setText(text: text)
+        for figure in self.selectedFigures {
+            (figure as! UMLTextFigure).setText(text: text)
+        }
+//        (self.selectedFigure as! UMLTextFigure).setText(text: text)
     }
     
     func addClassMethod(name: String) {
-        (self.selectedFigure as! UmlClassFigure).addMethod(name: name)
+        for figure in self.selectedFigures {
+            (figure as! UmlClassFigure).addMethod(name: name)
+        }
+//        (self.selectedFigure as! UmlClassFigure).addMethod(name: name)
         self.updateSideToolBar()
     }
     
     func removeClassMethod(name: String, index: Int) {
-        (self.selectedFigure as! UmlClassFigure).removeMethod(name: name, index: index)
+        for figure in self.selectedFigures {
+            (figure as! UmlClassFigure).removeMethod(name: name, index: index)
+        }
+//        (self.selectedFigure as! UmlClassFigure).removeMethod(name: name, index: index)
         self.updateSideToolBar()
     }
     
     func addClassAttribute(name: String) {
-        (self.selectedFigure as! UmlClassFigure).addAttribute(name: name)
+        for figure in self.selectedFigures {
+            (figure as! UmlClassFigure).addAttribute(name: name);
+        }
+//        (self.selectedFigure as! UmlClassFigure).addAttribute(name: name)
         self.updateSideToolBar()
     }
     
     func removeClassAttribute(name: String, index: Int) {
-        (self.selectedFigure as! UmlClassFigure).removeAttribute(name: name, index: index)
+        for figure in self.selectedFigures {
+            (figure as! UmlClassFigure).removeAttribute(name: name, index: index);
+        }
+//        (self.selectedFigure as! UmlClassFigure).removeAttribute(name: name, index: index)
         self.updateSideToolBar()
     }
     
@@ -237,26 +272,41 @@ extension Editor: SideToolbarDelegate {
     }
     
     func rotate(orientation: RotateOrientation) {
-        let figureSelected = self.selectedFigure;
-        self.selectedFigure.rotate(orientation: orientation)
-        self.deselect()
-        self.select(figure: figureSelected!)
+        for figure in self.selectedFigures {
+            figure.rotate(orientation: orientation)
+            self.deselectFigure(figure: figure);
+            self.select(figure: figure);
+        }
+//        let figureSelected = self.selectedFigure;
+//        self.selectedFigure.rotate(orientation: orientation)
+//        self.deselect()
+        
+//        self.select(figure: figureSelected!)
     }
     
     @objc private func rotatedView(_ sender: UIRotationGestureRecognizer) {
-        if(self.selectedFigure != nil && sender.state == .changed) {
-            let figureSelected = self.selectedFigure;
+        if(!self.selectedFigures.isEmpty && sender.state == .changed) {
+//            let figureSelected = self.selectedFigure;
             let currentRotationAngle = Int(rad2deg(sender.rotation))
             // 45 degree pour faciliter la gesture
             if(currentRotationAngle % 45 == 0) {
                 // pour le sense de la rotation
-                if(self.oldRotationAngle < currentRotationAngle) {
-                    self.selectedFigure.rotate(orientation: .right)
-                } else {
-                    self.selectedFigure.rotate(orientation: .left)
+                for figure in self.selectedFigures {
+                    if(self.oldRotationAngle < currentRotationAngle) {
+                        figure.rotate(orientation: .right)
+                    } else {
+                        figure.rotate(orientation: .left)
+                    }
+                    self.deselectFigure(figure: figure)
+                    self.select(figure: figure)
                 }
-                self.deselect()
-                self.select(figure: figureSelected!)
+//                if(self.oldRotationAngle < currentRotationAngle) {
+//                    self.selectedFigure.rotate(orientation: .right)
+//                } else {
+//                    self.selectedFigure.rotate(orientation: .left)
+//                }
+//                self.deselect()
+//                self.select(figure: figureSelected!)
             }
             oldRotationAngle = currentRotationAngle
             
