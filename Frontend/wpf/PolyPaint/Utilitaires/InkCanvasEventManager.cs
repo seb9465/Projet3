@@ -136,16 +136,16 @@ namespace PolyPaint.Utilitaires
                 Stroke stroke = null;
                 switch (drawViewModel.ItemType)
                 {
-                    case ItemTypeEnum.RectangleStroke:
+                    case ItemTypeEnum.Comment:
                         stroke = new RectangleStroke(collection, surfaceDessin, "#FF000000", "#FFFFFFFF");
                         break;
                 }
                 Color color = new Color()
                 {
-                    A = drawViewModel.Color.A,
-                    B = drawViewModel.Color.B,
-                    G = drawViewModel.Color.G,
-                    R = drawViewModel.Color.R,
+                    A = drawViewModel.FillColor.A,
+                    B = drawViewModel.FillColor.B,
+                    G = drawViewModel.FillColor.G,
+                    R = drawViewModel.FillColor.R,
                 };
                 stroke.DrawingAttributes.Color = color;
                 (stroke as ICanvasable).AddToCanvas();

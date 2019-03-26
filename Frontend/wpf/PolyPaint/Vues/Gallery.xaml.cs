@@ -43,7 +43,7 @@ namespace PolyPaint.Vues
                 {
                     var bitmapImage = (BitmapSource)new ImageSourceConverter().ConvertFrom(Convert.FromBase64String(item.Base64Image));
                     var strokes = GenerateStrokesFromBytes(Convert.FromBase64String(item.Base64Strokes));
-                    canvas.Add(new CanvasViewModel(item.CanvasId, item.Name, bitmapImage, strokes));
+                    canvas.Add(new CanvasViewModel(item.CanvasId, item.Name, bitmapImage, strokes, item.CanvasVisibility));
                 }
 
             }
@@ -67,7 +67,7 @@ namespace PolyPaint.Vues
             this.Close();
         }
 
-        private async void GoBack_Click(object sender, RoutedEventArgs e)
+        private void GoBack_Click(object sender, RoutedEventArgs e)
         {
             MenuProfile menuProfile = new MenuProfile();
             Application.Current.MainWindow = menuProfile;

@@ -6,6 +6,18 @@ namespace PolyPaint.Common.Collaboration
 {
     public enum ItemTypeEnum
     {
-        RectangleStroke
+        Activity,
+        Artefact,
+        Phase,
+        Comment,
+        Role,
+        UmlClass,
+        Text,
+        Agregation,
+        BidirectionalAssociation,
+        Composition,
+        Inheritance,
+        UnidirectionalAssociation,
+        Image
     }
 }

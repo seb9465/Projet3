@@ -20,8 +20,8 @@ namespace PolyPaint.Strokes
         public double Width { get; set; }
         public double Height { get; set; }
 
-        protected Brush Fill { get; set; }
-        protected Pen Border { get; set; }
+        public Brush Fill { get; set; }
+        public Pen Border { get; set; }
         public DashStyle BorderStyle { get { return Border.DashStyle; } }
         public Color BorderColor { get { return (Border.Brush as SolidColorBrush).Color; } }
         public Color FillColor { get { return (Fill as SolidColorBrush).Color; } }

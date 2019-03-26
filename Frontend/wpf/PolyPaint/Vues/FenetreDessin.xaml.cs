@@ -4,16 +4,19 @@ using Microsoft.Win32;
 using Newtonsoft.Json;
 using PolyPaint.Common.Collaboration;
 using PolyPaint.Modeles;
+using PolyPaint.Strokes;
 using PolyPaint.Structures;
 using PolyPaint.Utilitaires;
 using PolyPaint.VueModeles;
 using PolyPaint.Vues;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -33,6 +36,7 @@ namespace PolyPaint
     /// </summary>
     public partial class FenetreDessin : Window
     {
+        private StrokeBuilder rebuilder = new StrokeBuilder();
         private AdornerLayer adornerLayer;
         private LineStrokeAdorner adorner;
 
@@ -52,14 +56,18 @@ namespace PolyPaint
             InitializeComponent();
             _viewState = viewState;
             DataContext = new VueModele();
+            DispatcherTimer dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
+            dispatcherTimer.Tick += new EventHandler(SaveImage);
+            dispatcherTimer.Interval = new TimeSpan(0, 1, 0);
+            dispatcherTimer.Start();
 
             if (_viewState == ViewStateEnum.Online)
             {
                 object token = Application.Current.Properties["token"];
                 username = Application.Current.Properties["username"].ToString();
                 //token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6InVzZXIuMyIsIm5hbWVpZCI6Ijg4OTU2NjlhLTYyMmMtNDk2ZS1iZTkwLTI4YTQzMGE3NzhhZSIsImZhbWlseV9uYW1lIjoidXNlcjMiLCJuYmYiOjE1NTIyNTY1ODgsImV4cCI6NjE1NTIyNTY1MjgsImlhdCI6MTU1MjI1NjU4OCwiaXNzIjoiaHR0cHM6Ly9wb2x5cGFpbnQubWUiLCJhdWQiOiJodHRwczovL3BvbHlwYWludC5tZSJ9._CGBRWU961rt14S5FTx9QuzFkTCX86iel2PiMZ_PzMs";
-                ConnectToCollaborativeServer((string) token);
-                (DataContext as VueModele).ChatClient.Initialize((string) Application.Current.Properties["token"]);
+                ConnectToCollaborativeServer((string)token);
+                (DataContext as VueModele).ChatClient.Initialize((string)Application.Current.Properties["token"]);
                 (DataContext as VueModele).ChatClient.MessageReceived += ScrollDown;
                 externalChatWindow = new ChatWindow(DataContext);
                 Application.Current.Exit += OnClosing;
@@ -128,34 +136,21 @@ namespace PolyPaint
                 surfaceDessin.CutSelection();
             }
         }
-        private void SaveImage(object sender, RoutedEventArgs e)
+        private void SaveImage(object sender, EventArgs e)
         {
-            // Save Strokes on a file.
+            // Save in temporary folder
+            string filePath = Path.Combine(Path.GetTempPath(), "POLYPAINT_" + DateTime.Now.ToFileTime() + ".json");
+
+            if (surfaceDessin.Strokes.Count > 0)
             {
-                SaveFileDialog saveFileDialog = new SaveFileDialog
-                {
-                    DefaultExt = ".stro",
-                    Filter = "Strokes (.stro)|*.stro"
-                };
-
-                // Show save file dialog box
-                Nullable<bool> result = saveFileDialog.ShowDialog();
-
+                // Change strokes into DrawViewModels
+                List<DrawViewModel> strokes = rebuilder.GetDrawViewModelsFromStrokes(surfaceDessin.Strokes);
+                
+                //Serialize our "strokes"
                 FileStream fs = null;
-
-                try
-                {
-                    fs = new FileStream(saveFileDialog.FileName, FileMode.Create);
-                    surfaceDessin.Strokes.Save(fs);
-                }
-                catch
-                {
-                    if (fs != null)
-                    {
-                        fs.Close();
-                    }
-                }
-
+                fs = new FileStream(filePath, FileMode.Create);
+                var jsons = JsonConvert.SerializeObject(strokes);
+                fs.Write(Encoding.UTF8.GetBytes(jsons), 0, Encoding.UTF8.GetByteCount(jsons));
             }
         }
 
@@ -164,45 +159,36 @@ namespace PolyPaint
             // Load the strokes file.
             OpenFileDialog openFileDialog = new OpenFileDialog
             {
-                DefaultExt = ".stro",
-                Filter = "Strokes (.stro)|*.stro"
+                DefaultExt = ".json",
+                Filter = "JSON (.json)|*.json"
             };
 
             // Show save file dialog box
             Nullable<bool> result = openFileDialog.ShowDialog();
 
+            // Deserialize it
             FileStream fs = null;
+            fs = new FileStream(openFileDialog.FileName, FileMode.Open, FileAccess.Read);
+            byte[] jsons = new byte[fs.Length];
+            fs.Read(jsons, 0, (int)fs.Length);
 
-            if (!File.Exists(openFileDialog.FileName))
-            {
-                MessageBox.Show("The file you requested does not exist." + " Save the StrokeCollection before loading it.");
-                return;
-            }
-
-            try
-            {
-                // Put the strokes from the file onto the InkCanvas.
-                fs = new FileStream(openFileDialog.FileName, FileMode.Open, FileAccess.Read);
-                StrokeCollection importedStrokes = new StrokeCollection(fs);
-                surfaceDessin.Strokes.Clear();
-                surfaceDessin.Strokes.Add(importedStrokes);
-            }
-            catch
-            {
-                if (fs != null)
-                {
-                    fs.Close();
-                }
-            }
+            List<DrawViewModel> customStrokes = JsonConvert.DeserializeObject<List<DrawViewModel>>(Encoding.UTF8.GetString(jsons));
+            
+            // Rebuild the strokes
+            rebuilder.BuildStrokesFromDrawViewModels(customStrokes, surfaceDessin);
         }
 
         private async void SendToCloud(object sender, RoutedEventArgs e)
         {
+
+            UploadToCloud uploadToCloud = new UploadToCloud();
             byte[] strokesBytes = GetBytesForStrokes();
             byte[] imageBytes = GetBytesForImage();
             string strokesToSend = Convert.ToBase64String(strokesBytes);
             string imageToSend = Convert.ToBase64String(imageBytes);
-            SaveableCanvas canvas = new SaveableCanvas("NameNotImplementedYet", strokesToSend, imageToSend);
+            string CanvasName = uploadToCloud.CanvasName;
+            string CanvasVisibility = uploadToCloud.CanvasVisibility;
+            SaveableCanvas canvas = new SaveableCanvas(CanvasName, strokesToSend, imageToSend, CanvasVisibility);
 
             string canvasJson = JsonConvert.SerializeObject(canvas);
             using (HttpClient client = new HttpClient())
@@ -214,10 +200,12 @@ namespace PolyPaint
                 HttpResponseMessage response = await client.PostAsync($"{Config.URL}/api/user/canvas", content);
                 string responseString = await response.Content.ReadAsStringAsync();
             }
+
         }
 
         private async void ImportFromCloud(object sender, RoutedEventArgs e)
         {
+            progressBar.Visibility = Visibility.Visible;
             List<SaveableCanvas> strokes;
             using (HttpClient client = new HttpClient())
             {
@@ -227,7 +215,9 @@ namespace PolyPaint
                 string responseString = await response.Content.ReadAsStringAsync();
                 strokes = JsonConvert.DeserializeObject<List<SaveableCanvas>>(responseString);
             }
+            progressBar.Visibility = Visibility.Collapsed;
             Gallery gallery = new Gallery(strokes, surfaceDessin);
+           
             surfaceDessin.Strokes.Clear();
             surfaceDessin.Strokes.Add(gallery.SelectedCanvas.Strokes);
         }
@@ -245,20 +235,18 @@ namespace PolyPaint
         {
             // Get the dimensions of the ink canvas
             Size size = new Size(surfaceDessin.ActualWidth, surfaceDessin.ActualHeight);
-            surfaceDessin.Margin = new Thickness(0, 0, 0, 0);
-            surfaceDessin.Measure(size);
-            surfaceDessin.Arrange(new Rect(size));
+            surfaceDessin.Measure(new Size((int)surfaceDessin.ActualWidth, (int)surfaceDessin.ActualHeight));
 
-            int margin = (int) surfaceDessin.Margin.Left;
-            int width = (int) surfaceDessin.ActualWidth - margin;
-            int height = (int) surfaceDessin.ActualHeight - margin;
+            int margin = (int)surfaceDessin.Margin.Left;
+            int width = (int)surfaceDessin.ActualWidth + 2 * margin;
+            int height = (int)surfaceDessin.ActualHeight + 2 * margin;
 
             // Convert the strokes from the canvas to a bitmap
-            RenderTargetBitmap rtb = new RenderTargetBitmap(width, height, 96d, 96d, PixelFormats.Default);
+            RenderTargetBitmap rtb = new RenderTargetBitmap(width, height, 96d, 96d, PixelFormats.Pbgra32);
             rtb.Render(surfaceDessin);
 
             // Save the bitmap to a memory stream
-            BmpBitmapEncoder encoder = new BmpBitmapEncoder();
+            PngBitmapEncoder encoder = new PngBitmapEncoder();
             encoder.Frames.Add(BitmapFrame.Create(rtb));
             byte[] bitmapBytes;
             using (MemoryStream ms = new MemoryStream())
@@ -324,23 +312,25 @@ namespace PolyPaint
                 }
             }
         }
-        
+
         private void OnClosing(object sender, EventArgs e)
         {
             try
             {
                 using (HttpClient client = new HttpClient())
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", (string) Application.Current.Properties["token"]);
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", (string)Application.Current.Properties["token"]);
                     System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
                     client.GetAsync($"{Config.URL}/api/user/logout").Wait();
                 }
             }
             catch { }
         }
+       
+
         private async void InkCanvas_LeftMouseDown(object sender, MouseButtonEventArgs e)
         {
-            mouseLeftDownPoint = e.GetPosition((IInputElement) sender);
+            mouseLeftDownPoint = e.GetPosition((IInputElement)sender);
 
             if ((DataContext as VueModele).OutilSelectionne == "select")
             {
@@ -367,7 +357,7 @@ namespace PolyPaint
         }
         private void InkCanvas_LeftMouseMove(object sender, MouseEventArgs e)
         {
-            currentPoint = e.GetPosition((IInputElement) sender);
+            currentPoint = e.GetPosition((IInputElement)sender);
             if (IsDrawing)
             {
                 icEventManager.DrawShape(surfaceDessin, (DataContext as VueModele), currentPoint, mouseLeftDownPoint);
@@ -403,7 +393,7 @@ namespace PolyPaint
                     OutilSelectionne = (DataContext as VueModele).OutilSelectionne,
                     StylusPoints = points,
                     ItemType = itemType,
-                    Color = color,
+                    FillColor = color,
                     Owner = username,
                 };
                 await CollaborativeDrawAsync(drawViewModel);
@@ -434,16 +424,7 @@ namespace PolyPaint
             await Connection.StartAsync();
         }
 
-
-        private void DialogHost_DialogClosing(object sender, MaterialDesignThemes.Wpf.DialogClosingEventArgs eventArgs)
-        {
-
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
+       
         private async Task CollaborativeDrawAsync(DrawViewModel drawViewModel)
         {
             await Connection.InvokeAsync("Draw", JsonConvert.SerializeObject(drawViewModel));
@@ -479,7 +460,52 @@ namespace PolyPaint
                 sendButton.IsEnabled = false;
             }
         }
+        private void AddImageToCanvas(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            Nullable<bool> result = openFileDialog.ShowDialog();
 
+            ImageBrush ib = new ImageBrush
+            {
+                ImageSource = new BitmapImage(new Uri(openFileDialog.FileName, UriKind.Relative))
+            };
+            double ratio = ib.ImageSource.Width / ib.ImageSource.Height;
+            double imageWidth = Math.Min(ib.ImageSource.Width, surfaceDessin.ActualWidth);
+            double imageHeight = Math.Min(ib.ImageSource.Height, surfaceDessin.ActualHeight);
+
+            double finalWidth = Math.Min(imageWidth, imageHeight * ratio);
+            double finalHeight = Math.Min(imageHeight, imageWidth / ratio);
+
+            StylusPointCollection collection = new StylusPointCollection
+            {
+                new StylusPoint(0, 0),
+                new StylusPoint(finalWidth, finalHeight)
+            };
+
+            ImageStroke image = new ImageStroke(collection, surfaceDessin, ib);
+            (image as ICanvasable).AddToCanvas();
+        }
+        private void DownloadCanvasAsJPG(object sender, RoutedEventArgs e)
+        {
+            byte[] bitmap = GetBytesForImage();
+
+            SaveFileDialog saveFileDialog = new SaveFileDialog
+            {
+                DefaultExt = ".png",
+                Filter = "Image (.png)|*.png"
+            };
+
+            // Show save file dialog box
+            Nullable<bool> result = saveFileDialog.ShowDialog();
+            MemoryStream ms = new MemoryStream(bitmap);
+            System.Drawing.Image returnImage = System.Drawing.Image.FromStream(ms);
+            using (System.Drawing.Image image = System.Drawing.Image.FromStream(new MemoryStream(bitmap)))
+            {
+                if (saveFileDialog.FileName != "")
+                    image.Save(saveFileDialog.FileName, System.Drawing.Imaging.ImageFormat.Png);
+            }
+
+        }
         private async void Reinitialiser_Click(object sender, RoutedEventArgs e)
         {
             if (_viewState == ViewStateEnum.Online)
@@ -572,9 +598,10 @@ namespace PolyPaint
             adornerLayer.Add(adorner);
         }
 
-        private async void GoBack_Click(object sender, RoutedEventArgs e)
+        private void GoBack_Click(object sender, RoutedEventArgs e)
         {
-            externalChatWindow.Close();
+            if (_viewState == ViewStateEnum.Online)
+                externalChatWindow.Close();
             MenuProfile menuProfile = new MenuProfile();
             Application.Current.MainWindow = menuProfile;
             Close();
