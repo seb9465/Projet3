@@ -7,8 +7,8 @@
         mc:Ignorable="d"
         Title="ImageProtection" Height="209.509" Width="414.918">
     <Grid Margin="0,0,5.889,2.444">
-        <Label Content="Password:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="26" Width="62" />
-        <PasswordBox Name="passwordTextBox" HorizontalAlignment="Left" Height="25" Margin="85,10,0,0"  VerticalAlignment="Top" Width="280"/>
+        <Label Content="Password:" HorizontalAlignment="Left" Margin="10,30,0,0" VerticalAlignment="Top" Height="26" Width="62" />
+        <PasswordBox Name="passwordTextBox" HorizontalAlignment="Left" Height="25" Margin="85,30,0,0"  VerticalAlignment="Top" Width="280"/>
         <Button Content="Ok" HorizontalAlignment="Left" Margin="290,100,0,0" VerticalAlignment="Top" Width="75" Click="Ok_click"/>
     </Grid>
 </Window>

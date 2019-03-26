@@ -64,7 +64,7 @@ namespace PolyPaint.Vues
         private void OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             SelectedCanvas = (CanvasViewModel)ImagePreviews.SelectedItem;
-            if (SelectedCanvas.CanvasProtection != null)
+            if (SelectedCanvas.CanvasProtection != "")
             {
                 imageProtection = new ImageProtection();
                 if(imageProtection.PasswordEntered == SelectedCanvas.CanvasProtection)
