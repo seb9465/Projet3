@@ -10,7 +10,8 @@ import UIKit
 
 class Editor {
     public var editorView: EditorView = EditorView()
-    public var sideToolbarController: SideToolbarController?
+    //    public var sideToolbarController: SideToolbarController?
+    public var sideToolbatControllers: [SideToolbarController] = []
     
     private var undoArray: [Figure] = []
     private var redoArray: [Figure] = [];
@@ -89,7 +90,7 @@ class Editor {
         self.figures.append(figure)
         self.undoArray.append(figure);
     }
-
+    
     public func undo(view: UIView) -> Void {
         print(undoArray);
         if (undoArray.count > 0) {
@@ -147,18 +148,18 @@ class Editor {
             }
         }
     }
-
+    
     
     //    public func setFillColor(fillColor: UIColor) -> Void {
     //        self.currentlySelectedFigure.setFigureColor(figureColor: fillColor);
     //    }
     
     public func setSelectedFigureColor(color: UIColor) -> Void {
-//        self.selectedFigure.setFillColor(fillColor: color);
+        //        self.selectedFigure.setFillColor(fillColor: color);
     }
     
     public func setSelectFigureBorderColor(color: UIColor) -> Void {
-//        self.selectedFigure.setBorderColor(borderColor: color);
+        //        self.selectedFigure.setBorderColor(borderColor: color);
     }
     
     func snap(point: CGPoint) -> CGPoint{
@@ -194,22 +195,28 @@ extension Editor: SideToolbarDelegate {
     
     func addClassMethod(name: String) {
         (self.selectedFigure as! UmlClassFigure).addMethod(name: name)
-        sideToolbarController?.update()
+        self.updateSideToolBar()
     }
     
     func removeClassMethod(name: String, index: Int) {
         (self.selectedFigure as! UmlClassFigure).removeMethod(name: name, index: index)
-        sideToolbarController?.update()
+        self.updateSideToolBar()
     }
     
     func addClassAttribute(name: String) {
         (self.selectedFigure as! UmlClassFigure).addAttribute(name: name)
-        sideToolbarController?.update()
+        self.updateSideToolBar()
     }
     
     func removeClassAttribute(name: String, index: Int) {
         (self.selectedFigure as! UmlClassFigure).removeAttribute(name: name, index: index)
-        sideToolbarController?.update()
+        self.updateSideToolBar()
+    }
+    
+    func updateSideToolBar() {
+        for controller in self.sideToolbatControllers {
+            controller.update()
+        }
     }
     
     func save() -> Void{
@@ -239,7 +246,7 @@ extension Editor: SideToolbarDelegate {
                 self.select(figure: figureSelected!)
             }
             oldRotationAngle = currentRotationAngle
-
+            
         }
         print("rotation gesture is detected")
     }
@@ -267,7 +274,7 @@ extension Editor : TouchInputDelegate {
             if (action == "shape") {
                 self.deselect()
                 self.select(figure: figure!)
-                self.sideToolbarController?.update()
+                self.updateSideToolBar()
                 self.touchEventState = .TRANSLATE
                 return
             }
@@ -277,13 +284,13 @@ extension Editor : TouchInputDelegate {
                 self.touchEventState = .AREA_SELECT
                 return
             }
-
+            
         case .REZISE:
             break
         case .TRANSLATE:
             break
         case .INSERT:
-        CollaborationHub.shared.postNewFigure(origin: point, itemType: currentFigureType)
+            CollaborationHub.shared.postNewFigure(origin: point, itemType: currentFigureType)
             break
         case .CONNECTION:
             break
@@ -293,7 +300,7 @@ extension Editor : TouchInputDelegate {
             break
         case .AREA_SELECT:
             break
-
+            
         }
     }
     
@@ -322,8 +329,11 @@ extension Editor : TouchInputDelegate {
         if (self.touchEventState == .CONNECTION) {
             self.connectionPreview.removeFromSuperview()
             let lastPoint = self.snap(point: point)
-            let connection =
-            self.insertConnectionFigure(firstPoint: self.initialTouchPoint, lastPoint: lastPoint, itemType: currentFigureType)
+            let connection = self.insertConnectionFigure(
+                firstPoint: self.initialTouchPoint,
+                lastPoint: lastPoint,
+                itemType: currentFigureType
+            )
             self.touchEventState = .SELECT
             return
         }
