@@ -17,15 +17,23 @@ class PropertiesTableController: UIViewController {
         super.viewDidLoad()
         self.editor = (self.parent?.parent as! CanvasController).editor
         self.editor.sideToolbatControllers.append(self)
-        let attributesnib = UINib.init(nibName: "ClassCell", bundle: nil)
-        self.propertiesTable.register(attributesnib, forCellReuseIdentifier: "ClassCell")
+        let classAttributesnib = UINib.init(nibName: "ClassCell", bundle: nil)
+        self.propertiesTable.register(classAttributesnib, forCellReuseIdentifier: "ClassCell")
+        
+        let commentAttributesnib = UINib.init(nibName: "CommentCell", bundle: nil)
+        self.propertiesTable.register(commentAttributesnib, forCellReuseIdentifier: "CommentCell")
+        
+        let textAttributesnib = UINib.init(nibName: "TextCell", bundle: nil)
+        self.propertiesTable.register(textAttributesnib, forCellReuseIdentifier: "TextCell")
+        
+        let phaseAttributesnib = UINib.init(nibName: "PhaseCell", bundle: nil)
+        self.propertiesTable.register(phaseAttributesnib, forCellReuseIdentifier: "PhaseCell")
     }
 }
 
 extension PropertiesTableController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if (self.editor.selectedFigure == nil ||  !self.editor.selectedFigure.isKind(of: UmlClassFigure.self)) {
-            return 0
+        if (self.editor.selectedFigure == nil){
         }
         return 1
     }
@@ -35,7 +43,8 @@ extension PropertiesTableController: UITableViewDelegate, UITableViewDataSource 
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if(self.editor.selectedFigure.isKind(of: UmlClassFigure.self)) {
+        switch(self.editor.selectedFigure) {
+        case is UmlClassFigure:
             switch(indexPath.row) {
             case 0:
                 let cell = tableView.dequeueReusableCell(withIdentifier: "ClassCell", for: indexPath) as! ClassCell
@@ -47,31 +56,43 @@ extension PropertiesTableController: UITableViewDelegate, UITableViewDataSource 
                 cell.attributes = (self.editor.selectedFigure as! UmlClassFigure).attributes
                 cell.attributesTableView.reloadData()
                 return cell
-                
             default:
                 return UITableViewCell();
             }
-        }
-        
-        if(self.editor.selectedFigure.isKind(of: UmlCommentFigure.self)) {
+        case is UmlCommentFigure:
+                switch(indexPath.row) {
+                case 0:
+                    let cell = tableView.dequeueReusableCell(withIdentifier: "CommentCell", for: indexPath) as! CommentCell
+                    cell.delegate = self.editor
+                    cell.commentTextbox.text = (self.editor.selectedFigure as! UmlCommentFigure).comment
+                    return cell
+                default:
+                    return UITableViewCell();
+                }
+        case is UMLTextFigure:
             switch(indexPath.row) {
             case 0:
-                let cell = tableView.dequeueReusableCell(withIdentifier: "ClassCell", for: indexPath) as! ClassCell
-                cell.setUpTable()
+                let cell = tableView.dequeueReusableCell(withIdentifier: "TextCell", for: indexPath) as! TextCell
                 cell.delegate = self.editor
-                cell.classNameField.text = (self.editor.selectedFigure as! UmlClassFigure).className
-                cell.methods = (self.editor.selectedFigure as! UmlClassFigure).methods
-                cell.methodsTableView.reloadData()
-                cell.attributes = (self.editor.selectedFigure as! UmlClassFigure).attributes
-                cell.attributesTableView.reloadData()
+                cell.TextBoxField.text = (self.editor.selectedFigure as! UMLTextFigure).text
                 return cell
-                
             default:
                 return UITableViewCell();
             }
             
+        case is UmlPhaseFigure:
+            switch(indexPath.row) {
+            case 0:
+                let cell = tableView.dequeueReusableCell(withIdentifier: "PhaseCell", for: indexPath) as! PhaseCell
+                cell.delegate = self.editor
+                cell.phaseNameTextField.text = (self.editor.selectedFigure as! UmlPhaseFigure).phaseName
+                return cell
+            default:
+                return UITableViewCell();
+            }
+        default:
+            return UITableViewCell();
         }
-        return UITableViewCell();
     }
 }
 

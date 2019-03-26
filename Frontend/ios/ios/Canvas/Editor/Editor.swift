@@ -198,6 +198,14 @@ extension Editor: SideToolbarDelegate {
         (self.selectedFigure as! UmlCommentFigure).setComment(comment: comment)
     }
     
+    func setSelectedPhase(phaseName: String) {
+        (self.selectedFigure as! UmlPhaseFigure).setPhaseName(phaseName: phaseName)
+    }
+    
+    func setSelectedText(text: String) {
+        (self.selectedFigure as! UMLTextFigure).setText(text: text)
+    }
+    
     func addClassMethod(name: String) {
         (self.selectedFigure as! UmlClassFigure).addMethod(name: name)
         self.updateSideToolBar()
