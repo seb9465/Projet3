@@ -23,8 +23,8 @@ class Editor {
     public var connectionPreview: ConnectionFigure!
     public var connectionSourceFigure: Figure!
     
-    public var currentFigureType: ItemTypeEnum = ItemTypeEnum.UMLClass;
-    public var currentLineType: ItemTypeEnum = ItemTypeEnum.StraightLine
+    public var currentFigureType: ItemTypeEnum = ItemTypeEnum.UmlClass;
+  //  public var currentLineType: ItemTypeEnum = ItemTypeEnum.StraightLine
     
     // TouchInputDelegate properties
     public var touchEventState: TouchEventState = .SELECT
@@ -264,7 +264,7 @@ extension Editor : TouchInputDelegate {
             if (action == "anchor") {
                 self.connectionSourceFigure = figure
                 self.touchEventState = .CONNECTION
-                self.connectionPreview = ConnectionFigure(origin: self.initialTouchPoint, destination: self.initialTouchPoint, itemType: .StraightLine)
+                self.connectionPreview = ConnectionFigure(origin: self.initialTouchPoint, destination: self.initialTouchPoint, itemType: .UniderectionalAssoication)
                 self.editorView.addSubview(connectionPreview)
                 return
             }
@@ -314,7 +314,7 @@ extension Editor : TouchInputDelegate {
         
         if (self.touchEventState == .CONNECTION) {
             self.connectionPreview.removeFromSuperview()
-            self.connectionPreview = ConnectionFigure(origin: self.initialTouchPoint, destination: point, itemType: .StraightLine)
+            self.connectionPreview = ConnectionFigure(origin: self.initialTouchPoint, destination: point, itemType: .UniderectionalAssoication)
             self.editorView.addSubview(self.connectionPreview)
         }
         

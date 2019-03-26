@@ -11,7 +11,7 @@ import UIKit
 class ConnectionFigure : Figure {
     
     var points: [CGPoint] = []
-    var itemType: ItemTypeEnum = ItemTypeEnum.StraightLine
+    var itemType: ItemTypeEnum = ItemTypeEnum.UniderectionalAssoication
     
     init(origin: CGPoint, destination: CGPoint, itemType: ItemTypeEnum) {
         self.points.append(origin)

@@ -49,7 +49,7 @@ class FigureSelectionCell: UITableViewCell {
     }
     
     @IBAction func UMLClassSelected(_ sender: Any) {
-        self.delegate?.setSelectedFigureType(itemType: ItemTypeEnum.UMLClass)
+        self.delegate?.setSelectedFigureType(itemType: ItemTypeEnum.UmlClass)
         
         self.setSelectedButton(button: self.UMLClassButton)
     }
@@ -69,20 +69,20 @@ class FigureSelectionCell: UITableViewCell {
     }
     
     @IBAction func setSelectedLineStraigth(_ sender: Any) {
-        self.delegate?.setSelectedLineType(itemType: ItemTypeEnum.StraightLine)
+        self.delegate?.setSelectedLineType(itemType: ItemTypeEnum.UniderectionalAssoication)
     }
     @IBAction func setSelectedLineDashed(_ sender: Any) {
         self.DashedLineButton.layer.borderColor = UIColor.blue.cgColor
         self.DashedLineButton.layer.borderWidth = 1.0
-        self.delegate?.setSelectedFigureType(itemType: ItemTypeEnum.DashedLine)
+        self.delegate?.setSelectedFigureType(itemType: ItemTypeEnum.UniderectionalAssoication)
     }
     @IBAction func UMLCommentSelected(_ sender: Any) {
-        self.delegate?.setSelectedFigureType(itemType: ItemTypeEnum.UMLComment)
+        self.delegate?.setSelectedFigureType(itemType: ItemTypeEnum.Comment)
         
         self.setSelectedButton(button: self.UMLCommentButton)
     }
     @IBAction func PhaseSelected(_ sender: Any) {
-        self.delegate?.setSelectedFigureType(itemType: ItemTypeEnum.UMLPhaseFigure)
+        self.delegate?.setSelectedFigureType(itemType: ItemTypeEnum.Phase)
         self.setSelectedButton(button: self.PhaseButton)
     }
     

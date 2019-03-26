@@ -27,7 +27,7 @@ class FigureTableController: UIViewController, UIPopoverPresentationControllerDe
     }
     
     func setSelectedLineType(itemType: ItemTypeEnum) -> Void {
-        self.editor.currentLineType = itemType
+        //self.editor.currentLineType = itemType
     }
     
     func presentImagePicker() {
