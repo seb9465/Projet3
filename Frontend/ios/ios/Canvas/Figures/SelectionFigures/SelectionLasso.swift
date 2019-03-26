@@ -40,6 +40,7 @@ class SelectionLasso: UIView {
     }
     
     public func addNewTouchPoint(touchPoint: CGPoint) -> Void {
+        
         self.shape.removeFromSuperlayer();
         self.points.append(touchPoint);
         self.shapePath.removeAllPoints();
@@ -56,6 +57,10 @@ class SelectionLasso: UIView {
         
         self.shape.path = self.shapePath.cgPath;
         self.layer.addSublayer(self.shape);
+    }
+    
+    private func shapeNeedsToBeClosed(touchPoint: CGPoint) -> Bool {
+        return abs(touchPoint.x - self.firstPoint.x) <= 25 && abs(touchPoint.y - self.firstPoint.y) <= 25;
     }
     
     private func setShapeProperties() -> Void {
