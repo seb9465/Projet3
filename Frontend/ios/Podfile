@@ -15,6 +15,7 @@ target 'ios' do
   pod 'MessageInputBar'
   pod 'JWTDecode'
   pod 'ChromaColorPicker'
+  pod 'SwiftHUEColorPicker'
 
   target 'iosTests' do
     inherit! :search_paths
