@@ -63,13 +63,22 @@ namespace PolyPaint.Vues
 
         private void OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            
             SelectedCanvas = (CanvasViewModel)ImagePreviews.SelectedItem;
             if (SelectedCanvas.CanvasProtection != null)
             {
                 imageProtection = new ImageProtection();
-            }
+                if(imageProtection.PasswordEntered == SelectedCanvas.CanvasProtection)
+                {
+                    this.Close();
+                } else
+                {
+                    SelectedCanvas = null;
+                    MessageBox.Show("Wrong password");
+                }
+            } else
+            {
             this.Close();
+            }
         }
 
         private void GoBack_Click(object sender, RoutedEventArgs e)

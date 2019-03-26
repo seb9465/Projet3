@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PolyPaint.VueModeles;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,6 +21,8 @@ namespace PolyPaint.Vues
     public partial class ImageProtection : Window
     {
         public String PasswordEntered;
+        private Gallery gallery;
+
         public ImageProtection()
         {
             InitializeComponent();
