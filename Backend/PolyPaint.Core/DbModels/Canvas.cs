@@ -10,7 +10,7 @@ namespace PolyPaint.Core.DbModels
         [Required] public string Name { get; set; }
         [Required] public string Base64Strokes { get; set; }
         [Required] public string Base64Image { get; set; }
-
+        [Required] public string canvasVisibility{ get; set; }
         public Canvas()
         {
         }
