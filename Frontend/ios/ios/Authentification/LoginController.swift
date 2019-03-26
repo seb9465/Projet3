@@ -34,14 +34,14 @@ class LoginController: UIViewController, UITextFieldDelegate {
 //        let validEmail: Bool = isValidEmail(email: emailField.text!);
         
 //        AuthentificationAPI.login(username: emailField.text!, password: passwordField.text!)
-        AuthentificationAPI.login(username: "user.4", password: "!12345Aa")
+        AuthentificationAPI.login(username: "user.3", password: "!12345Aa")
             .done { (token) in
                 UIViewController.removeSpinner(spinner: sv);
                 self.validationLabel.text = ""
                 self.storeAuthentificationToken(token: token)
                 // Navigate to dashboard
-                let mainController = self.storyboard?.instantiateViewController(withIdentifier: "MainController") as! UINavigationController
-                self.present(mainController, animated: true, completion: nil)
+                let mainController = self.storyboard?.instantiateViewController(withIdentifier: "MainController")
+                self.present(mainController!, animated: true, completion: nil)
             }.catch { (Error) in
                 UIViewController.removeSpinner(spinner: sv);
                 self.validationLabel.text = "Invalid Credentials"
