@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,6 +10,7 @@ using System.Windows.Controls;
 using System.Windows.Ink;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using PolyPaint.Common.Collaboration;
 using PolyPaint.Strokes;
 
@@ -30,7 +32,8 @@ namespace PolyPaint.Utilitaires
                 { typeof(BidirectionalAssociationStroke), ItemTypeEnum.BidirectionalAssociationStroke },
                 { typeof(CompositionStroke), ItemTypeEnum.CompositionStroke},
                 { typeof(InheritanceStroke), ItemTypeEnum.InheritanceStroke },
-                { typeof(UnidirectionalAssociationStroke), ItemTypeEnum.UnidirectionalAssociationStroke }
+                { typeof(UnidirectionalAssociationStroke), ItemTypeEnum.UnidirectionalAssociationStroke },
+                { typeof(ImageStroke), ItemTypeEnum.ImageStroke}
                }
            );
 
@@ -150,6 +153,19 @@ namespace PolyPaint.Utilitaires
                                                                                             stroke.LastElbowPosition.Y);
                         (DrawingStroke as ICanvasable).AddToCanvas();
                         break;
+                    case ItemTypeEnum.ImageStroke:
+                        BitmapImage biImg = new BitmapImage();
+                        MemoryStream ms = new MemoryStream(stroke.ImageBytes);
+                        biImg.BeginInit();
+                        biImg.StreamSource = ms;
+                        biImg.EndInit();
+                        ImageSource imgSrc = biImg as ImageSource;
+                        ImageBrush brush = new ImageBrush(imgSrc);
+
+                        DrawingStroke = new ImageStroke(pts, surfaceDessin, brush);
+                        (DrawingStroke as ICanvasable).AddToCanvas();
+                        break;
+                    
 
                     default:
                         break;
@@ -216,6 +232,24 @@ namespace PolyPaint.Utilitaires
                         X = (stroke as AbstractLineStroke).LastElbowPosition.X,
                         Y = (stroke as AbstractLineStroke).LastElbowPosition.Y,
                     };
+                }
+                if ((stroke as ImageStroke) != null)
+                {
+                    byte[] bytes = null;
+                    ImageSource image = (stroke as ImageStroke).Brush.ImageSource;
+                    BitmapSource bitmapSource = image as BitmapSource;
+                    PngBitmapEncoder encoder = new PngBitmapEncoder();
+                    if (bitmapSource != null)
+                    {
+                        encoder.Frames.Add(BitmapFrame.Create(bitmapSource));
+
+                        using (var stream = new MemoryStream())
+                        {
+                            encoder.Save(stream);
+                            bytes = stream.ToArray();
+                        }
+                    }
+                    drawingStroke.ImageBytes = bytes;
                 }
                 viewModels.Add(drawingStroke);
             }

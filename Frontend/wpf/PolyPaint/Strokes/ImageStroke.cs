@@ -14,7 +14,7 @@ namespace PolyPaint.Strokes
 {
     public class ImageStroke : AbstractStroke
     {
-        ImageBrush Brush { get; set; }
+        public ImageBrush Brush { get; set; }
         public ImageStroke(StylusPointCollection pts, InkCanvas surfaceDessin, ImageBrush brush)
             : base(pts, surfaceDessin, "#FFFFFFFF", "#FFFFFFFF")
         {
