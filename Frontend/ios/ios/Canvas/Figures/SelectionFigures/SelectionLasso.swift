@@ -17,6 +17,7 @@ class SelectionLasso: UIView {
     
     private var shape: CAShapeLayer;
     private var shapePath: UIBezierPath;
+    private var shapeIsClosed: Bool;
     
     init(size: CGSize, touchPoint: CGPoint) {
         self.firstPoint = touchPoint;
@@ -26,6 +27,7 @@ class SelectionLasso: UIView {
         
         self.shape = CAShapeLayer();
         self.shapePath = UIBezierPath();
+        self.shapeIsClosed = false;
         
         let frame: CGRect = CGRect(origin: CGPoint(x: 0, y: 0), size: size);
         super.init(frame: frame);
@@ -40,9 +42,13 @@ class SelectionLasso: UIView {
     }
     
     public func addNewTouchPoint(touchPoint: CGPoint) -> Void {
+        let needsToBeClosed: Bool = self.shapeNeedsToBeClosed(touchPoint: touchPoint);
+        
+        if (!needsToBeClosed) {
+            self.points.append(touchPoint);
+        }
         
         self.shape.removeFromSuperlayer();
-        self.points.append(touchPoint);
         self.shapePath.removeAllPoints();
         self.shapePath.move(to: CGPoint(x: 0, y: 0));
         
@@ -55,12 +61,17 @@ class SelectionLasso: UIView {
             self.addTouchPointCircle(touchPoint: point);
         }
         
+        if (needsToBeClosed) {
+            self.shapePath.close();
+            self.shapeIsClosed = true;
+        }
+        
         self.shape.path = self.shapePath.cgPath;
         self.layer.addSublayer(self.shape);
     }
     
     private func shapeNeedsToBeClosed(touchPoint: CGPoint) -> Bool {
-        return abs(touchPoint.x - self.firstPoint.x) <= 25 && abs(touchPoint.y - self.firstPoint.y) <= 25;
+        return abs(touchPoint.x - self.firstPoint.x) <= 50 && abs(touchPoint.y - self.firstPoint.y) <= 50;
     }
     
     private func setShapeProperties() -> Void {
