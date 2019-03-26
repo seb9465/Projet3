@@ -23,9 +23,10 @@ class SelectionLasso: UIView, SelectionLassoProtocol {
     private var shapePath: UIBezierPath;
     var shapeIsClosed: Bool;
     
+    // MARK: Constructors
+    
     init(size: CGSize, touchPoint: CGPoint) {
         self.firstPoint = touchPoint;
-        
         self.points = [];
         self.points.append(touchPoint);
         
@@ -45,6 +46,8 @@ class SelectionLasso: UIView, SelectionLassoProtocol {
         fatalError("init(coder:) has not been implemented");
     }
     
+    // MARK: Public functions
+    
     public func addNewTouchPoint(touchPoint: CGPoint) -> Void {
         let needsToBeClosed: Bool = self.shapeNeedsToBeClosed(touchPoint: touchPoint);
         
@@ -53,15 +56,10 @@ class SelectionLasso: UIView, SelectionLassoProtocol {
         }
         
         self.shape.removeFromSuperlayer();
-        self.shapePath.removeAllPoints();
-        self.shapePath.move(to: CGPoint(x: 0, y: 0));
+        self.clearShapePath();
         
         for point in self.points {
-            self.shapePath.addLine(to: CGPoint(
-                x: point.x - self.firstPoint.x,
-                y: point.y - self.firstPoint.y
-            ));
-            
+            self.addLineToShapePath(touchPoint: point);
             self.addTouchPointCircle(touchPoint: point);
         }
         
@@ -72,6 +70,20 @@ class SelectionLasso: UIView, SelectionLassoProtocol {
         
         self.shape.path = self.shapePath.cgPath;
         self.layer.addSublayer(self.shape);
+    }
+    
+    // MARK: Private functions
+    
+    private func clearShapePath() -> Void {
+        self.shapePath.removeAllPoints();
+        self.shapePath.move(to: CGPoint(x: 0, y: 0));
+    }
+    
+    private func addLineToShapePath(touchPoint: CGPoint) -> Void {
+        self.shapePath.addLine(to: CGPoint(
+            x: touchPoint.x - self.firstPoint.x,
+            y: touchPoint.y - self.firstPoint.y
+        ));
     }
     
     private func shapeNeedsToBeClosed(touchPoint: CGPoint) -> Bool {
