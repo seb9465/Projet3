@@ -59,7 +59,7 @@ class FigureSelectionCell: UITableViewCell {
     }
     
     @IBAction func ActorSelected(_ sender: Any) {
-        self.delegate?.setSelectedFigureType(itemType: ItemTypeEnum.Actor)
+        self.delegate?.setSelectedFigureType(itemType: ItemTypeEnum.Role)
         self.setSelectedButton(button: self.ActorButton)
     }
     
