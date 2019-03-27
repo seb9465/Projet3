@@ -13,8 +13,8 @@ namespace PolyPaint.Strokes
 {
     public class ActivityStroke : AbstractShapeStroke
     {
-        public ActivityStroke(StylusPointCollection pts, InkCanvas surfaceDessin, string couleurBordure, string couleurRemplissage)
-            : base(pts, surfaceDessin, "Activity", couleurBordure, couleurRemplissage)
+        public ActivityStroke(StylusPointCollection pts, InkCanvas surfaceDessin, string couleurBordure, string couleurRemplissage, double thicc)
+            : base(pts, surfaceDessin, "Activity", couleurBordure, couleurRemplissage, thicc)
         { }
 
         protected override void DrawCore(DrawingContext drawingContext, DrawingAttributes drawingAttributes)

@@ -14,8 +14,8 @@ namespace PolyPaint.Strokes
 {
     public class TextStroke : AbstractShapeStroke
     {
-        public TextStroke(StylusPointCollection pts, InkCanvas surfaceDessin, string couleurBordure, string couleurRemplissage)
-            : base(pts, surfaceDessin, "Text", couleurBordure, couleurRemplissage)
+        public TextStroke(StylusPointCollection pts, InkCanvas surfaceDessin, string couleurBordure, string couleurRemplissage, double thicc)
+            : base(pts, surfaceDessin, "Text", couleurBordure, couleurRemplissage, thicc)
         { }
 
         protected override void DrawCore(DrawingContext drawingContext, DrawingAttributes drawingAttributes)

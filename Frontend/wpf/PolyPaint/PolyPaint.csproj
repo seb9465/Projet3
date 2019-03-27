@@ -384,7 +384,9 @@
     <Compile Include="Strokes\CompositionStroke.cs" />
     <Compile Include="Strokes\InheritanceStroke.cs" />
     <Compile Include="Strokes\BidirectionalAssociationStroke.cs" />
+    <Compile Include="Strokes\LineStroke.cs" />
     <Compile Include="Strokes\LineStrokeAdorner.cs" />
+    <Compile Include="Strokes\ImageStroke.cs" />
     <Compile Include="Strokes\UnidirectionalAssociationStroke.cs" />
     <Compile Include="Strokes\ActivityStroke.cs" />
     <Compile Include="Strokes\PhaseStroke.cs" />
@@ -416,6 +418,9 @@
     </Compile>
     <Compile Include="Vues\Gallery.xaml.cs">
       <DependentUpon>Gallery.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Vues\UploadToCloud.xaml.cs">
+      <DependentUpon>UploadToCloud.xaml</DependentUpon>
     </Compile>
     <Compile Include="Vues\ViewStateEnum.cs" />
     <Compile Include="Vues\MenuProfile.xaml.cs">
@@ -460,6 +465,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Vues\MenuProfile.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Vues\UploadToCloud.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

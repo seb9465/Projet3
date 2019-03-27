@@ -1,21 +1,18 @@
 ﻿using PolyPaint.Utilitaires;
 using System;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Ink;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Linq;
 
 namespace PolyPaint.Strokes
 {
     public class RectangleStroke : AbstractShapeStroke
     {
-        public RectangleStroke(StylusPointCollection pts, InkCanvas surfaceDessin, string couleurBordure, string couleurRemplissage)
-            : base(pts, surfaceDessin, "Comment", couleurBordure, couleurRemplissage)
+        public RectangleStroke(StylusPointCollection pts, InkCanvas surfaceDessin, string couleurBordure, string couleurRemplissage, double thicc)
+            : base(pts, surfaceDessin, "Comment", couleurBordure, couleurRemplissage, thicc)
         { }
 
         protected override void DrawCore(DrawingContext drawingContext, DrawingAttributes drawingAttributes)

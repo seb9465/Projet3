@@ -116,7 +116,11 @@ namespace PolyPaint.VueModeles
         public int TailleTrait
         {
             get { return editeur.TailleTrait; }
-            set { editeur.TailleTrait = value; }
+            set
+            {
+                editeur.TailleTrait = value;
+                editeur.SelectedStrokes.ToList().ForEach(x => (x as AbstractStroke).SetBorderThickness(editeur.TailleTrait));
+            }
         }
 
         public string SelectedBorder

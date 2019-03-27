@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PolyPaint.Utilitaires;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -10,6 +11,8 @@ namespace PolyPaint.Strokes
 {
     public abstract class AbstractLineStroke : AbstractStroke
     {
+        public bool IsRelation { get; set; }
+        public bool BothAttached { get; set; }
         protected FormattedText Source { get; set; }
         public string SourceString
         {
@@ -36,10 +39,12 @@ namespace PolyPaint.Strokes
 
         public Point LastElbowPosition { get; set; }
 
-        public AbstractLineStroke(StylusPointCollection stylusPoints, InkCanvas surfaceDessin, string from, string to, string couleurBordure, string couleurRemplissage)
-            : base(stylusPoints, surfaceDessin, couleurBordure, couleurRemplissage)
+        public AbstractLineStroke(StylusPointCollection stylusPoints, InkCanvas surfaceDessin, string from, string to, string couleurBordure, string couleurRemplissage, double thicc, bool isRelation)
+            : base(stylusPoints, surfaceDessin, couleurBordure, couleurRemplissage, thicc)
         {
-            LastElbowPosition = new Point();
+            IsRelation = isRelation;
+            BothAttached = false;
+            LastElbowPosition = new Point((stylusPoints[0].X + stylusPoints[1].X) / 2, (stylusPoints[0].Y + stylusPoints[1].Y) / 2);
             Source = new FormattedText(from, System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 12, Brushes.Black);
             Destination = new FormattedText(to, System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 12, Brushes.Black);
 
@@ -71,10 +76,12 @@ namespace PolyPaint.Strokes
                 var secondDistance = Vector.Subtract(secondCloseVector, (Vector)secondPoint).Length;
                 var newSecondPoint = secondDistance < MIN_DISTANCE ? (Point)secondCloseVector : StylusPoints[1].ToPoint();
 
+                BothAttached = firstDistance < MIN_DISTANCE && secondDistance < MIN_DISTANCE;
                 return new StylusPointCollection(new Point[] { newFirstPoint, newSecondPoint });
             }
             else
             {
+                BothAttached = false;
                 return StylusPoints;
             }
         }

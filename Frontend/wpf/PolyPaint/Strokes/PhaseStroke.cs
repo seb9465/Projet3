@@ -13,8 +13,8 @@ namespace PolyPaint.Strokes
 {
     public class PhaseStroke : AbstractShapeStroke
     {
-        public PhaseStroke(StylusPointCollection pts, InkCanvas surfaceDessin, string couleurBordure, string couleurRemplissage)
-            : base(pts, surfaceDessin, "Phase", couleurBordure, couleurRemplissage)
+        public PhaseStroke(StylusPointCollection pts, InkCanvas surfaceDessin, string couleurBordure, string couleurRemplissage, double thicc)
+            : base(pts, surfaceDessin, "Phase", couleurBordure, couleurRemplissage, thicc)
         { }
 
         protected override void DrawCore(DrawingContext drawingContext, DrawingAttributes drawingAttributes)

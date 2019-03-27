@@ -14,8 +14,8 @@ namespace PolyPaint.Strokes
 {
     public class RoleStroke : AbstractShapeStroke
     {
-        public RoleStroke(StylusPointCollection pts, InkCanvas surfaceDessin, string couleurBordure, string couleurRemplissage)
-            : base(pts, surfaceDessin, "Role", couleurBordure, couleurRemplissage)
+        public RoleStroke(StylusPointCollection pts, InkCanvas surfaceDessin, string couleurBordure, string couleurRemplissage, double thicc)
+            : base(pts, surfaceDessin, "Role", couleurBordure, couleurRemplissage, thicc)
         { }
 
         protected override void DrawCore(DrawingContext drawingContext, DrawingAttributes drawingAttributes)

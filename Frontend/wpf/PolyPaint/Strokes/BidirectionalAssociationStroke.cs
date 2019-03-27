@@ -1,5 +1,6 @@
 ﻿using PolyPaint.Utilitaires;
 using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Ink;
@@ -10,8 +11,8 @@ namespace PolyPaint.Strokes
 {
     public class BidirectionalAssociationStroke : AbstractLineStroke
     {
-        public BidirectionalAssociationStroke(StylusPointCollection pts, InkCanvas surfaceDessin, string couleurBordure)
-            : base(pts, surfaceDessin, "0..0", "0..0", couleurBordure, "#FF000000")
+        public BidirectionalAssociationStroke(StylusPointCollection pts, InkCanvas surfaceDessin, string couleurBordure, double thicc)
+            : base(pts, surfaceDessin, "0..0", "0..0", couleurBordure, "#FF000000", thicc, false)
         { }
 
         protected override void DrawCore(DrawingContext drawingContext, DrawingAttributes drawingAttributes)
@@ -35,72 +36,88 @@ namespace PolyPaint.Strokes
             StylusPoint stp = pts[0];
             StylusPoint sp = pts[1];
 
+            var unrotatedStp = Tools.RotatePoint(stp.ToPoint(), Center, -Rotation);
+            var unrotatedSp = Tools.RotatePoint(sp.ToPoint(), Center, -Rotation);
+            var unrotatedElbow = Tools.RotatePoint(LastElbowPosition, Center, -Rotation);
+
             int arrowLength = 10;
             double rad = (Math.PI / 180) * 35;
             double phi2 = (Math.PI / 180) * -35;
 
-            double startDx = stp.X - LastElbowPosition.X;
-            double startDy = stp.Y - LastElbowPosition.Y;
+            double startDx = unrotatedStp.X - unrotatedElbow.X;
+            double startDy = unrotatedStp.Y - unrotatedElbow.Y;
             double startTheta = Math.Atan2(startDy, startDx);
 
-            double startX = stp.X - arrowLength * Math.Cos(startTheta + rad);
-            double startY = stp.Y - arrowLength * Math.Sin(startTheta + rad);
+            double startX = unrotatedStp.X - arrowLength * Math.Cos(startTheta + rad);
+            double startY = unrotatedStp.Y - arrowLength * Math.Sin(startTheta + rad);
 
-            double startX2 = stp.X - arrowLength * Math.Cos(startTheta + phi2);
-            double startY2 = stp.Y - arrowLength * Math.Sin(startTheta + phi2);
+            double startX2 = unrotatedStp.X - arrowLength * Math.Cos(startTheta + phi2);
+            double startY2 = unrotatedStp.Y - arrowLength * Math.Sin(startTheta + phi2);
 
-            double endDx = sp.X - LastElbowPosition.X;
-            double endDy = sp.Y - LastElbowPosition.Y;
+            double endDx = unrotatedSp.X - unrotatedElbow.X;
+            double endDy = unrotatedSp.Y - unrotatedElbow.Y;
             double endTheta = Math.Atan2(endDy, endDx);
 
-            double endX = sp.X - arrowLength * Math.Cos(endTheta + rad);
-            double endY = sp.Y - arrowLength * Math.Sin(endTheta + rad);
+            double endX = unrotatedSp.X - arrowLength * Math.Cos(endTheta + rad);
+            double endY = unrotatedSp.Y - arrowLength * Math.Sin(endTheta + rad);
 
-            double endX2 = sp.X - arrowLength * Math.Cos(endTheta + phi2);
-            double endY2 = sp.Y - arrowLength * Math.Sin(endTheta + phi2);
-
-            Point point2 = new Point(startX, startY);
-            Point point3 = new Point(stp.X, stp.Y);
-            Point point4 = new Point(startX2, startY2);
+            double endX2 = unrotatedSp.X - arrowLength * Math.Cos(endTheta + phi2);
+            double endY2 = unrotatedSp.Y - arrowLength * Math.Sin(endTheta + phi2);
 
 
-            Point point7 = new Point(endX, endY);
-            Point point8 = new Point(sp.X, sp.Y);
-            Point point9 = new Point(endX2, endY2);
+            PointCollection points = new PointCollection();
+            points.Add(unrotatedStp);
+            points.Add(new Point(startX, startY));
+            points.Add(new Point(unrotatedStp.X, unrotatedStp.Y));
+            points.Add(new Point(startX2, startY2));
+            points.Add(unrotatedSp);
+            points.Add(new Point(endX, endY));
+            points.Add(new Point(unrotatedSp.X, unrotatedSp.Y));
+            points.Add(new Point(endX2, endY2));
+            points = new PointCollection(points.ToList().Select(point => Tools.RotatePoint(point, Center, Rotation)));
 
             StreamGeometry streamGeometry1 = new StreamGeometry();
             using (StreamGeometryContext geometryContext = streamGeometry1.Open())
             {
-                geometryContext.BeginFigure(stp.ToPoint(), true, true);
-                PointCollection points = new PointCollection
-                                             {
-                                                 point2,
-                                                 point3,
-                                                 point4
-                                             };
-                geometryContext.PolyLineTo(points, true, true);
+                geometryContext.BeginFigure(points[0], true, true);
+                var newPoints = new PointCollection
+                {
+                    points[1],
+                    points[2],
+                    points[3]
+                };
+                geometryContext.PolyLineTo(newPoints, true, true);
             }
 
             StreamGeometry streamGeometry2 = new StreamGeometry();
             using (StreamGeometryContext geometryContext = streamGeometry2.Open())
             {
-                geometryContext.BeginFigure(sp.ToPoint(), true, true);
-                PointCollection points = new PointCollection
-                                             {
-                                                 point7,
-                                                 point8,
-                                                 point9
-                                             };
-                geometryContext.PolyLineTo(points, true, true);
+                geometryContext.BeginFigure(points[4], true, true);
+                var newPoints = new PointCollection
+                {
+                    points[5],
+                    points[6],
+                    points[7]
+                };
+                geometryContext.PolyLineTo(newPoints, true, true);
             }
-
-            RotateTransform RT = new RotateTransform(Rotation, Center.X, Center.Y);
-            drawingContext.PushTransform(RT);
 
             drawingContext.DrawGeometry(Fill, Border, streamGeometry1);
             drawingContext.DrawGeometry(Fill, Border, streamGeometry2);
-            drawingContext.DrawLine(Border, stp.ToPoint(), LastElbowPosition);
-            drawingContext.DrawLine(Border, LastElbowPosition, sp.ToPoint());
+
+            StreamGeometry elbowGeometry = new StreamGeometry();
+            using (StreamGeometryContext geometryContext = elbowGeometry.Open())
+            {
+                geometryContext.BeginFigure(stp.ToPoint(), true, true);
+                var elbowPoints = new PointCollection
+                {
+                     LastElbowPosition,
+                     sp.ToPoint(),
+                     LastElbowPosition
+                };
+                geometryContext.PolyLineTo(elbowPoints, true, true);
+            }
+            drawingContext.DrawGeometry(Brushes.Transparent, Border, elbowGeometry);
         }
     }
 }
