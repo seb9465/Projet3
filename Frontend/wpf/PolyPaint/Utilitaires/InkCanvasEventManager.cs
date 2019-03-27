@@ -180,8 +180,8 @@ namespace PolyPaint.Utilitaires
             double shiftInX = newRectangle.Left - oldRectangle.Left;
             double shiftInY = newRectangle.Top - oldRectangle.Top;
             List<Point> affectedAnchorPoints = new List<Point>();
-            var selectedStroke = surfaceDessin.GetSelectedStrokes();
-            foreach (var stroke in selectedStroke)
+            var selectedStrokes = surfaceDessin.GetSelectedStrokes();
+            foreach (var stroke in selectedStrokes)
             {
                 Point topLeft = new Point(stroke.StylusPoints[0].X, stroke.StylusPoints[0].Y);
                 double width = (stroke.StylusPoints[1].X - stroke.StylusPoints[0].X);
@@ -205,7 +205,7 @@ namespace PolyPaint.Utilitaires
                 {
                     surfaceDessin.Strokes.Where(x => x is AbstractLineStroke &&
                         !surfaceDessin.GetSelectedStrokes().Contains(x) &&
-                        Point.Subtract(x.StylusPoints[i].ToPoint(), pt).Length <= 10)
+                        Point.Subtract(x.StylusPoints[i].ToPoint(), pt).Length <= Config.MIN_DISTANCE_ANCHORS)
                         .ToList()
                         .ForEach(x => RedrawPoint(x, i, new Vector(shiftInX, shiftInY)));
                 }

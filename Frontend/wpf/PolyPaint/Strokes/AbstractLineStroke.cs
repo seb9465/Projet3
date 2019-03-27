@@ -53,8 +53,7 @@ namespace PolyPaint.Strokes
                 LastElbowPosition = new Point((StylusPoints[0].X + StylusPoints[1].X) / 2, (StylusPoints[0].Y + StylusPoints[1].Y) / 2);
             };
         }
-
-        private readonly double MIN_DISTANCE = 10;
+        
         protected StylusPointCollection AttachToAnchors()
         {
             Point firstPoint = new Point(StylusPoints[0].X, StylusPoints[0].Y);
@@ -70,13 +69,13 @@ namespace PolyPaint.Strokes
             {
                 var firstCloseVector = (Vector)anchors.OrderBy(x => Point.Subtract(x, firstPoint).Length).First();
                 var firstDistance = Vector.Subtract(firstCloseVector, (Vector)firstPoint).Length;
-                var newFirstPoint = firstDistance < MIN_DISTANCE ? (Point)firstCloseVector : StylusPoints[0].ToPoint();
+                var newFirstPoint = firstDistance < Config.MIN_DISTANCE_ANCHORS ? (Point)firstCloseVector : StylusPoints[0].ToPoint();
 
                 var secondCloseVector = (Vector)anchors.OrderBy(x => Point.Subtract(x, secondPoint).Length).First();
                 var secondDistance = Vector.Subtract(secondCloseVector, (Vector)secondPoint).Length;
-                var newSecondPoint = secondDistance < MIN_DISTANCE ? (Point)secondCloseVector : StylusPoints[1].ToPoint();
+                var newSecondPoint = secondDistance < Config.MIN_DISTANCE_ANCHORS ? (Point)secondCloseVector : StylusPoints[1].ToPoint();
 
-                BothAttached = firstDistance < MIN_DISTANCE && secondDistance < MIN_DISTANCE;
+                BothAttached = firstDistance < Config.MIN_DISTANCE_ANCHORS && secondDistance < Config.MIN_DISTANCE_ANCHORS;
                 return new StylusPointCollection(new Point[] { newFirstPoint, newSecondPoint });
             }
             else
