@@ -30,7 +30,7 @@ namespace PolyPaint.Strokes
 
         protected InkCanvas SurfaceDessin { get; set; }
 
-        public AbstractStroke(StylusPointCollection pts, InkCanvas surfaceDessin, string couleurBordure, string couleurRemplissage)
+        public AbstractStroke(StylusPointCollection pts, InkCanvas surfaceDessin, string couleurBordure, string couleurRemplissage, double thicc)
             : base(pts)
         {
             TopLeft = new Point();
@@ -40,7 +40,7 @@ namespace PolyPaint.Strokes
             couleurBordure = couleurBordure == "" ? "#FF000000" : couleurBordure;
             couleurRemplissage = couleurRemplissage == "" ? "#FFFFFFFF" : couleurRemplissage;
 
-            Border = new Pen(new SolidColorBrush((Color)ColorConverter.ConvertFromString(couleurBordure)), 2);
+            Border = new Pen(new SolidColorBrush((Color)ColorConverter.ConvertFromString(couleurBordure)), thicc);
             Fill = new SolidColorBrush((Color)ColorConverter.ConvertFromString(couleurRemplissage));
 
             IsDrawingDone = false;
@@ -87,6 +87,12 @@ namespace PolyPaint.Strokes
             var dashStyle = Border.DashStyle;
             Border = new Pen(new SolidColorBrush((Color)ColorConverter.ConvertFromString(color)), Border.Thickness);
             Border.DashStyle = dashStyle;
+            Redraw();
+        }
+
+        public void SetBorderThickness(int thicc)
+        {
+            Border.Thickness = thicc;
             Redraw();
         }
 

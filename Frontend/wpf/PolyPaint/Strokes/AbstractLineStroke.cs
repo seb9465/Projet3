@@ -36,8 +36,8 @@ namespace PolyPaint.Strokes
 
         public Point LastElbowPosition { get; set; }
 
-        public AbstractLineStroke(StylusPointCollection stylusPoints, InkCanvas surfaceDessin, string from, string to, string couleurBordure, string couleurRemplissage)
-            : base(stylusPoints, surfaceDessin, couleurBordure, couleurRemplissage)
+        public AbstractLineStroke(StylusPointCollection stylusPoints, InkCanvas surfaceDessin, string from, string to, string couleurBordure, string couleurRemplissage, double thicc)
+            : base(stylusPoints, surfaceDessin, couleurBordure, couleurRemplissage, thicc)
         {
             LastElbowPosition = new Point();
             Source = new FormattedText(from, System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 12, Brushes.Black);

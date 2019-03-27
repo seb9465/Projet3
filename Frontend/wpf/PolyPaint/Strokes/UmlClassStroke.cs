@@ -22,8 +22,8 @@ namespace PolyPaint.Strokes
         public RelayCommand<string> RemoveFromProperties { get; set; }
         public RelayCommand<string> RemoveFromMethods { get; set; }
 
-        public UmlClassStroke(StylusPointCollection pts, InkCanvas surfaceDessin, string couleurBordure, string couleurRemplissage)
-            : base(pts, surfaceDessin, "Class", couleurBordure, couleurRemplissage)
+        public UmlClassStroke(StylusPointCollection pts, InkCanvas surfaceDessin, string couleurBordure, string couleurRemplissage, double thicc)
+            : base(pts, surfaceDessin, "Class", couleurBordure, couleurRemplissage, thicc)
         {
             Properties = new ObservableCollection<Property>();
             Methods = new ObservableCollection<Method>();

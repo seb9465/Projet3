@@ -10,8 +10,8 @@ namespace PolyPaint.Strokes
 {
     public class CompositionStroke : AbstractLineStroke
     {
-        public CompositionStroke(StylusPointCollection pts, InkCanvas surfaceDessin, string couleurBordure)
-            : base(pts, surfaceDessin, "0..0", "0..0", couleurBordure, "#FF000000") { }
+        public CompositionStroke(StylusPointCollection pts, InkCanvas surfaceDessin, string couleurBordure, double thicc)
+            : base(pts, surfaceDessin, "0..0", "0..0", couleurBordure, "#FF000000", thicc) { }
 
         protected override void DrawCore(DrawingContext drawingContext, DrawingAttributes drawingAttributes)
         {

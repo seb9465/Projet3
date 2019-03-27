@@ -10,8 +10,8 @@ namespace PolyPaint.Strokes
 {
     public class InheritanceStroke : AbstractLineStroke
     {
-        public InheritanceStroke(StylusPointCollection pts, InkCanvas surfaceDessin, string couleurBordure)
-            : base(pts, surfaceDessin, "0..0", "0..0", couleurBordure, "#00000000")
+        public InheritanceStroke(StylusPointCollection pts, InkCanvas surfaceDessin, string couleurBordure, double thicc)
+            : base(pts, surfaceDessin, "0..0", "0..0", couleurBordure, "#00000000", thicc)
         { }
 
         protected override void DrawCore(DrawingContext drawingContext, DrawingAttributes drawingAttributes)

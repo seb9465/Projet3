@@ -10,8 +10,8 @@ namespace PolyPaint.Strokes
 {
     public class AgregationStroke : AbstractLineStroke
     {
-        public AgregationStroke(StylusPointCollection pts, InkCanvas surfaceDessin, string couleurBordure)
-            : base(pts, surfaceDessin, "0..0", "0..0", couleurBordure, "#00000000")
+        public AgregationStroke(StylusPointCollection pts, InkCanvas surfaceDessin, string couleurBordure, double tailleTrait)
+            : base(pts, surfaceDessin, "0..0", "0..0", couleurBordure, "#00000000", tailleTrait)
         { }
 
         protected override void DrawCore(DrawingContext drawingContext, DrawingAttributes drawingAttributes)
