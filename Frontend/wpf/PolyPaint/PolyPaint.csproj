@@ -385,6 +385,7 @@
     <Compile Include="Strokes\CompositionStroke.cs" />
     <Compile Include="Strokes\InheritanceStroke.cs" />
     <Compile Include="Strokes\BidirectionalAssociationStroke.cs" />
+    <Compile Include="Strokes\LineStroke.cs" />
     <Compile Include="Strokes\LineStrokeAdorner.cs" />
     <Compile Include="Strokes\ImageStroke.cs" />
     <Compile Include="Strokes\UnidirectionalAssociationStroke.cs" />

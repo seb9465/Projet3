@@ -9,6 +9,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Ink;
+using System.Windows.Input;
 using System.Windows.Media;
 using Microsoft.AspNetCore.SignalR.Client;
 using PolyPaint.Common.Collaboration;
@@ -117,7 +118,11 @@ namespace PolyPaint.VueModeles
         public int TailleTrait
         {
             get { return editeur.TailleTrait; }
-            set { editeur.TailleTrait = value; }
+            set
+            {
+                editeur.TailleTrait = value;
+                editeur.SelectedStrokes.ToList().ForEach(x => (x as AbstractStroke).SetBorderThickness(editeur.TailleTrait));
+            }
         }
 
         public string SelectedBorder
@@ -141,6 +146,7 @@ namespace PolyPaint.VueModeles
         public RelayCommand<string> ChoisirOutil { get; set; }
         public RelayCommand<string> ChoisirRoom { get; set; }
         public RelayCommand<string> ChooseBorder { get; set; }
+        public RelayCommand<string> Rotate { get; set; }
         public RelayCommand<Room> RoomConnect { get; set; }
         public RelayCommand<object> Reinitialiser { get; set; }
 
@@ -176,6 +182,7 @@ namespace PolyPaint.VueModeles
             ChoisirOutil = new RelayCommand<string>(editeur.ChoisirOutil);
             ChoisirRoom = new RelayCommand<string>(choisirRoom);
             ChooseBorder = new RelayCommand<string>(chooseBorder);
+            Rotate = new RelayCommand<string>(rotate);
             RoomConnect = new RelayCommand<Room>(roomConnect);
             Reinitialiser = new RelayCommand<object>(editeur.Reinitialiser);
 
@@ -252,6 +259,19 @@ namespace PolyPaint.VueModeles
             foreach (AbstractStroke stroke in editeur.SelectedStrokes.Where(x => x is AbstractStroke))
             {
                 stroke.SetBorderStyle(Tools.DashAssociations[border]);
+            }
+        }
+
+        private void rotate(string side)
+        {
+            var increment = side == "right" ? 90 : -90;
+            foreach (AbstractStroke stroke in editeur.SelectedStrokes.Where(x => x is AbstractStroke))
+            {
+                stroke.Rotation = (stroke.Rotation + increment) % 360;
+                var stylusPoint0 = Tools.RotatePoint(stroke.StylusPoints[0].ToPoint(), stroke.Center, increment);
+                var stylusPoint1 = Tools.RotatePoint(stroke.StylusPoints[1].ToPoint(), stroke.Center, increment);
+                stroke.StylusPoints[0] = new StylusPoint(stylusPoint0.X, stylusPoint0.Y);
+                stroke.StylusPoints[1] = new StylusPoint(stylusPoint1.X, stylusPoint1.Y);
             }
         }
 

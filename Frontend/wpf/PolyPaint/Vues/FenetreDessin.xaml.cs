@@ -118,9 +118,14 @@ namespace PolyPaint
 
                 //Serialize our "strokes"
                 FileStream fs = null;
-                fs = new FileStream(filePath, FileMode.Create);
-                var jsons = JsonConvert.SerializeObject(strokes);
-                fs.Write(Encoding.UTF8.GetBytes(jsons), 0, Encoding.UTF8.GetByteCount(jsons));
+
+                try
+                {
+                    fs = new FileStream(filePath, FileMode.Create);
+                    var jsons = JsonConvert.SerializeObject(strokes);
+                    fs.Write(Encoding.UTF8.GetBytes(jsons), 0, Encoding.UTF8.GetByteCount(jsons));
+                }
+                catch (ArgumentException) { } // Close Dialog Window
             }
         }
 
@@ -138,14 +143,18 @@ namespace PolyPaint
 
             // Deserialize it
             FileStream fs = null;
-            fs = new FileStream(openFileDialog.FileName, FileMode.Open, FileAccess.Read);
-            byte[] jsons = new byte[fs.Length];
-            fs.Read(jsons, 0, (int)fs.Length);
+            try
+            {
+                fs = new FileStream(openFileDialog.FileName, FileMode.Open, FileAccess.Read);
+                byte[] jsons = new byte[fs.Length];
+                fs.Read(jsons, 0, (int)fs.Length);
 
-            List<DrawViewModel> customStrokes = JsonConvert.DeserializeObject<List<DrawViewModel>>(Encoding.UTF8.GetString(jsons));
+                List<DrawViewModel> customStrokes = JsonConvert.DeserializeObject<List<DrawViewModel>>(Encoding.UTF8.GetString(jsons));
 
-            // Rebuild the strokes
-            rebuilder.BuildStrokesFromDrawViewModels(customStrokes, surfaceDessin);
+                // Rebuild the strokes
+                rebuilder.BuildStrokesFromDrawViewModels(customStrokes, surfaceDessin);
+            }
+            catch (ArgumentException) { } // Close Dialog Window
         }
 
         private async void SendToCloud(object sender, RoutedEventArgs e)
@@ -333,11 +342,11 @@ namespace PolyPaint
             if ((DataContext as VueModele).OutilSelectionne == "") return;
             if (icEventManager.DrawingStroke != null)
             {
-                StrokeCollection alloA = new StrokeCollection
+                StrokeCollection strokeInACollection = new StrokeCollection
                 {
                     icEventManager.DrawingStroke
                 };
-                List<DrawViewModel> allo = rebuilder.GetDrawViewModelsFromStrokes(alloA);
+                List<DrawViewModel> allo = rebuilder.GetDrawViewModelsFromStrokes(strokeInACollection);
                 await (DataContext as VueModele).CollaborationClient.CollaborativeDrawAsync(allo[0]);
             }
             icEventManager.EndDraw(surfaceDessin, (DataContext as VueModele).OutilSelectionne);

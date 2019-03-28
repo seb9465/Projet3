@@ -1,4 +1,6 @@
-﻿using System;
+﻿using PolyPaint.Utilitaires;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -17,8 +19,28 @@ namespace PolyPaint.Strokes
         public bool IsDrawingDone { get; set; }
 
         public Point TopLeft { get; set; }
+        public Point Center { get { return new Point(TopLeft.X + Width / 2.0, TopLeft.Y + Height / 2.0); } }
         public double Width { get; set; }
         public double Height { get; set; }
+
+        public List<Point> UnrotatedStylusPoints
+        {
+            get
+            {
+                return StylusPoints.ToList().Select(x => Tools.RotatePoint(x.ToPoint(), Center, -Rotation)).ToList();
+            }
+        }
+        public Point UnrotatedTopLeft
+        {
+            get
+            {
+                return new Point(UnrotatedStylusPoints[0].X <= UnrotatedStylusPoints[1].X ? UnrotatedStylusPoints[0].X : UnrotatedStylusPoints[1].X,
+                UnrotatedStylusPoints[0].Y <= UnrotatedStylusPoints[1].Y ? UnrotatedStylusPoints[0].Y : UnrotatedStylusPoints[1].Y);
+            }
+        }
+        public double UnrotatedWidth { get { return Math.Abs(UnrotatedStylusPoints[1].X - UnrotatedStylusPoints[0].X); } }
+        public double UnrotatedHeight { get { return Math.Abs(UnrotatedStylusPoints[1].Y - UnrotatedStylusPoints[0].Y); } }
+        public double Rotation { get; set; }
 
         public Brush Fill { get; set; }
         public Pen Border { get; set; }
@@ -30,7 +52,7 @@ namespace PolyPaint.Strokes
 
         protected InkCanvas SurfaceDessin { get; set; }
 
-        public AbstractStroke(StylusPointCollection pts, InkCanvas surfaceDessin, string couleurBordure, string couleurRemplissage)
+        public AbstractStroke(StylusPointCollection pts, InkCanvas surfaceDessin, string couleurBordure, string couleurRemplissage, double thicc)
             : base(pts)
         {
             TopLeft = new Point();
@@ -40,7 +62,7 @@ namespace PolyPaint.Strokes
             couleurBordure = couleurBordure == "" ? "#FF000000" : couleurBordure;
             couleurRemplissage = couleurRemplissage == "" ? "#FFFFFFFF" : couleurRemplissage;
 
-            Border = new Pen(new SolidColorBrush((Color)ColorConverter.ConvertFromString(couleurBordure)), 2);
+            Border = new Pen(new SolidColorBrush((Color)ColorConverter.ConvertFromString(couleurBordure)), thicc);
             Fill = new SolidColorBrush((Color)ColorConverter.ConvertFromString(couleurRemplissage));
 
             IsDrawingDone = false;
@@ -90,6 +112,12 @@ namespace PolyPaint.Strokes
             Redraw();
         }
 
+        public void SetBorderThickness(int thicc)
+        {
+            Border.Thickness = thicc;
+            Redraw();
+        }
+
         public void SetFillColor(string color)
         {
             Fill = new SolidColorBrush((Color)ColorConverter.ConvertFromString(color));
@@ -99,6 +127,38 @@ namespace PolyPaint.Strokes
         public void Redraw()
         {
             OnInvalidated(new EventArgs());
+        }
+
+        // Draw a polyline.
+        protected void DrawPolyline(DrawingContext drawingContext,
+            Brush brush, Pen pen, Point[] points, FillRule fill_rule)
+        {
+            DrawPolygonOrPolyline(
+                drawingContext, brush, pen, points, fill_rule, false);
+        }
+
+        // Draw a polygon or polyline.
+        private void DrawPolygonOrPolyline(
+            DrawingContext drawingContext,
+            Brush brush, Pen pen, Point[] points, FillRule fill_rule,
+            bool draw_polygon)
+        {
+            // Make a StreamGeometry to hold the drawing objects.
+            StreamGeometry geo = new StreamGeometry();
+            geo.FillRule = fill_rule;
+
+            // Open the context to use for drawing.
+            using (StreamGeometryContext context = geo.Open())
+            {
+                // Start at the first point.
+                context.BeginFigure(points[0], true, draw_polygon);
+
+                // Add the points after the first one.
+                context.PolyLineTo(points.Skip(1).ToArray(), true, false);
+            }
+
+            // Draw.
+            drawingContext.DrawGeometry(brush, pen, geo);
         }
     }
 }

@@ -1,26 +1,17 @@
-﻿using PolyPaint.Utilitaires;
-using System;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
+﻿using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Ink;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Linq;
 
 namespace PolyPaint.Strokes
 {
-    public class ImageStroke : AbstractStroke
+    public class LineStroke : AbstractLineStroke
     {
-        public ImageBrush Brush { get; set; }
-        public ImageStroke(StylusPointCollection pts, InkCanvas surfaceDessin, ImageBrush brush)
-            : base(pts, surfaceDessin, "#FFFFFFFF", "#FFFFFFFF", 0)
-        {
-            Brush = brush;
-            SurfaceDessin = surfaceDessin;
-        }
+        public LineStroke(StylusPointCollection pts, InkCanvas surfaceDessin, string couleurBordure, double thicc)
+            : base(pts, surfaceDessin, "0..0", "0..0", couleurBordure, "#FF000000", thicc, false)
+        { }
 
         protected override void DrawCore(DrawingContext drawingContext, DrawingAttributes drawingAttributes)
         {
@@ -38,7 +29,18 @@ namespace PolyPaint.Strokes
             Width = Math.Abs(StylusPoints[1].X - StylusPoints[0].X);
             Height = Math.Abs(StylusPoints[1].Y - StylusPoints[0].Y);
 
-            drawingContext.DrawRectangle(Brush, null, new Rect(TopLeft, new Point(TopLeft.X + Width, TopLeft.Y + Height)));
+            var pts = AttachToAnchors();
+
+            StylusPoint stp = pts[0];
+            StylusPoint sp = pts[1];
+
+            var elbowPoints = new Point[]
+            {
+                stp.ToPoint(),
+                LastElbowPosition,
+                sp.ToPoint()
+            };
+            DrawPolyline(drawingContext, null, Border, elbowPoints, FillRule.EvenOdd);
         }
     }
 }
