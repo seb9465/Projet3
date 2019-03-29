@@ -330,7 +330,7 @@ namespace PolyPaint
             }
         }
 
-        private async void InkCanvas_LeftMouseUp(object sender, MouseButtonEventArgs e)
+        private void InkCanvas_LeftMouseUp(object sender, MouseButtonEventArgs e)
         {
             if ((DataContext as VueModele).OutilSelectionne == "") return;
             if (icEventManager.DrawingStroke != null)
@@ -340,7 +340,7 @@ namespace PolyPaint
                     icEventManager.DrawingStroke
                 };
                 List<DrawViewModel> allo = rebuilder.GetDrawViewModelsFromStrokes(strokeInACollection);
-                await (DataContext as VueModele).CollaborationClient.CollaborativeDrawAsync(allo);
+                (DataContext as VueModele).CollaborationClient.CollaborativeDrawAsync(allo);
             }
             icEventManager.EndDraw(surfaceDessin, (DataContext as VueModele).OutilSelectionne);
             if ((DataContext as VueModele).OutilSelectionne == "change_text")
@@ -448,6 +448,11 @@ namespace PolyPaint
                 reinitialiser.Command = (DataContext as VueModele).Reinitialiser;
                 reinitialiser.Command.Execute(reinitialiser.CommandParameter);
             });
+        }
+
+        private void SendSelectedStrokes(object sender, RoutedEventArgs e)
+        {
+            (DataContext as VueModele).SendSelectedStrokes();
         }
 
         void InkCanvas_SelectionMoving(object sender, InkCanvasSelectionEditingEventArgs e)
