@@ -21,8 +21,8 @@ class UmlFigure : Figure {
     var lineColor: UIColor!
     var oldTouchedPoint: CGPoint!
     
-    var incomingConnections : [ConnectionFigure] = []
-    var outgoingConnections : [ConnectionFigure] = []
+    var incomingConnections : [ConnectionFigure: String] = [:]
+    var outgoingConnections : [ConnectionFigure: String] = [:]
     
     private var currentAngle: Double = 0
 
@@ -84,23 +84,25 @@ class UmlFigure : Figure {
         self.frame = translatedFrame
         self.firstPoint = self.frame.origin
         self.lastPoint = CGPoint(x: self.frame.maxX, y: self.frame.maxY)
-        for connection in incomingConnections {
-            connection.lastPoint = convert((self.anchorPoints?.anchorPointsSnapEdges["left"])!, to: self.superview)
-            connection.setNeedsDisplay()
+        for pair in incomingConnections {
+            pair.key.points[1] = convert(((self.anchorPoints?.anchorPointsSnapEdges[pair.value]!)!), to: self.superview)
+            pair.key.setNeedsDisplay()
         }
         
-        for connection in outgoingConnections {
-            connection.points[0] = convert((self.anchorPoints?.anchorPointsSnapEdges["left"])!, to: self.superview)
-            connection.setNeedsDisplay()
+        for pair in outgoingConnections {
+            pair.key.points[0] = convert(((self.anchorPoints?.anchorPointsSnapEdges[pair.value]!)!), to: self.superview)
+            pair.key.setNeedsDisplay()
         }
     }
     
-    public func addIncomingConnection(connection: ConnectionFigure) {
-        self.incomingConnections.append(connection)
+    public func addIncomingConnection(connection: ConnectionFigure, anchor: String) {
+        self.incomingConnections.updateValue(anchor, forKey: connection)
+//        self.incomingConnections.append(connection)
     }
     
-    public func addOutgoingConnection(connection: ConnectionFigure) {
-        self.outgoingConnections.append(connection)
+    public func addOutgoingConnection(connection: ConnectionFigure, anchor: String) {
+        self.outgoingConnections.updateValue(anchor, forKey: connection)
+//        self.outgoingConnections.append(connection)
     }
     
     override public func rotate(orientation: RotateOrientation) -> Void {
@@ -125,7 +127,7 @@ class UmlFigure : Figure {
         return CGFloat(sqrt(xDist * xDist + yDist * yDist))
     }
     
-    public func getClosestAnchor(point: CGPoint) -> CGPoint {
+    public func getClosestAnchorPoint(point: CGPoint) -> CGPoint {
         var indexToAnchor : [Int: String] = [0: "top", 1: "left", 2: "right", 3: "bottom"]
         var distances: [CGFloat] = []
         distances.append(self.distance(a: point, b: convert((self.anchorPoints?.anchorPointsSnapEdges["top"])!, to: self.superview)))
@@ -135,6 +137,18 @@ class UmlFigure : Figure {
         
         let minIndex = distances.firstIndex(of: distances.min()!)
         return convert((self.anchorPoints?.anchorPointsSnapEdges[indexToAnchor[minIndex!]!])!, to: self.superview)
+    }
+    
+    public func getClosestAnchorPointName(point: CGPoint) -> String {
+        var indexToAnchor : [Int: String] = [0: "top", 1: "left", 2: "right", 3: "bottom"]
+        var distances: [CGFloat] = []
+        distances.append(self.distance(a: point, b: convert((self.anchorPoints?.anchorPointsSnapEdges["top"])!, to: self.superview)))
+        distances.append(self.distance(a: point, b: convert((self.anchorPoints?.anchorPointsSnapEdges["left"])!, to: self.superview)))
+        distances.append(self.distance(a: point, b: convert((self.anchorPoints?.anchorPointsSnapEdges["right"])!, to: self.superview)))
+        distances.append(self.distance(a: point, b: convert((self.anchorPoints?.anchorPointsSnapEdges["bottom"])!, to: self.superview)))
+        
+        let minIndex = distances.firstIndex(of: distances.min()!)
+        return indexToAnchor[minIndex!]!
     }
 }
 
@@ -175,89 +189,4 @@ extension UmlFigure {
         guard let point = touch?.location(in: self.superview) else { return }
         self.delegate?.notifyTouchEnded(point: point)
     }
-    
-
 }
-    
-    
-    
-
-    //    public override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-    //        print("touches began")
-    //        if (self.isSelected) {
-    //            guard let point = touches.first else { return };
-    //            previousPoint1 = point.previousLocation(in: self)
-    //            currentPoint = point.location(in: self)
-    //
-    //            let temp = CGRect(x: currentPoint!.x - 75/2, y: currentPoint!.y-75/2, width: 75, height: 75)
-    //
-    //            if (temp.contains(self.selectFigureService.selectedCornerCircle1.position)) {
-    //                self.isResizing = true;
-    //                self.resizingState = RESIZING.FROM_CIRCLE_1;
-    //            } else if (temp.contains(self.selectFigureService.selectedCornerCircle2.position)) {
-    //                self.isResizing = true;
-    //                self.resizingState = RESIZING.FROM_CIRCLE_2;
-    //            } else if (temp.contains(self.selectFigureService.selectedCornerCircle3.position)) {
-    //                self.isResizing = true;
-    //                self.resizingState = RESIZING.FROM_CIRCLE_3;
-    //            } else if (temp.contains(self.selectFigureService.selectedCornerCircle4.position)) {
-    //                self.isResizing = true;
-    //                self.resizingState = RESIZING.FROM_CIRCLE_4;
-    //            } else {
-    //                self.isDragging = true;
-    //                print("DRAGGING");
-    //            }
-    //
-    //            self.selectFigureService.removeSelectedFigureLayers();
-    //        }
-    //    }
-    
-    //    public override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-    //        if(self.isSelected) {
-    //            guard let point = touches.first else { return };
-    //
-    //            previousPoint1 = point.previousLocation(in: self);
-    //            currentPoint = point.location(in: self);
-    //
-    //            let deltax = currentPoint!.x - previousPoint1!.x;
-    //            let deltay = currentPoint!.y - previousPoint1!.y;
-    //
-    //            if (self.isDragging) {
-    //                self.lastPoint.x += deltax;
-    //                self.lastPoint.y += deltay;
-    //                self.firstPoint.x += deltax;
-    //                self.firstPoint.y += deltay;
-    //            } else if (self.isResizing) {
-    //                switch (self.resizingState) {
-    //                case .FROM_CIRCLE_1:
-    //                    self.firstPoint.x += deltax;
-    //                    self.firstPoint.y += deltay;
-    //                    break;
-    //                case .FROM_CIRCLE_2:
-    //                    self.lastPoint.x += deltax;
-    //                    self.firstPoint.y += deltay;
-    //                    break;
-    //                case .FROM_CIRCLE_3:
-    //                    self.lastPoint.x += deltax;
-    //                    self.lastPoint.y += deltay;
-    //                    break;
-    //                case .FROM_CIRCLE_4:
-    //                    self.lastPoint.y += deltay;
-    //                    self.firstPoint.x += deltax;
-    //                    break;
-    //                default:
-    //                    break;
-    //                }
-    //            }
-    //
-    //            setNeedsDisplay();
-    //        }
-    //    }
-    
-    //    public override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-    //        self.isDragging = false;
-    //        self.isResizing = false;
-    //
-    //        self.selectFigureService.adjustSelectedFigureLayers(firstPoint: self.firstPoint, lastPoint: self.lastPoint, bounds: self.bounds, layer: self.layer);
-    //        setNeedsDisplay();
-    //    }

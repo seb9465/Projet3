@@ -21,7 +21,9 @@ class Editor {
     public var selectedFigure: Figure! = nil;
     public var selectionOutline: SelectionOutline!
     public var connectionPreview: ConnectionFigure!
-    public var connectionSourceFigure: Figure!
+    
+//    public var connectionFigures: [String: Figure?] = ["source" : nil, "destination": nil]
+    public var sourceFigure: UmlFigure!
     
     public var currentFigureType: ItemTypeEnum = ItemTypeEnum.UmlClass;
   //  public var currentLineType: ItemTypeEnum = ItemTypeEnum.StraightLine
@@ -65,12 +67,12 @@ class Editor {
         self.selectedFigure = nil
     }
     
-    public func insertConnectionFigure(firstPoint: CGPoint, lastPoint: CGPoint, itemType: ItemTypeEnum) {
+    public func insertConnectionFigure(firstPoint: CGPoint, lastPoint: CGPoint, itemType: ItemTypeEnum) -> ConnectionFigure {
         let figure = ConnectionFigure(origin: self.initialTouchPoint, destination: lastPoint, itemType: itemType)
-        (self.connectionSourceFigure as! UmlFigure).addOutgoingConnection(connection: figure)
         self.editorView.addSubview(figure);
         self.figures.append(figure)
         self.undoArray.append(figure);
+        return figure
     }
     
     public func insertFigure(itemType: ItemTypeEnum, firstPoint: CGPoint, lastPoint: CGPoint) -> Void {
@@ -156,11 +158,22 @@ class Editor {
         for subview in self.editorView.subviews {
             if let figure = subview as? UmlFigure {
                 if (figure.frame.contains(point)) {
-                    return figure.getClosestAnchor(point: point)
+                    return figure.getClosestAnchorPoint(point: point)
                 }
             }
         }
         return point
+    }
+    
+    func getFigureContaining(point: CGPoint) -> UmlFigure? {
+        for subview in self.editorView.subviews {
+            if let figure = subview as? UmlFigure {
+                if (figure.frame.contains(point)) {
+                    return figure
+                }
+            }
+        }
+        return nil
     }
 }
 
@@ -262,7 +275,9 @@ extension Editor : TouchInputDelegate {
             self.previousTouchPoint = point
             
             if (action == "anchor") {
-                self.connectionSourceFigure = figure
+                // point est le snap-point d'un anchor point
+//                self.connectionFigures.updateValue(figure, forKey: "source")
+                self.sourceFigure = (figure as! UmlFigure)
                 self.touchEventState = .CONNECTION
                 self.connectionPreview = ConnectionFigure(origin: self.initialTouchPoint, destination: self.initialTouchPoint, itemType: .UniderectionalAssoication)
                 self.editorView.addSubview(connectionPreview)
@@ -326,12 +341,22 @@ extension Editor : TouchInputDelegate {
     func notifyTouchEnded(point: CGPoint) {
         if (self.touchEventState == .CONNECTION) {
             self.connectionPreview.removeFromSuperview()
-            let lastPoint = self.snap(point: point)
-            let connection = self.insertConnectionFigure(
-                firstPoint: self.initialTouchPoint,
-                lastPoint: lastPoint,
-                itemType: currentFigureType
-            )
+            // Update la destination Figure
+            guard let destinationFigure: UmlFigure = self.getFigureContaining(point: point) else {
+                print("No figure found")
+                self.touchEventState = .SELECT
+                return
+            }
+            
+            let lastPoint: CGPoint = destinationFigure.getClosestAnchorPoint(point: point)
+            let connection: ConnectionFigure = self.insertConnectionFigure(firstPoint: self.initialTouchPoint, lastPoint: lastPoint,itemType: currentFigureType)
+            
+            let sourceAnchor: String = self.sourceFigure.getClosestAnchorPointName(point: self.initialTouchPoint)
+            let destinationAnchor: String = destinationFigure.getClosestAnchorPointName(point: point)
+            
+            self.sourceFigure.addOutgoingConnection(connection: connection, anchor: sourceAnchor)
+            destinationFigure.addIncomingConnection(connection: connection, anchor: destinationAnchor)
+            
             self.touchEventState = .SELECT
             return
         }
