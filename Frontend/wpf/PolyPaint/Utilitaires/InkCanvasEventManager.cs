@@ -219,7 +219,7 @@ namespace PolyPaint.Utilitaires
             (stroke as ICanvasable).AddToCanvas();
         }
 
-        internal void ContextualMenuClick(InkCanvas surfaceDessin, string header)
+        internal void ContextualMenuClick(InkCanvas surfaceDessin, string header, VueModele vm)
         {
             switch (header)
             {
@@ -238,8 +238,15 @@ namespace PolyPaint.Utilitaires
                 case "InvertColors":
                     InvertStrokesColors(surfaceDessin);
                     break;
-                case "TransformAll":
-                    TransformAllStrokes(surfaceDessin);
+                case "TransformAllShapes":
+                    TransformAllShapes(surfaceDessin, vm);
+                    break;
+                case "TransformAllConnections":
+                    TransformAllConnections(surfaceDessin, vm);
+                    break;
+                case "TransformAllShapesAndConnections":
+                    TransformAllShapes(surfaceDessin, vm);
+                    TransformAllConnections(surfaceDessin, vm);
                     break;
             }
         }
@@ -263,9 +270,23 @@ namespace PolyPaint.Utilitaires
             return Color.FromArgb(color.A, (byte)~color.R, (byte)~color.G, (byte)~color.B);
         }
 
-        private void TransformAllStrokes(InkCanvas surfaceDessin)
+        private void TransformAllShapes(InkCanvas surfaceDessin, VueModele vm)
         {
-            throw new NotImplementedException();
+            foreach (AbstractShapeStroke stroke in surfaceDessin.Strokes.Where(x => x is AbstractShapeStroke))
+            {
+                stroke.SetBorderColor(vm.CouleurSelectionneeBordure);
+                stroke.SetFillColor(vm.CouleurSelectionneeRemplissage);
+                //stroke.SetBorderStyle(Tools.DashAssociations[vm.SelectedBorder]);
+            }
+        }
+        private void TransformAllConnections(InkCanvas surfaceDessin, VueModele vm)
+        {
+            foreach (AbstractLineStroke stroke in surfaceDessin.Strokes.Where(x => x is AbstractLineStroke))
+            {
+                stroke.SetBorderColor(vm.CouleurSelectionneeBordure);
+                stroke.SetFillColor(vm.CouleurSelectionneeRemplissage);
+                //stroke.SetBorderStyle(Tools.DashAssociations[vm.SelectedBorder]);
+            }
         }
     }
 }

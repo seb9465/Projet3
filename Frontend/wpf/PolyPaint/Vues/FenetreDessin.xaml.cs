@@ -557,7 +557,7 @@ namespace PolyPaint
         }
         private void ContextualMenu_Click(object sender, EventArgs e)
         {
-            icEventManager.ContextualMenuClick(surfaceDessin, (sender as MenuItem).Name);
+            icEventManager.ContextualMenuClick(surfaceDessin, (sender as MenuItem).Name, (DataContext as VueModele));
         }
 
         private void hamburgerMenu_Click(object sender, RoutedEventArgs e)
