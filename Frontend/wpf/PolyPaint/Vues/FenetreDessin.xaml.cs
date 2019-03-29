@@ -429,30 +429,40 @@ namespace PolyPaint
 
         private void ReceiveDraw(object sender, MessageArgs args)
         {
-            DrawViewModel drawViewModel = JsonConvert.DeserializeObject<DrawViewModel>(args.Message);
-            icEventManager.EndDraw(surfaceDessin, drawViewModel, username);
+            Dispatcher.Invoke(() =>
+            {
+                DrawViewModel drawViewModel = JsonConvert.DeserializeObject<DrawViewModel>(args.Message);
+                icEventManager.EndDraw(surfaceDessin, drawViewModel, username);
+            });
         }
 
         private void ReceiveSelect(object sender, MessageArgs args)
         {
-            (DataContext as VueModele).SelectItemOnline(surfaceDessin, JsonConvert.DeserializeObject<SelectViewModel>(args.Message), username);
+            Dispatcher.Invoke(() =>
+            {
+                (DataContext as VueModele).SelectItemOnline(surfaceDessin, JsonConvert.DeserializeObject<SelectViewModel>(args.Message), username);
+            });
         }
 
         private void ReceiveDuplicate(object sender, MessageArgs args)
         {
-            surfaceDessin.CopySelection();
-            surfaceDessin.Paste();
         }
 
         private void ReceiveDelete(object sender, MessageArgs args)
         {
-            surfaceDessin.CutSelection();
+            Dispatcher.Invoke(() =>
+            {
+                surfaceDessin.CutSelection();
+            });
         }
 
         private void ReceiveReset(object sender, EventArgs args)
         {
-            reinitialiser.Command = (DataContext as VueModele).Reinitialiser;
-            reinitialiser.Command.Execute(reinitialiser.CommandParameter);
+            Dispatcher.Invoke(() =>
+            {
+                reinitialiser.Command = (DataContext as VueModele).Reinitialiser;
+                reinitialiser.Command.Execute(reinitialiser.CommandParameter);
+            });
         }
 
         void InkCanvas_SelectionMoving(object sender, InkCanvasSelectionEditingEventArgs e)
