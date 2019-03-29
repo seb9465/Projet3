@@ -10,20 +10,17 @@ using PolyPaint.Utilitaires;
 using PolyPaint.VueModeles;
 using PolyPaint.Vues;
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Documents;
-using System.Windows.Ink;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -218,10 +215,17 @@ namespace PolyPaint
             }
             progressBar.Visibility = Visibility.Collapsed;
             Gallery gallery = new Gallery(strokes, surfaceDessin);
+
+            Application.Current.MainWindow = gallery;
            
+
             surfaceDessin.Strokes.Clear();
-            surfaceDessin.Strokes.Add(gallery.SelectedCanvas.Strokes);
+          //  surfaceDessin.Strokes.Add(gallery.SelectedCanvas.Strokes);
+
+            Close();
+            gallery.Show();
         }
+        
 
         private byte[] GetBytesForStrokes()
         {

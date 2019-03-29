@@ -27,6 +27,7 @@ namespace PolyPaint.Vues
         public CanvasViewModel SelectedCanvas { get; set; }
         private ImageProtection imageProtection;
         private string username;
+        FenetreDessin fenetreDessin = new FenetreDessin(ViewStateEnum.Online);
 
         public Gallery(List<SaveableCanvas> strokes, InkCanvas drawingSurface)
         {
@@ -35,7 +36,7 @@ namespace PolyPaint.Vues
             DataContext = Canvas;
             username = Application.Current.Properties["username"].ToString();
             usernameLabel.Content = username;
-            this.ShowDialog();
+           
         }
 
         private List<CanvasViewModel> ConvertStrokesToPNG(List<SaveableCanvas> savedCanvas, InkCanvas drawingSurface)
@@ -73,7 +74,10 @@ namespace PolyPaint.Vues
                 imageProtection = new ImageProtection();
                 if(imageProtection.PasswordEntered == SelectedCanvas.CanvasProtection)
                 {
+                    fenetreDessin.surfaceDessin.Strokes.Add(SelectedCanvas.Strokes);
+                    Application.Current.MainWindow = fenetreDessin;
                     this.Close();
+                    fenetreDessin.Show();
                 } else
                 {
                     SelectedCanvas = null;
@@ -81,9 +85,14 @@ namespace PolyPaint.Vues
                 }
             } else
             {
-            this.Close();
+                fenetreDessin.surfaceDessin.Strokes.Add(SelectedCanvas.Strokes);
+                Application.Current.MainWindow = fenetreDessin;
+                this.Close();
+                fenetreDessin.Show();
             }
         }
+
+       
 
         private void GoBack_Click(object sender, RoutedEventArgs e)
         {
