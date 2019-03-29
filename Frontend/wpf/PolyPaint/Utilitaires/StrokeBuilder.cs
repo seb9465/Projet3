@@ -19,19 +19,20 @@ namespace PolyPaint.Utilitaires
         private static ConcurrentDictionary<Type, ItemTypeEnum> _strokeTypes = new ConcurrentDictionary<Type, ItemTypeEnum>(
                new Dictionary<Type, ItemTypeEnum>()
                {
-                { typeof(ActivityStroke), ItemTypeEnum.ActivityStroke },
-                { typeof(ArtefactStroke), ItemTypeEnum.ArtefactStroke },
-                { typeof(PhaseStroke), ItemTypeEnum.PhaseStroke },
-                { typeof(RectangleStroke), ItemTypeEnum.RectangleStroke },
-                { typeof(RoleStroke), ItemTypeEnum.RoleStroke },
-                { typeof(UmlClassStroke), ItemTypeEnum.UmlClassStroke },
-                { typeof(TextStroke), ItemTypeEnum.TextStroke },
-                { typeof(AgregationStroke), ItemTypeEnum.AgregationStroke },
-                { typeof(BidirectionalAssociationStroke), ItemTypeEnum.BidirectionalAssociationStroke },
-                { typeof(CompositionStroke), ItemTypeEnum.CompositionStroke},
-                { typeof(InheritanceStroke), ItemTypeEnum.InheritanceStroke },
-                { typeof(UnidirectionalAssociationStroke), ItemTypeEnum.UnidirectionalAssociationStroke },
-                { typeof(ImageStroke), ItemTypeEnum.ImageStroke}
+                { typeof(ActivityStroke), ItemTypeEnum.Activity },
+                { typeof(ArtefactStroke), ItemTypeEnum.Artefact },
+                { typeof(PhaseStroke), ItemTypeEnum.Phase },
+                { typeof(RectangleStroke), ItemTypeEnum.Comment },
+                { typeof(RoleStroke), ItemTypeEnum.Role },
+                { typeof(UmlClassStroke), ItemTypeEnum.UmlClass },
+                { typeof(TextStroke), ItemTypeEnum.Text },
+                { typeof(AgregationStroke), ItemTypeEnum.Agregation },
+                { typeof(BidirectionalAssociationStroke), ItemTypeEnum.BidirectionalAssociation },
+                { typeof(CompositionStroke), ItemTypeEnum.Composition},
+                { typeof(InheritanceStroke), ItemTypeEnum.Inheritance },
+                { typeof(UnidirectionalAssociationStroke), ItemTypeEnum.UnidirectionalAssociation },
+                { typeof(LineStroke), ItemTypeEnum.Line },
+                { typeof(ImageStroke), ItemTypeEnum.Image}
                }
            );
 
@@ -67,48 +68,37 @@ namespace PolyPaint.Utilitaires
                     G = stroke.BorderColor.G,
                     R = stroke.BorderColor.R
                 };
+
+                var thicc = stroke.BorderThickness;
+
                 switch (stroke.ItemType)
                 {
-                    case ItemTypeEnum.RectangleStroke:
-                        DrawingStroke = new RectangleStroke(pts, surfaceDessin, borderColor.ToString(), fillColor.ToString());
-                        (DrawingStroke as AbstractShapeStroke).TitleString = stroke.ShapeTitle;
-                        (DrawingStroke as AbstractStroke).SetBorderStyle(Tools.DashAssociations[stroke.BorderStyle]);
-                        (DrawingStroke as ICanvasable).AddToCanvas();
+                    case ItemTypeEnum.Comment:
+                        DrawingStroke = new RectangleStroke(pts, surfaceDessin, borderColor.ToString(), fillColor.ToString(), thicc);
+                        SetShapeProperties(stroke);
                         break;
-                    case ItemTypeEnum.ActivityStroke:
-                        DrawingStroke = new ActivityStroke(pts, surfaceDessin, borderColor.ToString(), fillColor.ToString());
-                        (DrawingStroke as AbstractShapeStroke).TitleString = stroke.ShapeTitle;
-                        (DrawingStroke as AbstractStroke).SetBorderStyle(Tools.DashAssociations[stroke.BorderStyle]);
-                        (DrawingStroke as ICanvasable).AddToCanvas();
+                    case ItemTypeEnum.Activity:
+                        DrawingStroke = new ActivityStroke(pts, surfaceDessin, borderColor.ToString(), fillColor.ToString(), thicc);
+                        SetShapeProperties(stroke);
                         break;
-                    case ItemTypeEnum.ArtefactStroke:
-                        DrawingStroke = new ArtefactStroke(pts, surfaceDessin, borderColor.ToString(), fillColor.ToString());
-                        (DrawingStroke as AbstractShapeStroke).TitleString = stroke.ShapeTitle;
-                        (DrawingStroke as AbstractStroke).SetBorderStyle(Tools.DashAssociations[stroke.BorderStyle]);
-                        (DrawingStroke as ICanvasable).AddToCanvas();
+                    case ItemTypeEnum.Artefact:
+                        DrawingStroke = new ArtefactStroke(pts, surfaceDessin, borderColor.ToString(), fillColor.ToString(), thicc);
+                        SetShapeProperties(stroke);
                         break;
-                    case ItemTypeEnum.PhaseStroke:
-                        DrawingStroke = new PhaseStroke(pts, surfaceDessin, borderColor.ToString(), fillColor.ToString());
-                        (DrawingStroke as AbstractShapeStroke).TitleString = stroke.ShapeTitle;
-                        (DrawingStroke as AbstractStroke).SetBorderStyle(Tools.DashAssociations[stroke.BorderStyle]);
-                        (DrawingStroke as ICanvasable).AddToCanvas();
+                    case ItemTypeEnum.Phase:
+                        DrawingStroke = new PhaseStroke(pts, surfaceDessin, borderColor.ToString(), fillColor.ToString(), thicc);
+                        SetShapeProperties(stroke);
                         break;
-                    case ItemTypeEnum.RoleStroke:
-                        DrawingStroke = new RoleStroke(pts, surfaceDessin, borderColor.ToString(), fillColor.ToString());
-                        (DrawingStroke as AbstractShapeStroke).TitleString = stroke.ShapeTitle;
-                        (DrawingStroke as AbstractStroke).SetBorderStyle(Tools.DashAssociations[stroke.BorderStyle]);
-                        (DrawingStroke as ICanvasable).AddToCanvas();
+                    case ItemTypeEnum.Role:
+                        DrawingStroke = new RoleStroke(pts, surfaceDessin, borderColor.ToString(), fillColor.ToString(), thicc);
+                        SetShapeProperties(stroke);
                         break;
-                    case ItemTypeEnum.TextStroke:
-                        DrawingStroke = new TextStroke(pts, surfaceDessin, borderColor.ToString(), fillColor.ToString());
-                        (DrawingStroke as AbstractShapeStroke).TitleString = stroke.ShapeTitle;
-                        (DrawingStroke as AbstractStroke).SetBorderStyle(Tools.DashAssociations[stroke.BorderStyle]);
-                        (DrawingStroke as ICanvasable).AddToCanvas();
+                    case ItemTypeEnum.Text:
+                        DrawingStroke = new TextStroke(pts, surfaceDessin, borderColor.ToString(), fillColor.ToString(), thicc);
+                        SetShapeProperties(stroke);
                         break;
-                    case ItemTypeEnum.UmlClassStroke:
-                        DrawingStroke = new UmlClassStroke(pts, surfaceDessin, borderColor.ToString(), fillColor.ToString());
-                        (DrawingStroke as AbstractShapeStroke).TitleString = stroke.ShapeTitle;
-                        (DrawingStroke as AbstractStroke).SetBorderStyle(Tools.DashAssociations[stroke.BorderStyle]);
+                    case ItemTypeEnum.UmlClass:
+                        DrawingStroke = new UmlClassStroke(pts, surfaceDessin, borderColor.ToString(), fillColor.ToString(), thicc);
 
                         foreach (var method in stroke.Methods)
                             (DrawingStroke as UmlClassStroke).Methods.Add(new Method(method));
@@ -116,54 +106,33 @@ namespace PolyPaint.Utilitaires
                         foreach (var property in stroke.Properties)
                             (DrawingStroke as UmlClassStroke).Properties.Add(new Property(property));
 
-                        (DrawingStroke as ICanvasable).AddToCanvas();
+                        SetShapeProperties(stroke);
                         break;
-                    case ItemTypeEnum.AgregationStroke:
-                        DrawingStroke = new AgregationStroke(pts, surfaceDessin, borderColor.ToString());
-                        (DrawingStroke as AbstractLineStroke).SourceString = stroke.SourceTitle;
-                        (DrawingStroke as AbstractLineStroke).DestinationString = stroke.DestinationTitle;
-                        (DrawingStroke as AbstractStroke).SetBorderStyle(Tools.DashAssociations[stroke.BorderStyle]);
-                        (DrawingStroke as AbstractLineStroke).LastElbowPosition = new Point(stroke.LastElbowPosition.X,
-                                                                                            stroke.LastElbowPosition.Y);
-                        (DrawingStroke as ICanvasable).AddToCanvas();
+                    case ItemTypeEnum.Agregation:
+                        DrawingStroke = new AgregationStroke(pts, surfaceDessin, borderColor.ToString(), thicc);
+                        SetLineProperties(stroke);
                         break;
-                    case ItemTypeEnum.CompositionStroke:
-                        DrawingStroke = new CompositionStroke(pts, surfaceDessin, borderColor.ToString());
-                        (DrawingStroke as AbstractLineStroke).SourceString = stroke.SourceTitle;
-                        (DrawingStroke as AbstractLineStroke).DestinationString = stroke.DestinationTitle;
-                        (DrawingStroke as AbstractStroke).SetBorderStyle(Tools.DashAssociations[stroke.BorderStyle]);
-                        (DrawingStroke as AbstractLineStroke).LastElbowPosition = new Point(stroke.LastElbowPosition.X,
-                                                                                            stroke.LastElbowPosition.Y);
-                        (DrawingStroke as ICanvasable).AddToCanvas();
+                    case ItemTypeEnum.Composition:
+                        DrawingStroke = new CompositionStroke(pts, surfaceDessin, borderColor.ToString(), thicc);
+                        SetLineProperties(stroke);
                         break;
-                    case ItemTypeEnum.InheritanceStroke:
-                        DrawingStroke = new InheritanceStroke(pts, surfaceDessin, borderColor.ToString());
-                        (DrawingStroke as AbstractLineStroke).SourceString = stroke.SourceTitle;
-                        (DrawingStroke as AbstractLineStroke).DestinationString = stroke.DestinationTitle;
-                        (DrawingStroke as AbstractStroke).SetBorderStyle(Tools.DashAssociations[stroke.BorderStyle]);
-                        (DrawingStroke as AbstractLineStroke).LastElbowPosition = new Point(stroke.LastElbowPosition.X,
-                                                                                            stroke.LastElbowPosition.Y);
-                        (DrawingStroke as ICanvasable).AddToCanvas();
+                    case ItemTypeEnum.Inheritance:
+                        DrawingStroke = new InheritanceStroke(pts, surfaceDessin, borderColor.ToString(), thicc);
+                        SetLineProperties(stroke);
                         break;
-                    case ItemTypeEnum.BidirectionalAssociationStroke:
-                        DrawingStroke = new BidirectionalAssociationStroke(pts, surfaceDessin, borderColor.ToString());
-                        (DrawingStroke as AbstractLineStroke).SourceString = stroke.SourceTitle;
-                        (DrawingStroke as AbstractLineStroke).DestinationString = stroke.DestinationTitle;
-                        (DrawingStroke as AbstractStroke).SetBorderStyle(Tools.DashAssociations[stroke.BorderStyle]);
-                        (DrawingStroke as AbstractLineStroke).LastElbowPosition = new Point(stroke.LastElbowPosition.X,
-                                                                                            stroke.LastElbowPosition.Y);
-                        (DrawingStroke as ICanvasable).AddToCanvas();
+                    case ItemTypeEnum.BidirectionalAssociation:
+                        DrawingStroke = new BidirectionalAssociationStroke(pts, surfaceDessin, borderColor.ToString(), thicc);
+                        SetLineProperties(stroke);
                         break;
-                    case ItemTypeEnum.UnidirectionalAssociationStroke:
-                        DrawingStroke = new UnidirectionalAssociationStroke(pts, surfaceDessin, borderColor.ToString());
-                        (DrawingStroke as AbstractLineStroke).SourceString = stroke.SourceTitle;
-                        (DrawingStroke as AbstractLineStroke).DestinationString = stroke.DestinationTitle;
-                        (DrawingStroke as AbstractStroke).SetBorderStyle(Tools.DashAssociations[stroke.BorderStyle]);
-                        (DrawingStroke as AbstractLineStroke).LastElbowPosition = new Point(stroke.LastElbowPosition.X,
-                                                                                            stroke.LastElbowPosition.Y);
-                        (DrawingStroke as ICanvasable).AddToCanvas();
+                    case ItemTypeEnum.UnidirectionalAssociation:
+                        DrawingStroke = new UnidirectionalAssociationStroke(pts, surfaceDessin, borderColor.ToString(), thicc);
+                        SetLineProperties(stroke);
                         break;
-                    case ItemTypeEnum.ImageStroke:
+                    case ItemTypeEnum.Line:
+                        DrawingStroke = new LineStroke(pts, surfaceDessin, borderColor.ToString(), thicc);
+                        SetLineProperties(stroke);
+                        break;
+                    case ItemTypeEnum.Image:
                         BitmapImage biImg = new BitmapImage();
                         MemoryStream ms = new MemoryStream(stroke.ImageBytes);
                         biImg.BeginInit();
@@ -172,15 +141,35 @@ namespace PolyPaint.Utilitaires
                         ImageSource imgSrc = biImg as ImageSource;
                         ImageBrush brush = new ImageBrush(imgSrc);
 
+                        (DrawingStroke as AbstractStroke).Guid = Guid.Parse(stroke.Guid);
                         DrawingStroke = new ImageStroke(pts, surfaceDessin, brush);
                         (DrawingStroke as ICanvasable).AddToCanvas();
                         break;
-                    
+
 
                     default:
                         break;
                 }
             }
+        }
+
+        private void SetLineProperties(DrawViewModel stroke)
+        {
+            (DrawingStroke as AbstractStroke).Guid = Guid.Parse(stroke.Guid);
+            (DrawingStroke as AbstractLineStroke).SourceString = stroke.SourceTitle;
+            (DrawingStroke as AbstractLineStroke).DestinationString = stroke.DestinationTitle;
+            (DrawingStroke as AbstractStroke).SetBorderStyle(Tools.DashAssociations[stroke.BorderStyle]);
+            (DrawingStroke as AbstractLineStroke).LastElbowPosition = new Point(stroke.LastElbowPosition.X,
+                                                                                stroke.LastElbowPosition.Y);
+            (DrawingStroke as ICanvasable).AddToCanvas();
+        }
+
+        private void SetShapeProperties(DrawViewModel stroke)
+        {
+            (DrawingStroke as AbstractStroke).Guid = Guid.Parse(stroke.Guid);
+            (DrawingStroke as AbstractShapeStroke).TitleString = stroke.ShapeTitle;
+            (DrawingStroke as AbstractStroke).SetBorderStyle(Tools.DashAssociations[stroke.BorderStyle]);
+            (DrawingStroke as ICanvasable).AddToCanvas();
         }
 
         public List<DrawViewModel> GetDrawViewModelsFromStrokes(StrokeCollection strokes)
@@ -191,6 +180,7 @@ namespace PolyPaint.Utilitaires
                 DrawViewModel drawingStroke = new DrawViewModel();
                 drawingStroke.Owner = "Utilisateur";
                 drawingStroke.ItemType = _strokeTypes[stroke.GetType()];
+                drawingStroke.Guid = stroke.Guid.ToString();
                 List<PolyPaintStylusPoint> points = new List<PolyPaintStylusPoint>();
                 foreach (StylusPoint point in stroke.StylusPoints.ToList())
                 {
@@ -244,7 +234,7 @@ namespace PolyPaint.Utilitaires
                         Y = (stroke as AbstractLineStroke).LastElbowPosition.Y,
                     };
                 }
-                
+
                 if ((stroke as ImageStroke) != null)
                 {
                     byte[] bytes = null;

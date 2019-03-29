@@ -6,18 +6,19 @@ namespace PolyPaint.Common.Collaboration
 {
     public enum ItemTypeEnum
     {
-        ActivityStroke,
-        ArtefactStroke,
-        PhaseStroke,
-        RectangleStroke,
-        RoleStroke,
-        UmlClassStroke,
-        TextStroke,
-        AgregationStroke,
-        BidirectionalAssociationStroke,
-        CompositionStroke,
-        InheritanceStroke,
-        UnidirectionalAssociationStroke,
-        ImageStroke
+        Activity,
+        Artefact,
+        Phase,
+        Comment,
+        Role,
+        UmlClass,
+        Text,
+        Agregation,
+        BidirectionalAssociation,
+        Composition,
+        Inheritance,
+        UnidirectionalAssociation,
+        Line,
+        Image
     }
 }

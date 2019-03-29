@@ -21,8 +21,8 @@ namespace PolyPaint.Strokes
             }
         }
 
-        public AbstractShapeStroke(StylusPointCollection stylusPoints, InkCanvas surfaceDessin, string title, string couleurBordure, string couleurRemplissage)
-            : base(stylusPoints, surfaceDessin, couleurBordure, couleurRemplissage)
+        public AbstractShapeStroke(StylusPointCollection stylusPoints, InkCanvas surfaceDessin, string title, string couleurBordure, string couleurRemplissage, double thicc)
+            : base(stylusPoints, surfaceDessin, couleurBordure, couleurRemplissage, thicc)
         {
             AnchorPoints = new Point[4];
 

@@ -113,7 +113,7 @@ namespace PolyPaint.Modeles
         }
 
         // Grosseur des traits tracés par le crayon.
-        private int tailleTrait = 11;
+        private int tailleTrait = 2;
         public int TailleTrait
         {
             get { return tailleTrait; }
