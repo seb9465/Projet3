@@ -31,6 +31,7 @@ namespace PolyPaint.VueModeles
     class VueModele : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
+        private StrokeBuilder rebuilder = new StrokeBuilder();
         private Editeur editeur = new Editeur();
         private string _currentRoom;
         private ObservableCollection<Room> _rooms;
@@ -122,6 +123,7 @@ namespace PolyPaint.VueModeles
             {
                 editeur.TailleTrait = value;
                 editeur.SelectedStrokes.ToList().ForEach(x => (x as AbstractStroke).SetBorderThickness(editeur.TailleTrait));
+                CollaborationClient.CollaborativeDrawAsync(rebuilder.GetDrawViewModelsFromStrokes(editeur.SelectedStrokes)).Start();
             }
         }
 

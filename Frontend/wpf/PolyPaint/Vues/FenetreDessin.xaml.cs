@@ -340,7 +340,7 @@ namespace PolyPaint
                     icEventManager.DrawingStroke
                 };
                 List<DrawViewModel> allo = rebuilder.GetDrawViewModelsFromStrokes(strokeInACollection);
-                await (DataContext as VueModele).CollaborationClient.CollaborativeDrawAsync(allo[0]);
+                await (DataContext as VueModele).CollaborationClient.CollaborativeDrawAsync(allo);
             }
             icEventManager.EndDraw(surfaceDessin, (DataContext as VueModele).OutilSelectionne);
             if ((DataContext as VueModele).OutilSelectionne == "change_text")
@@ -416,8 +416,8 @@ namespace PolyPaint
         {
             Dispatcher.Invoke(() =>
             {
-                DrawViewModel drawViewModel = JsonConvert.DeserializeObject<DrawViewModel>(args.Message);
-                icEventManager.EndDraw(surfaceDessin, drawViewModel, username);
+                var drawViewModels = JsonConvert.DeserializeObject<List<DrawViewModel>>(args.Message);
+                icEventManager.EndDraw(surfaceDessin, drawViewModels, username);
             });
         }
 

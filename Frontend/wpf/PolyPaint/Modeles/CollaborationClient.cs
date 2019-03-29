@@ -25,11 +25,11 @@ namespace PolyPaint.Modeles{    class CollaborationClient    {        public
                 ResetReceived?.Invoke(this, new MessageArgs());
             });
         }
-        public async Task CollaborativeDrawAsync(DrawViewModel drawViewModel)
+        public async Task CollaborativeDrawAsync(List<DrawViewModel> drawViewModels)
         {
             try
             {
-                await Connection.InvokeAsync("Draw", JsonConvert.SerializeObject(drawViewModel));
+                await Connection.InvokeAsync("Draw", JsonConvert.SerializeObject(drawViewModels));
             }
             catch (Exception) { }
         }
