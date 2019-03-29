@@ -300,21 +300,6 @@ namespace PolyPaint
             }
         }
 
-        private void OnClosing(object sender, EventArgs e)
-        {
-            try
-            {
-                using (HttpClient client = new HttpClient())
-                {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", (string)Application.Current.Properties["token"]);
-                    System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
-                    client.GetAsync($"{Config.URL}/api/user/logout").Wait();
-                }
-            }
-            catch { }
-        }
-
-
         private async void InkCanvas_LeftMouseDown(object sender, MouseButtonEventArgs e)
         {
             mouseLeftDownPoint = e.GetPosition((IInputElement)sender);

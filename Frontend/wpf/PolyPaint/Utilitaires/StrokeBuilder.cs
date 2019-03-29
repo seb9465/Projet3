@@ -75,27 +75,27 @@ namespace PolyPaint.Utilitaires
                 {
                     case ItemTypeEnum.Comment:
                         DrawingStroke = new RectangleStroke(pts, surfaceDessin, borderColor.ToString(), fillColor.ToString(), thicc);
-                        SetShapeProperties(stroke);
+                        SetShapeProperties(stroke, surfaceDessin);
                         break;
                     case ItemTypeEnum.Activity:
                         DrawingStroke = new ActivityStroke(pts, surfaceDessin, borderColor.ToString(), fillColor.ToString(), thicc);
-                        SetShapeProperties(stroke);
+                        SetShapeProperties(stroke, surfaceDessin);
                         break;
                     case ItemTypeEnum.Artefact:
                         DrawingStroke = new ArtefactStroke(pts, surfaceDessin, borderColor.ToString(), fillColor.ToString(), thicc);
-                        SetShapeProperties(stroke);
+                        SetShapeProperties(stroke, surfaceDessin);
                         break;
                     case ItemTypeEnum.Phase:
                         DrawingStroke = new PhaseStroke(pts, surfaceDessin, borderColor.ToString(), fillColor.ToString(), thicc);
-                        SetShapeProperties(stroke);
+                        SetShapeProperties(stroke, surfaceDessin);
                         break;
                     case ItemTypeEnum.Role:
                         DrawingStroke = new RoleStroke(pts, surfaceDessin, borderColor.ToString(), fillColor.ToString(), thicc);
-                        SetShapeProperties(stroke);
+                        SetShapeProperties(stroke, surfaceDessin);
                         break;
                     case ItemTypeEnum.Text:
                         DrawingStroke = new TextStroke(pts, surfaceDessin, borderColor.ToString(), fillColor.ToString(), thicc);
-                        SetShapeProperties(stroke);
+                        SetShapeProperties(stroke, surfaceDessin);
                         break;
                     case ItemTypeEnum.UmlClass:
                         DrawingStroke = new UmlClassStroke(pts, surfaceDessin, borderColor.ToString(), fillColor.ToString(), thicc);
@@ -106,31 +106,31 @@ namespace PolyPaint.Utilitaires
                         foreach (var property in stroke.Properties)
                             (DrawingStroke as UmlClassStroke).Properties.Add(new Property(property));
 
-                        SetShapeProperties(stroke);
+                        SetShapeProperties(stroke, surfaceDessin);
                         break;
                     case ItemTypeEnum.Agregation:
                         DrawingStroke = new AgregationStroke(pts, surfaceDessin, borderColor.ToString(), thicc);
-                        SetLineProperties(stroke);
+                        SetLineProperties(stroke, surfaceDessin);
                         break;
                     case ItemTypeEnum.Composition:
                         DrawingStroke = new CompositionStroke(pts, surfaceDessin, borderColor.ToString(), thicc);
-                        SetLineProperties(stroke);
+                        SetLineProperties(stroke, surfaceDessin);
                         break;
                     case ItemTypeEnum.Inheritance:
                         DrawingStroke = new InheritanceStroke(pts, surfaceDessin, borderColor.ToString(), thicc);
-                        SetLineProperties(stroke);
+                        SetLineProperties(stroke, surfaceDessin);
                         break;
                     case ItemTypeEnum.BidirectionalAssociation:
                         DrawingStroke = new BidirectionalAssociationStroke(pts, surfaceDessin, borderColor.ToString(), thicc);
-                        SetLineProperties(stroke);
+                        SetLineProperties(stroke, surfaceDessin);
                         break;
                     case ItemTypeEnum.UnidirectionalAssociation:
                         DrawingStroke = new UnidirectionalAssociationStroke(pts, surfaceDessin, borderColor.ToString(), thicc);
-                        SetLineProperties(stroke);
+                        SetLineProperties(stroke, surfaceDessin);
                         break;
                     case ItemTypeEnum.Line:
                         DrawingStroke = new LineStroke(pts, surfaceDessin, borderColor.ToString(), thicc);
-                        SetLineProperties(stroke);
+                        SetLineProperties(stroke, surfaceDessin);
                         break;
                     case ItemTypeEnum.Image:
                         BitmapImage biImg = new BitmapImage();
@@ -153,7 +153,7 @@ namespace PolyPaint.Utilitaires
             }
         }
 
-        private void SetLineProperties(DrawViewModel stroke)
+        private void SetLineProperties(DrawViewModel stroke, InkCanvas surfaceDessin)
         {
             (DrawingStroke as AbstractStroke).Guid = Guid.Parse(stroke.Guid);
             (DrawingStroke as AbstractLineStroke).SourceString = stroke.SourceTitle;
@@ -161,15 +161,39 @@ namespace PolyPaint.Utilitaires
             (DrawingStroke as AbstractStroke).SetBorderStyle(Tools.DashAssociations[stroke.BorderStyle]);
             (DrawingStroke as AbstractLineStroke).LastElbowPosition = new Point(stroke.LastElbowPosition.X,
                                                                                 stroke.LastElbowPosition.Y);
-            (DrawingStroke as ICanvasable).AddToCanvas();
+
+            if (TryGetByGuid(surfaceDessin, Guid.Parse(stroke.Guid), out var existingStroke))
+            {
+                DrawingStroke = existingStroke;
+                (DrawingStroke as ICanvasable).Redraw();
+            }
+            else
+            {
+                (DrawingStroke as ICanvasable).AddToCanvas();
+            }
         }
 
-        private void SetShapeProperties(DrawViewModel stroke)
+        private void SetShapeProperties(DrawViewModel stroke, InkCanvas surfaceDessin)
         {
             (DrawingStroke as AbstractStroke).Guid = Guid.Parse(stroke.Guid);
             (DrawingStroke as AbstractShapeStroke).TitleString = stroke.ShapeTitle;
             (DrawingStroke as AbstractStroke).SetBorderStyle(Tools.DashAssociations[stroke.BorderStyle]);
-            (DrawingStroke as ICanvasable).AddToCanvas();
+
+            if (TryGetByGuid(surfaceDessin, Guid.Parse(stroke.Guid), out var existingStroke))
+            {
+                DrawingStroke = existingStroke;
+                (DrawingStroke as ICanvasable).Redraw();
+            }
+            else
+            {
+                (DrawingStroke as ICanvasable).AddToCanvas();
+            }
+        }
+
+        private bool TryGetByGuid(InkCanvas surfaceDessin, Guid guid, out AbstractStroke stroke)
+        {
+            stroke = (AbstractStroke)surfaceDessin.Strokes.FirstOrDefault(x => (x as AbstractStroke).Guid == guid);
+            return stroke != null;
         }
 
         public List<DrawViewModel> GetDrawViewModelsFromStrokes(StrokeCollection strokes)
