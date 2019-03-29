@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -18,7 +19,6 @@ using PolyPaint.Strokes;
 using PolyPaint.Structures;
 using PolyPaint.Utilitaires;
 using PolyPaint.Vues;
-using Xceed.Wpf.Toolkit;
 
 namespace PolyPaint.VueModeles
 {
@@ -123,7 +123,6 @@ namespace PolyPaint.VueModeles
             {
                 editeur.TailleTrait = value;
                 editeur.SelectedStrokes.ToList().ForEach(x => (x as AbstractStroke).SetBorderThickness(editeur.TailleTrait));
-                CollaborationClient.CollaborativeDrawAsync(rebuilder.GetDrawViewModelsFromStrokes(editeur.SelectedStrokes)).Start();
             }
         }
 
@@ -262,6 +261,7 @@ namespace PolyPaint.VueModeles
             {
                 stroke.SetBorderStyle(Tools.DashAssociations[border]);
             }
+            SendSelectedStrokes();
         }
 
         private void rotate(string side)
@@ -275,6 +275,7 @@ namespace PolyPaint.VueModeles
                 stroke.StylusPoints[0] = new StylusPoint(stylusPoint0.X, stylusPoint0.Y);
                 stroke.StylusPoints[1] = new StylusPoint(stylusPoint1.X, stylusPoint1.Y);
             }
+            SendSelectedStrokes();
         }
 
         public void ChangeSelection(InkCanvas surfaceDessin)
@@ -338,6 +339,11 @@ namespace PolyPaint.VueModeles
             {
                 ChatClient.ConnectToChannel(room.Title);
             }
+        }
+
+        internal async void SendSelectedStrokes()
+        {
+            await CollaborationClient.CollaborativeDrawAsync(rebuilder.GetDrawViewModelsFromStrokes(editeur.SelectedStrokes));
         }
 
         private void AddMessage(object sender, MessageArgs args)
