@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PolyPaint.VueModeles;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,27 +16,23 @@ using System.Windows.Shapes;
 namespace PolyPaint.Vues
 {
     /// <summary>
-    /// Logique d'interaction pour UploadToCloud.xaml
+    /// Logique d'interaction pour ImageProtection.xaml
     /// </summary>
-    public partial class UploadToCloud : Window
+    public partial class ImageProtection : Window
     {
-        public String CanvasVisibility;
-        public String CanvasName;
-        public String CanvasProtection;
-        public UploadToCloud()
+        public String PasswordEntered;
+        private Gallery gallery;
+
+        public ImageProtection()
         {
             InitializeComponent();
             this.ShowDialog();
         }
 
-        private void Ok_Click(object sender, RoutedEventArgs e)
+        private void Ok_click(object sender, RoutedEventArgs e)
         {
-            CanvasName = nameTextBox.Text;
-            CanvasVisibility = visibilityComboBox.Text;
-            CanvasProtection = passwordTextBox.Password;
+            PasswordEntered = passwordTextBox.Password;
             Close();
         }
     }
-
-    
 }

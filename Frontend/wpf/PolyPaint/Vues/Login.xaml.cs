@@ -1,10 +1,13 @@
 ﻿using Newtonsoft.Json;
 using PolyPaint.Common;
+using PolyPaint.Modeles;
 using PolyPaint.VueModeles;
 using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Windows;
 using System.Windows.Input;
@@ -58,11 +61,28 @@ namespace PolyPaint.Vues
 
                 if (result.StatusCode == System.Net.HttpStatusCode.OK)
                 {
+
                     DecodeToken(token);
-                    MenuProfile menuProfile = new MenuProfile();
-                    Application.Current.MainWindow = menuProfile;
+                    FenetreDessin fenetreDessin = new FenetreDessin(ViewStateEnum.Online);
+
+                    
+                    List<SaveableCanvas> strokes;
+                    using (client)
+                    {
+                        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", (string)Application.Current.Properties["token"]);
+                        System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
+                        HttpResponseMessage response = await client.GetAsync($"{Config.URL}/api/user/canvas");
+                        string responseString = await response.Content.ReadAsStringAsync();
+                        strokes = JsonConvert.DeserializeObject<List<SaveableCanvas>>(responseString);
+                    }
+                   
+                    Gallery gallery = new Gallery(strokes, fenetreDessin.surfaceDessin);
+
+                    Application.Current.MainWindow = gallery;
+                    
+
                     Close();
-                    menuProfile.Show();
+                    gallery.Show();
                 }
                 else
                 {

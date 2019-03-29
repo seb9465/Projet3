@@ -36,7 +36,6 @@ namespace PolyPaint
             usernameLabel.Content = username;
 
             object token = Application.Current.Properties["token"];
-            username = Application.Current.Properties["username"].ToString();
             (DataContext as VueModele).ChatClient.Initialize((string)Application.Current.Properties["token"]);
             (DataContext as VueModele).ChatClient.MessageReceived += ScrollDown;
             externalChatWindow = new ChatWindow(DataContext);

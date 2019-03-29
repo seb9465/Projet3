@@ -411,6 +411,9 @@
     <Compile Include="Vues\EditUmlWindow.xaml.cs">
       <DependentUpon>EditUmlWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Vues\ImageProtection.xaml.cs">
+      <DependentUpon>ImageProtection.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Vues\Login.xaml.cs">
       <DependentUpon>Login.xaml</DependentUpon>
     </Compile>
@@ -453,6 +456,10 @@
     <Compile Include="Vues\FenetreDessin.xaml.cs">
       <DependentUpon>FenetreDessin.xaml</DependentUpon>
     </Compile>
+    <Page Include="Vues\ImageProtection.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Vues\Login.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
