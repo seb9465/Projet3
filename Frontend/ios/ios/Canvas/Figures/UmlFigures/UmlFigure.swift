@@ -84,25 +84,7 @@ class UmlFigure : Figure {
         self.frame = translatedFrame
         self.firstPoint = self.frame.origin
         self.lastPoint = CGPoint(x: self.frame.maxX, y: self.frame.maxY)
-        for pair in incomingConnections {
-            pair.key.points[1] = convert(((self.anchorPoints?.anchorPointsSnapEdges[pair.value]!)!), to: self.superview)
-            pair.key.setNeedsDisplay()
-        }
-        
-        for pair in outgoingConnections {
-            pair.key.points[0] = convert(((self.anchorPoints?.anchorPointsSnapEdges[pair.value]!)!), to: self.superview)
-            pair.key.setNeedsDisplay()
-        }
-    }
-    
-    public func addIncomingConnection(connection: ConnectionFigure, anchor: String) {
-        self.incomingConnections.updateValue(anchor, forKey: connection)
-//        self.incomingConnections.append(connection)
-    }
-    
-    public func addOutgoingConnection(connection: ConnectionFigure, anchor: String) {
-        self.outgoingConnections.updateValue(anchor, forKey: connection)
-//        self.outgoingConnections.append(connection)
+        self.updateConnections()
     }
     
     override public func rotate(orientation: RotateOrientation) -> Void {
@@ -115,11 +97,34 @@ class UmlFigure : Figure {
         if (abs(currentAngle) == 360) {
             currentAngle = 0
         }
-        
+
         self.transform = CGAffineTransform.init(rotationAngle: CGFloat(currentAngle * Double.pi/180))
+        self.updateConnections()
         setNeedsDisplay()
     }
+}
+
+// Connections logic
+extension UmlFigure {
+    public func addIncomingConnection(connection: ConnectionFigure, anchor: String) {
+        self.incomingConnections.updateValue(anchor, forKey: connection)
+    }
     
+    public func addOutgoingConnection(connection: ConnectionFigure, anchor: String) {
+        self.outgoingConnections.updateValue(anchor, forKey: connection)
+    }
+    
+    private func updateConnections() {
+        for pair in incomingConnections {
+            pair.key.points[1] = convert(((self.anchorPoints?.anchorPointsSnapEdges[pair.value]!)!), to: self.superview)
+            pair.key.setNeedsDisplay()
+        }
+        
+        for pair in outgoingConnections {
+            pair.key.points[0] = convert(((self.anchorPoints?.anchorPointsSnapEdges[pair.value]!)!), to: self.superview)
+            pair.key.setNeedsDisplay()
+        }
+    }
     
     private func distance(a: CGPoint, b: CGPoint) -> CGFloat {
         let xDist = a.x - b.x
