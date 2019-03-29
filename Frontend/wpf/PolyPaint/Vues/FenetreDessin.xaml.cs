@@ -555,6 +555,10 @@ namespace PolyPaint
         {
             icEventManager.RedrawConnections(surfaceDessin, (DataContext as VueModele).OutilSelectionne, e.OldRectangle, e.NewRectangle);
         }
+        private void ContextualMenu_Click(object sender, EventArgs e)
+        {
+            icEventManager.ContextualMenuClick(surfaceDessin, (sender as MenuItem).Name);
+        }
 
         private void hamburgerMenu_Click(object sender, RoutedEventArgs e)
         {
