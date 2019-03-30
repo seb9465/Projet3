@@ -15,6 +15,7 @@ using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -199,15 +200,15 @@ namespace PolyPaint
             Gallery gallery = new Gallery(strokes, surfaceDessin);
 
             Application.Current.MainWindow = gallery;
-           
+
 
             surfaceDessin.Strokes.Clear();
-          //  surfaceDessin.Strokes.Add(gallery.SelectedCanvas.Strokes);
+            //  surfaceDessin.Strokes.Add(gallery.SelectedCanvas.Strokes);
 
             Close();
             gallery.Show();
         }
-        
+
 
         private byte[] GetBytesForStrokes()
         {
@@ -330,7 +331,7 @@ namespace PolyPaint
             }
         }
 
-        private void InkCanvas_LeftMouseUp(object sender, MouseButtonEventArgs e)
+        private async void InkCanvas_LeftMouseUp(object sender, MouseButtonEventArgs e)
         {
             if ((DataContext as VueModele).OutilSelectionne == "") return;
             if (icEventManager.DrawingStroke != null)
@@ -340,12 +341,16 @@ namespace PolyPaint
                     icEventManager.DrawingStroke
                 };
                 List<DrawViewModel> allo = rebuilder.GetDrawViewModelsFromStrokes(strokeInACollection);
-                (DataContext as VueModele).CollaborationClient.CollaborativeDrawAsync(allo);
+                await (DataContext as VueModele).CollaborationClient.CollaborativeDrawAsync(allo);
             }
             icEventManager.EndDraw(surfaceDessin, (DataContext as VueModele).OutilSelectionne);
             if ((DataContext as VueModele).OutilSelectionne == "change_text")
             {
-                icEventManager.ChangeText(surfaceDessin, mouseLeftDownPoint);
+                icEventManager.ChangeText(surfaceDessin, mouseLeftDownPoint, (VueModele)DataContext);
+            } else if((DataContext as VueModele).OutilSelectionne == "select")
+            {
+                var drawViewModel = rebuilder.GetDrawViewModelsFromStrokes(surfaceDessin.GetSelectedStrokes());
+                await (DataContext as VueModele).CollaborationClient.CollaborativeDrawAsync(drawViewModel);
             }
             IsDrawing = false;
         }

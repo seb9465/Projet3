@@ -297,6 +297,8 @@ namespace PolyPaint.Utilitaires
             (DrawingStroke as AbstractStroke).Guid = Guid.Parse(stroke.Guid);
             (DrawingStroke as AbstractShapeStroke).TitleString = stroke.ShapeTitle;
             (DrawingStroke as AbstractStroke).SetBorderStyle(Tools.DashAssociations[stroke.BorderStyle]);
+            (DrawingStroke as AbstractShapeStroke).TitleString = stroke.ShapeTitle;
+            (DrawingStroke as AbstractStroke).Rotation = stroke.Rotation;
 
             (DrawingStroke as ICanvasable).AddToCanvas();
         }
@@ -316,6 +318,7 @@ namespace PolyPaint.Utilitaires
                 drawingStroke.Owner = "Utilisateur";
                 drawingStroke.ItemType = _strokeTypes[stroke.GetType()];
                 drawingStroke.Guid = stroke.Guid.ToString();
+                drawingStroke.Rotation = stroke.Rotation;
                 List<PolyPaintStylusPoint> points = new List<PolyPaintStylusPoint>();
                 foreach (StylusPoint point in stroke.StylusPoints.ToList())
                 {

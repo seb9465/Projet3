@@ -28,7 +28,7 @@ namespace PolyPaint.VueModeles
     /// Expose des commandes et propriétés connectées au modèle aux des éléments de la vue peuvent se lier.
     /// Reçoit des avis de changement du modèle et envoie des avis de changements à la vue.
     /// </summary>
-    class VueModele : INotifyPropertyChanged
+    public class VueModele : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
         private StrokeBuilder rebuilder = new StrokeBuilder();
@@ -438,6 +438,11 @@ namespace PolyPaint.VueModeles
                     _rooms.Add(new Room(e.Message, false));
                 }
             });
+        }
+
+        public StrokeCollection GetSelectedStrokes()
+        {
+            return editeur.SelectedStrokes;
         }
     }
 }

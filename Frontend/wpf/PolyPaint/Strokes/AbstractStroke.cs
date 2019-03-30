@@ -50,7 +50,7 @@ namespace PolyPaint.Strokes
 
         public Guid Guid { get; set; } = Guid.NewGuid();
 
-        protected InkCanvas SurfaceDessin { get; set; }
+        public InkCanvas SurfaceDessin { get; set; }
 
         public AbstractStroke(StylusPointCollection pts, InkCanvas surfaceDessin, string couleurBordure, string couleurRemplissage, double thicc)
             : base(pts)

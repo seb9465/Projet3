@@ -16,7 +16,7 @@ namespace PolyPaint.Utilitaires
     {
         public Stroke DrawingStroke = null;
 
-        public void ChangeText(InkCanvas surfaceDessin, Point mouseLeftDownPoint)
+        public void ChangeText(InkCanvas surfaceDessin, Point mouseLeftDownPoint, VueModele vm)
         {
             StrokeCollection strokes = surfaceDessin.Strokes;
 
@@ -31,12 +31,12 @@ namespace PolyPaint.Utilitaires
                 {
                     if (strokes[i] is UmlClassStroke)
                     {
-                        var editWindow = new EditUmlWindow(strokes[i] as UmlClassStroke, surfaceDessin);
+                        var editWindow = new EditUmlWindow(strokes[i] as UmlClassStroke, surfaceDessin, vm);
                         editWindow.Show();
                     }
                     else if (strokes[i] is AbstractShapeStroke)
                     {
-                        var editWindow = new EditTitleWindow(strokes[i] as AbstractShapeStroke, surfaceDessin);
+                        var editWindow = new EditTitleWindow(strokes[i] as AbstractShapeStroke, surfaceDessin, vm);
                         editWindow.Show();
                     }
                     break;
