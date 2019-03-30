@@ -388,6 +388,7 @@
     <Compile Include="Strokes\LineStroke.cs" />
     <Compile Include="Strokes\LineStrokeAdorner.cs" />
     <Compile Include="Strokes\ImageStroke.cs" />
+    <Compile Include="Strokes\OnlineSelectedAdorner.cs" />
     <Compile Include="Strokes\UnidirectionalAssociationStroke.cs" />
     <Compile Include="Strokes\ActivityStroke.cs" />
     <Compile Include="Strokes\PhaseStroke.cs" />

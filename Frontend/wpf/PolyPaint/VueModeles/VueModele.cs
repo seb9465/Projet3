@@ -14,6 +14,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using Microsoft.AspNetCore.SignalR.Client;
 using PolyPaint.Common.Collaboration;
+using PolyPaint.Common.Messages;
 using PolyPaint.Modeles;
 using PolyPaint.Strokes;
 using PolyPaint.Structures;
@@ -38,6 +39,7 @@ namespace PolyPaint.VueModeles
         private ConcurrentDictionary<string, ObservableCollection<string>> _messagesByChannel { get; set; }
         private string _selectedBorder;
         private MediaPlayer mediaPlayer = new MediaPlayer();
+        private ConcurrentDictionary<string, List<DrawViewModel>> _onlineSelection { get; set; }
 
         public ChatClient ChatClient { get; set; }
         public CollaborationClient CollaborationClient { get; set; }
@@ -278,7 +280,7 @@ namespace PolyPaint.VueModeles
             SendSelectedStrokes();
         }
 
-        public void ChangeSelection(InkCanvas surfaceDessin)
+        public async Task ChangeSelection(InkCanvas surfaceDessin)
         {
             var strokes = surfaceDessin.GetSelectedStrokes();
             editeur.SelectedStrokes = strokes;
@@ -287,6 +289,19 @@ namespace PolyPaint.VueModeles
             HandleBorderColorChange(strokes);
             HandleFillColorChange(strokes);
             HandleBorderStyleChange(strokes);
+
+            var strokesToSend = rebuilder.GetDrawViewModelsFromStrokes(editeur.SelectedStrokes);
+            await CollaborationClient.CollaborativeSelectAsync(new ItemsMessage("", "", strokesToSend));
+        }
+
+        public void ChangeOnlineSelection(ItemsMessage message)
+        {
+            _onlineSelection.AddOrUpdate(message.Username, message.Items, (k, v) => { return message.Items; });
+        }
+
+        public ConcurrentDictionary<string, List<DrawViewModel>> GetOnlineSelection()
+        {
+            return _onlineSelection;
         }
 
         private void HandleBorderColorChange(StrokeCollection strokes)

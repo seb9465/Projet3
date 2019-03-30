@@ -9,6 +9,7 @@ using System.Windows.Ink;
 using System.Windows.Input;
 using System.Windows.Media;
 using PolyPaint.VueModeles;
+using System.Threading.Tasks;
 
 namespace PolyPaint.Utilitaires
 {
@@ -123,17 +124,21 @@ namespace PolyPaint.Utilitaires
             DrawingStroke = null;
         }
 
-        internal void EndDraw(InkCanvas surfaceDessin, string outilSelectionne)
+        internal async Task EndDrawAsync(InkCanvas surfaceDessin, VueModele vm)
         {
             if (DrawingStroke != null)
             {
-                if(DrawingStroke is AbstractLineStroke && (DrawingStroke as AbstractLineStroke).IsRelation && !(DrawingStroke as AbstractLineStroke).BothAttached)
+                if (DrawingStroke is AbstractLineStroke && (DrawingStroke as AbstractLineStroke).IsRelation && !(DrawingStroke as AbstractLineStroke).BothAttached)
                 {
                     (DrawingStroke as ICanvasable).RemoveFromCanvas();
                 }
                 else
                 {
                     (DrawingStroke as ICanvasable).AddToCanvas();
+
+                    StrokeBuilder rebuilder = new StrokeBuilder();
+                    List<DrawViewModel> allo = rebuilder.GetDrawViewModelsFromStrokes(new StrokeCollection { DrawingStroke });
+                    await vm.CollaborationClient.CollaborativeDrawAsync(allo);
                 }
                 DrawingStroke = null;
             }
