@@ -11,7 +11,6 @@ import UIKit
 import MessageKit
 import MessageInputBar
 
-// MessagesLayoutDelegate qui donne la hauteur, le padding et l'alignement des differentes vues.
 extension MsgChatController: MessagesLayoutDelegate {
     func heightForLocation(message: MessageKit.MessageType,
                            at indexPath: IndexPath,

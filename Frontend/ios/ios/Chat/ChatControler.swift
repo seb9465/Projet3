@@ -41,6 +41,18 @@ class MsgChatController: MessagesViewController, MsgChatProtocol {
         self.navigationItem.title = ChatService.shared.currentChannel.name;
         
         super.viewDidLoad();
+        
+        let afkMsgs: [String: [Message]] = ChatService.shared.messagesWhileAFK;
+        let channelName: String = ChatService.shared.currentChannel.name;
+        if (afkMsgs.keys.contains(channelName)) {
+            for message in afkMsgs[channelName]! {
+                self.messages.append(message);
+            }
+        }
+        
+        // TODO: Make a function in the ChatService for this and the get.
+        ChatService.shared.messagesWhileAFK.removeAll();
+        self.messagesCollectionView.reloadData();
     }
     
     @objc func back(sender: UIBarButtonItem) {
