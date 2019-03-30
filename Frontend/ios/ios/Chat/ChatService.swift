@@ -33,7 +33,6 @@ class ChatService {
             .withHttpConnectionOptions() { httpConnectionOptions in
                 httpConnectionOptions.accessTokenProvider = { return USER_TOKEN; }}
             .build();
-        
     }
     
     public func connectToHub() -> Void {
@@ -42,34 +41,8 @@ class ChatService {
         self.connected = true;
     }
     
-    public func initOnReceivingMessage(currentMemberName: String, insertMessage: @escaping (_ message: Message) -> Void) {
+    public func initOnReceivingMessage(currentMemberName: String? = "", insertMessage: @escaping (_ message: Message) -> Void) {
         self.onSendMessage(currentMemberName: currentMemberName, insertMessage: insertMessage);
-    }
-    
-    public func initOnReceivingMessageAFK() -> Void {
-        self.hubConnection.on(method: "SendMessage", callback: { args, typeConverter in
-            print("[ CHAT ] On SendMessageAFK");
-            let messageJson: String = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self)!;
-            if let messageJsonData = messageJson.data(using: .utf8) {
-                let message: ChatMessage = try! JSONDecoder().decode(ChatMessage.self, from: messageJsonData);
-                
-                var memberFromMessage: Member;
-                if (self._members.isAlreadyInArray(memberName: message.username)) {
-                    memberFromMessage = self._members.getMemberByName(memberName: message.username);
-                } else {
-                    memberFromMessage = Member( name: message.username, color: .random );
-                }
-                
-                let newMessage = Message(
-                    member: memberFromMessage,
-                    text: message.message,
-                    timestamp: message.timestamp,
-                    messageId: UUID().uuidString
-                );
-                
-                print("AFK Channel ", message.channelId);
-            }
-        });
     }
     
     public func initOnAnotherUserConnection(insertMessage: @escaping (_ message: Message) -> Void) -> Void {
@@ -111,6 +84,7 @@ class ChatService {
             if let e = error {
                 print("ERROR while invoking FetchChannels");
                 print(e);
+                self.invokeChannelsWhenConnected();
             }
         });
     }
@@ -149,6 +123,33 @@ class ChatService {
     
     public func disconnectFromCurrentChatRoom() -> Void {
         self.invokeDisconnectFromChannel();
+    }
+    
+    public func connectToUserChatRooms() -> Void {
+        self.hubConnection.on(method: "FetchChannels", callback: { args, typeConverter in
+            print("[ CHAT ] On FetchChannels");
+            
+            let channelsJson: String = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self)!;
+            if let channelsJsonData = channelsJson.data(using: .utf8) {
+                let channels: ChannelsMessage = try! JSONDecoder().decode(ChannelsMessage.self, from: channelsJsonData);
+                self.userChannels.channels = [];
+                self.serverChannels.channels = [];
+                for channel in channels.channels {
+                    if (channel.connected) {
+                        self.userChannels.channels.append(channel);
+                        
+                        let json = try? JSONEncoder().encode(ConnectionMessage(channelId: channel.name));
+                        let jsondata: String = String(data: json!, encoding: .utf8)!;
+                        
+                        self.hubConnection.invoke(method: "ConnectToChannel", arguments: [jsondata], invocationDidComplete: { error in
+                            print("[ CHAT ] Invoked ConnectToChannel.");
+                            self.printPossibleError(error: error);
+                        });
+                    }
+                }
+            }
+        });
+        self.invokeFetchChannels();
     }
     
     // MARK: Private functions
@@ -239,7 +240,8 @@ class ChatService {
         });
     }
     
-    private func onSendMessage(currentMemberName: String, insertMessage: @escaping (_ message: Message) -> Void) -> Void {
+    private func onSendMessage(currentMemberName: String?, insertMessage: @escaping (_ message: Message) -> Void) -> Void {
+        print("INIT ON MESAGE");
         self.hubConnection.on(method: "SendMessage", callback: { args, typeConverter in
             print("[ CHAT ] On SendMessage");
             let messageJson: String = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self)!;
@@ -284,7 +286,7 @@ class ChatService {
         });
     }
     
-    private func invokeConnectToChannel() -> Void {
+    public func invokeConnectToChannel() -> Void {
         let json = try? JSONEncoder().encode(ConnectionMessage(channelId: self.currentChannel.name));
         let jsondata: String = String(data: json!, encoding: .utf8)!;
         
