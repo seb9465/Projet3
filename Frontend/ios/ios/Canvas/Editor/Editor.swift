@@ -52,27 +52,15 @@ class Editor {
         self.editorView.addSubview(self.selectionLasso);
     }
     
-//    func selectArea(point: CGPoint) {
-//        let points: [CGPoint] = [self.initialTouchPoint, point]
-//        let selectionOrigin = CGPoint(x: points.map { $0.x }.min()!, y: points.map { $0.y }.min()!)
-//        let selectionDest = CGPoint(x: points.map { $0.x }.max()!, y: points.map { $0.y }.max()!)
-//        
-//        self.selectionOutline.append(SelectionOutline(firstPoint: selectionOrigin, lastPoint: selectionDest, associatedFigureID: figure.figureID));
-//        self.selectionOutline.last!.addSelectedFigureLayers()
-//        if (selectionOutline.last!.frame.width < 10) {
-//            return
-//        }
-//        self.editorView.addSubview(self.selectionOutline.last!)
-//    }
-    
     func deselect() {
         if (self.selectionOutline.count > 0) {
             for outline in self.selectionOutline {
                 outline.removeFromSuperview();
             }
+            
             self.selectionOutline.removeAll();
-//            self.selectionOutline.removeFromSuperview()
         }
+        
         self.deselectLasso();
         self.selectedFigures.removeAll();
     }
@@ -82,8 +70,8 @@ class Editor {
             let tmpOutlineIndex: Int = self.selectionOutline.firstIndex(where: { $0.associatedFigureID == figure.figureID })!;
             self.selectionOutline[tmpOutlineIndex].removeFromSuperview();
             self.selectionOutline.remove(at: tmpOutlineIndex);
-//            self.selectionOutline.removeFromSuperview()
         }
+        
         self.deselectLasso();
         self.selectedFigures.remove(at: self.selectedFigures.firstIndex(of: figure)!);
     }
@@ -199,42 +187,42 @@ extension Editor: SideToolbarDelegate {
         for figure in self.selectedFigures {
             (figure as! UmlFigure).setBorderColor(borderColor: color);
         }
-//        (self.selectedFigure as! UmlFigure).setBorderColor(borderColor: color)
+        
     }
     
     func setSelectedFigureName(name: String) {
         for figure in self.selectedFigures {
             (figure as! UmlClassFigure).setClassName(name: name);
         }
-//        (self.selectedFigure as! UmlClassFigure).setClassName(name: name)
+        
     }
     
     func setSelectedComment(comment: String) {
         for figure in self.selectedFigures {
             (figure as! UmlCommentFigure).setComment(comment: comment);
         }
-//        (self.selectedFigure as! UmlCommentFigure).setComment(comment: comment)
+        
     }
     
     func setSelectedPhase(phaseName: String) {
         for figure in self.selectedFigures {
             (figure as! UmlPhaseFigure).setPhaseName(phaseName: phaseName);
         }
-//        (self.selectedFigure as! UmlPhaseFigure).setPhaseName(phaseName: phaseName)
+        
     }
     
     func setSelectedText(text: String) {
         for figure in self.selectedFigures {
             (figure as! UMLTextFigure).setText(text: text)
         }
-//        (self.selectedFigure as! UMLTextFigure).setText(text: text)
+        
     }
     
     func addClassMethod(name: String) {
         for figure in self.selectedFigures {
             (figure as! UmlClassFigure).addMethod(name: name)
         }
-//        (self.selectedFigure as! UmlClassFigure).addMethod(name: name)
+        
         self.updateSideToolBar()
     }
     
@@ -242,7 +230,7 @@ extension Editor: SideToolbarDelegate {
         for figure in self.selectedFigures {
             (figure as! UmlClassFigure).removeMethod(name: name, index: index)
         }
-//        (self.selectedFigure as! UmlClassFigure).removeMethod(name: name, index: index)
+        
         self.updateSideToolBar()
     }
     
@@ -250,7 +238,7 @@ extension Editor: SideToolbarDelegate {
         for figure in self.selectedFigures {
             (figure as! UmlClassFigure).addAttribute(name: name);
         }
-//        (self.selectedFigure as! UmlClassFigure).addAttribute(name: name)
+        
         self.updateSideToolBar()
     }
     
@@ -258,61 +246,46 @@ extension Editor: SideToolbarDelegate {
         for figure in self.selectedFigures {
             (figure as! UmlClassFigure).removeAttribute(name: name, index: index);
         }
-//        (self.selectedFigure as! UmlClassFigure).removeAttribute(name: name, index: index)
+        
         self.updateSideToolBar()
     }
     
     func updateSideToolBar() {
         for controller in self.sideToolbatControllers {
-            controller.update()
+            controller.update();
         }
     }
     
     func save() -> Void{
-        CanvasService.SaveCanvas(name: "TestSaveCanva")
+        CanvasService.SaveCanvas(name: "TestSaveCanva");
     }
     
     func rotate(orientation: RotateOrientation) {
         for figure in self.selectedFigures {
             let tempFigure: Figure = figure;
-            figure.rotate(orientation: orientation)
+            figure.rotate(orientation: orientation);
             self.deselectFigure(figure: tempFigure);
             self.select(figure: figure);
         }
-//        let figureSelected = self.selectedFigure;
-//        self.selectedFigure.rotate(orientation: orientation)
-//        self.deselect()
-        
-//        self.select(figure: figureSelected!)
     }
     
     @objc private func rotatedView(_ sender: UIRotationGestureRecognizer) {
         if(!self.selectedFigures.isEmpty && sender.state == .changed) {
-//            let figureSelected = self.selectedFigure;
-            let currentRotationAngle = Int(rad2deg(sender.rotation))
-            // 45 degree pour faciliter la gesture
-            if(currentRotationAngle % 45 == 0) {
-                // pour le sense de la rotation
+            let currentRotationAngle = Int(rad2deg(sender.rotation));
+            
+            if(currentRotationAngle % 45 == 0) {    // 45 degree pour faciliter la gesture
                 for figure in self.selectedFigures {
                     let tempFigure: Figure = figure;
                     if(self.oldRotationAngle < currentRotationAngle) {
-                        figure.rotate(orientation: .right)
+                        figure.rotate(orientation: .right);
                     } else {
-                        figure.rotate(orientation: .left)
+                        figure.rotate(orientation: .left);
                     }
-                    self.deselectFigure(figure: tempFigure)
-                    self.select(figure: figure)
+                    self.deselectFigure(figure: tempFigure);
+                    self.select(figure: figure);
                 }
-//                if(self.oldRotationAngle < currentRotationAngle) {
-//                    self.selectedFigure.rotate(orientation: .right)
-//                } else {
-//                    self.selectedFigure.rotate(orientation: .left)
-//                }
-//                self.deselect()
-//                self.select(figure: figureSelected!)
             }
-            oldRotationAngle = currentRotationAngle
-            
+            oldRotationAngle = currentRotationAngle;
         }
     }
     
@@ -334,17 +307,13 @@ extension Editor : TouchInputDelegate {
                 self.editorView.addSubview(connectionPreview)
                 self.touchEventState = .CONNECTION
                 return
-            }
-            
-            if (action == "shape") {
+            } else if (action == "shape") {
                 self.deselect()
                 self.select(figure: figure!)
                 self.updateSideToolBar()
 //                self.touchEventState = .TRANSLATE
                 return
-            }
-            
-            if (action == "empty") {
+            } else if (action == "empty") {
                 self.deselect()
                 self.touchEventState = .AREA_SELECT
                 self.selectLasso(touchPoint: point);
@@ -375,14 +344,14 @@ extension Editor : TouchInputDelegate {
     func notifyTouchMoved(point: CGPoint, figure: Figure) {
         if (self.touchEventState == .SELECT && self.selectedFigures.count > 0) {
             self.touchEventState = .TRANSLATE;
-        }
+        } // No else if here please !
+        
         if (self.touchEventState == .TRANSLATE) {
             let tmpOutlineIndex: Int = self.selectionOutline.firstIndex(where: { $0.associatedFigureID == figure.figureID })!;
             
             let offset = CGPoint(x: point.x - self.previousTouchPoint.x, y: point.y - self.previousTouchPoint.y)
             (figure as! UmlFigure).translate(by: offset)
             self.selectionOutline[tmpOutlineIndex].translate(by: offset)
-//            self.selectionOutline.translate(by: offset)
             self.previousTouchPoint = point
             
             return
@@ -391,10 +360,6 @@ extension Editor : TouchInputDelegate {
             self.connectionPreview = ConnectionFigure(origin: self.initialTouchPoint, destination: point, itemType: .UniderectionalAssoication)
             self.editorView.addSubview(self.connectionPreview)
         }
-        
-//        if (self.touchEventState == .AREA_SELECT) {
-//            // Resize the selection shape
-//        }
     }
     
     func notifyTouchEnded(point: CGPoint) {
@@ -408,9 +373,6 @@ extension Editor : TouchInputDelegate {
             );
             self.touchEventState = .SELECT;
         } else if (self.touchEventState == .AREA_SELECT) {
-//            self.selectArea(point: point)
-            // TODO: Retourne a .SELECT seulement si la selection au lasso est completer
-//            self.touchEventState = .SELECT
             if (self.selectionLasso.shapeIsClosed) {
                 for figure in self.figures {
                     if (self.selectionLasso.contains(figure: figure)) {
@@ -421,13 +383,9 @@ extension Editor : TouchInputDelegate {
                 self.touchEventState = .SELECT;
             }
             return
-        } else if (self.touchEventState == .INSERT) {
-            return
         } else if (self.touchEventState == .TRANSLATE) {
             self.touchEventState = .SELECT;
-            
         }
-        
     }
     
     func handleConnectionTouchEnded(point: CGPoint) {
