@@ -18,16 +18,17 @@ namespace PolyPaint.API.Hubs
         public CollaborativeHub(UserService _userService) : base(_userService)
         { }
 
-        public async Task Draw(string canvasDrawing)
+        public async Task Draw(string canvasDrawings)
         {
-            var drawViewModel = JsonConvert.DeserializeObject<DrawViewModel>(canvasDrawing);
+            var drawViewModels = JsonConvert.DeserializeObject<List<DrawViewModel>>(canvasDrawings);
 
             var user = await GetUserFromToken(Context.User);
-            if (user != null)
+            if (user != null && drawViewModels.Count > 0)
             {
-                if (UserHandler.UserGroupMap.TryGetValue(drawViewModel.ChannelId, out var users) && users.Contains(user.Id))
+                var channelId = drawViewModels.First().ChannelId;
+                if (UserHandler.UserGroupMap.TryGetValue(channelId, out var users) && users.Contains(user.Id))
                 {
-                    await Clients.Group(drawViewModel.ChannelId).SendAsync("Draw", JsonConvert.SerializeObject(drawViewModel));
+                    await Clients.OthersInGroup(channelId).SendAsync("Draw", JsonConvert.SerializeObject(drawViewModels));
                 }
             }
         }
@@ -48,7 +49,7 @@ namespace PolyPaint.API.Hubs
             {
                 if (UserHandler.UserGroupMap.TryGetValue(channelId, out var users) && users.Contains(user.Id))
                 {
-                    await Clients.Group(channelId).SendAsync("Delete");
+                    await Clients.OthersInGroup(channelId).SendAsync("Delete");
                 }
             }
         }
@@ -61,7 +62,7 @@ namespace PolyPaint.API.Hubs
             {
                 if (UserHandler.UserGroupMap.TryGetValue(selectViewModel.ChannelId, out var users) && users.Contains(user.Id))
                 {
-                    await Clients.Group(selectViewModel.ChannelId).SendAsync("Select", selectViewModel);
+                    await Clients.OthersInGroup(selectViewModel.ChannelId).SendAsync("Select", selectViewModel);
                 }
             }
         }
@@ -73,7 +74,7 @@ namespace PolyPaint.API.Hubs
             {
                 if (UserHandler.UserGroupMap.TryGetValue(channelId, out var users) && users.Contains(user.Id))
                 {
-                    await Clients.Group(channelId).SendAsync("Reset");
+                    await Clients.OthersInGroup(channelId).SendAsync("Reset");
                 }
             }
         }
