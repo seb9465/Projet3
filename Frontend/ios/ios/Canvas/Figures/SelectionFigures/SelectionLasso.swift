@@ -78,7 +78,7 @@ class SelectionLasso: UIView, SelectionLassoProtocol {
         
         var points: [CGPoint] = [];
         points.append(CGPoint(x: firstPoint.x, y: firstPoint.y));   // Upper left corner
-        points.append(CGPoint(x: firstPoint.x, y: lastPoint.y));     // Lower left corner
+        points.append(CGPoint(x: firstPoint.x, y: lastPoint.y));    // Lower left corner
         points.append(CGPoint(x: lastPoint.x, y: firstPoint.y));    // Upper right corner
         points.append(CGPoint(x: lastPoint.x, y: lastPoint.y));     // Lower right corner
         
@@ -122,7 +122,7 @@ class SelectionLasso: UIView, SelectionLassoProtocol {
         let circle = CAShapeLayer();
         circle.path = UIBezierPath(roundedRect: CGRect(x: -5, y: -5, width: 2.0 * self.radius, height: 2.0 * self.radius), cornerRadius: self.radius).cgPath;
         circle.position = CGPoint(x: touchPoint.x, y: touchPoint.y);
-        circle.fillColor = UIColor.blue.cgColor;
+        circle.fillColor = Constants.RED_COLOR.cgColor;
         self.layer.addSublayer(circle);
     }
 }
