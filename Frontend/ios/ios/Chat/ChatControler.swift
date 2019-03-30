@@ -34,7 +34,17 @@ class MsgChatController: MessagesViewController, MsgChatProtocol {
         ChatService.shared.initOnAnotherUserConnection(insertMessage: self.insertMessage);
         ChatService.shared.connectToGroup();
         
+        self.navigationItem.hidesBackButton = true;
+        let newBackButton = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(self.back(sender:)));
+        self.navigationItem.leftBarButtonItem = newBackButton;
+        
         super.viewDidLoad();
+    }
+    
+    @objc func back(sender: UIBarButtonItem) {
+        ChatService.shared.currentChannel = nil;
+        
+        self.navigationController?.popViewController(animated: true)
     }
     
     override func viewWillDisappear(_ animated: Bool) -> Void {
