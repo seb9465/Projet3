@@ -9,28 +9,28 @@
 import UIKit
 
 class ConnectionAssociationUni: ConnectionFigure {
-    override func draw(_ rect: CGRect) {
-        if let context = UIGraphicsGetCurrentContext() {
-            context.setStrokeColor(UIColor.blue.cgColor)
-            context.setLineWidth(2)
-            context.beginPath()
-            context.move(to: self.getLocalInitialPoint())
-            context.addLine(to: self.getLocalFinalPoint())
-            if (itemType == ItemTypeEnum.UniderectionalAssoication) {
-                context.setLineDash(phase: 0, lengths: [4,4])
-            }
-            context.strokePath()
-        }
-        
-        let bezierPath = UIBezierPath()
-        bezierPath.move(to: CGPoint(x: 61.5, y: 44.7))
-        bezierPath.addLine(to: CGPoint(x: 75.5, y: 25.5))
-        bezierPath.addLine(to: CGPoint(x: 89.5, y: 44.7))
-        bezierPath.addLine(to: CGPoint(x: 75.5, y: 65.5))
-        bezierPath.addLine(to: CGPoint(x: 61.5, y: 44.7))
-        bezierPath.close()
-        UIColor.black.setStroke()
-        bezierPath.lineWidth = 1
-        bezierPath.stroke()
-    }
+//    override func draw(_ rect: CGRect) {
+//        if let context = UIGraphicsGetCurrentContext() {
+//            context.setStrokeColor(UIColor.blue.cgColor)
+//            context.setLineWidth(2)
+//            context.beginPath()
+//            context.move(to: self.getLocalInitialPoint())
+//            context.addLine(to: self.getLocalFinalPoint())
+//            if (itemType == ItemTypeEnum.UniderectionalAssoication) {
+//                context.setLineDash(phase: 0, lengths: [4,4])
+//            }
+//            context.strokePath()
+//        }
+//        
+//        let bezierPath = UIBezierPath()
+//        bezierPath.move(to: CGPoint(x: 61.5, y: 44.7))
+//        bezierPath.addLine(to: CGPoint(x: 75.5, y: 25.5))
+//        bezierPath.addLine(to: CGPoint(x: 89.5, y: 44.7))
+//        bezierPath.addLine(to: CGPoint(x: 75.5, y: 65.5))
+//        bezierPath.addLine(to: CGPoint(x: 61.5, y: 44.7))
+//        bezierPath.close()
+//        UIColor.black.setStroke()
+//        bezierPath.lineWidth = 1
+//        bezierPath.stroke()
+//    }
 }

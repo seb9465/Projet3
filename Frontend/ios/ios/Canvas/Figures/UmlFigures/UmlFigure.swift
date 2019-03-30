@@ -116,13 +116,11 @@ extension UmlFigure {
     
     private func updateConnections() {
         for pair in incomingConnections {
-            pair.key.points[1] = convert(((self.anchorPoints?.anchorPointsSnapEdges[pair.value]!)!), to: self.superview)
-            pair.key.setNeedsDisplay()
+            pair.key.updateDestination(point: convert(((self.anchorPoints?.anchorPointsSnapEdges[pair.value]!)!), to: self.superview))
         }
         
         for pair in outgoingConnections {
-            pair.key.points[0] = convert(((self.anchorPoints?.anchorPointsSnapEdges[pair.value]!)!), to: self.superview)
-            pair.key.setNeedsDisplay()
+            pair.key.updateOrigin(point: convert(((self.anchorPoints?.anchorPointsSnapEdges[pair.value]!)!), to: self.superview))
         }
     }
     
