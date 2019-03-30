@@ -10,13 +10,11 @@ using PolyPaint.Utilitaires;
 using PolyPaint.VueModeles;
 using PolyPaint.Vues;
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -71,18 +69,12 @@ namespace PolyPaint
                 (DataContext as VueModele).ChatClient.MessageReceived += ScrollDown;
                 externalChatWindow = new ChatWindow(DataContext);
                 Application.Current.Exit += OnClosing;
-
             }
             else
             {
                 sendToCloud.Visibility = Visibility.Collapsed;
                 importFromCloud.Visibility = Visibility.Collapsed;
                 chatMenu.Visibility = Visibility.Collapsed;
-
-                Thickness margin = surfaceDessin.Margin;
-                margin.Right = -790;
-                margin.Bottom = -260;
-                surfaceDessin.Margin = margin;
             }
         }
 
@@ -145,12 +137,17 @@ namespace PolyPaint
             {
                 // Change strokes into DrawViewModels
                 List<DrawViewModel> strokes = rebuilder.GetDrawViewModelsFromStrokes(surfaceDessin.Strokes);
-                
+
                 //Serialize our "strokes"
                 FileStream fs = null;
-                fs = new FileStream(filePath, FileMode.Create);
-                var jsons = JsonConvert.SerializeObject(strokes);
-                fs.Write(Encoding.UTF8.GetBytes(jsons), 0, Encoding.UTF8.GetByteCount(jsons));
+
+                try
+                {
+                    fs = new FileStream(filePath, FileMode.Create);
+                    var jsons = JsonConvert.SerializeObject(strokes);
+                    fs.Write(Encoding.UTF8.GetBytes(jsons), 0, Encoding.UTF8.GetByteCount(jsons));
+                }
+                catch (ArgumentException) { } // Close Dialog Window
             }
         }
 
@@ -168,14 +165,18 @@ namespace PolyPaint
 
             // Deserialize it
             FileStream fs = null;
-            fs = new FileStream(openFileDialog.FileName, FileMode.Open, FileAccess.Read);
-            byte[] jsons = new byte[fs.Length];
-            fs.Read(jsons, 0, (int)fs.Length);
+            try
+            {
+                fs = new FileStream(openFileDialog.FileName, FileMode.Open, FileAccess.Read);
+                byte[] jsons = new byte[fs.Length];
+                fs.Read(jsons, 0, (int)fs.Length);
 
-            List<DrawViewModel> customStrokes = JsonConvert.DeserializeObject<List<DrawViewModel>>(Encoding.UTF8.GetString(jsons));
-            
-            // Rebuild the strokes
-            rebuilder.BuildStrokesFromDrawViewModels(customStrokes, surfaceDessin);
+                List<DrawViewModel> customStrokes = JsonConvert.DeserializeObject<List<DrawViewModel>>(Encoding.UTF8.GetString(jsons));
+
+                // Rebuild the strokes
+                rebuilder.BuildStrokesFromDrawViewModels(customStrokes, surfaceDessin);
+            }
+            catch (ArgumentException) { } // Close Dialog Window
         }
 
         private async void SendToCloud(object sender, RoutedEventArgs e)
@@ -188,12 +189,13 @@ namespace PolyPaint
             string imageToSend = Convert.ToBase64String(imageBytes);
             string CanvasName = uploadToCloud.CanvasName;
             string CanvasVisibility = uploadToCloud.CanvasVisibility;
-            SaveableCanvas canvas = new SaveableCanvas(CanvasName, strokesToSend, imageToSend, CanvasVisibility);
+            string CanvasProtection = uploadToCloud.CanvasProtection;
+            SaveableCanvas canvas = new SaveableCanvas(CanvasName, strokesToSend, imageToSend, CanvasVisibility, CanvasProtection);
 
             string canvasJson = JsonConvert.SerializeObject(canvas);
             using (HttpClient client = new HttpClient())
             {
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6Im9saXZpZXIubGF1em9uIiwibmFtZWlkIjoiMjY5MGYyMjAtN2JiYS00NDViLTgzYWEtMjIwZmVlMDczMTRiIiwiZmFtaWx5X25hbWUiOiJ1c2VyIiwibmJmIjoxNTUwNTkwMjgzLCJleHAiOjYxNTUwNTkwMjIzLCJpYXQiOjE1NTA1OTAyODMsImlzcyI6Imh0dHBzOi8vcG9seXBhaW50Lm1lIiwiYXVkIjoiaHR0cHM6Ly9wb2x5cGFpbnQubWUifQ.7zc5SqJNkJi7q8-SPzJ7Jbz1S5umsMszoJrxyBResVQ");
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", (string)Application.Current.Properties["token"]);
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
                 StringContent content = new StringContent(canvasJson, Encoding.UTF8, "application/json");
@@ -209,7 +211,7 @@ namespace PolyPaint
             List<SaveableCanvas> strokes;
             using (HttpClient client = new HttpClient())
             {
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6Im9saXZpZXIubGF1em9uIiwibmFtZWlkIjoiMjY5MGYyMjAtN2JiYS00NDViLTgzYWEtMjIwZmVlMDczMTRiIiwiZmFtaWx5X25hbWUiOiJ1c2VyIiwibmJmIjoxNTUwNTkwMjgzLCJleHAiOjYxNTUwNTkwMjIzLCJpYXQiOjE1NTA1OTAyODMsImlzcyI6Imh0dHBzOi8vcG9seXBhaW50Lm1lIiwiYXVkIjoiaHR0cHM6Ly9wb2x5cGFpbnQubWUifQ.7zc5SqJNkJi7q8-SPzJ7Jbz1S5umsMszoJrxyBResVQ");
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", (string)Application.Current.Properties["token"]);
                 System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
                 HttpResponseMessage response = await client.GetAsync($"{Config.URL}/api/user/canvas");
                 string responseString = await response.Content.ReadAsStringAsync();
@@ -217,10 +219,17 @@ namespace PolyPaint
             }
             progressBar.Visibility = Visibility.Collapsed;
             Gallery gallery = new Gallery(strokes, surfaceDessin);
+
+            Application.Current.MainWindow = gallery;
            
+
             surfaceDessin.Strokes.Clear();
-            surfaceDessin.Strokes.Add(gallery.SelectedCanvas.Strokes);
+          //  surfaceDessin.Strokes.Add(gallery.SelectedCanvas.Strokes);
+
+            Close();
+            gallery.Show();
         }
+        
 
         private byte[] GetBytesForStrokes()
         {
@@ -326,7 +335,7 @@ namespace PolyPaint
             }
             catch { }
         }
-       
+
 
         private async void InkCanvas_LeftMouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -369,34 +378,12 @@ namespace PolyPaint
             if ((DataContext as VueModele).OutilSelectionne == "") return;
             if (_viewState == ViewStateEnum.Online)
             {
-                List<PolyPaintStylusPoint> points = new List<PolyPaintStylusPoint>();
-                foreach (StylusPoint point in icEventManager.DrawingStroke.StylusPoints.ToList())
+                StrokeCollection strokeInACollection = new StrokeCollection
                 {
-                    points.Add(new PolyPaintStylusPoint()
-                    {
-                        PressureFactor = point.PressureFactor,
-                        X = point.X,
-                        Y = point.Y,
-                    });
-                }
-                Enum.TryParse<ItemTypeEnum>(icEventManager.DrawingStroke.GetType().ToString(), out ItemTypeEnum itemType);
-
-                PolyPaintColor color = new PolyPaintColor()
-                {
-                    A = icEventManager.DrawingStroke.DrawingAttributes.Color.A,
-                    B = icEventManager.DrawingStroke.DrawingAttributes.Color.B,
-                    G = icEventManager.DrawingStroke.DrawingAttributes.Color.G,
-                    R = icEventManager.DrawingStroke.DrawingAttributes.Color.R,
+                    icEventManager.DrawingStroke
                 };
-                DrawViewModel drawViewModel = new DrawViewModel
-                {
-                    OutilSelectionne = (DataContext as VueModele).OutilSelectionne,
-                    StylusPoints = points,
-                    ItemType = itemType,
-                    FillColor = color,
-                    Owner = username,
-                };
-                await CollaborativeDrawAsync(drawViewModel);
+                List<DrawViewModel> drawViewModel = rebuilder.GetDrawViewModelsFromStrokes(strokeInACollection);
+                await CollaborativeDrawAsync(drawViewModel[0]);
             }
             else
             {
@@ -424,7 +411,7 @@ namespace PolyPaint
             await Connection.StartAsync();
         }
 
-       
+
         private async Task CollaborativeDrawAsync(DrawViewModel drawViewModel)
         {
             await Connection.InvokeAsync("Draw", JsonConvert.SerializeObject(drawViewModel));
@@ -567,6 +554,10 @@ namespace PolyPaint
         void InkCanvas_SelectionMoving(object sender, InkCanvasSelectionEditingEventArgs e)
         {
             icEventManager.RedrawConnections(surfaceDessin, (DataContext as VueModele).OutilSelectionne, e.OldRectangle, e.NewRectangle);
+        }
+        private void ContextualMenu_Click(object sender, EventArgs e)
+        {
+            icEventManager.ContextualMenuClick(surfaceDessin, (sender as MenuItem).Name, (DataContext as VueModele));
         }
 
         private void hamburgerMenu_Click(object sender, RoutedEventArgs e)

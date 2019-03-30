@@ -9,6 +9,7 @@ using System.Windows.Ink;
 using System.Windows.Input;
 using System.Windows.Media;
 using PolyPaint.VueModeles;
+using System;
 
 namespace PolyPaint.Utilitaires
 {
@@ -60,51 +61,55 @@ namespace PolyPaint.Utilitaires
                 switch (vm.OutilSelectionne)
                 {
                     case "uml_class":
-                        DrawingStroke = new UmlClassStroke(pts, surfaceDessin, vm.CouleurSelectionneeBordure, vm.CouleurSelectionneeRemplissage);
+                        DrawingStroke = new UmlClassStroke(pts, surfaceDessin, vm.CouleurSelectionneeBordure, vm.CouleurSelectionneeRemplissage, vm.TailleTrait);
                         surfaceDessin.Strokes.Add(DrawingStroke);
                         break;
                     case "rectangle":
-                        DrawingStroke = new RectangleStroke(pts, surfaceDessin, vm.CouleurSelectionneeBordure, vm.CouleurSelectionneeRemplissage);
+                        DrawingStroke = new RectangleStroke(pts, surfaceDessin, vm.CouleurSelectionneeBordure, vm.CouleurSelectionneeRemplissage, vm.TailleTrait);
                         surfaceDessin.Strokes.Add(DrawingStroke);
                         break;
                     case "artefact":
-                        DrawingStroke = new ArtefactStroke(pts, surfaceDessin, vm.CouleurSelectionneeBordure, vm.CouleurSelectionneeRemplissage);
+                        DrawingStroke = new ArtefactStroke(pts, surfaceDessin, vm.CouleurSelectionneeBordure, vm.CouleurSelectionneeRemplissage, vm.TailleTrait);
                         surfaceDessin.Strokes.Add(DrawingStroke);
                         break;
                     case "activity":
-                        DrawingStroke = new ActivityStroke(pts, surfaceDessin, vm.CouleurSelectionneeBordure, vm.CouleurSelectionneeRemplissage);
+                        DrawingStroke = new ActivityStroke(pts, surfaceDessin, vm.CouleurSelectionneeBordure, vm.CouleurSelectionneeRemplissage, vm.TailleTrait);
                         surfaceDessin.Strokes.Add(DrawingStroke);
                         break;
                     case "phase":
-                        DrawingStroke = new PhaseStroke(pts, surfaceDessin, vm.CouleurSelectionneeBordure, vm.CouleurSelectionneeRemplissage);
+                        DrawingStroke = new PhaseStroke(pts, surfaceDessin, vm.CouleurSelectionneeBordure, vm.CouleurSelectionneeRemplissage, vm.TailleTrait);
                         surfaceDessin.Strokes.Add(DrawingStroke);
                         break;
                     case "role":
-                        DrawingStroke = new RoleStroke(pts, surfaceDessin, vm.CouleurSelectionneeBordure, vm.CouleurSelectionneeRemplissage);
+                        DrawingStroke = new RoleStroke(pts, surfaceDessin, vm.CouleurSelectionneeBordure, vm.CouleurSelectionneeRemplissage, vm.TailleTrait);
                         surfaceDessin.Strokes.Add(DrawingStroke);
                         break;
                     case "text":
-                        DrawingStroke = new TextStroke(pts, surfaceDessin, vm.CouleurSelectionneeBordure, vm.CouleurSelectionneeRemplissage);
+                        DrawingStroke = new TextStroke(pts, surfaceDessin, vm.CouleurSelectionneeBordure, vm.CouleurSelectionneeRemplissage, vm.TailleTrait);
                         surfaceDessin.Strokes.Add(DrawingStroke);
                         break;
                     case "asso_uni":
-                        DrawingStroke = new UnidirectionalAssociationStroke(pts, surfaceDessin, vm.CouleurSelectionneeBordure);
+                        DrawingStroke = new UnidirectionalAssociationStroke(pts, surfaceDessin, vm.CouleurSelectionneeBordure, vm.TailleTrait);
                         surfaceDessin.Strokes.Add(DrawingStroke);
                         break;
                     case "asso_bi":
-                        DrawingStroke = new BidirectionalAssociationStroke(pts, surfaceDessin, vm.CouleurSelectionneeBordure);
+                        DrawingStroke = new BidirectionalAssociationStroke(pts, surfaceDessin, vm.CouleurSelectionneeBordure, vm.TailleTrait);
                         surfaceDessin.Strokes.Add(DrawingStroke);
                         break;
                     case "composition":
-                        DrawingStroke = new CompositionStroke(pts, surfaceDessin, vm.CouleurSelectionneeBordure);
+                        DrawingStroke = new CompositionStroke(pts, surfaceDessin, vm.CouleurSelectionneeBordure, vm.TailleTrait);
                         surfaceDessin.Strokes.Add(DrawingStroke);
                         break;
                     case "heritage":
-                        DrawingStroke = new InheritanceStroke(pts, surfaceDessin, vm.CouleurSelectionneeBordure);
+                        DrawingStroke = new InheritanceStroke(pts, surfaceDessin, vm.CouleurSelectionneeBordure, vm.TailleTrait);
                         surfaceDessin.Strokes.Add(DrawingStroke);
                         break;
                     case "agregation":
-                        DrawingStroke = new AgregationStroke(pts, surfaceDessin, vm.CouleurSelectionneeBordure);
+                        DrawingStroke = new AgregationStroke(pts, surfaceDessin, vm.CouleurSelectionneeBordure, vm.TailleTrait);
+                        surfaceDessin.Strokes.Add(DrawingStroke);
+                        break;
+                    case "line":
+                        DrawingStroke = new LineStroke(pts, surfaceDessin, vm.CouleurSelectionneeBordure, vm.TailleTrait);
                         surfaceDessin.Strokes.Add(DrawingStroke);
                         break;
                 }
@@ -113,50 +118,55 @@ namespace PolyPaint.Utilitaires
 
         internal void EndDraw(InkCanvas surfaceDessin, DrawViewModel drawViewModel, string username)
         {
-            if (DrawingStroke != null && (drawViewModel.OutilSelectionne == "rectangle"
-                                      || drawViewModel.OutilSelectionne == "uml_class"
-                                      || drawViewModel.OutilSelectionne == "activity"
-                                      || drawViewModel.OutilSelectionne == "artefact"
-                                      || drawViewModel.OutilSelectionne == "phase"
-                                      || drawViewModel.OutilSelectionne == "role"
-                                      || drawViewModel.OutilSelectionne == "text"))
-            {
-                StylusPointCollection collection = new StylusPointCollection();
+            //StylusPointCollection collection = new StylusPointCollection();
 
-                foreach (PolyPaintStylusPoint point in drawViewModel.StylusPoints)
-                {
-                    collection.Add(new StylusPoint()
-                    {
-                        X = point.X,
-                        Y = point.Y,
-                        PressureFactor = point.PressureFactor,
-                    });
-                }
+            //foreach (PolyPaintStylusPoint point in drawViewModel.StylusPoints)
+            //{
+            //    collection.Add(new StylusPoint()
+            //    {
+            //        X = point.X,
+            //        Y = point.Y,
+            //        PressureFactor = point.PressureFactor,
+            //    });
+            //}
 
-                Stroke stroke = null;
-                switch (drawViewModel.ItemType)
+            //Stroke stroke = null;
+            //switch (drawViewModel.ItemType)
+            //{
+            //    case ItemTypeEnum.Comment:
+            //        stroke = new RectangleStroke(collection, surfaceDessin, "#FF000000", "#FFFFFFFF");
+            //        break;
+            //}
+            //Color color = new Color()
+            //{
+            //    A = drawViewModel.FillColor.A,
+            //    B = drawViewModel.FillColor.B,
+            //    G = drawViewModel.FillColor.G,
+            //    R = drawViewModel.FillColor.R,
+            //};
+            //stroke.DrawingAttributes.Color = color;
+            //(stroke as ICanvasable).AddToCanvas();
+            StrokeBuilder builder = new StrokeBuilder();
+            List<DrawViewModel> viewModel = new List<DrawViewModel>
                 {
-                    case ItemTypeEnum.Comment:
-                        stroke = new RectangleStroke(collection, surfaceDessin, "#FF000000", "#FFFFFFFF");
-                        break;
-                }
-                Color color = new Color()
-                {
-                    A = drawViewModel.FillColor.A,
-                    B = drawViewModel.FillColor.B,
-                    G = drawViewModel.FillColor.G,
-                    R = drawViewModel.FillColor.R,
+                    drawViewModel
                 };
-                stroke.DrawingAttributes.Color = color;
-                (stroke as ICanvasable).AddToCanvas();
-            }
+            builder.BuildStrokesFromDrawViewModels(viewModel, surfaceDessin);
+            DrawingStroke = null;
         }
 
         internal void EndDraw(InkCanvas surfaceDessin, string outilSelectionne)
         {
             if (DrawingStroke != null)
             {
-                (DrawingStroke as ICanvasable).AddToCanvas();
+                if(DrawingStroke is AbstractLineStroke && (DrawingStroke as AbstractLineStroke).IsRelation && !(DrawingStroke as AbstractLineStroke).BothAttached)
+                {
+                    (DrawingStroke as ICanvasable).RemoveFromCanvas();
+                }
+                else
+                {
+                    (DrawingStroke as ICanvasable).AddToCanvas();
+                }
                 DrawingStroke = null;
             }
         }
@@ -171,8 +181,8 @@ namespace PolyPaint.Utilitaires
             double shiftInX = newRectangle.Left - oldRectangle.Left;
             double shiftInY = newRectangle.Top - oldRectangle.Top;
             List<Point> affectedAnchorPoints = new List<Point>();
-            var selectedStroke = surfaceDessin.GetSelectedStrokes();
-            foreach (var stroke in selectedStroke)
+            var selectedStrokes = surfaceDessin.GetSelectedStrokes();
+            foreach (var stroke in selectedStrokes)
             {
                 Point topLeft = new Point(stroke.StylusPoints[0].X, stroke.StylusPoints[0].Y);
                 double width = (stroke.StylusPoints[1].X - stroke.StylusPoints[0].X);
@@ -196,7 +206,7 @@ namespace PolyPaint.Utilitaires
                 {
                     surfaceDessin.Strokes.Where(x => x is AbstractLineStroke &&
                         !surfaceDessin.GetSelectedStrokes().Contains(x) &&
-                        Point.Subtract(x.StylusPoints[i].ToPoint(), pt).Length <= 10)
+                        Point.Subtract(x.StylusPoints[i].ToPoint(), pt).Length <= Config.MIN_DISTANCE_ANCHORS)
                         .ToList()
                         .ForEach(x => RedrawPoint(x, i, new Vector(shiftInX, shiftInY)));
                 }
@@ -207,6 +217,76 @@ namespace PolyPaint.Utilitaires
         {
             stroke.StylusPoints[index] = new StylusPoint(stroke.StylusPoints[index].X + shift.X, stroke.StylusPoints[index].Y + shift.Y);
             (stroke as ICanvasable).AddToCanvas();
+        }
+
+        internal void ContextualMenuClick(InkCanvas surfaceDessin, string header, VueModele vm)
+        {
+            switch (header)
+            {
+                case "SelectAll":
+                    surfaceDessin.Select(surfaceDessin.Strokes);
+                    break;
+                case "InvertSelection":
+                    StrokeCollection strokesToSelect = new StrokeCollection();
+                    foreach (var stroke in surfaceDessin.Strokes)
+                    {
+                        if (!surfaceDessin.GetSelectedStrokes().Contains(stroke))
+                            strokesToSelect.Add(stroke);
+                    }
+                    surfaceDessin.Select(strokesToSelect);
+                    break;
+                case "InvertColors":
+                    InvertStrokesColors(surfaceDessin);
+                    break;
+                case "TransformAllShapes":
+                    TransformAllShapes(surfaceDessin, vm);
+                    break;
+                case "TransformAllConnections":
+                    TransformAllConnections(surfaceDessin, vm);
+                    break;
+                case "TransformAllShapesAndConnections":
+                    TransformAllShapes(surfaceDessin, vm);
+                    TransformAllConnections(surfaceDessin, vm);
+                    break;
+            }
+        }
+
+        private void InvertStrokesColors(InkCanvas surfaceDessin)
+        {
+            foreach (AbstractShapeStroke stroke in surfaceDessin.GetSelectedStrokes().Where(x => x is AbstractShapeStroke))
+            {
+                stroke.SetBorderColor(InvertColorValue(stroke.BorderColor).ToString());
+                stroke.SetFillColor(InvertColorValue(stroke.FillColor).ToString());
+            }
+            foreach (AbstractLineStroke stroke in surfaceDessin.GetSelectedStrokes().Where(x => x is AbstractLineStroke))
+            {
+                stroke.SetBorderColor(InvertColorValue(stroke.BorderColor).ToString());
+                stroke.SetFillColor(InvertColorValue(stroke.FillColor).ToString());
+            }
+        }
+
+        private Color InvertColorValue(Color color)
+        {
+            return Color.FromArgb(color.A, (byte)~color.R, (byte)~color.G, (byte)~color.B);
+        }
+
+        private void TransformAllShapes(InkCanvas surfaceDessin, VueModele vm)
+        {
+            foreach (AbstractShapeStroke stroke in surfaceDessin.Strokes.Where(x => x is AbstractShapeStroke))
+            {
+                stroke.SetBorderColor(vm.CouleurSelectionneeBordure);
+                stroke.SetFillColor(vm.CouleurSelectionneeRemplissage);
+                //stroke.SetBorderStyle(Tools.DashAssociations[vm.SelectedBorder]);
+            }
+        }
+        private void TransformAllConnections(InkCanvas surfaceDessin, VueModele vm)
+        {
+            foreach (AbstractLineStroke stroke in surfaceDessin.Strokes.Where(x => x is AbstractLineStroke))
+            {
+                stroke.SetBorderColor(vm.CouleurSelectionneeBordure);
+                stroke.SetFillColor(vm.CouleurSelectionneeRemplissage);
+                //stroke.SetBorderStyle(Tools.DashAssociations[vm.SelectedBorder]);
+            }
         }
     }
 }

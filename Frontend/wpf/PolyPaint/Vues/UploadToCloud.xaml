@@ -10,8 +10,8 @@
     <Grid>
         <Label Content="Name:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" />
         <TextBox Name="nameTextBox" HorizontalAlignment="Left" Height="25" Margin="85,10,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="280"/>
-        <Label Content="Visibility :" HorizontalAlignment="Left" Margin="10,90,0,0" VerticalAlignment="Top"/>
-        <ComboBox  Margin="10,0,0,80" Height="30"  Width="275" Name="visibilityComboBox">
+        <Label Content="Visibility :" HorizontalAlignment="Left" Margin="10,80,0,0" VerticalAlignment="Top"/>
+        <ComboBox  Margin="10,-10,0,80"  Width="275" Name="visibilityComboBox">
             <ComboBoxItem>
                 Public
             </ComboBoxItem>
@@ -19,7 +19,9 @@
                 Private
             </ComboBoxItem>
         </ComboBox>
+        <Label Content="Password :" HorizontalAlignment="Left" Margin="10,150,0,0" VerticalAlignment="Top"/>
+        <PasswordBox Name="passwordTextBox" HorizontalAlignment="Left" Height="25" Margin="85,150,0,0" VerticalAlignment="Top" Width="280"/>
         
-        <Button Content="Ok" HorizontalAlignment="Left" Margin="290,200,0,0" VerticalAlignment="Top" Width="75" Click="Ok_Click"/>
+        <Button Content="Ok" HorizontalAlignment="Left" Margin="290,210,0,0" VerticalAlignment="Top" Width="75" Click="Ok_Click"/>
     </Grid>
 </Window>

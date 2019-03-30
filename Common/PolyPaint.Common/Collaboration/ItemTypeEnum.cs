@@ -18,6 +18,7 @@ namespace PolyPaint.Common.Collaboration
         Composition,
         Inheritance,
         UnidirectionalAssociation,
+        Line,
         Image
     }
 }
