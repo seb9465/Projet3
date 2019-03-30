@@ -264,11 +264,11 @@ class ChatService {
                 
                 if (message.username != currentMemberName) {
                     // TODO: Add message to dict if user not in channel
-                    if (self.currentChannel != nil) {
+                    if (self.currentChannel != nil && self.currentChannel.name == message.channelId) {
                         insertMessage(newMessage);
                         SoundNotification.play(sound: Sound.SendMessage);
                     } else {
-                        print("AFK");
+                        print("AFK ", message.channelId);
                     }
                 }
             }
