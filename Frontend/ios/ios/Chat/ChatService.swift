@@ -33,6 +33,7 @@ class ChatService {
             .withHttpConnectionOptions() { httpConnectionOptions in
                 httpConnectionOptions.accessTokenProvider = { return USER_TOKEN; }}
             .build();
+        
     }
     
     public func connectToHub() -> Void {
@@ -307,7 +308,7 @@ class ChatService {
     }
     
     private func invokeSendMessage(currentUser: String, message: Message, insertMessage: @escaping (_ message: Message) -> Void) -> Void {
-        let chatMsg: ChatMessage = ChatMessage(user: currentUser, message: message.text, channelId: "general");
+        let chatMsg: ChatMessage = ChatMessage(user: currentUser, message: message.text, channelId: self.currentChannel.name);
         let json = try? JSONEncoder().encode(chatMsg);
         let jsonData: String = String(data: json!, encoding: .utf8)!;
         self.hubConnection.invoke(method: "SendMessage", arguments: [jsonData], invocationDidComplete: { error in
