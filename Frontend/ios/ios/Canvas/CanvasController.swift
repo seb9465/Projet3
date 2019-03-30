@@ -43,11 +43,14 @@ class CanvasController: UIViewController {
     }
     
     // MARK: - Button Action Functions
+    
     @IBAction func undoButton(_ sender: Any) {
+        self.editor.deselect();
         self.editor.undo(view: self.view);
     }
     
     @IBAction func redoButton(_ sender: Any) {
+        self.editor.deselect();
         self.editor.redo(view: self.view);
     }
     
@@ -65,21 +68,22 @@ class CanvasController: UIViewController {
         self.resetButtonColor();
         self.selectButton.tintColor = Constants.RED_COLOR;
         self.editor.changeTouchHandleState(to: .SELECT)
+        self.editor.deselect();
     }
     
     @IBAction func insertButtonPressed(_ sender: Any) {
         self.resetButtonColor();
         self.insertButton.tintColor = Constants.RED_COLOR;
         self.editor.changeTouchHandleState(to: .INSERT)
+        self.editor.deselect();
     }
     
     @IBAction func exportButtonPressed(_ sender: Any) {
-        UIGraphicsBeginImageContextWithOptions(self.editor.editorView.bounds.size, false, 0.0)
-        self.editor.editorView.drawHierarchy(in: self.editor.editorView.bounds, afterScreenUpdates: true)
+        UIGraphicsBeginImageContextWithOptions(self.editor.editorView.bounds.size, false, 0.0);
+        self.editor.editorView.drawHierarchy(in: self.editor.editorView.bounds, afterScreenUpdates: true);
         let image = UIGraphicsGetImageFromCurrentImageContext();
         UIGraphicsEndImageContext();
-        UIImageWriteToSavedPhotosAlbum(image!, self, #selector(image(_:didFinishSavingWithError:contextInfo:)), nil)
-        
+        UIImageWriteToSavedPhotosAlbum(image!, self, #selector(image(_:didFinishSavingWithError:contextInfo:)), nil);
     }
     
     private func resetButtonColor() -> Void {
