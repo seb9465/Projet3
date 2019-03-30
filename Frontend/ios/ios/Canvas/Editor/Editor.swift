@@ -342,10 +342,6 @@ extension Editor : TouchInputDelegate {
     }
     
     func notifyTouchMoved(point: CGPoint, figure: Figure) {
-//        if (self.touchEventState == .SELECT && self.selectedFigures.count > 0) {
-//            self.touchEventState = .TRANSLATE;
-//        } // No else if here please !
-        
         if (self.touchEventState == .SELECT || self.touchEventState == .TRANSLATE) {
             self.touchEventState = .TRANSLATE;
             let offset = CGPoint(x: point.x - self.previousTouchPoint.x, y: point.y - self.previousTouchPoint.y)
@@ -354,11 +350,7 @@ extension Editor : TouchInputDelegate {
                 (fig as! UmlFigure).translate(by: offset)
                 self.selectionOutline[tmpOutlineIndex].translate(by: offset)
             }
-//            let tmpOutlineIndex: Int = self.selectionOutline.firstIndex(where: { $0.associatedFigureID == figure.figureID })!;
             
-//            let offset = CGPoint(x: point.x - self.previousTouchPoint.x, y: point.y - self.previousTouchPoint.y)
-//            (figure as! UmlFigure).translate(by: offset)
-//            self.selectionOutline[tmpOutlineIndex].translate(by: offset)
             self.previousTouchPoint = point
             
             return
