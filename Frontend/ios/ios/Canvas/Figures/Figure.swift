@@ -10,6 +10,15 @@ import UIKit
 class Figure: UIView {
     var firstPoint: CGPoint!
     var lastPoint: CGPoint!
+    var uuid: UUID!
+    
+//    init() {
+//        self.uuid = UUID.init()
+//    }
+    
+//    required init?(coder aDecoder: NSCoder) {
+//        fatalError("init(coder:) has not been implemented")
+//    }
     
     public func exportToViewModel(itemType: ItemTypeEnum) -> DrawViewModel {
         let point1 = PolyPaintStylusPoint(X: Double(self.firstPoint.x), Y: Double(self.firstPoint.y), PressureFactor: 1)
@@ -24,5 +33,6 @@ class Figure: UIView {
             ChannelId: "general"
         )
     }
+    
     public func rotate(orientation: RotateOrientation) -> Void {}
 }

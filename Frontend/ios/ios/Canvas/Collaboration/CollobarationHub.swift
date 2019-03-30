@@ -102,6 +102,7 @@ class CollaborationHub {
 
             let jsonString: String = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self)!;
             let jsonData = jsonString.data(using: .utf8)
+//            print(jsonString)
             
             let viewModel: DrawViewModel = try! JSONDecoder().decode(DrawViewModel.self, from: jsonData!);
             let fpoint: CGPoint = CGPoint(x: viewModel.StylusPoints[0].X, y: viewModel.StylusPoints[0].Y)
@@ -110,6 +111,20 @@ class CollaborationHub {
             self.delegate!.updateCanvas(itemType: viewModel.ItemType, firstPoint: fpoint, lastPoint: lpoint)
         })
     }
+//
+//    public func select(origin: CGPoint, itemType: ItemTypeEnum) -> Void {
+//        let model = FigureFactory.shared.getFigure(type: itemType, touchedPoint: origin)?.exportToViewModel(itemType: itemType)
+//        let jsonEncoder = JSONEncoder()
+//        let jsonData = try! jsonEncoder.encode(model)
+//        let jsonString = String(data: jsonData, encoding: .utf8)
+//
+//        self.hubConnection.invoke(method: "Draw", arguments: [jsonString], invocationDidComplete: { (Error) in
+//            if (Error != nil) {
+//                print("Error calling draw", Error!)
+//                return
+//            }
+//        });
+//    }
     
     public func onReset() -> Void {
         self.hubConnection.on(method: "Reset", callback:{ args, typeConverter in

@@ -87,7 +87,7 @@
                                 </items>
                             </toolbar>
                             <containerView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oVb-fS-ct1">
-                                <rect key="frame" x="774" y="70" width="250" height="698"/>
+                                <rect key="frame" x="0.0" y="70" width="250" height="698"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                 <connections>
                                     <segue destination="VIB-9K-WwK" kind="embed" id="HEM-aM-WDJ"/>

@@ -102,4 +102,25 @@ class UmlClassFigure: UmlFigure {
         outerRectPath.fill()
         outerRectPath.stroke()
     }
+    
+//    override func exportToViewModel(itemType: ItemTypeEnum) -> DrawViewModel {
+//        return DrawViewModel(
+//             Guid: self.uuid,
+//             owner: String,
+//             ItemType: ItemTypeEnum,
+//             StylusPoints: [PolyPaintStylusPoint],
+//             Color: PolyPaintColor,
+//             BorderThickness: Double,
+//             BorderStyle: String,
+//             ShapeTitle: String,
+//             Methods: [String],
+//             Properties: [String],
+//             SourceTitle: String,
+//             DestinationTitle: String,
+//             ChannelId: String,
+//             OutilSelectionne: String,
+//             LastElbowPosition: PolyPaintStylusPoint,
+//             ImageBytes: [UInt8],
+//        )
+//    }
 }

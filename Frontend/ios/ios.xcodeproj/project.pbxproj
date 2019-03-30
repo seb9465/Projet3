@@ -40,7 +40,7 @@
 		3DA5CA55224444B100087298 /* ConnectionAssociationBi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DA5CA54224444B100087298 /* ConnectionAssociationBi.swift */; };
 		3DA5CA57224444C100087298 /* ConnectionHeritage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DA5CA56224444C100087298 /* ConnectionHeritage.swift */; };
 		3DA5CA59224444D000087298 /* ConnectionComposition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DA5CA58224444D000087298 /* ConnectionComposition.swift */; };
-		3DA5CA5B224444DD00087298 /* ConnectionAggregation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DA5CA5A224444DD00087298 /* ConnectionAggregation.swift */; };
+		3DA5CA5B224444DD00087298 /* ConnectionAgregation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DA5CA5A224444DD00087298 /* ConnectionAgregation.swift */; };
 		3DABD3DB224141DE00707D86 /* AddAttributeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DABD3D9224141DE00707D86 /* AddAttributeCell.swift */; };
 		3DABD3E02241433C00707D86 /* ClassAttributeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DABD3DE2241433C00707D86 /* ClassAttributeCell.swift */; };
 		3DABD3F222418FC300707D86 /* StyleTableController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DABD3F122418FC300707D86 /* StyleTableController.swift */; };
@@ -163,7 +163,7 @@
 		3DA5CA54224444B100087298 /* ConnectionAssociationBi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionAssociationBi.swift; sourceTree = "<group>"; };
 		3DA5CA56224444C100087298 /* ConnectionHeritage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionHeritage.swift; sourceTree = "<group>"; };
 		3DA5CA58224444D000087298 /* ConnectionComposition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionComposition.swift; sourceTree = "<group>"; };
-		3DA5CA5A224444DD00087298 /* ConnectionAggregation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionAggregation.swift; sourceTree = "<group>"; };
+		3DA5CA5A224444DD00087298 /* ConnectionAgregation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionAgregation.swift; sourceTree = "<group>"; };
 		3DABD3D9224141DE00707D86 /* AddAttributeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAttributeCell.swift; sourceTree = "<group>"; };
 		3DABD3DE2241433C00707D86 /* ClassAttributeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassAttributeCell.swift; sourceTree = "<group>"; };
 		3DABD3F122418FC300707D86 /* StyleTableController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleTableController.swift; sourceTree = "<group>"; };
@@ -279,7 +279,7 @@
 				3DA5CA54224444B100087298 /* ConnectionAssociationBi.swift */,
 				3DA5CA56224444C100087298 /* ConnectionHeritage.swift */,
 				3DA5CA58224444D000087298 /* ConnectionComposition.swift */,
-				3DA5CA5A224444DD00087298 /* ConnectionAggregation.swift */,
+				3DA5CA5A224444DD00087298 /* ConnectionAgregation.swift */,
 			);
 			path = ConnectionFigures;
 			sourceTree = "<group>";
@@ -990,7 +990,7 @@
 				3DA5CA43224414D200087298 /* PublicGalleryController.swift in Sources */,
 				3D2052A9224A944C00C488F1 /* ColorPicker.swift in Sources */,
 				3DA5CA59224444D000087298 /* ConnectionComposition.swift in Sources */,
-				3DA5CA5B224444DD00087298 /* ConnectionAggregation.swift in Sources */,
+				3DA5CA5B224444DD00087298 /* ConnectionAgregation.swift in Sources */,
 				3D121EDC22209E070074C61C /* PlaceHolderCell.swift in Sources */,
 				3D0A917322388F6E002FCB74 /* ConnectionFigure.swift in Sources */,
 				3D6E955D2230839900BC7BE7 /* DrawViewModel.swift in Sources */,

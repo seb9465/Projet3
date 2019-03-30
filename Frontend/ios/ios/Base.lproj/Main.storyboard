@@ -45,7 +45,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rlA-y3-sf3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2864.6484375" y="1935.9375"/>
+            <point key="canvasLocation" x="1488" y="1938"/>
         </scene>
         <!--Login Controller-->
         <scene sceneID="tne-QT-ifu">
@@ -155,12 +155,11 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gq9-Om-dXf" customClass="RoundedCorners" customModule="ios" customModuleProvider="target">
-                                <rect key="frame" x="446" y="636" width="143" height="24"/>
+                                <rect key="frame" x="441" y="547" width="143" height="17"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="1" green="0.41960784309999999" blue="0.41960784309999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="15"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                 <state key="normal" title="Continue Offline">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <color key="titleColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>
                                     <segue destination="eTb-Zs-q24" kind="show" id="04t-QQ-4uf"/>
@@ -350,7 +349,7 @@
                 <viewControllerPlaceholder storyboardName="Canvas" id="IOM-ce-rID" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qtU-Li-Cbw" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3325" y="388"/>
+            <point key="canvasLocation" x="1948" y="388"/>
         </scene>
         <!--Chat-->
         <scene sceneID="7Gi-od-bYT">
@@ -358,7 +357,7 @@
                 <viewControllerPlaceholder storyboardIdentifier="Chat" storyboardName="Chat" id="dDl-qJ-RPL" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NKd-Vk-iP4" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3321" y="430"/>
+            <point key="canvasLocation" x="1945" y="430"/>
         </scene>
         <!--Dashboard Controller-->
         <scene sceneID="BP5-U0-e8s">
@@ -432,7 +431,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ktH-qe-LBO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2864.6484375" y="408.59375"/>
+            <point key="canvasLocation" x="1488" y="409"/>
         </scene>
         <!--Private-->
         <scene sceneID="nkj-ah-UXJ">
@@ -448,7 +447,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ioa-a1-pRW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3843" y="1155"/>
+            <point key="canvasLocation" x="2466" y="1155"/>
         </scene>
         <!--Public-->
         <scene sceneID="20z-jM-bGf">
@@ -485,7 +484,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5dZ-Ri-KE5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3843" y="573"/>
+            <point key="canvasLocation" x="2466" y="573"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="y0g-De-ygA">
@@ -504,7 +503,7 @@
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Jgd-rp-4PY" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2865" y="1155"/>
+            <point key="canvasLocation" x="1488" y="1155"/>
         </scene>
     </scenes>
 </document>
