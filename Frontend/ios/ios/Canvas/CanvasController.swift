@@ -60,21 +60,39 @@ class CanvasController: UIViewController {
     
     @IBAction func deleteButton(_ sender: Any) {
         self.resetButtonColor();
-        self.deleteButton.tintColor = Constants.RED_COLOR;
-        self.editor.changeTouchHandleState(to: .DELETE)
+        if (self.editor.touchEventState == .DELETE) {
+            self.editor.changeTouchHandleState(to: .NONE);
+        } else {
+            self.deleteButton.tintColor = Constants.RED_COLOR;
+            self.editor.changeTouchHandleState(to: .DELETE)
+        }
+        
+        self.editor.deselect();
     }
     
     @IBAction func selectFigureButton(_ sender: Any) {
         self.resetButtonColor();
-        self.selectButton.tintColor = Constants.RED_COLOR;
-        self.editor.changeTouchHandleState(to: .SELECT)
+        
+        if (self.editor.touchEventState == .SELECT) {
+            self.editor.changeTouchHandleState(to: .NONE);
+        } else {
+            self.selectButton.tintColor = Constants.RED_COLOR;
+            self.editor.changeTouchHandleState(to: .SELECT)
+        }
+        
         self.editor.deselect();
     }
     
     @IBAction func insertButtonPressed(_ sender: Any) {
         self.resetButtonColor();
-        self.insertButton.tintColor = Constants.RED_COLOR;
-        self.editor.changeTouchHandleState(to: .INSERT)
+        
+        if (self.editor.touchEventState == .INSERT) {
+            self.editor.changeTouchHandleState(to: .NONE);
+        } else {
+            self.insertButton.tintColor = Constants.RED_COLOR;
+            self.editor.changeTouchHandleState(to: .INSERT)
+        }
+        
         self.editor.deselect();
     }
     

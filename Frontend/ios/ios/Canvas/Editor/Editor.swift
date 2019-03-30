@@ -323,7 +323,6 @@ extension Editor: SideToolbarDelegate {
 
 extension Editor : TouchInputDelegate {
     func notifyTouchBegan(action: String, point: CGPoint, figure: Figure?) {
-        print("Action: ", action);
         switch (self.touchEventState) {
         case .SELECT:
             self.initialTouchPoint = point
