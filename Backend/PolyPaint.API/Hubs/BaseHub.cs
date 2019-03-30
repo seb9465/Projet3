@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using PolyPaint.API.Handlers;
 using PolyPaint.Common;
+using PolyPaint.Common.Messages;
 using PolyPaint.Core;
 using PolyPaint.DataAccess.Services;
 using System;

@@ -1,15 +1,18 @@
 ﻿using PolyPaint.Common.Collaboration;
 using System.Collections.Generic;
 
-class ItemsMessage
+namespace PolyPaint.Common.Messages
 {
-    public string CanvasId { get; set; }
-    public string Username { get; set; }
-    public List<DrawViewModel> Items { get; set; }
-    public ItemsMessage(string canvasId, string username, List<DrawViewModel> items)
+    public class ItemsMessage
     {
-        CanvasId = canvasId;
-        Username = username;
-        Items = items;
+        public string CanvasId { get; set; }
+        public string Username { get; set; }
+        public List<DrawViewModel> Items { get; set; }
+        public ItemsMessage(string canvasId, string username, List<DrawViewModel> items)
+        {
+            CanvasId = canvasId;
+            Username = username;
+            Items = items;
+        }
     }
 }

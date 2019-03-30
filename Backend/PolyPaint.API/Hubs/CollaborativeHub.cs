@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using PolyPaint.API.Handlers;
 using PolyPaint.Common;
 using PolyPaint.Common.Collaboration;
+using PolyPaint.Common.Messages;
 using PolyPaint.Core;
 using PolyPaint.DataAccess.Services;
 using System;
@@ -18,17 +19,17 @@ namespace PolyPaint.API.Hubs
         public CollaborativeHub(UserService _userService) : base(_userService)
         { }
 
-        public async Task Draw(string canvasDrawings)
+        public async Task Draw(string itemsMessage)
         {
-            var drawViewModels = JsonConvert.DeserializeObject<List<DrawViewModel>>(canvasDrawings);
+            var message = JsonConvert.DeserializeObject<ItemsMessage>(itemsMessage);
 
             var user = await GetUserFromToken(Context.User);
-            if (user != null && drawViewModels.Count > 0)
+            if (user != null && message.Items.Count > 0)
             {
-                var channelId = drawViewModels.First().ChannelId;
+                var channelId = message.Items.First().ChannelId;
                 if (UserHandler.UserGroupMap.TryGetValue(channelId, out var users) && users.Contains(user.Id))
                 {
-                    await Clients.OthersInGroup(channelId).SendAsync("Draw", JsonConvert.SerializeObject(drawViewModels));
+                    await Clients.OthersInGroup(channelId).SendAsync("Draw", JsonConvert.SerializeObject(itemsMessage));
                 }
             }
         }
@@ -55,14 +56,17 @@ namespace PolyPaint.API.Hubs
         }
 
 
-        public async Task Select(SelectViewModel selectViewModel)
+        public async Task Select(string itemsMessage)
         {
+            var message = JsonConvert.DeserializeObject<ItemsMessage>(itemsMessage);
+
             var user = await GetUserFromToken(Context.User);
             if (user != null)
             {
-                if (UserHandler.UserGroupMap.TryGetValue(selectViewModel.ChannelId, out var users) && users.Contains(user.Id))
+                var channelId = message.Items.First().ChannelId;
+                if (UserHandler.UserGroupMap.TryGetValue(channelId, out var users) && users.Contains(user.Id))
                 {
-                    await Clients.OthersInGroup(selectViewModel.ChannelId).SendAsync("Select", selectViewModel);
+                    await Clients.OthersInGroup(channelId).SendAsync("Select", JsonConvert.SerializeObject(message));
                 }
             }
         }

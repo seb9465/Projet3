@@ -1,10 +1,13 @@
 using System.Collections.Generic;
 
-public class ChannelsMessage : BaseMessage
+namespace PolyPaint.Common.Messages
 {
-    public List<Channel> Channels {get;set;}
-    public ChannelsMessage(List<Channel> channels)
+    public class ChannelsMessage : BaseMessage
     {
-        Channels = channels;
+        public List<Channel> Channels { get; set; }
+        public ChannelsMessage(List<Channel> channels)
+        {
+            Channels = channels;
+        }
     }
 }
