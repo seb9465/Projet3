@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -74,63 +75,164 @@ namespace PolyPaint.Utilitaires
                 switch (stroke.ItemType)
                 {
                     case ItemTypeEnum.Comment:
-                        DrawingStroke = new RectangleStroke(pts, surfaceDessin, borderColor.ToString(), fillColor.ToString(), thicc);
-                        SetShapeProperties(stroke);
+                        if (TryGetByGuid(surfaceDessin, Guid.Parse(stroke.Guid), out var existingCommentStroke))
+                        {
+                            DrawingStroke = existingCommentStroke;
+                            ChangeConstructProperties(existingCommentStroke, pts, borderColor.ToString(), fillColor.ToString(), thicc);
+                        }
+                        else
+                        {
+                            DrawingStroke = new RectangleStroke(pts, surfaceDessin, borderColor.ToString(), fillColor.ToString(), thicc);
+                        }
+                        SetShapeProperties(stroke, surfaceDessin);
                         break;
                     case ItemTypeEnum.Activity:
-                        DrawingStroke = new ActivityStroke(pts, surfaceDessin, borderColor.ToString(), fillColor.ToString(), thicc);
-                        SetShapeProperties(stroke);
+                        if (TryGetByGuid(surfaceDessin, Guid.Parse(stroke.Guid), out var existingActStroke))
+                        {
+                            DrawingStroke = existingActStroke;
+                            ChangeConstructProperties(existingActStroke, pts, borderColor.ToString(), fillColor.ToString(), thicc);
+                        }
+                        else
+                        {
+                            DrawingStroke = new ActivityStroke(pts, surfaceDessin, borderColor.ToString(), fillColor.ToString(), thicc);
+                        }
+                        SetShapeProperties(stroke, surfaceDessin);
                         break;
                     case ItemTypeEnum.Artefact:
-                        DrawingStroke = new ArtefactStroke(pts, surfaceDessin, borderColor.ToString(), fillColor.ToString(), thicc);
-                        SetShapeProperties(stroke);
+                        if (TryGetByGuid(surfaceDessin, Guid.Parse(stroke.Guid), out var existingArtStroke))
+                        {
+                            DrawingStroke = existingArtStroke;
+                            ChangeConstructProperties(existingArtStroke, pts, borderColor.ToString(), fillColor.ToString(), thicc);
+                        }
+                        else
+                        {
+                            DrawingStroke = new ArtefactStroke(pts, surfaceDessin, borderColor.ToString(), fillColor.ToString(), thicc);
+                        }
+                        SetShapeProperties(stroke, surfaceDessin);
                         break;
                     case ItemTypeEnum.Phase:
-                        DrawingStroke = new PhaseStroke(pts, surfaceDessin, borderColor.ToString(), fillColor.ToString(), thicc);
-                        SetShapeProperties(stroke);
+                        if (TryGetByGuid(surfaceDessin, Guid.Parse(stroke.Guid), out var existingPhaseStroke))
+                        {
+                            DrawingStroke = existingPhaseStroke;
+                            ChangeConstructProperties(existingPhaseStroke, pts, borderColor.ToString(), fillColor.ToString(), thicc);
+                        }
+                        else
+                        {
+                            DrawingStroke = new PhaseStroke(pts, surfaceDessin, borderColor.ToString(), fillColor.ToString(), thicc);
+                        }
+                        SetShapeProperties(stroke, surfaceDessin);
                         break;
                     case ItemTypeEnum.Role:
-                        DrawingStroke = new RoleStroke(pts, surfaceDessin, borderColor.ToString(), fillColor.ToString(), thicc);
-                        SetShapeProperties(stroke);
+                        if (TryGetByGuid(surfaceDessin, Guid.Parse(stroke.Guid), out var existingRoleStroke))
+                        {
+                            DrawingStroke = existingRoleStroke;
+                            ChangeConstructProperties(existingRoleStroke, pts, borderColor.ToString(), fillColor.ToString(), thicc);
+                        }
+                        else
+                        {
+                            DrawingStroke = new RoleStroke(pts, surfaceDessin, borderColor.ToString(), fillColor.ToString(), thicc);
+                        }
+                        SetShapeProperties(stroke, surfaceDessin);
                         break;
                     case ItemTypeEnum.Text:
-                        DrawingStroke = new TextStroke(pts, surfaceDessin, borderColor.ToString(), fillColor.ToString(), thicc);
-                        SetShapeProperties(stroke);
+                        if (TryGetByGuid(surfaceDessin, Guid.Parse(stroke.Guid), out var existingTextStroke))
+                        {
+                            DrawingStroke = existingTextStroke;
+                            ChangeConstructProperties(existingTextStroke, pts, borderColor.ToString(), fillColor.ToString(), thicc);
+                        }
+                        else
+                        {
+                            DrawingStroke = new TextStroke(pts, surfaceDessin, borderColor.ToString(), fillColor.ToString(), thicc);
+                        }
+                        SetShapeProperties(stroke, surfaceDessin);
                         break;
                     case ItemTypeEnum.UmlClass:
-                        DrawingStroke = new UmlClassStroke(pts, surfaceDessin, borderColor.ToString(), fillColor.ToString(), thicc);
+                        if (TryGetByGuid(surfaceDessin, Guid.Parse(stroke.Guid), out var existingUmlStroke))
+                        {
+                            DrawingStroke = existingUmlStroke;
+                            ChangeConstructProperties(existingUmlStroke, pts, borderColor.ToString(), fillColor.ToString(), thicc);
+                        }
+                        else
+                        {
+                            DrawingStroke = new UmlClassStroke(pts, surfaceDessin, borderColor.ToString(), fillColor.ToString(), thicc);
+                        }
 
-                        foreach (var method in stroke.Methods)
-                            (DrawingStroke as UmlClassStroke).Methods.Add(new Method(method));
+                        (DrawingStroke as UmlClassStroke).Methods = new ObservableCollection<Method>(stroke.Methods.Select(x => new Method(x)));
+                        (DrawingStroke as UmlClassStroke).Properties = new ObservableCollection<Property>(stroke.Properties.Select(x => new Property(x)));
 
-                        foreach (var property in stroke.Properties)
-                            (DrawingStroke as UmlClassStroke).Properties.Add(new Property(property));
-
-                        SetShapeProperties(stroke);
+                        SetShapeProperties(stroke, surfaceDessin);
                         break;
                     case ItemTypeEnum.Agregation:
-                        DrawingStroke = new AgregationStroke(pts, surfaceDessin, borderColor.ToString(), thicc);
-                        SetLineProperties(stroke);
+                        if (TryGetByGuid(surfaceDessin, Guid.Parse(stroke.Guid), out var existingAggStroke))
+                        {
+                            DrawingStroke = existingAggStroke;
+                            ChangeConstructProperties(existingAggStroke, pts, borderColor.ToString(), fillColor.ToString(), thicc);
+                        }
+                        else
+                        {
+                            DrawingStroke = new AgregationStroke(pts, surfaceDessin, borderColor.ToString(), thicc);
+                        }
+                        SetLineProperties(stroke, surfaceDessin);
                         break;
                     case ItemTypeEnum.Composition:
-                        DrawingStroke = new CompositionStroke(pts, surfaceDessin, borderColor.ToString(), thicc);
-                        SetLineProperties(stroke);
+                        if (TryGetByGuid(surfaceDessin, Guid.Parse(stroke.Guid), out var existingCompStroke))
+                        {
+                            DrawingStroke = existingCompStroke;
+                            ChangeConstructProperties(existingCompStroke, pts, borderColor.ToString(), fillColor.ToString(), thicc);
+                        }
+                        else
+                        {
+                            DrawingStroke = new CompositionStroke(pts, surfaceDessin, borderColor.ToString(), thicc);
+                        }
+                        SetLineProperties(stroke, surfaceDessin);
                         break;
                     case ItemTypeEnum.Inheritance:
-                        DrawingStroke = new InheritanceStroke(pts, surfaceDessin, borderColor.ToString(), thicc);
-                        SetLineProperties(stroke);
+                        if (TryGetByGuid(surfaceDessin, Guid.Parse(stroke.Guid), out var existingInhStroke))
+                        {
+                            DrawingStroke = existingInhStroke;
+                            ChangeConstructProperties(existingInhStroke, pts, borderColor.ToString(), fillColor.ToString(), thicc);
+                        }
+                        else
+                        {
+                            DrawingStroke = new InheritanceStroke(pts, surfaceDessin, borderColor.ToString(), thicc);
+                        }
+                        SetLineProperties(stroke, surfaceDessin);
                         break;
                     case ItemTypeEnum.BidirectionalAssociation:
-                        DrawingStroke = new BidirectionalAssociationStroke(pts, surfaceDessin, borderColor.ToString(), thicc);
-                        SetLineProperties(stroke);
+                        if (TryGetByGuid(surfaceDessin, Guid.Parse(stroke.Guid), out var existingBiStroke))
+                        {
+                            DrawingStroke = existingBiStroke;
+                            ChangeConstructProperties(existingBiStroke, pts, borderColor.ToString(), fillColor.ToString(), thicc);
+                        }
+                        else
+                        {
+                            DrawingStroke = new BidirectionalAssociationStroke(pts, surfaceDessin, borderColor.ToString(), thicc);
+                        }
+                        SetLineProperties(stroke, surfaceDessin);
                         break;
                     case ItemTypeEnum.UnidirectionalAssociation:
-                        DrawingStroke = new UnidirectionalAssociationStroke(pts, surfaceDessin, borderColor.ToString(), thicc);
-                        SetLineProperties(stroke);
+                        if (TryGetByGuid(surfaceDessin, Guid.Parse(stroke.Guid), out var existingUniStroke))
+                        {
+                            DrawingStroke = existingUniStroke;
+                            ChangeConstructProperties(existingUniStroke, pts, borderColor.ToString(), fillColor.ToString(), thicc);
+                        }
+                        else
+                        {
+                            DrawingStroke = new UnidirectionalAssociationStroke(pts, surfaceDessin, borderColor.ToString(), thicc);
+                        }
+                        SetLineProperties(stroke, surfaceDessin);
                         break;
                     case ItemTypeEnum.Line:
-                        DrawingStroke = new LineStroke(pts, surfaceDessin, borderColor.ToString(), thicc);
-                        SetLineProperties(stroke);
+                        if (TryGetByGuid(surfaceDessin, Guid.Parse(stroke.Guid), out var existingLineStroke))
+                        {
+                            DrawingStroke = existingLineStroke;
+                            ChangeConstructProperties(existingLineStroke, pts, borderColor.ToString(), fillColor.ToString(), thicc);
+                        }
+                        else
+                        {
+                            DrawingStroke = new LineStroke(pts, surfaceDessin, borderColor.ToString(), thicc);
+                        }
+                        SetLineProperties(stroke, surfaceDessin);
                         break;
                     case ItemTypeEnum.Image:
                         BitmapImage biImg = new BitmapImage();
@@ -142,7 +244,16 @@ namespace PolyPaint.Utilitaires
                         ImageBrush brush = new ImageBrush(imgSrc);
 
                         (DrawingStroke as AbstractStroke).Guid = Guid.Parse(stroke.Guid);
-                        DrawingStroke = new ImageStroke(pts, surfaceDessin, brush);
+                        if (TryGetByGuid(surfaceDessin, Guid.Parse(stroke.Guid), out var existingImageStroke))
+                        {
+                            DrawingStroke = existingImageStroke;
+                            DrawingStroke.StylusPoints = pts;
+                            (DrawingStroke as ImageStroke).Brush = brush;
+                        }
+                        else
+                        {
+                            DrawingStroke = new ImageStroke(pts, surfaceDessin, brush);
+                        }
                         (DrawingStroke as ICanvasable).AddToCanvas();
                         break;
 
@@ -153,7 +264,15 @@ namespace PolyPaint.Utilitaires
             }
         }
 
-        private void SetLineProperties(DrawViewModel stroke)
+        private void ChangeConstructProperties(AbstractStroke existingStroke, StylusPointCollection pts, string borderColor, string fillColor, double thicc)
+        {
+            existingStroke.StylusPoints = pts;
+            existingStroke.SetBorderColor(borderColor);
+            existingStroke.SetFillColor(fillColor);
+            existingStroke.SetBorderThickness(thicc);
+        }
+
+        private void SetLineProperties(DrawViewModel stroke, InkCanvas surfaceDessin)
         {
             (DrawingStroke as AbstractStroke).Guid = Guid.Parse(stroke.Guid);
             (DrawingStroke as AbstractLineStroke).SourceString = stroke.SourceTitle;
@@ -161,15 +280,33 @@ namespace PolyPaint.Utilitaires
             (DrawingStroke as AbstractStroke).SetBorderStyle(Tools.DashAssociations[stroke.BorderStyle]);
             (DrawingStroke as AbstractLineStroke).LastElbowPosition = new Point(stroke.LastElbowPosition.X,
                                                                                 stroke.LastElbowPosition.Y);
-            (DrawingStroke as ICanvasable).AddToCanvas();
+
+            if (TryGetByGuid(surfaceDessin, Guid.Parse(stroke.Guid), out var existingStroke))
+            {
+                DrawingStroke = existingStroke;
+                (DrawingStroke as ICanvasable).Redraw();
+            }
+            else
+            {
+                (DrawingStroke as ICanvasable).AddToCanvas();
+            }
         }
 
-        private void SetShapeProperties(DrawViewModel stroke)
+        private void SetShapeProperties(DrawViewModel stroke, InkCanvas surfaceDessin)
         {
             (DrawingStroke as AbstractStroke).Guid = Guid.Parse(stroke.Guid);
             (DrawingStroke as AbstractShapeStroke).TitleString = stroke.ShapeTitle;
             (DrawingStroke as AbstractStroke).SetBorderStyle(Tools.DashAssociations[stroke.BorderStyle]);
+            (DrawingStroke as AbstractShapeStroke).TitleString = stroke.ShapeTitle;
+            (DrawingStroke as AbstractStroke).Rotation = stroke.Rotation;
+
             (DrawingStroke as ICanvasable).AddToCanvas();
+        }
+
+        private bool TryGetByGuid(InkCanvas surfaceDessin, Guid guid, out AbstractStroke stroke)
+        {
+            stroke = (AbstractStroke)surfaceDessin.Strokes.FirstOrDefault(x => (x as AbstractStroke).Guid == guid);
+            return stroke != null;
         }
 
         public List<DrawViewModel> GetDrawViewModelsFromStrokes(StrokeCollection strokes)
@@ -181,6 +318,7 @@ namespace PolyPaint.Utilitaires
                 drawingStroke.Owner = "Utilisateur";
                 drawingStroke.ItemType = _strokeTypes[stroke.GetType()];
                 drawingStroke.Guid = stroke.Guid.ToString();
+                drawingStroke.Rotation = stroke.Rotation;
                 List<PolyPaintStylusPoint> points = new List<PolyPaintStylusPoint>();
                 foreach (StylusPoint point in stroke.StylusPoints.ToList())
                 {

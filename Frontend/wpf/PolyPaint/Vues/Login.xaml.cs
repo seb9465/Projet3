@@ -64,25 +64,27 @@ namespace PolyPaint.Vues
 
                     DecodeToken(token);
                     FenetreDessin fenetreDessin = new FenetreDessin(ViewStateEnum.Online);
-
-                    
-                    List<SaveableCanvas> strokes;
-                    using (client)
-                    {
-                        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", (string)Application.Current.Properties["token"]);
-                        System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
-                        HttpResponseMessage response = await client.GetAsync($"{Config.URL}/api/user/canvas");
-                        string responseString = await response.Content.ReadAsStringAsync();
-                        strokes = JsonConvert.DeserializeObject<List<SaveableCanvas>>(responseString);
-                    }
-                   
-                    Gallery gallery = new Gallery(strokes, fenetreDessin.surfaceDessin);
-
-                    Application.Current.MainWindow = gallery;
-                    
-
+                    Application.Current.MainWindow = fenetreDessin;
                     Close();
-                    gallery.Show();
+                    fenetreDessin.Show();
+
+                    //List<SaveableCanvas> strokes;
+                    //using (client)
+                    //{
+                    //    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", (string)Application.Current.Properties["token"]);
+                    //    System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
+                    //    HttpResponseMessage response = await client.GetAsync($"{Config.URL}/api/user/canvas");
+                    //    string responseString = await response.Content.ReadAsStringAsync();
+                    //    strokes = JsonConvert.DeserializeObject<List<SaveableCanvas>>(responseString);
+                    //}
+                   
+                    //Gallery gallery = new Gallery(strokes, fenetreDessin.surfaceDessin);
+
+                    //Application.Current.MainWindow = gallery;
+                    
+
+                    //Close();
+                    //gallery.Show();
                 }
                 else
                 {

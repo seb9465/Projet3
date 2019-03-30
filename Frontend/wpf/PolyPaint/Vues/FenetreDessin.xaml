@@ -343,7 +343,8 @@
                         UsingAlphaChannel="False"
                         ShowAvailableColors="True"
                         ShowStandardColors="True"
-                        ShowTabHeaders="False" />
+                        ShowTabHeaders="False"
+                        MouseLeftButtonUp="SendSelectedStrokes"/>
                     <xctk:ColorPicker x:Name="selecteurCouleurRemplissage"                             
                         VerticalContentAlignment="Stretch"
                         Background="#00000000"
@@ -355,13 +356,15 @@
                         UsingAlphaChannel="False"
                         ShowAvailableColors="True"
                         ShowStandardColors="True"
-                        ShowTabHeaders="False" />
+                        ShowTabHeaders="False"
+                        MouseLeftButtonUp="SendSelectedStrokes"/>
                     <Slider Width="100" Height="26" Minimum="1" Maximum="50"
                         Value="{Binding Path=TailleTrait, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                         Margin="12"
                         Foreground="OrangeRed"
                         IsEnabled="{Binding Path=IsStrokeSelected}"
-                        TickFrequency="10" TickPlacement="BottomRight" IsSnapToTickEnabled="False">
+                        TickFrequency="10" TickPlacement="BottomRight" IsSnapToTickEnabled="False"
+                        PreviewMouseUp="SendSelectedStrokes">
                     </Slider>
                 </StackPanel>
             </Border>
@@ -400,8 +403,8 @@
                            MouseLeave="surfaceDessin_MouseLeave"
                            MouseMove="surfaceDessin_MouseMove"
                            PreviewMouseMove="InkCanvas_LeftMouseMove"
-                           PreviewMouseUp="InkCanvas_LeftMouseUp"
-                           PreviewMouseDown="InkCanvas_LeftMouseDown"
+                           MouseUp="InkCanvas_LeftMouseUp"
+                           MouseDown="InkCanvas_LeftMouseDown"
                            SelectionMoving="InkCanvas_SelectionMoving"               
                            Strokes="{Binding Path=Traits, Mode=OneTime}"
                            EditingMode="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurModeEdition}, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"

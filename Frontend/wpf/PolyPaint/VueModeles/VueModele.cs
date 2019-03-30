@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -18,7 +19,6 @@ using PolyPaint.Strokes;
 using PolyPaint.Structures;
 using PolyPaint.Utilitaires;
 using PolyPaint.Vues;
-using Xceed.Wpf.Toolkit;
 
 namespace PolyPaint.VueModeles
 {
@@ -28,9 +28,10 @@ namespace PolyPaint.VueModeles
     /// Expose des commandes et propriétés connectées au modèle aux des éléments de la vue peuvent se lier.
     /// Reçoit des avis de changement du modèle et envoie des avis de changements à la vue.
     /// </summary>
-    class VueModele : INotifyPropertyChanged
+    public class VueModele : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
+        private StrokeBuilder rebuilder = new StrokeBuilder();
         private Editeur editeur = new Editeur();
         private string _currentRoom;
         private ObservableCollection<Room> _rooms;
@@ -260,6 +261,7 @@ namespace PolyPaint.VueModeles
             {
                 stroke.SetBorderStyle(Tools.DashAssociations[border]);
             }
+            SendSelectedStrokes();
         }
 
         private void rotate(string side)
@@ -273,6 +275,7 @@ namespace PolyPaint.VueModeles
                 stroke.StylusPoints[0] = new StylusPoint(stylusPoint0.X, stylusPoint0.Y);
                 stroke.StylusPoints[1] = new StylusPoint(stylusPoint1.X, stylusPoint1.Y);
             }
+            SendSelectedStrokes();
         }
 
         public void ChangeSelection(InkCanvas surfaceDessin)
@@ -336,6 +339,11 @@ namespace PolyPaint.VueModeles
             {
                 ChatClient.ConnectToChannel(room.Title);
             }
+        }
+
+        internal async void SendSelectedStrokes()
+        {
+            await CollaborationClient.CollaborativeDrawAsync(rebuilder.GetDrawViewModelsFromStrokes(editeur.SelectedStrokes));
         }
 
         private void AddMessage(object sender, MessageArgs args)
@@ -430,6 +438,11 @@ namespace PolyPaint.VueModeles
                     _rooms.Add(new Room(e.Message, false));
                 }
             });
+        }
+
+        public StrokeCollection GetSelectedStrokes()
+        {
+            return editeur.SelectedStrokes;
         }
     }
 }

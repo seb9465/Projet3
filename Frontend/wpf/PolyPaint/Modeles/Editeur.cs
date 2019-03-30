@@ -36,7 +36,6 @@ namespace PolyPaint.Modeles
             get { return pointeSelectionnee; }
             set
             {
-                OutilSelectionne = "crayon";
                 pointeSelectionnee = value;
                 ProprieteModifiee();
             }
@@ -52,7 +51,6 @@ namespace PolyPaint.Modeles
             set
             {
                 couleurSelectionneeBordure = value;
-                OutilSelectionne = "crayon";
 
                 if (couleurSelectionneeBordure != "")
                 {
@@ -89,7 +87,6 @@ namespace PolyPaint.Modeles
             set
             {
                 couleurSelectionneeRemplissage = value;
-                OutilSelectionne = "crayon";
 
                 if (couleurSelectionneeRemplissage != "")
                 {
@@ -122,7 +119,6 @@ namespace PolyPaint.Modeles
             set
             {
                 tailleTrait = value;
-                OutilSelectionne = "crayon";
                 ProprieteModifiee();
             }
         }

@@ -16,7 +16,7 @@ namespace PolyPaint.Utilitaires
     {
         public Stroke DrawingStroke = null;
 
-        public void ChangeText(InkCanvas surfaceDessin, Point mouseLeftDownPoint)
+        public void ChangeText(InkCanvas surfaceDessin, Point mouseLeftDownPoint, VueModele vm)
         {
             StrokeCollection strokes = surfaceDessin.Strokes;
 
@@ -31,12 +31,12 @@ namespace PolyPaint.Utilitaires
                 {
                     if (strokes[i] is UmlClassStroke)
                     {
-                        var editWindow = new EditUmlWindow(strokes[i] as UmlClassStroke, surfaceDessin);
+                        var editWindow = new EditUmlWindow(strokes[i] as UmlClassStroke, surfaceDessin, vm);
                         editWindow.Show();
                     }
                     else if (strokes[i] is AbstractShapeStroke)
                     {
-                        var editWindow = new EditTitleWindow(strokes[i] as AbstractShapeStroke, surfaceDessin);
+                        var editWindow = new EditTitleWindow(strokes[i] as AbstractShapeStroke, surfaceDessin, vm);
                         editWindow.Show();
                     }
                     break;
@@ -115,42 +115,11 @@ namespace PolyPaint.Utilitaires
             }
         }
 
-        internal void EndDraw(InkCanvas surfaceDessin, DrawViewModel drawViewModel, string username)
+        internal void EndDraw(InkCanvas surfaceDessin, List<DrawViewModel> drawViewModels, string username)
         {
-            //StylusPointCollection collection = new StylusPointCollection();
-
-            //foreach (PolyPaintStylusPoint point in drawViewModel.StylusPoints)
-            //{
-            //    collection.Add(new StylusPoint()
-            //    {
-            //        X = point.X,
-            //        Y = point.Y,
-            //        PressureFactor = point.PressureFactor,
-            //    });
-            //}
-
-            //Stroke stroke = null;
-            //switch (drawViewModel.ItemType)
-            //{
-            //    case ItemTypeEnum.Comment:
-            //        stroke = new RectangleStroke(collection, surfaceDessin, "#FF000000", "#FFFFFFFF");
-            //        break;
-            //}
-            //Color color = new Color()
-            //{
-            //    A = drawViewModel.FillColor.A,
-            //    B = drawViewModel.FillColor.B,
-            //    G = drawViewModel.FillColor.G,
-            //    R = drawViewModel.FillColor.R,
-            //};
-            //stroke.DrawingAttributes.Color = color;
-            //(stroke as ICanvasable).AddToCanvas();
             StrokeBuilder builder = new StrokeBuilder();
-            List<DrawViewModel> viewModel = new List<DrawViewModel>
-                {
-                    drawViewModel
-                };
-            builder.BuildStrokesFromDrawViewModels(viewModel, surfaceDessin);
+
+            builder.BuildStrokesFromDrawViewModels(drawViewModels, surfaceDessin);
             DrawingStroke = null;
         }
 

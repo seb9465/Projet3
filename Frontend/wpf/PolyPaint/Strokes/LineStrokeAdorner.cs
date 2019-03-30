@@ -7,6 +7,10 @@ using System.Windows.Media;
 using System.Windows.Ink;
 using System.Linq;
 using PolyPaint.Strokes;
+using PolyPaint.VueModeles;
+using PolyPaint.Utilitaires;
+using PolyPaint.Common.Collaboration;
+using System.Collections.Generic;
 
 public class LineStrokeAdorner : Adorner
 {
@@ -58,11 +62,14 @@ public class LineStrokeAdorner : Adorner
         rotation = new RotateTransform();
     }
 
-    void DragCompleted(object sender, DragCompletedEventArgs e)
+    async void DragCompleted(object sender, DragCompletedEventArgs e)
     {
         dragPos = Mouse.GetPosition(this);
         AdornedStroke.LastElbowPosition = dragPos;
         AdornedStroke.Redraw();
+        var rebuilder = new StrokeBuilder();
+        var drawViewModel = rebuilder.GetDrawViewModelsFromStrokes(new StrokeCollection() { AdornedStroke });
+        await (AdornedStroke.SurfaceDessin.DataContext as VueModele).CollaborationClient.CollaborativeDrawAsync(drawViewModel);
         InvalidateArrange();
     }
 

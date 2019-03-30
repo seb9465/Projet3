@@ -2,7 +2,7 @@
 
 namespace PolyPaint.Structures
 {
-    class MessageArgs : EventArgs
+    public class MessageArgs : EventArgs
     {
         public string Username { get; private set; }
         public string Message { get; private set; }
