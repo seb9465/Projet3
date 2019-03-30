@@ -40,6 +40,10 @@ class LoginController: UIViewController, UITextFieldDelegate {
                 UIViewController.removeSpinner(spinner: sv);
                 self.validationLabel.text = ""
                 self.storeAuthentificationToken(token: token)
+                // Connect to chat
+                ChatService.shared.connectToHub();  // TODO: Add notification when client is connected.
+                ChatService.shared.initOnReceivingMessageAFK();
+                
                 // Navigate to dashboard
                 let mainController = self.storyboard?.instantiateViewController(withIdentifier: "MainController")
                 self.present(mainController!, animated: true, completion: nil)

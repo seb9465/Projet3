@@ -21,6 +21,8 @@ class ChatService {
     var userChannels: ChannelsMessage = ChannelsMessage();
     var serverChannels: ChannelsMessage = ChannelsMessage();
     
+    var messagesWhileAFK: [String: [Message]] = [:];
+    
     // TODO: Ajouter un attributs permettant de conserver les messages lorsque le CHAT est fermé.
     
     init() {
@@ -41,6 +43,32 @@ class ChatService {
     
     public func initOnReceivingMessage(currentMemberName: String, insertMessage: @escaping (_ message: Message) -> Void) {
         self.onSendMessage(currentMemberName: currentMemberName, insertMessage: insertMessage);
+    }
+    
+    public func initOnReceivingMessageAFK() -> Void {
+        self.hubConnection.on(method: "SendMessage", callback: { args, typeConverter in
+            print("[ CHAT ] On SendMessageAFK");
+            let messageJson: String = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self)!;
+            if let messageJsonData = messageJson.data(using: .utf8) {
+                let message: ChatMessage = try! JSONDecoder().decode(ChatMessage.self, from: messageJsonData);
+                
+                var memberFromMessage: Member;
+                if (self._members.isAlreadyInArray(memberName: message.username)) {
+                    memberFromMessage = self._members.getMemberByName(memberName: message.username);
+                } else {
+                    memberFromMessage = Member( name: message.username, color: .random );
+                }
+                
+                let newMessage = Message(
+                    member: memberFromMessage,
+                    text: message.message,
+                    timestamp: message.timestamp,
+                    messageId: UUID().uuidString
+                );
+                
+                print("AFK Channel ", message.channelId);
+            }
+        });
     }
     
     public func initOnAnotherUserConnection(insertMessage: @escaping (_ message: Message) -> Void) -> Void {
@@ -232,8 +260,13 @@ class ChatService {
                 );
                 
                 if (message.username != currentMemberName) {
-                    insertMessage(newMessage);
-                    SoundNotification.play(sound: Sound.SendMessage);
+                    // TODO: Add message to dict if user not in channel
+                    if (self.currentChannel != nil) {
+                        insertMessage(newMessage);
+                        SoundNotification.play(sound: Sound.SendMessage);
+                    } else {
+                        print("AFK");
+                    }
                 }
             }
         });
