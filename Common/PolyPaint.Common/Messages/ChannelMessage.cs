@@ -1,8 +1,11 @@
-public class ChannelMessage : BaseMessage
+namespace PolyPaint.Common.Messages
 {
-    public Channel Channel { get; set; }
-    public ChannelMessage(Channel channel)
+    public class ChannelMessage : BaseMessage
     {
-        Channel = channel;
+        public Channel Channel { get; set; }
+        public ChannelMessage(Channel channel)
+        {
+            Channel = channel;
+        }
     }
 }

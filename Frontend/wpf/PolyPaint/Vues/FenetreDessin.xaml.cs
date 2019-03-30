@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Win32;
 using Newtonsoft.Json;
 using PolyPaint.Common.Collaboration;
+using PolyPaint.Common.Messages;
 using PolyPaint.Modeles;
 using PolyPaint.Strokes;
 using PolyPaint.Structures;
@@ -36,6 +37,7 @@ namespace PolyPaint
         private StrokeBuilder rebuilder = new StrokeBuilder();
         private AdornerLayer adornerLayer;
         private LineStrokeAdorner adorner;
+        private OnlineSelectedAdorner onlineSelectedAdorner;
 
         private ChatWindow externalChatWindow;
         private MediaPlayer mediaPlayer = new MediaPlayer();
@@ -313,8 +315,6 @@ namespace PolyPaint
                     MouseLeftDownPointY = mouseLeftDownPoint.Y,
                     Owner = username,
                 };
-                await (DataContext as VueModele).CollaborationClient.CollaborativeSelectAsync(selectViewModel);
-
                 (DataContext as VueModele).SelectItemOffline(surfaceDessin, mouseLeftDownPoint);
             }
             else
@@ -334,20 +334,12 @@ namespace PolyPaint
         private async void InkCanvas_LeftMouseUp(object sender, MouseButtonEventArgs e)
         {
             if ((DataContext as VueModele).OutilSelectionne == "") return;
-            if (icEventManager.DrawingStroke != null)
-            {
-                StrokeCollection strokeInACollection = new StrokeCollection
-                {
-                    icEventManager.DrawingStroke
-                };
-                List<DrawViewModel> allo = rebuilder.GetDrawViewModelsFromStrokes(strokeInACollection);
-                await (DataContext as VueModele).CollaborationClient.CollaborativeDrawAsync(allo);
-            }
-            icEventManager.EndDraw(surfaceDessin, (DataContext as VueModele).OutilSelectionne);
+            await icEventManager.EndDrawAsync(surfaceDessin, (DataContext as VueModele));
             if ((DataContext as VueModele).OutilSelectionne == "change_text")
             {
                 icEventManager.ChangeText(surfaceDessin, mouseLeftDownPoint, (VueModele)DataContext);
-            } else if((DataContext as VueModele).OutilSelectionne == "select")
+            }
+            else if ((DataContext as VueModele).OutilSelectionne == "select" || (DataContext as VueModele).OutilSelectionne == "lasso")
             {
                 var drawViewModel = rebuilder.GetDrawViewModelsFromStrokes(surfaceDessin.GetSelectedStrokes());
                 await (DataContext as VueModele).CollaborationClient.CollaborativeDrawAsync(drawViewModel);
@@ -421,8 +413,8 @@ namespace PolyPaint
         {
             Dispatcher.Invoke(() =>
             {
-                var drawViewModels = JsonConvert.DeserializeObject<List<DrawViewModel>>(args.Message);
-                icEventManager.EndDraw(surfaceDessin, drawViewModels, username);
+                var message = JsonConvert.DeserializeObject<ItemsMessage>(args.Message);
+                icEventManager.EndDraw(surfaceDessin, message.Items, username);
             });
         }
 
@@ -430,7 +422,16 @@ namespace PolyPaint
         {
             Dispatcher.Invoke(() =>
             {
-                (DataContext as VueModele).SelectItemOnline(surfaceDessin, JsonConvert.DeserializeObject<SelectViewModel>(args.Message), username);
+                (DataContext as VueModele).ChangeOnlineSelection(JsonConvert.DeserializeObject<ItemsMessage>(args.Message));
+                if (onlineSelectedAdorner != null)
+                    adornerLayer.Remove(onlineSelectedAdorner);
+
+                adornerLayer = AdornerLayer.GetAdornerLayer(surfaceDessin);
+                foreach (var user in ((VueModele)DataContext).GetOnlineSelection())
+                {
+                    onlineSelectedAdorner = new OnlineSelectedAdorner(surfaceDessin, user);
+                    adornerLayer.Add(onlineSelectedAdorner);
+                }
             });
         }
 
@@ -481,9 +482,9 @@ namespace PolyPaint
             }
         }
 
-        private void surfaceDessin_ChangeSelection(object sender, EventArgs e)
+        private async void surfaceDessin_ChangeSelection(object sender, EventArgs e)
         {
-            (DataContext as VueModele).ChangeSelection((sender as InkCanvas));
+            await (DataContext as VueModele).ChangeSelection(sender as InkCanvas);
             // Add the rotating strokes adorner to the InkPresenter.
             if (adorner != null)
                 adornerLayer.Remove(adorner);

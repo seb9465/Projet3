@@ -9,8 +9,6 @@ using System.Linq;
 using PolyPaint.Strokes;
 using PolyPaint.VueModeles;
 using PolyPaint.Utilitaires;
-using PolyPaint.Common.Collaboration;
-using System.Collections.Generic;
 
 public class LineStrokeAdorner : Adorner
 {

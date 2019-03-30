@@ -1,14 +1,17 @@
-public class ChatMessage : BaseMessage
+namespace PolyPaint.Common.Messages
 {
-    public string Username { get; set; }
-    public string Message { get; set; }
-    public string ChannelId { get; set; }
-    public string Timestamp { get; set; }
-    public ChatMessage(string username = "", string message = "", string channelId = "", string timestamp = "")
+    public class ChatMessage : BaseMessage
     {
-        Username = username;
-        Message = message;
-        ChannelId = channelId;
-        Timestamp = timestamp;
+        public string Username { get; set; }
+        public string Message { get; set; }
+        public string ChannelId { get; set; }
+        public string Timestamp { get; set; }
+        public ChatMessage(string username = "", string message = "", string channelId = "", string timestamp = "")
+        {
+            Username = username;
+            Message = message;
+            ChannelId = channelId;
+            Timestamp = timestamp;
+        }
     }
 }

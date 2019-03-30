@@ -1,14 +1,17 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-public abstract class BaseMessage
+namespace PolyPaint.Common.Messages
 {
-    [JsonIgnore]
-    private readonly JsonSerializerSettings SerializerSettings = new JsonSerializerSettings
+    public abstract class BaseMessage
     {
-        ContractResolver = new CamelCasePropertyNamesContractResolver(),
-        NullValueHandling = NullValueHandling.Ignore
-    };
+        [JsonIgnore]
+        private readonly JsonSerializerSettings SerializerSettings = new JsonSerializerSettings
+        {
+            ContractResolver = new CamelCasePropertyNamesContractResolver(),
+            NullValueHandling = NullValueHandling.Ignore
+        };
 
-    public override string ToString() => JsonConvert.SerializeObject(this, SerializerSettings);
+        public override string ToString() => JsonConvert.SerializeObject(this, SerializerSettings);
+    }
 }
