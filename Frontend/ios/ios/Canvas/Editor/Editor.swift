@@ -18,9 +18,9 @@ class Editor {
     private var figures: [Figure] = [];
     private var oldRotationAngle: Int = 0
     
-    public var selectedFigures: [Figure]! = [];
-    public var selectionLasso: SelectionLasso! = nil;
-    public var selectionOutline: SelectionOutline!
+    public var selectedFigures: [Figure] = [];
+    public var selectionLasso: SelectionLasso = nil;
+    public var selectionOutline: [SelectionOutline] = [];
     
     // Connection Creation properties
     public var connectionPreview: ConnectionFigure!
@@ -41,9 +41,9 @@ class Editor {
     
     func select(figure: Figure) {
         self.selectedFigures.append(figure);
-        self.selectionOutline = SelectionOutline(firstPoint: figure.frame.origin, lastPoint: CGPoint(x: figure.frame.maxX, y: figure.frame.maxY))
-        self.selectionOutline.addSelectedFigureLayers()
-        self.editorView.addSubview(self.selectionOutline)
+        self.selectionOutline.append(SelectionOutline(firstPoint: figure.frame.origin, lastPoint: CGPoint(x: figure.frame.maxX, y: figure.frame.maxY)));
+        self.selectionOutline.last!.addSelectedFigureLayers();
+        self.editorView.addSubview(self.selectionOutline.last!);
     }
     
     func selectLasso(touchPoint: CGPoint) {
@@ -57,12 +57,12 @@ class Editor {
         let selectionOrigin = CGPoint(x: points.map { $0.x }.min()!, y: points.map { $0.y }.min()!)
         let selectionDest = CGPoint(x: points.map { $0.x }.max()!, y: points.map { $0.y }.max()!)
         
-        self.selectionOutline = SelectionOutline(firstPoint: selectionOrigin, lastPoint: selectionDest)
-        self.selectionOutline.addSelectedFigureLayers()
-        if (selectionOutline.frame.width < 10) {
+        self.selectionOutline.append(SelectionOutline(firstPoint: selectionOrigin, lastPoint: selectionDest));
+        self.selectionOutline.last!.addSelectedFigureLayers()
+        if (selectionOutline.last!.frame.width < 10) {
             return
         }
-        self.editorView.addSubview(self.selectionOutline)
+        self.editorView.addSubview(self.selectionOutline.last!)
     }
     
     func deselect() {
