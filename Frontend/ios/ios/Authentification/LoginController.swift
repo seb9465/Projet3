@@ -34,15 +34,14 @@ class LoginController: UIViewController, UITextFieldDelegate {
 //        let validEmail: Bool = isValidEmail(email: emailField.text!);
         
 //        AuthentificationAPI.login(username: emailField.text!, password: passwordField.text!)
-        AuthentificationAPI.login(username: "seb.cado", password: "!12345Aa")
-//        AuthentificationAPI.login(username: "seb.cado2", password: "!12345Aa")
+//        AuthentificationAPI.login(username: "seb.cado", password: "!12345Aa")
+        AuthentificationAPI.login(username: "seb.cado2", password: "!12345Aa")
             .done { (token) in
                 UIViewController.removeSpinner(spinner: sv);
                 self.validationLabel.text = ""
                 self.storeAuthentificationToken(token: token)
                 // Connect to chat
                 ChatService.shared.connectToHub();  // TODO: Add notification when client is connected.
-                ChatService.shared.initOnReceivingMessageAFK();
                 
                 // Navigate to dashboard
                 let mainController = self.storyboard?.instantiateViewController(withIdentifier: "MainController")

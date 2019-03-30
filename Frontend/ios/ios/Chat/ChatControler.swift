@@ -38,6 +38,8 @@ class MsgChatController: MessagesViewController, MsgChatProtocol {
         let newBackButton = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(self.back(sender:)));
         self.navigationItem.leftBarButtonItem = newBackButton;
         
+        self.navigationItem.title = ChatService.shared.currentChannel.name;
+        
         super.viewDidLoad();
     }
     
