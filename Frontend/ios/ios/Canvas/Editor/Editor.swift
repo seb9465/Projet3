@@ -19,7 +19,7 @@ class Editor {
     private var oldRotationAngle: Int = 0
     
     public var selectedFigures: [Figure] = [];
-    public var selectionLasso: SelectionLasso = nil;
+    public var selectionLasso: SelectionLasso! = nil;
     public var selectionOutline: [SelectionOutline] = [];
     
     // Connection Creation properties
@@ -41,7 +41,7 @@ class Editor {
     
     func select(figure: Figure) {
         self.selectedFigures.append(figure);
-        self.selectionOutline.append(SelectionOutline(firstPoint: figure.frame.origin, lastPoint: CGPoint(x: figure.frame.maxX, y: figure.frame.maxY)));
+        self.selectionOutline.append(SelectionOutline(firstPoint: figure.frame.origin, lastPoint: CGPoint(x: figure.frame.maxX, y: figure.frame.maxY), associatedFigureID: figure.figureID));
         self.selectionOutline.last!.addSelectedFigureLayers();
         self.editorView.addSubview(self.selectionOutline.last!);
     }
@@ -52,30 +52,37 @@ class Editor {
         self.editorView.addSubview(self.selectionLasso);
     }
     
-    func selectArea(point: CGPoint) {
-        let points: [CGPoint] = [self.initialTouchPoint, point]
-        let selectionOrigin = CGPoint(x: points.map { $0.x }.min()!, y: points.map { $0.y }.min()!)
-        let selectionDest = CGPoint(x: points.map { $0.x }.max()!, y: points.map { $0.y }.max()!)
-        
-        self.selectionOutline.append(SelectionOutline(firstPoint: selectionOrigin, lastPoint: selectionDest));
-        self.selectionOutline.last!.addSelectedFigureLayers()
-        if (selectionOutline.last!.frame.width < 10) {
-            return
-        }
-        self.editorView.addSubview(self.selectionOutline.last!)
-    }
+//    func selectArea(point: CGPoint) {
+//        let points: [CGPoint] = [self.initialTouchPoint, point]
+//        let selectionOrigin = CGPoint(x: points.map { $0.x }.min()!, y: points.map { $0.y }.min()!)
+//        let selectionDest = CGPoint(x: points.map { $0.x }.max()!, y: points.map { $0.y }.max()!)
+//        
+//        self.selectionOutline.append(SelectionOutline(firstPoint: selectionOrigin, lastPoint: selectionDest, associatedFigureID: figure.figureID));
+//        self.selectionOutline.last!.addSelectedFigureLayers()
+//        if (selectionOutline.last!.frame.width < 10) {
+//            return
+//        }
+//        self.editorView.addSubview(self.selectionOutline.last!)
+//    }
     
     func deselect() {
-        if (self.selectionOutline != nil) {
-            self.selectionOutline.removeFromSuperview()
+        if (self.selectionOutline.count > 0) {
+            for outline in self.selectionOutline {
+                outline.removeFromSuperview();
+            }
+            self.selectionOutline.removeAll();
+//            self.selectionOutline.removeFromSuperview()
         }
         self.deselectLasso();
         self.selectedFigures.removeAll();
     }
     
     func deselectFigure(figure: Figure) {
-        if (self.selectionOutline != nil) {
-            self.selectionOutline.removeFromSuperview()
+        if (self.selectionOutline.count > 0) {
+            let tmpOutlineIndex: Int = self.selectionOutline.firstIndex(where: { $0.firstPoint == figure.firstPoint && $0.lastPoint == figure.lastPoint })!;
+            let tempOutline: SelectionOutline = self.selectionOutline[tmpOutlineIndex];
+            tempOutline.removeFromSuperview();
+//            self.selectionOutline.removeFromSuperview()
         }
         self.deselectLasso();
         self.selectedFigures.remove(at: self.selectedFigures.firstIndex(of: figure)!);
@@ -365,9 +372,12 @@ extension Editor : TouchInputDelegate {
     
     func notifyTouchMoved(point: CGPoint, figure: Figure) {
         if (self.touchEventState == .TRANSLATE) {
+            let tmpOutlineIndex: Int = self.selectionOutline.firstIndex(where: { $0.associatedFigureID == figure.figureID })!;
+            
             let offset = CGPoint(x: point.x - self.previousTouchPoint.x, y: point.y - self.previousTouchPoint.y)
             (figure as! UmlFigure).translate(by: offset)
-            self.selectionOutline.translate(by: offset)
+            self.selectionOutline[tmpOutlineIndex].translate(by: offset)
+//            self.selectionOutline.translate(by: offset)
             self.previousTouchPoint = point
             
             return

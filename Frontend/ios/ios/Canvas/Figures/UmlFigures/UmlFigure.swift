@@ -15,6 +15,7 @@ protocol TouchInputDelegate {
 }
 
 class UmlFigure : Figure {
+    
     var delegate: TouchInputDelegate?
     var figureColor: UIColor!
     var lineWidth: CGFloat!
@@ -29,6 +30,7 @@ class UmlFigure : Figure {
     var anchorPoints: AnchorPoints?;
     
     init(firstPoint: CGPoint, lastPoint: CGPoint, width: CGFloat, height: CGFloat) {
+        
         let frameSize = CGSize(width: abs(firstPoint.x - lastPoint.x), height: abs(firstPoint.y - lastPoint.y))
         let frame = CGRect(origin: firstPoint, size: frameSize)
         
@@ -37,6 +39,8 @@ class UmlFigure : Figure {
         self.lastPoint = lastPoint
         self.initializeBaseStyle()
         self.initializeAnchorPoints()
+        self.figureID = Constants.figureIDCounter;
+        Constants.figureIDCounter += 1;
     }
     
     // Alternate init to create UmlFigures on user tap

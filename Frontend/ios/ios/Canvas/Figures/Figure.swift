@@ -8,8 +8,10 @@
 import UIKit
 
 class Figure: UIView {
+    
     var firstPoint: CGPoint!
     var lastPoint: CGPoint!
+    var figureID: Int!;
     
     public func exportToViewModel(itemType: ItemTypeEnum) -> DrawViewModel {
         let point1 = PolyPaintStylusPoint(X: Double(self.firstPoint.x), Y: Double(self.firstPoint.y), PressureFactor: 1)
@@ -24,5 +26,6 @@ class Figure: UIView {
             ChannelId: "general"
         )
     }
+    
     public func rotate(orientation: RotateOrientation) -> Void {}
 }
