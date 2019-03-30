@@ -80,8 +80,8 @@ class Editor {
     func deselectFigure(figure: Figure) {
         if (self.selectionOutline.count > 0) {
             let tmpOutlineIndex: Int = self.selectionOutline.firstIndex(where: { $0.associatedFigureID == figure.figureID })!;
-            let tempOutline: SelectionOutline = self.selectionOutline[tmpOutlineIndex];
-            tempOutline.removeFromSuperview();
+            self.selectionOutline[tmpOutlineIndex].removeFromSuperview();
+            self.selectionOutline.remove(at: tmpOutlineIndex);
 //            self.selectionOutline.removeFromSuperview()
         }
         self.deselectLasso();
@@ -323,6 +323,7 @@ extension Editor: SideToolbarDelegate {
 
 extension Editor : TouchInputDelegate {
     func notifyTouchBegan(action: String, point: CGPoint, figure: Figure?) {
+        print("Action: ", action);
         switch (self.touchEventState) {
         case .SELECT:
             self.initialTouchPoint = point
@@ -340,7 +341,7 @@ extension Editor : TouchInputDelegate {
                 self.deselect()
                 self.select(figure: figure!)
                 self.updateSideToolBar()
-                self.touchEventState = .TRANSLATE
+//                self.touchEventState = .TRANSLATE
                 return
             }
             
@@ -373,6 +374,9 @@ extension Editor : TouchInputDelegate {
     }
     
     func notifyTouchMoved(point: CGPoint, figure: Figure) {
+        if (self.touchEventState == .SELECT && self.selectedFigures.count > 0) {
+            self.touchEventState = .TRANSLATE;
+        }
         if (self.touchEventState == .TRANSLATE) {
             let tmpOutlineIndex: Int = self.selectionOutline.firstIndex(where: { $0.associatedFigureID == figure.figureID })!;
             
@@ -420,7 +424,11 @@ extension Editor : TouchInputDelegate {
             return
         } else if (self.touchEventState == .INSERT) {
             return
+        } else if (self.touchEventState == .TRANSLATE) {
+            self.touchEventState = .SELECT;
+            
         }
+        
     }
     
     func handleConnectionTouchEnded(point: CGPoint) {
