@@ -11,7 +11,7 @@ import GLKit
 protocol TouchInputDelegate {
     func notifyTouchBegan(action: String, point: CGPoint, figure: Figure?)
     func notifyTouchMoved(point: CGPoint, figure: Figure)
-    func notifyTouchEnded(point: CGPoint)
+    func notifyTouchEnded(point: CGPoint, figure: Figure?)
 }
 
 class UmlFigure : Figure {
@@ -188,12 +188,12 @@ extension UmlFigure {
     public override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         let touch = touches.first
         guard let point = touch?.location(in: self.superview) else { return }
-        self.delegate?.notifyTouchEnded(point: point)
+        self.delegate?.notifyTouchEnded(point: point, figure: self)
     }
     
     public override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
         let touch = touches.first
         guard let point = touch?.location(in: self.superview) else { return }
-        self.delegate?.notifyTouchEnded(point: point)
+        self.delegate?.notifyTouchEnded(point: point, figure: self)
     }
 }

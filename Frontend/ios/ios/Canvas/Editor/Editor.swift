@@ -308,9 +308,9 @@ extension Editor : TouchInputDelegate {
                 self.touchEventState = .CONNECTION
                 return
             } else if (action == "shape") {
-                self.deselect()
-                self.select(figure: figure!)
-                self.updateSideToolBar()
+//                self.deselect()
+//                self.select(figure: figure!)
+//                self.updateSideToolBar()
 //                self.touchEventState = .TRANSLATE
                 return
             } else if (action == "empty") {
@@ -342,16 +342,23 @@ extension Editor : TouchInputDelegate {
     }
     
     func notifyTouchMoved(point: CGPoint, figure: Figure) {
-        if (self.touchEventState == .SELECT && self.selectedFigures.count > 0) {
-            self.touchEventState = .TRANSLATE;
-        } // No else if here please !
+//        if (self.touchEventState == .SELECT && self.selectedFigures.count > 0) {
+//            self.touchEventState = .TRANSLATE;
+//        } // No else if here please !
         
-        if (self.touchEventState == .TRANSLATE) {
-            let tmpOutlineIndex: Int = self.selectionOutline.firstIndex(where: { $0.associatedFigureID == figure.figureID })!;
-            
+        if (self.touchEventState == .SELECT || self.touchEventState == .TRANSLATE) {
+            self.touchEventState = .TRANSLATE;
             let offset = CGPoint(x: point.x - self.previousTouchPoint.x, y: point.y - self.previousTouchPoint.y)
-            (figure as! UmlFigure).translate(by: offset)
-            self.selectionOutline[tmpOutlineIndex].translate(by: offset)
+            for fig in self.selectedFigures {
+                let tmpOutlineIndex: Int = self.selectionOutline.firstIndex(where: { $0.associatedFigureID == fig.figureID })!;
+                (fig as! UmlFigure).translate(by: offset)
+                self.selectionOutline[tmpOutlineIndex].translate(by: offset)
+            }
+//            let tmpOutlineIndex: Int = self.selectionOutline.firstIndex(where: { $0.associatedFigureID == figure.figureID })!;
+            
+//            let offset = CGPoint(x: point.x - self.previousTouchPoint.x, y: point.y - self.previousTouchPoint.y)
+//            (figure as! UmlFigure).translate(by: offset)
+//            self.selectionOutline[tmpOutlineIndex].translate(by: offset)
             self.previousTouchPoint = point
             
             return
@@ -362,7 +369,7 @@ extension Editor : TouchInputDelegate {
         }
     }
     
-    func notifyTouchEnded(point: CGPoint) {
+    func notifyTouchEnded(point: CGPoint, figure: Figure?) {
         if (self.touchEventState == .CONNECTION) {
             self.connectionPreview.removeFromSuperview()
             let lastPoint = self.snap(point: point)
@@ -385,7 +392,13 @@ extension Editor : TouchInputDelegate {
             return
         } else if (self.touchEventState == .TRANSLATE) {
             self.touchEventState = .SELECT;
+        } else if (self.touchEventState == .SELECT) {
+            self.deselect()
+            self.select(figure: figure!)
+            self.updateSideToolBar()
+            return
         }
+        
     }
     
     func handleConnectionTouchEnded(point: CGPoint) {
