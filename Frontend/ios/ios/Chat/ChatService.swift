@@ -263,12 +263,19 @@ class ChatService {
                 );
                 
                 if (message.username != currentMemberName) {
-                    // TODO: Add message to dict if user not in channel
                     if (self.currentChannel != nil && self.currentChannel.name == message.channelId) {
                         insertMessage(newMessage);
                         SoundNotification.play(sound: Sound.SendMessage);
                     } else {
-                        print("AFK ", message.channelId);
+                        let tmp: [String: [Message]] = [message.channelId: [newMessage]];
+                        if (self.messagesWhileAFK.keys.contains(message.channelId)) {
+                            var tmpMessages: [Message] = self.messagesWhileAFK[message.channelId]!;
+                            tmpMessages.append(newMessage);
+                            self.messagesWhileAFK.updateValue(tmpMessages, forKey: message.channelId);
+                        } else {
+                            self.messagesWhileAFK.merge(tmp, uniquingKeysWith: { (first, _) in first })
+                        }
+                        print(self.messagesWhileAFK);
                     }
                 }
             }
