@@ -28,7 +28,7 @@ class Editor {
     public var currentFigureType: ItemTypeEnum = ItemTypeEnum.UmlClass;
     
     // TouchInputDelegate properties
-    public var touchEventState: TouchEventState = .SELECT
+    public var touchEventState: TouchEventState = .NONE
     private var initialTouchPoint: CGPoint!
     private var previousTouchPoint: CGPoint!
     
@@ -79,7 +79,7 @@ class Editor {
     
     func deselectFigure(figure: Figure) {
         if (self.selectionOutline.count > 0) {
-            let tmpOutlineIndex: Int = self.selectionOutline.firstIndex(where: { $0.firstPoint == figure.firstPoint && $0.lastPoint == figure.lastPoint })!;
+            let tmpOutlineIndex: Int = self.selectionOutline.firstIndex(where: { $0.associatedFigureID == figure.figureID })!;
             let tempOutline: SelectionOutline = self.selectionOutline[tmpOutlineIndex];
             tempOutline.removeFromSuperview();
 //            self.selectionOutline.removeFromSuperview()
@@ -367,6 +367,8 @@ extension Editor : TouchInputDelegate {
         case .AREA_SELECT:
             self.selectionLasso.addNewTouchPoint(touchPoint: point);
             break
+        case .NONE:
+            break;
         }
     }
     
@@ -381,9 +383,7 @@ extension Editor : TouchInputDelegate {
             self.previousTouchPoint = point
             
             return
-        }
-        
-        if (self.touchEventState == .CONNECTION) {
+        } else if (self.touchEventState == .CONNECTION) {
             self.connectionPreview.removeFromSuperview()
             self.connectionPreview = ConnectionFigure(origin: self.initialTouchPoint, destination: point, itemType: .UniderectionalAssoication)
             self.editorView.addSubview(self.connectionPreview)
