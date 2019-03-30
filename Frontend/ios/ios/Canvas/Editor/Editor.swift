@@ -168,6 +168,17 @@ class Editor {
         }
         return nil
     }
+    
+    func snap(point: CGPoint) -> CGPoint{
+        for subview in self.editorView.subviews {
+            if let figure = subview as? UmlFigure {
+                if (figure.frame.contains(point)) {
+                    return figure.getClosestAnchorPoint(point: point)
+                }
+            }
+        }
+        return point
+    }
 }
 
 extension Editor {
