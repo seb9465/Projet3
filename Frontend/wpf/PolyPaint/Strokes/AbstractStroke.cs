@@ -52,18 +52,21 @@ namespace PolyPaint.Strokes
 
         public InkCanvas SurfaceDessin { get; set; }
 
-        public AbstractStroke(StylusPointCollection pts, InkCanvas surfaceDessin, string couleurBordure, string couleurRemplissage, double thicc)
+        public AbstractStroke(StylusPointCollection pts, InkCanvas surfaceDessin, string couleurBordure, string couleurRemplissage, double thicc, DashStyle borderStyle)
             : base(pts)
         {
             TopLeft = new Point();
             Width = 0;
             Height = 0;
 
+
             couleurBordure = couleurBordure == "" ? "#FF000000" : couleurBordure;
             couleurRemplissage = couleurRemplissage == "" ? "#FFFFFFFF" : couleurRemplissage;
 
             Border = new Pen(new SolidColorBrush((Color)ColorConverter.ConvertFromString(couleurBordure)), thicc);
             Fill = new SolidColorBrush((Color)ColorConverter.ConvertFromString(couleurRemplissage));
+
+            SetBorderStyle(borderStyle);
 
             IsDrawingDone = false;
 

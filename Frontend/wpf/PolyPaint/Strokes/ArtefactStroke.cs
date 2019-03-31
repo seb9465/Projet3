@@ -14,8 +14,8 @@ namespace PolyPaint.Strokes
 {
     public class ArtefactStroke : AbstractShapeStroke
     {
-        public ArtefactStroke(StylusPointCollection pts, InkCanvas surfaceDessin, string couleurBordure, string couleurRemplissage, double thicc)
-            : base(pts, surfaceDessin, "Artefact", couleurBordure, couleurRemplissage, thicc)
+        public ArtefactStroke(StylusPointCollection pts, InkCanvas surfaceDessin, string couleurBordure, string couleurRemplissage, double thicc, DashStyle dashStyle)
+            : base(pts, surfaceDessin, "Artefact", couleurBordure, couleurRemplissage, thicc, dashStyle)
         { }
 
         protected override void DrawCore(DrawingContext drawingContext, DrawingAttributes drawingAttributes)

@@ -30,18 +30,18 @@ namespace PolyPaint.Modeles{    public class CollaborationClient    {       
         {
             try
             {
-                await Connection.InvokeAsync("Draw", JsonConvert.SerializeObject(drawViewModels));
+                await Connection.InvokeAsync("Draw", JsonConvert.SerializeObject(new ItemsMessage("general", "", drawViewModels)));
             }
             catch (Exception) { }
         }
 
-        public async Task CollaborativeSelectAsync(ItemsMessage drawViewModels)
+        public async Task CollaborativeSelectAsync(List<DrawViewModel> drawViewModels)
         {
             try
             {
-                await Connection.InvokeAsync("Select", JsonConvert.SerializeObject(drawViewModels));
+                await Connection.InvokeAsync("Select", JsonConvert.SerializeObject(new ItemsMessage("general", "", drawViewModels)));
             }
-            catch (Exception) { }
+            catch (Exception e) { }
         }
 
         public async Task CollaborativeDuplicateAsync()

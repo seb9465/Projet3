@@ -238,7 +238,6 @@
                             BorderBrush="{Binding Path=SelectedBorder, Converter={StaticResource convertisseurBordure}, ConverterParameter=solid, UpdateSourceTrigger=PropertyChanged}" 
                             Background="{Binding Path=SelectedBorder, Converter={StaticResource convertisseurCouleurFond}, ConverterParameter=solid, UpdateSourceTrigger=PropertyChanged}"                                 
                             HorizontalContentAlignment="Center"
-                            IsEnabled="{Binding Path=IsStrokeSelected}"
                             Command="{Binding Path=ChooseBorder}"
                             CommandParameter="solid">
                                 <Rectangle Width="10" Height="2" Fill="Black" Stroke="Black" StrokeThickness="2" HorizontalAlignment="Center"/>
@@ -249,7 +248,6 @@
                             HorizontalContentAlignment="Center"                            
                             BorderBrush="{Binding Path=SelectedBorder, Converter={StaticResource convertisseurBordure}, ConverterParameter=dash, UpdateSourceTrigger=PropertyChanged}" 
                             Background="{Binding Path=SelectedBorder, Converter={StaticResource convertisseurCouleurFond}, ConverterParameter=dash, UpdateSourceTrigger=PropertyChanged}"
-                            IsEnabled="{Binding Path=IsStrokeSelected}"
                             Command="{Binding Path=ChooseBorder}"
                             CommandParameter="dash">
                                 <Grid>
