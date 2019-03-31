@@ -20,10 +20,10 @@ class ChatRoomsControllerTableViewController: UITableViewController {
     
     @IBAction func backButton(_ sender: Any) {
 //        ChatService.shared.disconnectFromHub();
-        
+        ChatService.shared.currentChannel = nil;
         let storyboard = UIStoryboard(name: "Main", bundle: nil);
-        let view = storyboard.instantiateViewController(withIdentifier: "DashboardController");
-        navigationController?.pushViewController(view, animated: true);
+        let view = storyboard.instantiateViewController(withIdentifier: "MainController");
+        self.present(view, animated: true, completion: nil);
     }
     
     override func viewDidLoad() {

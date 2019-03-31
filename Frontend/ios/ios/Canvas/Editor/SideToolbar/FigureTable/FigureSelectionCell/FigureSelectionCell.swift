@@ -22,7 +22,9 @@ class FigureSelectionCell: UITableViewCell {
     
     @IBOutlet weak var PhaseButton: RoundedCorners!
     
+    @IBOutlet weak var textButton: RoundedCorners!
     
+    @IBOutlet weak var imageButton: RoundedCorners!
     
     private var lastButtonSelected: RoundedCorners!
     private var lastLineSelected: RoundedCorners!
@@ -39,7 +41,7 @@ class FigureSelectionCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
     }
     
-    func setSelectedButton(button: RoundedCorners) -> Void {
+    public func setSelectedButton(button: RoundedCorners) -> Void {
         self.lastButtonSelected.layer.borderWidth = 0.0
         self.lastButtonSelected = button
         self.lastButtonSelected.layer.borderColor = UIColor.blue.cgColor
@@ -47,7 +49,7 @@ class FigureSelectionCell: UITableViewCell {
     }
     
     @IBAction func UMLClassSelected(_ sender: Any) {
-        self.delegate?.setSelectedFigureType(itemType: ItemTypeEnum.UMLClass)
+        self.delegate?.setSelectedFigureType(itemType: ItemTypeEnum.UmlClass)
         
         self.setSelectedButton(button: self.UMLClassButton)
     }
@@ -57,7 +59,7 @@ class FigureSelectionCell: UITableViewCell {
     }
     
     @IBAction func ActorSelected(_ sender: Any) {
-        self.delegate?.setSelectedFigureType(itemType: ItemTypeEnum.Actor)
+        self.delegate?.setSelectedFigureType(itemType: ItemTypeEnum.Role)
         self.setSelectedButton(button: self.ActorButton)
     }
     
@@ -67,20 +69,33 @@ class FigureSelectionCell: UITableViewCell {
     }
     
     @IBAction func setSelectedLineStraigth(_ sender: Any) {
-        self.delegate?.setSelectedLineType(itemType: ItemTypeEnum.StraightLine)
+        self.delegate?.setSelectedLineType(itemType: ItemTypeEnum.UniderectionalAssoication)
     }
     @IBAction func setSelectedLineDashed(_ sender: Any) {
         self.DashedLineButton.layer.borderColor = UIColor.blue.cgColor
         self.DashedLineButton.layer.borderWidth = 1.0
-        self.delegate?.setSelectedFigureType(itemType: ItemTypeEnum.DashedLine)
+        self.delegate?.setSelectedFigureType(itemType: ItemTypeEnum.UniderectionalAssoication)
     }
     @IBAction func UMLCommentSelected(_ sender: Any) {
-        self.delegate?.setSelectedFigureType(itemType: ItemTypeEnum.UMLComment)
+        self.delegate?.setSelectedFigureType(itemType: ItemTypeEnum.Comment)
         
         self.setSelectedButton(button: self.UMLCommentButton)
     }
     @IBAction func PhaseSelected(_ sender: Any) {
-    self.delegate?.setSelectedFigureType(itemType: ItemTypeEnum.UMLPhaseFigure)
+        self.delegate?.setSelectedFigureType(itemType: ItemTypeEnum.Phase)
         self.setSelectedButton(button: self.PhaseButton)
+    }
+    
+    
+    @IBAction func textSelected(_ sender: Any) {
+        self.delegate?.setSelectedFigureType(itemType: ItemTypeEnum.Text)
+        self.setSelectedButton(button: self.textButton)
+    }
+    
+    @IBAction func imageSelected(_ sender: Any) {
+        
+        self.delegate?.presentImagePicker()
+        self.delegate?.setSelectedFigureType(itemType: ItemTypeEnum.Image)
+        self.setSelectedButton(button: self.imageButton)
     }
 }

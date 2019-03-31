@@ -16,8 +16,8 @@ class StyleTableController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.editor = (self.parent?.parent as! CanvasController).editor
-        self.editor.sideToolbarController = self
-        
+        self.editor.sideToolbatControllers.append(self)
+
         let nib = UINib.init(nibName: "BorderCell", bundle: nil)
         let rotateNib = UINib.init(nibName: "RotateCell", bundle: nil)
         self.styleTable.register(nib, forCellReuseIdentifier: "BorderCell")
@@ -26,7 +26,7 @@ class StyleTableController: UIViewController {
 
 extension StyleTableController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if (self.editor.selectedFigure == nil) {
+        if (self.editor.selectedFigures.isEmpty) {
             return 0
         }
         return 2

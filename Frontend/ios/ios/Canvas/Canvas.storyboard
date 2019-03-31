@@ -23,56 +23,66 @@
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                 <items>
                                     <barButtonItem title="Quit" id="4Er-Gx-QB8">
+                                        <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
                                             <action selector="quitButton:" destination="Vts-He-P18" id="KcM-sA-VDA"/>
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem title="New" id="ic3-cN-C5G">
-                                        <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
                                             <action selector="clearButton:" destination="Vts-He-P18" id="JlR-Gh-chb"/>
                                         </connections>
                                     </barButtonItem>
-                                    <barButtonItem title="Save" id="Cwu-WP-ULr"/>
-                                    <barButtonItem title="Load" id="8N0-s0-ZU2"/>
+                                    <barButtonItem title="Save" id="Cwu-WP-ULr">
+                                        <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <connections>
+                                            <action selector="saveButton:" destination="Vts-He-P18" id="hnc-dA-amp"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem title="Export" id="yqP-yF-mGn" userLabel="Export">
+                                        <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <connections>
+                                            <action selector="exportButtonPressed:" destination="Vts-He-P18" id="c5G-3f-Ps3"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem title="Load" id="8N0-s0-ZU2">
+                                        <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </barButtonItem>
                                     <barButtonItem title="Clear" id="cJl-7R-Nql">
+                                        <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
                                             <action selector="clearButton:" destination="Vts-He-P18" id="Kti-wA-ab9"/>
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem systemItem="undo" id="vbj-g9-11e">
+                                        <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
                                             <action selector="undoButton:" destination="Vts-He-P18" id="Q7f-VC-utl"/>
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem systemItem="redo" id="Bmp-bw-401">
+                                        <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
                                             <action selector="redoButton:" destination="Vts-He-P18" id="2RI-2W-Sfy"/>
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem title="Insert" id="SLY-eP-ACv" userLabel="Insert Button">
+                                        <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
                                             <action selector="insertButtonPressed:" destination="Vts-He-P18" id="ZLI-eA-O5s"/>
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem title="Select" id="Lts-nR-qFd">
+                                        <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
                                             <action selector="selectFigureButton:" destination="Vts-He-P18" id="ZEn-to-nDy"/>
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem title="Delete" id="5ld-32-8cy">
+                                        <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
                                             <action selector="deleteButton:" destination="Vts-He-P18" id="O21-i5-hoW"/>
-                                        </connections>
-                                    </barButtonItem>
-                                    <barButtonItem title="Border" id="mdZ-5y-94T">
-                                        <connections>
-                                            <action selector="borderButton:" destination="Vts-He-P18" id="r6O-iM-TLH"/>
-                                        </connections>
-                                    </barButtonItem>
-                                    <barButtonItem title="Fill" id="QqS-3X-DNp">
-                                        <connections>
-                                            <action selector="fillButton:" destination="Vts-He-P18" id="lSt-J1-ym8"/>
                                         </connections>
                                     </barButtonItem>
                                 </items>
@@ -90,10 +100,10 @@
                         <viewLayoutGuide key="safeArea" id="h7K-cJ-n3H"/>
                     </view>
                     <connections>
-                        <outlet property="borderButton" destination="mdZ-5y-94T" id="FgC-S0-rGV"/>
                         <outlet property="deleteButton" destination="5ld-32-8cy" id="y06-F1-JC8"/>
-                        <outlet property="fillButton" destination="QqS-3X-DNp" id="rPk-OW-90X"/>
+                        <outlet property="exportButton" destination="yqP-yF-mGn" id="ydc-eg-QxN"/>
                         <outlet property="insertButton" destination="SLY-eP-ACv" id="oPa-Hm-WsF"/>
+                        <outlet property="navigationBar" destination="P0r-rK-G4e" id="Xne-YZ-5HS"/>
                         <outlet property="selectButton" destination="Lts-nR-qFd" id="AOd-xa-kni"/>
                     </connections>
                 </viewController>

@@ -11,6 +11,7 @@ using System.Windows.Media;
 using PolyPaint.VueModeles;
 using System.Threading.Tasks;
 using PolyPaint.Common.Messages;
+using System;
 
 namespace PolyPaint.Utilitaires
 {
@@ -193,6 +194,76 @@ namespace PolyPaint.Utilitaires
         {
             stroke.StylusPoints[index] = new StylusPoint(stroke.StylusPoints[index].X + shift.X, stroke.StylusPoints[index].Y + shift.Y);
             (stroke as ICanvasable).AddToCanvas();
+        }
+
+        internal void ContextualMenuClick(InkCanvas surfaceDessin, string header, VueModele vm)
+        {
+            switch (header)
+            {
+                case "SelectAll":
+                    surfaceDessin.Select(surfaceDessin.Strokes);
+                    break;
+                case "InvertSelection":
+                    StrokeCollection strokesToSelect = new StrokeCollection();
+                    foreach (var stroke in surfaceDessin.Strokes)
+                    {
+                        if (!surfaceDessin.GetSelectedStrokes().Contains(stroke))
+                            strokesToSelect.Add(stroke);
+                    }
+                    surfaceDessin.Select(strokesToSelect);
+                    break;
+                case "InvertColors":
+                    InvertStrokesColors(surfaceDessin);
+                    break;
+                case "TransformAllShapes":
+                    TransformAllShapes(surfaceDessin, vm);
+                    break;
+                case "TransformAllConnections":
+                    TransformAllConnections(surfaceDessin, vm);
+                    break;
+                case "TransformAllShapesAndConnections":
+                    TransformAllShapes(surfaceDessin, vm);
+                    TransformAllConnections(surfaceDessin, vm);
+                    break;
+            }
+        }
+
+        private void InvertStrokesColors(InkCanvas surfaceDessin)
+        {
+            foreach (AbstractShapeStroke stroke in surfaceDessin.GetSelectedStrokes().Where(x => x is AbstractShapeStroke))
+            {
+                stroke.SetBorderColor(InvertColorValue(stroke.BorderColor).ToString());
+                stroke.SetFillColor(InvertColorValue(stroke.FillColor).ToString());
+            }
+            foreach (AbstractLineStroke stroke in surfaceDessin.GetSelectedStrokes().Where(x => x is AbstractLineStroke))
+            {
+                stroke.SetBorderColor(InvertColorValue(stroke.BorderColor).ToString());
+                stroke.SetFillColor(InvertColorValue(stroke.FillColor).ToString());
+            }
+        }
+
+        private Color InvertColorValue(Color color)
+        {
+            return Color.FromArgb(color.A, (byte)~color.R, (byte)~color.G, (byte)~color.B);
+        }
+
+        private void TransformAllShapes(InkCanvas surfaceDessin, VueModele vm)
+        {
+            foreach (AbstractShapeStroke stroke in surfaceDessin.Strokes.Where(x => x is AbstractShapeStroke))
+            {
+                stroke.SetBorderColor(vm.CouleurSelectionneeBordure);
+                stroke.SetFillColor(vm.CouleurSelectionneeRemplissage);
+                //stroke.SetBorderStyle(Tools.DashAssociations[vm.SelectedBorder]);
+            }
+        }
+        private void TransformAllConnections(InkCanvas surfaceDessin, VueModele vm)
+        {
+            foreach (AbstractLineStroke stroke in surfaceDessin.Strokes.Where(x => x is AbstractLineStroke))
+            {
+                stroke.SetBorderColor(vm.CouleurSelectionneeBordure);
+                stroke.SetFillColor(vm.CouleurSelectionneeRemplissage);
+                //stroke.SetBorderStyle(Tools.DashAssociations[vm.SelectedBorder]);
+            }
         }
     }
 }

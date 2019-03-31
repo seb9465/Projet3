@@ -407,7 +407,20 @@
                            Strokes="{Binding Path=Traits, Mode=OneTime}"
                            EditingMode="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurModeEdition}, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
                            DefaultDrawingAttributes="{Binding Path=AttributsDessin, Mode=OneTime}"
-                           SelectionChanged="surfaceDessin_ChangeSelection" />
+                           SelectionChanged="surfaceDessin_ChangeSelection">
+                        <InkCanvas.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="Tout sélectionner" Click="ContextualMenu_Click" Name="SelectAll"/>
+                                <MenuItem Header="Inverser la sélection" Click="ContextualMenu_Click" Name="InvertSelection"/>
+                                <MenuItem Header="Inverser les couleurs de la sélection" Click="ContextualMenu_Click" Name="InvertColors"/>
+                                <MenuItem Header="Transformer toutes les...">
+                                    <MenuItem Header="Formes UML" Click="ContextualMenu_Click" Name="TransformAllShapes"/>
+                                    <MenuItem Header="Connexions UML" Click="ContextualMenu_Click" Name="TransformAllConnections"/>
+                                    <MenuItem Header="Formes et connexions UML" Click="ContextualMenu_Click" Name="TransformAllShapesAndConnections"/>
+                                </MenuItem>
+                            </ContextMenu>
+                        </InkCanvas.ContextMenu>
+                    </InkCanvas>
                     <Border.Effect>
                         <DropShadowEffect Opacity="0.3" BlurRadius="10"/>
                     </Border.Effect>

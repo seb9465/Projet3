@@ -24,7 +24,6 @@ class PublicGalleryController: UIViewController {
         
         CanvasService.getAll()
             .done { (retreivedCanvas) in
-                print(retreivedCanvas)
                 self.canvas = retreivedCanvas
                 self.collectionView.reloadData()
             }.catch { (Error) in
@@ -52,8 +51,6 @@ extension PublicGalleryController : UICollectionViewDelegateFlowLayout {
         let paddingSpace = sectionInsets.left * (itemsPerRow + 1)
         let availableWidth = view.frame.width - paddingSpace
         let widthPerItem = availableWidth / itemsPerRow
-
-        print(widthPerItem)
         return CGSize(width: widthPerItem, height: widthPerItem)
     }
 
