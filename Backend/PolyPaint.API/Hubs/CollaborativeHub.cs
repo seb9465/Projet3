@@ -26,10 +26,10 @@ namespace PolyPaint.API.Hubs
             var user = await GetUserFromToken(Context.User);
             if (user != null && message.Items.Count > 0)
             {
-                var channelId = message.Items.First().ChannelId;
+                var channelId = message.CanvasId;
                 if (UserHandler.UserGroupMap.TryGetValue(channelId, out var users) && users.Contains(user.Id))
                 {
-                    await Clients.OthersInGroup(channelId).SendAsync("Draw", JsonConvert.SerializeObject(itemsMessage));
+                    await Clients.OthersInGroup(channelId).SendAsync("Draw", JsonConvert.SerializeObject(message));
                 }
             }
         }
@@ -63,9 +63,10 @@ namespace PolyPaint.API.Hubs
             var user = await GetUserFromToken(Context.User);
             if (user != null)
             {
-                var channelId = message.Items.First().ChannelId;
+                var channelId = message.CanvasId;
                 if (UserHandler.UserGroupMap.TryGetValue(channelId, out var users) && users.Contains(user.Id))
                 {
+                    message.Username = user.UserName;
                     await Clients.OthersInGroup(channelId).SendAsync("Select", JsonConvert.SerializeObject(message));
                 }
             }
