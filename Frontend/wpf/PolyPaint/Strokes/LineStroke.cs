@@ -9,8 +9,8 @@ namespace PolyPaint.Strokes
 {
     public class LineStroke : AbstractLineStroke
     {
-        public LineStroke(StylusPointCollection pts, InkCanvas surfaceDessin, string couleurBordure, double thicc)
-            : base(pts, surfaceDessin, "0..0", "0..0", couleurBordure, "#FF000000", thicc, false)
+        public LineStroke(StylusPointCollection pts, InkCanvas surfaceDessin, string couleurBordure, double thicc, DashStyle dashStyle)
+            : base(pts, surfaceDessin, "0..0", "0..0", couleurBordure, "#FF000000", thicc, false, dashStyle)
         { }
 
         protected override void DrawCore(DrawingContext drawingContext, DrawingAttributes drawingAttributes)

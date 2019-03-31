@@ -1,4 +1,6 @@
-﻿using PolyPaint.Common.Collaboration;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
+using PolyPaint.Common.Collaboration;
 using System.Collections.Generic;
 
 namespace PolyPaint.Common.Messages

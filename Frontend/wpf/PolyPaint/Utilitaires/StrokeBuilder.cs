@@ -78,11 +78,11 @@ namespace PolyPaint.Utilitaires
                         if (TryGetByGuid(surfaceDessin, Guid.Parse(stroke.Guid), out var existingCommentStroke))
                         {
                             DrawingStroke = existingCommentStroke;
-                            ChangeConstructProperties(existingCommentStroke, pts, borderColor.ToString(), fillColor.ToString(), thicc);
+                            ChangeConstructProperties(existingCommentStroke, pts, borderColor.ToString(), fillColor.ToString(), thicc, Tools.DashAssociations[stroke.BorderStyle]);
                         }
                         else
                         {
-                            DrawingStroke = new RectangleStroke(pts, surfaceDessin, borderColor.ToString(), fillColor.ToString(), thicc);
+                            DrawingStroke = new RectangleStroke(pts, surfaceDessin, borderColor.ToString(), fillColor.ToString(), thicc, Tools.DashAssociations[stroke.BorderStyle]);
                         }
                         SetShapeProperties(stroke, surfaceDessin);
                         break;
@@ -90,11 +90,11 @@ namespace PolyPaint.Utilitaires
                         if (TryGetByGuid(surfaceDessin, Guid.Parse(stroke.Guid), out var existingActStroke))
                         {
                             DrawingStroke = existingActStroke;
-                            ChangeConstructProperties(existingActStroke, pts, borderColor.ToString(), fillColor.ToString(), thicc);
+                            ChangeConstructProperties(existingActStroke, pts, borderColor.ToString(), fillColor.ToString(), thicc, Tools.DashAssociations[stroke.BorderStyle]);
                         }
                         else
                         {
-                            DrawingStroke = new ActivityStroke(pts, surfaceDessin, borderColor.ToString(), fillColor.ToString(), thicc);
+                            DrawingStroke = new ActivityStroke(pts, surfaceDessin, borderColor.ToString(), fillColor.ToString(), thicc, Tools.DashAssociations[stroke.BorderStyle]);
                         }
                         SetShapeProperties(stroke, surfaceDessin);
                         break;
@@ -102,11 +102,11 @@ namespace PolyPaint.Utilitaires
                         if (TryGetByGuid(surfaceDessin, Guid.Parse(stroke.Guid), out var existingArtStroke))
                         {
                             DrawingStroke = existingArtStroke;
-                            ChangeConstructProperties(existingArtStroke, pts, borderColor.ToString(), fillColor.ToString(), thicc);
+                            ChangeConstructProperties(existingArtStroke, pts, borderColor.ToString(), fillColor.ToString(), thicc, Tools.DashAssociations[stroke.BorderStyle]);
                         }
                         else
                         {
-                            DrawingStroke = new ArtefactStroke(pts, surfaceDessin, borderColor.ToString(), fillColor.ToString(), thicc);
+                            DrawingStroke = new ArtefactStroke(pts, surfaceDessin, borderColor.ToString(), fillColor.ToString(), thicc, Tools.DashAssociations[stroke.BorderStyle]);
                         }
                         SetShapeProperties(stroke, surfaceDessin);
                         break;
@@ -114,11 +114,11 @@ namespace PolyPaint.Utilitaires
                         if (TryGetByGuid(surfaceDessin, Guid.Parse(stroke.Guid), out var existingPhaseStroke))
                         {
                             DrawingStroke = existingPhaseStroke;
-                            ChangeConstructProperties(existingPhaseStroke, pts, borderColor.ToString(), fillColor.ToString(), thicc);
+                            ChangeConstructProperties(existingPhaseStroke, pts, borderColor.ToString(), fillColor.ToString(), thicc, Tools.DashAssociations[stroke.BorderStyle]);
                         }
                         else
                         {
-                            DrawingStroke = new PhaseStroke(pts, surfaceDessin, borderColor.ToString(), fillColor.ToString(), thicc);
+                            DrawingStroke = new PhaseStroke(pts, surfaceDessin, borderColor.ToString(), fillColor.ToString(), thicc, Tools.DashAssociations[stroke.BorderStyle]);
                         }
                         SetShapeProperties(stroke, surfaceDessin);
                         break;
@@ -126,11 +126,11 @@ namespace PolyPaint.Utilitaires
                         if (TryGetByGuid(surfaceDessin, Guid.Parse(stroke.Guid), out var existingRoleStroke))
                         {
                             DrawingStroke = existingRoleStroke;
-                            ChangeConstructProperties(existingRoleStroke, pts, borderColor.ToString(), fillColor.ToString(), thicc);
+                            ChangeConstructProperties(existingRoleStroke, pts, borderColor.ToString(), fillColor.ToString(), thicc, Tools.DashAssociations[stroke.BorderStyle]);
                         }
                         else
                         {
-                            DrawingStroke = new RoleStroke(pts, surfaceDessin, borderColor.ToString(), fillColor.ToString(), thicc);
+                            DrawingStroke = new RoleStroke(pts, surfaceDessin, borderColor.ToString(), fillColor.ToString(), thicc, Tools.DashAssociations[stroke.BorderStyle]);
                         }
                         SetShapeProperties(stroke, surfaceDessin);
                         break;
@@ -138,11 +138,11 @@ namespace PolyPaint.Utilitaires
                         if (TryGetByGuid(surfaceDessin, Guid.Parse(stroke.Guid), out var existingTextStroke))
                         {
                             DrawingStroke = existingTextStroke;
-                            ChangeConstructProperties(existingTextStroke, pts, borderColor.ToString(), fillColor.ToString(), thicc);
+                            ChangeConstructProperties(existingTextStroke, pts, borderColor.ToString(), fillColor.ToString(), thicc, Tools.DashAssociations[stroke.BorderStyle]);
                         }
                         else
                         {
-                            DrawingStroke = new TextStroke(pts, surfaceDessin, borderColor.ToString(), fillColor.ToString(), thicc);
+                            DrawingStroke = new TextStroke(pts, surfaceDessin, borderColor.ToString(), fillColor.ToString(), thicc, Tools.DashAssociations[stroke.BorderStyle]);
                         }
                         SetShapeProperties(stroke, surfaceDessin);
                         break;
@@ -150,11 +150,11 @@ namespace PolyPaint.Utilitaires
                         if (TryGetByGuid(surfaceDessin, Guid.Parse(stroke.Guid), out var existingUmlStroke))
                         {
                             DrawingStroke = existingUmlStroke;
-                            ChangeConstructProperties(existingUmlStroke, pts, borderColor.ToString(), fillColor.ToString(), thicc);
+                            ChangeConstructProperties(existingUmlStroke, pts, borderColor.ToString(), fillColor.ToString(), thicc, Tools.DashAssociations[stroke.BorderStyle]);
                         }
                         else
                         {
-                            DrawingStroke = new UmlClassStroke(pts, surfaceDessin, borderColor.ToString(), fillColor.ToString(), thicc);
+                            DrawingStroke = new UmlClassStroke(pts, surfaceDessin, borderColor.ToString(), fillColor.ToString(), thicc, Tools.DashAssociations[stroke.BorderStyle]);
                         }
 
                         (DrawingStroke as UmlClassStroke).Methods = new ObservableCollection<Method>(stroke.Methods.Select(x => new Method(x)));
@@ -166,11 +166,11 @@ namespace PolyPaint.Utilitaires
                         if (TryGetByGuid(surfaceDessin, Guid.Parse(stroke.Guid), out var existingAggStroke))
                         {
                             DrawingStroke = existingAggStroke;
-                            ChangeConstructProperties(existingAggStroke, pts, borderColor.ToString(), fillColor.ToString(), thicc);
+                            ChangeConstructProperties(existingAggStroke, pts, borderColor.ToString(), fillColor.ToString(), thicc, Tools.DashAssociations[stroke.BorderStyle]);
                         }
                         else
                         {
-                            DrawingStroke = new AgregationStroke(pts, surfaceDessin, borderColor.ToString(), thicc);
+                            DrawingStroke = new AgregationStroke(pts, surfaceDessin, borderColor.ToString(), thicc, Tools.DashAssociations[stroke.BorderStyle]);
                         }
                         SetLineProperties(stroke, surfaceDessin);
                         break;
@@ -178,11 +178,11 @@ namespace PolyPaint.Utilitaires
                         if (TryGetByGuid(surfaceDessin, Guid.Parse(stroke.Guid), out var existingCompStroke))
                         {
                             DrawingStroke = existingCompStroke;
-                            ChangeConstructProperties(existingCompStroke, pts, borderColor.ToString(), fillColor.ToString(), thicc);
+                            ChangeConstructProperties(existingCompStroke, pts, borderColor.ToString(), fillColor.ToString(), thicc, Tools.DashAssociations[stroke.BorderStyle]);
                         }
                         else
                         {
-                            DrawingStroke = new CompositionStroke(pts, surfaceDessin, borderColor.ToString(), thicc);
+                            DrawingStroke = new CompositionStroke(pts, surfaceDessin, borderColor.ToString(), thicc, Tools.DashAssociations[stroke.BorderStyle]);
                         }
                         SetLineProperties(stroke, surfaceDessin);
                         break;
@@ -190,11 +190,11 @@ namespace PolyPaint.Utilitaires
                         if (TryGetByGuid(surfaceDessin, Guid.Parse(stroke.Guid), out var existingInhStroke))
                         {
                             DrawingStroke = existingInhStroke;
-                            ChangeConstructProperties(existingInhStroke, pts, borderColor.ToString(), fillColor.ToString(), thicc);
+                            ChangeConstructProperties(existingInhStroke, pts, borderColor.ToString(), fillColor.ToString(), thicc, Tools.DashAssociations[stroke.BorderStyle]);
                         }
                         else
                         {
-                            DrawingStroke = new InheritanceStroke(pts, surfaceDessin, borderColor.ToString(), thicc);
+                            DrawingStroke = new InheritanceStroke(pts, surfaceDessin, borderColor.ToString(), thicc, Tools.DashAssociations[stroke.BorderStyle]);
                         }
                         SetLineProperties(stroke, surfaceDessin);
                         break;
@@ -202,11 +202,11 @@ namespace PolyPaint.Utilitaires
                         if (TryGetByGuid(surfaceDessin, Guid.Parse(stroke.Guid), out var existingBiStroke))
                         {
                             DrawingStroke = existingBiStroke;
-                            ChangeConstructProperties(existingBiStroke, pts, borderColor.ToString(), fillColor.ToString(), thicc);
+                            ChangeConstructProperties(existingBiStroke, pts, borderColor.ToString(), fillColor.ToString(), thicc, Tools.DashAssociations[stroke.BorderStyle]);
                         }
                         else
                         {
-                            DrawingStroke = new BidirectionalAssociationStroke(pts, surfaceDessin, borderColor.ToString(), thicc);
+                            DrawingStroke = new BidirectionalAssociationStroke(pts, surfaceDessin, borderColor.ToString(), thicc, Tools.DashAssociations[stroke.BorderStyle]);
                         }
                         SetLineProperties(stroke, surfaceDessin);
                         break;
@@ -214,11 +214,11 @@ namespace PolyPaint.Utilitaires
                         if (TryGetByGuid(surfaceDessin, Guid.Parse(stroke.Guid), out var existingUniStroke))
                         {
                             DrawingStroke = existingUniStroke;
-                            ChangeConstructProperties(existingUniStroke, pts, borderColor.ToString(), fillColor.ToString(), thicc);
+                            ChangeConstructProperties(existingUniStroke, pts, borderColor.ToString(), fillColor.ToString(), thicc, Tools.DashAssociations[stroke.BorderStyle]);
                         }
                         else
                         {
-                            DrawingStroke = new UnidirectionalAssociationStroke(pts, surfaceDessin, borderColor.ToString(), thicc);
+                            DrawingStroke = new UnidirectionalAssociationStroke(pts, surfaceDessin, borderColor.ToString(), thicc, Tools.DashAssociations[stroke.BorderStyle]);
                         }
                         SetLineProperties(stroke, surfaceDessin);
                         break;
@@ -226,11 +226,11 @@ namespace PolyPaint.Utilitaires
                         if (TryGetByGuid(surfaceDessin, Guid.Parse(stroke.Guid), out var existingLineStroke))
                         {
                             DrawingStroke = existingLineStroke;
-                            ChangeConstructProperties(existingLineStroke, pts, borderColor.ToString(), fillColor.ToString(), thicc);
+                            ChangeConstructProperties(existingLineStroke, pts, borderColor.ToString(), fillColor.ToString(), thicc, Tools.DashAssociations[stroke.BorderStyle]);
                         }
                         else
                         {
-                            DrawingStroke = new LineStroke(pts, surfaceDessin, borderColor.ToString(), thicc);
+                            DrawingStroke = new LineStroke(pts, surfaceDessin, borderColor.ToString(), thicc, Tools.DashAssociations[stroke.BorderStyle]);
                         }
                         SetLineProperties(stroke, surfaceDessin);
                         break;
@@ -264,12 +264,13 @@ namespace PolyPaint.Utilitaires
             }
         }
 
-        private void ChangeConstructProperties(AbstractStroke existingStroke, StylusPointCollection pts, string borderColor, string fillColor, double thicc)
+        private void ChangeConstructProperties(AbstractStroke existingStroke, StylusPointCollection pts, string borderColor, string fillColor, double thicc, DashStyle style)
         {
             existingStroke.StylusPoints = pts;
             existingStroke.SetBorderColor(borderColor);
             existingStroke.SetFillColor(fillColor);
             existingStroke.SetBorderThickness(thicc);
+            existingStroke.SetBorderStyle(style);
         }
 
         private void SetLineProperties(DrawViewModel stroke, InkCanvas surfaceDessin)
@@ -296,7 +297,6 @@ namespace PolyPaint.Utilitaires
         {
             (DrawingStroke as AbstractStroke).Guid = Guid.Parse(stroke.Guid);
             (DrawingStroke as AbstractShapeStroke).TitleString = stroke.ShapeTitle;
-            (DrawingStroke as AbstractStroke).SetBorderStyle(Tools.DashAssociations[stroke.BorderStyle]);
             (DrawingStroke as AbstractShapeStroke).TitleString = stroke.ShapeTitle;
             (DrawingStroke as AbstractStroke).Rotation = stroke.Rotation;
 

@@ -10,6 +10,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using PolyPaint.VueModeles;
 using System.Threading.Tasks;
+using PolyPaint.Common.Messages;
 
 namespace PolyPaint.Utilitaires
 {
@@ -61,55 +62,55 @@ namespace PolyPaint.Utilitaires
                 switch (vm.OutilSelectionne)
                 {
                     case "uml_class":
-                        DrawingStroke = new UmlClassStroke(pts, surfaceDessin, vm.CouleurSelectionneeBordure, vm.CouleurSelectionneeRemplissage, vm.TailleTrait);
+                        DrawingStroke = new UmlClassStroke(pts, surfaceDessin, vm.CouleurSelectionneeBordure, vm.CouleurSelectionneeRemplissage, vm.TailleTrait, vm.SelectedBorderDashStyle);
                         surfaceDessin.Strokes.Add(DrawingStroke);
                         break;
                     case "rectangle":
-                        DrawingStroke = new RectangleStroke(pts, surfaceDessin, vm.CouleurSelectionneeBordure, vm.CouleurSelectionneeRemplissage, vm.TailleTrait);
+                        DrawingStroke = new RectangleStroke(pts, surfaceDessin, vm.CouleurSelectionneeBordure, vm.CouleurSelectionneeRemplissage, vm.TailleTrait, vm.SelectedBorderDashStyle);
                         surfaceDessin.Strokes.Add(DrawingStroke);
                         break;
                     case "artefact":
-                        DrawingStroke = new ArtefactStroke(pts, surfaceDessin, vm.CouleurSelectionneeBordure, vm.CouleurSelectionneeRemplissage, vm.TailleTrait);
+                        DrawingStroke = new ArtefactStroke(pts, surfaceDessin, vm.CouleurSelectionneeBordure, vm.CouleurSelectionneeRemplissage, vm.TailleTrait, vm.SelectedBorderDashStyle);
                         surfaceDessin.Strokes.Add(DrawingStroke);
                         break;
                     case "activity":
-                        DrawingStroke = new ActivityStroke(pts, surfaceDessin, vm.CouleurSelectionneeBordure, vm.CouleurSelectionneeRemplissage, vm.TailleTrait);
+                        DrawingStroke = new ActivityStroke(pts, surfaceDessin, vm.CouleurSelectionneeBordure, vm.CouleurSelectionneeRemplissage, vm.TailleTrait, vm.SelectedBorderDashStyle);
                         surfaceDessin.Strokes.Add(DrawingStroke);
                         break;
                     case "phase":
-                        DrawingStroke = new PhaseStroke(pts, surfaceDessin, vm.CouleurSelectionneeBordure, vm.CouleurSelectionneeRemplissage, vm.TailleTrait);
+                        DrawingStroke = new PhaseStroke(pts, surfaceDessin, vm.CouleurSelectionneeBordure, vm.CouleurSelectionneeRemplissage, vm.TailleTrait, vm.SelectedBorderDashStyle);
                         surfaceDessin.Strokes.Add(DrawingStroke);
                         break;
                     case "role":
-                        DrawingStroke = new RoleStroke(pts, surfaceDessin, vm.CouleurSelectionneeBordure, vm.CouleurSelectionneeRemplissage, vm.TailleTrait);
+                        DrawingStroke = new RoleStroke(pts, surfaceDessin, vm.CouleurSelectionneeBordure, vm.CouleurSelectionneeRemplissage, vm.TailleTrait, vm.SelectedBorderDashStyle);
                         surfaceDessin.Strokes.Add(DrawingStroke);
                         break;
                     case "text":
-                        DrawingStroke = new TextStroke(pts, surfaceDessin, vm.CouleurSelectionneeBordure, vm.CouleurSelectionneeRemplissage, vm.TailleTrait);
+                        DrawingStroke = new TextStroke(pts, surfaceDessin, vm.CouleurSelectionneeBordure, vm.CouleurSelectionneeRemplissage, vm.TailleTrait, vm.SelectedBorderDashStyle);
                         surfaceDessin.Strokes.Add(DrawingStroke);
                         break;
                     case "asso_uni":
-                        DrawingStroke = new UnidirectionalAssociationStroke(pts, surfaceDessin, vm.CouleurSelectionneeBordure, vm.TailleTrait);
+                        DrawingStroke = new UnidirectionalAssociationStroke(pts, surfaceDessin, vm.CouleurSelectionneeBordure, vm.TailleTrait, vm.SelectedBorderDashStyle);
                         surfaceDessin.Strokes.Add(DrawingStroke);
                         break;
                     case "asso_bi":
-                        DrawingStroke = new BidirectionalAssociationStroke(pts, surfaceDessin, vm.CouleurSelectionneeBordure, vm.TailleTrait);
+                        DrawingStroke = new BidirectionalAssociationStroke(pts, surfaceDessin, vm.CouleurSelectionneeBordure, vm.TailleTrait, vm.SelectedBorderDashStyle);
                         surfaceDessin.Strokes.Add(DrawingStroke);
                         break;
                     case "composition":
-                        DrawingStroke = new CompositionStroke(pts, surfaceDessin, vm.CouleurSelectionneeBordure, vm.TailleTrait);
+                        DrawingStroke = new CompositionStroke(pts, surfaceDessin, vm.CouleurSelectionneeBordure, vm.TailleTrait, vm.SelectedBorderDashStyle);
                         surfaceDessin.Strokes.Add(DrawingStroke);
                         break;
                     case "heritage":
-                        DrawingStroke = new InheritanceStroke(pts, surfaceDessin, vm.CouleurSelectionneeBordure, vm.TailleTrait);
+                        DrawingStroke = new InheritanceStroke(pts, surfaceDessin, vm.CouleurSelectionneeBordure, vm.TailleTrait, vm.SelectedBorderDashStyle);
                         surfaceDessin.Strokes.Add(DrawingStroke);
                         break;
                     case "agregation":
-                        DrawingStroke = new AgregationStroke(pts, surfaceDessin, vm.CouleurSelectionneeBordure, vm.TailleTrait);
+                        DrawingStroke = new AgregationStroke(pts, surfaceDessin, vm.CouleurSelectionneeBordure, vm.TailleTrait, vm.SelectedBorderDashStyle);
                         surfaceDessin.Strokes.Add(DrawingStroke);
                         break;
                     case "line":
-                        DrawingStroke = new LineStroke(pts, surfaceDessin, vm.CouleurSelectionneeBordure, vm.TailleTrait);
+                        DrawingStroke = new LineStroke(pts, surfaceDessin, vm.CouleurSelectionneeBordure, vm.TailleTrait, vm.SelectedBorderDashStyle);
                         surfaceDessin.Strokes.Add(DrawingStroke);
                         break;
                 }
@@ -138,7 +139,9 @@ namespace PolyPaint.Utilitaires
 
                     StrokeBuilder rebuilder = new StrokeBuilder();
                     List<DrawViewModel> allo = rebuilder.GetDrawViewModelsFromStrokes(new StrokeCollection { DrawingStroke });
+                    vm.SelectItem(surfaceDessin, ((AbstractStroke)DrawingStroke).Center);
                     await vm.CollaborationClient.CollaborativeDrawAsync(allo);
+                    await vm.CollaborationClient.CollaborativeSelectAsync(allo);
                 }
                 DrawingStroke = null;
             }

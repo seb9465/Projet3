@@ -5,10 +5,8 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Documents;
 using System.Windows.Ink;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -134,6 +132,8 @@ namespace PolyPaint.VueModeles
             set { _selectedBorder = value; ProprieteModifiee(); }
         }
 
+        public DashStyle SelectedBorderDashStyle { get { return _selectedBorder == "" ? DashStyles.Solid : Tools.DashAssociations[_selectedBorder]; } }
+
         public Boolean IsStrokeSelected
         {
             get { return editeur.SelectedStrokes.Any(x => x is AbstractStroke) && editeur.SelectedStrokes.Count > 0; }
@@ -153,8 +153,20 @@ namespace PolyPaint.VueModeles
         public RelayCommand<Room> RoomConnect { get; set; }
         public RelayCommand<object> Reinitialiser { get; set; }
 
-        public void SelectItemOffline(InkCanvas surfaceDessin, Point mouseLeftDownPoint) => editeur.SelectItemOffline(surfaceDessin, mouseLeftDownPoint);
-        public void SelectItemOnline(InkCanvas surfaceDessin, SelectViewModel selectViewModel, string username) => editeur.SelectItemOnline(surfaceDessin, selectViewModel, username);
+        public void SelectItem(InkCanvas surfaceDessin, Point mouseLeftDownPoint)
+        {
+            editeur.SelectItem(surfaceDessin, mouseLeftDownPoint, this);
+            editeur.OutilSelectionne = "select";
+        }
+        public void SelectItemLasso(InkCanvas surfaceDessin, Rect bounds)
+        {
+            editeur.SelectItemLasso(surfaceDessin, bounds, this);
+            editeur.OutilSelectionne = "select";
+        }
+        public void SelectNothing(InkCanvas surfaceDessin)
+        {
+            editeur.SelectItemLasso(surfaceDessin, Rect.Empty, this);
+        }
 
         /// <summary>
         /// Constructeur de VueModele
@@ -200,6 +212,7 @@ namespace PolyPaint.VueModeles
             _messagesByChannel = new ConcurrentDictionary<string, ObservableCollection<string>>();
             _rooms = new ObservableCollection<Room>();
             _selectedBorder = "";
+            _onlineSelection = new ConcurrentDictionary<string, List<DrawViewModel>>();
         }
 
         /// <summary>
@@ -280,7 +293,7 @@ namespace PolyPaint.VueModeles
             SendSelectedStrokes();
         }
 
-        public async Task ChangeSelection(InkCanvas surfaceDessin)
+        public void ChangeSelection(InkCanvas surfaceDessin)
         {
             var strokes = surfaceDessin.GetSelectedStrokes();
             editeur.SelectedStrokes = strokes;
@@ -289,9 +302,6 @@ namespace PolyPaint.VueModeles
             HandleBorderColorChange(strokes);
             HandleFillColorChange(strokes);
             HandleBorderStyleChange(strokes);
-
-            var strokesToSend = rebuilder.GetDrawViewModelsFromStrokes(editeur.SelectedStrokes);
-            await CollaborationClient.CollaborativeSelectAsync(new ItemsMessage("", "", strokesToSend));
         }
 
         public void ChangeOnlineSelection(ItemsMessage message)

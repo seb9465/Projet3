@@ -1,5 +1,4 @@
 ﻿using PolyPaint.Common.Collaboration;
-using PolyPaint.VueModeles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +18,7 @@ namespace PolyPaint.Strokes
         private Pen _hatchPen;
         private Rect _strokesBounds;
         private List<Rect> _elementsBounds;
+
         private List<DrawViewModel> _strokes;
         private string _username;
 
@@ -35,6 +35,7 @@ namespace PolyPaint.Strokes
         public OnlineSelectedAdorner(UIElement adornedElement, KeyValuePair<string, List<DrawViewModel>> pair)
             : base(adornedElement)
         {
+            IsHitTestVisible = false;
             _username = pair.Key;
             _strokes = pair.Value;
 
@@ -49,10 +50,7 @@ namespace PolyPaint.Strokes
             _adornerPenBrush = new Pen(new SolidColorBrush(Color.FromRgb(132, 146, 222)), 1);
             _adornerPenBrush.Freeze();
 
-            _adornerFillBrush = new LinearGradientBrush(Color.FromRgb(240, 242, 255), //start color
-                                            Color.FromRgb(180, 207, 248),               //end color
-                                            45f                                         //angle
-                                            );
+            _adornerFillBrush = new SolidColorBrush(Color.FromArgb(100, 100, 100, 100));
             _adornerFillBrush.Freeze();
 
             // Create a hatch pen
@@ -95,33 +93,6 @@ namespace PolyPaint.Strokes
 
             _elementsBounds = new List<Rect>();
             _strokesBounds = Rect.Empty;
-        }
-
-        /// <summary>
-        /// SelectionHandleHitTest
-        /// </summary>
-        /// <param name="point"></param>
-        /// <returns></returns>
-        internal InkCanvasSelectionHitResult SelectionHandleHitTest(Point point)
-        {
-            InkCanvasSelectionHitResult result = InkCanvasSelectionHitResult.None;
-            Rect rectWireFrame = GetWireFrameRect();
-
-            if (!rectWireFrame.IsEmpty)
-            {
-                // Now, check if we hit on the frame
-                if (result == InkCanvasSelectionHitResult.None)
-                {
-                    Rect outterRect = Rect.Inflate(rectWireFrame, CornerResizeHandleSize / 2, CornerResizeHandleSize / 2);
-                    if (outterRect.Contains(point))
-                    {
-                        result = InkCanvasSelectionHitResult.Selection;
-                    }
-                }
-
-            }
-
-            return result;
         }
 
         /// <summary>
@@ -188,9 +159,13 @@ namespace PolyPaint.Strokes
             if (!rectWireFrame.IsEmpty)
             {
                 // Draw the wire frame.
-                drawingContext.DrawRectangle(null,
+                drawingContext.DrawRectangle(_adornerFillBrush,
                     _adornerBorderPen,
                     rectWireFrame);
+
+                var typeface = new Typeface(new FontFamily("Arial"), FontStyles.Italic, FontWeights.Normal, FontStretches.Normal);
+                var text = new FormattedText(_username, System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, typeface, 10, new SolidColorBrush(Color.FromRgb(150, 150, 150)));
+                drawingContext.DrawText(text, new Point(rectWireFrame.TopLeft.X, rectWireFrame.TopLeft.Y - text.Height - 2));
             }
         }
 
@@ -278,7 +253,7 @@ namespace PolyPaint.Strokes
 
                 outlineGeometry = hatchGeometry.GetOutlinedPathGeometry();
                 outlineGeometry.Freeze();
-                if (count == 1 && ((InkCanvas)AdornedElement).GetSelectedStrokes().Count == 0)
+                if (count == 1 && _strokes.Count == 0)
                 {
                     geometryCollection.Add(outlineGeometry);
                 }
@@ -295,7 +270,7 @@ namespace PolyPaint.Strokes
             // At last, draw the hatch borders
             if (outlineGeometry != null)
             {
-                drawingContext.DrawGeometry(null, _hatchPen, outlineGeometry);
+                drawingContext.DrawGeometry(_adornerFillBrush, _hatchPen, outlineGeometry);
             }
         }
 
@@ -307,8 +282,18 @@ namespace PolyPaint.Strokes
         {
             Rect frameRect = Rect.Empty;
             // trying to select bounds in all drawviewmodels
-            Point min = _strokes.Min(stroke => Math.Min(Math.Pow(stroke.StylusPoints[0].X + stroke.StylusPoints[0].Y, 2), Math.Pow(stroke.StylusPoints[1].X + stroke.StylusPoints[1].Y, 2)));
-            Rect selectionRect = new Rect()
+
+            Rect selectionRect = Rect.Empty;
+            if (_strokes.Count > 0)
+            {
+                var xmin = _strokes.Min(stroke => stroke.StylusPoints[0].X < stroke.StylusPoints[1].X ? stroke.StylusPoints[0].X : stroke.StylusPoints[1].X);
+                var ymin = _strokes.Min(stroke => stroke.StylusPoints[0].Y < stroke.StylusPoints[1].Y ? stroke.StylusPoints[0].Y : stroke.StylusPoints[1].Y);
+
+                var xmax = _strokes.Max(stroke => stroke.StylusPoints[0].X > stroke.StylusPoints[1].X ? stroke.StylusPoints[0].X : stroke.StylusPoints[1].X);
+                var ymax = _strokes.Max(stroke => stroke.StylusPoints[0].Y > stroke.StylusPoints[1].Y ? stroke.StylusPoints[0].Y : stroke.StylusPoints[1].Y);
+
+                selectionRect = new Rect(new Point(xmin, ymin), new Point(xmax, ymax));
+            }
 
             if (!selectionRect.IsEmpty)
             {

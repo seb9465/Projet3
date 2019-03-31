@@ -1,8 +1,5 @@
 ﻿using PolyPaint.Utilitaires;
 using System;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Ink;
@@ -14,8 +11,8 @@ namespace PolyPaint.Strokes
 {
     public class TextStroke : AbstractShapeStroke
     {
-        public TextStroke(StylusPointCollection pts, InkCanvas surfaceDessin, string couleurBordure, string couleurRemplissage, double thicc)
-            : base(pts, surfaceDessin, "Text", couleurBordure, couleurRemplissage, thicc)
+        public TextStroke(StylusPointCollection pts, InkCanvas surfaceDessin, string couleurBordure, string couleurRemplissage, double thicc, DashStyle dashStyle)
+            : base(pts, surfaceDessin, "Text", couleurBordure, couleurRemplissage, thicc, dashStyle)
         { }
 
         protected override void DrawCore(DrawingContext drawingContext, DrawingAttributes drawingAttributes)

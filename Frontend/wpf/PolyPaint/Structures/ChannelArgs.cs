@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PolyPaint.Common.Messages;
+using System;
 
 namespace PolyPaint.Structures
 {
