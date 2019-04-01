@@ -296,8 +296,6 @@ extension Editor: SideToolbarDelegate {
 
 extension Editor : TouchInputDelegate {
     func notifyTouchBegan(action: String, point: CGPoint, figure: Figure?) {
-        print(action)
-
         switch (self.touchEventState) {
         case .SELECT:
             self.initialTouchPoint = point
@@ -310,10 +308,10 @@ extension Editor : TouchInputDelegate {
                 self.touchEventState = .CONNECTION
                 return
             } else if (action == "shape") {
-//                self.deselect()
-//                self.select(figure: figure!)
-//                self.updateSideToolBar()
-//                self.touchEventState = .TRANSLATE
+                self.deselect()
+                self.select(figure: figure!)
+                self.updateSideToolBar()
+                self.touchEventState = .TRANSLATE
                 return
             } else if (action == "empty") {
                 self.deselect()
@@ -374,14 +372,7 @@ extension Editor : TouchInputDelegate {
     
     func notifyTouchEnded(point: CGPoint, figure: Figure?) {
         if (self.touchEventState == .CONNECTION) {
-            self.connectionPreview.removeFromSuperview()
-            let lastPoint = self.snap(point: point)
-            let connection = self.insertConnectionFigure(
-                firstPoint: self.initialTouchPoint,
-                lastPoint: lastPoint,
-                itemType: currentFigureType
-            );
-            self.touchEventState = .SELECT;
+            self.handleConnectionTouchEnded(point: point)
         } else if (self.touchEventState == .AREA_SELECT) {
             if (self.selectionLasso.shapeIsClosed) {
                 for figure in self.figures {
