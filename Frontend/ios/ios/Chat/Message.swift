@@ -55,7 +55,7 @@ class ConnectionMessage: Codable {
     public var canvasId: String;
     public var channelId: String;
     
-    init(username: String?="", canvasId: String?="", channelId: String?="") {
+    init(username: String? = "", canvasId: String? = "", channelId: String? = "") {
         self.username = username!;
         self.canvasId = canvasId!;
         self.channelId = channelId!;
