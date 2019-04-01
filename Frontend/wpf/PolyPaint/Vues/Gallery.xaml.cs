@@ -60,16 +60,9 @@ namespace PolyPaint.Vues
         private void NewCanva_Click(object sender, RoutedEventArgs e)
         {
             UploadToCloud uploadToCloud = new UploadToCloud();
-
-            CanvasName = uploadToCloud.CanvasName;
-            CanvasVisibility = uploadToCloud.CanvasVisibility;
-            CanvasProtection = uploadToCloud.CanvasProtection;
-
-            Application.Current.MainWindow = fenetreDessin;
+            Application.Current.MainWindow = uploadToCloud;
             this.Close();
-            fenetreDessin.Show();
-
-            
+            uploadToCloud.Show();
     }
 
 

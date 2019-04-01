@@ -39,9 +39,9 @@ namespace PolyPaint
         private AdornerLayer adornerLayer;
         private LineStrokeAdorner adorner;
 
-        public String CanvasVisibility;
-        public String CanvasName;
-        public String CanvasProtection;
+        public String canvasVisibility = "";
+        public String canvasName = "";
+        public String canvasProtection= "";
 
         private ChatWindow externalChatWindow;
         private MediaPlayer mediaPlayer = new MediaPlayer();
@@ -187,15 +187,13 @@ namespace PolyPaint
 
         private async void SendToCloud()
         {
-
-            UploadToCloud uploadToCloud = new UploadToCloud();
             byte[] strokesBytes = GetBytesForStrokes();
             byte[] imageBytes = GetBytesForImage();
             string strokesToSend = Convert.ToBase64String(strokesBytes);
             string imageToSend = Convert.ToBase64String(imageBytes);
-            string CanvasName = uploadToCloud.CanvasName;
-            string CanvasVisibility = uploadToCloud.CanvasVisibility;
-            string CanvasProtection = uploadToCloud.CanvasProtection;
+            string CanvasName = canvasName;
+            string CanvasVisibility = canvasVisibility;
+            string CanvasProtection = canvasProtection;
             SaveableCanvas canvas = new SaveableCanvas(CanvasName, strokesToSend, imageToSend, CanvasVisibility, CanvasProtection);
 
             string canvasJson = JsonConvert.SerializeObject(canvas);
