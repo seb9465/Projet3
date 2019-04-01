@@ -20,14 +20,10 @@ class Members {
         self._members = [];
     }
     
-    public func addMember(member: Member) -> Bool {
+    public func addMember(member: Member) -> Void {
         if (!self.isAlreadyInArray(memberName: member.name)) {
             self._members.append(member);
-            
-            return true;
         }
-        
-        return false;
     }
     
     public func removeFromArray(member: Member) -> Bool {
