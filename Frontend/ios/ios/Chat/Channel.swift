@@ -8,6 +8,8 @@
 
 import Foundation
 
+// MARK: Channel class
+
 class Channel: Codable {
     private var _name: String;
     private var _connected: Bool;
@@ -28,6 +30,8 @@ class Channel: Codable {
     }
 }
 
+// MARK: ChannelMessage class
+
 class ChannelMessage: Codable {
     private var _channel: Channel;
     
@@ -40,6 +44,8 @@ class ChannelMessage: Codable {
         self._channel = channel;
     }
 }
+
+// MARK: ChannelsMessage class
 
 class ChannelsMessage: Codable {
     private var _channels: [Channel];
