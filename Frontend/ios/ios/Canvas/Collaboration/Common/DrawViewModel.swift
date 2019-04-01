@@ -25,6 +25,8 @@ struct DrawViewModel: Codable {
     var LastElbowPosition: PolyPaintStylusPoint!
     var ImageBytes: [UInt8]!
     var Rotation: Double
+
+    init() {}
 }
 
 enum ItemTypeEnum: Int, Codable {
