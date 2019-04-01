@@ -9,12 +9,22 @@
 import Foundation
 
 class Channel: Codable {
-    public var name: String;
-    public var connected: Bool;
+    private var _name: String;
+    private var _connected: Bool;
+    
+    public var name: String {
+        get { return self._name }
+        set { self._name = newValue }
+    }
+    
+    public var connected: Bool {
+        get { return self._connected }
+        set { self._connected = newValue }
+    }
     
     init(name: String, connected: Bool) {
-        self.name = name;
-        self.connected = connected;
+        self._name = name;
+        self._connected = connected;
     }
 }
 
