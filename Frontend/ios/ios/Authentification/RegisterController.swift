@@ -26,15 +26,9 @@ class RegisterController: UIViewController {
     // MARK: Actions
     
     @IBAction func registerButtonPressed(_ sender: UIButton) {
-        let userInfo = [
-            "firstName": self.firstNameField.text,
-            "lastName": self.lastNameField.text,
-            "username": self.usernameField.text,
-            "email": self.emailField.text,
-            "password": self.passwordField.text,
-        ];
-
-        registerUser(parameters: userInfo)
+        let registrationViewModel: RegistrationViewModel = RegistrationViewModel(firstName: self.firstNameField.text!, lastName: self.lastNameField.text!, email: self.usernameField.text!, username: self.emailField.text!, password: self.passwordField.text!);
+        
+        registerUser(parameters: registrationViewModel.toJson())
             .done { response in
                 print(response);
                 self.performSegue(withIdentifier: "goBackToLogin", sender: nil)
