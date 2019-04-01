@@ -22,24 +22,34 @@ class Channel: Codable {
         set { self._connected = newValue }
     }
     
-    init(name: String, connected: Bool) {
+    init (name: String, connected: Bool) {
         self._name = name;
         self._connected = connected;
     }
 }
 
 class ChannelMessage: Codable {
-    public var channel: Channel;
+    private var _channel: Channel;
     
-    init(channel: Channel) {
-        self.channel = channel;
+    public var channel: Channel {
+        get { return self._channel }
+        set { self._channel = newValue }
+    }
+    
+    init (channel: Channel) {
+        self._channel = channel;
     }
 }
 
 class ChannelsMessage: Codable {
-    public var channels: [Channel];
+    private var _channels: [Channel];
     
-    init(channels: [Channel]? = []) {
-        self.channels = channels!;
+    public var channels: [Channel] {
+        get { return self._channels }
+        set { self._channels = newValue }
+    }
+    
+    init (channels: [Channel]? = []) {
+        self._channels = channels!;
     }
 }
