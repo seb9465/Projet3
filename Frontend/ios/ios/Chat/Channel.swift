@@ -14,6 +14,11 @@ class Channel: Codable {
     private var _name: String;
     private var _connected: Bool;
     
+    init (name: String, connected: Bool) {
+        self._name = name;
+        self._connected = connected;
+    }
+    
     public var name: String {
         get { return self._name }
         set { self._name = newValue }
@@ -23,11 +28,6 @@ class Channel: Codable {
         get { return self._connected }
         set { self._connected = newValue }
     }
-    
-    init (name: String, connected: Bool) {
-        self._name = name;
-        self._connected = connected;
-    }
 }
 
 // MARK: ChannelMessage class
@@ -35,13 +35,13 @@ class Channel: Codable {
 class ChannelMessage: Codable {
     private var _channel: Channel;
     
+    init (channel: Channel) {
+        self._channel = channel;
+    }
+    
     public var channel: Channel {
         get { return self._channel }
         set { self._channel = newValue }
-    }
-    
-    init (channel: Channel) {
-        self._channel = channel;
     }
 }
 
@@ -50,12 +50,12 @@ class ChannelMessage: Codable {
 class ChannelsMessage: Codable {
     private var _channels: [Channel];
     
+    init (channels: [Channel]? = []) {
+        self._channels = channels!;
+    }
+    
     public var channels: [Channel] {
         get { return self._channels }
         set { self._channels = newValue }
-    }
-    
-    init (channels: [Channel]? = []) {
-        self._channels = channels!;
     }
 }
