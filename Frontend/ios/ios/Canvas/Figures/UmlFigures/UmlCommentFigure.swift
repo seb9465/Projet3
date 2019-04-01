@@ -17,6 +17,12 @@ class UmlCommentFigure: UmlFigure {
         super.init(firstPoint: firstPoint, lastPoint: lastPoint, width: BASE_WIDTH, height: BASE_WIDTH)
     }
     
+    override init(drawViewModel: DrawViewModel) {
+        super.init(drawViewModel: drawViewModel);
+        self.comment = drawViewModel.ShapeTitle!
+    }
+    
+    
     init(origin: CGPoint) {
         super.init(touchedPoint: origin, width: BASE_WIDTH, height: BASE_HEIGHT)
     }

@@ -21,8 +21,6 @@ class UmlClassFigure: UmlFigure {
     
     init(origin: CGPoint) {
         super.init(touchedPoint: origin, width: BASE_WIDTH, height: BASE_HEIGHT)
-        //        self.figureID = Constants.figureIDCounter;
-        Constants.figureIDCounter += 1;
     }
     
     init(firstPoint: CGPoint, lastPoint: CGPoint) {
@@ -61,8 +59,6 @@ class UmlClassFigure: UmlFigure {
     
     override init(drawViewModel: DrawViewModel) {
         super.init(drawViewModel: drawViewModel);
-//        self.lineColor = drawViewModel.BorderColor
-//        self.figureColor = drawViewModel.FillColor
         self.methods = drawViewModel.Methods!
         self.attributes = drawViewModel.Properties!
     }
