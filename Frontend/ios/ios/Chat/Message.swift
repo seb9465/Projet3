@@ -14,10 +14,15 @@ import MessageKit
 // Used for the frontend-backend communication.
 
 class ChatMessage: Codable {
+    
+    // MARK: Attributes
+    
     private var _username: String;
     private var _message: String;
     private var _channelId: String;
     private var _timestamp: String;
+    
+    // MARK: Constructor
     
     init(user: String, message: String, channelId: String, timestamp: String? = "") {
         self._username = user;
@@ -25,6 +30,8 @@ class ChatMessage: Codable {
         self._channelId = channelId;
         self._timestamp = timestamp!;
     }
+    
+    // MARK: Getter - Setter
     
     public var username: String {
         get { return self._username }
@@ -51,15 +58,22 @@ class ChatMessage: Codable {
 // Used for the frontend-backend communication.
 
 class ConnectionMessage: Codable {
+    
+    // MARK: Attributes
+    
     private var _username: String;
     private var _canvasId: String;
     private var _channelId: String;
+    
+    // MARK: Constructor
     
     init (username: String? = "", canvasId: String? = "", channelId: String? = "") {
         self._username = username!;
         self._canvasId = canvasId!;
         self._channelId = channelId!;
     }
+    
+    // MARK: Getter - Setter
     
     public var username: String {
         get { return self._username }
@@ -81,10 +95,15 @@ class ConnectionMessage: Codable {
 // Data structure for the messages in the chat view.
 
 class Message {
+    
+    // MARK: Attributes
+    
     private var _member: Member;
     private var _text: String;
     private var _timestamp: String;
     private var _messageId: String;
+    
+    // MARK: Constructor
     
     init (member: Member, text: String? = "", timestamp: String? = "", messageId: String? = "") {
         self._member = member;
@@ -92,6 +111,8 @@ class Message {
         self._timestamp = timestamp!;
         self._messageId = messageId!;
     }
+    
+    // MARK: Getter - Setter
     
     public var member: Member {
         get { return self._member }
