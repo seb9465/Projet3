@@ -83,7 +83,7 @@ class CollaborationHub {
     }
     
     public func postNewFigure(origin: CGPoint, itemType: ItemTypeEnum) -> Void {
-        let model = FigureFactory.shared.getFigure(type: itemType, touchedPoint: origin)?.exportToViewModel(itemType: itemType)
+        let model = FigureFactory.shared.getFigure(type: itemType, touchedPoint: origin)?.exportToViewModel()
             let jsonEncoder = JSONEncoder()
             let jsonData = try! jsonEncoder.encode(model)
             let jsonString = String(data: jsonData, encoding: .utf8)

@@ -11,6 +11,7 @@ class Figure: UIView {
     
     var firstPoint: CGPoint!
     var lastPoint: CGPoint!
+    var itemType: ItemTypeEnum!
     var uuid: UUID!
     
     override init(frame: CGRect) {
@@ -22,18 +23,18 @@ class Figure: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public func exportToViewModel(itemType: ItemTypeEnum) -> DrawViewModel {
+    public func exportToViewModel() -> DrawViewModel {
         let point1 = PolyPaintStylusPoint(X: Double(self.firstPoint.x), Y: Double(self.firstPoint.y), PressureFactor: 1)
         let point2 = PolyPaintStylusPoint(X: Double(self.lastPoint.x), Y: Double(self.lastPoint.y), PressureFactor: 1)
         let color: PolyPaintColor = PolyPaintColor(A: 255, R: 255, G: 1, B: 1)
         
-        return DrawViewModel(
-            ItemType: itemType,
-            StylusPoints: [point1, point2],
-            OutilSelectionne: "",
-            Color: color,
-            ChannelId: "general"
-        )
+        var viewModel: DrawViewModel = DrawViewModel()
+        viewModel.Guid = self.uuid
+        viewModel.owner = UserDefaults.standard.string(forKey: "username")
+        viewModel.ItemType = self.itemType
+        viewModel.StylusPoints = [point1, point2]
+        viewModel.
+
     }
     
     public func rotate(orientation: RotateOrientation) -> Void {}

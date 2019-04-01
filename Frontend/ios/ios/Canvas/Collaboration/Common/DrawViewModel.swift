@@ -24,6 +24,7 @@ struct DrawViewModel: Codable {
     var LastElbowPosition: PolyPaintStylusPoint!
     var ImageBytes: [UInt8]!
 
+    init() {}
     init(ItemType: ItemTypeEnum, StylusPoints: [PolyPaintStylusPoint], OutilSelectionne: String, Color: PolyPaintColor, ChannelId: String) {
         self.ItemType = ItemType
         self.StylusPoints = StylusPoints
