@@ -8,8 +8,9 @@ namespace PolyPaint.Modeles
 {
     public class SaveableCanvas
     {
-        public SaveableCanvas(string name, string base64Strokes, string base64Image, string canvasVisibility, string canvasProtection)
+        public SaveableCanvas(string canvasId, string name, string base64Strokes, string base64Image, string canvasVisibility, string canvasProtection)
         {
+            CanvasId = canvasId;
             Name = name;
             Base64Strokes = base64Strokes;
             Base64Image = base64Image;

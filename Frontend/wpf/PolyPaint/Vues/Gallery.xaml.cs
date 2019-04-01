@@ -143,11 +143,19 @@ namespace PolyPaint.Vues
             List<CanvasViewModel> canvas = new List<CanvasViewModel>();
             if(savedCanvas != null)
             {
-                foreach (var item in savedCanvas)
+                for (int item = 0; item < savedCanvas.Count; item++)
                 {
-                    var bitmapImage = (BitmapSource)new ImageSourceConverter().ConvertFrom(Convert.FromBase64String(item.Base64Image));
-                    var strokes = GenerateStrokesFromBytes(Convert.FromBase64String(item.Base64Strokes));
-                    canvas.Add(new CanvasViewModel(item.CanvasId, item.Name, bitmapImage, strokes, item.CanvasVisibility, item.CanvasProtection));
+                    for (int i=0; i<item; i++)
+                    {
+                        if (savedCanvas[item].Name == savedCanvas[i].Name)
+                        {
+                            canvas.RemoveAt(i);
+                        }
+                    }
+                    var bitmapImage = (BitmapSource)new ImageSourceConverter().ConvertFrom(Convert.FromBase64String(savedCanvas[item].Base64Image));
+                    var strokes = GenerateStrokesFromBytes(Convert.FromBase64String(savedCanvas[item].Base64Strokes));
+                    canvas.Add(new CanvasViewModel(savedCanvas[item].CanvasId, savedCanvas[item].Name, bitmapImage, strokes, savedCanvas[item].CanvasVisibility, savedCanvas[item].CanvasProtection));
+                  
                 }
                 
             }

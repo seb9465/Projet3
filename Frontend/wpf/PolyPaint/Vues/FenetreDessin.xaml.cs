@@ -191,10 +191,11 @@ namespace PolyPaint
             byte[] imageBytes = GetBytesForImage();
             string strokesToSend = Convert.ToBase64String(strokesBytes);
             string imageToSend = Convert.ToBase64String(imageBytes);
+            string CanvasId = DateTime.Now.ToString("yyyy.MM.dd.hh.mm.ss.ffffff");
             string CanvasName = canvasName;
             string CanvasVisibility = canvasVisibility;
             string CanvasProtection = canvasProtection;
-            SaveableCanvas canvas = new SaveableCanvas(CanvasName, strokesToSend, imageToSend, CanvasVisibility, CanvasProtection);
+            SaveableCanvas canvas = new SaveableCanvas(CanvasId, CanvasName, strokesToSend, imageToSend, CanvasVisibility, CanvasProtection);
 
             string canvasJson = JsonConvert.SerializeObject(canvas);
             using (HttpClient client = new HttpClient())
