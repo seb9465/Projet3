@@ -1,4 +1,6 @@
-﻿using PolyPaint.Modeles;
+﻿using MaterialDesignThemes.Wpf;
+using PolyPaint.Modeles;
+using PolyPaint.Structures;
 using PolyPaint.VueModeles;
 using System;
 using System.Collections.Generic;
@@ -28,15 +30,104 @@ namespace PolyPaint.Vues
         private ImageProtection imageProtection;
         private string username;
         FenetreDessin fenetreDessin = new FenetreDessin(ViewStateEnum.Online);
+        
+        private ChatWindow externalChatWindow;
+        bool isMenuOpen = false;
+        private ViewStateEnum _viewState { get; set; }
+        private MediaPlayer mediaPlayer = new MediaPlayer();
 
         public Gallery(List<SaveableCanvas> strokes, InkCanvas drawingSurface)
         {
             InitializeComponent();
             Canvas = ConvertStrokesToPNG(strokes, drawingSurface);
-            DataContext = Canvas;
+
+
+            DataContext = new VueModele();
+            (DataContext as VueModele).ChatClient.Initialize((string)Application.Current.Properties["token"]);
+            (DataContext as VueModele).ChatClient.MessageReceived += ScrollDown;
+            externalChatWindow = new ChatWindow(DataContext);
+
+            DataContext = Canvas; // Il faudrait reussir a utiliser plusieurs datacontext. Ici on a besoin du datacontext pour recuperer les donnee du chat ET des canvas. Cest pous ca que le chat marche pas dans la gallerie
             username = Application.Current.Properties["username"].ToString();
             usernameLabel.Content = username;
-           
+        }
+
+
+        private void NewCanva_Click(object sender, RoutedEventArgs e)
+        {
+        }
+
+
+        private void AddRoom(object sender, DialogClosingEventArgs eventArgs)
+        {
+            if (!Equals(eventArgs.Parameter, true)) return;
+
+            if (!string.IsNullOrWhiteSpace(roomTextBox.Text))
+            {
+                (DataContext as VueModele).ChatClient.CreateChannel(roomTextBox.Text.Trim());
+            }
+            clearRoomName(sender, eventArgs);
+        }
+
+        private void clearRoomName(object sender, RoutedEventArgs e)
+        {
+            roomTextBox.Text = "";
+        }
+        private void ScrollDown(object sender, MessageArgs args)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                messagesList.SelectedIndex = messagesList.Items.Count - 1;
+                messagesList.ScrollIntoView(messagesList.SelectedItem);
+            });
+        }
+        private void chatButton_Click(object sender, RoutedEventArgs e)
+        {
+            externalChatWindow.Show();
+            chatWrapper.Visibility = Visibility.Collapsed;
+            ScrollDown(null, null);
+        }
+
+        private void sendButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(messageTextBox.Text))
+            {
+                (DataContext as VueModele).ChatClient.SendMessage(messageTextBox.Text, (DataContext as VueModele).CurrentRoom);
+            }
+            mediaPlayer.Open(new Uri("SoundEffects//send.mp3", UriKind.Relative));
+            mediaPlayer.Volume = 100;
+            mediaPlayer.Play();
+            messageTextBox.Text = String.Empty;
+            messageTextBox.Focus();
+        }
+
+        private void hamburgerMenu_Click(object sender, RoutedEventArgs e)
+        {
+            if (isMenuOpen)
+            {
+                chatMenu.Width = 70;
+                chatTab.Visibility = Visibility.Collapsed;
+                isMenuOpen = false;
+                canvasStackPanel.Width = 1070;
+            }
+            else
+            {
+                chatMenu.Width = 500;
+                chatTab.Visibility = Visibility.Visible;
+                isMenuOpen = true;
+                canvasStackPanel.Width = 620;
+            }
+        }
+
+        private void EnterKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                if (sendButton.IsEnabled)
+                {
+                    sendButton_Click(sender, e);
+                }
+            }
         }
 
         private List<CanvasViewModel> ConvertStrokesToPNG(List<SaveableCanvas> savedCanvas, InkCanvas drawingSurface)

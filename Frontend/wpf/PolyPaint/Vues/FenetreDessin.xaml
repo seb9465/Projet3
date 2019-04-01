@@ -395,8 +395,8 @@
                       DragStarted="GlisserCommence" DragCompleted="GlisserTermine"
                       />
                 <Border BorderThickness="5,5,0,0" Grid.ColumnSpan="2" Margin="0,0,-696,-236" Grid.RowSpan="2">
-                    <InkCanvas ClipToBounds="True" Grid.Column="0" Grid.Row="0" Name="surfaceDessin" Margin="10,11,10,51"
-                           HorizontalAlignment="Stretch" VerticalAlignment="Stretch"                           
+                    <InkCanvas ClipToBounds="True" Grid.Column="0" Grid.Row="0" Name="surfaceDessin" Margin="10" Width="1200"
+                           HorizontalAlignment="Left" VerticalAlignment="Stretch"                           
                            MouseLeave="surfaceDessin_MouseLeave"
                            MouseMove="surfaceDessin_MouseMove"
                            PreviewMouseMove="InkCanvas_LeftMouseMove"
@@ -416,7 +416,7 @@
                     <ProgressBar  Style="{StaticResource MaterialDesignCircularProgressBar}" Value="0" IsIndeterminate="True" Width="50" Height="50" />
                 </Grid>
             </Grid>
-            <StackPanel x:Name="chatMenu" Background="Gainsboro" Width="70"  HorizontalAlignment="Right" Panel.ZIndex="100">
+            <StackPanel x:Name="chatMenu" Background="Gainsboro" Width="500"  HorizontalAlignment="Right" >
 
                 <ToggleButton x:Name="hamburgerMenu" Style="{StaticResource MaterialDesignActionToggleButton}" Foreground="Black" Background="Transparent" Click="hamburgerMenu_Click" Margin="0,10,20,0" HorizontalAlignment="Right">
                     <ToggleButton.Content>
@@ -427,8 +427,8 @@
                     </materialDesign:ToggleButtonAssist.OnContent>
                 </ToggleButton>
 
-                <StackPanel Orientation="Vertical" Margin="20" x:Name="chatTab" Visibility="Collapsed" Background="WhiteSmoke">
-                    <Border BorderThickness="1" BorderBrush="Gray" ClipToBounds="True" HorizontalAlignment="Stretch" Height="314">
+                <StackPanel Orientation="Vertical" Margin="20" x:Name="chatTab" Visibility="Visible" Background="WhiteSmoke">
+                    <Border BorderThickness="1" BorderBrush="Gray" ClipToBounds="True" HorizontalAlignment="Stretch" Height="450">
                         <StackPanel Orientation="Vertical" Margin="10" x:Name="chatWrapper">
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                                 <Button  x:Name="chatButton" HorizontalAlignment="Left" Margin="0,0,10,0"  Width="50" Click="chatButton_Click">
@@ -436,9 +436,9 @@
                                 </Button>
 
                             </StackPanel>
-                            <StackPanel Orientation="Horizontal">
+                            <StackPanel Orientation="Vertical">
 
-                                <materialDesign:DialogHost DialogClosing="AddRoom" Style="{StaticResource MaterialDesignEmbeddedDialogHost}" Margin="5,0,0,0" Width="269"  HorizontalAlignment="Left" Height="235">
+                                <materialDesign:DialogHost DialogClosing="AddRoom" Style="{StaticResource MaterialDesignEmbeddedDialogHost}" Margin="-55,-30,0,20" Width="320"  HorizontalAlignment="Center" Height="150">
                                     <materialDesign:DialogHost.DialogContent>
                                         <StackPanel Margin="15">
                                             <TextBlock>
