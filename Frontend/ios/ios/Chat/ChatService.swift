@@ -10,10 +10,15 @@ import Foundation
 import SwiftSignalRClient
 import PromiseKit
 
-class ChatService {
+protocol ChatServiceProtocol {
+    var messagesWhileAFK: [String: [Message]] { get set }
+}
+
+class ChatService: ChatServiceProtocol {
+    
     static let shared = ChatService();
     
-    var hubConnection: HubConnection;
+    private var hubConnection: HubConnection;
     var _members: Members;
     var currentChannel: Channel!;
     var connected: Bool = false;
@@ -21,7 +26,7 @@ class ChatService {
     var userChannels: ChannelsMessage = ChannelsMessage();
     var serverChannels: ChannelsMessage = ChannelsMessage();
     
-    var messagesWhileAFK: [String: [Message]] = [:];
+    var messagesWhileAFK: [String: [Message]];
     
     init() {
         print("[ CHAT ] INIT from ChatService");
@@ -31,6 +36,8 @@ class ChatService {
             .withHttpConnectionOptions() { httpConnectionOptions in
                 httpConnectionOptions.accessTokenProvider = { return USER_TOKEN; }}
             .build();
+        
+        self.messagesWhileAFK = [:];
     }
     
     public func connectToHub() -> Void {
@@ -46,7 +53,6 @@ class ChatService {
     public func initOnAnotherUserConnection(insertMessage: @escaping (_ message: Message) -> Void) -> Void {
         self.onSelfConnectionToChannel(insertMessage: insertMessage);
         self.onUserConnectionToChannel(insertMessage: insertMessage);
-        
         self.onUserDisconnectFromChannel(insertMessage: insertMessage);
     }
     
@@ -79,6 +85,7 @@ class ChatService {
     public func invokeFetchChannels() -> Void {
         self.hubConnection.invoke(method: "FetchChannels", arguments: [], invocationDidComplete: { error in
             print("[ CHAT ] Invoked FetchChannels");
+            
             if let e = error {
                 print("ERROR while invoking FetchChannels");
                 print(e);
@@ -92,10 +99,12 @@ class ChatService {
             print("[ CHAT ] On FetchChannels");
             
             let channelsJson: String = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self)!;
+            
             if let channelsJsonData = channelsJson.data(using: .utf8) {
                 let channels: ChannelsMessage = try! JSONDecoder().decode(ChannelsMessage.self, from: channelsJsonData);
                 self.userChannels.channels = [];
                 self.serverChannels.channels = [];
+                
                 for channel in channels.channels {
                     if (channel.connected) {
                         self.userChannels.channels.append(channel);
@@ -127,10 +136,12 @@ class ChatService {
             print("[ CHAT ] On FetchChannels");
             
             let channelsJson: String = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self)!;
+            
             if let channelsJsonData = channelsJson.data(using: .utf8) {
                 let channels: ChannelsMessage = try! JSONDecoder().decode(ChannelsMessage.self, from: channelsJsonData);
                 self.userChannels.channels = [];
                 self.serverChannels.channels = [];
+                
                 for channel in channels.channels {
                     if (channel.connected) {
                         self.userChannels.channels.append(channel);
@@ -146,6 +157,7 @@ class ChatService {
                 }
             }
         });
+        
         self.invokeFetchChannels();
     }
     

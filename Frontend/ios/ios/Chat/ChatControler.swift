@@ -30,9 +30,9 @@ class MsgChatController: MessagesViewController, MsgChatProtocol {
         messagesCollectionView.register(MyCustomCell.self)
         
         self.initDelegate();
+        
         ChatService.shared.initOnReceivingMessage(currentMemberName: self.member.name, insertMessage: self.insertMessage)
         ChatService.shared.initOnAnotherUserConnection(insertMessage: self.insertMessage);
-//        ChatService.shared.connectToGroup();
         
         self.navigationItem.hidesBackButton = true;
         let newBackButton = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(self.back(sender:)));
