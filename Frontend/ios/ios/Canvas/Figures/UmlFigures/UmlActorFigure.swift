@@ -79,5 +79,31 @@ class UmlActorFigure: UmlFigure {
         bezier5Path.lineWidth = 1
         bezier5Path.stroke()
     }
+    
+    override func exportViewModel() -> DrawViewModel {
+        let point1 = PolyPaintStylusPoint(X: Double(self.firstPoint.x), Y: Double(self.firstPoint.y), PressureFactor: 1)
+        let point2 = PolyPaintStylusPoint(X: Double(self.lastPoint.x), Y: Double(self.lastPoint.y), PressureFactor: 1)
+        
+        var drawViewModel: DrawViewModel = DrawViewModel()
+        drawViewModel.Guid = self.uuid.uuidString
+        drawViewModel.owner = UserDefaults.standard.string(forKey: "username")
+        drawViewModel.ItemType = self.itemType
+        drawViewModel.StylusPoints = [point1, point2]
+        drawViewModel.FillColor = PolyPaintColor(A: 255, R: 255, G: 1, B: 1)
+        drawViewModel.BorderColor = PolyPaintColor(A: 255, R: 255, G: 1, B: 1)
+        drawViewModel.BorderThickness = 2.0
+        drawViewModel.BorderStyle = "solid"
+        drawViewModel.ShapeTitle = "A_IMPLEMENTER"
+        drawViewModel.Methods = nil
+        drawViewModel.Properties = nil
+        drawViewModel.SourceTitle = nil
+        drawViewModel.DestinationTitle = nil
+        drawViewModel.ChannelId = "general"
+        drawViewModel.OutilSelectionne = nil
+        drawViewModel.LastElbowPosition = nil
+        drawViewModel.ImageBytes = nil
+        drawViewModel.Rotation = self.currentAngle
+        return drawViewModel
+    }
 }
 

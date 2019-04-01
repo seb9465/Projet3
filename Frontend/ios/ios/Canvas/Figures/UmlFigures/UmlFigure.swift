@@ -15,17 +15,19 @@ protocol TouchInputDelegate {
 }
 
 class UmlFigure : Figure {
-    
     var delegate: TouchInputDelegate?
+    
+    // DrawViewModel common attributes
+    var name: String!
     var figureColor: UIColor!
-    var lineWidth: CGFloat!
     var lineColor: UIColor!
-    var oldTouchedPoint: CGPoint!
+    var lineWidth: CGFloat!
+//    var oldTouchedPoint: CGPoint!
     
     var incomingConnections : [ConnectionFigure: String] = [:]
     var outgoingConnections : [ConnectionFigure: String] = [:]
     
-    private var currentAngle: Double = 0
+    var currentAngle: Double = 0
 
     var anchorPoints: AnchorPoints?;
     
