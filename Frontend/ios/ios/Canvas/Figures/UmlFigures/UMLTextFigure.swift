@@ -15,8 +15,6 @@ class UMLTextFigure: UmlFigure {
     
     init(firstPoint: CGPoint, lastPoint: CGPoint) {
         super.init(firstPoint: firstPoint, lastPoint: lastPoint, width: BASE_WIDTH, height: BASE_WIDTH)
-        self.figureID = Constants.figureIDCounter;
-        Constants.figureIDCounter += 1;
     }
     
     init(origin: CGPoint) {
@@ -38,5 +36,31 @@ class UMLTextFigure: UmlFigure {
         textLabel.text = self.text
         textLabel.textAlignment = .center
         textLabel.drawText(in: textRect)
+    }
+    
+    override func exportViewModel() -> DrawViewModel {
+        let point1 = PolyPaintStylusPoint(X: Double(self.firstPoint.x), Y: Double(self.firstPoint.y), PressureFactor: 1)
+        let point2 = PolyPaintStylusPoint(X: Double(self.lastPoint.x), Y: Double(self.lastPoint.y), PressureFactor: 1)
+        
+        var drawViewModel: DrawViewModel = DrawViewModel()
+        drawViewModel.Guid = self.uuid.uuidString
+        drawViewModel.owner = UserDefaults.standard.string(forKey: "username")
+        drawViewModel.ItemType = self.itemType
+        drawViewModel.StylusPoints = [point1, point2]
+        drawViewModel.FillColor = PolyPaintColor(A: 255, R: 255, G: 1, B: 1)
+        drawViewModel.BorderColor = PolyPaintColor(A: 255, R: 255, G: 1, B: 1)
+        drawViewModel.BorderThickness = 2.0
+        drawViewModel.BorderStyle = "solid"
+        drawViewModel.ShapeTitle = self.text
+        drawViewModel.Methods = nil
+        drawViewModel.Properties = nil
+        drawViewModel.SourceTitle = nil
+        drawViewModel.DestinationTitle = nil
+        drawViewModel.ChannelId = "general"
+        drawViewModel.OutilSelectionne = nil
+        drawViewModel.LastElbowPosition = nil
+        drawViewModel.ImageBytes = nil
+        drawViewModel.Rotation = self.currentAngle
+        return drawViewModel
     }
 }

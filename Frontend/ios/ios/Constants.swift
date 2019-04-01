@@ -30,6 +30,4 @@ struct Constants {
         formatter.dateFormat = "HH:mm:ss";
         return formatter;
     }()
-    
-    static var figureIDCounter: Int = 0;
 }

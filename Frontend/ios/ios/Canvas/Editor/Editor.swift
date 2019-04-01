@@ -41,7 +41,7 @@ class Editor {
     
     func select(figure: Figure) {
         self.selectedFigures.append(figure);
-        self.selectionOutline.append(SelectionOutline(firstPoint: figure.frame.origin, lastPoint: CGPoint(x: figure.frame.maxX, y: figure.frame.maxY), associatedFigureID: figure.figureID));
+        self.selectionOutline.append(SelectionOutline(firstPoint: figure.frame.origin, lastPoint: CGPoint(x: figure.frame.maxX, y: figure.frame.maxY), associatedFigureID: figure.uuid));
         self.selectionOutline.last!.addSelectedFigureLayers();
         self.editorView.addSubview(self.selectionOutline.last!);
     }
@@ -67,7 +67,7 @@ class Editor {
     
     func deselectFigure(figure: Figure) {
         if (self.selectionOutline.count > 0) {
-            let tmpOutlineIndex: Int = self.selectionOutline.firstIndex(where: { $0.associatedFigureID == figure.figureID })!;
+            let tmpOutlineIndex: Int = self.selectionOutline.firstIndex(where: { $0.associatedFigureID == figure.uuid })!;
             self.selectionOutline[tmpOutlineIndex].removeFromSuperview();
             self.selectionOutline.remove(at: tmpOutlineIndex);
         }
@@ -346,7 +346,7 @@ extension Editor : TouchInputDelegate {
             self.touchEventState = .TRANSLATE;
             let offset = CGPoint(x: point.x - self.previousTouchPoint.x, y: point.y - self.previousTouchPoint.y)
             for fig in self.selectedFigures {
-                let tmpOutlineIndex: Int = self.selectionOutline.firstIndex(where: { $0.associatedFigureID == fig.figureID })!;
+                let tmpOutlineIndex: Int = self.selectionOutline.firstIndex(where: { $0.associatedFigureID == fig.uuid })!;
                 (fig as! UmlFigure).translate(by: offset)
                 self.selectionOutline[tmpOutlineIndex].translate(by: offset)
             }
@@ -423,7 +423,16 @@ extension Editor : TouchInputDelegate {
 }
 
 extension Editor: CollaborationHubDelegate {
-    func updateCanvas(itemType: ItemTypeEnum, firstPoint: CGPoint, lastPoint: CGPoint) {
+    func updateCanvas(itemMessage: ItemMessage) {
+        for drawViewModel in itemMessage.Items {
+            if (self.figures.contains(where: {$0.uuid.uuidString == drawViewModel.Guid})) {
+                // Handle quand il est la
+                return
+            }
+            
+            // Handle quand il est pas la
+        }
+        
         self.insertFigure(itemType: itemType, firstPoint: firstPoint, lastPoint: lastPoint)
     }
     

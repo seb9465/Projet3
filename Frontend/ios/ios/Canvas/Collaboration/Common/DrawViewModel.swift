@@ -7,30 +7,26 @@
 //
 
 struct DrawViewModel: Codable {
-    var Guid: String!
-    var owner: String!
-    var ItemType: ItemTypeEnum!
-    var StylusPoints: [PolyPaintStylusPoint]!
-    var Color: PolyPaintColor!
-    var BorderThickness: Double!
-    var BorderStyle: String!
-    var ShapeTitle: String!
-    var Methods: [String]!
-    var Properties: [String]!
-    var SourceTitle: String!
-    var DestinationTitle: String!
-    var ChannelId: String!
-    var OutilSelectionne: String!
-    var LastElbowPosition: PolyPaintStylusPoint!
-    var ImageBytes: [UInt8]!
+    var Guid: String?
+    var owner: String?
+    var ItemType: ItemTypeEnum?
+    var StylusPoints: [PolyPaintStylusPoint]?
+    var FillColor: PolyPaintColor?
+    var BorderColor: PolyPaintColor?
+    var BorderThickness: Double?
+    var BorderStyle: String?
+    var ShapeTitle: String?
+    var Methods: [String]?
+    var Properties: [String]?
+    var SourceTitle: String?
+    var DestinationTitle: String?
+    var ChannelId: String?
+    var OutilSelectionne: String?
+    var LastElbowPosition: PolyPaintStylusPoint?
+    var ImageBytes: [UInt8]?
+    var Rotation: Double?
 
-    init(ItemType: ItemTypeEnum, StylusPoints: [PolyPaintStylusPoint], OutilSelectionne: String, Color: PolyPaintColor, ChannelId: String) {
-        self.ItemType = ItemType
-        self.StylusPoints = StylusPoints
-        self.OutilSelectionne = OutilSelectionne
-        self.Color = Color
-        self.ChannelId = ChannelId
-    }
+    init() {}
 }
 
 enum ItemTypeEnum: Int, Codable {

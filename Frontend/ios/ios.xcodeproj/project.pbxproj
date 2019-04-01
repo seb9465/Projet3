@@ -40,7 +40,7 @@
 		3DA5CA55224444B100087298 /* ConnectionAssociationBi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DA5CA54224444B100087298 /* ConnectionAssociationBi.swift */; };
 		3DA5CA57224444C100087298 /* ConnectionHeritage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DA5CA56224444C100087298 /* ConnectionHeritage.swift */; };
 		3DA5CA59224444D000087298 /* ConnectionComposition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DA5CA58224444D000087298 /* ConnectionComposition.swift */; };
-		3DA5CA5B224444DD00087298 /* ConnectionAggregation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DA5CA5A224444DD00087298 /* ConnectionAggregation.swift */; };
+		3DA5CA5B224444DD00087298 /* ConnectionAgregation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DA5CA5A224444DD00087298 /* ConnectionAgregation.swift */; };
 		3DABD3DB224141DE00707D86 /* AddAttributeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DABD3D9224141DE00707D86 /* AddAttributeCell.swift */; };
 		3DABD3E02241433C00707D86 /* ClassAttributeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DABD3DE2241433C00707D86 /* ClassAttributeCell.swift */; };
 		3DABD3F222418FC300707D86 /* StyleTableController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DABD3F122418FC300707D86 /* StyleTableController.swift */; };
@@ -116,6 +116,7 @@
 		C4D12710224424FC004B3641 /* UmlPhaseFigure.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D1270F224424FC004B3641 /* UmlPhaseFigure.swift */; };
 		C4D1271222457750004B3641 /* LocalGalleryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D1271122457750004B3641 /* LocalGalleryController.swift */; };
 		C4D1271422459521004B3641 /* UMLTextFigure.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D1271322459521004B3641 /* UMLTextFigure.swift */; };
+		C4D1A8732252A3B00011F1BF /* ItemMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D1A8722252A3B00011F1BF /* ItemMessage.swift */; };
 		C4D6BB2722384F5B00121695 /* AnchorPoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D6BB2622384F5B00121695 /* AnchorPoints.swift */; };
 		C5724AD99504D99A25966BB9 /* Pods_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6CD8C54089242A6862A3C2E4 /* Pods_ios.framework */; };
 /* End PBXBuildFile section */
@@ -164,7 +165,7 @@
 		3DA5CA54224444B100087298 /* ConnectionAssociationBi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionAssociationBi.swift; sourceTree = "<group>"; };
 		3DA5CA56224444C100087298 /* ConnectionHeritage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionHeritage.swift; sourceTree = "<group>"; };
 		3DA5CA58224444D000087298 /* ConnectionComposition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionComposition.swift; sourceTree = "<group>"; };
-		3DA5CA5A224444DD00087298 /* ConnectionAggregation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionAggregation.swift; sourceTree = "<group>"; };
+		3DA5CA5A224444DD00087298 /* ConnectionAgregation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionAgregation.swift; sourceTree = "<group>"; };
 		3DABD3D9224141DE00707D86 /* AddAttributeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAttributeCell.swift; sourceTree = "<group>"; };
 		3DABD3DE2241433C00707D86 /* ClassAttributeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassAttributeCell.swift; sourceTree = "<group>"; };
 		3DABD3F122418FC300707D86 /* StyleTableController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleTableController.swift; sourceTree = "<group>"; };
@@ -246,6 +247,7 @@
 		C4D1270F224424FC004B3641 /* UmlPhaseFigure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UmlPhaseFigure.swift; sourceTree = "<group>"; };
 		C4D1271122457750004B3641 /* LocalGalleryController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalGalleryController.swift; sourceTree = "<group>"; };
 		C4D1271322459521004B3641 /* UMLTextFigure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UMLTextFigure.swift; sourceTree = "<group>"; };
+		C4D1A8722252A3B00011F1BF /* ItemMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemMessage.swift; sourceTree = "<group>"; };
 		C4D6BB2622384F5B00121695 /* AnchorPoints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnchorPoints.swift; sourceTree = "<group>"; };
 		C6C9AA086604975DCA6FF292 /* Pods-iosTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iosTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-iosTests/Pods-iosTests.debug.xcconfig"; sourceTree = "<group>"; };
 		E7966B3EFE20A93B4BE0DB10 /* Pods-ios.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ios.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ios/Pods-ios.debug.xcconfig"; sourceTree = "<group>"; };
@@ -281,7 +283,7 @@
 				3DA5CA54224444B100087298 /* ConnectionAssociationBi.swift */,
 				3DA5CA56224444C100087298 /* ConnectionHeritage.swift */,
 				3DA5CA58224444D000087298 /* ConnectionComposition.swift */,
-				3DA5CA5A224444DD00087298 /* ConnectionAggregation.swift */,
+				3DA5CA5A224444DD00087298 /* ConnectionAgregation.swift */,
 			);
 			path = ConnectionFigures;
 			sourceTree = "<group>";
@@ -377,6 +379,7 @@
 			isa = PBXGroup;
 			children = (
 				3D6E955C2230839900BC7BE7 /* DrawViewModel.swift */,
+				C4D1A8722252A3B00011F1BF /* ItemMessage.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -993,7 +996,7 @@
 				3DA5CA43224414D200087298 /* PublicGalleryController.swift in Sources */,
 				3D2052A9224A944C00C488F1 /* ColorPicker.swift in Sources */,
 				3DA5CA59224444D000087298 /* ConnectionComposition.swift in Sources */,
-				3DA5CA5B224444DD00087298 /* ConnectionAggregation.swift in Sources */,
+				3DA5CA5B224444DD00087298 /* ConnectionAgregation.swift in Sources */,
 				3D121EDC22209E070074C61C /* PlaceHolderCell.swift in Sources */,
 				3D0A917322388F6E002FCB74 /* ConnectionFigure.swift in Sources */,
 				3D6E955D2230839900BC7BE7 /* DrawViewModel.swift in Sources */,
@@ -1026,6 +1029,7 @@
 				3D6E4C3D223ADE7000E391D4 /* BorderCell.swift in Sources */,
 				B7567948220F355F00F80B12 /* Constants.swift in Sources */,
 				C4D12706224418F3004B3641 /* UmlCommentFigure.swift in Sources */,
+				C4D1A8732252A3B00011F1BF /* ItemMessage.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
