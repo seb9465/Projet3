@@ -177,7 +177,7 @@ class ChatService {
                         self._hubConnection.invoke(method: "ConnectToChannel", arguments: [jsondata], invocationDidComplete: { error in
                             print("[ CHAT ] Invoked ConnectToChannel.");
                             
-                            if let e = error {
+                            if error != nil {
                                 print("ERROR while invoking ConnectToChannel");
                             }
                         });
@@ -328,7 +328,7 @@ class ChatService {
         self._hubConnection.invoke(method: "CreateChannel", arguments: [newChannelJsonData], invocationDidComplete: { error in
             print("[ CHAT ] Invoke CreateChannel");
             
-            if let e = error {
+            if error != nil {
                 print("ERROR while invoking CreateChannel");
             }
         });
@@ -341,7 +341,7 @@ class ChatService {
         self._hubConnection.invoke(method: "ConnectToChannel", arguments: [jsondata], invocationDidComplete: { error in
             print("[ CHAT ] Invoked ConnectToChannel.");
             
-            if let e = error {
+            if error != nil {
                 print("ERROR while invoking ConnectToChannel");
             }
         });
