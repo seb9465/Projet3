@@ -14,16 +14,36 @@ import MessageKit
 // Used for the frontend-backend communication.
 
 class ChatMessage: Codable {
-    var username: String;
-    var message: String;
-    var channelId: String;
-    var timestamp: String;
+    private var _username: String;
+    private var _message: String;
+    private var _channelId: String;
+    private var _timestamp: String;
     
     init(user: String, message: String, channelId: String, timestamp: String? = "") {
-        self.username = user;
-        self.message = message;
-        self.channelId = channelId;
-        self.timestamp = timestamp!;
+        self._username = user;
+        self._message = message;
+        self._channelId = channelId;
+        self._timestamp = timestamp!;
+    }
+    
+    public var username: String {
+        get { return self._username }
+        set { self._username = newValue }
+    }
+    
+    public var message: String {
+        get { return self._message }
+        set { self._message = newValue }
+    }
+    
+    public var channelId: String {
+        get { return self._channelId }
+        set { self._channelId = newValue }
+    }
+    
+    public var timestamp: String {
+        get { return self._timestamp }
+        set { self._timestamp = newValue }
     }
 }
 
