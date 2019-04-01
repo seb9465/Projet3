@@ -196,12 +196,15 @@ namespace PolyPaint.Utilitaires
             (stroke as ICanvasable).AddToCanvas();
         }
 
-        internal void ContextualMenuClick(InkCanvas surfaceDessin, string header, VueModele vm)
+        internal async void ContextualMenuClick(InkCanvas surfaceDessin, string header, VueModele vm)
         {
+            var rebuilder = new StrokeBuilder();
             switch (header)
             {
                 case "SelectAll":
-                    surfaceDessin.Select(surfaceDessin.Strokes);
+                    vm.SelectItems(surfaceDessin, surfaceDessin.Strokes);
+                    var list = rebuilder.GetDrawViewModelsFromStrokes(surfaceDessin.GetSelectedStrokes());
+                    await vm.CollaborationClient.CollaborativeSelectAsync(list);
                     break;
                 case "InvertSelection":
                     StrokeCollection strokesToSelect = new StrokeCollection();
@@ -210,32 +213,37 @@ namespace PolyPaint.Utilitaires
                         if (!surfaceDessin.GetSelectedStrokes().Contains(stroke))
                             strokesToSelect.Add(stroke);
                     }
-                    surfaceDessin.Select(strokesToSelect);
+                    vm.SelectItems(surfaceDessin, strokesToSelect);
+                    list = rebuilder.GetDrawViewModelsFromStrokes(surfaceDessin.GetSelectedStrokes());
+                    await vm.CollaborationClient.CollaborativeSelectAsync(list);
                     break;
                 case "InvertColors":
                     InvertStrokesColors(surfaceDessin);
+                    list = rebuilder.GetDrawViewModelsFromStrokes(surfaceDessin.GetSelectedStrokes());
+                    await vm.CollaborationClient.CollaborativeDrawAsync(list);
                     break;
                 case "TransformAllShapes":
                     TransformAllShapes(surfaceDessin, vm);
+                    list = rebuilder.GetDrawViewModelsFromStrokes(new StrokeCollection(surfaceDessin.Strokes.Where(x => x is AbstractShapeStroke && (!vm.GetOnlineSelection().Values.Any(y => y.Any(z => z.Guid == ((AbstractStroke)x).Guid.ToString()))))));
+                    await vm.CollaborationClient.CollaborativeDrawAsync(list);
                     break;
                 case "TransformAllConnections":
                     TransformAllConnections(surfaceDessin, vm);
+                    list = rebuilder.GetDrawViewModelsFromStrokes(new StrokeCollection(surfaceDessin.Strokes.Where(x => x is AbstractLineStroke && (!vm.GetOnlineSelection().Values.Any(y => y.Any(z => z.Guid == ((AbstractStroke)x).Guid.ToString()))))));
+                    await vm.CollaborationClient.CollaborativeDrawAsync(list);
                     break;
                 case "TransformAllShapesAndConnections":
                     TransformAllShapes(surfaceDessin, vm);
                     TransformAllConnections(surfaceDessin, vm);
+                    list = rebuilder.GetDrawViewModelsFromStrokes(new StrokeCollection(surfaceDessin.Strokes.Where(x => x is AbstractStroke && (!vm.GetOnlineSelection().Values.Any(y => y.Any(z => z.Guid == ((AbstractStroke)x).Guid.ToString()))))));
+                    await vm.CollaborationClient.CollaborativeDrawAsync(list);
                     break;
             }
         }
 
         private void InvertStrokesColors(InkCanvas surfaceDessin)
         {
-            foreach (AbstractShapeStroke stroke in surfaceDessin.GetSelectedStrokes().Where(x => x is AbstractShapeStroke))
-            {
-                stroke.SetBorderColor(InvertColorValue(stroke.BorderColor).ToString());
-                stroke.SetFillColor(InvertColorValue(stroke.FillColor).ToString());
-            }
-            foreach (AbstractLineStroke stroke in surfaceDessin.GetSelectedStrokes().Where(x => x is AbstractLineStroke))
+            foreach (AbstractStroke stroke in surfaceDessin.GetSelectedStrokes().Where(x => x is AbstractStroke))
             {
                 stroke.SetBorderColor(InvertColorValue(stroke.BorderColor).ToString());
                 stroke.SetFillColor(InvertColorValue(stroke.FillColor).ToString());
@@ -249,20 +257,26 @@ namespace PolyPaint.Utilitaires
 
         private void TransformAllShapes(InkCanvas surfaceDessin, VueModele vm)
         {
-            foreach (AbstractShapeStroke stroke in surfaceDessin.Strokes.Where(x => x is AbstractShapeStroke))
+            foreach (AbstractShapeStroke stroke in surfaceDessin.Strokes.Where(x => x is AbstractShapeStroke && (!vm.GetOnlineSelection().Values.Any(y => y.Any(z => z.Guid == ((AbstractStroke)x).Guid.ToString())))))
             {
-                stroke.SetBorderColor(vm.CouleurSelectionneeBordure);
-                stroke.SetFillColor(vm.CouleurSelectionneeRemplissage);
-                //stroke.SetBorderStyle(Tools.DashAssociations[vm.SelectedBorder]);
+                if (vm.CouleurSelectionneeBordure != "")
+                    stroke.SetBorderColor(vm.CouleurSelectionneeBordure);
+                if (vm.CouleurSelectionneeRemplissage != "")
+                    stroke.SetFillColor(vm.CouleurSelectionneeRemplissage);
+                if (vm.SelectedBorder != "")
+                    stroke.SetBorderStyle(Tools.DashAssociations[vm.SelectedBorder]);
             }
         }
         private void TransformAllConnections(InkCanvas surfaceDessin, VueModele vm)
         {
-            foreach (AbstractLineStroke stroke in surfaceDessin.Strokes.Where(x => x is AbstractLineStroke))
+            foreach (AbstractLineStroke stroke in surfaceDessin.Strokes.Where(x => x is AbstractLineStroke && (!vm.GetOnlineSelection().Values.Any(y => y.Any(z => z.Guid == ((AbstractStroke)x).Guid.ToString())))))
             {
-                stroke.SetBorderColor(vm.CouleurSelectionneeBordure);
-                stroke.SetFillColor(vm.CouleurSelectionneeRemplissage);
-                //stroke.SetBorderStyle(Tools.DashAssociations[vm.SelectedBorder]);
+                if (vm.CouleurSelectionneeBordure != "")
+                    stroke.SetBorderColor(vm.CouleurSelectionneeBordure);
+                if (vm.CouleurSelectionneeRemplissage != "")
+                    stroke.SetFillColor(vm.CouleurSelectionneeRemplissage);
+                if (vm.SelectedBorder != "")
+                    stroke.SetBorderStyle(Tools.DashAssociations[vm.SelectedBorder]);
             }
         }
     }

@@ -153,15 +153,20 @@ namespace PolyPaint.VueModeles
         public RelayCommand<Room> RoomConnect { get; set; }
         public RelayCommand<object> Reinitialiser { get; set; }
 
-        public void SelectItem(InkCanvas surfaceDessin, Point mouseLeftDownPoint)
+        public StrokeCollection SelectItem(InkCanvas surfaceDessin, Point mouseLeftDownPoint)
         {
-            editeur.SelectItem(surfaceDessin, mouseLeftDownPoint, this);
             editeur.OutilSelectionne = "select";
+            return editeur.SelectItem(surfaceDessin, mouseLeftDownPoint, this);
         }
-        public void SelectItemLasso(InkCanvas surfaceDessin, Rect bounds)
+        public StrokeCollection SelectItemLasso(InkCanvas surfaceDessin, Rect bounds)
         {
-            editeur.SelectItemLasso(surfaceDessin, bounds, this);
             editeur.OutilSelectionne = "select";
+            return editeur.SelectItemLasso(surfaceDessin, bounds, this);
+        }
+        public StrokeCollection SelectItems(InkCanvas surfaceDessin, StrokeCollection strokes)
+        {
+            editeur.OutilSelectionne = "select";
+            return editeur.SelectItems(surfaceDessin, strokes, this);
         }
         public void SelectNothing(InkCanvas surfaceDessin)
         {
