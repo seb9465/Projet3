@@ -423,7 +423,16 @@ extension Editor : TouchInputDelegate {
 }
 
 extension Editor: CollaborationHubDelegate {
-    func updateCanvas(itemType: ItemTypeEnum, firstPoint: CGPoint, lastPoint: CGPoint) {
+    func updateCanvas(itemMessage: ItemMessage) {
+        for drawViewModel in itemMessage.Items {
+            if (self.figures.contains(where: {$0.uuid.uuidString == drawViewModel.Guid})) {
+                // Handle quand il est la
+                return
+            }
+            
+            // Handle quand il est pas la
+        }
+        
         self.insertFigure(itemType: itemType, firstPoint: firstPoint, lastPoint: lastPoint)
     }
     

@@ -7,24 +7,24 @@
 //
 
 struct DrawViewModel: Codable {
-    var Guid: String!
-    var owner: String!
-    var ItemType: ItemTypeEnum!
-    var StylusPoints: [PolyPaintStylusPoint]!
-    var FillColor: PolyPaintColor!
-    var BorderColor: PolyPaintColor!
-    var BorderThickness: Double!
-    var BorderStyle: String!
-    var ShapeTitle: String!
-    var Methods: [String]!
-    var Properties: [String]!
-    var SourceTitle: String!
-    var DestinationTitle: String!
-    var ChannelId: String!
-    var OutilSelectionne: String!
-    var LastElbowPosition: PolyPaintStylusPoint!
-    var ImageBytes: [UInt8]!
-    var Rotation: Double
+    var Guid: String?
+    var owner: String?
+    var ItemType: ItemTypeEnum?
+    var StylusPoints: [PolyPaintStylusPoint]?
+    var FillColor: PolyPaintColor?
+    var BorderColor: PolyPaintColor?
+    var BorderThickness: Double?
+    var BorderStyle: String?
+    var ShapeTitle: String?
+    var Methods: [String]?
+    var Properties: [String]?
+    var SourceTitle: String?
+    var DestinationTitle: String?
+    var ChannelId: String?
+    var OutilSelectionne: String?
+    var LastElbowPosition: PolyPaintStylusPoint?
+    var ImageBytes: [UInt8]?
+    var Rotation: Double?
 
     init() {}
 }

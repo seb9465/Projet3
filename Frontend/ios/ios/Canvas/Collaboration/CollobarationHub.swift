@@ -82,14 +82,14 @@ class CollaborationHub {
         });
     }
     
+    // Send a new figure to the collaborative Hub
     public func postNewFigure(figure: Figure) -> Void {
-        //  let model = FigureFactory.shared.getFigure(type: itemType, touchedPoint: origin)?.exportToViewModel(itemType: itemType)
-        
         let itemMessage = ItemMessage(
             CanvasId: "general",
             Username: UserDefaults.standard.string(forKey: "username")!,
-            Items: [figure.exportToViewModel()]
+            Items: [figure.exportViewModel()]
         )
+
         let jsonEncoder = JSONEncoder()
         let jsonData = try! jsonEncoder.encode(itemMessage)
         let jsonString = String(data: jsonData, encoding: .utf8)
@@ -102,19 +102,16 @@ class CollaborationHub {
         });
     }
     
+    // Receive a figure from the collaboratibve Hub
     public func onDraw() -> Void {
         self.hubConnection.on(method: "Draw", callback: { (args, typeConverter) in
             print("[ Collab ] Received new figure")
 
             let jsonString: String = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self)!;
             let jsonData = jsonString.data(using: .utf8)
+            let itemMessage: ItemMessage = try! JSONDecoder().decode(ItemMessage.self, from: jsonData!);
             
-            let viewModel: ItemMessage = try! JSONDecoder().decode(ItemMessage.self, from: jsonData!);
-            
-            let fpoint: CGPoint = CGPoint(x: viewModel.StylusPoints[0].X, y: viewModel.StylusPoints[0].Y)
-            let lpoint: CGPoint = CGPoint(x: viewModel.StylusPoints[1].X, y: viewModel.StylusPoints[1].Y)
-            
-            self.delegate!.updateCanvas(itemType: viewModel.ItemType, firstPoint: fpoint, lastPoint: lpoint)
+            self.delegate!.updateCanvas(itemMessage)
         })
     }
     //

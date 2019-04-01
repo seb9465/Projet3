@@ -16,23 +16,38 @@ class Figure: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.uuid = UUID.init()
+        self.uuid = UUID()
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public func exportToViewModel() -> DrawViewModel {
+    public func exportViewModel() -> DrawViewModel {
         let point1 = PolyPaintStylusPoint(X: Double(self.firstPoint.x), Y: Double(self.firstPoint.y), PressureFactor: 1)
         let point2 = PolyPaintStylusPoint(X: Double(self.lastPoint.x), Y: Double(self.lastPoint.y), PressureFactor: 1)
-        let color: PolyPaintColor = PolyPaintColor(A: 255, R: 255, G: 1, B: 1)
     
-        var viewModel: DrawViewModel = DrawViewModel()
-        viewModel.Guid = self.uuid
-        viewModel.owner = UserDefaults.standard.string(forKey: "username")
-        viewModel.ItemType = self.itemType
-        viewModel.StylusPoints = [point1, point2]
+        var drawViewModel: DrawViewModel = DrawViewModel()
+        drawViewModel.Guid = self.uuid.uuidString
+        drawViewModel.owner = UserDefaults.standard.string(forKey: "username")
+        drawViewModel.ItemType = self.itemType
+        drawViewModel.StylusPoints = [point1, point2]
+        drawViewModel.FillColor = PolyPaintColor(A: 255, R: 255, G: 1, B: 1)
+        drawViewModel.BorderColor = PolyPaintColor(A: 255, R: 255, G: 1, B: 1)
+        drawViewModel.BorderThickness = 2.0
+        drawViewModel.BorderStyle = "solid"
+        drawViewModel.ShapeTitle = "shapeTitle"
+        drawViewModel.Methods = []
+        drawViewModel.Properties = []
+        drawViewModel.SourceTitle = "source"
+        drawViewModel.DestinationTitle = "destination"
+        drawViewModel.ChannelId = "general"
+        drawViewModel.OutilSelectionne = "jai_chier_dans_le_plat_du_jour"
+        drawViewModel.LastElbowPosition = point1
+        drawViewModel.ImageBytes = [UInt8(exactly: 0.0)!]
+        drawViewModel.Rotation = 0.0
+        
+        return drawViewModel
     }
     
     public func rotate(orientation: RotateOrientation) -> Void {}
