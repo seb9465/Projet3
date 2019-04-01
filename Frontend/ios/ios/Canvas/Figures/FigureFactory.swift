@@ -47,7 +47,7 @@ class FigureFactory {
     }
     
     // Alternate init to create UmlFigures on user tap
-    public func getFigure(type: ItemTypeEnum, touchedPoint: CGPoint) -> Figure? {
+    public func getFigure(type: ItemTypeEnum, touchedPoint: CGPoint) -> UmlFigure? {
         switch (type) {
         case .UmlClass :
             return UmlClassFigure(origin: touchedPoint)

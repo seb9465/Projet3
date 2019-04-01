@@ -8,9 +8,10 @@
 
 import Foundation
 import SwiftSignalRClient
+import JWTDecode
 
 protocol CollaborationHubDelegate {
-    func updateCanvas(itemType: ItemTypeEnum, firstPoint: CGPoint, lastPoint: CGPoint)
+    func updateCanvas(itemMessage: ItemMessage)
     func updateClear();
 }
 
@@ -84,9 +85,12 @@ class CollaborationHub {
     
     // Send a new figure to the collaborative Hub
     public func postNewFigure(figure: Figure) -> Void {
+        let token = UserDefaults.standard.string(forKey: "token");
+        let jwt = try! decode(jwt: token!)
+        let username = jwt.claim(name: "unique_name").string
         let itemMessage = ItemMessage(
             CanvasId: "general",
-            Username: UserDefaults.standard.string(forKey: "username")!,
+            Username: username!,
             Items: [figure.exportViewModel()!]
         )
 
@@ -111,7 +115,7 @@ class CollaborationHub {
             let jsonData = jsonString.data(using: .utf8)
             let itemMessage: ItemMessage = try! JSONDecoder().decode(ItemMessage.self, from: jsonData!);
             
-            self.delegate!.updateCanvas(itemMessage)
+            self.delegate!.updateCanvas(itemMessage: itemMessage)
         })
     }
     //

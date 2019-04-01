@@ -176,6 +176,7 @@ extension UmlFigure {
 // Touch Interaction Logic
 extension UmlFigure {
     public override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        print("fired")
         let touch = touches.first
         guard let point = touch?.location(in: self) else { return }
         guard let sublayers = self.layer.sublayers as? [CAShapeLayer] else { return }

@@ -296,6 +296,8 @@ extension Editor: SideToolbarDelegate {
 
 extension Editor : TouchInputDelegate {
     func notifyTouchBegan(action: String, point: CGPoint, figure: Figure?) {
+        print(action)
+
         switch (self.touchEventState) {
         case .SELECT:
             self.initialTouchPoint = point
@@ -325,7 +327,16 @@ extension Editor : TouchInputDelegate {
         case .TRANSLATE:
             break
         case .INSERT:
-            CollaborationHub.shared.postNewFigure(origin: point, itemType: currentFigureType)
+            // Get une figure dans la factory
+            // ajouter la figure au canvas
+            // export le viewModel de la figure
+            // post le view model au HUB
+            
+            let figure = FigureFactory.shared.getFigure(type: self.currentFigureType, touchedPoint: point)!
+            figure.delegate = self
+            self.figures.append(figure)
+            self.editorView.addSubview(figure)
+            CollaborationHub.shared.postNewFigure(figure: figure)
             break
         case .CONNECTION:
             break
@@ -433,7 +444,7 @@ extension Editor: CollaborationHubDelegate {
             // Handle quand il est pas la
         }
         
-        self.insertFigure(itemType: itemType, firstPoint: firstPoint, lastPoint: lastPoint)
+//        sself.insertFigure(itemType: itemType, firstPoint: firstPoint, lastPoint: lastPoint)
     }
     
     func updateClear() {
