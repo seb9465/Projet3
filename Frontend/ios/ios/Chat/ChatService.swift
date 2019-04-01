@@ -10,45 +10,56 @@ import Foundation
 import SwiftSignalRClient
 import PromiseKit
 
-protocol ChatServiceProtocol {
-    var messagesWhileAFK: [String: [Message]] { get set }
-    var currentChannel: Channel! { get set }
-    var userChannels: ChannelsMessage { get }
-    var serverChannels: ChannelsMessage { get }
-}
-
-class ChatService: ChatServiceProtocol {
+class ChatService {
     
     static let shared = ChatService();
     
-    private var hubConnection: HubConnection;
+    private var _hubConnection: HubConnection;
     private var _members: Members;
-    private var connected: Bool = false;
+    private var _connected: Bool;
+    private var _currentChannel: Channel!;
+    private var _userChannels: ChannelsMessage;
+    private var _serverChannels: ChannelsMessage;
+    private var _messagesWhileAFK: [String: [Message]];
     
-    var currentChannel: Channel!;
-    var userChannels: ChannelsMessage;
-    var serverChannels: ChannelsMessage;
-    var messagesWhileAFK: [String: [Message]];
+    public var currentChannel: Channel! {
+        get { return self._currentChannel }
+        set { self._currentChannel = newValue }
+    }
+    
+    public var userChannels: ChannelsMessage {
+        get { return self._userChannels }
+    }
+    
+    public var serverChannels: ChannelsMessage {
+        get { return self._serverChannels }
+    }
+    
+    public var messagesWhileAFK: [ String: [Message]] {
+        get { return self._messagesWhileAFK }
+        set { self._messagesWhileAFK = newValue }
+    }
     
     init() {
         print("[ CHAT ] INIT from ChatService");
         self._members = Members();
         
-        self.hubConnection = HubConnectionBuilder(url: URL(string: Constants.CHAT_URL)!)
+        self._hubConnection = HubConnectionBuilder(url: URL(string: Constants.CHAT_URL)!)
             .withHttpConnectionOptions() { httpConnectionOptions in
                 httpConnectionOptions.accessTokenProvider = { return USER_TOKEN; }}
             .build();
         
-        self.messagesWhileAFK = [:];
-        self.currentChannel = nil;
-        self.userChannels = ChannelsMessage();
-        self.serverChannels = ChannelsMessage();
+        self._messagesWhileAFK = [:];
+        self._currentChannel = nil;
+        self._userChannels = ChannelsMessage();
+        self._serverChannels = ChannelsMessage();
+        self._connected = false;
     }
     
     public func connectToHub() -> Void {
         print("[ CHAT ] Connect to hub");
-        self.hubConnection.start();
-        self.connected = true;
+        self._hubConnection.start();
+        self._connected = true;
     }
     
     public func initOnReceivingMessage(currentMemberName: String? = "", insertMessage: @escaping (_ message: Message) -> Void) {
@@ -63,7 +74,7 @@ class ChatService: ChatServiceProtocol {
     
     public func invokeChannelsWhenConnected() -> Void {
         print("[ CHAT ] Invoke Channels when Connected");
-        self.hubConnection.on(method: "ClientIsConnected", callback: { args, typeConverter in
+        self._hubConnection.on(method: "ClientIsConnected", callback: { args, typeConverter in
             self.invokeFetchChannels();
         });
     }
@@ -73,11 +84,11 @@ class ChatService: ChatServiceProtocol {
     }
     
     public func onCreateChannel(updateChannelsFct: @escaping () -> Void) -> Void {
-        self.hubConnection.on(method: "CreateChannel", callback: { args, typeConverter in
+        self._hubConnection.on(method: "CreateChannel", callback: { args, typeConverter in
             let newChannelJson: String = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self)!;
             if let newChannelJsonData = newChannelJson.data(using: .utf8) {
                 let newChannel: ChannelMessage = try! JSONDecoder().decode(ChannelMessage.self, from: newChannelJsonData);
-                self.userChannels.channels.append(newChannel.channel);
+                self._userChannels.channels.append(newChannel.channel);
             }
             updateChannelsFct();
         });
@@ -88,7 +99,7 @@ class ChatService: ChatServiceProtocol {
     }
     
     public func invokeFetchChannels() -> Void {
-        self.hubConnection.invoke(method: "FetchChannels", arguments: [], invocationDidComplete: { error in
+        self._hubConnection.invoke(method: "FetchChannels", arguments: [], invocationDidComplete: { error in
             print("[ CHAT ] Invoked FetchChannels");
             
             if let e = error {
@@ -100,21 +111,21 @@ class ChatService: ChatServiceProtocol {
     }
     
     public func onFetchChannels(updateChannelsFct: @escaping () -> Void) -> Void {
-        self.hubConnection.on(method: "FetchChannels", callback: { args, typeConverter in
+        self._hubConnection.on(method: "FetchChannels", callback: { args, typeConverter in
             print("[ CHAT ] On FetchChannels");
             
             let channelsJson: String = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self)!;
             
             if let channelsJsonData = channelsJson.data(using: .utf8) {
                 let channels: ChannelsMessage = try! JSONDecoder().decode(ChannelsMessage.self, from: channelsJsonData);
-                self.userChannels.channels = [];
-                self.serverChannels.channels = [];
+                self._userChannels.channels = [];
+                self._serverChannels.channels = [];
                 
                 for channel in channels.channels {
                     if (channel.connected) {
-                        self.userChannels.channels.append(channel);
+                        self._userChannels.channels.append(channel);
                     } else {
-                        self.serverChannels.channels.append(channel);
+                        self._serverChannels.channels.append(channel);
                     }
                 }
                 updateChannelsFct();
@@ -127,8 +138,8 @@ class ChatService: ChatServiceProtocol {
     }
     
     public func disconnectFromHub() -> Void {
-        self.hubConnection.stop();
-        self.connected = false;
+        self._hubConnection.stop();
+        self._connected = false;
         print("[ CHAT ] Connection stopped");
     }
     
@@ -137,24 +148,24 @@ class ChatService: ChatServiceProtocol {
     }
     
     public func connectToUserChatRooms() -> Void {
-        self.hubConnection.on(method: "FetchChannels", callback: { args, typeConverter in
+        self._hubConnection.on(method: "FetchChannels", callback: { args, typeConverter in
             print("[ CHAT ] On FetchChannels");
             
             let channelsJson: String = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self)!;
             
             if let channelsJsonData = channelsJson.data(using: .utf8) {
                 let channels: ChannelsMessage = try! JSONDecoder().decode(ChannelsMessage.self, from: channelsJsonData);
-                self.userChannels.channels = [];
-                self.serverChannels.channels = [];
+                self._userChannels.channels = [];
+                self._serverChannels.channels = [];
                 
                 for channel in channels.channels {
                     if (channel.connected) {
-                        self.userChannels.channels.append(channel);
+                        self._userChannels.channels.append(channel);
                         
                         let json = try? JSONEncoder().encode(ConnectionMessage(channelId: channel.name));
                         let jsondata: String = String(data: json!, encoding: .utf8)!;
                         
-                        self.hubConnection.invoke(method: "ConnectToChannel", arguments: [jsondata], invocationDidComplete: { error in
+                        self._hubConnection.invoke(method: "ConnectToChannel", arguments: [jsondata], invocationDidComplete: { error in
                             print("[ CHAT ] Invoked ConnectToChannel.");
                             self.printPossibleError(error: error);
                         });
@@ -169,7 +180,7 @@ class ChatService: ChatServiceProtocol {
     // MARK: Private functions
     
     private func onSelfConnectionToChannel(insertMessage: @escaping (_ message: Message) -> Void) -> Void {
-        self.hubConnection.on(method: "ConnectToChannelSender", callback: { args, typeConverter in
+        self._hubConnection.on(method: "ConnectToChannelSender", callback: { args, typeConverter in
             print("[ CHAT ] On ConnectToChannelSender");
             
             let json: String = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self)!;
@@ -194,7 +205,7 @@ class ChatService: ChatServiceProtocol {
     }
     
     private func onUserConnectionToChannel(insertMessage: @escaping (_ message: Message) -> Void) -> Void {
-        self.hubConnection.on(method: "ConnectToChannel", callback: { args, typeConverter in
+        self._hubConnection.on(method: "ConnectToChannel", callback: { args, typeConverter in
             print("[ CHAT ] On ConnectToChannel");
             
             let json: String = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self)!;
@@ -226,7 +237,7 @@ class ChatService: ChatServiceProtocol {
     }
     
     private func onUserDisconnectFromChannel(insertMessage: @escaping (_ message: Message) -> Void) -> Void {
-        self.hubConnection.on(method: "DisconnectFromChannel", callback: { args, typeConverter in
+        self._hubConnection.on(method: "DisconnectFromChannel", callback: { args, typeConverter in
             print("[ CHAT ] On DisconnectFromChannel");
             
             let json: String = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self)!;
@@ -256,7 +267,7 @@ class ChatService: ChatServiceProtocol {
     
     private func onSendMessage(currentMemberName: String?, insertMessage: @escaping (_ message: Message) -> Void) -> Void {
         print("INIT ON MESAGE");
-        self.hubConnection.on(method: "SendMessage", callback: { args, typeConverter in
+        self._hubConnection.on(method: "SendMessage", callback: { args, typeConverter in
             print("[ CHAT ] On SendMessage");
             let messageJson: String = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self)!;
             if let messageJsonData = messageJson.data(using: .utf8) {
@@ -277,19 +288,19 @@ class ChatService: ChatServiceProtocol {
                 );
                 
                 if (message.username != currentMemberName) {
-                    if (self.currentChannel != nil && self.currentChannel.name == message.channelId) {
+                    if (self._currentChannel != nil && self._currentChannel.name == message.channelId) {
                         insertMessage(newMessage);
                         SoundNotification.play(sound: Sound.SendMessage);
                     } else {
                         let tmp: [String: [Message]] = [message.channelId: [newMessage]];
-                        if (self.messagesWhileAFK.keys.contains(message.channelId)) {
-                            var tmpMessages: [Message] = self.messagesWhileAFK[message.channelId]!;
+                        if (self._messagesWhileAFK.keys.contains(message.channelId)) {
+                            var tmpMessages: [Message] = self._messagesWhileAFK[message.channelId]!;
                             tmpMessages.append(newMessage);
-                            self.messagesWhileAFK.updateValue(tmpMessages, forKey: message.channelId);
+                            self._messagesWhileAFK.updateValue(tmpMessages, forKey: message.channelId);
                         } else {
-                            self.messagesWhileAFK.merge(tmp, uniquingKeysWith: { (first, _) in first })
+                            self._messagesWhileAFK.merge(tmp, uniquingKeysWith: { (first, _) in first })
                         }
-                        print(self.messagesWhileAFK);
+                        print(self._messagesWhileAFK);
                     }
                 }
             }
@@ -301,27 +312,27 @@ class ChatService: ChatServiceProtocol {
         let newChannelJson = try? JSONEncoder().encode(newChannel);
         let newChannelJsonData: String = String(data: newChannelJson!, encoding: .utf8)!;
         
-        self.hubConnection.invoke(method: "CreateChannel", arguments: [newChannelJsonData], invocationDidComplete: { error in
+        self._hubConnection.invoke(method: "CreateChannel", arguments: [newChannelJsonData], invocationDidComplete: { error in
             print("[ CHAT ] Invoke CreateChannel");
             self.printPossibleError(error: error);
         });
     }
     
     public func invokeConnectToChannel() -> Void {
-        let json = try? JSONEncoder().encode(ConnectionMessage(channelId: self.currentChannel.name));
+        let json = try? JSONEncoder().encode(ConnectionMessage(channelId: self._currentChannel.name));
         let jsondata: String = String(data: json!, encoding: .utf8)!;
         
-        self.hubConnection.invoke(method: "ConnectToChannel", arguments: [jsondata], invocationDidComplete: { error in
+        self._hubConnection.invoke(method: "ConnectToChannel", arguments: [jsondata], invocationDidComplete: { error in
             print("[ CHAT ] Invoked ConnectToChannel.");
             self.printPossibleError(error: error);
         });
     }
     
     private func invokeDisconnectFromChannel() -> Void {
-        let json = try? JSONEncoder().encode(ConnectionMessage(channelId: self.currentChannel.name));
+        let json = try? JSONEncoder().encode(ConnectionMessage(channelId: self._currentChannel.name));
         let jsondata: String = String(data: json!, encoding: .utf8)!;
         
-        self.hubConnection.invoke(method: "DisconnectFromChannel", arguments: [jsondata], invocationDidComplete: { error in
+        self._hubConnection.invoke(method: "DisconnectFromChannel", arguments: [jsondata], invocationDidComplete: { error in
             print("[ CHAT ] Invoked DisconnectFromChannel.");
             if let e = error {
                 print("[ CHAT ] Error Invoking DisconnectFromChannel.");
@@ -331,10 +342,10 @@ class ChatService: ChatServiceProtocol {
     }
     
     private func invokeSendMessage(currentUser: String, message: Message, insertMessage: @escaping (_ message: Message) -> Void) -> Void {
-        let chatMsg: ChatMessage = ChatMessage(user: currentUser, message: message.text, channelId: self.currentChannel.name);
+        let chatMsg: ChatMessage = ChatMessage(user: currentUser, message: message.text, channelId: self._currentChannel.name);
         let json = try? JSONEncoder().encode(chatMsg);
         let jsonData: String = String(data: json!, encoding: .utf8)!;
-        self.hubConnection.invoke(method: "SendMessage", arguments: [jsonData], invocationDidComplete: { error in
+        self._hubConnection.invoke(method: "SendMessage", arguments: [jsonData], invocationDidComplete: { error in
             print("[ CHAT ] Invoke SendMessage");
             self.printPossibleError(error: error);
             SoundNotification.play(sound: Sound.ReceiveMessage);
