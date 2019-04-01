@@ -1,5 +1,7 @@
-﻿using System;
+﻿using PolyPaint.Utilitaires;
+using System;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
@@ -11,8 +13,8 @@ namespace PolyPaint.Strokes
 {
     public class PhaseStroke : AbstractShapeStroke
     {
-        public PhaseStroke(StylusPointCollection pts, InkCanvas surfaceDessin, string couleurBordure, string couleurRemplissage)
-            : base(pts, surfaceDessin, "Phase", couleurBordure, couleurRemplissage)
+        public PhaseStroke(StylusPointCollection pts, InkCanvas surfaceDessin, string couleurBordure, string couleurRemplissage, double thicc, DashStyle dashStyle)
+            : base(pts, surfaceDessin, "Phase", couleurBordure, couleurRemplissage, thicc, dashStyle)
         { }
 
         protected override void DrawCore(DrawingContext drawingContext, DrawingAttributes drawingAttributes)
@@ -31,27 +33,45 @@ namespace PolyPaint.Strokes
             Width = Math.Abs(StylusPoints[1].X - StylusPoints[0].X);
             Height = Math.Abs(StylusPoints[1].Y - StylusPoints[0].Y);
 
-            drawingContext.DrawRectangle(Fill, Border, new Rect(TopLeft, new Point(TopLeft.X + Width, TopLeft.Y + Title.Height + 20)));
-            drawingContext.DrawRectangle(Brushes.Transparent, Border, new Rect(new Point(TopLeft.X, TopLeft.Y + Title.Height + 20), new Point(TopLeft.X + Width, TopLeft.Y + Height)));
+            PointCollection points = new PointCollection();
+            points.Add(UnrotatedTopLeft);
+            points.Add(new Point(UnrotatedTopLeft.X + UnrotatedWidth, UnrotatedTopLeft.Y + Title.Height + 20));
+            points.Add(new Point(UnrotatedTopLeft.X, UnrotatedTopLeft.Y + Title.Height + 20));
+            points.Add(new Point(UnrotatedTopLeft.X + UnrotatedWidth, UnrotatedTopLeft.Y + UnrotatedHeight));
+            points = new PointCollection(points.ToList().Select(x => Tools.RotatePoint(x, Center, Rotation)));
+
+            drawingContext.DrawRectangle(Fill, Border, new Rect(
+                points[0],
+                points[1]
+            ));
+            drawingContext.DrawRectangle(Brushes.Transparent, Border, new Rect(
+                points[2],
+                points[3]
+            ));
 
             if (IsDrawingDone)
-                DrawText(drawingContext, Title);
+            {
+                drawingContext.PushTransform(new RotateTransform(Rotation, Center.X, Center.Y));
+                DrawText(drawingContext);
+                drawingContext.Pop();
+            }
             DrawAnchorPoints(drawingContext);
         }
 
-        private void DrawText(DrawingContext drawingContext, FormattedText Title)
+        private void DrawText(DrawingContext drawingContext)
         {
-            drawingContext.DrawText(Title, new Point(TopLeft.X + Width / 2.0 - Title.Width / 2.0, TopLeft.Y + 10));
+            drawingContext.DrawText(Title, new Point(UnrotatedTopLeft.X + UnrotatedWidth / 2.0 - Title.Width / 2.0, UnrotatedTopLeft.Y + 10));
         }
 
         private void DrawAnchorPoints(DrawingContext drawingContext)
         {
             SolidColorBrush brush = new SolidColorBrush(Colors.Gray);
 
-            AnchorPoints[0] = new Point(TopLeft.X + Width / 2, TopLeft.Y);
-            AnchorPoints[1] = new Point(TopLeft.X + Width / 2, TopLeft.Y + Height);
-            AnchorPoints[2] = new Point(TopLeft.X + Width, TopLeft.Y + Height / 2);
-            AnchorPoints[3] = new Point(TopLeft.X, TopLeft.Y + Height / 2);
+            AnchorPoints[0] = new Point(UnrotatedTopLeft.X + UnrotatedWidth / 2, UnrotatedTopLeft.Y);
+            AnchorPoints[1] = new Point(UnrotatedTopLeft.X + UnrotatedWidth / 2, UnrotatedTopLeft.Y + UnrotatedHeight);
+            AnchorPoints[2] = new Point(UnrotatedTopLeft.X + UnrotatedWidth, UnrotatedTopLeft.Y + UnrotatedHeight / 2);
+            AnchorPoints[3] = new Point(UnrotatedTopLeft.X, UnrotatedTopLeft.Y + UnrotatedHeight / 2);
+            AnchorPoints = AnchorPoints.ToList().Select(x => Tools.RotatePoint(x, Center, Rotation)).ToArray();
 
             drawingContext.DrawEllipse(brush, null, AnchorPoints[0], 2, 2);
             drawingContext.DrawEllipse(brush, null, AnchorPoints[1], 2, 2);

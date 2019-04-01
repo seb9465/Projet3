@@ -1,6 +1,9 @@
 ﻿using PolyPaint.Strokes;
+using PolyPaint.Utilitaires;
+using PolyPaint.VueModeles;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Ink;
 using System.Windows.Input;
 
 namespace PolyPaint.Vues
@@ -10,27 +13,24 @@ namespace PolyPaint.Vues
     /// </summary>
     public partial class EditUmlWindow : Window
     {
+        StrokeBuilder strokeBuilder = new StrokeBuilder();
+        VueModele viewModel { get; set; }
         public InkCanvas SurfaceDessin { get; set; }
-        public EditUmlWindow(UmlClassStroke stroke, InkCanvas surfaceDessin)
+        public EditUmlWindow(UmlClassStroke stroke, InkCanvas surfaceDessin, VueModele vm)
         {
             DataContext = stroke;
             SurfaceDessin = surfaceDessin;
             InitializeComponent();
             Loaded += (sender, e) => titleTextBox.Focus();
+            viewModel = vm;
         }
 
-        private void Ok_Click(object sender, RoutedEventArgs e)
+        private async void Ok_Click(object sender, RoutedEventArgs e)
         {
+            var drawViewModel = strokeBuilder.GetDrawViewModelsFromStrokes(new StrokeCollection() { (Stroke)DataContext });
             Close();
-            (DataContext as UmlClassStroke).Redraw();
-        }
-
-        private void EnterKeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter)
-            {
-                Ok_Click(sender, e);
-            }
+            (DataContext as ICanvasable).Redraw();
+            await viewModel.CollaborationClient.CollaborativeDrawAsync(drawViewModel);
         }
     }
 }

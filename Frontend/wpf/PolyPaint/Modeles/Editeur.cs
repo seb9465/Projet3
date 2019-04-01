@@ -1,5 +1,8 @@
 ﻿using PolyPaint.Common.Collaboration;
 using PolyPaint.Strokes;
+using PolyPaint.Utilitaires;
+using PolyPaint.VueModeles;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -36,7 +39,6 @@ namespace PolyPaint.Modeles
             get { return pointeSelectionnee; }
             set
             {
-                OutilSelectionne = "crayon";
                 pointeSelectionnee = value;
                 ProprieteModifiee();
             }
@@ -52,15 +54,10 @@ namespace PolyPaint.Modeles
             set
             {
                 couleurSelectionneeBordure = value;
-                OutilSelectionne = "crayon";
 
                 if (couleurSelectionneeBordure != "")
                 {
-                    foreach (AbstractShapeStroke stroke in SelectedStrokes.Where(x => x is AbstractShapeStroke))
-                    {
-                        stroke.SetBorderColor(value);
-                    }
-                    foreach (AbstractLineStroke stroke in SelectedStrokes.Where(x => x is AbstractLineStroke))
+                    foreach (AbstractStroke stroke in SelectedStrokes.Where(x => x is AbstractStroke))
                     {
                         stroke.SetBorderColor(value);
                     }
@@ -89,7 +86,6 @@ namespace PolyPaint.Modeles
             set
             {
                 couleurSelectionneeRemplissage = value;
-                OutilSelectionne = "crayon";
 
                 if (couleurSelectionneeRemplissage != "")
                 {
@@ -113,7 +109,7 @@ namespace PolyPaint.Modeles
         }
 
         // Grosseur des traits tracés par le crayon.
-        private int tailleTrait = 11;
+        private int tailleTrait = 2;
         public int TailleTrait
         {
             get { return tailleTrait; }
@@ -122,7 +118,6 @@ namespace PolyPaint.Modeles
             set
             {
                 tailleTrait = value;
-                OutilSelectionne = "crayon";
                 ProprieteModifiee();
             }
         }
@@ -177,7 +172,7 @@ namespace PolyPaint.Modeles
         // On vide la surface de dessin de tous ses traits.
         public void Reinitialiser(object o) => traits.Clear();
 
-        public void SelectItemOffline(InkCanvas surfaceDessin, Point mouseLeftDownPoint)
+        public StrokeCollection SelectItem(InkCanvas surfaceDessin, Point mouseLeftDownPoint, VueModele vm)
         {
             InkCanvasEditingMode all = surfaceDessin.EditingMode;
 
@@ -190,36 +185,57 @@ namespace PolyPaint.Modeles
                 if (mouseLeftDownPoint.X >= box.Left && mouseLeftDownPoint.X <= box.Right &&
                     mouseLeftDownPoint.Y <= box.Bottom && mouseLeftDownPoint.Y >= box.Top)
                 {
-                    strokeToSelect.Add(traits[i]);
-                    surfaceDessin.Select(strokeToSelect);
+                    if (!vm.GetOnlineSelection().Values.Any(x => x.Any(y => y.Guid == ((AbstractStroke)traits[i]).Guid.ToString())))
+                    {
+                        strokeToSelect.Add(traits[i]);
+                        surfaceDessin.Select(strokeToSelect);
+                    }
 
                     break;
                 }
             }
+            return strokeToSelect;
         }
 
-        public void SelectItemOnline(InkCanvas surfaceDessin, SelectViewModel selectViewModel, string username)
+        public StrokeCollection SelectItemLasso(InkCanvas surfaceDessin, Rect bounds, VueModele vm)
         {
-            InkCanvasEditingMode all = surfaceDessin.EditingMode;
+            // Hack because to permit when exactly on border
+            if (!bounds.IsEmpty)
+            {
+                bounds.X -= 0.00001;
+                bounds.Y -= 0.00001;
+                bounds.Width += 0.00002;
+                bounds.Height += 0.00002;
+            }
 
-            // We travel the StrokeCollection inversely to select the first plan item first
-            // if some items overlap.
             StrokeCollection strokeToSelect = new StrokeCollection();
             for (int i = traits.Count - 1; i >= 0; i--)
             {
                 Rect box = traits[i].GetBounds();
-                if (selectViewModel.MouseLeftDownPointX >= box.Left && selectViewModel.MouseLeftDownPointX <= box.Right &&
-                    selectViewModel.MouseLeftDownPointY <= box.Bottom && selectViewModel.MouseLeftDownPointY >= box.Top)
+                if (bounds.Contains(box))
                 {
-                    if (username == selectViewModel.Owner)
+                    if (!vm.GetOnlineSelection().Values.Any(x => x.Any(y => y.Guid == ((AbstractStroke)traits[i]).Guid.ToString())))
                     {
-                        //strokes[i].DrawingAttributes.Color = Colors.Black;
+                        strokeToSelect.Add(traits[i]);
                     }
-                    strokeToSelect.Add(traits[i]);
-                    surfaceDessin.Select(strokeToSelect);
-                    break;
                 }
             }
+            surfaceDessin.Select(strokeToSelect);
+            return strokeToSelect;
+        }
+
+        public StrokeCollection SelectItems(InkCanvas surfaceDessin, StrokeCollection strokes, VueModele vm)
+        {
+            StrokeCollection strokeToSelect = new StrokeCollection();
+            foreach (var stroke in strokes)
+            {
+                if (!vm.GetOnlineSelection().Values.Any(x => x.Any(y => y.Guid == ((AbstractStroke)stroke).Guid.ToString())))
+                {
+                    strokeToSelect.Add(stroke);
+                }
+            }
+            surfaceDessin.Select(strokeToSelect);
+            return strokeToSelect;
         }
     }
 }

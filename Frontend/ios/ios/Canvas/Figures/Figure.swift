@@ -8,6 +8,7 @@
 import UIKit
 
 class Figure: UIView {
+    
     var firstPoint: CGPoint!
     var lastPoint: CGPoint!
     var uuid: UUID!

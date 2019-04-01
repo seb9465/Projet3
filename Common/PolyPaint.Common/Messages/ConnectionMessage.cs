@@ -1,13 +1,16 @@
-public class ConnectionMessage : BaseMessage
+namespace PolyPaint.Common.Messages
 {
-    public string Username { get; set; }
-    public string CanvasId { get; set; }
-    public string ChannelId { get; set; }
-
-    public ConnectionMessage(string username = "", string canvasId = "", string channelId = "")
+    public class ConnectionMessage : BaseMessage
     {
-        Username = username;
-        CanvasId = canvasId;
-        ChannelId = channelId;
+        public string Username { get; set; }
+        public string CanvasId { get; set; }
+        public string ChannelId { get; set; }
+
+        public ConnectionMessage(string username = "", string canvasId = "", string channelId = "")
+        {
+            Username = username;
+            CanvasId = canvasId;
+            ChannelId = channelId;
+        }
     }
 }

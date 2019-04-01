@@ -25,16 +25,21 @@ namespace PolyPaint.Vues
     {
         public List<CanvasViewModel> Canvas { get; set; }
         public CanvasViewModel SelectedCanvas { get; set; }
+        private ImageProtection imageProtection;
+        private string username;
+        FenetreDessin fenetreDessin = new FenetreDessin(ViewStateEnum.Online);
 
         public Gallery(List<SaveableCanvas> strokes, InkCanvas drawingSurface)
         {
             InitializeComponent();
             Canvas = ConvertStrokesToPNG(strokes, drawingSurface);
             DataContext = Canvas;
-            this.ShowDialog();
+            username = Application.Current.Properties["username"].ToString();
+            usernameLabel.Content = username;
+           
         }
 
-        private static List<CanvasViewModel> ConvertStrokesToPNG(List<SaveableCanvas> savedCanvas, InkCanvas drawingSurface)
+        private List<CanvasViewModel> ConvertStrokesToPNG(List<SaveableCanvas> savedCanvas, InkCanvas drawingSurface)
         {
             List<CanvasViewModel> canvas = new List<CanvasViewModel>();
             if(savedCanvas != null)
@@ -43,9 +48,9 @@ namespace PolyPaint.Vues
                 {
                     var bitmapImage = (BitmapSource)new ImageSourceConverter().ConvertFrom(Convert.FromBase64String(item.Base64Image));
                     var strokes = GenerateStrokesFromBytes(Convert.FromBase64String(item.Base64Strokes));
-                    canvas.Add(new CanvasViewModel(item.CanvasId, item.Name, bitmapImage, strokes));
+                    canvas.Add(new CanvasViewModel(item.CanvasId, item.Name, bitmapImage, strokes, item.CanvasVisibility, item.CanvasProtection));
                 }
-
+                
             }
             return canvas;
         }
@@ -64,10 +69,32 @@ namespace PolyPaint.Vues
         private void OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             SelectedCanvas = (CanvasViewModel)ImagePreviews.SelectedItem;
-            this.Close();
+            if (SelectedCanvas.CanvasProtection != "")
+            {
+                imageProtection = new ImageProtection();
+                if(imageProtection.PasswordEntered == SelectedCanvas.CanvasProtection)
+                {
+                    fenetreDessin.surfaceDessin.Strokes.Add(SelectedCanvas.Strokes);
+                    Application.Current.MainWindow = fenetreDessin;
+                    this.Close();
+                    fenetreDessin.Show();
+                } else
+                {
+                    SelectedCanvas = null;
+                    MessageBox.Show("Wrong password");
+                }
+            } else
+            {
+                fenetreDessin.surfaceDessin.Strokes.Add(SelectedCanvas.Strokes);
+                Application.Current.MainWindow = fenetreDessin;
+                this.Close();
+                fenetreDessin.Show();
+            }
         }
 
-        private async void GoBack_Click(object sender, RoutedEventArgs e)
+       
+
+        private void GoBack_Click(object sender, RoutedEventArgs e)
         {
             MenuProfile menuProfile = new MenuProfile();
             Application.Current.MainWindow = menuProfile;

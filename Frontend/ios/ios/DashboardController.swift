@@ -19,5 +19,7 @@ class DashboardController: UIViewController, UITextFieldDelegate {
         let token = UserDefaults.standard.string(forKey: "token");
         let jwt = try! decode(jwt: token!)
         UsernameLabel.text = jwt.claim(name: "unique_name").string
+        ChatService.shared.initOnReceivingMessage(insertMessage:{_ in });
+        ChatService.shared.connectToUserChatRooms();
     }
 }

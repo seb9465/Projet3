@@ -265,8 +265,8 @@
       <HintPath>..\packages\Microsoft.Net.Http.Headers.2.2.0\lib\netstandard2.0\Microsoft.Net.Http.Headers.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
@@ -370,16 +370,11 @@
     </ApplicationDefinition>
     <Compile Include="Config.cs" />
     <Compile Include="Convertisseurs\Convertisseurs.cs" />
-    <Compile Include="Modeles\Channel.cs" />
     <Compile Include="Modeles\ChatClient.cs" />
+    <Compile Include="Modeles\CollaborationClient.cs" />
     <Compile Include="Modeles\Editeur.cs" />
-    <Compile Include="Modeles\Messages\BaseMessage.cs" />
-    <Compile Include="Modeles\Messages\ChannelMessage.cs" />
-    <Compile Include="Modeles\Messages\ChannelsMessage.cs" />
-    <Compile Include="Modeles\Messages\ChatMessage.cs" />
-    <Compile Include="Modeles\Messages\ConnectionMessage.cs" />
-    <Compile Include="Modeles\Messages\ErrorMessage.cs" />
     <Compile Include="Modeles\Room.cs" />
+    <Compile Include="Modeles\SaveableElement.cs" />
     <Compile Include="Modeles\SaveableCanvas.cs" />
     <Compile Include="Strokes\AbstractLineStroke.cs" />
     <Compile Include="Strokes\AbstractShapeStroke.cs" />
@@ -390,7 +385,10 @@
     <Compile Include="Strokes\CompositionStroke.cs" />
     <Compile Include="Strokes\InheritanceStroke.cs" />
     <Compile Include="Strokes\BidirectionalAssociationStroke.cs" />
+    <Compile Include="Strokes\LineStroke.cs" />
     <Compile Include="Strokes\LineStrokeAdorner.cs" />
+    <Compile Include="Strokes\ImageStroke.cs" />
+    <Compile Include="Strokes\OnlineSelectedAdorner.cs" />
     <Compile Include="Strokes\UnidirectionalAssociationStroke.cs" />
     <Compile Include="Strokes\ActivityStroke.cs" />
     <Compile Include="Strokes\PhaseStroke.cs" />
@@ -402,6 +400,7 @@
     <Compile Include="Structures\MessageArgs.cs" />
     <Compile Include="Utilitaires\InkCanvasEventManager.cs" />
     <Compile Include="Utilitaires\RelayCommand.cs" />
+    <Compile Include="Utilitaires\StrokeBuilder.cs" />
     <Compile Include="Utilitaires\Tools.cs" />
     <Compile Include="VueModeles\CanvasViewModel.cs" />
     <Compile Include="VueModeles\RegistrationViewModel.cs" />
@@ -413,6 +412,9 @@
     <Compile Include="Vues\EditUmlWindow.xaml.cs">
       <DependentUpon>EditUmlWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Vues\ImageProtection.xaml.cs">
+      <DependentUpon>ImageProtection.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Vues\Login.xaml.cs">
       <DependentUpon>Login.xaml</DependentUpon>
     </Compile>
@@ -421,6 +423,9 @@
     </Compile>
     <Compile Include="Vues\Gallery.xaml.cs">
       <DependentUpon>Gallery.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Vues\UploadToCloud.xaml.cs">
+      <DependentUpon>UploadToCloud.xaml</DependentUpon>
     </Compile>
     <Compile Include="Vues\ViewStateEnum.cs" />
     <Compile Include="Vues\MenuProfile.xaml.cs">
@@ -452,6 +457,10 @@
     <Compile Include="Vues\FenetreDessin.xaml.cs">
       <DependentUpon>FenetreDessin.xaml</DependentUpon>
     </Compile>
+    <Page Include="Vues\ImageProtection.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Vues\Login.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -465,6 +474,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Vues\MenuProfile.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Vues\UploadToCloud.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

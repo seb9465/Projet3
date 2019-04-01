@@ -13,17 +13,15 @@ class CanvasController: UIViewController {
     
     // MARK: - Attributes
     private var activeButton: UIBarButtonItem!;
-    private var colorPicker: ChromaColorPicker!;
     
     public var editor: Editor = Editor()
     
     @IBOutlet weak var insertButton: UIBarButtonItem!
     @IBOutlet var selectButton: UIBarButtonItem!
     @IBOutlet var deleteButton: UIBarButtonItem!
-    @IBOutlet var borderButton: UIBarButtonItem!
-    @IBOutlet var fillButton: UIBarButtonItem!
     
     @IBOutlet weak var exportButton: UIBarButtonItem!
+    @IBOutlet var navigationBar: UIToolbar!
     
     override func viewDidLoad() {
         super.viewDidLoad();
@@ -31,24 +29,12 @@ class CanvasController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
         CollaborationHub.shared.connectToHub()
         
-        // Color picker parameters.
-        let pickerSize = CGSize(width: 200, height: 200);
-        let pickerOrigin = CGPoint(x: 200, y: 100);
-        colorPicker = ChromaColorPicker(frame: CGRect(origin: pickerOrigin, size: pickerSize))
-        //        colorPicker.delegate = self as ChromaColorPickerDelegate;
-        colorPicker.padding = 10
-        colorPicker.stroke = 3 //stroke of the rainbow circle
-        colorPicker.currentAngle = Float.pi
-        colorPicker.hexLabel.textColor = UIColor.white
-        colorPicker.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.1);
         self.view.addSubview(self.editor.editorView)
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated);
         navigationController?.setNavigationBarHidden(true, animated: animated);
-        self.borderButton.isEnabled = false;
-        self.fillButton.isEnabled = false;
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -57,11 +43,14 @@ class CanvasController: UIViewController {
     }
     
     // MARK: - Button Action Functions
+    
     @IBAction func undoButton(_ sender: Any) {
+        self.editor.deselect();
         self.editor.undo(view: self.view);
     }
     
     @IBAction func redoButton(_ sender: Any) {
+        self.editor.deselect();
         self.editor.redo(view: self.view);
     }
     
@@ -70,23 +59,55 @@ class CanvasController: UIViewController {
     }
     
     @IBAction func deleteButton(_ sender: Any) {
-        self.editor.changeTouchHandleState(to: .DELETE)
+        self.resetButtonColor();
+        if (self.editor.touchEventState == .DELETE) {
+            self.editor.changeTouchHandleState(to: .NONE);
+        } else {
+            self.deleteButton.tintColor = Constants.RED_COLOR;
+            self.editor.changeTouchHandleState(to: .DELETE)
+        }
+        
+        self.editor.deselect();
     }
     
     @IBAction func selectFigureButton(_ sender: Any) {
-        self.editor.changeTouchHandleState(to: .SELECT)
+        self.resetButtonColor();
+        
+        if (self.editor.touchEventState == .SELECT) {
+            self.editor.changeTouchHandleState(to: .NONE);
+        } else {
+            self.selectButton.tintColor = Constants.RED_COLOR;
+            self.editor.changeTouchHandleState(to: .SELECT)
+        }
+        
+        self.editor.deselect();
     }
     
     @IBAction func insertButtonPressed(_ sender: Any) {
-        self.editor.changeTouchHandleState(to: .INSERT)
+        self.resetButtonColor();
+        
+        if (self.editor.touchEventState == .INSERT) {
+            self.editor.changeTouchHandleState(to: .NONE);
+        } else {
+            self.insertButton.tintColor = Constants.RED_COLOR;
+            self.editor.changeTouchHandleState(to: .INSERT)
+        }
+        
+        self.editor.deselect();
     }
+    
     @IBAction func exportButtonPressed(_ sender: Any) {
-        UIGraphicsBeginImageContextWithOptions(self.editor.editorView.bounds.size, false, 0.0)
-        self.editor.editorView.drawHierarchy(in: self.editor.editorView.bounds, afterScreenUpdates: true)
+        UIGraphicsBeginImageContextWithOptions(self.editor.editorView.bounds.size, false, 0.0);
+        self.editor.editorView.drawHierarchy(in: self.editor.editorView.bounds, afterScreenUpdates: true);
         let image = UIGraphicsGetImageFromCurrentImageContext();
         UIGraphicsEndImageContext();
-        UIImageWriteToSavedPhotosAlbum(image!, self, #selector(image(_:didFinishSavingWithError:contextInfo:)), nil)
-        
+        UIImageWriteToSavedPhotosAlbum(image!, self, #selector(image(_:didFinishSavingWithError:contextInfo:)), nil);
+    }
+    
+    private func resetButtonColor() -> Void {
+        self.selectButton.tintColor = UIColor.black;
+        self.deleteButton.tintColor = UIColor.black;
+        self.insertButton.tintColor = UIColor.black;
     }
     
     @objc private func image(_ image: UIImage, didFinishSavingWithError error: Error?, contextInfo: UnsafeRawPointer) {

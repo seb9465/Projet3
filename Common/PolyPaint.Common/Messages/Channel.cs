@@ -1,10 +1,13 @@
-public class Channel
+namespace PolyPaint.Common.Messages
 {
-    public string Name;
-    public bool Connected;
-    public Channel(string name, bool connected)
+    public class Channel
     {
-        Name = name;
-        Connected = connected;
+        public string Name;
+        public bool Connected;
+        public Channel(string name, bool connected)
+        {
+            Name = name;
+            Connected = connected;
+        }
     }
 }

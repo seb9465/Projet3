@@ -34,7 +34,31 @@ class MsgChatController: MessagesViewController, MsgChatProtocol {
         ChatService.shared.initOnAnotherUserConnection(insertMessage: self.insertMessage);
         ChatService.shared.connectToGroup();
         
+        self.navigationItem.hidesBackButton = true;
+        let newBackButton = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(self.back(sender:)));
+        self.navigationItem.leftBarButtonItem = newBackButton;
+        
+        self.navigationItem.title = ChatService.shared.currentChannel.name;
+        
         super.viewDidLoad();
+        
+        let afkMsgs: [String: [Message]] = ChatService.shared.messagesWhileAFK;
+        let channelName: String = ChatService.shared.currentChannel.name;
+        if (afkMsgs.keys.contains(channelName)) {
+            for message in afkMsgs[channelName]! {
+                self.messages.append(message);
+            }
+        }
+        
+        // TODO: Make a function in the ChatService for this and the get.
+        ChatService.shared.messagesWhileAFK.removeAll();
+        self.messagesCollectionView.reloadData();
+    }
+    
+    @objc func back(sender: UIBarButtonItem) {
+        ChatService.shared.currentChannel = nil;
+        
+        self.navigationController?.popViewController(animated: true)
     }
     
     override func viewWillDisappear(_ animated: Bool) -> Void {

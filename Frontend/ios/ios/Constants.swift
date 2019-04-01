@@ -23,10 +23,13 @@ struct Constants {
     static let LOGOUT_URL: String = Constants.SERVER_BASE_URL + "/api/user/logout";
     
     static let RED_COLOR: UIColor = UIColor(red: 1, green: 0.419608, blue: 0.419608, alpha: 1);
+    static let DEFAULT_BLUE_COLOR = UIColor(red: 0, green: 122/255, blue: 1, alpha: 1);
     
     static let formatter: DateFormatter = {
         let formatter = DateFormatter();
         formatter.dateFormat = "HH:mm:ss";
         return formatter;
     }()
+    
+    static var figureIDCounter: Int = 0;
 }

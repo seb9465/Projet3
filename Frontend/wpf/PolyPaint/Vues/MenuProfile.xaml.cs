@@ -31,12 +31,11 @@ namespace PolyPaint
         public MenuProfile()
         {
             InitializeComponent();
-            DataContext = new VueModele();
+            DataContext = new VueModele(_viewState);
             username = Application.Current.Properties["username"].ToString();
             usernameLabel.Content = username;
 
             object token = Application.Current.Properties["token"];
-            username = Application.Current.Properties["username"].ToString();
             (DataContext as VueModele).ChatClient.Initialize((string)Application.Current.Properties["token"]);
             (DataContext as VueModele).ChatClient.MessageReceived += ScrollDown;
             externalChatWindow = new ChatWindow(DataContext);
@@ -55,7 +54,12 @@ namespace PolyPaint
 
         private void GalleryBtn_Click(object sender, RoutedEventArgs e)
         {
-           
+            FenetreDessin fenetreDessin = new FenetreDessin(ViewStateEnum.Online);
+            externalChatWindow.Close();
+            //Gallery gallery = new Gallery(strokes,fenetreDessin.surfaceDessin);
+            //Application.Current.MainWindow = gallery;
+            Close();
+            //gallery.Show();
         }
 
         private void OnClosing(object sender, EventArgs e)

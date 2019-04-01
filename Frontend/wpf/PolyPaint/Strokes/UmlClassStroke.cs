@@ -22,8 +22,8 @@ namespace PolyPaint.Strokes
         public RelayCommand<string> RemoveFromProperties { get; set; }
         public RelayCommand<string> RemoveFromMethods { get; set; }
 
-        public UmlClassStroke(StylusPointCollection pts, InkCanvas surfaceDessin, string couleurBordure, string couleurRemplissage)
-            : base(pts, surfaceDessin, "Class", couleurBordure, couleurRemplissage)
+        public UmlClassStroke(StylusPointCollection pts, InkCanvas surfaceDessin, string couleurBordure, string couleurRemplissage, double thicc, DashStyle dashStyle)
+            : base(pts, surfaceDessin, "Class", couleurBordure, couleurRemplissage, thicc, dashStyle)
         {
             Properties = new ObservableCollection<Property>();
             Methods = new ObservableCollection<Method>();
@@ -50,32 +50,42 @@ namespace PolyPaint.Strokes
             Width = Math.Abs(StylusPoints[1].X - StylusPoints[0].X);
             Height = Math.Abs(StylusPoints[1].Y - StylusPoints[0].Y);
 
-            drawingContext.DrawRectangle(Fill, Border, new Rect(TopLeft, new Point(TopLeft.X + Width, TopLeft.Y + Height)));
+
+            PointCollection points = new PointCollection();
+            points.Add(UnrotatedTopLeft);
+            points.Add(new Point(UnrotatedTopLeft.X + UnrotatedWidth, UnrotatedTopLeft.Y + UnrotatedHeight));
+            points = new PointCollection(points.ToList().Select(x => Tools.RotatePoint(x, Center, Rotation)));
+
+            drawingContext.DrawRectangle(Fill, Border, new Rect(points[0], points[1]));
             if (IsDrawingDone)
+            {
+                drawingContext.PushTransform(new RotateTransform(Rotation, Center.X, Center.Y));
                 DrawText(drawingContext);
+                drawingContext.Pop();
+            }
             DrawAnchorPoints(drawingContext);
         }
 
         private void DrawText(DrawingContext drawingContext)
         {
-            var nextHeight = TopLeft.Y + 10;
+            var nextHeight = UnrotatedTopLeft.Y + 10;
 
-            drawingContext.DrawText(Title, new Point(TopLeft.X + 10, nextHeight));
+            drawingContext.DrawText(Title, new Point(UnrotatedTopLeft.X + 10, nextHeight));
             nextHeight += 10 + Title.Height;
-            drawingContext.DrawLine(Border, new Point(TopLeft.X, nextHeight), new Point(TopLeft.X + Width, nextHeight));
+            drawingContext.DrawLine(Border, new Point(UnrotatedTopLeft.X, nextHeight), new Point(UnrotatedTopLeft.X + UnrotatedWidth, nextHeight));
             nextHeight += 10;
             for (int i = 0; i < Properties.Count; i++)
             {
                 var tempFt = new FormattedText($"{Properties[i].Title}", System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 12, new SolidColorBrush(Colors.Black));
-                drawingContext.DrawText(tempFt, new Point(TopLeft.X + 10, nextHeight));
+                drawingContext.DrawText(tempFt, new Point(UnrotatedTopLeft.X + 10, nextHeight));
                 nextHeight += 10 + tempFt.Height;
             }
-            drawingContext.DrawLine(Border, new Point(TopLeft.X, nextHeight), new Point(TopLeft.X + Width, nextHeight));
+            drawingContext.DrawLine(Border, new Point(UnrotatedTopLeft.X, nextHeight), new Point(UnrotatedTopLeft.X + UnrotatedWidth, nextHeight));
             nextHeight += 10;
             for (int i = 0; i < Methods.Count; i++)
             {
                 var tempFt = new FormattedText($"{Methods[i].Title}", System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 12, new SolidColorBrush(Colors.Black));
-                drawingContext.DrawText(tempFt, new Point(TopLeft.X + 10, nextHeight));
+                drawingContext.DrawText(tempFt, new Point(UnrotatedTopLeft.X + 10, nextHeight));
                 nextHeight += 10 + tempFt.Height;
             }
         }
@@ -84,10 +94,11 @@ namespace PolyPaint.Strokes
         {
             SolidColorBrush brush = new SolidColorBrush(Colors.Gray);
 
-            AnchorPoints[0] = new Point(TopLeft.X + Width / 2, TopLeft.Y);
-            AnchorPoints[1] = new Point(TopLeft.X + Width / 2, TopLeft.Y + Height);
-            AnchorPoints[2] = new Point(TopLeft.X + Width, TopLeft.Y + Height / 2);
-            AnchorPoints[3] = new Point(TopLeft.X, TopLeft.Y + Height / 2);
+            AnchorPoints[0] = new Point(UnrotatedTopLeft.X + UnrotatedWidth / 2, UnrotatedTopLeft.Y);
+            AnchorPoints[1] = new Point(UnrotatedTopLeft.X + UnrotatedWidth / 2, UnrotatedTopLeft.Y + UnrotatedHeight);
+            AnchorPoints[2] = new Point(UnrotatedTopLeft.X + UnrotatedWidth, UnrotatedTopLeft.Y + UnrotatedHeight / 2);
+            AnchorPoints[3] = new Point(UnrotatedTopLeft.X, UnrotatedTopLeft.Y + UnrotatedHeight / 2);
+            AnchorPoints = AnchorPoints.ToList().Select(x => Tools.RotatePoint(x, Center, Rotation)).ToArray();
 
             drawingContext.DrawEllipse(brush, null, AnchorPoints[0], 2, 2);
             drawingContext.DrawEllipse(brush, null, AnchorPoints[1], 2, 2);

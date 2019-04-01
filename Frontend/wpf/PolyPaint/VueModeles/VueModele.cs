@@ -7,16 +7,17 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Documents;
 using System.Windows.Ink;
+using System.Windows.Input;
 using System.Windows.Media;
 using Microsoft.AspNetCore.SignalR.Client;
 using PolyPaint.Common.Collaboration;
+using PolyPaint.Common.Messages;
 using PolyPaint.Modeles;
 using PolyPaint.Strokes;
 using PolyPaint.Structures;
 using PolyPaint.Utilitaires;
-using Xceed.Wpf.Toolkit;
+using PolyPaint.Vues;
 
 namespace PolyPaint.VueModeles
 {
@@ -26,25 +27,20 @@ namespace PolyPaint.VueModeles
     /// Expose des commandes et propriétés connectées au modèle aux des éléments de la vue peuvent se lier.
     /// Reçoit des avis de changement du modèle et envoie des avis de changements à la vue.
     /// </summary>
-    class VueModele : INotifyPropertyChanged
+    public class VueModele : INotifyPropertyChanged
     {
-        private static ConcurrentDictionary<string, DashStyle> _dashAssociations = new ConcurrentDictionary<string, DashStyle>(
-            new Dictionary<string, DashStyle>()
-            {
-                { "solid", DashStyles.Solid },
-                {"dash", DashStyles.Dash }
-            }
-        );
-
         public event PropertyChangedEventHandler PropertyChanged;
+        private StrokeBuilder rebuilder = new StrokeBuilder();
         private Editeur editeur = new Editeur();
         private string _currentRoom;
         private ObservableCollection<Room> _rooms;
         private ConcurrentDictionary<string, ObservableCollection<string>> _messagesByChannel { get; set; }
         private string _selectedBorder;
         private MediaPlayer mediaPlayer = new MediaPlayer();
+        private ConcurrentDictionary<string, List<DrawViewModel>> _onlineSelection { get; set; }
 
         public ChatClient ChatClient { get; set; }
+        public CollaborationClient CollaborationClient { get; set; }
 
         // Ensemble d'attributs qui définissent l'apparence d'un trait.
         public DrawingAttributes AttributsDessin { get; set; } = new DrawingAttributes();
@@ -123,7 +119,11 @@ namespace PolyPaint.VueModeles
         public int TailleTrait
         {
             get { return editeur.TailleTrait; }
-            set { editeur.TailleTrait = value; }
+            set
+            {
+                editeur.TailleTrait = value;
+                editeur.SelectedStrokes.ToList().ForEach(x => (x as AbstractStroke).SetBorderThickness(editeur.TailleTrait));
+            }
         }
 
         public string SelectedBorder
@@ -131,6 +131,8 @@ namespace PolyPaint.VueModeles
             get { return _selectedBorder; }
             set { _selectedBorder = value; ProprieteModifiee(); }
         }
+
+        public DashStyle SelectedBorderDashStyle { get { return _selectedBorder == "" ? DashStyles.Solid : Tools.DashAssociations[_selectedBorder]; } }
 
         public Boolean IsStrokeSelected
         {
@@ -147,20 +149,39 @@ namespace PolyPaint.VueModeles
         public RelayCommand<string> ChoisirOutil { get; set; }
         public RelayCommand<string> ChoisirRoom { get; set; }
         public RelayCommand<string> ChooseBorder { get; set; }
+        public RelayCommand<string> Rotate { get; set; }
         public RelayCommand<Room> RoomConnect { get; set; }
         public RelayCommand<object> Reinitialiser { get; set; }
 
-        public void SelectItemOffline(InkCanvas surfaceDessin, Point mouseLeftDownPoint) => editeur.SelectItemOffline(surfaceDessin, mouseLeftDownPoint);
-        public void SelectItemOnline(InkCanvas surfaceDessin, SelectViewModel selectViewModel, string username) => editeur.SelectItemOnline(surfaceDessin, selectViewModel, username);
+        public StrokeCollection SelectItem(InkCanvas surfaceDessin, Point mouseLeftDownPoint)
+        {
+            editeur.OutilSelectionne = "select";
+            return editeur.SelectItem(surfaceDessin, mouseLeftDownPoint, this);
+        }
+        public StrokeCollection SelectItemLasso(InkCanvas surfaceDessin, Rect bounds)
+        {
+            editeur.OutilSelectionne = "select";
+            return editeur.SelectItemLasso(surfaceDessin, bounds, this);
+        }
+        public StrokeCollection SelectItems(InkCanvas surfaceDessin, StrokeCollection strokes)
+        {
+            editeur.OutilSelectionne = "select";
+            return editeur.SelectItems(surfaceDessin, strokes, this);
+        }
+        public void SelectNothing(InkCanvas surfaceDessin)
+        {
+            editeur.SelectItemLasso(surfaceDessin, Rect.Empty, this);
+        }
 
         /// <summary>
         /// Constructeur de VueModele
         /// On récupère certaines données initiales du modèle et on construit les commandes
         /// sur lesquelles la vue se connectera.
         /// </summary>
-        public VueModele()
+        public VueModele(ViewStateEnum vs)
         {
             ChatClient = new ChatClient();
+            CollaborationClient = new CollaborationClient();
 
             // On écoute pour des changements sur le modèle. Lorsqu'il y en a, EditeurProprieteModifiee est appelée.
             editeur.PropertyChanged += new PropertyChangedEventHandler(EditeurProprieteModifiee);
@@ -181,6 +202,7 @@ namespace PolyPaint.VueModeles
             ChoisirOutil = new RelayCommand<string>(editeur.ChoisirOutil);
             ChoisirRoom = new RelayCommand<string>(choisirRoom);
             ChooseBorder = new RelayCommand<string>(chooseBorder);
+            Rotate = new RelayCommand<string>(rotate);
             RoomConnect = new RelayCommand<Room>(roomConnect);
             Reinitialiser = new RelayCommand<object>(editeur.Reinitialiser);
 
@@ -195,6 +217,7 @@ namespace PolyPaint.VueModeles
             _messagesByChannel = new ConcurrentDictionary<string, ObservableCollection<string>>();
             _rooms = new ObservableCollection<Room>();
             _selectedBorder = "";
+            _onlineSelection = new ConcurrentDictionary<string, List<DrawViewModel>>();
         }
 
         /// <summary>
@@ -256,8 +279,23 @@ namespace PolyPaint.VueModeles
 
             foreach (AbstractStroke stroke in editeur.SelectedStrokes.Where(x => x is AbstractStroke))
             {
-                stroke.SetBorderStyle(_dashAssociations[border]);
+                stroke.SetBorderStyle(Tools.DashAssociations[border]);
             }
+            SendSelectedStrokes();
+        }
+
+        private void rotate(string side)
+        {
+            var increment = side == "right" ? 90 : -90;
+            foreach (AbstractStroke stroke in editeur.SelectedStrokes.Where(x => x is AbstractStroke))
+            {
+                stroke.Rotation = (stroke.Rotation + increment) % 360;
+                var stylusPoint0 = Tools.RotatePoint(stroke.StylusPoints[0].ToPoint(), stroke.Center, increment);
+                var stylusPoint1 = Tools.RotatePoint(stroke.StylusPoints[1].ToPoint(), stroke.Center, increment);
+                stroke.StylusPoints[0] = new StylusPoint(stylusPoint0.X, stylusPoint0.Y);
+                stroke.StylusPoints[1] = new StylusPoint(stylusPoint1.X, stylusPoint1.Y);
+            }
+            SendSelectedStrokes();
         }
 
         public void ChangeSelection(InkCanvas surfaceDessin)
@@ -269,6 +307,16 @@ namespace PolyPaint.VueModeles
             HandleBorderColorChange(strokes);
             HandleFillColorChange(strokes);
             HandleBorderStyleChange(strokes);
+        }
+
+        public void ChangeOnlineSelection(ItemsMessage message)
+        {
+            _onlineSelection.AddOrUpdate(message.Username, message.Items, (k, v) => { return message.Items; });
+        }
+
+        public ConcurrentDictionary<string, List<DrawViewModel>> GetOnlineSelection()
+        {
+            return _onlineSelection;
         }
 
         private void HandleBorderColorChange(StrokeCollection strokes)
@@ -307,7 +355,7 @@ namespace PolyPaint.VueModeles
             }
             else
             {
-                SelectedBorder = _dashAssociations.First(x => x.Value == (strokes.First() as AbstractStroke).BorderStyle).Key;
+                SelectedBorder = Tools.DashAssociations.First(x => x.Value == (strokes.First() as AbstractStroke).BorderStyle).Key;
             }
         }
 
@@ -321,6 +369,11 @@ namespace PolyPaint.VueModeles
             {
                 ChatClient.ConnectToChannel(room.Title);
             }
+        }
+
+        internal async void SendSelectedStrokes()
+        {
+            await CollaborationClient.CollaborativeDrawAsync(rebuilder.GetDrawViewModelsFromStrokes(editeur.SelectedStrokes));
         }
 
         private void AddMessage(object sender, MessageArgs args)
@@ -415,6 +468,11 @@ namespace PolyPaint.VueModeles
                     _rooms.Add(new Room(e.Message, false));
                 }
             });
+        }
+
+        public StrokeCollection GetSelectedStrokes()
+        {
+            return editeur.SelectedStrokes;
         }
     }
 }

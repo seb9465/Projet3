@@ -1,10 +1,13 @@
 ﻿using Newtonsoft.Json;
 using PolyPaint.Common;
+using PolyPaint.Modeles;
 using PolyPaint.VueModeles;
 using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Windows;
 using System.Windows.Input;
@@ -31,7 +34,7 @@ namespace PolyPaint.Vues
 
         private async void LoginBtn_Click(object sender, RoutedEventArgs e)
         {
-           // errors_label.Content = "";
+            // errors_label.Content = "";
             LoginViewModel loginViewModel = new LoginViewModel()
             {
                 Username = usernameBox.Text,
@@ -46,15 +49,42 @@ namespace PolyPaint.Vues
                 client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
                 StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
                 HttpResponseMessage result = await client.PostAsync("/api/login", content);
-                string token = JsonConvert.DeserializeObject<string>(await result.Content.ReadAsStringAsync());
+                string token = "";
+                try
+                {
+                    token = JsonConvert.DeserializeObject<string>(await result.Content.ReadAsStringAsync());
+                }
+                catch (JsonReaderException exc)
+                {
+                    Console.WriteLine(exc.Message);
+                }
 
                 if (result.StatusCode == System.Net.HttpStatusCode.OK)
                 {
+
                     DecodeToken(token);
-                    MenuProfile menuProfile = new MenuProfile();
-                    Application.Current.MainWindow = menuProfile;
+                    FenetreDessin fenetreDessin = new FenetreDessin(ViewStateEnum.Online);
+                    Application.Current.MainWindow = fenetreDessin;
                     Close();
-                    menuProfile.Show();
+                    fenetreDessin.Show();
+
+                    //List<SaveableCanvas> strokes;
+                    //using (client)
+                    //{
+                    //    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", (string)Application.Current.Properties["token"]);
+                    //    System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
+                    //    HttpResponseMessage response = await client.GetAsync($"{Config.URL}/api/user/canvas");
+                    //    string responseString = await response.Content.ReadAsStringAsync();
+                    //    strokes = JsonConvert.DeserializeObject<List<SaveableCanvas>>(responseString);
+                    //}
+                   
+                    //Gallery gallery = new Gallery(strokes, fenetreDessin.surfaceDessin);
+
+                    //Application.Current.MainWindow = gallery;
+                    
+
+                    //Close();
+                    //gallery.Show();
                 }
                 else
                 {
@@ -71,7 +101,8 @@ namespace PolyPaint.Vues
             Close();
             register.Show();
         }
-        private void DecodeToken(string token) {
+        private void DecodeToken(string token)
+        {
             var handler = new JwtSecurityTokenHandler();
             var userToken = handler.ReadToken(token) as JwtSecurityToken;
             Application.Current.Properties.Add("token", token);

@@ -11,10 +11,11 @@ import GLKit
 protocol TouchInputDelegate {
     func notifyTouchBegan(action: String, point: CGPoint, figure: Figure?)
     func notifyTouchMoved(point: CGPoint, figure: Figure)
-    func notifyTouchEnded(point: CGPoint)
+    func notifyTouchEnded(point: CGPoint, figure: Figure?)
 }
 
 class UmlFigure : Figure {
+    
     var delegate: TouchInputDelegate?
     var figureColor: UIColor!
     var lineWidth: CGFloat!
@@ -29,6 +30,7 @@ class UmlFigure : Figure {
     var anchorPoints: AnchorPoints?;
     
     init(firstPoint: CGPoint, lastPoint: CGPoint, width: CGFloat, height: CGFloat) {
+        
         let frameSize = CGSize(width: abs(firstPoint.x - lastPoint.x), height: abs(firstPoint.y - lastPoint.y))
         let frame = CGRect(origin: firstPoint, size: frameSize)
         
@@ -37,6 +39,8 @@ class UmlFigure : Figure {
         self.lastPoint = lastPoint
         self.initializeBaseStyle()
         self.initializeAnchorPoints()
+        self.figureID = Constants.figureIDCounter;
+        Constants.figureIDCounter += 1;
     }
     
     // Alternate init to create UmlFigures on user tap
@@ -184,12 +188,12 @@ extension UmlFigure {
     public override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         let touch = touches.first
         guard let point = touch?.location(in: self.superview) else { return }
-        self.delegate?.notifyTouchEnded(point: point)
+        self.delegate?.notifyTouchEnded(point: point, figure: self)
     }
     
     public override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
         let touch = touches.first
         guard let point = touch?.location(in: self.superview) else { return }
-        self.delegate?.notifyTouchEnded(point: point)
+        self.delegate?.notifyTouchEnded(point: point, figure: self)
     }
 }

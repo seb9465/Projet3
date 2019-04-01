@@ -1,8 +1,11 @@
-public class ErrorMessage : BaseMessage
+namespace PolyPaint.Common.Messages
 {
-    public string Message { get; set; }
-    public ErrorMessage(string message)
+    public class ErrorMessage : BaseMessage
     {
-        Message = message;
+        public string Message { get; set; }
+        public ErrorMessage(string message)
+        {
+            Message = message;
+        }
     }
 }

@@ -26,7 +26,7 @@ class StyleTableController: UIViewController {
 
 extension StyleTableController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if (self.editor.selectedFigure == nil) {
+        if (self.editor.selectedFigures.isEmpty) {
             return 0
         }
         return 2
