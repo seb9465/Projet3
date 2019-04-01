@@ -27,6 +27,7 @@ class UmlClassFigure: UmlFigure {
     
     init(firstPoint: CGPoint, lastPoint: CGPoint) {
         super.init(firstPoint: firstPoint, lastPoint: lastPoint, width: BASE_WIDTH, height: BASE_WIDTH)
+        self.itemType = ItemTypeEnum.UmlClass
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -126,16 +127,16 @@ class UmlClassFigure: UmlFigure {
         drawViewModel.BorderColor = PolyPaintColor(A: 255, R: 255, G: 1, B: 1)
         drawViewModel.BorderThickness = 2.0
         drawViewModel.BorderStyle = "solid"
-        drawViewModel.ShapeTitle = "shapeTitle"
-        drawViewModel.Methods = []
-        drawViewModel.Properties = []
-        drawViewModel.SourceTitle = "source"
-        drawViewModel.DestinationTitle = "destination"
+        drawViewModel.ShapeTitle = self.className
+        drawViewModel.Methods = self.methods
+        drawViewModel.Properties = self.attributes
+        drawViewModel.SourceTitle = nil
+        drawViewModel.DestinationTitle = nil
         drawViewModel.ChannelId = "general"
-        drawViewModel.OutilSelectionne = "jai_chier_dans_le_plat_du_jour"
-        drawViewModel.LastElbowPosition = point1
-        drawViewModel.ImageBytes = [UInt8(exactly: 0.0)!]
-        drawViewModel.Rotation = 0.0
+        drawViewModel.OutilSelectionne = nil
+        drawViewModel.LastElbowPosition = nil
+        drawViewModel.ImageBytes = nil
+        drawViewModel.Rotation = self.currentAngle
         return drawViewModel
     }
 }
