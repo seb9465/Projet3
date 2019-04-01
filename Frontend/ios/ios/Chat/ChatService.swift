@@ -209,6 +209,7 @@ class ChatService {
             print("[ CHAT ] On ConnectToChannel");
             
             let json: String = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self)!;
+            
             if let jsonData = json.data(using: .utf8) {
                 let obj: ConnectionMessage = try! JSONDecoder().decode(ConnectionMessage.self, from: jsonData);
                 

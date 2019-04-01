@@ -555,7 +555,6 @@
 		B711B5DD21F659A30096BF7F = {
 			isa = PBXGroup;
 			children = (
-				C43102E022132226008F1D80 /* SoundNotification.swift */,
 				B711B5E821F659A30096BF7F /* ios */,
 				B711B5FD21F659A50096BF7F /* iosTests */,
 				B711B5E721F659A30096BF7F /* Products */,
@@ -585,6 +584,7 @@
 				3DDE25162202A3650082E735 /* Segues */,
 				3D24628321FFF29E00C89165 /* Authentification */,
 				B711B5E921F659A30096BF7F /* AppDelegate.swift */,
+				C43102E022132226008F1D80 /* SoundNotification.swift */,
 				B711B5ED21F659A30096BF7F /* Main.storyboard */,
 				B711B5F021F659A50096BF7F /* Assets.xcassets */,
 				B711B5F221F659A50096BF7F /* LaunchScreen.storyboard */,
