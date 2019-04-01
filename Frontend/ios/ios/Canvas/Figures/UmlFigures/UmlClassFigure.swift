@@ -58,6 +58,14 @@ class UmlClassFigure: UmlFigure {
         setNeedsDisplay();
     }
     
+    override init(drawViewModel: DrawViewModel) {
+        super.init(drawViewModel: drawViewModel);
+//        self.lineColor = drawViewModel.BorderColor
+//        self.figureColor = drawViewModel.FillColor
+        self.methods = drawViewModel.Methods!
+        self.attributes = drawViewModel.Properties!
+    }
+    
     override func draw(_ rect: CGRect) {
         let outerRect = CGRect(x: 0, y: 0, width: BASE_WIDTH, height: BASE_HEIGHT).insetBy(dx: 5, dy: 5);
         let nameRect = CGRect(x: 0, y: 0, width: BASE_WIDTH, height: 50).insetBy(dx: 5, dy: 5);

@@ -39,8 +39,6 @@ class UmlFigure : Figure {
         self.lastPoint = lastPoint
         self.initializeBaseStyle()
         self.initializeAnchorPoints()
-//        self.figureID = Constants.figureIDCounter;
-        Constants.figureIDCounter += 1;
     }
     
     // Alternate init to create UmlFigures on user tap
@@ -52,6 +50,15 @@ class UmlFigure : Figure {
         self.lastPoint = CGPoint(x: touchedPoint.x + width/2, y: touchedPoint.y + height/2)
         self.initializeBaseStyle()
         self.initializeAnchorPoints()
+    }
+    
+    override init(drawViewModel: DrawViewModel) {
+        self.uuid = UUID(uuidString: drawViewModel.Guid!)
+        self.itemType = drawViewModel.ItemType!
+        self.figureColor = UIColor.red
+        self.lineColor = UIColor.black
+        self.currentAngle = drawViewModel.Rotation!
+        self.lineWidth = CGFloat(drawViewModel.BorderThickness!)
     }
     
     required init?(coder aDecoder: NSCoder) {

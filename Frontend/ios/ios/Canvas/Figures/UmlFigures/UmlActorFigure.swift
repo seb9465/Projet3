@@ -14,8 +14,6 @@ class UmlActorFigure: UmlFigure {
     
     init(firstPoint: CGPoint, lastPoint: CGPoint) {
         super.init(firstPoint: firstPoint, lastPoint: lastPoint, width: BASE_WIDTH, height: BASE_WIDTH)
-//        self.figureID = Constants.figureIDCounter;
-        Constants.figureIDCounter += 1;
     }
     
     init(origin: CGPoint) {
