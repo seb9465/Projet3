@@ -27,6 +27,14 @@ class Figure: UIView {
         let point2 = PolyPaintStylusPoint(X: Double(self.lastPoint.x), Y: Double(self.lastPoint.y), PressureFactor: 1)
         let color: PolyPaintColor = PolyPaintColor(A: 255, R: 255, G: 1, B: 1)
         
+        init(ItemType: ItemTypeEnum, StylusPoints: [PolyPaintStylusPoint], OutilSelectionne: String, Color: PolyPaintColor, ChannelId: String) {
+            self.ItemType = ItemType
+            self.StylusPoints = StylusPoints
+            self.OutilSelectionne = OutilSelectionne
+            self.Color = Color
+            self.ChannelId = ChannelId
+        }
+        
         return DrawViewModel(
             ItemType: itemType,
             StylusPoints: [point1, point2],

@@ -11,7 +11,8 @@ struct DrawViewModel: Codable {
     var owner: String!
     var ItemType: ItemTypeEnum!
     var StylusPoints: [PolyPaintStylusPoint]!
-    var Color: PolyPaintColor!
+    var FillColor: PolyPaintColor!
+    var BorderColor: PolyPaintColor!
     var BorderThickness: Double!
     var BorderStyle: String!
     var ShapeTitle: String!
@@ -23,14 +24,7 @@ struct DrawViewModel: Codable {
     var OutilSelectionne: String!
     var LastElbowPosition: PolyPaintStylusPoint!
     var ImageBytes: [UInt8]!
-
-    init(ItemType: ItemTypeEnum, StylusPoints: [PolyPaintStylusPoint], OutilSelectionne: String, Color: PolyPaintColor, ChannelId: String) {
-        self.ItemType = ItemType
-        self.StylusPoints = StylusPoints
-        self.OutilSelectionne = OutilSelectionne
-        self.Color = Color
-        self.ChannelId = ChannelId
-    }
+    var Rotation: Double
 }
 
 enum ItemTypeEnum: Int, Codable {
