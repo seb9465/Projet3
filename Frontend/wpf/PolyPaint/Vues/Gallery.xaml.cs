@@ -145,17 +145,17 @@ namespace PolyPaint.Vues
             {
                 for (int item = 0; item < savedCanvas.Count; item++)
                 {
-                    for (int i=0; i<item; i++)
+                    
+                    var bitmapImage = (BitmapSource)new ImageSourceConverter().ConvertFrom(Convert.FromBase64String(savedCanvas[item].Base64Image));
+                    var strokes = GenerateStrokesFromBytes(Convert.FromBase64String(savedCanvas[item].Base64Strokes));
+                    canvas.Add(new CanvasViewModel(savedCanvas[item].CanvasId, savedCanvas[item].Name, bitmapImage, strokes, savedCanvas[item].CanvasVisibility, savedCanvas[item].CanvasProtection));
+                  for (int i=0; i<canvas.Count-1; i++)
                     {
-                        if (savedCanvas[item].Name == savedCanvas[i].Name)
+                        if (savedCanvas[item].Name == canvas[i].Name)
                         {
                             canvas.RemoveAt(i);
                         }
                     }
-                    var bitmapImage = (BitmapSource)new ImageSourceConverter().ConvertFrom(Convert.FromBase64String(savedCanvas[item].Base64Image));
-                    var strokes = GenerateStrokesFromBytes(Convert.FromBase64String(savedCanvas[item].Base64Strokes));
-                    canvas.Add(new CanvasViewModel(savedCanvas[item].CanvasId, savedCanvas[item].Name, bitmapImage, strokes, savedCanvas[item].CanvasVisibility, savedCanvas[item].CanvasProtection));
-                  
                 }
                 
             }

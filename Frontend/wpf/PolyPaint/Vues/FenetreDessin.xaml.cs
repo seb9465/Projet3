@@ -191,7 +191,7 @@ namespace PolyPaint
             byte[] imageBytes = GetBytesForImage();
             string strokesToSend = Convert.ToBase64String(strokesBytes);
             string imageToSend = Convert.ToBase64String(imageBytes);
-            string CanvasId = DateTime.Now.ToString("yyyy.MM.dd.hh.mm.ss.ffffff");
+            string CanvasId = DateTime.Now.ToString("yyyy.MM.dd.hh.mm.ss.ffff");
             string CanvasName = canvasName;
             string CanvasVisibility = canvasVisibility;
             string CanvasProtection = canvasProtection;
