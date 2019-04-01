@@ -49,4 +49,16 @@ class RegistrationViewModel {
     public var password: String {
         get { return self._password }
     }
+    
+    // MARK: Public functions
+    
+    public func toJson() -> [String: String]{
+        return [
+            "firstName": self._firstName,
+            "lastName": self._lastName,
+            "username": self._username,
+            "email": self._email,
+            "password": self._password,
+        ];
+    }
 }
