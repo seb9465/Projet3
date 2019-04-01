@@ -51,5 +51,10 @@ namespace PolyPaint.Utilitaires
         {
             return (Math.PI / 180) * angle;
         }
+
+        public static double ConvertToDegrees(double angle)
+        {
+            return angle * (180 / Math.PI);
+        }
     }
 }

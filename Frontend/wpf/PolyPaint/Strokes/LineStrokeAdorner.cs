@@ -60,14 +60,14 @@ public class LineStrokeAdorner : Adorner
         rotation = new RotateTransform();
     }
 
-    async void DragCompleted(object sender, DragCompletedEventArgs e)
+    void DragCompleted(object sender, DragCompletedEventArgs e)
     {
         dragPos = Mouse.GetPosition(this);
         AdornedStroke.LastElbowPosition = dragPos;
         AdornedStroke.Redraw();
         var rebuilder = new StrokeBuilder();
         var drawViewModel = rebuilder.GetDrawViewModelsFromStrokes(new StrokeCollection() { AdornedStroke });
-        await (AdornedStroke.SurfaceDessin.DataContext as VueModele).CollaborationClient.CollaborativeDrawAsync(drawViewModel);
+        (AdornedStroke.SurfaceDessin.DataContext as VueModele).CollaborationClient.CollaborativeDrawAsync(drawViewModel);
         InvalidateArrange();
     }
 

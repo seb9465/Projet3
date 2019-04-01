@@ -41,6 +41,7 @@ namespace PolyPaint.Strokes
                 sp.ToPoint()
             };
             DrawPolyline(drawingContext, null, Border, elbowPoints, FillRule.EvenOdd);
+            DrawText(drawingContext);
         }
     }
 }

@@ -81,6 +81,7 @@ namespace PolyPaint.Strokes
                 points[0]
             };
             DrawPolyline(drawingContext, null, Border, elbowPoints, FillRule.EvenOdd);
+            DrawText(drawingContext);
         }
     }
 }

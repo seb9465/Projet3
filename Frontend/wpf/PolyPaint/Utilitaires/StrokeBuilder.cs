@@ -276,6 +276,7 @@ namespace PolyPaint.Utilitaires
         private void SetLineProperties(DrawViewModel stroke, InkCanvas surfaceDessin)
         {
             (DrawingStroke as AbstractStroke).Guid = Guid.Parse(stroke.Guid);
+            (DrawingStroke as AbstractStroke).TitleString = stroke.ShapeTitle;
             (DrawingStroke as AbstractLineStroke).SourceString = stroke.SourceTitle;
             (DrawingStroke as AbstractLineStroke).DestinationString = stroke.DestinationTitle;
             (DrawingStroke as AbstractStroke).SetBorderStyle(Tools.DashAssociations[stroke.BorderStyle]);
@@ -296,9 +297,8 @@ namespace PolyPaint.Utilitaires
         private void SetShapeProperties(DrawViewModel stroke, InkCanvas surfaceDessin)
         {
             (DrawingStroke as AbstractStroke).Guid = Guid.Parse(stroke.Guid);
-            (DrawingStroke as AbstractShapeStroke).TitleString = stroke.ShapeTitle;
-            (DrawingStroke as AbstractShapeStroke).TitleString = stroke.ShapeTitle;
             (DrawingStroke as AbstractStroke).Rotation = stroke.Rotation;
+            (DrawingStroke as AbstractStroke).TitleString = stroke.ShapeTitle;
 
             (DrawingStroke as ICanvasable).AddToCanvas();
         }
@@ -346,10 +346,10 @@ namespace PolyPaint.Utilitaires
                 };
                 drawingStroke.BorderThickness = stroke.Border.Thickness;
                 drawingStroke.BorderStyle = Tools.DashAssociations.First(x => x.Value == stroke.BorderStyle).Key;
+                drawingStroke.ShapeTitle = (stroke as AbstractStroke).TitleString;
 
                 if ((stroke as AbstractShapeStroke != null))
                 {
-                    drawingStroke.ShapeTitle = (stroke as AbstractShapeStroke).TitleString;
                     if (stroke as UmlClassStroke != null)
                     {
                         drawingStroke.Methods = new List<string>();

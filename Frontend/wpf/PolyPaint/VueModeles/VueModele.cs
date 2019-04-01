@@ -371,9 +371,9 @@ namespace PolyPaint.VueModeles
             }
         }
 
-        internal async void SendSelectedStrokes()
+        internal void SendSelectedStrokes()
         {
-            await CollaborationClient.CollaborativeDrawAsync(rebuilder.GetDrawViewModelsFromStrokes(editeur.SelectedStrokes));
+            CollaborationClient.CollaborativeDrawAsync(rebuilder.GetDrawViewModelsFromStrokes(editeur.SelectedStrokes));
         }
 
         private void AddMessage(object sender, MessageArgs args)

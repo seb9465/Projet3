@@ -74,12 +74,12 @@ namespace PolyPaint
             _onlineSelectedAdorners = new ConcurrentDictionary<string, OnlineSelectedAdorner>();
         }
 
-        private async void VueModelePropertyChanged(object sender, PropertyChangedEventArgs args)
+        private void VueModelePropertyChanged(object sender, PropertyChangedEventArgs args)
         {
             if (args.PropertyName == "OutilSelectionne" && (DataContext as VueModele).OutilSelectionne != "select")
             {
                 (DataContext as VueModele).SelectNothing(surfaceDessin);
-                await (DataContext as VueModele).CollaborationClient.CollaborativeSelectAsync(new List<DrawViewModel>());
+                (DataContext as VueModele).CollaborationClient.CollaborativeSelectAsync(new List<DrawViewModel>());
 
             }
         }
@@ -342,7 +342,7 @@ namespace PolyPaint
             }
         }
 
-        private async void InkCanvas_LeftMouseUp(object sender, MouseButtonEventArgs e)
+        private void InkCanvas_LeftMouseUp(object sender, MouseButtonEventArgs e)
         {
             if ((DataContext as VueModele).OutilSelectionne == "") return;
             var bounds = Rect.Empty;
@@ -350,27 +350,30 @@ namespace PolyPaint
             {
                 bounds = surfaceDessin.GetSelectionBounds();
             }
-            if ((DataContext as VueModele).OutilSelectionne == "change_text")
+
+            var selectedItems = new List<DrawViewModel>();
+            switch ((DataContext as VueModele).OutilSelectionne)
             {
-                (DataContext as VueModele).SelectItem(surfaceDessin, e.GetPosition((IInputElement)sender));
-                icEventManager.ChangeText(surfaceDessin, mouseLeftDownPoint, (VueModele)DataContext);
-            }
-            else if ((DataContext as VueModele).OutilSelectionne == "select")
-            {
-                var drawViewModel = rebuilder.GetDrawViewModelsFromStrokes(surfaceDessin.GetSelectedStrokes());
-                await (DataContext as VueModele).CollaborationClient.CollaborativeDrawAsync(drawViewModel);
-                await (DataContext as VueModele).CollaborationClient.CollaborativeSelectAsync(drawViewModel);
-            }
-            else if ((DataContext as VueModele).OutilSelectionne == "lasso")
-            {
-                (DataContext as VueModele).SelectItemLasso(surfaceDessin, bounds);
-                var drawViewModel = rebuilder.GetDrawViewModelsFromStrokes(surfaceDessin.GetSelectedStrokes());
-                await (DataContext as VueModele).CollaborationClient.CollaborativeDrawAsync(drawViewModel);
-                await (DataContext as VueModele).CollaborationClient.CollaborativeSelectAsync(drawViewModel);
-            }
-            else
-            {
-                await icEventManager.EndDrawAsync(surfaceDessin, (DataContext as VueModele));
+                case "change_text":
+                    icEventManager.ChangeText(surfaceDessin, mouseLeftDownPoint, (VueModele)DataContext);
+                    selectedItems = rebuilder.GetDrawViewModelsFromStrokes(surfaceDessin.GetSelectedStrokes());
+                    (DataContext as VueModele).SelectItem(surfaceDessin, e.GetPosition((IInputElement)sender));
+                    (DataContext as VueModele).CollaborationClient.CollaborativeSelectAsync(selectedItems);
+                    break;
+                case "select":
+                    selectedItems = rebuilder.GetDrawViewModelsFromStrokes(surfaceDessin.GetSelectedStrokes());
+                    (DataContext as VueModele).CollaborationClient.CollaborativeDrawAsync(selectedItems);
+                    (DataContext as VueModele).CollaborationClient.CollaborativeSelectAsync(selectedItems);
+                    break;
+                case "lasso":
+                    (DataContext as VueModele).SelectItemLasso(surfaceDessin, bounds);
+                    selectedItems = rebuilder.GetDrawViewModelsFromStrokes(surfaceDessin.GetSelectedStrokes());
+                    (DataContext as VueModele).CollaborationClient.CollaborativeDrawAsync(selectedItems);
+                    (DataContext as VueModele).CollaborationClient.CollaborativeSelectAsync(selectedItems);
+                    break;
+                default:
+                    icEventManager.EndDrawAsync(surfaceDessin, (DataContext as VueModele));
+                    break;
             }
             IsDrawing = false;
         }
