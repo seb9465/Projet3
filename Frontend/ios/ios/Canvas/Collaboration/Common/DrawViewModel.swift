@@ -5,7 +5,7 @@
 //  Created by William Sevigny on 2019-03-06.
 //  Copyright © 2019 LOG3000 equipe 12. All rights reserved.
 //
-
+import UIKit
 struct DrawViewModel: Codable {
     var Guid: String?
     var owner: String?
@@ -54,6 +54,10 @@ struct PolyPaintStylusPoint: Codable {
         self.X = X
         self.Y = Y
         self.PressureFactor = PressureFactor
+    }
+    
+    func getCGPoint() -> CGPoint {
+        return CGPoint(x: self.X, y: self.Y)
     }
 }
 

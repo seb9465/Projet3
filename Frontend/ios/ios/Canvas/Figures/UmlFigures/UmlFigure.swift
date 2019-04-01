@@ -54,7 +54,12 @@ class UmlFigure : Figure {
         self.initializeAnchorPoints()
     }
     
-    override init(drawViewModel: DrawViewModel) {
+    init(drawViewModel: DrawViewModel) {
+        let firstPoint: CGPoint = drawViewModel.StylusPoints![0].getCGPoint()
+        let lastPoint: CGPoint = drawViewModel.StylusPoints![1].getCGPoint()
+        let frameSize = CGSize(width: abs(firstPoint.x - lastPoint.x), height: abs(firstPoint.y - lastPoint.y))
+        let frame = CGRect(origin: firstPoint, size: frameSize)
+        super.init(frame: frame)
         self.uuid = UUID(uuidString: drawViewModel.Guid!)
         self.itemType = drawViewModel.ItemType!
         self.figureColor = UIColor.red
