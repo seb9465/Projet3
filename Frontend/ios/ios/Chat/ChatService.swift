@@ -14,6 +14,8 @@ class ChatService {
     
     static let shared = ChatService();
     
+    // MARK: Attributes
+    
     private var _hubConnection: HubConnection;
     private var _members: Members;
     private var _connected: Bool;
@@ -21,6 +23,27 @@ class ChatService {
     private var _userChannels: ChannelsMessage;
     private var _serverChannels: ChannelsMessage;
     private var _messagesWhileAFK: [String: [Message]];
+    
+    
+    // MARK: Constructor
+    
+    init() {
+        print("[ CHAT ] INIT from ChatService");
+        self._members = Members();
+        
+        self._hubConnection = HubConnectionBuilder(url: URL(string: Constants.CHAT_URL)!)
+            .withHttpConnectionOptions() { httpConnectionOptions in
+                httpConnectionOptions.accessTokenProvider = { return USER_TOKEN; }}
+            .build();
+        
+        self._messagesWhileAFK = [:];
+        self._currentChannel = nil;
+        self._userChannels = ChannelsMessage();
+        self._serverChannels = ChannelsMessage();
+        self._connected = false;
+    }
+    
+    // MARK: Getter - Setter
     
     public var currentChannel: Channel! {
         get { return self._currentChannel }
@@ -40,27 +63,13 @@ class ChatService {
         set { self._messagesWhileAFK = newValue }
     }
     
-    init() {
-        print("[ CHAT ] INIT from ChatService");
-        self._members = Members();
-        
-        self._hubConnection = HubConnectionBuilder(url: URL(string: Constants.CHAT_URL)!)
-            .withHttpConnectionOptions() { httpConnectionOptions in
-                httpConnectionOptions.accessTokenProvider = { return USER_TOKEN; }}
-            .build();
-        
-        self._messagesWhileAFK = [:];
-        self._currentChannel = nil;
-        self._userChannels = ChannelsMessage();
-        self._serverChannels = ChannelsMessage();
-        self._connected = false;
-    }
-    
     public func connectToHub() -> Void {
         print("[ CHAT ] Connect to hub");
         self._hubConnection.start();
         self._connected = true;
     }
+    
+    // MARK: Public functions
     
     public func initOnReceivingMessage(currentMemberName: String? = "", insertMessage: @escaping (_ message: Message) -> Void) {
         self.onSendMessage(currentMemberName: currentMemberName, insertMessage: insertMessage);
@@ -167,7 +176,10 @@ class ChatService {
                         
                         self._hubConnection.invoke(method: "ConnectToChannel", arguments: [jsondata], invocationDidComplete: { error in
                             print("[ CHAT ] Invoked ConnectToChannel.");
-                            self.printPossibleError(error: error);
+                            
+                            if let e = error {
+                                print("ERROR while invoking ConnectToChannel");
+                            }
                         });
                     }
                 }
@@ -315,7 +327,10 @@ class ChatService {
         
         self._hubConnection.invoke(method: "CreateChannel", arguments: [newChannelJsonData], invocationDidComplete: { error in
             print("[ CHAT ] Invoke CreateChannel");
-            self.printPossibleError(error: error);
+            
+            if let e = error {
+                print("ERROR while invoking CreateChannel");
+            }
         });
     }
     
@@ -325,7 +340,10 @@ class ChatService {
         
         self._hubConnection.invoke(method: "ConnectToChannel", arguments: [jsondata], invocationDidComplete: { error in
             print("[ CHAT ] Invoked ConnectToChannel.");
-            self.printPossibleError(error: error);
+            
+            if let e = error {
+                print("ERROR while invoking ConnectToChannel");
+            }
         });
     }
     
@@ -348,15 +366,13 @@ class ChatService {
         let jsonData: String = String(data: json!, encoding: .utf8)!;
         self._hubConnection.invoke(method: "SendMessage", arguments: [jsonData], invocationDidComplete: { error in
             print("[ CHAT ] Invoke SendMessage");
-            self.printPossibleError(error: error);
+            
+            if error != nil {
+                print("ERROR while invoking SendMessage");
+            }
+            
             SoundNotification.play(sound: Sound.ReceiveMessage);
             insertMessage(message);
         });
-    }
-    
-    private func printPossibleError(error: Error?) -> Void {
-        if let e = error {
-            print(e);
-        }
     }
 }
