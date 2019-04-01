@@ -87,7 +87,7 @@ class CollaborationHub {
         let itemMessage = ItemMessage(
             CanvasId: "general",
             Username: UserDefaults.standard.string(forKey: "username")!,
-            Items: [figure.exportViewModel()]
+            Items: [figure.exportViewModel()!]
         )
 
         let jsonEncoder = JSONEncoder()

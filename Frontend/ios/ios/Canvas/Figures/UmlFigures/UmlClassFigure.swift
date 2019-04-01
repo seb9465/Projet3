@@ -21,7 +21,7 @@ class UmlClassFigure: UmlFigure {
     
     init(origin: CGPoint) {
         super.init(touchedPoint: origin, width: BASE_WIDTH, height: BASE_HEIGHT)
-//        self.figureID = Constants.figureIDCounter;
+        //        self.figureID = Constants.figureIDCounter;
         Constants.figureIDCounter += 1;
     }
     
@@ -84,7 +84,7 @@ class UmlClassFigure: UmlFigure {
             attributeLabel.textAlignment = .left
             attributeLabel.drawText(in: attributesRect)
         }
-
+        
         let outerRectPath = UIBezierPath(rect: outerRect)
         let nameRectPath = UIBezierPath(rect: nameRect)
         let splitterRectPath = UIBezierPath(rect: splitterRect)
@@ -105,24 +105,29 @@ class UmlClassFigure: UmlFigure {
         outerRectPath.stroke()
     }
     
-//    override func exportToViewModel(itemType: ItemTypeEnum) -> DrawViewModel {
-//        return DrawViewModel(
-//             Guid: self.uuid,
-//             owner: String,
-//             ItemType: ItemTypeEnum,
-//             StylusPoints: [PolyPaintStylusPoint],
-//             Color: PolyPaintColor,
-//             BorderThickness: Double,
-//             BorderStyle: String,
-//             ShapeTitle: String,
-//             Methods: [String],
-//             Properties: [String],
-//             SourceTitle: String,
-//             DestinationTitle: String,
-//             ChannelId: String,
-//             OutilSelectionne: String,
-//             LastElbowPosition: PolyPaintStylusPoint,
-//             ImageBytes: [UInt8],
-//        )
-//    }
+    override func exportViewModel() -> DrawViewModel {
+        let point1 = PolyPaintStylusPoint(X: Double(self.firstPoint.x), Y: Double(self.firstPoint.y), PressureFactor: 1)
+        let point2 = PolyPaintStylusPoint(X: Double(self.lastPoint.x), Y: Double(self.lastPoint.y), PressureFactor: 1)
+        
+        var drawViewModel: DrawViewModel = DrawViewModel()
+        drawViewModel.Guid = self.uuid.uuidString
+        drawViewModel.owner = UserDefaults.standard.string(forKey: "username")
+        drawViewModel.ItemType = self.itemType
+        drawViewModel.StylusPoints = [point1, point2]
+        drawViewModel.FillColor = PolyPaintColor(A: 255, R: 255, G: 1, B: 1)
+        drawViewModel.BorderColor = PolyPaintColor(A: 255, R: 255, G: 1, B: 1)
+        drawViewModel.BorderThickness = 2.0
+        drawViewModel.BorderStyle = "solid"
+        drawViewModel.ShapeTitle = "shapeTitle"
+        drawViewModel.Methods = []
+        drawViewModel.Properties = []
+        drawViewModel.SourceTitle = "source"
+        drawViewModel.DestinationTitle = "destination"
+        drawViewModel.ChannelId = "general"
+        drawViewModel.OutilSelectionne = "jai_chier_dans_le_plat_du_jour"
+        drawViewModel.LastElbowPosition = point1
+        drawViewModel.ImageBytes = [UInt8(exactly: 0.0)!]
+        drawViewModel.Rotation = 0.0
+        return drawViewModel
+    }
 }
