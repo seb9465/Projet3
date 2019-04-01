@@ -17,6 +17,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -38,6 +39,10 @@ namespace PolyPaint
         private AdornerLayer adornerLayer;
         private LineStrokeAdorner adorner;
 
+        public String CanvasVisibility;
+        public String CanvasName;
+        public String CanvasProtection;
+
         private ChatWindow externalChatWindow;
         private MediaPlayer mediaPlayer = new MediaPlayer();
         private InkCanvasEventManager icEventManager = new InkCanvasEventManager();
@@ -58,6 +63,7 @@ namespace PolyPaint
             dispatcherTimer.Tick += new EventHandler(SaveImage);
             dispatcherTimer.Interval = new TimeSpan(0, 1, 0);
             dispatcherTimer.Start();
+            
 
             if (_viewState == ViewStateEnum.Online)
             {
@@ -69,11 +75,11 @@ namespace PolyPaint
                 (DataContext as VueModele).ChatClient.MessageReceived += ScrollDown;
                 externalChatWindow = new ChatWindow(DataContext);
                 Application.Current.Exit += OnClosing;
+
             }
             else
             {
                 sendToCloud.Visibility = Visibility.Collapsed;
-                importFromCloud.Visibility = Visibility.Collapsed;
                 chatMenu.Visibility = Visibility.Collapsed;
             }
         }
@@ -179,7 +185,7 @@ namespace PolyPaint
             catch (ArgumentException) { } // Close Dialog Window
         }
 
-        private async void SendToCloud(object sender, RoutedEventArgs e)
+        private async void SendToCloud()
         {
 
             UploadToCloud uploadToCloud = new UploadToCloud();
@@ -393,6 +399,10 @@ namespace PolyPaint
             {
                 icEventManager.ChangeText(surfaceDessin, mouseLeftDownPoint);
             }
+
+            SendToCloud();
+
+
             IsDrawing = false;
 
         }
@@ -587,15 +597,7 @@ namespace PolyPaint
             adornerLayer.Add(adorner);
         }
 
-        private void GoBack_Click(object sender, RoutedEventArgs e)
-        {
-            if (_viewState == ViewStateEnum.Online)
-                externalChatWindow.Close();
-            MenuProfile menuProfile = new MenuProfile();
-            Application.Current.MainWindow = menuProfile;
-            Close();
-            menuProfile.Show();
-        }
+       
         void Window_Loaded(object sender, RoutedEventArgs e)
         {
         }

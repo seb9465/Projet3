@@ -30,7 +30,11 @@ namespace PolyPaint.Vues
         private ImageProtection imageProtection;
         private string username;
         FenetreDessin fenetreDessin = new FenetreDessin(ViewStateEnum.Online);
-        
+
+        public String CanvasVisibility;
+        public String CanvasName;
+        public String CanvasProtection;
+
         private ChatWindow externalChatWindow;
         bool isMenuOpen = false;
         private ViewStateEnum _viewState { get; set; }
@@ -55,7 +59,18 @@ namespace PolyPaint.Vues
 
         private void NewCanva_Click(object sender, RoutedEventArgs e)
         {
-        }
+            UploadToCloud uploadToCloud = new UploadToCloud();
+
+            CanvasName = uploadToCloud.CanvasName;
+            CanvasVisibility = uploadToCloud.CanvasVisibility;
+            CanvasProtection = uploadToCloud.CanvasProtection;
+
+            Application.Current.MainWindow = fenetreDessin;
+            this.Close();
+            fenetreDessin.Show();
+
+            
+    }
 
 
         private void AddRoom(object sender, DialogClosingEventArgs eventArgs)
@@ -182,15 +197,6 @@ namespace PolyPaint.Vues
                 fenetreDessin.Show();
             }
         }
-
-       
-
-        private void GoBack_Click(object sender, RoutedEventArgs e)
-        {
-            MenuProfile menuProfile = new MenuProfile();
-            Application.Current.MainWindow = menuProfile;
-            Close();
-            menuProfile.Show();
-        }
+        
     }
 }

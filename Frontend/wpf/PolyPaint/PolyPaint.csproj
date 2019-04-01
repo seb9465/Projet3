@@ -426,9 +426,6 @@
       <DependentUpon>UploadToCloud.xaml</DependentUpon>
     </Compile>
     <Compile Include="Vues\ViewStateEnum.cs" />
-    <Compile Include="Vues\MenuProfile.xaml.cs">
-      <DependentUpon>MenuProfile.xaml</DependentUpon>
-    </Compile>
     <Page Include="Vues\ChatWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -470,10 +467,6 @@
     <Page Include="Vues\Gallery.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Vues\MenuProfile.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Vues\UploadToCloud.xaml">
       <SubType>Designer</SubType>

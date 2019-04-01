@@ -38,10 +38,7 @@ namespace PolyPaint.Vues
                 if (window.GetType() == typeof(FenetreDessin))
                 {
                     (window as FenetreDessin).chatWrapper.Visibility = Visibility.Visible;
-                } else if (window.GetType() == typeof(MenuProfile))
-                {
-                    (window as MenuProfile).chatWrapper.Visibility = Visibility.Visible;
-                }
+                } 
             }
         }
 

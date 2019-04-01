@@ -27,13 +27,15 @@
         <convertisseurs:ConvertisseurRoomContent x:Key="convertisseurRoomContent" />
     </Window.Resources>
     <StackPanel>
-        <StackPanel>
-            
-            <Button Style="{StaticResource MaterialDesignRaisedLightButton}" Click="GoBack_Click"
-             Width="60" Height="40" HorizontalAlignment="Left" Background="Gainsboro" BorderBrush="Gray" Margin="0,0,0,0" >
-                <materialDesign:PackIcon Kind="ArrowBack" Height="24" Width="24"/>
+        <DockPanel>
+            <Button Style="{StaticResource MaterialDesignRaisedLightButton}" Click="ImportFromCloud"
+             Width="120" Height="40"  Background="Gainsboro"  HorizontalAlignment="Left" BorderBrush="Gray" Margin="0,0,10,0" >
+                <StackPanel Orientation="Horizontal">
+                    <materialDesign:PackIcon Kind="ArrowBack" Height="24" Width="24"/>
+                    <Label FontWeight="Bold">Gallery</Label>
+                </StackPanel>
             </Button>
-        </StackPanel>
+        </DockPanel>
 
         <DockPanel Height="640">
 
@@ -75,13 +77,8 @@
                     </Button>
 
                     <Button Style="{StaticResource MaterialDesignRaisedButton}" ToolTip="Envoyer un canevas sur le serveur distant DOIT SE FAIRE AUTOMATIQUEMENT" 
-                        x:Name="sendToCloud" Width="30" Height="30" Margin="5" Padding="0"  Click="SendToCloud" FontSize="18">
+                        x:Name="sendToCloud" Width="30" Height="30" Margin="5" Padding="0" FontSize="18">
                         <materialDesign:PackIcon Kind="CloudUpload" />
-                    </Button>
-
-                    <Button Style="{StaticResource MaterialDesignRaisedButton}" ToolTip="Importer un canevas du serveur distant DOIT SE FAIRE DANS LA SECTION PRÉCÉDENTE - GALLERIE" 
-                        x:Name="importFromCloud" Width="30" Height="30" Margin="5" Padding="0"  Click="ImportFromCloud" FontSize="18">
-                        <materialDesign:PackIcon Kind="CloudDownload" />
                     </Button>
 
                     <StackPanel Orientation="Horizontal">
@@ -416,7 +413,7 @@
                     <ProgressBar  Style="{StaticResource MaterialDesignCircularProgressBar}" Value="0" IsIndeterminate="True" Width="50" Height="50" />
                 </Grid>
             </Grid>
-            <StackPanel x:Name="chatMenu" Background="Gainsboro" Width="500"  HorizontalAlignment="Right" >
+            <StackPanel x:Name="chatMenu" Background="Gainsboro" Width="70"  HorizontalAlignment="Right" >
 
                 <ToggleButton x:Name="hamburgerMenu" Style="{StaticResource MaterialDesignActionToggleButton}" Foreground="Black" Background="Transparent" Click="hamburgerMenu_Click" Margin="0,10,20,0" HorizontalAlignment="Right">
                     <ToggleButton.Content>
@@ -427,7 +424,7 @@
                     </materialDesign:ToggleButtonAssist.OnContent>
                 </ToggleButton>
 
-                <StackPanel Orientation="Vertical" Margin="20" x:Name="chatTab" Visibility="Visible" Background="WhiteSmoke">
+                <StackPanel Orientation="Vertical" Margin="20" x:Name="chatTab" Visibility="Collapsed" Background="WhiteSmoke">
                     <Border BorderThickness="1" BorderBrush="Gray" ClipToBounds="True" HorizontalAlignment="Stretch" Height="450">
                         <StackPanel Orientation="Vertical" Margin="10" x:Name="chatWrapper">
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
