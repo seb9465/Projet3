@@ -74,7 +74,7 @@
 		B7567948220F355F00F80B12 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7567947220F355F00F80B12 /* Constants.swift */; };
 		B756794A220F5DC800F80B12 /* Chat.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B7567949220F5DC800F80B12 /* Chat.storyboard */; };
 		B756794C220F608B00F80B12 /* Members.swift in Sources */ = {isa = PBXBuildFile; fileRef = B756794B220F608B00F80B12 /* Members.swift */; };
-		B775FE3F22135D6300B2EFE0 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B775FE3E22135D6300B2EFE0 /* Extensions.swift */; };
+		B775FE3F22135D6300B2EFE0 /* Spinner.swift in Sources */ = {isa = PBXBuildFile; fileRef = B775FE3E22135D6300B2EFE0 /* Spinner.swift */; };
 		B781B95922132BDB001C1BD8 /* Canvas.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B781B95822132BDB001C1BD8 /* Canvas.storyboard */; };
 		B781B95B22132C2F001C1BD8 /* CanvasController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B781B95A22132C2F001C1BD8 /* CanvasController.swift */; };
 		B79117DF2234AE830008CB4C /* Channel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B79117DE2234AE830008CB4C /* Channel.swift */; };
@@ -204,7 +204,7 @@
 		B7567947220F355F00F80B12 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		B7567949220F5DC800F80B12 /* Chat.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Chat.storyboard; sourceTree = "<group>"; };
 		B756794B220F608B00F80B12 /* Members.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Members.swift; sourceTree = "<group>"; };
-		B775FE3E22135D6300B2EFE0 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		B775FE3E22135D6300B2EFE0 /* Spinner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spinner.swift; sourceTree = "<group>"; };
 		B781B95822132BDB001C1BD8 /* Canvas.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Canvas.storyboard; sourceTree = "<group>"; };
 		B781B95A22132C2F001C1BD8 /* CanvasController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasController.swift; sourceTree = "<group>"; };
 		B79117DE2234AE830008CB4C /* Channel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Channel.swift; sourceTree = "<group>"; };
@@ -591,7 +591,7 @@
 				B711B5F521F659A50096BF7F /* Info.plist */,
 				3DC967EC220A09C400FA76CB /* DashboardController.swift */,
 				B7567947220F355F00F80B12 /* Constants.swift */,
-				B775FE3E22135D6300B2EFE0 /* Extensions.swift */,
+				B775FE3E22135D6300B2EFE0 /* Spinner.swift */,
 			);
 			path = ios;
 			sourceTree = "<group>";
@@ -1006,7 +1006,7 @@
 				3DE8F120223C44AF0052580B /* ClassMethodCell.swift in Sources */,
 				3D2268192236E9F500B2F604 /* EditorView.swift in Sources */,
 				C43102E122132226008F1D80 /* SoundNotification.swift in Sources */,
-				B775FE3F22135D6300B2EFE0 /* Extensions.swift in Sources */,
+				B775FE3F22135D6300B2EFE0 /* Spinner.swift in Sources */,
 				B756794C220F608B00F80B12 /* Members.swift in Sources */,
 				C4D6BB2722384F5B00121695 /* AnchorPoints.swift in Sources */,
 				3D2565602225BDFE00BCE946 /* GalleryController.swift in Sources */,
