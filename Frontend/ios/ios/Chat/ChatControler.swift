@@ -32,7 +32,7 @@ class MsgChatController: MessagesViewController, MsgChatProtocol {
         self.initDelegate();
         ChatService.shared.initOnReceivingMessage(currentMemberName: self.member.name, insertMessage: self.insertMessage)
         ChatService.shared.initOnAnotherUserConnection(insertMessage: self.insertMessage);
-        ChatService.shared.connectToGroup();
+//        ChatService.shared.connectToGroup();
         
         self.navigationItem.hidesBackButton = true;
         let newBackButton = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(self.back(sender:)));
@@ -63,9 +63,6 @@ class MsgChatController: MessagesViewController, MsgChatProtocol {
     
     override func viewWillDisappear(_ animated: Bool) -> Void {
          super.viewWillDisappear(animated);
-        
-        // TODO: Disconnect from channel only.
-//        ChatService.shared.disconnectFromCurrentChatRoom();
     }
     
     func messageInputBar(_ inputBar: MessageInputBar, textViewTextDidChangeTo text: String) -> Void {

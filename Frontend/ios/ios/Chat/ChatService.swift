@@ -23,8 +23,6 @@ class ChatService {
     
     var messagesWhileAFK: [String: [Message]] = [:];
     
-    // TODO: Ajouter un attributs permettant de conserver les messages lorsque le CHAT est fermé.
-    
     init() {
         print("[ CHAT ] INIT from ChatService");
         self._members = Members();
@@ -115,7 +113,6 @@ class ChatService {
     }
     
     public func disconnectFromHub() -> Void {
-        //        self.disconnectFromChatRoom();
         self.hubConnection.stop();
         self.connected = false;
         print("[ CHAT ] Connection stopped");
