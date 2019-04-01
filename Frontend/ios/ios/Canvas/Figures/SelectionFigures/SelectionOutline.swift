@@ -21,12 +21,12 @@ class SelectionOutline: UIView {
 
     public var firstPoint: CGPoint!
     public var lastPoint: CGPoint!
-    public var associatedFigureID: Int!;
+    public var associatedFigureID: UUID!;
     
     var border: CAShapeLayer!;
     var cornerAnchors: [CAShapeLayer] = []
     
-    init(firstPoint: CGPoint, lastPoint: CGPoint, associatedFigureID: Int) {
+    init(firstPoint: CGPoint, lastPoint: CGPoint, associatedFigureID: UUID) {
         self.firstPoint = firstPoint
         self.lastPoint = lastPoint
         self.associatedFigureID = associatedFigureID;

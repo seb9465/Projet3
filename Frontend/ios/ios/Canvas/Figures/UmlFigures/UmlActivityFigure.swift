@@ -14,7 +14,7 @@ class UmlActivityFigure: UmlFigure {
     
     init(firstPoint: CGPoint, lastPoint: CGPoint) {
         super.init(firstPoint: firstPoint, lastPoint: lastPoint, width: BASE_WIDTH, height: BASE_WIDTH)
-        self.figureID = Constants.figureIDCounter;
+//        self.figureID = Constants.figureIDCounter;
         Constants.figureIDCounter += 1;
     }
     

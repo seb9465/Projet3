@@ -39,7 +39,7 @@ class UmlFigure : Figure {
         self.lastPoint = lastPoint
         self.initializeBaseStyle()
         self.initializeAnchorPoints()
-        self.figureID = Constants.figureIDCounter;
+//        self.figureID = Constants.figureIDCounter;
         Constants.figureIDCounter += 1;
     }
     

@@ -21,7 +21,7 @@ class UmlClassFigure: UmlFigure {
     
     init(origin: CGPoint) {
         super.init(touchedPoint: origin, width: BASE_WIDTH, height: BASE_HEIGHT)
-        self.figureID = Constants.figureIDCounter;
+//        self.figureID = Constants.figureIDCounter;
         Constants.figureIDCounter += 1;
     }
     
