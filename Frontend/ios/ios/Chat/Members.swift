@@ -12,13 +12,19 @@ import UIKit
 class Members {
     private var _members: [Member];
     
-    var members: [Member] {
-        get { return _members }
-    }
+    // MARK: Constructor
     
     init() {
         self._members = [];
     }
+    
+    // MARK: Getter - Setter
+    
+    public var members: [Member] {
+        get { return _members }
+    }
+    
+    // MARK: Public functions
     
     public func addMember(member: Member) -> Void {
         if (!self.isAlreadyInArray(memberName: member.name)) {
@@ -43,6 +49,8 @@ class Members {
     public func isAlreadyInArray(memberName: String) -> Bool {
         return self._members.contains(where: { $0.name == memberName });
     }
+    
+    // MARK: Private functions
     
     private func getIndexOfMember(memberName: String) -> Int {
         return self._members.index(where: { (memb) -> Bool in
