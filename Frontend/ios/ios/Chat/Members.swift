@@ -10,6 +10,9 @@ import Foundation
 import UIKit
 
 class Members {
+    
+    // MARK: Attributes
+    
     private var _members: [Member];
     
     // MARK: Constructor
@@ -60,18 +63,26 @@ class Members {
 }
 
 class Member {
-    let _name: String;
-    let _color: UIColor;
     
-    var name: String {
-        get { return _name }
-    }
-    var color: UIColor {
-        get { return _color }
-    }
+    // MARK: Attributes
+    
+    private let _name: String;
+    private let _color: UIColor;
+    
+    // MARK: Constructor
     
     init(name: String, color: UIColor) {
         self._name = name;
         self._color = color;
+    }
+    
+    // MARK: Getter - Setter
+    
+    public var name: String {
+        get { return _name }
+    }
+    
+    public var color: UIColor {
+        get { return _color }
     }
 }
