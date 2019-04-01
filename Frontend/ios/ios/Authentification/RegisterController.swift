@@ -15,11 +15,15 @@ let emailTest = NSPredicate(format: "SELF MATCHES %@", "[A-Z0-9a-z._%+-]+@[A-Za-
 
 class RegisterController: UIViewController {
     
+    // MARK: Outlets
+    
     @IBOutlet weak var firstNameField: UITextField!
     @IBOutlet weak var usernameField: UITextField!
     @IBOutlet weak var emailField: UITextField!
     @IBOutlet weak var passwordField: UITextField!
     @IBOutlet weak var lastNameField: UITextField!
+    
+    // MARK: Actions
     
     @IBAction func registerButtonPressed(_ sender: UIButton) {
         let userInfo = [
@@ -30,11 +34,6 @@ class RegisterController: UIViewController {
             "password": self.passwordField.text,
         ];
 
-//        async {
-//            let response = try await(self.registerUser(parameters: userInfo));
-//            print(response);
-//            self.performSegue(withIdentifier: "goBackToLogin", sender: nil)
-//        }
         registerUser(parameters: userInfo)
             .done { response in
                 print(response);
@@ -42,13 +41,7 @@ class RegisterController: UIViewController {
             }
     }
     
-    func registerUser(parameters: [String: String?]) -> Promise<Any>{
-        return Promise {seal in
-            Alamofire.request(Constants.REGISTER_URL as URLConvertible, method: .post, parameters: parameters as Parameters, encoding: JSONEncoding.default).responseJSON{ response in
-                seal.fulfill(response);
-            };
-        }
-    }
+    // MARK: Actions
     
     @IBAction func goBackPressed(_ sender: UIButton) {
         dismiss(animated: true, completion: nil)
@@ -84,4 +77,13 @@ class RegisterController: UIViewController {
         // Check if password respects the format needed
     }
     
+    // MARK: Private functions
+    
+    private func registerUser(parameters: [String: String?]) -> Promise<Any>{
+        return Promise {seal in
+            Alamofire.request(Constants.REGISTER_URL as URLConvertible, method: .post, parameters: parameters as Parameters, encoding: JSONEncoding.default).responseJSON{ response in
+                seal.fulfill(response);
+            };
+        }
+    }
 }

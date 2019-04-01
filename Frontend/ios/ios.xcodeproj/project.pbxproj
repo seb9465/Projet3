@@ -95,6 +95,7 @@
 		B7B1B4472234725E00BEE17D /* ChatRoomsControllerTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B1B4452234725E00BEE17D /* ChatRoomsControllerTableViewController.swift */; };
 		B7B1B4482234725E00BEE17D /* ChatRoomsControllerTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B7B1B4462234725E00BEE17D /* ChatRoomsControllerTableViewController.xib */; };
 		B7B1B44A22348E9700BEE17D /* AddScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B1B44922348E9700BEE17D /* AddScreenViewController.swift */; };
+		B7F9F6AF2252CE41004C6AE8 /* RegistrationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F9F6AE2252CE41004C6AE8 /* RegistrationViewModel.swift */; };
 		C43102E122132226008F1D80 /* SoundNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43102E022132226008F1D80 /* SoundNotification.swift */; };
 		C47715C4224149B5008F27E6 /* RotateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47715C2224149B5008F27E6 /* RotateCell.swift */; };
 		C47715C92241969F008F27E6 /* PropertiesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47715C82241969F008F27E6 /* PropertiesController.swift */; };
@@ -225,6 +226,7 @@
 		B7B1B4452234725E00BEE17D /* ChatRoomsControllerTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomsControllerTableViewController.swift; sourceTree = "<group>"; };
 		B7B1B4462234725E00BEE17D /* ChatRoomsControllerTableViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChatRoomsControllerTableViewController.xib; sourceTree = "<group>"; };
 		B7B1B44922348E9700BEE17D /* AddScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddScreenViewController.swift; sourceTree = "<group>"; };
+		B7F9F6AE2252CE41004C6AE8 /* RegistrationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationViewModel.swift; sourceTree = "<group>"; };
 		C43102E022132226008F1D80 /* SoundNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundNotification.swift; sourceTree = "<group>"; };
 		C47715C2224149B5008F27E6 /* RotateCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RotateCell.swift; sourceTree = "<group>"; };
 		C47715C82241969F008F27E6 /* PropertiesController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PropertiesController.swift; sourceTree = "<group>"; };
@@ -311,6 +313,7 @@
 			children = (
 				3DC967EA220A067900FA76CB /* LoginController.swift */,
 				3DC61EB82200B44B003FE445 /* RegisterController.swift */,
+				B7F9F6AE2252CE41004C6AE8 /* RegistrationViewModel.swift */,
 			);
 			path = Authentification;
 			sourceTree = "<group>";
@@ -977,6 +980,7 @@
 				B7A3A5C22203C27600031F64 /* Message.swift in Sources */,
 				B7B1B43E2231C03900BEE17D /* MessageDisplayExtension.swift in Sources */,
 				B7B1B4472234725E00BEE17D /* ChatRoomsControllerTableViewController.swift in Sources */,
+				B7F9F6AF2252CE41004C6AE8 /* RegistrationViewModel.swift in Sources */,
 				3DA5CA4722441A9200087298 /* GalleryCell.swift in Sources */,
 				3DE8F114223C26890052580B /* SideToolbarDelegate.swift in Sources */,
 				C4D1270E224424E1004B3641 /* UmlArtefactFigure.swift in Sources */,
