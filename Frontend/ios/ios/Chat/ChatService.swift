@@ -12,6 +12,9 @@ import PromiseKit
 
 protocol ChatServiceProtocol {
     var messagesWhileAFK: [String: [Message]] { get set }
+    var currentChannel: Channel! { get set }
+    var userChannels: ChannelsMessage { get }
+    var serverChannels: ChannelsMessage { get }
 }
 
 class ChatService: ChatServiceProtocol {
@@ -19,13 +22,12 @@ class ChatService: ChatServiceProtocol {
     static let shared = ChatService();
     
     private var hubConnection: HubConnection;
-    var _members: Members;
+    private var _members: Members;
+    private var connected: Bool = false;
+    
     var currentChannel: Channel!;
-    var connected: Bool = false;
-    
-    var userChannels: ChannelsMessage = ChannelsMessage();
-    var serverChannels: ChannelsMessage = ChannelsMessage();
-    
+    var userChannels: ChannelsMessage;
+    var serverChannels: ChannelsMessage;
     var messagesWhileAFK: [String: [Message]];
     
     init() {
@@ -38,6 +40,9 @@ class ChatService: ChatServiceProtocol {
             .build();
         
         self.messagesWhileAFK = [:];
+        self.currentChannel = nil;
+        self.userChannels = ChannelsMessage();
+        self.serverChannels = ChannelsMessage();
     }
     
     public func connectToHub() -> Void {
