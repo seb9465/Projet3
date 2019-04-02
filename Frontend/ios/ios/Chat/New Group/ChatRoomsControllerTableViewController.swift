@@ -21,6 +21,13 @@ class ChatRoomsControllerTableViewController: UITableViewController {
         ChatService.shared.currentChannel = nil;
         let storyboard = UIStoryboard(name: "Main", bundle: nil);
         let view = storyboard.instantiateViewController(withIdentifier: "MainController");
+        
+        let transition = CATransition();
+        transition.duration = 0.3;
+        transition.type = CATransitionType.reveal;
+        transition.subtype = CATransitionSubtype.fromBottom;
+        self.view.window!.layer.add(transition, forKey: kCATransition);
+        
         self.present(view, animated: true, completion: nil);
     }
     
