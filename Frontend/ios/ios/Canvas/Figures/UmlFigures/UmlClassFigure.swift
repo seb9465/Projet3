@@ -29,6 +29,12 @@ class UmlClassFigure: UmlFigure {
         self.itemType = ItemTypeEnum.UmlClass
     }
     
+    override init(drawViewModel: DrawViewModel) {
+        super.init(drawViewModel: drawViewModel);
+        self.methods = drawViewModel.Methods!
+        self.attributes = drawViewModel.Properties!
+    }
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -56,12 +62,6 @@ class UmlClassFigure: UmlFigure {
     public func removeAttribute(name: String, index: Int) {
         self.attributes.remove(at: index)
         setNeedsDisplay();
-    }
-    
-    override init(drawViewModel: DrawViewModel) {
-        super.init(drawViewModel: drawViewModel);
-        self.methods = drawViewModel.Methods!
-        self.attributes = drawViewModel.Properties!
     }
     
     override func draw(_ rect: CGRect) {

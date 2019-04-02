@@ -62,10 +62,12 @@ class UmlFigure : Figure {
         super.init(frame: frame)
         self.uuid = UUID(uuidString: drawViewModel.Guid!)
         self.itemType = drawViewModel.ItemType!
-        self.figureColor = UIColor.red
+        self.figureColor = UIColor.clear
         self.lineColor = UIColor.black
         self.currentAngle = drawViewModel.Rotation!
         self.lineWidth = CGFloat(drawViewModel.BorderThickness!)
+        self.backgroundColor = UIColor.clear
+        self.initializeAnchorPoints()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -88,12 +90,12 @@ class UmlFigure : Figure {
     }
     
     public func setFillColor(fillColor: UIColor) -> Void {
-        self.figureColor = fillColor;
+        self.figureColor = fillColor
         setNeedsDisplay();
     }
     
     public func setBorderColor(borderColor: UIColor) -> Void {
-        self.lineColor = borderColor;
+        self.lineColor = borderColor
         setNeedsDisplay();
     }
 

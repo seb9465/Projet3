@@ -92,11 +92,11 @@ class Editor {
     }
     
     public func insertFigure(itemType: ItemTypeEnum, firstPoint: CGPoint, lastPoint: CGPoint) -> Void {
-        let figure = FigureFactory.shared.getFigure(itemType: itemType, firstPoint: firstPoint, lastPoint: lastPoint)!
-        figure.delegate = self
-        self.editorView.addSubview(figure);
-        self.figures.append(figure)
-        self.undoArray.append(figure);
+////        let figure = FigureFactory.shared.getFigure(itemType: itemType, firstPoint: firstPoint, lastPoint: lastPoint)!
+//        figure.delegate = self
+//        self.editorView.addSubview(figure);
+//        self.figures.append(figure)
+//        self.undoArray.append(figure);
     }
     
     public func deleteFigure(tapPoint: CGPoint) -> Void {
@@ -428,12 +428,15 @@ extension Editor: CollaborationHubDelegate {
     func updateCanvas(itemMessage: ItemMessage) {
         print(itemMessage)
         for drawViewModel in itemMessage.Items {
-            if (self.figures.contains(where: {$0.uuid.uuidString == drawViewModel.Guid})) {
-                // Handle quand il est la
-                return
-            }
+//            if (self.figures.contains(where: {$0.uuid.uuidString == drawViewModel.Guid})) {
+//                // Handle quand il est la
+//                return
+//            }
             
-            // Handle quand il est pas la
+            let figure = FigureFactory.shared.fromDrawViewModel(drawViewModel: drawViewModel)!
+            figure.delegate = self
+            self.figures.append(figure)
+            self.editorView.addSubview(figure)
         }
         
 //        sself.insertFigure(itemType: itemType, firstPoint: firstPoint, lastPoint: lastPoint)

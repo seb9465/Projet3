@@ -20,6 +20,10 @@ class UmlActorFigure: UmlFigure {
         super.init(touchedPoint: origin, width: BASE_WIDTH, height: BASE_HEIGHT)
     }
     
+    override init(drawViewModel: DrawViewModel) {
+        super.init(drawViewModel: drawViewModel);
+    }
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
