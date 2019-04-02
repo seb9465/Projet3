@@ -50,7 +50,16 @@ class Editor {
     }
     
     // Selection recieved by hub
-    func select(figures: [Figure], username: String) {
+    func select(drawViewModels: [DrawViewModel], username: String) {
+        // TODO - William | Move to select
+        self.selectedFiguresDictionnary.updateValue(drawViewModels, forKey: username)
+        var figuresToSelect: [Figure] = []
+        for figure in self.figures {
+            if (drawViewModels.contains(where: {$0.Guid == figure.uuid.uuidString})) {
+                figuresToSelect.append(figure)
+            }
+        }
+        
         var selectionOutlines: [SelectionOutline] = []
         for figure in figures {
             let outline = SelectionOutline(
@@ -114,20 +123,27 @@ class Editor {
         }
     }
     
+    public func insertFigure(drawViewModel: DrawViewModel) -> Void {
+        let figure = FigureFactory.shared.fromDrawViewModel(drawViewModel: drawViewModel)!
+        figure.delegate = self
+        self.figures.append(figure)
+        self.editorView.addSubview(figure)
+    }
+    
+    public func insertFigure(position: CGPoint) -> Void {
+        let figure = FigureFactory.shared.getFigure(type: self.currentFigureType, touchedPoint: position)!
+        figure.delegate = self
+        self.figures.append(figure)
+        self.editorView.addSubview(figure)
+        CollaborationHub.shared.postNewFigure(figures: [figure])
+    }
+    
     public func insertConnectionFigure(firstPoint: CGPoint, lastPoint: CGPoint, itemType: ItemTypeEnum) -> ConnectionFigure {
         let figure = ConnectionFigure(origin: self.initialTouchPoint, destination: lastPoint, itemType: itemType)
         self.editorView.addSubview(figure);
         self.figures.append(figure)
         self.undoArray.append(figure);
         return figure
-    }
-    
-    public func insertFigure(itemType: ItemTypeEnum, firstPoint: CGPoint, lastPoint: CGPoint) -> Void {
-////        let figure = FigureFactory.shared.getFigure(itemType: itemType, firstPoint: firstPoint, lastPoint: lastPoint)!
-//        figure.delegate = self
-//        self.editorView.addSubview(figure);
-//        self.figures.append(figure)
-//        self.undoArray.append(figure);
     }
     
     public func deleteFigure(tapPoint: CGPoint) -> Void {
@@ -352,13 +368,15 @@ extension Editor : TouchInputDelegate {
                 self.editorView.addSubview(connectionPreview)
                 self.touchEventState = .CONNECTION
                 return
-            } else if (action == "shape") {
+            }
+            if (action == "shape") {
 //                self.deselect()
 //                self.select(figure: figure!)
 //                self.updateSideToolBar()
 //                self.touchEventState = .TRANSLATE
                 return
-            } else if (action == "empty") {
+            }
+            if (action == "empty") {
                 self.deselect()
 //                self.touchEventState = .AREA_SELECT
 //                self.selectLasso(touchPoint: point)
@@ -370,16 +388,7 @@ extension Editor : TouchInputDelegate {
         case .TRANSLATE:
             break
         case .INSERT:
-            // Get une figure dans la factory
-            // ajouter la figure au canvas
-            // export le viewModel de la figure
-            // post le view model au HUB
-            
-            let figure = FigureFactory.shared.getFigure(type: self.currentFigureType, touchedPoint: point)!
-            figure.delegate = self
-            self.figures.append(figure)
-            self.editorView.addSubview(figure)
-            CollaborationHub.shared.postNewFigure(figures: [figure])
+            self.insertFigure(position: point)
             break
         case .CONNECTION:
             break
@@ -411,12 +420,14 @@ extension Editor : TouchInputDelegate {
             }
             
             self.previousTouchPoint = point
-            
             return
-        } else if (self.touchEventState == .CONNECTION) {
+        }
+        
+        if (self.touchEventState == .CONNECTION) {
             self.connectionPreview.removeFromSuperview()
             self.connectionPreview = ConnectionFigure(origin: self.initialTouchPoint, destination: point, itemType: .UniderectionalAssoication)
             self.editorView.addSubview(self.connectionPreview)
+            return
         }
     }
     
@@ -508,46 +519,41 @@ extension Editor: CollaborationHubDelegate {
             self.deselect(username: itemMessage.Username)
             return
         }
-        
-        // TODO - William | Move to select
-        self.selectedFiguresDictionnary.updateValue(itemMessage.Items, forKey: itemMessage.Username)
-        var figuresToSelect: [Figure] = []
-        for figure in self.figures {
-            if (itemMessage.Items.contains(where: {$0.Guid == figure.uuid.uuidString})) {
-                 figuresToSelect.append(figure)
-            }
-        }
 
-        self.select(figures: figuresToSelect, username: itemMessage.Username)
+        self.select(drawViewModels: itemMessage.Items, username: itemMessage.Username)
     }
     
     func updateCanvas(itemMessage: ItemMessage) {
         print(itemMessage)
         for drawViewModel in itemMessage.Items {
+            
+            // Remplacer la vielle figure par la nouvelle version
             if (self.figures.contains(where: {$0.uuid.uuidString == drawViewModel.Guid})) {
-                let oldFigure = self.figures.first(where: {$0.uuid.uuidString == drawViewModel.Guid})
-                self.figures.removeAll{$0 == oldFigure}
-                oldFigure?.removeFromSuperview()
-                let newFigure = FigureFactory.shared.fromDrawViewModel(drawViewModel: drawViewModel)!
-                newFigure.delegate = self
-                self.figures.append(newFigure)
-                self.editorView.addSubview(newFigure)
+                self.overriteFigure(figureId: drawViewModel.Guid!, newDrawViewModel: drawViewModel, username: itemMessage.Username)
                 self.deselect(username: itemMessage.Username)
-                self.selectedFiguresDictionnary.updateValue(itemMessage.Items, forKey: itemMessage.Username)
-                self.select(figures: [newFigure], username: itemMessage.Username)
+                self.select(drawViewModels: itemMessage.Items, username: itemMessage.Username)
                 return
             }
             
-            let figure = FigureFactory.shared.fromDrawViewModel(drawViewModel: drawViewModel)!
-            figure.delegate = self
-            self.figures.append(figure)
-            self.editorView.addSubview(figure)
+            // Creer un nouvelle figure
+            
+            // ici
         }
-        
-//        sself.insertFigure(itemType: itemType, firstPoint: firstPoint, lastPoint: lastPoint)
-    }
+}
     
     func updateClear() {
         self.clear()
+    }
+}
+
+extension Editor {
+    func overriteFigure(figureId: String, newDrawViewModel: DrawViewModel, username: String) {
+        let oldFigure = self.figures.first(where: {$0.uuid.uuidString == figureId})
+        self.figures.removeAll{$0 == oldFigure}
+        oldFigure?.removeFromSuperview()
+        let newFigure = FigureFactory.shared.fromDrawViewModel(drawViewModel: newDrawViewModel)!
+        newFigure.delegate = self
+        self.figures.append(newFigure)
+        self.editorView.addSubview(newFigure)
     }
 }
