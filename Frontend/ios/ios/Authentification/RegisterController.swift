@@ -26,12 +26,20 @@ class RegisterController: UIViewController {
     // MARK: Actions
     
     @IBAction func registerButtonPressed(_ sender: UIButton) {
-        let registrationViewModel: RegistrationViewModel = RegistrationViewModel(firstName: self.firstNameField.text!, lastName: self.lastNameField.text!, email: self.usernameField.text!, username: self.emailField.text!, password: self.passwordField.text!);
+//        let registrationViewModel: RegistrationViewModel = RegistrationViewModel(firstName: self.firstNameField.text!, lastName: self.lastNameField.text!, email: self.usernameField.text!, username: self.emailField.text!, password: self.passwordField.text!);
+        let registrationViewModel: RegistrationViewModel = RegistrationViewModel(firstName: "sebaa", lastName: "cadoo", email: "sebb.cadoo", username: "sebb.cadoo@me.com", password: "!12345Aa");
         
         registerUser(parameters: registrationViewModel.toJson())
             .done { response in
                 print(response);
-                self.performSegue(withIdentifier: "goBackToLogin", sender: nil)
+                
+                let alert: UIAlertController = UIAlertController(title: "Registration complete!", message: "Welcome abord " + self.firstNameField.text!, preferredStyle: .alert);
+                let action: UIAlertAction = UIAlertAction(title: "Sick, let me in!", style: .default) {
+                    UIAlertAction in
+                    self.navigationController?.popToRootViewController(animated: true);
+                }
+                alert.addAction(action);
+                self.present(alert, animated: true, completion: nil);
             }
     }
     
