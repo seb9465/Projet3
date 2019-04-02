@@ -20,8 +20,8 @@ class UmlFigure : Figure {
     // DrawViewModel common attributes
 //    var name: String!
     var figureColor: UIColor!
-    var lineColor: UIColor!
-    var lineWidth: CGFloat!
+//    var lineColor: UIColor!
+//    var lineWidth: CGFloat!
 //    var oldTouchedPoint: CGPoint!
     
     var incomingConnections : [ConnectionFigure: String] = [:]

@@ -15,7 +15,6 @@ class UmlClassFigure: UmlFigure {
     let BASE_WIDTH: CGFloat = 150
     let BASE_HEIGHT: CGFloat = 200
     
-//    public var className: String = "ClassName"
     public var methods: [String] = []
     public var attributes: [String] = []
     
@@ -69,11 +68,32 @@ class UmlClassFigure: UmlFigure {
         let nameRect = CGRect(x: 0, y: 0, width: BASE_WIDTH, height: 50).insetBy(dx: 5, dy: 5);
         let splitterRect = CGRect(x: 0, y: 0, width: BASE_WIDTH, height: 125).insetBy(dx: 5, dy: 5);
         
+        let outerRectPath = UIBezierPath(rect: outerRect)
+        let nameRectPath = UIBezierPath(rect: nameRect)
+        let splitterRectPath = UIBezierPath(rect: splitterRect)
+        
+        self.figureColor.setFill()
+        self.lineColor.setStroke()
+        if (self.isBorderDashed) {
+            outerRectPath.setLineDash([4,4], count: 1, phase: 0)
+            nameRectPath.setLineDash([4,4], count: 1, phase: 0)
+            splitterRectPath.setLineDash([4,4], count: 1, phase: 0)
+        }
+        
+        outerRectPath.lineWidth = self.lineWidth
+        outerRectPath.fill()
+        outerRectPath.stroke()
+        splitterRectPath.lineWidth = self.lineWidth
+        splitterRectPath.fill()
+        splitterRectPath.stroke()
+        nameRectPath.lineWidth = self.lineWidth
+        nameRectPath.fill()
+        nameRectPath.stroke()
+        
         let nameLabel = UILabel(frame: nameRect)
         nameLabel.text = self.name
         nameLabel.textAlignment = .center
         nameLabel.drawText(in: nameRect)
-        
         
         for n in 0..<self.methods.count {
             let methodRect = CGRect(x: 0, y: CGFloat(50 + (16 * n)), width: self.frame.width, height: 16).insetBy(dx: 5, dy: 5);
@@ -90,25 +110,6 @@ class UmlClassFigure: UmlFigure {
             attributeLabel.textAlignment = .left
             attributeLabel.drawText(in: attributesRect)
         }
-        
-        let outerRectPath = UIBezierPath(rect: outerRect)
-        let nameRectPath = UIBezierPath(rect: nameRect)
-        let splitterRectPath = UIBezierPath(rect: splitterRect)
-        
-        self.figureColor.setFill()
-        self.lineColor.setStroke()
-        
-        splitterRectPath.lineWidth = self.lineWidth
-        splitterRectPath.fill()
-        splitterRectPath.stroke()
-        
-        nameRectPath.lineWidth = self.lineWidth
-        nameRectPath.fill()
-        nameRectPath.stroke()
-        
-        outerRectPath.lineWidth = self.lineWidth
-        outerRectPath.fill()
-        outerRectPath.stroke()
     }
     
     override func exportViewModel() -> DrawViewModel {

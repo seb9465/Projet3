@@ -14,9 +14,11 @@ class BorderCell: UITableViewCell {
     
     @IBOutlet weak var borderColorPicker: SwiftHUEColorPicker!
     @IBOutlet weak var applyButton: RoundedCorners!
+    @IBOutlet weak var thicknessSlider: UISlider!
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        self.thicknessSlider.isContinuous = false
         self.borderColorPicker.delegate = self
         // Initialization code
     }
@@ -54,10 +56,15 @@ class BorderCell: UITableViewCell {
     }
     
     @IBAction func fullLineSelected(_ sender: UIButton) {
-//        self.delegate.se
+        self.delegate?.setSelectedFigureBorderStyle(isDashed: false)
     }
     
     @IBAction func dashedLineSelected(_ sender: UIButton) {
+        self.delegate?.setSelectedFigureBorderStyle(isDashed: true)
+    }
+
+    @IBAction func thicknessChanged(_ sender: UISlider) {
+        self.delegate?.setSelectedFigureLineWidth(width: CGFloat(sender.value * 10))
     }
 }
 

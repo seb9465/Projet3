@@ -232,6 +232,24 @@ extension Editor: SideToolbarDelegate {
         }
     }
     
+    func setSelectedFigureFillColor(color: UIColor) {
+        for figure in self.selectedFigures {
+            (figure as! UmlFigure).setFillColor(fillColor: color)
+        }
+    }
+    
+    func setSelectedFigureBorderStyle(isDashed: Bool) {
+        for figure in self.selectedFigures {
+            figure.setIsBorderDashed(isDashed: isDashed)
+        }
+    }
+    
+    func setSelectedFigureLineWidth(width: CGFloat) {
+        for figure in self.selectedFigures {
+            figure.setLineWidth(width: width)
+        }
+    }
+    
     func setSelectedFigureName(name: String) {
         for figure in self.selectedFigures {
             figure.setFigureName(name: name)
