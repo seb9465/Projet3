@@ -11,15 +11,19 @@ import JWTDecode
 import Alamofire
 
 class DashboardController: UIViewController, UITextFieldDelegate {
-    @IBOutlet weak var UsernameLabel: UILabel!
     
-    override func viewDidLoad() {
-        self.navigationItem.setHidesBackButton(true, animated:true);
+    @IBOutlet weak var usernameLabel: UILabel!
+    @IBOutlet var logoutButton: RoundedCorners!
+    
+    override func viewDidLoad() { self.navigationItem.setHidesBackButton(true, animated:true);
         super.viewDidLoad();
         let token = UserDefaults.standard.string(forKey: "token");
         let jwt = try! decode(jwt: token!)
-        UsernameLabel.text = jwt.claim(name: "unique_name").string
+        usernameLabel.text = jwt.claim(name: "unique_name").string
         ChatService.shared.initOnReceivingMessage(insertMessage:{_ in });
         ChatService.shared.connectToUserChatRooms();
+    }
+    
+    @IBAction func logoutButton(_ sender: Any) {
     }
 }
