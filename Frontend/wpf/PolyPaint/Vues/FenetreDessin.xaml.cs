@@ -129,8 +129,10 @@ namespace PolyPaint
         private void SupprimerSelection(object sender, RoutedEventArgs e)
         {
             List<DrawViewModel> strokes = rebuilder.GetDrawViewModelsFromStrokes(surfaceDessin.GetSelectedStrokes());
-            (DataContext as VueModele).CollaborationClient.CollaborativeDeleteAsync(strokes);
             surfaceDessin.CutSelection();
+            (DataContext as VueModele).CollaborationClient.CollaborativeSelectAsync(new List<DrawViewModel>());
+            (DataContext as VueModele).CollaborationClient.CollaborativeDeleteAsync(strokes);
+            SendToCloud();
 
         }
         private void SaveImage(object sender, EventArgs e)
@@ -461,6 +463,7 @@ namespace PolyPaint
         private void Reinitialiser_Click(object sender, RoutedEventArgs e)
         {
             (DataContext as VueModele).Reinitialiser.Execute(null);
+            (DataContext as VueModele).CollaborationClient.CollaborativeSelectAsync(new List<DrawViewModel>());
             (DataContext as VueModele).CollaborationClient.CollaborativeResetAsync();
             SendToCloud();
         }

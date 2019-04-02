@@ -21,7 +21,7 @@ namespace PolyPaint.Modeles{    public class CollaborationClient    {       
             {
                 DuplicateReceived?.Invoke(this, new MessageArgs(message: drawViewModelString));
             });
-            Connection.On<string>("Delete", (drawViewModelString) =>
+            Connection.On<string>("Cut", (drawViewModelString) =>
             {
                 DeleteReceived?.Invoke(this, new MessageArgs(message: drawViewModelString));
             });
@@ -95,7 +95,7 @@ namespace PolyPaint.Modeles{    public class CollaborationClient    {       
         {
             try
             {
-                await Connection.InvokeAsync("Delete", JsonConvert.SerializeObject(new ItemsMessage("general", "", drawViewModels)));
+                await Connection.InvokeAsync("Cut", JsonConvert.SerializeObject(new ItemsMessage("general", "", drawViewModels)));
             }
             catch (Exception) { }
         }
