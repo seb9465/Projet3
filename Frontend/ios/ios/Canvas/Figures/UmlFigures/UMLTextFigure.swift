@@ -15,6 +15,7 @@ class UMLTextFigure: UmlFigure {
     
     init(firstPoint: CGPoint, lastPoint: CGPoint) {
         super.init(firstPoint: firstPoint, lastPoint: lastPoint, width: BASE_WIDTH, height: BASE_WIDTH)
+        self.itemType = ItemTypeEnum.Text
     }
     
     override init(drawViewModel: DrawViewModel) {
@@ -24,6 +25,7 @@ class UMLTextFigure: UmlFigure {
     
     init(origin: CGPoint) {
         super.init(touchedPoint: origin, width: BASE_WIDTH, height: BASE_HEIGHT)
+        self.itemType = ItemTypeEnum.Text
     }
     
     required init?(coder aDecoder: NSCoder) {

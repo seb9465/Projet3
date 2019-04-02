@@ -15,6 +15,7 @@ class UmlPhaseFigure: UmlFigure {
     
     init(firstPoint: CGPoint, lastPoint: CGPoint) {
         super.init(firstPoint: firstPoint, lastPoint: lastPoint, width: BASE_WIDTH, height: BASE_WIDTH)
+        self.itemType = ItemTypeEnum.Phase
     }
     
     override init(drawViewModel: DrawViewModel) {
@@ -24,6 +25,7 @@ class UmlPhaseFigure: UmlFigure {
     
     init(origin: CGPoint) {
         super.init(touchedPoint: origin, width: BASE_WIDTH, height: BASE_HEIGHT)
+        self.itemType = ItemTypeEnum.Phase
     }
     
     required init?(coder aDecoder: NSCoder) {

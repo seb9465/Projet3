@@ -13,13 +13,20 @@ class Figure: UIView {
     var lastPoint: CGPoint!
     var itemType: ItemTypeEnum!
     var uuid: UUID!
+    var name: String = "name"
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.uuid = UUID()
     }
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    public func setFigureName(name: String) {
+        self.name = name
+        setNeedsDisplay()
     }
     
     public func exportViewModel() -> DrawViewModel? {return nil}

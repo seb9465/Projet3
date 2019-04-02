@@ -253,30 +253,8 @@ extension Editor: SideToolbarDelegate {
     
     func setSelectedFigureName(name: String) {
         for figure in self.selectedFigures {
-            (figure as! UmlClassFigure).setClassName(name: name);
+            figure.setFigureName(name: name)
         }
-        
-    }
-    
-    func setSelectedComment(comment: String) {
-        for figure in self.selectedFigures {
-            (figure as! UmlCommentFigure).setComment(comment: comment);
-        }
-        
-    }
-    
-    func setSelectedPhase(phaseName: String) {
-        for figure in self.selectedFigures {
-            (figure as! UmlPhaseFigure).setPhaseName(phaseName: phaseName);
-        }
-        
-    }
-    
-    func setSelectedText(text: String) {
-        for figure in self.selectedFigures {
-            (figure as! UMLTextFigure).setText(text: text)
-        }
-        
     }
     
     func addClassMethod(name: String) {
@@ -378,6 +356,7 @@ extension Editor : TouchInputDelegate {
             }
             if (action == "empty") {
                 self.deselect()
+                self.updateSideToolBar()
 //                self.touchEventState = .AREA_SELECT
 //                self.selectLasso(touchPoint: point)
                 return

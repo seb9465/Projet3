@@ -43,6 +43,37 @@ enum ItemTypeEnum: Int, Codable {
     case Inheritance
     case UniderectionalAssoication
     case Image
+    
+    var description: String {
+        switch self {
+        case .Activity:
+            return "Activity"
+        case .Artefact:
+            return "Artefact"
+        case .Phase:
+            return "Phase"
+        case .Comment:
+            return "Comment"
+        case .Role:
+            return "Role"
+        case .UmlClass:
+            return "Class"
+        case .Text:
+            return "Text"
+        case .Agregation:
+            return "Connection"
+        case .BidirectionalAssociation:
+            return "Connection"
+        case .Composition:
+            return "Connection"
+        case .Inheritance:
+            return "Connection"
+        case .UniderectionalAssoication:
+            return "Connection"
+        case .Image:
+            return "Image"
+        }
+    }
 }
 
 struct PolyPaintStylusPoint: Codable {

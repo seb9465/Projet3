@@ -15,7 +15,7 @@ class UmlClassFigure: UmlFigure {
     let BASE_WIDTH: CGFloat = 150
     let BASE_HEIGHT: CGFloat = 200
     
-    public var className: String = "ClassName"
+//    public var className: String = "ClassName"
     public var methods: [String] = []
     public var attributes: [String] = []
     
@@ -40,7 +40,7 @@ class UmlClassFigure: UmlFigure {
     }
     
     public func setClassName(name: String) -> Void {
-        self.className = name;
+        self.name = name;
         setNeedsDisplay();
     }
     
@@ -70,7 +70,7 @@ class UmlClassFigure: UmlFigure {
         let splitterRect = CGRect(x: 0, y: 0, width: BASE_WIDTH, height: 125).insetBy(dx: 5, dy: 5);
         
         let nameLabel = UILabel(frame: nameRect)
-        nameLabel.text = self.className
+        nameLabel.text = self.name
         nameLabel.textAlignment = .center
         nameLabel.drawText(in: nameRect)
         
@@ -124,7 +124,7 @@ class UmlClassFigure: UmlFigure {
         drawViewModel.BorderColor = PolyPaintColor(A: 255, R: 255, G: 1, B: 1)
         drawViewModel.BorderThickness = 2.0
         drawViewModel.BorderStyle = "solid"
-        drawViewModel.ShapeTitle = self.className
+        drawViewModel.ShapeTitle = self.name
         drawViewModel.Methods = self.methods
         drawViewModel.Properties = self.attributes
         drawViewModel.SourceTitle = nil
