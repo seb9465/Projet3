@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PolyPaint.Modeles;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,10 +23,13 @@ namespace PolyPaint.Vues
         public String CanvasVisibility;
         public String CanvasName;
         public String CanvasProtection;
-        public UploadToCloud()
+        public String CanvasAutor;
+        public ChatClient ChatClient;
+
+        public UploadToCloud(ChatClient chatClient)
         {
             InitializeComponent();
-            this.ShowDialog();
+            ChatClient = chatClient;
         }
 
         private void Ok_Click(object sender, RoutedEventArgs e)
@@ -33,9 +37,20 @@ namespace PolyPaint.Vues
             CanvasName = nameTextBox.Text;
             CanvasVisibility = visibilityComboBox.Text;
             CanvasProtection = passwordTextBox.Password;
+            CanvasAutor = Application.Current.Properties["username"].ToString();
+
+            FenetreDessin fenetreDessin = new FenetreDessin(new List<Common.Collaboration.DrawViewModel>(), ChatClient)
+            {
+                canvasName = CanvasName,
+                canvasVisibility = CanvasVisibility,
+                canvasProtection = CanvasProtection,
+                canvasAutor = CanvasAutor
+            };
+
+            Application.Current.MainWindow = fenetreDessin;
+            this.Close();
+            fenetreDessin.Show();
             Close();
         }
     }
-
-    
 }

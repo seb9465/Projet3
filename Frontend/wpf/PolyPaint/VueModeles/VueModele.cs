@@ -27,14 +27,12 @@ namespace PolyPaint.VueModeles
     /// Expose des commandes et propriétés connectées au modèle aux des éléments de la vue peuvent se lier.
     /// Reçoit des avis de changement du modèle et envoie des avis de changements à la vue.
     /// </summary>
-    public class VueModele : INotifyPropertyChanged
+    public class VueModele : INotifyPropertyChanged, IChatDataContext
     {
         public event PropertyChangedEventHandler PropertyChanged;
         private StrokeBuilder rebuilder = new StrokeBuilder();
         private Editeur editeur = new Editeur();
         private string _currentRoom;
-        private ObservableCollection<Room> _rooms;
-        private ConcurrentDictionary<string, ObservableCollection<string>> _messagesByChannel { get; set; }
         private string _selectedBorder;
         private MediaPlayer mediaPlayer = new MediaPlayer();
         private ConcurrentDictionary<string, List<DrawViewModel>> _onlineSelection { get; set; }
@@ -51,13 +49,13 @@ namespace PolyPaint.VueModeles
         {
             get
             {
-                if (_messagesByChannel.Count == 0 || _currentRoom == null)
+                if (ChatClient.MessagesByChannel.Count == 0 || _currentRoom == null)
                 {
                     return new ObservableCollection<string>();
                 }
                 else
                 {
-                    return _messagesByChannel.GetOrAdd(_currentRoom, new ObservableCollection<string>());
+                    return ChatClient.MessagesByChannel.GetOrAdd(_currentRoom, new ObservableCollection<string>());
                 }
             }
             set { }
@@ -65,8 +63,8 @@ namespace PolyPaint.VueModeles
 
         public ObservableCollection<Room> Rooms
         {
-            get { return _rooms; }
-            set { _rooms = value; ProprieteModifiee(); }
+            get { return ChatClient.Rooms; }
+            set { ChatClient.Rooms = value; ProprieteModifiee(); }
         }
 
         public string CurrentRoom
@@ -178,9 +176,9 @@ namespace PolyPaint.VueModeles
         /// On récupère certaines données initiales du modèle et on construit les commandes
         /// sur lesquelles la vue se connectera.
         /// </summary>
-        public VueModele(ViewStateEnum vs)
+        public VueModele(ChatClient chatClient)
         {
-            ChatClient = new ChatClient();
+            ChatClient = chatClient;
             CollaborationClient = new CollaborationClient();
 
             // On écoute pour des changements sur le modèle. Lorsqu'il y en a, EditeurProprieteModifiee est appelée.
@@ -213,9 +211,7 @@ namespace PolyPaint.VueModeles
             ChatClient.ConnectedToChannelSender += ConnectedToRoomSender;
             ChatClient.DisconnectedFromChannel += DisconnectedFromRoom;
             ChatClient.DisconnectedFromChannelSender += DisconnectedFromRoomSender;
-
-            _messagesByChannel = new ConcurrentDictionary<string, ObservableCollection<string>>();
-            _rooms = new ObservableCollection<Room>();
+            
             _selectedBorder = "";
             _onlineSelection = new ConcurrentDictionary<string, List<DrawViewModel>>();
         }
@@ -394,14 +390,14 @@ namespace PolyPaint.VueModeles
         {
             Application.Current.Dispatcher.Invoke(() =>
             {
-                if (!_messagesByChannel.Keys.Contains(roomName))
+                if (!ChatClient.MessagesByChannel.Keys.Contains(roomName))
                 {
-                    _messagesByChannel.GetOrAdd(roomName, new ObservableCollection<string>());
+                    ChatClient.MessagesByChannel.GetOrAdd(roomName, new ObservableCollection<string>());
                     ProprieteModifiee("MessagesListBox");
                 }
-                if (_rooms.FirstOrDefault(x => x.Title == roomName) == null)
+                if (ChatClient.Rooms.FirstOrDefault(x => x.Title == roomName) == null)
                 {
-                    _rooms.Add(new Room(roomName, false));
+                    ChatClient.Rooms.Add(new Room(roomName, false));
                     ProprieteModifiee("Rooms");
                 }
             });
@@ -416,7 +412,7 @@ namespace PolyPaint.VueModeles
         {
             Application.Current.Dispatcher.Invoke(() =>
             {
-                _messagesByChannel.AddOrUpdate(room, new ObservableCollection<string>() { message }, (k, v) =>
+                ChatClient.MessagesByChannel.AddOrUpdate(room, new ObservableCollection<string>() { message }, (k, v) =>
                 {
                     v.Add(message);
                     return v;
@@ -437,14 +433,14 @@ namespace PolyPaint.VueModeles
         {
             Application.Current.Dispatcher.Invoke(() =>
             {
-                var room = _rooms.FirstOrDefault(x => x.Title == e.Message);
+                var room = ChatClient.Rooms.FirstOrDefault(x => x.Title == e.Message);
                 if (room != null)
                 {
                     room.Connected = true;
                 }
                 else
                 {
-                    _rooms.Add(new Room(e.Message, true));
+                    ChatClient.Rooms.Add(new Room(e.Message, true));
                 }
             });
         }
@@ -458,14 +454,14 @@ namespace PolyPaint.VueModeles
         {
             Application.Current.Dispatcher.Invoke(() =>
             {
-                var room = _rooms.FirstOrDefault(x => x.Title == e.Message);
+                var room = ChatClient.Rooms.FirstOrDefault(x => x.Title == e.Message);
                 if (room != null)
                 {
                     room.Connected = false;
                 }
                 else
                 {
-                    _rooms.Add(new Room(e.Message, false));
+                    ChatClient.Rooms.Add(new Room(e.Message, false));
                 }
             });
         }

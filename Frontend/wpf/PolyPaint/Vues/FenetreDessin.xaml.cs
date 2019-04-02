@@ -19,6 +19,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -41,9 +42,15 @@ namespace PolyPaint
         private LineStrokeAdorner adorner;
         private ConcurrentDictionary<string, OnlineSelectedAdorner> _onlineSelectedAdorners;
 
+        public String canvasVisibility = "";
+        public String canvasName = "";
+        public String canvasProtection= "";
+        public String canvasAutor = "";
+
         private ChatWindow externalChatWindow;
         private MediaPlayer mediaPlayer = new MediaPlayer();
         private InkCanvasEventManager icEventManager = new InkCanvasEventManager();
+        private StrokeBuilder strokeBuilder = new StrokeBuilder();
         private bool IsDrawing = false;
         private Point currentPoint, mouseLeftDownPoint;
         private HubConnection Connection;
@@ -52,11 +59,10 @@ namespace PolyPaint
         bool isMenuOpen = false;
         private ViewStateEnum _viewState { get; set; }
 
-        public FenetreDessin(ViewStateEnum viewState)
+        public FenetreDessin(List<DrawViewModel> drawViewModels, ChatClient chatClient)
         {
             InitializeComponent();
-            _viewState = viewState;
-            DataContext = new VueModele(viewState);
+            DataContext = new VueModele(chatClient);
 
             (DataContext as VueModele).CollaborationClient.Initialize((string)Application.Current.Properties["token"]);
             (DataContext as VueModele).CollaborationClient.DrawReceived += ReceiveDraw;
@@ -70,8 +76,12 @@ namespace PolyPaint
             dispatcherTimer.Tick += new EventHandler(SaveImage);
             dispatcherTimer.Interval = new TimeSpan(0, 1, 0);
             dispatcherTimer.Start();
+            
 
             _onlineSelectedAdorners = new ConcurrentDictionary<string, OnlineSelectedAdorner>();
+            externalChatWindow = new ChatWindow(DataContext);
+
+            rebuilder.BuildStrokesFromDrawViewModels(drawViewModels, surfaceDessin);
         }
 
         private void VueModelePropertyChanged(object sender, PropertyChangedEventArgs args)
@@ -170,18 +180,19 @@ namespace PolyPaint
             catch (ArgumentException) { } // Close Dialog Window
         }
 
-        private async void SendToCloud(object sender, RoutedEventArgs e)
+        private async void SendToCloud()
         {
-
-            UploadToCloud uploadToCloud = new UploadToCloud();
             byte[] strokesBytes = GetBytesForStrokes();
             byte[] imageBytes = GetBytesForImage();
-            string strokesToSend = Convert.ToBase64String(strokesBytes);
+            List<DrawViewModel> drawViewModels = strokeBuilder.GetDrawViewModelsFromStrokes(surfaceDessin.Strokes);
+            string json = JsonConvert.SerializeObject(drawViewModels);
             string imageToSend = Convert.ToBase64String(imageBytes);
-            string CanvasName = uploadToCloud.CanvasName;
-            string CanvasVisibility = uploadToCloud.CanvasVisibility;
-            string CanvasProtection = uploadToCloud.CanvasProtection;
-            SaveableCanvas canvas = new SaveableCanvas(CanvasName, strokesToSend, imageToSend, CanvasVisibility, CanvasProtection);
+            string CanvasId = DateTime.Now.ToString("yyyy.MM.dd.hh.mm.ss.ffff");
+            string CanvasName = canvasName;
+            string CanvasVisibility = canvasVisibility;
+            string CanvasProtection = canvasProtection;
+            string CanvasAutor = canvasAutor;
+            SaveableCanvas canvas = new SaveableCanvas(CanvasId, CanvasName, json, imageToSend, CanvasVisibility, CanvasProtection, CanvasAutor);
 
             string canvasJson = JsonConvert.SerializeObject(canvas);
             using (HttpClient client = new HttpClient())
@@ -209,7 +220,7 @@ namespace PolyPaint
                 strokes = JsonConvert.DeserializeObject<List<SaveableCanvas>>(responseString);
             }
             progressBar.Visibility = Visibility.Collapsed;
-            Gallery gallery = new Gallery(strokes, surfaceDessin);
+            Gallery gallery = new Gallery(strokes, (DataContext as VueModele).ChatClient);
 
             Application.Current.MainWindow = gallery;
 
@@ -220,8 +231,7 @@ namespace PolyPaint
             Close();
             gallery.Show();
         }
-
-
+        
         private byte[] GetBytesForStrokes()
         {
             MemoryStream ms = new MemoryStream();
@@ -370,6 +380,10 @@ namespace PolyPaint
                     icEventManager.EndDrawAsync(surfaceDessin, (DataContext as VueModele));
                     break;
             }
+
+            SendToCloud();
+
+
             IsDrawing = false;
         }
 
@@ -502,12 +516,14 @@ namespace PolyPaint
                 chatMenu.Width = 70;
                 chatTab.Visibility = Visibility.Collapsed;
                 isMenuOpen = false;
+                surfaceDessin.Width = 1200;
             }
             else
             {
-                chatMenu.Width = 775;
+                chatMenu.Width = 500;
                 chatTab.Visibility = Visibility.Visible;
                 isMenuOpen = true;
+                surfaceDessin.Width = 800;
             }
         }
 
@@ -524,17 +540,7 @@ namespace PolyPaint
             adornerLayer.Add(adorner);
         }
 
-        private void GoBack_Click(object sender, RoutedEventArgs e)
-        {
-            if (_viewState == ViewStateEnum.Online)
-                externalChatWindow.Close();
-            MenuProfile menuProfile = new MenuProfile();
-            Application.Current.MainWindow = menuProfile;
-            Close();
-            menuProfile.Show();
-        }
-
-        private void Disconnect_Click(object sender, RoutedEventArgs e)
+private void Disconnect_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -552,7 +558,7 @@ namespace PolyPaint
             Close();
             login.Show();
         }
-
+       
         void Window_Loaded(object sender, RoutedEventArgs e)
         {
         }
