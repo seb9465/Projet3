@@ -9,7 +9,6 @@
 import UIKit
 
 class UmlCommentFigure: UmlFigure {
-    public var comment: String = "comment"
     let BASE_WIDTH: CGFloat = 150
     let BASE_HEIGHT: CGFloat = 50
     
@@ -21,7 +20,7 @@ class UmlCommentFigure: UmlFigure {
     
     override init(drawViewModel: DrawViewModel) {
         super.init(drawViewModel: drawViewModel);
-        self.comment = drawViewModel.ShapeTitle!
+        self.name = drawViewModel.ShapeTitle!
     }
     
     
@@ -34,16 +33,11 @@ class UmlCommentFigure: UmlFigure {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public func setComment(comment: String) -> Void {
-        self.comment = comment;
-        setNeedsDisplay();
-    }
-    
     override func draw(_ rect: CGRect) {
         let commentRect = CGRect(x: 0, y: 0, width: BASE_WIDTH, height: BASE_HEIGHT).insetBy(dx: 5, dy: 5);
         
         let commentLabel = UILabel(frame: commentRect)
-        commentLabel.text = self.comment
+        commentLabel.text = self.name
         commentLabel.textAlignment = .center
         commentLabel.drawText(in: commentRect)
         
@@ -70,7 +64,7 @@ class UmlCommentFigure: UmlFigure {
         drawViewModel.BorderColor = PolyPaintColor(A: 255, R: 255, G: 1, B: 1)
         drawViewModel.BorderThickness = 2.0
         drawViewModel.BorderStyle = "solid"
-        drawViewModel.ShapeTitle = self.comment
+        drawViewModel.ShapeTitle = self.name
         drawViewModel.Methods = nil
         drawViewModel.Properties = nil
         drawViewModel.SourceTitle = nil

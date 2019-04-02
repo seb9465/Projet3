@@ -9,7 +9,6 @@
 import UIKit
 
 class UmlPhaseFigure: UmlFigure {
-    public var phaseName: String = "PhaseName"
     let BASE_WIDTH: CGFloat = 400
     let BASE_HEIGHT: CGFloat = 250
     
@@ -20,7 +19,7 @@ class UmlPhaseFigure: UmlFigure {
     
     override init(drawViewModel: DrawViewModel) {
         super.init(drawViewModel: drawViewModel);
-        self.phaseName = drawViewModel.ShapeTitle!
+        self.name = drawViewModel.ShapeTitle!
     }
     
     init(origin: CGPoint) {
@@ -32,18 +31,13 @@ class UmlPhaseFigure: UmlFigure {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public func setPhaseName(phaseName: String) -> Void {
-        self.phaseName = phaseName;
-        setNeedsDisplay();
-    }
-    
     override func draw(_ rect: CGRect) {
          let outerRect = CGRect(x: 0, y: 0, width: BASE_WIDTH, height: BASE_HEIGHT).insetBy(dx: 5, dy: 5);
         let phaneNameRect = CGRect(x: 0, y: 0, width: BASE_WIDTH, height: 50).insetBy(dx: 5, dy: 5);
         
         let phaseNameLabel = UILabel(frame: phaneNameRect)
 //        UIRectFill()
-        phaseNameLabel.text = self.phaseName
+        phaseNameLabel.text = self.name
         phaseNameLabel.textAlignment = .center
         phaseNameLabel.drawText(in: phaneNameRect)
         let outerRectPath = UIBezierPath(rect: outerRect)
@@ -74,7 +68,7 @@ class UmlPhaseFigure: UmlFigure {
         drawViewModel.BorderColor = PolyPaintColor(A: 255, R: 255, G: 1, B: 1)
         drawViewModel.BorderThickness = 2.0
         drawViewModel.BorderStyle = "solid"
-        drawViewModel.ShapeTitle = self.phaseName
+        drawViewModel.ShapeTitle = self.name
         drawViewModel.Methods = nil
         drawViewModel.Properties = nil
         drawViewModel.SourceTitle = nil
