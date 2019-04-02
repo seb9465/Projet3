@@ -118,11 +118,16 @@ class RegisterController: UIViewController {
         sender.layer.borderWidth = 1.0;
         sender.layer.cornerRadius = 5;
         
+        sender.layer.borderColor = Constants.RED_COLOR.cgColor;
+        self.usernameErrorText.isHidden = false;
+        self.usernameErrorIcon.isHidden = false;
+        
+        let charSet: CharacterSet = CharacterSet(charactersIn: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890._-");
+        
         if (sender.text!.isEmpty){
-            sender.layer.borderColor = Constants.RED_COLOR.cgColor;
             self.usernameErrorText.text = "Username field must not be empty";
-            self.usernameErrorText.isHidden = false;
-            self.usernameErrorIcon.isHidden = false;
+        } else if (sender.text!.rangeOfCharacter(from: charSet.inverted) != nil) {
+            self.usernameErrorText.text = "Invalid username format";
         } else {
             sender.layer.borderColor = UIColor.green.cgColor;
             self.usernameErrorText.isHidden = true;
