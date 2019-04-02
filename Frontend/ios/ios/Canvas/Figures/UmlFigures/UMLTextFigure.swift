@@ -48,10 +48,10 @@ class UMLTextFigure: UmlFigure {
         drawViewModel.Owner = UserDefaults.standard.string(forKey: "username")
         drawViewModel.ItemType = ItemTypeEnum.Text
         drawViewModel.StylusPoints = [point1, point2]
-        drawViewModel.FillColor = PolyPaintColor(A: 255, R: 255, G: 1, B: 1)
-        drawViewModel.BorderColor = PolyPaintColor(A: 255, R: 255, G: 1, B: 1)
-        drawViewModel.BorderThickness = 2.0
-        drawViewModel.BorderStyle = "solid"
+        drawViewModel.FillColor = PolyPaintColor(color: self.figureColor)
+        drawViewModel.BorderColor = PolyPaintColor(color: self.lineColor)
+        drawViewModel.BorderThickness = Double(self.lineWidth)
+        drawViewModel.BorderStyle = (self.isBorderDashed) ? "dash" : "solid"
         drawViewModel.ShapeTitle = self.name
         drawViewModel.Methods = nil
         drawViewModel.Properties = nil
