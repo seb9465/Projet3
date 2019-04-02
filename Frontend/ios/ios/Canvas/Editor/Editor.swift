@@ -430,13 +430,18 @@ extension Editor : TouchInputDelegate {
             }
             CollaborationHub.shared.selectObjects(drawViewModels: drawViewModels)
             self.deselectLasso();
-            self.touchEventState = .AREA_SELECT;
+            self.touchEventState = .AREA_SELECT
             return
         }
         
         if (self.touchEventState == .TRANSLATE) {
+            if (self.selectedFigures.isEmpty) {
+                self.touchEventState = .SELECT
+                return
+            }
+            
             CollaborationHub.shared.postNewFigure(figures: [figure!])
-            self.touchEventState = .SELECT;
+            self.touchEventState = .SELECT
             return
         }
     }
@@ -509,7 +514,7 @@ extension Editor {
     func isFigureSelected(figure: Figure) -> Bool {
         for pair in self.selectedFiguresDictionnary {
             for selectedModel in pair.value {
-                if(selectedModel.Guid == figure.uuid.uuidString) {
+                if(selectedModel.Guid == figure.uuid.uuidString.lowercased()) {
                     print("Already selected!")
                     return true
                 }
