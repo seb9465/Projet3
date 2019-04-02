@@ -28,7 +28,7 @@ namespace PolyPaint.Vues
         public List<CanvasViewModel> Canvas { get; set; }
         public CanvasViewModel SelectedCanvas { get; set; }
         private ImageProtection imageProtection;
-        private string username;
+        private string username = Application.Current.Properties["username"].ToString();
         FenetreDessin fenetreDessin = new FenetreDessin(ViewStateEnum.Online);
 
         public String CanvasVisibility;
@@ -53,7 +53,7 @@ namespace PolyPaint.Vues
             externalChatWindow = new ChatWindow(DataContext);
 
             DataContext = Canvas; // Il faudrait reussir a utiliser plusieurs datacontext. Ici on a besoin du datacontext pour recuperer les donnee du chat ET des canvas. Cest pous ca que le chat marche pas dans la gallerie
-            username = Application.Current.Properties["username"].ToString();
+            
             usernameLabel.Content = username;
         }
 
@@ -64,7 +64,7 @@ namespace PolyPaint.Vues
             Application.Current.MainWindow = uploadToCloud;
             this.Close();
             uploadToCloud.Show();
-    }
+        }
 
 
         private void AddRoom(object sender, DialogClosingEventArgs eventArgs)
@@ -142,23 +142,26 @@ namespace PolyPaint.Vues
         private List<CanvasViewModel> ConvertStrokesToPNG(List<SaveableCanvas> savedCanvas, InkCanvas drawingSurface)
         {
             List<CanvasViewModel> canvas = new List<CanvasViewModel>();
-            if(savedCanvas != null)
+            if (savedCanvas != null)
             {
                 for (int item = 0; item < savedCanvas.Count; item++)
                 {
-                    
-                    var bitmapImage = (BitmapSource)new ImageSourceConverter().ConvertFrom(Convert.FromBase64String(savedCanvas[item].Base64Image));
-                    var strokes = GenerateStrokesFromBytes(Convert.FromBase64String(savedCanvas[item].Base64Strokes));
-                    canvas.Add(new CanvasViewModel(savedCanvas[item].CanvasId, savedCanvas[item].Name, bitmapImage, strokes, savedCanvas[item].CanvasVisibility, savedCanvas[item].CanvasProtection, savedCanvas[item].CanvasAutor));
-                  for (int i=0; i<canvas.Count-1; i++)
+                    if (savedCanvas[item].CanvasAutor == username | savedCanvas[item].CanvasVisibility == "Public")
                     {
-                        if (savedCanvas[item].Name == canvas[i].Name)
+                        var bitmapImage = (BitmapSource)new ImageSourceConverter().ConvertFrom(Convert.FromBase64String(savedCanvas[item].Base64Image));
+                        var strokes = GenerateStrokesFromBytes(Convert.FromBase64String(savedCanvas[item].Base64Strokes));
+                        canvas.Add(new CanvasViewModel(savedCanvas[item].CanvasId, savedCanvas[item].Name, bitmapImage, strokes, savedCanvas[item].CanvasVisibility, savedCanvas[item].CanvasProtection, savedCanvas[item].CanvasAutor));
+                        for (int i = 0; i < canvas.Count - 1; i++)
                         {
-                            canvas.RemoveAt(i);
+                            if (savedCanvas[item].Name == canvas[i].Name)
+                            {
+                                canvas.RemoveAt(i);
+                            }
                         }
                     }
+
                 }
-                
+
             }
             return canvas;
         }
@@ -180,18 +183,20 @@ namespace PolyPaint.Vues
             if (SelectedCanvas.CanvasProtection != "")
             {
                 imageProtection = new ImageProtection();
-                if(imageProtection.PasswordEntered == SelectedCanvas.CanvasProtection)
+                if (imageProtection.PasswordEntered == SelectedCanvas.CanvasProtection)
                 {
                     fenetreDessin.surfaceDessin.Strokes.Add(SelectedCanvas.Strokes);
                     Application.Current.MainWindow = fenetreDessin;
                     this.Close();
                     fenetreDessin.Show();
-                } else
+                }
+                else
                 {
                     SelectedCanvas = null;
                     MessageBox.Show("Wrong password");
                 }
-            } else
+            }
+            else
             {
                 fenetreDessin.surfaceDessin.Strokes.Add(SelectedCanvas.Strokes);
                 Application.Current.MainWindow = fenetreDessin;
@@ -199,6 +204,6 @@ namespace PolyPaint.Vues
                 fenetreDessin.Show();
             }
         }
-        
+
     }
 }
