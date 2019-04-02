@@ -39,7 +39,9 @@ namespace PolyPaint.Strokes
             Width = Math.Abs(StylusPoints[1].X - StylusPoints[0].X);
             Height = Math.Abs(StylusPoints[1].Y - StylusPoints[0].Y);
 
+            drawingContext.PushTransform(new RotateTransform(Rotation, Center.X, Center.Y));
             drawingContext.DrawRectangle(Brush, null, new Rect(TopLeft, new Point(TopLeft.X + Width, TopLeft.Y + Height)));
+            drawingContext.Pop();
         }
     }
 }
