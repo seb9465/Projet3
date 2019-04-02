@@ -25,5 +25,11 @@ class DashboardController: UIViewController, UITextFieldDelegate {
     }
     
     @IBAction func logoutButton(_ sender: Any) {
+        AuthentificationAPI.logout()
+        UserDefaults.standard.removePersistentDomain(forName: "token");
+        
+        let mainView: UIStoryboard = UIStoryboard(name: "Main", bundle: nil);
+        let viewcontroller : UIViewController = mainView.instantiateViewController(withIdentifier: "LoginStoryboard") as UIViewController;
+        self.present(viewcontroller, animated: false);
     }
 }
