@@ -66,10 +66,10 @@ class RegisterController: UIViewController {
     @IBAction func registerButtonPressed(_ sender: UIButton) {
 //        let registrationViewModel: RegistrationViewModel = RegistrationViewModel(firstName: self.firstNameField.text!, lastName: self.lastNameField.text!, email: self.usernameField.text!, username: self.emailField.text!, password: self.passwordField.text!);
         let registrationViewModel: RegistrationViewModel = RegistrationViewModel(firstName: "sebaaaa", lastName: "cadoo", email: "sebbaa.cadoo@me.com", username: "sebbaa.cadoo", password: "!12345Aa");
-        
+        let sv = UIViewController.displaySpinner(onView: self.view);
         registerUser(parameters: registrationViewModel.toJson())
             .done { response in
-                
+                UIViewController.removeSpinner(spinner: sv);
             }
     }
     
