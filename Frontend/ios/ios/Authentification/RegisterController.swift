@@ -14,7 +14,7 @@ import Alamofire_SwiftyJSON
 
 
 let EMAIL_REGEX = NSPredicate(format: "SELF MATCHES %@", "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}")
-let PWD_REGEX = NSPredicate(format: "SELF MATCHES %@", "(?=.*[a-z])(?=.*[A-Z])(?=[!@#$&*]).{8,15}");
+let PWD_REGEX = NSPredicate(format: "SELF MATCHES %@", "(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$&*]).{8,15}");
 
 class RegisterController: UIViewController {
     
@@ -155,6 +155,9 @@ class RegisterController: UIViewController {
         } else {
             sender.layer.borderColor = Constants.RED_COLOR.cgColor;
             
+            self.pwdErrorText.text = self.getPasswordErrors(password: sender.text!);
+            self.pwdErrorText.isHidden = false;
+            self.pwdErrorIcon.isHidden = false;
         }
     }
     
@@ -171,6 +174,31 @@ class RegisterController: UIViewController {
         self.emailErrorText.isHidden = true;
         self.pwdErrorIcon.isHidden = true;
         self.pwdErrorText.isHidden = true;
+    }
+    
+    private func getPasswordErrors(password: String) -> String {
+        var errorMsg = "Password requires"
+        
+        if (password.rangeOfCharacter(from: CharacterSet.uppercaseLetters) == nil) {
+            errorMsg += " at least one upper case letter,"
+        }
+        if (password.rangeOfCharacter(from: CharacterSet.lowercaseLetters) == nil) {
+            errorMsg += " at least one lower case letter,"
+        }
+        if (password.rangeOfCharacter(from: CharacterSet.decimalDigits) == nil) {
+            errorMsg += " at least one number,"
+        }
+        if password.count < 8 {
+            errorMsg += " at least eight characters,"
+        } else if password.count > 15 {
+            errorMsg += " a maximum of 15 characters,"
+        }
+        if (!password.containsSpecialCharacter) {
+            errorMsg += " at least one special character,"
+        }
+        errorMsg.removeLast();
+        
+        return errorMsg;
     }
     
     private func registerUser(parameters: [String: String?]) -> Promise<[HttpResponseMessage]>{
@@ -289,5 +317,13 @@ extension RegisterController: UITextFieldDelegate {
         activeField?.resignFirstResponder()
         activeField = nil
         return true
+    }
+}
+
+extension String {
+    var containsSpecialCharacter: Bool {
+        let regex = ".*[^A-Za-z0-9].*"
+        let testString = NSPredicate(format:"SELF MATCHES %@", regex)
+        return testString.evaluate(with: self)
     }
 }
