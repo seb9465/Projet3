@@ -25,6 +25,7 @@ class RegisterController: UIViewController {
     @IBOutlet weak var emailField: UITextField!
     @IBOutlet weak var passwordField: UITextField!
     @IBOutlet weak var lastNameField: UITextField!
+    @IBOutlet var registerButton: RoundedCorners!
     
     @IBOutlet var firstNameErrorIcon: UIButton!
     @IBOutlet var firstNameErrorText: UILabel!
@@ -57,6 +58,11 @@ class RegisterController: UIViewController {
         self.contentView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(returnTextView(gesture:))))
         
         self.hideErrorViews();
+        
+        self.registerButton.isUserInteractionEnabled = false;
+        self.registerButton.alpha = 0.5;
+        
+        self.setupAddTargetWithoutErrorsTextFields();
         
         super.viewDidLoad();
     }
@@ -140,6 +146,7 @@ class RegisterController: UIViewController {
     
     @IBAction func validateEmailField(_ sender: UITextField) {
         sender.layer.borderWidth = 1.0;
+        sender.layer.cornerRadius = 5;
         
         if(EMAIL_REGEX.evaluate(with: sender.text)){
             sender.layer.borderColor = UIColor.green.cgColor;
@@ -155,6 +162,7 @@ class RegisterController: UIViewController {
     
     @IBAction func validatePasswordField(_ sender: UITextField) {
         sender.layer.borderWidth = 1.0;
+        sender.layer.cornerRadius = 5;
         
         if(PWD_REGEX.evaluate(with: sender.text)){
             sender.layer.borderColor = UIColor.green.cgColor;
@@ -280,6 +288,19 @@ class RegisterController: UIViewController {
         return alert;
     }
     
+    private func setupAddTargetWithoutErrorsTextFields() {
+        self.firstNameField.addTarget(self, action: #selector(textFieldsWithoutErrors),
+                                    for: .editingChanged)
+        self.lastNameField.addTarget(self, action: #selector(textFieldsWithoutErrors),
+                                     for: .editingChanged)
+        self.usernameField.addTarget(self, action: #selector(textFieldsWithoutErrors),
+                                        for: .editingChanged)
+        self.emailField.addTarget(self, action: #selector(textFieldsWithoutErrors),
+                                              for: .editingChanged)
+        self.passwordField.addTarget(self, action: #selector(textFieldsWithoutErrors),
+                                  for: .editingChanged)
+    }
+    
     // MARK: Object functions
     
     @objc private func returnTextView(gesture: UIGestureRecognizer) {
@@ -309,10 +330,30 @@ class RegisterController: UIViewController {
         UIView.animate(withDuration: 0.3) {
             guard let heightConstraint = self.constraintContentHeight else { return }
             guard let keybHeight = self.keyboardHeight else { return }
-            heightConstraint.constant -= self.keyboardHeight
+            heightConstraint.constant -= keybHeight
         }
         
         self.keyboardHeight = nil
+    }
+    
+    @objc func textFieldsWithoutErrors(sender: UITextField) {
+        print("REGISTER BUTTON CHECK");
+        sender.text = sender.text?.trimmingCharacters(in: .whitespaces)
+        
+        guard
+            let firstName = self.firstNameErrorIcon, firstName.isHidden && !self.firstNameField.text!.isEmpty,
+            let lastName = self.lastNameErrorIcon, lastName.isHidden && !self.lastNameField.text!.isEmpty,
+            let username = self.usernameErrorIcon, username.isHidden && !self.usernameField.text!.isEmpty,
+            let email = self.emailErrorIcon, email.isHidden && !self.emailField.text!.isEmpty,
+            let password = self.pwdErrorIcon, password.isHidden && !self.passwordField.text!.isEmpty
+        else
+        {
+            return
+        }
+        // enable okButton if all conditions are met
+        self.registerButton.isHidden = false;
+        self.registerButton.alpha = 1;
+        self.registerButton.isUserInteractionEnabled = true;
     }
 }
 

@@ -442,6 +442,7 @@
                         <outlet property="passwordField" destination="Egp-x2-jry" id="WUe-PP-gvf"/>
                         <outlet property="pwdErrorIcon" destination="0ik-hJ-oIw" id="d43-fw-NQ3"/>
                         <outlet property="pwdErrorText" destination="epJ-tH-nel" id="x2Z-g0-WfK"/>
+                        <outlet property="registerButton" destination="krF-Nf-kKm" id="5v0-yK-sno"/>
                         <outlet property="scrollView" destination="2RJ-NI-vdS" id="7fl-x6-UZY"/>
                         <outlet property="usernameErrorIcon" destination="3v0-ae-gBG" id="R7r-3e-ob9"/>
                         <outlet property="usernameErrorText" destination="1gw-WF-ueQ" id="Hea-0j-uxY"/>
