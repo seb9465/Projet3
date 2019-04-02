@@ -196,10 +196,15 @@ namespace PolyPaint.Vues
                 imageProtection = new ImageProtection();
                 if (imageProtection.PasswordEntered == SelectedCanvas.CanvasProtection)
                 {
-                    FenetreDessin fenetreDessin = new FenetreDessin(drawViewModels, (DataContext as UserDataContext).ChatClient);
+                    FenetreDessin fenetreDessin = new FenetreDessin(drawViewModels, (DataContext as UserDataContext).ChatClient)
+                    {
+                        canvasAutor = SelectedCanvas.CanvasAutor,
+                        canvasName = SelectedCanvas.Name,
+                        canvasVisibility = SelectedCanvas.CanvasVisibility,
+                        canvasProtection = SelectedCanvas.CanvasProtection
+                    };
                     Application.Current.MainWindow = fenetreDessin;
                     this.Close();
-                    DataContext = null;
                     fenetreDessin.Show();
                 }
                 else
@@ -210,10 +215,15 @@ namespace PolyPaint.Vues
             }
             else
             {
-                FenetreDessin fenetreDessin = new FenetreDessin(drawViewModels, (DataContext as UserDataContext).ChatClient);
+                FenetreDessin fenetreDessin = new FenetreDessin(drawViewModels, (DataContext as UserDataContext).ChatClient)
+                {
+                    canvasAutor = SelectedCanvas.CanvasAutor,
+                    canvasName = SelectedCanvas.Name,
+                    canvasVisibility = SelectedCanvas.CanvasVisibility,
+                    canvasProtection = SelectedCanvas.CanvasProtection
+                };
                 Application.Current.MainWindow = fenetreDessin;
                 this.Close();
-                DataContext = null;
                 fenetreDessin.Show();
             }
         }

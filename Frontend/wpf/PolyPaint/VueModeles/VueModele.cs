@@ -138,7 +138,11 @@ namespace PolyPaint.VueModeles
             set { ProprieteModifiee(); }
         }
 
-        public StrokeCollection Traits { get; set; }
+        public StrokeCollection Traits
+        {
+            get { return editeur.traits; }
+            set { editeur.traits = value; ProprieteModifiee(); }
+        }
 
         // Commandes sur lesquels la vue pourra se connecter.
         public RelayCommand<object> Empiler { get; set; }
@@ -211,7 +215,7 @@ namespace PolyPaint.VueModeles
             ChatClient.ConnectedToChannelSender += ConnectedToRoomSender;
             ChatClient.DisconnectedFromChannel += DisconnectedFromRoom;
             ChatClient.DisconnectedFromChannelSender += DisconnectedFromRoomSender;
-            
+
             _selectedBorder = "";
             _onlineSelection = new ConcurrentDictionary<string, List<DrawViewModel>>();
         }
