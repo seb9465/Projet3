@@ -146,23 +146,6 @@ class Editor {
         return figure
     }
     
-    public func deleteFigure(tapPoint: CGPoint) -> Void {
-        let subview = self.editorView.hitTest(tapPoint, with: nil);
-        
-        if (self.subviewIsInUndoArray(subview: subview!)) {
-            var counter: Int = 0;
-            for v in self.undoArray {
-                if (v == subview) {
-                    self.redoArray.append(v);
-                    v.removeFromSuperview();
-                    self.undoArray.remove(at: counter);
-                    break;
-                }
-                counter += 1;
-            }
-        }
-    }
-    
     public func deleteSelectedFigures() {
         if (self.selectedFigures.isEmpty) {
             return
@@ -372,7 +355,6 @@ extension Editor : TouchInputDelegate {
         case .CONNECTION:
             break
         case .DELETE:
-            self.deleteFigure(tapPoint: point);
             self.deselect();
             break
         case .AREA_SELECT:
@@ -421,13 +403,9 @@ extension Editor : TouchInputDelegate {
                 return
             }
             self.deselect()
-            for pair in self.selectedFiguresDictionnary {
-                for selectedModel in pair.value {
-                    if(selectedModel.Guid == figure?.uuid.uuidString) {
-                        print("Already selected!")
-                        return
-                    }
-                }
+            
+            if (self.isFigureSelected(figure: figure!)) {
+                return
             }
             self.select(figure: figure!)
             self.updateSideToolBar()
@@ -444,13 +422,11 @@ extension Editor : TouchInputDelegate {
                     self.select(figure: figure);
                 }
             }
-            
             var drawViewModels: [DrawViewModel] = []
             for figure in selectedFigures {
                 drawViewModels.append(figure.exportViewModel()!)
             }
             CollaborationHub.shared.selectObjects(drawViewModels: drawViewModels)
-
             self.deselectLasso();
             self.touchEventState = .AREA_SELECT;
             return
@@ -526,6 +502,20 @@ extension Editor: CollaborationHubDelegate {
 }
 
 extension Editor {
+    
+    func isFigureSelected(figure: Figure) -> Bool {
+        for pair in self.selectedFiguresDictionnary {
+            for selectedModel in pair.value {
+                if(selectedModel.Guid == figure.uuid.uuidString) {
+                    print("Already selected!")
+                    return true
+                }
+            }
+        }
+        return false
+    }
+    
+    
     func overriteFigure(figureId: String, newDrawViewModel: DrawViewModel, username: String) {
         let oldFigure = self.figures.first(where: {$0.uuid.uuidString == figureId})
         self.figures.removeAll{$0 == oldFigure}
