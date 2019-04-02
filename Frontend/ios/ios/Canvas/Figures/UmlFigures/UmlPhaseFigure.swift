@@ -9,25 +9,26 @@
 import UIKit
 
 class UmlPhaseFigure: UmlFigure {
-    public var phaseName: String = "PhaseName"
     let BASE_WIDTH: CGFloat = 400
     let BASE_HEIGHT: CGFloat = 250
     
     init(firstPoint: CGPoint, lastPoint: CGPoint) {
         super.init(firstPoint: firstPoint, lastPoint: lastPoint, width: BASE_WIDTH, height: BASE_WIDTH)
+        self.itemType = ItemTypeEnum.Phase
+    }
+    
+    override init(drawViewModel: DrawViewModel) {
+        super.init(drawViewModel: drawViewModel);
+        self.name = drawViewModel.ShapeTitle!
     }
     
     init(origin: CGPoint) {
         super.init(touchedPoint: origin, width: BASE_WIDTH, height: BASE_HEIGHT)
+        self.itemType = ItemTypeEnum.Phase
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    public func setPhaseName(phaseName: String) -> Void {
-        self.phaseName = phaseName;
-        setNeedsDisplay();
     }
     
     override func draw(_ rect: CGRect) {
@@ -36,7 +37,7 @@ class UmlPhaseFigure: UmlFigure {
         
         let phaseNameLabel = UILabel(frame: phaneNameRect)
 //        UIRectFill()
-        phaseNameLabel.text = self.phaseName
+        phaseNameLabel.text = self.name
         phaseNameLabel.textAlignment = .center
         phaseNameLabel.drawText(in: phaneNameRect)
         let outerRectPath = UIBezierPath(rect: outerRect)
@@ -59,15 +60,15 @@ class UmlPhaseFigure: UmlFigure {
         let point2 = PolyPaintStylusPoint(X: Double(self.lastPoint.x), Y: Double(self.lastPoint.y), PressureFactor: 1)
         
         var drawViewModel: DrawViewModel = DrawViewModel()
-        drawViewModel.Guid = self.uuid.uuidString
-        drawViewModel.owner = UserDefaults.standard.string(forKey: "username")
-        drawViewModel.ItemType = self.itemType
+        drawViewModel.Guid = self.uuid.uuidString.lowercased()
+        drawViewModel.Owner = UserDefaults.standard.string(forKey: "username")
+        drawViewModel.ItemType = ItemTypeEnum.Phase
         drawViewModel.StylusPoints = [point1, point2]
         drawViewModel.FillColor = PolyPaintColor(A: 255, R: 255, G: 1, B: 1)
         drawViewModel.BorderColor = PolyPaintColor(A: 255, R: 255, G: 1, B: 1)
         drawViewModel.BorderThickness = 2.0
         drawViewModel.BorderStyle = "solid"
-        drawViewModel.ShapeTitle = self.phaseName
+        drawViewModel.ShapeTitle = self.name
         drawViewModel.Methods = nil
         drawViewModel.Properties = nil
         drawViewModel.SourceTitle = nil

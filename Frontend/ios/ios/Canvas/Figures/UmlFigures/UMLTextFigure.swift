@@ -9,31 +9,32 @@
 import UIKit
 
 class UMLTextFigure: UmlFigure {
-    public var text: String = "text"
     let BASE_WIDTH: CGFloat = 100
     let BASE_HEIGHT: CGFloat = 50
     
     init(firstPoint: CGPoint, lastPoint: CGPoint) {
         super.init(firstPoint: firstPoint, lastPoint: lastPoint, width: BASE_WIDTH, height: BASE_WIDTH)
+        self.itemType = ItemTypeEnum.Text
+    }
+    
+    override init(drawViewModel: DrawViewModel) {
+        super.init(drawViewModel: drawViewModel);
+        self.name = drawViewModel.ShapeTitle!
     }
     
     init(origin: CGPoint) {
         super.init(touchedPoint: origin, width: BASE_WIDTH, height: BASE_HEIGHT)
+        self.itemType = ItemTypeEnum.Text
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    public func setText(text: String) -> Void {
-        self.text = text;
-        setNeedsDisplay();
-    }
-    
+
     override func draw(_ rect: CGRect) {
         let textRect = CGRect(x: 0, y: 0, width: BASE_WIDTH, height: BASE_HEIGHT).insetBy(dx: 5, dy: 5);
         let textLabel = UILabel(frame: textRect)
-        textLabel.text = self.text
+        textLabel.text = self.name
         textLabel.textAlignment = .center
         textLabel.drawText(in: textRect)
     }
@@ -43,15 +44,15 @@ class UMLTextFigure: UmlFigure {
         let point2 = PolyPaintStylusPoint(X: Double(self.lastPoint.x), Y: Double(self.lastPoint.y), PressureFactor: 1)
         
         var drawViewModel: DrawViewModel = DrawViewModel()
-        drawViewModel.Guid = self.uuid.uuidString
-        drawViewModel.owner = UserDefaults.standard.string(forKey: "username")
-        drawViewModel.ItemType = self.itemType
+        drawViewModel.Guid = self.uuid.uuidString.lowercased()
+        drawViewModel.Owner = UserDefaults.standard.string(forKey: "username")
+        drawViewModel.ItemType = ItemTypeEnum.Text
         drawViewModel.StylusPoints = [point1, point2]
         drawViewModel.FillColor = PolyPaintColor(A: 255, R: 255, G: 1, B: 1)
         drawViewModel.BorderColor = PolyPaintColor(A: 255, R: 255, G: 1, B: 1)
         drawViewModel.BorderThickness = 2.0
         drawViewModel.BorderStyle = "solid"
-        drawViewModel.ShapeTitle = self.text
+        drawViewModel.ShapeTitle = self.name
         drawViewModel.Methods = nil
         drawViewModel.Properties = nil
         drawViewModel.SourceTitle = nil

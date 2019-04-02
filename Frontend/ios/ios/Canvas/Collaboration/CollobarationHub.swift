@@ -8,9 +8,11 @@
 
 import Foundation
 import SwiftSignalRClient
+import JWTDecode
 
 protocol CollaborationHubDelegate {
-    func updateCanvas(itemType: ItemTypeEnum, firstPoint: CGPoint, lastPoint: CGPoint)
+    func updateCanvas(itemMessage: ItemMessage)
+    func updateSelection(itemMessage: ItemMessage)
     func updateClear();
 }
 
@@ -40,6 +42,7 @@ class CollaborationHub {
         self.onConnectToChannel()
         self.onDraw()
         self.onReset()
+        self.onSelect()
         //        self.onFetchChannels()
     }
     
@@ -83,11 +86,20 @@ class CollaborationHub {
     }
     
     // Send a new figure to the collaborative Hub
-    public func postNewFigure(figure: Figure) -> Void {
+    public func postNewFigure(figures: [Figure]) -> Void {
+        let token = UserDefaults.standard.string(forKey: "token");
+        let jwt = try! decode(jwt: token!)
+        let username = jwt.claim(name: "unique_name").string
+        
+        var viewModels : [DrawViewModel] = []
+        for figure in figures {
+            viewModels.append(figure.exportViewModel()!)
+        }
+        
         let itemMessage = ItemMessage(
             CanvasId: "general",
-            Username: UserDefaults.standard.string(forKey: "username")!,
-            Items: [figure.exportViewModel()!]
+            Username: username!,
+            Items: viewModels
         )
 
         let jsonEncoder = JSONEncoder()
@@ -102,6 +114,28 @@ class CollaborationHub {
         });
     }
     
+    public func selectObjects(drawViewModels: [DrawViewModel]) -> Void {
+        let token = UserDefaults.standard.string(forKey: "token");
+        let jwt = try! decode(jwt: token!)
+        let username = jwt.claim(name: "unique_name").string
+        let itemMessage = ItemMessage(
+            CanvasId: "general",
+            Username: username!,
+            Items: drawViewModels
+            )
+        
+        let jsonEncoder = JSONEncoder()
+        let jsonData = try! jsonEncoder.encode(itemMessage)
+        let jsonString = String(data: jsonData, encoding: .utf8)
+        
+        self.hubConnection.invoke(method: "Select", arguments: [jsonString], invocationDidComplete: { (Error) in
+            if (Error != nil) {
+                print("Error calling select", Error!)
+                return
+            }
+        });
+    }
+    
     // Receive a figure from the collaboratibve Hub
     public func onDraw() -> Void {
         self.hubConnection.on(method: "Draw", callback: { (args, typeConverter) in
@@ -111,23 +145,21 @@ class CollaborationHub {
             let jsonData = jsonString.data(using: .utf8)
             let itemMessage: ItemMessage = try! JSONDecoder().decode(ItemMessage.self, from: jsonData!);
             
-            self.delegate!.updateCanvas(itemMessage)
+            self.delegate!.updateCanvas(itemMessage: itemMessage)
         })
     }
-    //
-    //    public func select(origin: CGPoint, itemType: ItemTypeEnum) -> Void {
-    //        let model = FigureFactory.shared.getFigure(type: itemType, touchedPoint: origin)?.exportToViewModel(itemType: itemType)
-    //        let jsonEncoder = JSONEncoder()
-    //        let jsonData = try! jsonEncoder.encode(model)
-    //        let jsonString = String(data: jsonData, encoding: .utf8)
-    //
-    //        self.hubConnection.invoke(method: "Draw", arguments: [jsonString], invocationDidComplete: { (Error) in
-    //            if (Error != nil) {
-    //                print("Error calling draw", Error!)
-    //                return
-    //            }
-    //        });
-    //    }
+    
+    public func onSelect() -> Void {
+        self.hubConnection.on(method: "Select", callback: { (args, typeConverter) in
+            print("[ Collab ] Received SELECT action")
+            
+            let jsonString: String = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self)!;
+            let jsonData = jsonString.data(using: .utf8)
+            let itemMessage: ItemMessage = try! JSONDecoder().decode(ItemMessage.self, from: jsonData!);
+            
+            self.delegate!.updateSelection(itemMessage: itemMessage)
+        })
+    }
     
     public func onReset() -> Void {
         self.hubConnection.on(method: "Reset", callback:{ args, typeConverter in
@@ -144,46 +176,4 @@ class CollaborationHub {
             }
         })
     }
-    
-    //    public func fetchChannels() -> Void {
-    //        print("[ Collab ] Invoked FetchChannels");
-    //        self.hubConnection.invoke(method: "FetchChannels", arguments: [], invocationDidComplete: { error in
-    //            if (error != nil) {
-    //                print("ERROR while invoking FetchChannels");
-    //                print(error!);
-    //                return
-    //            }
-    //        });
-    //    }
-    
-    //    public func onFetchChannels() -> Void {
-    //        self.hubConnection.on(method: "FetchChannels", callback: { (args, typeConverter) in
-    //            let channels: Any = try! typeConverter.convertFromWireType(obj: args[0], targetType: Any.self)!
-    //            print("[ Collab ] Channels:", channels);
-    //        });
-    //    }
-    
-    //    public func updateDrawing(drawViewModel: DrawViewModel) -> Void {
-    //        let point: PolyPaintStylusPoint = PolyPaintStylusPoint(X: 10, Y: 10, PressureFactor: 10)
-    //        let color: PolyPaintColor = PolyPaintColor(A: 1, R: 1, G: 1, B: 1)
-    //        let model: DrawViewModel = DrawViewModel(
-    //            ItemType: ItemTypeEnum.RoundedRectangleStroke,
-    //            StylusPoints: [point],
-    //            OutilSelectionne: "Rectangle",
-    //            Color: color,
-    //            ChannelId: "id"
-    //        )
-    //        let jsonEncoder = JSONEncoder()
-    //        let jsonData = try! jsonEncoder.encode(model)
-    //        let jsonString = String(data: jsonData, encoding: .utf8)
-    //        print(jsonString)
-    //
-    //        self.hubConnection.invoke(method: "Draw", arguments: [jsonString], invocationDidComplete: { (Error) in
-    //            if (Error != nil) {
-    //                print("Error calling draw", Error!)
-    //                return
-    //            }
-    //            print("received update from hub!")
-    //        });
-    //    }
 }

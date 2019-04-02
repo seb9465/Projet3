@@ -18,7 +18,6 @@ protocol SelectionOutlineProtocol {
 
 class SelectionOutline: UIView {
     private let radius: CGFloat = 5.0;
-
     public var firstPoint: CGPoint!
     public var lastPoint: CGPoint!
     public var associatedFigureID: UUID!;
@@ -70,6 +69,17 @@ class SelectionOutline: UIView {
         self.cornerAnchors.append(selectedCornerCircle4)
     }
     
+    public func addUsernameSelecting(username: String) {
+        if(username != "") {
+            let usernameTextLayer = CATextLayer()
+            usernameTextLayer.string = username
+            usernameTextLayer.frame = self.layer.bounds
+            usernameTextLayer.backgroundColor = UIColor.red.withAlphaComponent(0.4).cgColor
+            self.layer.addSublayer(usernameTextLayer)
+            usernameTextLayer.setNeedsDisplay()
+        }
+    }
+    
     public func setInitialSelectedDashedBorder(bounds: CGRect) -> Void {
         border = CAShapeLayer();
         border.strokeColor = UIColor.black.cgColor;
@@ -78,7 +88,6 @@ class SelectionOutline: UIView {
         border.fillColor = nil;
         border.path = UIBezierPath(rect: bounds).cgPath;
     }
-
     public func addSelectedFigureLayers() -> Void {
         self.layer.addSublayer(border);
         for cornerAnchor in self.cornerAnchors {
