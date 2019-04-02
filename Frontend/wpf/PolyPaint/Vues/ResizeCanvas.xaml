@@ -6,13 +6,14 @@
          xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:local="clr-namespace:PolyPaint.Vues"
         mc:Ignorable="d"
+       
         Title="UploadToCloud" Height="307.345" Width="432.889">
     <Grid Margin="0,30,0,0">
         <Label Content="Height:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" />
-        <TextBox Name="heightTextBox" HorizontalAlignment="Left" Height="25" Margin="85,10,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="280"/>
+        <TextBox Name="heightTextBox" TextChanged="FieldsUpdate" HorizontalAlignment="Left" Height="25" Margin="85,10,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="280"/>
         <Label Content="Width:" HorizontalAlignment="Left" Margin="10,70,0,0" VerticalAlignment="Top" />
-        <TextBox Name="widthTextBox" HorizontalAlignment="Left" Height="25" Margin="85,70,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="280"/>
+        <TextBox Name="widthTextBox" TextChanged="FieldsUpdate" HorizontalAlignment="Left" Height="25" Margin="85,70,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="280"/>
 
-        <Button Content="Ok" HorizontalAlignment="Left" Margin="290,210,0,0" VerticalAlignment="Top" Width="75" Click="Ok_Click"/>
+        <Button Name="OkButton" Content="Ok" HorizontalAlignment="Left" Margin="290,210,0,0" VerticalAlignment="Top" Width="75" IsEnabled="False" Click="Ok_Click"/>
     </Grid>
 </Window>
