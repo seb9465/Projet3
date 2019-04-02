@@ -308,10 +308,10 @@ extension Editor : TouchInputDelegate {
                 self.touchEventState = .CONNECTION
                 return
             } else if (action == "shape") {
-                self.deselect()
-                self.select(figure: figure!)
-                self.updateSideToolBar()
-                self.touchEventState = .TRANSLATE
+//                self.deselect()
+//                self.select(figure: figure!)
+//                self.updateSideToolBar()
+//                self.touchEventState = .TRANSLATE
                 return
             } else if (action == "empty") {
                 self.deselect()
@@ -373,26 +373,35 @@ extension Editor : TouchInputDelegate {
     func notifyTouchEnded(point: CGPoint, figure: Figure?) {
         if (self.touchEventState == .CONNECTION) {
             self.handleConnectionTouchEnded(point: point)
-        } else if (self.touchEventState == .AREA_SELECT) {
-            if (self.selectionLasso.shapeIsClosed) {
-                for figure in self.figures {
-                    if (self.selectionLasso.contains(figure: figure)) {
-                        self.select(figure: figure);
-                    }
-                }
-                self.deselectLasso();
-                self.touchEventState = .SELECT;
-            }
             return
-        } else if (self.touchEventState == .TRANSLATE) {
-            self.touchEventState = .SELECT;
-        } else if (self.touchEventState == .SELECT) {
+        }
+        
+        if (self.touchEventState == .SELECT) {
             self.deselect()
             self.select(figure: figure!)
             self.updateSideToolBar()
             return
         }
         
+        if (self.touchEventState == .AREA_SELECT) {
+            if (!self.selectionLasso.shapeIsClosed) {
+                return
+            }
+            
+            for figure in self.figures {
+                if (self.selectionLasso.contains(figure: figure)) {
+                    self.select(figure: figure);
+                }
+            }
+            self.deselectLasso();
+            self.touchEventState = .SELECT;
+            return
+        }
+        
+        if (self.touchEventState == .TRANSLATE) {
+            self.touchEventState = .SELECT;
+            return
+        }
     }
     
     func handleConnectionTouchEnded(point: CGPoint) {
