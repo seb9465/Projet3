@@ -39,16 +39,18 @@ class UmlCommentFigure: UmlFigure {
         let commentLabel = UILabel(frame: commentRect)
         commentLabel.text = self.name
         commentLabel.textAlignment = .center
-        commentLabel.drawText(in: commentRect)
-        
         let commentRectPath = UIBezierPath(rect: commentRect)
-        
+        commentRectPath.lineWidth = self.lineWidth
         self.figureColor.setFill()
         self.lineColor.setStroke()
-
+        if(self.isBorderDashed) {
+            commentRectPath.setLineDash([4,4], count: 1, phase: 0)
+        }
         commentRectPath.lineWidth = self.lineWidth
         commentRectPath.fill()
         commentRectPath.stroke()
+        commentLabel.drawText(in: commentRect)
+        
     }
     
     override func exportViewModel() -> DrawViewModel {

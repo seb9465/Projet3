@@ -41,19 +41,27 @@ class UmlArtefactFigure: UmlFigure {
         bezier2Path.addLine(to: CGPoint(x: 4.5, y: 5.5))
         bezier2Path.addLine(to: CGPoint(x: 4.5, y: 97.5))
         bezier2Path.close()
-        UIColor.black.setStroke()
-        bezier2Path.lineWidth = 1
-        bezier2Path.stroke()
-        
         
         //// Bezier 3 Drawing
         let bezier3Path = UIBezierPath()
         bezier3Path.move(to: CGPoint(x: 47.5, y: 5.5))
         bezier3Path.addLine(to: CGPoint(x: 69.5, y: 23.5))
-        UIColor.black.setStroke()
-        bezier3Path.lineWidth = 1
-        bezier3Path.stroke()
 
+        self.figureColor.setFill()
+        self.lineColor.setStroke()
+        bezier2Path.lineWidth = self.lineWidth
+        bezier3Path.lineWidth = self.lineWidth
+        
+        if(self.isBorderDashed) {
+            bezier2Path.setLineDash([4,4], count: 1, phase: 0)
+            bezier3Path.setLineDash([4,4], count: 1, phase: 0)
+        }
+        bezier2Path.stroke()
+        bezier2Path.fill()
+        bezier3Path.stroke()
+        bezier3Path.fill()
+
+        
         let textRect = CGRect(x: 0, y: 0, width: BASE_WIDTH, height: 50).insetBy(dx: 5, dy: 5);
         let nameLabel = UILabel(frame: textRect)
         nameLabel.text = self.name
