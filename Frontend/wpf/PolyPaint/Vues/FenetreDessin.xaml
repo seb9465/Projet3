@@ -35,6 +35,10 @@
                     <Label FontWeight="Bold">Gallery</Label>
                 </StackPanel>
             </Button>
+            <Button Style="{StaticResource MaterialDesignRaisedLightButton}" Click="Disconnect_Click"
+             Width="60" Height="40" HorizontalAlignment="Right" Background="Gainsboro" BorderBrush="Gray" Margin="0,0,0,0" >
+                <materialDesign:PackIcon Kind="LanDisconnect" Height="24" Width="24"/>
+            </Button>
         </DockPanel>
 
         <DockPanel Height="640">
@@ -260,9 +264,9 @@
                             HorizontalContentAlignment="Center"                                
                             Command="{Binding Path=ChoisirOutil}"
                             CommandParameter="asso_uni">
-                            <StackPanel>
-                                <Image Source="/Resources/uni_asso.png" Height="24" Width="24"  />
-                            </StackPanel>
+                                <StackPanel>
+                                    <Image Source="/Resources/uni_asso.png" Height="24" Width="24"  />
+                                </StackPanel>
                             </Button>
                             <Button Name="AssoBi" Width="24" Height="24" Padding="0" ToolTip="Association bidirectionnelle"
                             HorizontalContentAlignment="Center"                            
@@ -270,9 +274,9 @@
                             Background="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurCouleurFond}, ConverterParameter=asso_bi, UpdateSourceTrigger=PropertyChanged}"                                
                             Command="{Binding Path=ChoisirOutil}"
                             CommandParameter="asso_bi">
-                            <StackPanel>
-                                <Image Source="/Resources/bi_asso.png" Height="24" Width="24"  />
-                            </StackPanel>
+                                <StackPanel>
+                                    <Image Source="/Resources/bi_asso.png" Height="24" Width="24"  />
+                                </StackPanel>
                             </Button>
                             <Button Name="Line" Width="24" Height="24" Padding="0" ToolTip="Ligne simple"
                             HorizontalContentAlignment="Center"                            
@@ -295,9 +299,9 @@
                             HorizontalContentAlignment="Center"                                
                             Command="{Binding Path=ChoisirOutil}"
                             CommandParameter="heritage">
-                            <StackPanel>
-                                <Image Source="/Resources/inheritance.png" Height="24" Width="24"  />
-                            </StackPanel>
+                                <StackPanel>
+                                    <Image Source="/Resources/inheritance.png" Height="24" Width="24"  />
+                                </StackPanel>
                             </Button>
                             <Button Name="Agregation" Width="24" Height="24" Padding="0" ToolTip="Agrégation"
                             BorderBrush="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurBordure}, ConverterParameter=agregation, UpdateSourceTrigger=PropertyChanged}" 
@@ -305,9 +309,9 @@
                             HorizontalContentAlignment="Center"                                
                             Command="{Binding Path=ChoisirOutil}"
                             CommandParameter="agregation">
-                            <StackPanel>
+                                <StackPanel>
                                     <Image Source="/Resources/agregation.png" Height="24" Width="24"  />
-                            </StackPanel>
+                                </StackPanel>
                             </Button>
                             <Button Name="Composition" Width="24" Height="24" Padding="0" ToolTip="Composition"
                             HorizontalContentAlignment="Center"                            
@@ -321,7 +325,7 @@
                             </Button>
                         </StackPanel>
                     </StackPanel>
-                            <xctk:ColorPicker x:Name="selecteurCouleurBordure"                             
+                    <xctk:ColorPicker x:Name="selecteurCouleurBordure"                             
                         VerticalContentAlignment="Stretch"
                         Background="#00000000"
                         ShowDropDownButton="False"
@@ -359,12 +363,7 @@
                 </StackPanel>
             </Border>
 
-            <Border DockPanel.Dock="Bottom" Height="25" BorderThickness="0,0.75,0,0.75" BorderBrush="#77000000">
-                <StackPanel Orientation="Horizontal" Background="#FFF0F0F0" HorizontalAlignment="Left" Width="1335" Margin="0,-3.889,0,3.444">
-                    <Image Source="/Resources/position.png" Margin="5,5,5,5" VerticalAlignment="Center"/>
-                    <TextBlock Name="textBlockPosition" VerticalAlignment="Center" HorizontalAlignment="Left"/>
-                </StackPanel>
-            </Border>
+            
 
             <Grid DockPanel.Dock="Left" Margin="0,1,0,0">
                 <Grid.ColumnDefinitions>
@@ -389,8 +388,7 @@
                       />
                 <Border BorderThickness="5,5,0,0" Grid.ColumnSpan="2" Margin="0,0,-696,-236" Grid.RowSpan="2">
                     <InkCanvas ClipToBounds="True" Grid.Column="0" Grid.Row="0" Name="surfaceDessin" Margin="10" Width="1200"
-                           HorizontalAlignment="Left" VerticalAlignment="Stretch"                           
-                           MouseLeave="surfaceDessin_MouseLeave"
+                           HorizontalAlignment="Left" VerticalAlignment="Stretch"  
                            MouseMove="surfaceDessin_MouseMove"
                            PreviewMouseMove="InkCanvas_LeftMouseMove"
                            MouseUp="InkCanvas_LeftMouseUp"
@@ -529,5 +527,5 @@
         </DockPanel>
 
     </StackPanel>
-    
+
 </Window>

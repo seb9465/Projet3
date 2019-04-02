@@ -103,13 +103,8 @@ namespace PolyPaint
             if (nom == "horizontal" || nom == "diagonal") colonne.Width = new GridLength(Math.Max(32, colonne.Width.Value + e.HorizontalChange));
             if (nom == "vertical" || nom == "diagonal") ligne.Height = new GridLength(Math.Max(32, ligne.Height.Value + e.VerticalChange));
         }
-
-        // Pour la gestion de l'affichage de position du pointeur.
-        private void surfaceDessin_MouseLeave(object sender, MouseEventArgs e) => textBlockPosition.Text = "";
         private void surfaceDessin_MouseMove(object sender, MouseEventArgs e)
         {
-            Point p = e.GetPosition(surfaceDessin);
-            textBlockPosition.Text = Math.Round(p.X) + ", " + Math.Round(p.Y) + "px";
 
             // Select single UML option is not an existing InkCanvasEditingMode, so this extra verification
             // is required when moving the mouse in canvas.
@@ -545,6 +540,24 @@ namespace PolyPaint
             adornerLayer.Add(adorner);
         }
 
+private void Disconnect_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                using (HttpClient client = new HttpClient())
+                {
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", (string)Application.Current.Properties["token"]);
+                    System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
+                    client.GetAsync($"{Config.URL}/api/user/logout").Wait();
+                }
+            }
+            catch { }
+
+            Login login = new Login();
+            Application.Current.MainWindow = login;
+            Close();
+            login.Show();
+        }
        
         void Window_Loaded(object sender, RoutedEventArgs e)
         {
