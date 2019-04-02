@@ -60,7 +60,7 @@ class UmlArtefactFigure: UmlFigure {
         let point2 = PolyPaintStylusPoint(X: Double(self.lastPoint.x), Y: Double(self.lastPoint.y), PressureFactor: 1)
         
         var drawViewModel: DrawViewModel = DrawViewModel()
-        drawViewModel.Guid = self.uuid.uuidString
+        drawViewModel.Guid = self.uuid.uuidString.lowercased()
         drawViewModel.Owner = UserDefaults.standard.string(forKey: "username")
         drawViewModel.ItemType = ItemTypeEnum.Artefact
         drawViewModel.StylusPoints = [point1, point2]

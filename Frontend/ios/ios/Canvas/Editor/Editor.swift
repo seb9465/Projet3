@@ -55,7 +55,7 @@ class Editor {
         self.selectedFiguresDictionnary.updateValue(drawViewModels, forKey: username)
         var figuresToSelect: [Figure] = []
         for figure in self.figures {
-            if (drawViewModels.contains(where: {$0.Guid == figure.uuid.uuidString})) {
+            if (drawViewModels.contains(where: {$0.Guid == figure.uuid.uuidString.lowercased()})) {
                 figuresToSelect.append(figure)
             }
         }
@@ -231,7 +231,6 @@ extension Editor: SideToolbarDelegate {
         for figure in self.selectedFigures {
             (figure as! UmlFigure).setBorderColor(borderColor: color);
         }
-        
     }
     
     func setSelectedFigureName(name: String) {
@@ -246,6 +245,7 @@ extension Editor: SideToolbarDelegate {
         }
         
         self.updateSideToolBar()
+        CollaborationHub.shared.postNewFigure(figures: self.selectedFigures)
     }
     
     func removeClassMethod(name: String, index: Int) {
@@ -477,16 +477,21 @@ extension Editor: CollaborationHubDelegate {
             self.deselect(username: itemMessage.Username)
             return
         }
-
+        self.deselect(username: itemMessage.Username)
         self.select(drawViewModels: itemMessage.Items, username: itemMessage.Username)
     }
     
     func updateCanvas(itemMessage: ItemMessage) {
-        print(itemMessage)
+//        print(itemMessage)
         for drawViewModel in itemMessage.Items {
             
             // Remplacer la vielle figure par la nouvelle version
-            if (self.figures.contains(where: {$0.uuid.uuidString == drawViewModel.Guid})) {
+            print(drawViewModel.Guid)
+            for fig in figures {
+                print(fig.uuid.uuidString)
+            }
+            if (self.figures.contains(where: {$0.uuid.uuidString.lowercased() == drawViewModel.Guid})) {
+                print("Figure overritten")
                 self.overriteFigure(figureId: drawViewModel.Guid!, newDrawViewModel: drawViewModel, username: itemMessage.Username)
                 self.deselect(username: itemMessage.Username)
                 self.select(drawViewModels: itemMessage.Items, username: itemMessage.Username)
@@ -520,7 +525,7 @@ extension Editor {
     
     
     func overriteFigure(figureId: String, newDrawViewModel: DrawViewModel, username: String) {
-        let oldFigure = self.figures.first(where: {$0.uuid.uuidString == figureId})
+        let oldFigure = self.figures.first(where: {$0.uuid.uuidString.lowercased() == figureId})
         self.figures.removeAll{$0 == oldFigure}
         oldFigure?.removeFromSuperview()
         let newFigure = FigureFactory.shared.fromDrawViewModel(drawViewModel: newDrawViewModel)!
