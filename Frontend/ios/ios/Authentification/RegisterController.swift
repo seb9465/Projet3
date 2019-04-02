@@ -34,10 +34,9 @@ class RegisterController: UIViewController {
                 print(response);
                 
                 let alert: UIAlertController = UIAlertController(title: "Registration complete!", message: "Welcome abord " + self.firstNameField.text!, preferredStyle: .alert);
-                let action: UIAlertAction = UIAlertAction(title: "Sick, let me in!", style: .default) {
-                    UIAlertAction in
+                let action: UIAlertAction = UIAlertAction(title: "Sick, let me in!", style: .default, handler: { action in
                     self.navigationController?.popToRootViewController(animated: true);
-                }
+                });
                 alert.addAction(action);
                 self.present(alert, animated: true, completion: nil);
             }
