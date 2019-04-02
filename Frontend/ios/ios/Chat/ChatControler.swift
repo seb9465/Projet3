@@ -64,7 +64,7 @@ class MsgChatController: MessagesViewController, MsgChatProtocol {
         transition.subtype = CATransitionSubtype.fromBottom;
         self.view.window!.layer.add(transition, forKey: kCATransition);
         
-        self.navigationController?.popViewController(animated: true)
+        self.navigationController?.popViewController(animated: false)
     }
     
     override func viewWillDisappear(_ animated: Bool) -> Void {

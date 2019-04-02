@@ -28,7 +28,7 @@ class ChatRoomsControllerTableViewController: UITableViewController {
         transition.subtype = CATransitionSubtype.fromBottom;
         self.view.window!.layer.add(transition, forKey: kCATransition);
         
-        self.present(view, animated: true, completion: nil);
+        self.present(view, animated: false, completion: nil);
     }
     
     override func viewDidLoad() {

@@ -36,6 +36,7 @@ class DashboardController: UIViewController, UITextFieldDelegate {
         transition.type = CATransitionType.reveal;
         transition.subtype = CATransitionSubtype.fromBottom;
         self.view.window!.layer.add(transition, forKey: kCATransition);
+        
         self.present(viewController, animated: false, completion: nil);
     }
 }
