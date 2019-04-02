@@ -43,6 +43,7 @@ class RegisterController: UIViewController {
     private var activeField: UITextField?
     private var lastOffset: CGPoint!
     private var keyboardHeight: CGFloat!
+    private var spinner: UIView!;
     
     // MARK: Timing functions
     
@@ -66,16 +67,15 @@ class RegisterController: UIViewController {
     }
     
     // MARK: Actions
-    var sv: UIView!;
+    
     @IBAction func registerButtonPressed(_ sender: UIButton) {
-//        let registrationViewModel: RegistrationViewModel = RegistrationViewModel(firstName: self.firstNameField.text!, lastName: self.lastNameField.text!, email: self.usernameField.text!, username: self.emailField.text!, password: self.passwordField.text!);
-        let registrationViewModel: RegistrationViewModel = RegistrationViewModel(firstName: "user", lastName: "hyped", email: "user.777713123@me.com", username: "user.777711221", password: "!12345Aa");
-        sv = UIViewController.displaySpinner(onView: self.view);
+        let registrationViewModel: RegistrationViewModel = RegistrationViewModel(firstName: self.firstNameField.text!, lastName: self.lastNameField.text!, email: self.usernameField.text!, username: self.emailField.text!, password: self.passwordField.text!);
+//        let registrationViewModel: RegistrationViewModel = RegistrationViewModel(firstName: "user", lastName: "hyped", email: "user.777713123@me.com", username: "user.777711221", password: "!12345Aa");
+        spinner = UIViewController.displaySpinner(onView: self.view);
         registerUser(parameters: registrationViewModel.toJson())
             .done { response in
                 
             } .catch { (error) in
-//                self.present(self.buildFailureAlert(errorMessage: error.localizedDescription), animated: true);
                 print(error);
                 self.present(self.buildOkAlert(), animated: true);
         }
@@ -122,7 +122,7 @@ class RegisterController: UIViewController {
     private func registerUser(parameters: [String: String?]) -> Promise<[HttpResponseMessage]>{
         return Promise {seal in
             Alamofire.request(Constants.REGISTER_URL as URLConvertible, method: .post, parameters: parameters as Parameters, encoding: JSONEncoding.default).responseSwiftyJSON{ response in
-                UIViewController.removeSpinner(spinner: self.sv);
+                UIViewController.removeSpinner(spinner: self.spinner);
                 self.hideErrorViews();
                 var errors: [HttpResponseMessage] = [];
                 print(response);
