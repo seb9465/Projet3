@@ -29,7 +29,13 @@ class DashboardController: UIViewController, UITextFieldDelegate {
         UserDefaults.standard.removePersistentDomain(forName: "token");
         
         let mainView: UIStoryboard = UIStoryboard(name: "Main", bundle: nil);
-        let viewcontroller : UIViewController = mainView.instantiateViewController(withIdentifier: "LoginStoryboard") as UIViewController;
-        self.present(viewcontroller, animated: false);
+        let viewController : UIViewController = mainView.instantiateViewController(withIdentifier: "LoginStoryboard") as UIViewController;
+        
+        let transition = CATransition();
+        transition.duration = 0.3;
+        transition.type = CATransitionType.reveal;
+        transition.subtype = CATransitionSubtype.fromBottom;
+        self.view.window!.layer.add(transition, forKey: kCATransition);
+        self.present(viewController, animated: false, completion: nil);
     }
 }
