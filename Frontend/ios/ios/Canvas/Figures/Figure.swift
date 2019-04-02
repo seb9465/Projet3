@@ -15,9 +15,9 @@ class Figure: UIView {
     var uuid: UUID!
     var name: String = "name"
     var isBorderDashed: Bool = false
-    var fillColor: UIColor!
-    var lineColor: UIColor!
-    var lineWidth: CGFloat!
+    var fillColor: UIColor! = UIColor.clear
+    var lineColor: UIColor! = UIColor.black
+    var lineWidth: CGFloat! = 2
     
     override init(frame: CGRect) {
         super.init(frame: frame)
