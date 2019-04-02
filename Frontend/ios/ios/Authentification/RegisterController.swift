@@ -13,7 +13,8 @@ import AwaitKit
 import Alamofire_SwiftyJSON
 
 
-let emailTest = NSPredicate(format: "SELF MATCHES %@", "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}")
+let EMAIL_REGEX = NSPredicate(format: "SELF MATCHES %@", "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}")
+let PWD_REGEX = NSPredicate(format: "SELF MATCHES %@", "(?=.*[a-z])(?=.*[A-Z])(?=!@#$&*).{8,15}");
 
 class RegisterController: UIViewController {
     
@@ -50,7 +51,8 @@ class RegisterController: UIViewController {
     public override func viewDidLoad() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
-    self.contentView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(returnTextView(gesture:))))
+        
+        self.contentView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(returnTextView(gesture:))))
         
         self.hideErrorViews();
         
@@ -69,8 +71,8 @@ class RegisterController: UIViewController {
     // MARK: Actions
     
     @IBAction func registerButtonPressed(_ sender: UIButton) {
-        let registrationViewModel: RegistrationViewModel = RegistrationViewModel(firstName: self.firstNameField.text!, lastName: self.lastNameField.text!, email: self.usernameField.text!, username: self.emailField.text!, password: self.passwordField.text!);
-//        let registrationViewModel: RegistrationViewModel = RegistrationViewModel(firstName: "user", lastName: "hyped", email: "user.777713123@me.com", username: "user.777711221", password: "!12345Aa");
+//        let registrationViewModel: RegistrationViewModel = RegistrationViewModel(firstName: self.firstNameField.text!, lastName: self.lastNameField.text!, email: self.usernameField.text!, username: self.emailField.text!, password: self.passwordField.text!);
+        let registrationViewModel: RegistrationViewModel = RegistrationViewModel(firstName: "user", lastName: "hyped", email: "user.777713123@me.com", username: "user.777711221", password: "!12345");
         spinner = UIViewController.displaySpinner(onView: self.view);
         registerUser(parameters: registrationViewModel.toJson())
             .done { response in
@@ -78,7 +80,7 @@ class RegisterController: UIViewController {
             } .catch { (error) in
                 print(error);
                 self.present(self.buildOkAlert(), animated: true);
-        }
+            }
     }
     
     // MARK: Actions
@@ -95,26 +97,40 @@ class RegisterController: UIViewController {
         } else {
             sender.layer.borderWidth = 1.0;
             sender.layer.cornerRadius = 5;
-            sender.layer.borderColor = UIColor.green.cgColor;
+            sender.layer.borderColor = Constants.RED_COLOR.cgColor;
         }
     }
     
     @IBAction func validateUsernameField(_ sender: UITextField) {
-        // Check if username is registered in the database
-    }
-    
-    @IBAction func validateEmailField(_ sender: UITextField) {
-        if(emailTest.evaluate(with: sender.text)){
+        if((sender.text!.isEmpty)){
             sender.layer.borderWidth = 1.0;
-            sender.layer.borderColor = UIColor.green.cgColor;
+            sender.layer.cornerRadius = 5;
+            sender.layer.borderColor = Constants.RED_COLOR.cgColor;
         } else {
             sender.layer.borderWidth = 1.0;
-            sender.layer.borderColor = UIColor.red.cgColor;
+            sender.layer.cornerRadius = 5;
+            sender.layer.borderColor = UIColor.green.cgColor;
         }
     }
     
-    @IBAction func validatePasswordField(_ sender: UITextField) {
-        // Check if password respects the format needed
+    @IBAction func validateEmailField(_ sender: UITextField) {
+        sender.layer.borderWidth = 1.0;
+        
+        if(EMAIL_REGEX.evaluate(with: sender.text)){
+            sender.layer.borderColor = UIColor.green.cgColor;
+        } else {
+            sender.layer.borderColor = Constants.RED_COLOR.cgColor;
+        }
+    }
+    
+    @IBAction func validatePwdField(_ sender: Any) {
+        (sender as! UITextField).layer.borderWidth = 1.0;
+        
+        if(PWD_REGEX.evaluate(with: (sender as! UITextField).text)){
+            (sender as! UITextField).layer.borderColor = UIColor.green.cgColor;
+        } else {
+            (sender as! UITextField).layer.borderColor = Constants.RED_COLOR.cgColor;
+        }
     }
     
     // MARK: Private functions
@@ -125,14 +141,13 @@ class RegisterController: UIViewController {
                 UIViewController.removeSpinner(spinner: self.spinner);
                 self.hideErrorViews();
                 var errors: [HttpResponseMessage] = [];
-                print(response);
-                print(response.result);
                 switch response.result {
                 case .failure(let error):
                     seal.reject(error);
                     break;
                 case .success:
                     if (response.response?.statusCode == 400) {
+                        print(response.value!);
                         for err in response.value! {
                             let messageJSON: String = err.1.rawString()!;
                             let message: HttpResponseMessage = self.showError(messageJSON: messageJSON);
