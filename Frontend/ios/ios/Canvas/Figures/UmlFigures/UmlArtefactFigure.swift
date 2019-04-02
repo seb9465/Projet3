@@ -53,6 +53,13 @@ class UmlArtefactFigure: UmlFigure {
         UIColor.black.setStroke()
         bezier3Path.lineWidth = 1
         bezier3Path.stroke()
+
+        let textRect = CGRect(x: 0, y: 0, width: BASE_WIDTH, height: 50).insetBy(dx: 5, dy: 5);
+        let nameLabel = UILabel(frame: textRect)
+        nameLabel.text = self.name
+        nameLabel.contentMode = .bottom
+        nameLabel.textAlignment = .center
+        nameLabel.drawText(in: textRect)
     }
     
     override func exportViewModel() -> DrawViewModel {
