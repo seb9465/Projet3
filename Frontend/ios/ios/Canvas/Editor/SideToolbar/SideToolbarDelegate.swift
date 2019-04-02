@@ -11,12 +11,10 @@ import UIKit
 protocol SideToolbarDelegate {
     func setSelectedFigureBorderColor(color: UIColor)
     func setSelectedFigureName(name: String)
-//    func setSelectedComment(comment: String)
+    func setSelectedFigureNameDidEnd()
     func addClassMethod(name: String)
     func removeClassMethod(name: String, index: Int)
     func addClassAttribute(name: String)
     func removeClassAttribute(name: String, index: Int)
     func rotate(orientation: RotateOrientation)
-//    func setSelectedText(text: String)
-//    func setSelectedPhase(phaseName: String)
 }

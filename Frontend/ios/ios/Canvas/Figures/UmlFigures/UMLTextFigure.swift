@@ -9,7 +9,6 @@
 import UIKit
 
 class UMLTextFigure: UmlFigure {
-    public var text: String = "text"
     let BASE_WIDTH: CGFloat = 100
     let BASE_HEIGHT: CGFloat = 50
     
@@ -20,7 +19,7 @@ class UMLTextFigure: UmlFigure {
     
     override init(drawViewModel: DrawViewModel) {
         super.init(drawViewModel: drawViewModel);
-        self.text = drawViewModel.ShapeTitle!
+        self.name = drawViewModel.ShapeTitle!
     }
     
     init(origin: CGPoint) {
@@ -31,16 +30,11 @@ class UMLTextFigure: UmlFigure {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    public func setText(text: String) -> Void {
-        self.text = text;
-        setNeedsDisplay();
-    }
-    
+
     override func draw(_ rect: CGRect) {
         let textRect = CGRect(x: 0, y: 0, width: BASE_WIDTH, height: BASE_HEIGHT).insetBy(dx: 5, dy: 5);
         let textLabel = UILabel(frame: textRect)
-        textLabel.text = self.text
+        textLabel.text = self.name
         textLabel.textAlignment = .center
         textLabel.drawText(in: textRect)
     }
@@ -58,7 +52,7 @@ class UMLTextFigure: UmlFigure {
         drawViewModel.BorderColor = PolyPaintColor(A: 255, R: 255, G: 1, B: 1)
         drawViewModel.BorderThickness = 2.0
         drawViewModel.BorderStyle = "solid"
-        drawViewModel.ShapeTitle = self.text
+        drawViewModel.ShapeTitle = self.name
         drawViewModel.Methods = nil
         drawViewModel.Properties = nil
         drawViewModel.SourceTitle = nil

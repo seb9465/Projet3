@@ -34,6 +34,7 @@
                         <textInputTraits key="textInputTraits"/>
                         <connections>
                             <action selector="nameInputChanged:" destination="KGk-i7-Jjw" eventType="editingChanged" id="Ir0-Sh-8RU"/>
+                            <action selector="nameInputDidEnd:" destination="KGk-i7-Jjw" eventType="editingDidEnd" id="riD-gm-G8E"/>
                         </connections>
                     </textField>
                 </subviews>

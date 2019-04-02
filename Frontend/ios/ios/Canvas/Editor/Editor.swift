@@ -238,6 +238,11 @@ extension Editor: SideToolbarDelegate {
         }
     }
     
+    
+    func setSelectedFigureNameDidEnd() {
+        CollaborationHub.shared.postNewFigure(figures: self.selectedFigures)
+    }
+    
     func addClassMethod(name: String) {
         for figure in self.selectedFigures {
             (figure as! UmlClassFigure).addMethod(name: name)
@@ -330,17 +335,17 @@ extension Editor : TouchInputDelegate {
                 return
             }
             if (action == "shape") {
-//                self.deselect()
-//                self.select(figure: figure!)
-//                self.updateSideToolBar()
-//                self.touchEventState = .TRANSLATE
+                //                self.deselect()
+                //                self.select(figure: figure!)
+                //                self.updateSideToolBar()
+                //                self.touchEventState = .TRANSLATE
                 return
             }
             if (action == "empty") {
                 self.deselect()
                 self.updateSideToolBar()
-//                self.touchEventState = .AREA_SELECT
-//                self.selectLasso(touchPoint: point)
+                //                self.touchEventState = .AREA_SELECT
+                //                self.selectLasso(touchPoint: point)
                 return
             }
             break;
@@ -491,12 +496,12 @@ extension Editor: CollaborationHubDelegate {
     }
     
     func updateCanvas(itemMessage: ItemMessage) {
-//        print(itemMessage)
+        //        print(itemMessage)
         for drawViewModel in itemMessage.Items {
             
             // Remplacer la vielle figure par la nouvelle version
             print(drawViewModel.Guid)
-
+            
             if (self.figures.contains(where: {$0.uuid.uuidString.lowercased() == drawViewModel.Guid})) {
                 print("Figure overritten")
                 self.overriteFigure(figureId: drawViewModel.Guid!, newDrawViewModel: drawViewModel, username: itemMessage.Username)
@@ -507,7 +512,7 @@ extension Editor: CollaborationHubDelegate {
             
             self.insertFigure(drawViewModel: drawViewModel)
         }
-}
+    }
     
     func updateClear() {
         self.clear()

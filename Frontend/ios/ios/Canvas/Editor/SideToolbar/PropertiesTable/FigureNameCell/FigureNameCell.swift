@@ -30,4 +30,7 @@ class FigureNameCell: UITableViewCell {
     @IBAction func nameInputChanged(_ sender: UITextField) {
         self.delegate?.setSelectedFigureName(name: sender.text!)
     }
+    @IBAction func nameInputDidEnd(_ sender: Any) {
+        self.delegate?.setSelectedFigureNameDidEnd();
+    }
 }
