@@ -13,6 +13,8 @@ class Editor {
     //    public var sideToolbarController: SideToolbarController?
     public var sideToolbatControllers: [SideToolbarController] = []
     private var selectedFiguresDictionnary: [String : [DrawViewModel]] = [:]
+    private var selectedOutlinesDictionnary: [String : [SelectionOutline]] = [:]
+    
     private var undoArray: [Figure] = []
     private var redoArray: [Figure] = [];
     private var figures: [Figure] = [];
@@ -39,6 +41,7 @@ class Editor {
         self.editorView.addGestureRecognizer(rotation)
     }
     
+    // Select made locally
     func select(figure: Figure) {
         self.selectedFigures.append(figure);
         self.selectionOutline.append(SelectionOutline(firstPoint: figure.frame.origin, lastPoint: CGPoint(x: figure.frame.maxX, y: figure.frame.maxY), associatedFigureID: figure.uuid));
@@ -46,13 +49,21 @@ class Editor {
         self.editorView.addSubview(self.selectionOutline.last!);
     }
     
-    func select(figure: Figure, username: String) {
-        let newSelectionOutline = SelectionOutline(firstPoint: figure.frame.origin, lastPoint: CGPoint(x: figure.frame.maxX, y: figure.frame.maxY), associatedFigureID: figure.uuid)
-        newSelectionOutline.addUsernameSelecting(username: username)
-        self.selectedFigures.append(figure);
-        self.selectionOutline.append(newSelectionOutline);
-        self.selectionOutline.last!.addSelectedFigureLayers();
-        self.editorView.addSubview(self.selectionOutline.last!);
+    // Selection recieved by hub
+    func select(figures: [Figure], username: String) {
+        var selectionOutlines: [SelectionOutline] = []
+        for figure in figures {
+            var outline = SelectionOutline(
+                firstPoint: figure.frame.origin,
+                lastPoint: CGPoint(x: figure.frame.maxX, y: figure.frame.maxY),
+                associatedFigureID: figure.uuid
+            )
+            outline.addUsernameSelecting(username: username)
+            outline.addSelectedFigureLayers()
+            selectionOutlines.append(outline)
+            self.editorView.addSubview(outline);
+        }
+        self.selectedOutlinesDictionnary.updateValue(selectionOutlines, forKey: username)
     }
     
     func selectLasso(touchPoint: CGPoint) {
@@ -462,9 +473,14 @@ extension Editor : TouchInputDelegate {
 extension Editor: CollaborationHubDelegate {
     func updateSelection(itemMessage: ItemMessage) {
         self.selectedFiguresDictionnary.updateValue(itemMessage.Items, forKey: itemMessage.Username)
-        for pair in  self.selectedFiguresDictionnary {
-            self.select(figure: self.figures.first(where: {$0.uuid.uuidString == pair.value[0].Guid})!, username: pair.key)
+        var figuresToSelect: [Figure] = []
+        for figure in self.figures {
+            if (itemMessage.Items.contains(where: {$0.Guid == figure.uuid.uuidString})) {
+                 figuresToSelect.append(figure)
+            }
         }
+
+        self.select(figures: figuresToSelect, username: itemMessage.Username)
     }
     
     func updateCanvas(itemMessage: ItemMessage) {
