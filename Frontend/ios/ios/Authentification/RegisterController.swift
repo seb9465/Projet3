@@ -114,23 +114,17 @@ class RegisterController: UIViewController {
     private func registerUser(parameters: [String: String?]) -> Promise<Any>{
         return Promise {seal in
             Alamofire.request(Constants.REGISTER_URL as URLConvertible, method: .post, parameters: parameters as Parameters, encoding: JSONEncoding.default).responseSwiftyJSON{ response in
+                if (response.result.isFailure) {
+                    return;
+                }
                 
-                switch response.result {
-                case .success:
-//                    if response.response?.statusCode == 400
-                    var errors: [HttpResponseMessage] = [];
+                if (response.response?.statusCode == 400) {
                     for err in response.value! {
                         let messageJSON: String = err.1.rawString()!;
-                        let jsonData = messageJSON.data(using: .utf8);
-                        let message: HttpResponseMessage = try! JSONDecoder().decode(HttpResponseMessage.self, from: jsonData!);
-                        
-                        errors.append(message);
+                        self.showErrors(messageJSON: messageJSON);
                     }
-                    
-                    break;
-                case .failure (let error):
-
-                    break;
+                } else if (response.response?.statusCode == 200) {
+                    self.showOkAlert();
                 }
                 
                 seal.fulfill(response);
@@ -138,7 +132,28 @@ class RegisterController: UIViewController {
         }
     }
     
-    private func buildOkAlert() -> UIAlertController {
+    private func showErrors(messageJSON: String) -> Void {
+        let jsonData = messageJSON.data(using: .utf8);
+        let message: HttpResponseMessage = try! JSONDecoder().decode(HttpResponseMessage.self, from: jsonData!);
+        
+        switch message.code {
+        case "DuplicateEmail":
+            self.emailErrorText.text = "Email already exists";
+            self.emailErrorIcon.isHidden = false;
+            self.emailErrorText.isHidden = false;
+            break;
+        case "DuplicateUserName":
+            self.emailErrorText.text = "Username already exists";
+            
+            break;
+        default:
+            break;
+        }
+        
+        
+    }
+    
+    private func showOkAlert() -> Void {
         let alert: UIAlertController = UIAlertController(title: "Registration complete!", message: "Welcome abord " + self.firstNameField.text!, preferredStyle: .alert);
         
         let okAction: UIAlertAction = UIAlertAction(title: "Sick, let me in!", style: .default, handler: { action in
@@ -155,8 +170,6 @@ class RegisterController: UIViewController {
         });
         
         alert.addAction(okAction);
-        
-        return alert;
     }
     
     @objc private func returnTextView(gesture: UIGestureRecognizer) {
