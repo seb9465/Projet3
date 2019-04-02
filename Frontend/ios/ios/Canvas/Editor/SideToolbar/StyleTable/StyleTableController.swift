@@ -19,9 +19,12 @@ class StyleTableController: UIViewController {
         self.editor.sideToolbatControllers.append(self)
 
         let nib = UINib.init(nibName: "BorderCell", bundle: nil)
+        let fillNib = UINib.init(nibName: "FillCell", bundle: nil)
         let rotateNib = UINib.init(nibName: "RotateCell", bundle: nil)
         self.styleTable.register(nib, forCellReuseIdentifier: "BorderCell")
-        self.styleTable.register(rotateNib, forCellReuseIdentifier: "RotateCell")    }
+        self.styleTable.register(fillNib, forCellReuseIdentifier: "FillCell")
+        self.styleTable.register(rotateNib, forCellReuseIdentifier: "RotateCell")
+    }
 }
 
 extension StyleTableController: UITableViewDelegate, UITableViewDataSource {
@@ -29,24 +32,32 @@ extension StyleTableController: UITableViewDelegate, UITableViewDataSource {
         if (self.editor.selectedFigures.isEmpty) {
             return 0
         }
-        return 2
+        return 3
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if (indexPath.row == 0) {
-            return 300
-        } else {
-            return 525
+            return 125
         }
+        
+        if (indexPath.row == 1) {
+            return 400
+        }
+
+        return 100
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch(indexPath.row) {
         case 0:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "BorderCell", for: indexPath) as! BorderCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: "FillCell", for: indexPath) as! FillCell
             cell.delegate = self.editor
             return cell
         case 1:
+            let cell = tableView.dequeueReusableCell(withIdentifier: "BorderCell", for: indexPath) as! BorderCell
+            cell.delegate = self.editor
+            return cell
+        case 2:
             let cell = tableView.dequeueReusableCell(withIdentifier: "RotateCell", for: indexPath) as! RotateCell
             cell.delegate = self.editor
             return cell;

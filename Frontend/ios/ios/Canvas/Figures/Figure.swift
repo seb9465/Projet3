@@ -14,6 +14,10 @@ class Figure: UIView {
     var itemType: ItemTypeEnum!
     var uuid: UUID!
     var name: String = "name"
+    var isBorderDashed: Bool = false
+    var fillColor: UIColor! = UIColor.clear
+    var lineColor: UIColor! = UIColor.black
+    var lineWidth: CGFloat! = 2
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -28,6 +32,21 @@ class Figure: UIView {
         self.name = name
         setNeedsDisplay()
     }
+    
+    public func setIsBorderDashed(isDashed: Bool) {
+        self.isBorderDashed = isDashed
+        setNeedsDisplay()
+    }
+    
+    public func setLineWidth(width: CGFloat) {
+        self.lineWidth = width
+        setNeedsDisplay()
+    }
+    
+//    public func setFillColor(color: UIColor) {
+//        self.fillColor = color
+//        setNeedsDisplay()
+//    }
     
     public func exportViewModel() -> DrawViewModel? {return nil}
 
