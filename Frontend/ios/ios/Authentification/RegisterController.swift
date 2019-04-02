@@ -61,20 +61,11 @@ class RegisterController: UIViewController {
         super.viewDidLoad();
     }
     
-    public func hideErrorViews() -> Void {
-        self.emailErrorIcon.isHidden = true;
-        self.emailErrorText.isHidden = true;
-        self.pwdErrorIcon.isHidden = true;
-        self.pwdErrorText.isHidden = true;
-        self.usernameErrorIcon.isHidden = true;
-        self.usernameErrorText.isHidden = true;
-    }
-    
     // MARK: Actions
     
     @IBAction func registerButtonPressed(_ sender: UIButton) {
-//        let registrationViewModel: RegistrationViewModel = RegistrationViewModel(firstName: self.firstNameField.text!, lastName: self.lastNameField.text!, email: self.usernameField.text!, username: self.emailField.text!, password: self.passwordField.text!);
-        let registrationViewModel: RegistrationViewModel = RegistrationViewModel(firstName: "user", lastName: "hyped", email: "user.777713123@me.com", username: "user.777711221", password: "!12345");
+        let registrationViewModel: RegistrationViewModel = RegistrationViewModel(firstName: self.firstNameField.text!, lastName: self.lastNameField.text!, email: self.usernameField.text!, username: self.emailField.text!, password: self.passwordField.text!);
+//        let registrationViewModel: RegistrationViewModel = RegistrationViewModel(firstName: "user", lastName: "hyped", email: "user.777713123@me.com", username: "user.777711221", password: "!12345");
         spinner = UIViewController.displaySpinner(onView: self.view);
         registerUser(parameters: registrationViewModel.toJson())
             .done { response in
@@ -92,38 +83,50 @@ class RegisterController: UIViewController {
     }
     
     @IBAction func validateFirstNameField(_ sender: UITextField) {
-        if((sender.text!.isEmpty)){
-            sender.layer.borderWidth = 1.0;
-            sender.layer.cornerRadius = 5;
-            sender.layer.borderColor = UIColor.red.cgColor;
-        } else {
-            sender.layer.borderWidth = 1.0;
-            sender.layer.cornerRadius = 5;
+        sender.layer.borderWidth = 1.0;
+        sender.layer.cornerRadius = 5;
+        
+        if(sender.text!.isEmpty){
             sender.layer.borderColor = Constants.RED_COLOR.cgColor;
+            self.firstNameErrorText.text = "First Name field must not be empty";
+            self.firstNameErrorText.isHidden = false;
+            self.firstNameErrorIcon.isHidden = false;
+        } else {
+            sender.layer.borderColor = UIColor.green.cgColor;
+            self.firstNameErrorText.isHidden = true;
+            self.firstNameErrorIcon.isHidden = true;
         }
     }
     
     @IBAction func validateLastNameField(_ sender: UITextField) {
-        if((sender.text!.isEmpty)){
-            sender.layer.borderWidth = 1.0;
-            sender.layer.cornerRadius = 5;
-            sender.layer.borderColor = UIColor.red.cgColor;
-        } else {
-            sender.layer.borderWidth = 1.0;
-            sender.layer.cornerRadius = 5;
+        sender.layer.borderWidth = 1.0;
+        sender.layer.cornerRadius = 5;
+        
+        if (sender.text!.isEmpty){
             sender.layer.borderColor = Constants.RED_COLOR.cgColor;
+            self.lastNameErrorText.text = "Last Name field must not be empty";
+            self.lastNameErrorText.isHidden = false;
+            self.lastNameErrorIcon.isHidden = false;
+        } else {
+            sender.layer.borderColor = UIColor.green.cgColor;
+            self.lastNameErrorText.isHidden = true;
+            self.lastNameErrorIcon.isHidden = true;
         }
     }
     
     @IBAction func validateUserNameField(_ sender: UITextField) {
-        if((sender.text!.isEmpty)){
-            sender.layer.borderWidth = 1.0;
-            sender.layer.cornerRadius = 5;
-            sender.layer.borderColor = UIColor.red.cgColor;
-        } else {
-            sender.layer.borderWidth = 1.0;
-            sender.layer.cornerRadius = 5;
+        sender.layer.borderWidth = 1.0;
+        sender.layer.cornerRadius = 5;
+        
+        if (sender.text!.isEmpty){
             sender.layer.borderColor = Constants.RED_COLOR.cgColor;
+            self.usernameErrorText.text = "Username field must not be empty";
+            self.usernameErrorText.isHidden = false;
+            self.usernameErrorIcon.isHidden = false;
+        } else {
+            sender.layer.borderColor = UIColor.green.cgColor;
+            self.usernameErrorText.isHidden = true;
+            self.usernameErrorIcon.isHidden = true;
         }
     }
     
@@ -147,12 +150,28 @@ class RegisterController: UIViewController {
         
         if(PWD_REGEX.evaluate(with: sender.text)){
             sender.layer.borderColor = UIColor.green.cgColor;
+            self.pwdErrorText.isHidden = true;
+            self.pwdErrorIcon.isHidden = true;
         } else {
             sender.layer.borderColor = Constants.RED_COLOR.cgColor;
+            
         }
     }
     
     // MARK: Private functions
+    
+    private func hideErrorViews() -> Void {
+        self.firstNameErrorIcon.isHidden = true;
+        self.firstNameErrorText.isHidden = true;
+        self.lastNameErrorIcon.isHidden = true;
+        self.lastNameErrorText.isHidden = true;
+        self.usernameErrorIcon.isHidden = true;
+        self.usernameErrorText.isHidden = true;
+        self.emailErrorIcon.isHidden = true;
+        self.emailErrorText.isHidden = true;
+        self.pwdErrorIcon.isHidden = true;
+        self.pwdErrorText.isHidden = true;
+    }
     
     private func registerUser(parameters: [String: String?]) -> Promise<[HttpResponseMessage]>{
         return Promise {seal in
@@ -224,6 +243,8 @@ class RegisterController: UIViewController {
         return alert;
     }
     
+    // MARK: Object functions
+    
     @objc private func returnTextView(gesture: UIGestureRecognizer) {
         guard activeField != nil else {
             return
@@ -232,8 +253,6 @@ class RegisterController: UIViewController {
         activeField?.resignFirstResponder()
         activeField = nil
     }
-    
-    // MARK: Object functions
     
     @objc func keyboardWillShow(notification: NSNotification) {
         if keyboardHeight != nil {
