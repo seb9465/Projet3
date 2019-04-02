@@ -364,7 +364,7 @@ extension Editor : TouchInputDelegate {
             figure.delegate = self
             self.figures.append(figure)
             self.editorView.addSubview(figure)
-            CollaborationHub.shared.postNewFigure(figure: figure)
+            CollaborationHub.shared.postNewFigure(figures: [figure])
             break
         case .CONNECTION:
             break
@@ -452,6 +452,7 @@ extension Editor : TouchInputDelegate {
         }
         
         if (self.touchEventState == .TRANSLATE) {
+            CollaborationHub.shared.postNewFigure(figures: [figure!])
             self.touchEventState = .SELECT;
             return
         }
@@ -508,10 +509,16 @@ extension Editor: CollaborationHubDelegate {
     func updateCanvas(itemMessage: ItemMessage) {
         print(itemMessage)
         for drawViewModel in itemMessage.Items {
-//            if (self.figures.contains(where: {$0.uuid.uuidString == drawViewModel.Guid})) {
-//                // Handle quand il est la
-//                return
-//            }
+            if (self.figures.contains(where: {$0.uuid.uuidString == drawViewModel.Guid})) {
+                let oldFigure = self.figures.first(where: {$0.uuid.uuidString == drawViewModel.Guid})
+                self.figures.removeAll{$0 == oldFigure}
+                oldFigure?.removeFromSuperview()
+                let newFigure = FigureFactory.shared.fromDrawViewModel(drawViewModel: drawViewModel)!
+                newFigure.delegate = self
+                self.figures.append(newFigure)
+                self.editorView.addSubview(newFigure)
+                return
+            }
             
             let figure = FigureFactory.shared.fromDrawViewModel(drawViewModel: drawViewModel)!
             figure.delegate = self
