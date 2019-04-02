@@ -311,6 +311,7 @@ extension Editor: SideToolbarDelegate {
             self.deselectFigure(figure: tempFigure);
             self.select(figure: figure);
         }
+        CollaborationHub.shared.postNewFigure(figures: self.selectedFigures)
     }
     
     @objc private func rotatedView(_ sender: UIRotationGestureRecognizer) {
@@ -321,9 +322,9 @@ extension Editor: SideToolbarDelegate {
                 for figure in self.selectedFigures {
                     let tempFigure: Figure = figure;
                     if(self.oldRotationAngle < currentRotationAngle) {
-                        figure.rotate(orientation: .right);
+                        self.rotate(orientation: .right);
                     } else {
-                        figure.rotate(orientation: .left);
+                        self.rotate(orientation: .left);
                     }
                     self.deselectFigure(figure: tempFigure);
                     self.select(figure: figure);
@@ -514,12 +515,7 @@ extension Editor: CollaborationHubDelegate {
     }
     
     func updateCanvas(itemMessage: ItemMessage) {
-        //        print(itemMessage)
         for drawViewModel in itemMessage.Items {
-            
-            // Remplacer la vielle figure par la nouvelle version
-            print(drawViewModel.Guid)
-            
             if (self.figures.contains(where: {$0.uuid.uuidString.lowercased() == drawViewModel.Guid})) {
                 print("Figure overritten")
                 self.overriteFigure(figureId: drawViewModel.Guid!, newDrawViewModel: drawViewModel, username: itemMessage.Username)
