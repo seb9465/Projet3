@@ -46,6 +46,15 @@ class Editor {
         self.editorView.addSubview(self.selectionOutline.last!);
     }
     
+    func select(figure: Figure, username: String) {
+        let newSelectionOutline = SelectionOutline(firstPoint: figure.frame.origin, lastPoint: CGPoint(x: figure.frame.maxX, y: figure.frame.maxY), associatedFigureID: figure.uuid)
+        newSelectionOutline.addUsernameSelecting(username: username)
+        self.selectedFigures.append(figure);
+        self.selectionOutline.append(newSelectionOutline);
+        self.selectionOutline.last!.addSelectedFigureLayers();
+        self.editorView.addSubview(self.selectionOutline.last!);
+    }
+    
     func selectLasso(touchPoint: CGPoint) {
         self.selectionLasso = SelectionLasso(size: self.editorView.frame.size, touchPoint: touchPoint);
         
@@ -438,7 +447,7 @@ extension Editor: CollaborationHubDelegate {
     func updateSelection(itemMessage: ItemMessage) {
         self.selectedFiguresDictionnary.updateValue(itemMessage.Items, forKey: itemMessage.Username)
         for pair in  self.selectedFiguresDictionnary {
-            self.select(figure: self.figures.first(where: {$0.uuid.uuidString == pair.value[0].Guid})!)
+            self.select(figure: self.figures.first(where: {$0.uuid.uuidString == pair.value[0].Guid})!, username: pair.key)
             
 //            pair.value[0]
         }

@@ -42,6 +42,7 @@ class CollaborationHub {
         self.onConnectToChannel()
         self.onDraw()
         self.onReset()
+        self.onSelect()
         //        self.onFetchChannels()
     }
     
