@@ -71,14 +71,15 @@ class RegisterController: UIViewController {
     @IBAction func registerButtonPressed(_ sender: UIButton) {
         self.view.endEditing(true);
         
-        let registrationViewModel: RegistrationViewModel = RegistrationViewModel(firstName: self.firstNameField.text!, lastName: self.lastNameField.text!, email: self.emailField.text!, username: self.usernameField.text!, password: self.passwordField.text!);
-        
+//        let registrationViewModel: RegistrationViewModel = RegistrationViewModel(firstName: self.firstNameField.text!, lastName: self.lastNameField.text!, email: self.emailField.text!, username: self.usernameField.text!, password: self.passwordField.text!);
+        let registrationViewModel: RegistrationViewModel = RegistrationViewModel(firstName: "seb", lastName: "cado", email: "seb.cado2@poly.ca", username: "seb.cado2", password: "!12345Aa");
         spinner = UIViewController.displaySpinner(onView: self.view);
         
         registerUser(parameters: registrationViewModel.toJson())
             .done { response in
                 
-            } .catch { (error) in
+            } .catch { error in
+                print("ERRORS");
                 print(error);
                 self.present(self.buildOkAlert(), animated: true);
             }
@@ -216,29 +217,31 @@ class RegisterController: UIViewController {
         return errorMsg;
     }
     
-    private func registerUser(parameters: [String: String?]) -> Promise<[HttpResponseMessage]>{
+    private func registerUser(parameters: [String: String]) -> Promise<Any>{
         return Promise {seal in
             Alamofire.request(Constants.REGISTER_URL as URLConvertible, method: .post, parameters: parameters as Parameters, encoding: JSONEncoding.default).responseSwiftyJSON{ response in
                 UIViewController.removeSpinner(spinner: self.spinner);
                 self.hideErrorViews();
                 var errors: [HttpResponseMessage] = [];
                 
-                switch response.result {
-                case .failure(let error):
-                    seal.reject(error);
-                    break;
-                case .success:
-                    if (response.response?.statusCode == 400) {
-                        for err in response.value! {
-                            let messageJSON: String = err.1.rawString()!;
-                            let message: HttpResponseMessage = self.showError(messageJSON: messageJSON);
-                            errors.append(message);
-                        }
+                print(response.response?.statusCode);
+                
+                switch response.response?.statusCode {
+                case 400:
+                    for err in response.value! {
+                        let messageJSON: String = err.1.rawString()!;
+                        let message: HttpResponseMessage = self.showError(messageJSON: messageJSON);
+                        errors.append(message);
                     }
+                    seal.resolve(errors, nil);
+                    break;
+                case 200:
+                    seal.fulfill(response);
+                    break;
+                default:
                     break;
                 }
                 
-                seal.fulfill(errors);
             };
         }
     }
