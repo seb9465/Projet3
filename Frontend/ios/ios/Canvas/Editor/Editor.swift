@@ -372,6 +372,9 @@ extension Editor : TouchInputDelegate {
     
     func notifyTouchMoved(point: CGPoint, figure: Figure) {
         if (self.touchEventState == .SELECT || self.touchEventState == .TRANSLATE) {
+            if (!figure.isEqual(self.selectedFigures[0])) {
+                return
+            }
             self.touchEventState = .TRANSLATE;
             let offset = CGPoint(x: point.x - self.previousTouchPoint.x, y: point.y - self.previousTouchPoint.y)
             for fig in self.selectedFigures {
