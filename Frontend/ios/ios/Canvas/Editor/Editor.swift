@@ -154,6 +154,7 @@ class Editor {
         
         for figure in self.selectedFigures {
             figure.removeFromSuperview()
+            self.figures.removeAll{$0 == figure}
         }
         
         self.deselect()
