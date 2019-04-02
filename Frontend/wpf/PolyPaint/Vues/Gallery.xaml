@@ -38,7 +38,7 @@
                                     <StackPanel>
                                         <Label x:Name="name" Background="#f8aaa0" Content="{Binding Name}" HorizontalContentAlignment="Center"/>
                                         <Border BorderThickness="1" BorderBrush="#f8aaa0">
-                                            <Image Source="{Binding ImagePreview}" Height="200" Width="250" Margin="5" />
+                                            <Image Source="{Binding Image}" Height="200" Width="250" Margin="5" />
                                         </Border>
                                         <Label x:Name="visibilityLabel" Background="#f8aaa0" Content="{Binding CanvasVisibility}" />
 
