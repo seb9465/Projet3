@@ -39,20 +39,23 @@ class UmlPhaseFigure: UmlFigure {
 //        UIRectFill()
         phaseNameLabel.text = self.name
         phaseNameLabel.textAlignment = .center
-        phaseNameLabel.drawText(in: phaneNameRect)
+        
         let outerRectPath = UIBezierPath(rect: outerRect)
         let commentRectPath = UIBezierPath(rect: phaneNameRect)
         
         self.figureColor.setFill()
         self.lineColor.setStroke()
-        
-        commentRectPath.lineWidth = self.lineWidth
-        commentRectPath.fill()
-        commentRectPath.stroke()
-
+        if(self.isBorderDashed) {
+            outerRectPath.setLineDash([4,4], count: 1, phase: 0)
+            commentRectPath.setLineDash([4,4], count: 1, phase: 0)
+        }
         outerRectPath.lineWidth = self.lineWidth
         outerRectPath.fill()
         outerRectPath.stroke()
+        commentRectPath.lineWidth = self.lineWidth
+        commentRectPath.fill()
+        commentRectPath.stroke()
+        phaseNameLabel.drawText(in: phaneNameRect)
     }
     
     override func exportViewModel() -> DrawViewModel {
