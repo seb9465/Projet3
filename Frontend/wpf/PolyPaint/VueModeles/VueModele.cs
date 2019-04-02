@@ -296,6 +296,7 @@ namespace PolyPaint.VueModeles
                 stroke.StylusPoints[1] = new StylusPoint(stylusPoint1.X, stylusPoint1.Y);
             }
             SendSelectedStrokes();
+            CollaborationClient.CollaborativeSelectAsync(rebuilder.GetDrawViewModelsFromStrokes(editeur.SelectedStrokes));
         }
 
         public void ChangeSelection(InkCanvas surfaceDessin)

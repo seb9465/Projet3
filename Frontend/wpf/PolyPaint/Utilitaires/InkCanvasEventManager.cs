@@ -124,9 +124,7 @@ namespace PolyPaint.Utilitaires
         internal void EndDraw(InkCanvas surfaceDessin, List<DrawViewModel> drawViewModels, string username)
         {
             StrokeBuilder builder = new StrokeBuilder();
-
             builder.BuildStrokesFromDrawViewModels(drawViewModels, surfaceDessin);
-            DrawingStroke = null;
         }
 
         internal void EndDrawAsync(InkCanvas surfaceDessin, VueModele vm)
@@ -184,11 +182,12 @@ namespace PolyPaint.Utilitaires
             {
                 for (int i = 0; i < 2; i++)
                 {
-                    surfaceDessin.Strokes.Where(x => x is AbstractLineStroke &&
+                    var strokes = surfaceDessin.Strokes.Where(x => x is AbstractLineStroke &&
                         !surfaceDessin.GetSelectedStrokes().Contains(x) &&
                         Point.Subtract(x.StylusPoints[i].ToPoint(), pt).Length <= Config.MIN_DISTANCE_ANCHORS)
-                        .ToList()
-                        .ForEach(x => RedrawPoint(x, i, new Vector(shiftInX, shiftInY)));
+                        .ToList();
+                    strokes.ForEach(x => RedrawPoint(x, i, new Vector(shiftInX, shiftInY)));
+                    
                 }
             }
         }
