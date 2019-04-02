@@ -21,14 +21,4 @@ class HttpResponseMessage: Codable {
         self.description = description;
         self.code = code;
     }
-    
-    // MARK: Getter - Setter
-    
-//    public var description: String {
-//        get { return self._description }
-//    }
-//
-//    public var code: String {
-//        get { return self._code }
-//    }
 }
