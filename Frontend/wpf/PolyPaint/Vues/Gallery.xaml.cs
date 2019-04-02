@@ -160,7 +160,7 @@ namespace PolyPaint.Vues
                 {
                     if (savedCanvas[item].CanvasAutor == username | savedCanvas[item].CanvasVisibility == "Public")
                     {
-                        canvas.Add(new SaveableCanvas(savedCanvas[item].CanvasId, savedCanvas[item].Name, savedCanvas[item].Base64Strokes, savedCanvas[item].Base64Image, savedCanvas[item].CanvasVisibility, savedCanvas[item].CanvasProtection, savedCanvas[item].CanvasAutor));
+                        canvas.Add(new SaveableCanvas(savedCanvas[item].CanvasId, savedCanvas[item].Name, savedCanvas[item].DrawViewModels, savedCanvas[item].Image, savedCanvas[item].CanvasVisibility, savedCanvas[item].CanvasProtection, savedCanvas[item].CanvasAutor));
                         for (int i = 0; i < canvas.Count - 1; i++)
                         {
                             if (savedCanvas[item].Name == canvas[i].Name)
@@ -176,21 +176,10 @@ namespace PolyPaint.Vues
             return canvas;
         }
 
-        private static StrokeCollection GenerateStrokesFromBytes(byte[] bytes)
-        {
-            StrokeCollection strokes;
-            using (MemoryStream ms = new MemoryStream(bytes))
-            {
-                strokes = new System.Windows.Ink.StrokeCollection(ms);
-                ms.Close();
-            }
-            return strokes;
-        }
-
         private void OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             SelectedCanvas = (SaveableCanvas)ImagePreviews.SelectedItem;
-            List<DrawViewModel> drawViewModels = JsonConvert.DeserializeObject<List<DrawViewModel>>(SelectedCanvas.Base64Strokes);
+            List<DrawViewModel> drawViewModels = JsonConvert.DeserializeObject<List<DrawViewModel>>(SelectedCanvas.DrawViewModels);
             if (SelectedCanvas.CanvasProtection != "" && SelectedCanvas.CanvasAutor != username)
             {
                 imageProtection = new ImageProtection();

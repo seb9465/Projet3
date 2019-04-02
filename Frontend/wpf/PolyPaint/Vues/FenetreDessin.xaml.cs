@@ -15,6 +15,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -125,10 +126,13 @@ namespace PolyPaint
             surfaceDessin.Paste();
         }
 
-        private async void SupprimerSelection(object sender, RoutedEventArgs e)
+        private void SupprimerSelection(object sender, RoutedEventArgs e)
         {
-            await (DataContext as VueModele).CollaborationClient.CollaborativeDeleteAsync();
+            List<DrawViewModel> strokes = rebuilder.GetDrawViewModelsFromStrokes(surfaceDessin.GetSelectedStrokes());
             surfaceDessin.CutSelection();
+            (DataContext as VueModele).CollaborationClient.CollaborativeSelectAsync(new List<DrawViewModel>());
+            (DataContext as VueModele).CollaborationClient.CollaborativeDeleteAsync(strokes);
+            SendToCloud();
 
         }
         private void SaveImage(object sender, EventArgs e)
@@ -202,7 +206,7 @@ namespace PolyPaint
             string CanvasVisibility = canvasVisibility;
             string CanvasProtection = canvasProtection;
             string CanvasAutor = canvasAutor;
-            SaveableCanvas canvas = new SaveableCanvas(CanvasId, CanvasName, json, imageToSend, CanvasVisibility, CanvasProtection, CanvasAutor);
+            SaveableCanvas canvas = new SaveableCanvas(CanvasId, CanvasName, json, imageBytes, CanvasVisibility, CanvasProtection, CanvasAutor);
 
             string canvasJson = JsonConvert.SerializeObject(canvas);
             using (HttpClient client = new HttpClient())
@@ -433,6 +437,7 @@ namespace PolyPaint
             ImageStroke image = new ImageStroke(collection, surfaceDessin, ib);
             (image as ICanvasable).AddToCanvas();
             (DataContext as VueModele).CollaborationClient.CollaborativeDrawAsync(rebuilder.GetDrawViewModelsFromStrokes(new StrokeCollection(new List<Stroke>() { image })));
+            SendToCloud();
         }
         private void DownloadCanvasAsJPG(object sender, RoutedEventArgs e)
         {
@@ -455,9 +460,12 @@ namespace PolyPaint
             }
 
         }
-        private async void Reinitialiser_Click(object sender, RoutedEventArgs e)
+        private void Reinitialiser_Click(object sender, RoutedEventArgs e)
         {
-            await (DataContext as VueModele).CollaborationClient.CollaborativeResetAsync();
+            (DataContext as VueModele).Reinitialiser.Execute(null);
+            (DataContext as VueModele).CollaborationClient.CollaborativeSelectAsync(new List<DrawViewModel>());
+            (DataContext as VueModele).CollaborationClient.CollaborativeResetAsync();
+            SendToCloud();
         }
 
         private void ReceiveDraw(object sender, MessageArgs args)
@@ -493,7 +501,8 @@ namespace PolyPaint
         {
             Dispatcher.Invoke(() =>
             {
-                surfaceDessin.CutSelection();
+                var message = JsonConvert.DeserializeObject<ItemsMessage>(args.Message);
+                surfaceDessin.Strokes.Remove(new StrokeCollection(surfaceDessin.Strokes.Where(x => message.Items.Any(y => y.Guid == (x as AbstractStroke).Guid.ToString()))));
             });
         }
 
@@ -501,8 +510,7 @@ namespace PolyPaint
         {
             Dispatcher.Invoke(() =>
             {
-                reinitialiser.Command = (DataContext as VueModele).Reinitialiser;
-                reinitialiser.Command.Execute(reinitialiser.CommandParameter);
+                (DataContext as VueModele).Reinitialiser.Execute(null);
             });
         }
 
@@ -518,6 +526,7 @@ namespace PolyPaint
         private void ContextualMenu_Click(object sender, EventArgs e)
         {
             icEventManager.ContextualMenuClick(surfaceDessin, (sender as MenuItem).Name, (DataContext as VueModele));
+            SendToCloud();
         }
 
         private void hamburgerMenu_Click(object sender, RoutedEventArgs e)
