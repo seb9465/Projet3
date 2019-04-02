@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  RegisterController.swift
 //  ios
 //
 //  Created by William Sevigny on 2019-01-29.
@@ -11,7 +11,6 @@ import Alamofire
 import PromiseKit
 import AwaitKit
 import Alamofire_SwiftyJSON
-
 
 let EMAIL_REGEX = NSPredicate(format: "SELF MATCHES %@", "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}")
 let PWD_REGEX = NSPredicate(format: "SELF MATCHES %@", "(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$&*]).{8,15}");
@@ -312,6 +311,9 @@ class RegisterController: UIViewController {
         activeField = nil
     }
     
+    /**
+     When keyboard opens, it will enable the scrolling.
+    */
     @objc func keyboardWillShow(notification: NSNotification) {
         if keyboardHeight != nil {
             return
@@ -326,6 +328,9 @@ class RegisterController: UIViewController {
         }
     }
     
+    /**
+     When keyboard closes, it will disable the scrolling.
+    */
     @objc func keyboardWillHide(notification: NSNotification) {
         UIView.animate(withDuration: 0.3) {
             guard let heightConstraint = self.constraintContentHeight else { return }
@@ -336,7 +341,10 @@ class RegisterController: UIViewController {
         self.keyboardHeight = nil
     }
     
-    @objc func textFieldsWithoutErrors(sender: UITextField) {
+    /**
+     Makes the Register button enabled while the fields are not filled or errors are still present.
+    */
+    @objc func textFieldsWithoutErrors(sender: UITextField) -> Void {
         print("REGISTER BUTTON CHECK");
         sender.text = sender.text?.trimmingCharacters(in: .whitespaces)
         
@@ -358,7 +366,7 @@ class RegisterController: UIViewController {
     }
 }
 
-// MARK: UITextFieldDelegate
+// MARK: UITextFieldDelegate extension
 
 extension RegisterController: UITextFieldDelegate {
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
@@ -373,6 +381,8 @@ extension RegisterController: UITextFieldDelegate {
         return true
     }
 }
+
+// MARK: String extension
 
 extension String {
     var containsSpecialCharacter: Bool {
