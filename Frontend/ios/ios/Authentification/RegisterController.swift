@@ -197,7 +197,7 @@ class RegisterController: UIViewController {
         UIView.animate(withDuration: 0.3) {
             self.constraintContentHeight.constant -= self.keyboardHeight
             
-            self.scrollView.contentOffset = self.lastOffset
+//            self.scrollView.contentOffset = self.lastOffset
         }
         
         keyboardHeight = nil
