@@ -10,6 +10,9 @@ import UIKit
 
 class ChatRoomsControllerTableViewController: UITableViewController {
     
+    @IBOutlet var backButton: UIBarButtonItem!
+    @IBOutlet var addButton: UIBarButtonItem!
+    
     private let refreshTable = UIRefreshControl();
     
     @objc private func refreshData(_ sender: Any) {
@@ -43,6 +46,9 @@ class ChatRoomsControllerTableViewController: UITableViewController {
         self.tableView.addSubview(self.refreshTable);
         
         self.navigationItem.rightBarButtonItems?.append(self.editButtonItem);
+        
+        self.backButton.tintColor = Constants.RED_COLOR;
+        self.addButton.tintColor = Constants.RED_COLOR;
         
         super.viewDidLoad()
     }

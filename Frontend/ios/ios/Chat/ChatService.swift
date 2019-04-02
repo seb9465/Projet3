@@ -279,7 +279,6 @@ class ChatService {
     }
     
     private func onSendMessage(currentMemberName: String?, insertMessage: @escaping (_ message: Message) -> Void) -> Void {
-        print("INIT ON MESAGE");
         self._hubConnection.on(method: "SendMessage", callback: { args, typeConverter in
             print("[ CHAT ] On SendMessage");
             let messageJson: String = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self)!;
