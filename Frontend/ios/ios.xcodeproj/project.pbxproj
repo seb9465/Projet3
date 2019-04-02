@@ -77,6 +77,7 @@
 		B775FE3F22135D6300B2EFE0 /* Spinner.swift in Sources */ = {isa = PBXBuildFile; fileRef = B775FE3E22135D6300B2EFE0 /* Spinner.swift */; };
 		B781B95922132BDB001C1BD8 /* Canvas.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B781B95822132BDB001C1BD8 /* Canvas.storyboard */; };
 		B781B95B22132C2F001C1BD8 /* CanvasController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B781B95A22132C2F001C1BD8 /* CanvasController.swift */; };
+		B78810572253083100D26BE7 /* HttpResponseMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B78810562253083100D26BE7 /* HttpResponseMessage.swift */; };
 		B79117DF2234AE830008CB4C /* Channel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B79117DE2234AE830008CB4C /* Channel.swift */; };
 		B79D8449224A7AC100537981 /* SelectionLasso.swift in Sources */ = {isa = PBXBuildFile; fileRef = B79D8448224A7AC100537981 /* SelectionLasso.swift */; };
 		B7A3A5C02203BF3B00031F64 /* ChatControler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A3A5BF2203BF3B00031F64 /* ChatControler.swift */; };
@@ -208,6 +209,7 @@
 		B775FE3E22135D6300B2EFE0 /* Spinner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spinner.swift; sourceTree = "<group>"; };
 		B781B95822132BDB001C1BD8 /* Canvas.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Canvas.storyboard; sourceTree = "<group>"; };
 		B781B95A22132C2F001C1BD8 /* CanvasController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasController.swift; sourceTree = "<group>"; };
+		B78810562253083100D26BE7 /* HttpResponseMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpResponseMessage.swift; sourceTree = "<group>"; };
 		B79117DE2234AE830008CB4C /* Channel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Channel.swift; sourceTree = "<group>"; };
 		B79D8448224A7AC100537981 /* SelectionLasso.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionLasso.swift; sourceTree = "<group>"; };
 		B7A3A5BF2203BF3B00031F64 /* ChatControler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatControler.swift; sourceTree = "<group>"; };
@@ -314,6 +316,7 @@
 				3DC967EA220A067900FA76CB /* LoginController.swift */,
 				3DC61EB82200B44B003FE445 /* RegisterController.swift */,
 				B7F9F6AE2252CE41004C6AE8 /* RegistrationViewModel.swift */,
+				B78810562253083100D26BE7 /* HttpResponseMessage.swift */,
 			);
 			path = Authentification;
 			sourceTree = "<group>";
@@ -989,6 +992,7 @@
 				3DE8F114223C26890052580B /* SideToolbarDelegate.swift in Sources */,
 				C4D1270E224424E1004B3641 /* UmlArtefactFigure.swift in Sources */,
 				3DA5CA532244449900087298 /* ConnectionAssociationUni.swift in Sources */,
+				B78810572253083100D26BE7 /* HttpResponseMessage.swift in Sources */,
 				3DABD3F222418FC300707D86 /* StyleTableController.swift in Sources */,
 				3DABD3F92241988500707D86 /* FigureSelectionCell.swift in Sources */,
 				3D1622B22239AB4F00B98263 /* Figure.swift in Sources */,
