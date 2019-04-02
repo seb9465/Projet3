@@ -26,14 +26,16 @@ class RegisterController: UIViewController {
     @IBOutlet weak var passwordField: UITextField!
     @IBOutlet weak var lastNameField: UITextField!
     
-    
-    @IBOutlet var pwdErrorIcon: UIButton!
-    @IBOutlet var pwdErrorText: UILabel!
-    @IBOutlet var emailErrorIcon: UIButton!
-    @IBOutlet var emailErrorText: UILabel!
+    @IBOutlet var firstNameErrorIcon: UIButton!
+    @IBOutlet var firstNameErrorText: UILabel!
+    @IBOutlet var lastNameErrorIcon: UIButton!
+    @IBOutlet var lastNameErrorText: UILabel!
     @IBOutlet var usernameErrorIcon: UIButton!
     @IBOutlet var usernameErrorText: UILabel!
-    
+    @IBOutlet var emailErrorIcon: UIButton!
+    @IBOutlet var emailErrorText: UILabel!
+    @IBOutlet var pwdErrorIcon: UIButton!
+    @IBOutlet var pwdErrorText: UILabel!
     
     @IBOutlet var contentView: UIView!
     @IBOutlet var scrollView: UIScrollView!
@@ -89,7 +91,7 @@ class RegisterController: UIViewController {
         dismiss(animated: true, completion: nil)
     }
     
-    @IBAction func validateNameField(_ sender: UITextField) {
+    @IBAction func validateFirstNameField(_ sender: UITextField) {
         if((sender.text!.isEmpty)){
             sender.layer.borderWidth = 1.0;
             sender.layer.cornerRadius = 5;
@@ -101,15 +103,27 @@ class RegisterController: UIViewController {
         }
     }
     
-    @IBAction func validateUsernameField(_ sender: UITextField) {
+    @IBAction func validateLastNameField(_ sender: UITextField) {
         if((sender.text!.isEmpty)){
             sender.layer.borderWidth = 1.0;
             sender.layer.cornerRadius = 5;
-            sender.layer.borderColor = Constants.RED_COLOR.cgColor;
+            sender.layer.borderColor = UIColor.red.cgColor;
         } else {
             sender.layer.borderWidth = 1.0;
             sender.layer.cornerRadius = 5;
-            sender.layer.borderColor = UIColor.green.cgColor;
+            sender.layer.borderColor = Constants.RED_COLOR.cgColor;
+        }
+    }
+    
+    @IBAction func validateUserNameField(_ sender: UITextField) {
+        if((sender.text!.isEmpty)){
+            sender.layer.borderWidth = 1.0;
+            sender.layer.cornerRadius = 5;
+            sender.layer.borderColor = UIColor.red.cgColor;
+        } else {
+            sender.layer.borderWidth = 1.0;
+            sender.layer.cornerRadius = 5;
+            sender.layer.borderColor = Constants.RED_COLOR.cgColor;
         }
     }
     
@@ -118,8 +132,13 @@ class RegisterController: UIViewController {
         
         if(EMAIL_REGEX.evaluate(with: sender.text)){
             sender.layer.borderColor = UIColor.green.cgColor;
+            self.emailErrorText.isHidden = true;
+            self.emailErrorIcon.isHidden = true;
         } else {
             sender.layer.borderColor = Constants.RED_COLOR.cgColor;
+            self.emailErrorText.text = "Invalid email format";
+            self.emailErrorText.isHidden = false;
+            self.emailErrorIcon.isHidden = false;
         }
     }
     
