@@ -13,13 +13,16 @@ import AwaitKit
 
 class LoginController: UIViewController, UITextFieldDelegate {
     
-    @IBOutlet weak var serverlabel: UILabel!
-    @IBOutlet var emailField: UITextField!
-    @IBOutlet var passwordField: UITextField!
-    @IBOutlet var validationLabel: UILabel!
-    @IBOutlet var loginButton: UIButton!
+    // MARK: Outlets
     
-    @IBOutlet weak var offlineButton: RoundedCorners!
+    @IBOutlet weak var serverlabel: UILabel!;
+    @IBOutlet var emailField: UITextField!;
+    @IBOutlet var passwordField: UITextField!;
+    @IBOutlet var validationLabel: UILabel!;
+    @IBOutlet var loginButton: UIButton!;
+    @IBOutlet weak var offlineButton: RoundedCorners!;
+    
+    // MARK: Timing functions
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,12 +39,12 @@ class LoginController: UIViewController, UITextFieldDelegate {
     }
     
     @IBAction func loginPressed(_ sender: Any) {
-        let sv = UIViewController.displaySpinner(onView: self.view);
+        let spinner = UIViewController.displaySpinner(onView: self.view);
         
         AuthentificationAPI.login(username: emailField.text!, password: passwordField.text!)
 //        AuthentificationAPI.login(username: "seb.cado2", password: "!12345Aa")
             .done { (token) in
-                UIViewController.removeSpinner(spinner: sv);
+                UIViewController.removeSpinner(spinner: spinner);
                 self.validationLabel.text = ""
                 self.storeAuthentificationToken(token: token)
                 ChatService.shared.connectToHub();
@@ -49,7 +52,7 @@ class LoginController: UIViewController, UITextFieldDelegate {
                 let mainController = self.storyboard?.instantiateViewController(withIdentifier: "MainController")
                 self.present(mainController!, animated: true, completion: nil)
             }.catch { (Error) in
-                UIViewController.removeSpinner(spinner: sv);
+                UIViewController.removeSpinner(spinner: spinner);
                 self.validationLabel.text = "Invalid Credentials"
                 print(Error)
         }
