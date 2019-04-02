@@ -64,9 +64,12 @@ class RegisterController: UIViewController {
     // MARK: Actions
     
     @IBAction func registerButtonPressed(_ sender: UIButton) {
-//        let registrationViewModel: RegistrationViewModel = RegistrationViewModel(firstName: self.firstNameField.text!, lastName: self.lastNameField.text!, email: self.emailField.text!, username: self.usernameField.text!, password: self.passwordField.text!);
-        let registrationViewModel: RegistrationViewModel = RegistrationViewModel(firstName: "user", lastName: "hyped", email: "user.777713123@me.com", username: "user.777711221", password: "!12345");
+        self.view.endEditing(true);
+        
+        let registrationViewModel: RegistrationViewModel = RegistrationViewModel(firstName: self.firstNameField.text!, lastName: self.lastNameField.text!, email: self.emailField.text!, username: self.usernameField.text!, password: self.passwordField.text!);
+        
         spinner = UIViewController.displaySpinner(onView: self.view);
+        
         registerUser(parameters: registrationViewModel.toJson())
             .done { response in
                 
@@ -212,6 +215,7 @@ class RegisterController: UIViewController {
                 UIViewController.removeSpinner(spinner: self.spinner);
                 self.hideErrorViews();
                 var errors: [HttpResponseMessage] = [];
+                
                 switch response.result {
                 case .failure(let error):
                     seal.reject(error);
@@ -226,6 +230,7 @@ class RegisterController: UIViewController {
                     }
                     break;
                 }
+                
                 seal.fulfill(errors);
             };
         }
