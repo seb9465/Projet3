@@ -20,6 +20,7 @@ namespace PolyPaint.Strokes
         {
             Brush = brush;
             SurfaceDessin = surfaceDessin;
+            TitleString = "";
         }
 
         protected override void DrawCore(DrawingContext drawingContext, DrawingAttributes drawingAttributes)
