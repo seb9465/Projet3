@@ -19,19 +19,28 @@ class RegisterController: UIViewController {
     
     // MARK: Outlets
     
-    @IBOutlet var contentView: UIView!
-    @IBOutlet var scrollView: UIScrollView!
     @IBOutlet weak var firstNameField: UITextField!
     @IBOutlet weak var usernameField: UITextField!
     @IBOutlet weak var emailField: UITextField!
     @IBOutlet weak var passwordField: UITextField!
     @IBOutlet weak var lastNameField: UITextField!
     
+    
+    @IBOutlet var pwdErrorIcon: UIButton!
+    @IBOutlet var pwdErrorText: UILabel!
+    @IBOutlet var emailErrorIcon: UIButton!
+    @IBOutlet var emailErrorText: UILabel!
+    
+    
+    @IBOutlet var contentView: UIView!
+    @IBOutlet var scrollView: UIScrollView!
     @IBOutlet var constraintContentHeight: NSLayoutConstraint!
     
-    var activeField: UITextField?
-    var lastOffset: CGPoint!
-    var keyboardHeight: CGFloat!
+    // MARK: Attributes
+    
+    private var activeField: UITextField?
+    private var lastOffset: CGPoint!
+    private var keyboardHeight: CGFloat!
     
     // MARK: Timing functions
     
@@ -153,51 +162,22 @@ class RegisterController: UIViewController {
     // MARK: Object functions
     
     @objc func keyboardWillShow(notification: NSNotification) {
-//        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
-//            self.view.frame.size.height -= keyboardSize.height;
-//            self.view.layoutIfNeeded();
-//        }
-        
         if keyboardHeight != nil {
             return
         }
         
         if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
-            keyboardHeight = keyboardSize.height
+            keyboardHeight = keyboardSize.height;
             
-            // so increase contentView's height by keyboard height
             UIView.animate(withDuration: 0.3, animations: {
                 self.constraintContentHeight.constant += self.keyboardHeight
-            })
-            
-//            print(activeField)
-//            // move if keyboard hide input field
-//            let distanceToBottom = self.scrollView.frame.size.height - (activeField?.frame.origin.y)! - (activeField?.frame.size.height)!
-//            let collapseSpace = keyboardHeight - distanceToBottom
-//
-//            if collapseSpace < 0 {
-//                // no collapse
-//                return
-//            }
-//
-//            // set new offset for scroll view
-//            UIView.animate(withDuration: 0.3, animations: {
-//                // scroll to the position above keyboard 10 points
-//                self.scrollView.contentOffset = CGPoint(x: self.lastOffset.x, y: collapseSpace + 10)
-//            })
+            });
         }
     }
     
     @objc func keyboardWillHide(notification: NSNotification) {
-//        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
-//            self.view.frame.size.height += keyboardSize.height;
-//            self.view.layoutIfNeeded();
-//        }
-        
         UIView.animate(withDuration: 0.3) {
             self.constraintContentHeight.constant -= self.keyboardHeight
-            
-//            self.scrollView.contentOffset = self.lastOffset
         }
         
         keyboardHeight = nil
