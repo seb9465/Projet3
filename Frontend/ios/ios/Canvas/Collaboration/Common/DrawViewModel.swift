@@ -116,4 +116,8 @@ struct PolyPaintColor: Codable {
         self.G = Int(green)
         self.B = Int(blue)
     }
+    
+    func getUIColor() -> UIColor {
+        return UIColor(red: CGFloat(self.R), green: CGFloat(self.G), blue: CGFloat(self.B), alpha: CGFloat(self.A))
+    }
 }

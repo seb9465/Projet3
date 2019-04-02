@@ -64,8 +64,8 @@ class UmlFigure : Figure {
         self.lastPoint = lastPoint
         self.uuid = UUID(uuidString: drawViewModel.Guid!)
         self.itemType = drawViewModel.ItemType!
-        self.figureColor = UIColor.clear
-        self.lineColor = UIColor.black
+        self.figureColor = drawViewModel.FillColor?.getUIColor()
+        self.lineColor = drawViewModel.BorderColor?.getUIColor()
         self.currentAngle = drawViewModel.Rotation!
         self.lineWidth = CGFloat(drawViewModel.BorderThickness!)
         self.backgroundColor = UIColor.clear
