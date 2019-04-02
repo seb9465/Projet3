@@ -13,7 +13,6 @@ import AwaitKit
 import Alamofire_SwiftyJSON
 
 
-
 let emailTest = NSPredicate(format: "SELF MATCHES %@", "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}")
 
 class RegisterController: UIViewController {
@@ -81,40 +80,21 @@ class RegisterController: UIViewController {
             Alamofire.request(Constants.REGISTER_URL as URLConvertible, method: .post, parameters: parameters as Parameters, encoding: JSONEncoding.default).responseSwiftyJSON{ response in
                 switch response.result {
                 case .success:
-                    var errors: [Any] = [];
+                    var errors: [HttpResponseMessage] = [];
                     for err in response.value! {
-                        errors.append(err.1);
+                        let messageJSON: String = err.1.rawString()!;
+                        let jsonData = messageJSON.data(using: .utf8);
+                        let message: HttpResponseMessage = try! JSONDecoder().decode(HttpResponseMessage.self, from: jsonData!);
+                        print(message);
+//                        errors.append(err.1);
                     }
-                    
+//                    let obj: ConnectionMessage = try! JSONDecoder().decode(ConnectionMessage.self, from: jsonData);
                     print(errors.count);
                     break;
                 case .failure (let error):
-//                    print(error as! String);
-//                    let error: String = response.value as! String;
-//                    let indexStartOfText = error.index(error.startIndex, offsetBy: 1)
-//                    let indexEndOfText = error.index(error.endIndex, offsetBy: -2)
-//                    let substring = error[indexStartOfText..<indexEndOfText];
+
                     break;
                 }
-//                if let status = response.response?.statusCode {
-//                    switch(status){
-//                    case 200:
-//                        self.present(self.buildOkAlert(), animated: true, completion: nil);
-//                    default:
-//                        var error: String = response.description as String;
-////                        print(error);
-//                        error = String(error.filter { !"\n\t\r".contains($0) })
-//                        let indexStartOfText = error.index(error.startIndex, offsetBy: 10)
-//                        let indexEndOfText = error.index(error.endIndex, offsetBy: -1)
-//                        let substring = error[indexStartOfText..<indexEndOfText];
-//                        print(substring);
-//                        let sub = substring.replacingOccurrences(of: "},", with: "};");
-//                        let errors: [String] = sub.components(separatedBy: ";");
-//
-////                        print(errors);
-//
-//                    }
-                
                 
                 seal.fulfill(response);
             };

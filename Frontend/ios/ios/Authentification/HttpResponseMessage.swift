@@ -8,7 +8,7 @@
 
 import Foundation
 
-class HttpResponseMessage {
+class HttpResponseMessage: Codable {
     
     // MARK: Attributes
     
