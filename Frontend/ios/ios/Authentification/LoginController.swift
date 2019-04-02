@@ -41,7 +41,7 @@ class LoginController: UIViewController, UITextFieldDelegate {
                 self.validationLabel.text = ""
                 self.storeAuthentificationToken(token: token)
                 // Connect to chat
-                ChatService.shared.connectToHub();  // TODO: Add notification when client is connected.
+                ChatService.shared.connectToHub();
                 
                 // Navigate to dashboard
                 let mainController = self.storyboard?.instantiateViewController(withIdentifier: "MainController")

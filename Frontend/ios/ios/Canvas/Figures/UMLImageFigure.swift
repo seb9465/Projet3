@@ -20,8 +20,6 @@ class UmlImageFigure: UmlFigure {
     
     init(firstPoint: CGPoint, lastPoint: CGPoint) {
         super.init(firstPoint: firstPoint, lastPoint: lastPoint, width: self.BASE_WIDTH, height: BASE_WIDTH)
-        self.figureID = Constants.figureIDCounter;
-        Constants.figureIDCounter += 1;
     }
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

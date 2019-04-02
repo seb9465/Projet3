@@ -15,17 +15,19 @@ protocol TouchInputDelegate {
 }
 
 class UmlFigure : Figure {
-    
     var delegate: TouchInputDelegate?
+    
+    // DrawViewModel common attributes
+    var name: String!
     var figureColor: UIColor!
-    var lineWidth: CGFloat!
     var lineColor: UIColor!
-    var oldTouchedPoint: CGPoint!
+    var lineWidth: CGFloat!
+//    var oldTouchedPoint: CGPoint!
     
     var incomingConnections : [ConnectionFigure: String] = [:]
     var outgoingConnections : [ConnectionFigure: String] = [:]
     
-    private var currentAngle: Double = 0
+    var currentAngle: Double = 0
 
     var anchorPoints: AnchorPoints?;
     
@@ -39,8 +41,6 @@ class UmlFigure : Figure {
         self.lastPoint = lastPoint
         self.initializeBaseStyle()
         self.initializeAnchorPoints()
-        self.figureID = Constants.figureIDCounter;
-        Constants.figureIDCounter += 1;
     }
     
     // Alternate init to create UmlFigures on user tap
@@ -52,6 +52,15 @@ class UmlFigure : Figure {
         self.lastPoint = CGPoint(x: touchedPoint.x + width/2, y: touchedPoint.y + height/2)
         self.initializeBaseStyle()
         self.initializeAnchorPoints()
+    }
+    
+    override init(drawViewModel: DrawViewModel) {
+        self.uuid = UUID(uuidString: drawViewModel.Guid!)
+        self.itemType = drawViewModel.ItemType!
+        self.figureColor = UIColor.red
+        self.lineColor = UIColor.black
+        self.currentAngle = drawViewModel.Rotation!
+        self.lineWidth = CGFloat(drawViewModel.BorderThickness!)
     }
     
     required init?(coder aDecoder: NSCoder) {

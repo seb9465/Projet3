@@ -43,9 +43,9 @@ class ConnectionFigure : Figure {
     }
     
     private func initializeAnchors() {
-        self.anchors.updateValue(ConnectionAnchor(position: self.points[.ORIGIN]!), forKey: .ORIGIN)
+//        self.anchors.updateValue(ConnectionAnchor(position: self.points[.ORIGIN]!), forKey: .ORIGIN)
         self.anchors.updateValue(ConnectionAnchor(position: self.points[.ELBOW]!), forKey: .ELBOW)
-        self.anchors.updateValue(ConnectionAnchor(position: self.points[.DESTINATION]!), forKey: .DESTINATION)
+//        self.anchors.updateValue(ConnectionAnchor(position: self.points[.DESTINATION]!), forKey: .DESTINATION)
         
         for pair in self.anchors {
             self.layer.addSublayer(pair.value)
@@ -54,17 +54,15 @@ class ConnectionFigure : Figure {
     
     func updateOrigin(point: CGPoint) {
         self.points.updateValue(point, forKey: .ORIGIN)
-        self.anchors[.ORIGIN]!.removeFromSuperlayer()
-        self.anchors[.ORIGIN]! = ConnectionAnchor(position: point)
-        self.layer.addSublayer(self.anchors[.ORIGIN]!)
+//        self.anchors[.ORIGIN]!.removeFromSuperlayer()
+//        self.anchors[.ORIGIN]! = ConnectionAnchor(position: point)
+//        self.layer.addSublayer(self.anchors[.ORIGIN]!)
         setNeedsDisplay()
     }
     
     func updateDestination(point: CGPoint) {
         self.points.updateValue(point, forKey: .DESTINATION)
-        self.anchors[.DESTINATION]!.removeFromSuperlayer()
-        self.anchors[.DESTINATION]! = ConnectionAnchor(position: point)
-        self.layer.addSublayer(self.anchors[.DESTINATION]!)
+
         setNeedsDisplay()
     }
     
@@ -93,9 +91,7 @@ class ConnectionFigure : Figure {
 
 // Touch Interaction Logic
 extension ConnectionFigure {
-    public override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        print("ELBOW TOUCHED")
-    }
+    public override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {}
     
     public override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         let touch = touches.first

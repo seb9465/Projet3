@@ -11,14 +11,6 @@ import Alamofire
 import PromiseKit
 import AwaitKit
 
-protocol UserProtocol {
-    var firstName: String { get }
-    var lastName: String { get }
-    var username: String { get }
-    var email: String { get }
-    var password: String { get }
-}
-
 let emailTest = NSPredicate(format: "SELF MATCHES %@", "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}")
 
 class RegisterController: UIViewController {
