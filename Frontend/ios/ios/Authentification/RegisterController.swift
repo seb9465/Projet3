@@ -14,7 +14,7 @@ import Alamofire_SwiftyJSON
 
 
 let EMAIL_REGEX = NSPredicate(format: "SELF MATCHES %@", "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}")
-let PWD_REGEX = NSPredicate(format: "SELF MATCHES %@", "(?=.*[a-z])(?=.*[A-Z])(?=!@#$&*).{8,15}");
+let PWD_REGEX = NSPredicate(format: "SELF MATCHES %@", "(?=.*[a-z])(?=.*[A-Z])(?=[!@#$&*]).{8,15}");
 
 class RegisterController: UIViewController {
     
@@ -123,13 +123,13 @@ class RegisterController: UIViewController {
         }
     }
     
-    @IBAction func validatePwdField(_ sender: Any) {
-        (sender as! UITextField).layer.borderWidth = 1.0;
+    @IBAction func validatePasswordField(_ sender: UITextField) {
+        sender.layer.borderWidth = 1.0;
         
-        if(PWD_REGEX.evaluate(with: (sender as! UITextField).text)){
-            (sender as! UITextField).layer.borderColor = UIColor.green.cgColor;
+        if(PWD_REGEX.evaluate(with: sender.text)){
+            sender.layer.borderColor = UIColor.green.cgColor;
         } else {
-            (sender as! UITextField).layer.borderColor = Constants.RED_COLOR.cgColor;
+            sender.layer.borderColor = Constants.RED_COLOR.cgColor;
         }
     }
     

@@ -259,8 +259,7 @@
                                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                 <textInputTraits key="textInputTraits"/>
                                                 <connections>
-                                                    <action selector="validatePasswordField:" destination="VLV-Wg-lJt" eventType="editingDidEnd" id="bAq-Ls-1Vb"/>
-                                                    <action selector="validatePwdField:" destination="VLV-Wg-lJt" eventType="valueChanged" id="35q-8R-daw"/>
+                                                    <action selector="validatePasswordField:" destination="VLV-Wg-lJt" eventType="editingChanged" id="r8F-QU-Urf"/>
                                                 </connections>
                                             </textField>
                                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="infoLight" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0ik-hJ-oIw">
