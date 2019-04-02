@@ -17,40 +17,18 @@ class ChatMessage: Codable {
     
     // MARK: Attributes
     
-    private var _username: String;
-    private var _message: String;
-    private var _channelId: String;
-    private var _timestamp: String;
+    public var username: String;
+    public var message: String;
+    public var channelId: String;
+    public var timestamp: String;
     
     // MARK: Constructor
     
     init(user: String, message: String, channelId: String, timestamp: String? = "") {
-        self._username = user;
-        self._message = message;
-        self._channelId = channelId;
-        self._timestamp = timestamp!;
-    }
-    
-    // MARK: Getter - Setter
-    
-    public var username: String {
-        get { return self._username }
-        set { self._username = newValue }
-    }
-    
-    public var message: String {
-        get { return self._message }
-        set { self._message = newValue }
-    }
-    
-    public var channelId: String {
-        get { return self._channelId }
-        set { self._channelId = newValue }
-    }
-    
-    public var timestamp: String {
-        get { return self._timestamp }
-        set { self._timestamp = newValue }
+        self.username = user;
+        self.message = message;
+        self.channelId = channelId;
+        self.timestamp = timestamp!;
     }
 }
 
@@ -61,33 +39,16 @@ class ConnectionMessage: Codable {
     
     // MARK: Attributes
     
-    private var _username: String;
-    private var _canvasId: String;
-    private var _channelId: String;
+    public var username: String;
+    public var canvasId: String;
+    public var channelId: String;
     
     // MARK: Constructor
     
     init (username: String? = "", canvasId: String? = "", channelId: String? = "") {
-        self._username = username!;
-        self._canvasId = canvasId!;
-        self._channelId = channelId!;
-    }
-    
-    // MARK: Getter - Setter
-    
-    public var username: String {
-        get { return self._username }
-        set { self._username = newValue }
-    }
-    
-    public var canvasId: String {
-        get { return self._canvasId }
-        set { self._canvasId = newValue }
-    }
-    
-    public var channelId: String {
-        get { return self._channelId }
-        set { self._channelId = newValue }
+        self.username = username!;
+        self.canvasId = canvasId!;
+        self.channelId = channelId!;
     }
 }
 
