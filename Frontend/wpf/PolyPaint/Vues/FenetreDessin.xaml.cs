@@ -180,6 +180,14 @@ namespace PolyPaint
             catch (ArgumentException) { } // Close Dialog Window
         }
 
+
+        private void ResizeCanva_Click(object sender, RoutedEventArgs e)
+        {
+            ResizeCanvas resizeCanvas = new ResizeCanvas();
+            surfaceDessin.Width = resizeCanvas.CanvasWidth;
+            surfaceDessin.Height = resizeCanvas.CanvasHeight;
+        }
+
         private async void SendToCloud()
         {
             byte[] strokesBytes = GetBytesForStrokes();
@@ -563,4 +571,5 @@ private void Disconnect_Click(object sender, RoutedEventArgs e)
         {
         }
     }
+
 }
