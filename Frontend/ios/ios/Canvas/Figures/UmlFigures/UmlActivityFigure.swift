@@ -41,9 +41,14 @@ class UmlActivityFigure: UmlFigure {
         bezierPath.addLine(to: CGPoint(x: 22.53, y: 68.5))
         bezierPath.addLine(to: CGPoint(x: 7.5, y: 41.11))
         bezierPath.close()
-        UIColor.black.setStroke()
-        bezierPath.lineWidth = 1
+        if(self.isBorderDashed) {
+            bezierPath.setLineDash([4,4], count: 1, phase: 0)
+        }
+        self.lineColor.setStroke()
+        self.figureColor.setFill()
+        bezierPath.lineWidth = self.lineWidth
         bezierPath.stroke()
+        bezierPath.fill()
     }
     
     override func exportViewModel() -> DrawViewModel {

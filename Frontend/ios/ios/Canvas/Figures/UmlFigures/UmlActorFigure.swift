@@ -35,53 +35,59 @@ class UmlActorFigure: UmlFigure {
         //// Group
         //// Oval Drawing
         let ovalPath = UIBezierPath(ovalIn: CGRect(x: 25, y: 11.5, width: 27, height: 26))
-        UIColor.black.setStroke()
-        ovalPath.lineWidth = 1
-        ovalPath.stroke()
         
         
         //// Bezier Drawing
         let bezierPath = UIBezierPath()
         bezierPath.move(to: CGPoint(x: 38.26, y: 39.17))
         bezierPath.addLine(to: CGPoint(x: 38.26, y: 73.75))
-        UIColor.black.setStroke()
-        bezierPath.lineWidth = 1
-        bezierPath.stroke()
-        
-        
+
         //// Bezier 2 Drawing
         let bezier2Path = UIBezierPath()
         bezier2Path.move(to: CGPoint(x: 38.26, y: 39.17))
         bezier2Path.addLine(to: CGPoint(x: 63.5, y: 39.17))
-        UIColor.black.setStroke()
-        bezier2Path.lineWidth = 1
-        bezier2Path.stroke()
-        
-        
+
         //// Bezier 3 Drawing
         let bezier3Path = UIBezierPath()
         bezier3Path.move(to: CGPoint(x: 10.5, y: 39.17))
         bezier3Path.addLine(to: CGPoint(x: 38.26, y: 39.17))
-        UIColor.black.setStroke()
-        bezier3Path.lineWidth = 1
-        bezier3Path.stroke()
-        
-        
+
         //// Bezier 4 Drawing
         let bezier4Path = UIBezierPath()
         bezier4Path.move(to: CGPoint(x: 38.26, y: 73.75))
         bezier4Path.addLine(to: CGPoint(x: 18.07, y: 92.19))
-        UIColor.black.setStroke()
-        bezier4Path.lineWidth = 1
-        bezier4Path.stroke()
-        
         
         //// Bezier 5 Drawing
         let bezier5Path = UIBezierPath()
         bezier5Path.move(to: CGPoint(x: 38.26, y: 73.75))
         bezier5Path.addLine(to: CGPoint(x: 58.45, y: 94.5))
-        UIColor.black.setStroke()
-        bezier5Path.lineWidth = 1
+
+        self.lineColor.setStroke()
+        self.figureColor.setFill()
+        ovalPath.lineWidth = self.lineWidth
+        bezierPath.lineWidth = self.lineWidth
+        bezier2Path.lineWidth = self.lineWidth
+        bezier3Path.lineWidth = self.lineWidth
+        bezier4Path.lineWidth = self.lineWidth
+        bezier5Path.lineWidth = self.lineWidth
+        if(self.isBorderDashed) {
+            bezierPath.setLineDash([4,4], count: 1, phase: 0)
+            bezier2Path.setLineDash([4,4], count: 1, phase: 0)
+            bezier3Path.setLineDash([4,4], count: 1, phase: 0)
+            bezier4Path.setLineDash([4,4], count: 1, phase: 0)
+            bezier5Path.setLineDash([4,4], count: 1, phase: 0)
+        }
+        ovalPath.fill()
+        bezierPath.fill()
+        bezier2Path.fill()
+        bezier3Path.fill()
+        bezier4Path.fill()
+        bezier5Path.fill()
+        ovalPath.stroke()
+        bezierPath.stroke()
+        bezier2Path.stroke()
+        bezier3Path.stroke()
+        bezier4Path.stroke()
         bezier5Path.stroke()
     }
     
