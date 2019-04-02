@@ -12,23 +12,23 @@ class HttpResponseMessage: Codable {
     
     // MARK: Attributes
     
-    private var _description: String;
-    private var _code: String;
+    public var description: String;
+    public var code: String;
     
     // MARK: Constructor
     
     init (description: String, code: String) {
-        self._description = description;
-        self._code = code;
+        self.description = description;
+        self.code = code;
     }
     
     // MARK: Getter - Setter
     
-    public var description: String {
-        get { return self._description }
-    }
-    
-    public var code: String {
-        get { return self._code }
-    }
+//    public var description: String {
+//        get { return self._description }
+//    }
+//
+//    public var code: String {
+//        get { return self._code }
+//    }
 }

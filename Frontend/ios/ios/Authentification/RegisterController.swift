@@ -85,11 +85,10 @@ class RegisterController: UIViewController {
                         let messageJSON: String = err.1.rawString()!;
                         let jsonData = messageJSON.data(using: .utf8);
                         let message: HttpResponseMessage = try! JSONDecoder().decode(HttpResponseMessage.self, from: jsonData!);
-                        print(message);
-//                        errors.append(err.1);
+                        
+                        errors.append(message);
                     }
-//                    let obj: ConnectionMessage = try! JSONDecoder().decode(ConnectionMessage.self, from: jsonData);
-                    print(errors.count);
+                    
                     break;
                 case .failure (let error):
 
