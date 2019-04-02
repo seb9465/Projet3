@@ -13,7 +13,6 @@ import AwaitKit
 
 class LoginController: UIViewController, UITextFieldDelegate {
     
-    @IBOutlet weak var autologinlabel: UILabel!
     @IBOutlet weak var serverlabel: UILabel!
     @IBOutlet var emailField: UITextField!
     @IBOutlet var passwordField: UITextField!
@@ -26,7 +25,6 @@ class LoginController: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
         
         self.serverlabel.text = "Server: " + Constants.SERVER_BASE_URL
-        self.autologinlabel.text = "Auto-login: true"
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
@@ -81,7 +79,7 @@ class LoginController: UIViewController, UITextFieldDelegate {
         
         guard
             let username = self.emailField.text, !username.isEmpty,
-            let password = self.passwordField.text, password.isEmpty
+            let password = self.passwordField.text, !password.isEmpty
             else
         {
             self.loginButton.alpha = 0.5;
