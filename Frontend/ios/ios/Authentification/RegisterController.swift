@@ -78,8 +78,10 @@ class RegisterController: UIViewController {
     private func registerUser(parameters: [String: String?]) -> Promise<Any>{
         return Promise {seal in
             Alamofire.request(Constants.REGISTER_URL as URLConvertible, method: .post, parameters: parameters as Parameters, encoding: JSONEncoding.default).responseSwiftyJSON{ response in
+                
                 switch response.result {
                 case .success:
+//                    if response.response?.statusCode == 400
                     var errors: [HttpResponseMessage] = [];
                     for err in response.value! {
                         let messageJSON: String = err.1.rawString()!;
