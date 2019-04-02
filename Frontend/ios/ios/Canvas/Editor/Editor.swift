@@ -429,6 +429,12 @@ extension Editor : TouchInputDelegate {
                     self.select(figure: figure);
                 }
             }
+            
+            var drawViewModels: [DrawViewModel] = []
+            for figure in selectedFigures {
+                drawViewModels.append(figure.exportViewModel()!)
+            }
+            CollaborationHub.shared.selectObjects(drawViewModels: drawViewModels)
 
             self.deselectLasso();
             self.touchEventState = .AREA_SELECT;
