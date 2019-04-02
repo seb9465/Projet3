@@ -17,7 +17,7 @@ class SelectionLasso: UIView, SelectionLassoProtocol {
     private let radius: CGFloat = 5.0;
     
     private var firstPoint: CGPoint;
-    private var points: [CGPoint];
+    var points: [CGPoint];
     
     private var shape: CAShapeLayer;
     private var shapePath: UIBezierPath;

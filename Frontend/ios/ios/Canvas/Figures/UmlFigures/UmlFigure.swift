@@ -60,6 +60,8 @@ class UmlFigure : Figure {
         let frameSize = CGSize(width: abs(firstPoint.x - lastPoint.x), height: abs(firstPoint.y - lastPoint.y))
         let frame = CGRect(origin: firstPoint, size: frameSize)
         super.init(frame: frame)
+        self.firstPoint = firstPoint
+        self.lastPoint = lastPoint
         self.uuid = UUID(uuidString: drawViewModel.Guid!)
         self.itemType = drawViewModel.ItemType!
         self.figureColor = UIColor.clear

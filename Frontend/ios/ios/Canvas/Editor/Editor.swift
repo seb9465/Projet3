@@ -315,8 +315,8 @@ extension Editor : TouchInputDelegate {
                 return
             } else if (action == "empty") {
                 self.deselect()
-                self.touchEventState = .AREA_SELECT
-                self.selectLasso(touchPoint: point);
+//                self.touchEventState = .AREA_SELECT
+//                self.selectLasso(touchPoint: point)
                 return
             }
             break;
@@ -343,6 +343,10 @@ extension Editor : TouchInputDelegate {
             self.deselect();
             break
         case .AREA_SELECT:
+            if (self.selectionLasso == nil) {
+                self.selectLasso(touchPoint: point)
+                return
+            }
             self.selectionLasso.addNewTouchPoint(touchPoint: point);
             break
         case .NONE:
@@ -377,7 +381,18 @@ extension Editor : TouchInputDelegate {
         }
         
         if (self.touchEventState == .SELECT) {
+            if (figure == nil) {
+                return
+            }
             self.deselect()
+            for pair in self.selectedFiguresDictionnary {
+                for selectedModel in pair.value {
+                    if(selectedModel.Guid == figure?.uuid.uuidString) {
+                        print("Already selected!")
+                        return
+                    }
+                }
+            }
             self.select(figure: figure!)
             self.updateSideToolBar()
             CollaborationHub.shared.selectObjects(drawViewModels: [(figure!.exportViewModel())!])
@@ -394,8 +409,9 @@ extension Editor : TouchInputDelegate {
                     self.select(figure: figure);
                 }
             }
+
             self.deselectLasso();
-            self.touchEventState = .SELECT;
+            self.touchEventState = .AREA_SELECT;
             return
         }
         
@@ -437,10 +453,9 @@ extension Editor : TouchInputDelegate {
 extension Editor: CollaborationHubDelegate {
     func updateSelection(itemMessage: ItemMessage) {
         self.selectedFiguresDictionnary.updateValue(itemMessage.Items, forKey: itemMessage.Username)
-        for pair in  self.selectedFiguresDictionnary {
+        print(self.selectedFiguresDictionnary)
+        for pair in self.selectedFiguresDictionnary {
             self.select(figure: self.figures.first(where: {$0.uuid.uuidString == pair.value[0].Guid})!)
-            
-//            pair.value[0]
         }
     }
     
