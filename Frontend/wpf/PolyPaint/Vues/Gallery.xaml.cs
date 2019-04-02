@@ -23,6 +23,13 @@ namespace PolyPaint.Vues
     /// <summary>
     /// Interaction logic for Gallery.xaml
     /// </summary>
+    /// 
+    class UserDataContext
+    {
+        public VueModele VueModele { get; set; }
+        public List<CanvasViewModel> Canvas { get; set; }
+    }
+
     public partial class Gallery : Window
     {
         public List<CanvasViewModel> Canvas { get; set; }
@@ -47,12 +54,13 @@ namespace PolyPaint.Vues
             Canvas = ConvertStrokesToPNG(strokes, drawingSurface);
 
 
-            DataContext = new VueModele();
-            (DataContext as VueModele).ChatClient.Initialize((string)Application.Current.Properties["token"]);
-            (DataContext as VueModele).ChatClient.MessageReceived += ScrollDown;
-            externalChatWindow = new ChatWindow(DataContext);
-
-            DataContext = Canvas; // Il faudrait reussir a utiliser plusieurs datacontext. Ici on a besoin du datacontext pour recuperer les donnee du chat ET des canvas. Cest pous ca que le chat marche pas dans la gallerie
+            DataContext = new UserDataContext();
+            (DataContext as UserDataContext).VueModele = new VueModele();
+            (DataContext as UserDataContext).VueModele.ChatClient.Initialize((string)Application.Current.Properties["token"]);
+            (DataContext as UserDataContext).VueModele.ChatClient.MessageReceived += ScrollDown;
+            externalChatWindow = new ChatWindow((DataContext as UserDataContext).VueModele);
+            (DataContext as UserDataContext).Canvas = Canvas;
+          //  DataContext = Canvas; // Il faudrait reussir a utiliser plusieurs datacontext. Ici on a besoin du datacontext pour recuperer les donnee du chat ET des canvas. Cest pous ca que le chat marche pas dans la gallerie
             
             usernameLabel.Content = username;
         }
