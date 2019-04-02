@@ -345,7 +345,6 @@ class RegisterController: UIViewController {
      Makes the Register button enabled while the fields are not filled or errors are still present.
     */
     @objc func textFieldsWithoutErrors(sender: UITextField) -> Void {
-        print("REGISTER BUTTON CHECK");
         sender.text = sender.text?.trimmingCharacters(in: .whitespaces)
         
         guard
