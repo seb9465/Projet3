@@ -76,11 +76,6 @@
                         <materialDesign:PackIcon Kind="RedoVariant" ToolTip="Refaire la dernière action" />
                     </Button>
 
-                    <Button Style="{StaticResource MaterialDesignRaisedButton}" ToolTip="Envoyer un canevas sur le serveur distant DOIT SE FAIRE AUTOMATIQUEMENT" 
-                        x:Name="sendToCloud" Width="30" Height="30" Margin="5" Padding="0" FontSize="18">
-                        <materialDesign:PackIcon Kind="CloudUpload" />
-                    </Button>
-
                     <StackPanel Orientation="Horizontal">
                         <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Width="2" />
                     </StackPanel>

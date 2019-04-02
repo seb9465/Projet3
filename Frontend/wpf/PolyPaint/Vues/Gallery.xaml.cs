@@ -34,6 +34,7 @@ namespace PolyPaint.Vues
         public String CanvasVisibility;
         public String CanvasName;
         public String CanvasProtection;
+        public String CanvasAutor;
 
         private ChatWindow externalChatWindow;
         bool isMenuOpen = false;
@@ -148,7 +149,7 @@ namespace PolyPaint.Vues
                     
                     var bitmapImage = (BitmapSource)new ImageSourceConverter().ConvertFrom(Convert.FromBase64String(savedCanvas[item].Base64Image));
                     var strokes = GenerateStrokesFromBytes(Convert.FromBase64String(savedCanvas[item].Base64Strokes));
-                    canvas.Add(new CanvasViewModel(savedCanvas[item].CanvasId, savedCanvas[item].Name, bitmapImage, strokes, savedCanvas[item].CanvasVisibility, savedCanvas[item].CanvasProtection));
+                    canvas.Add(new CanvasViewModel(savedCanvas[item].CanvasId, savedCanvas[item].Name, bitmapImage, strokes, savedCanvas[item].CanvasVisibility, savedCanvas[item].CanvasProtection, savedCanvas[item].CanvasAutor));
                   for (int i=0; i<canvas.Count-1; i++)
                     {
                         if (savedCanvas[item].Name == canvas[i].Name)

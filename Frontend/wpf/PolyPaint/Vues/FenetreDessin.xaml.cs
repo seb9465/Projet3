@@ -42,6 +42,7 @@ namespace PolyPaint
         public String canvasVisibility = "";
         public String canvasName = "";
         public String canvasProtection= "";
+        public String canvasAutor = "";
 
         private ChatWindow externalChatWindow;
         private MediaPlayer mediaPlayer = new MediaPlayer();
@@ -79,7 +80,6 @@ namespace PolyPaint
             }
             else
             {
-                sendToCloud.Visibility = Visibility.Collapsed;
                 chatMenu.Visibility = Visibility.Collapsed;
             }
         }
@@ -195,7 +195,8 @@ namespace PolyPaint
             string CanvasName = canvasName;
             string CanvasVisibility = canvasVisibility;
             string CanvasProtection = canvasProtection;
-            SaveableCanvas canvas = new SaveableCanvas(CanvasId, CanvasName, strokesToSend, imageToSend, CanvasVisibility, CanvasProtection);
+            string CanvasAutor = canvasAutor;
+            SaveableCanvas canvas = new SaveableCanvas(CanvasId, CanvasName, strokesToSend, imageToSend, CanvasVisibility, CanvasProtection, CanvasAutor);
 
             string canvasJson = JsonConvert.SerializeObject(canvas);
             using (HttpClient client = new HttpClient())

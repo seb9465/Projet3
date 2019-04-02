@@ -22,6 +22,7 @@ namespace PolyPaint.Vues
         public String CanvasVisibility;
         public String CanvasName;
         public String CanvasProtection;
+        public String CanvasAutor;
         FenetreDessin fenetreDessin = new FenetreDessin(ViewStateEnum.Online);
         public UploadToCloud()
         {
@@ -33,10 +34,12 @@ namespace PolyPaint.Vues
             CanvasName = nameTextBox.Text;
             CanvasVisibility = visibilityComboBox.Text;
             CanvasProtection = passwordTextBox.Password;
+            CanvasAutor = Application.Current.Properties["username"].ToString();
 
             fenetreDessin.canvasName = CanvasName;
             fenetreDessin.canvasVisibility = CanvasVisibility;
             fenetreDessin.canvasProtection = CanvasProtection;
+            fenetreDessin.canvasAutor = CanvasAutor;
 
             Application.Current.MainWindow = fenetreDessin;
             this.Close();
