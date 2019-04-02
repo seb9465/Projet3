@@ -39,6 +39,15 @@ class Editor {
         CollaborationHub.shared.delegate = self
         let rotation = UIRotationGestureRecognizer(target: self, action: #selector(self.rotatedView(_:)))
         self.editorView.addGestureRecognizer(rotation)
+   //     self.editorView.backgroundColor = UIColor.red
+   //     self.editorView.clipsToBounds = true
+    }
+    
+    func resize(width: CGFloat, heigth: CGFloat) {
+        print("resizing")
+        self.editorView.frame.size.width = width
+        self.editorView.frame.size.height = heigth
+        self.editorView.setNeedsDisplay()
     }
     
     // Select made locally
@@ -127,6 +136,7 @@ class Editor {
         figure.delegate = self
         self.figures.append(figure)
         self.editorView.addSubview(figure)
+  //      self.resize(width: 100, heigth: 100)
     }
     
     public func insertFigure(position: CGPoint) -> Void {
@@ -135,6 +145,7 @@ class Editor {
         self.figures.append(figure)
         self.editorView.addSubview(figure)
         CollaborationHub.shared.postNewFigure(figures: [figure])
+  //      self.resize(width: 150, heigth: 150)
     }
     
     public func insertConnectionFigure(firstPoint: CGPoint, lastPoint: CGPoint, itemType: ItemTypeEnum) -> ConnectionFigure {
