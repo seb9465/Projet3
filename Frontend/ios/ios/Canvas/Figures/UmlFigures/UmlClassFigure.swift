@@ -21,6 +21,7 @@ class UmlClassFigure: UmlFigure {
     
     init(origin: CGPoint) {
         super.init(touchedPoint: origin, width: BASE_WIDTH, height: BASE_HEIGHT)
+        self.itemType = ItemTypeEnum.UmlClass
     }
     
     init(firstPoint: CGPoint, lastPoint: CGPoint) {
@@ -116,8 +117,8 @@ class UmlClassFigure: UmlFigure {
         
         var drawViewModel: DrawViewModel = DrawViewModel()
         drawViewModel.Guid = self.uuid.uuidString
-        drawViewModel.owner = UserDefaults.standard.string(forKey: "username")
-        drawViewModel.ItemType = self.itemType
+        drawViewModel.Owner = UserDefaults.standard.string(forKey: "username")
+        drawViewModel.ItemType = ItemTypeEnum.UmlClass
         drawViewModel.StylusPoints = [point1, point2]
         drawViewModel.FillColor = PolyPaintColor(A: 255, R: 255, G: 1, B: 1)
         drawViewModel.BorderColor = PolyPaintColor(A: 255, R: 255, G: 1, B: 1)

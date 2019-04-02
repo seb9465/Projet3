@@ -49,8 +49,8 @@ class UMLTextFigure: UmlFigure {
         
         var drawViewModel: DrawViewModel = DrawViewModel()
         drawViewModel.Guid = self.uuid.uuidString
-        drawViewModel.owner = UserDefaults.standard.string(forKey: "username")
-        drawViewModel.ItemType = self.itemType
+        drawViewModel.Owner = UserDefaults.standard.string(forKey: "username")
+        drawViewModel.ItemType = ItemTypeEnum.Text
         drawViewModel.StylusPoints = [point1, point2]
         drawViewModel.FillColor = PolyPaintColor(A: 255, R: 255, G: 1, B: 1)
         drawViewModel.BorderColor = PolyPaintColor(A: 255, R: 255, G: 1, B: 1)

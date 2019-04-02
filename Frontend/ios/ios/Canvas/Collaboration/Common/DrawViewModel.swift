@@ -8,7 +8,7 @@
 import UIKit
 struct DrawViewModel: Codable {
     var Guid: String?
-    var owner: String?
+    var Owner: String?
     var ItemType: ItemTypeEnum?
     var StylusPoints: [PolyPaintStylusPoint]?
     var FillColor: PolyPaintColor?

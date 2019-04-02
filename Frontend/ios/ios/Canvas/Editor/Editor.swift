@@ -426,6 +426,7 @@ extension Editor : TouchInputDelegate {
 
 extension Editor: CollaborationHubDelegate {
     func updateCanvas(itemMessage: ItemMessage) {
+        print(itemMessage)
         for drawViewModel in itemMessage.Items {
             if (self.figures.contains(where: {$0.uuid.uuidString == drawViewModel.Guid})) {
                 // Handle quand il est la
