@@ -25,12 +25,12 @@ class LoginController: UIViewController, UITextFieldDelegate {
     // MARK: Timing functions
     
     override func viewDidLoad() {
-        super.viewDidLoad()
+        super.viewDidLoad();
         
-        self.serverlabel.text = "Server: " + Constants.SERVER_BASE_URL
+        self.serverlabel.text = "Server: " + Constants.SERVER_BASE_URL;
         
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil);
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil);
         
         // TODO: DÉCOMMENTÉ LES PROCHAINES LIGNES POUR LA VERSION RELEASE.
 //        self.loginButton.isUserInteractionEnabled = false;
@@ -38,47 +38,67 @@ class LoginController: UIViewController, UITextFieldDelegate {
 //        self.setupAddTargetIsNotEmptyTextFields();
     }
     
-    @IBAction func loginPressed(_ sender: Any) {
+    // MARK: Action functions
+    
+    /**
+     Handling when the Login button is pressed.
+    */
+    @IBAction func loginPressed(_ sender: Any) -> Void {
         let spinner = UIViewController.displaySpinner(onView: self.view);
         
         AuthentificationAPI.login(username: emailField.text!, password: passwordField.text!)
 //        AuthentificationAPI.login(username: "seb.cado2", password: "!12345Aa")
             .done { (token) in
                 UIViewController.removeSpinner(spinner: spinner);
-                self.validationLabel.text = ""
-                self.storeAuthentificationToken(token: token)
+                self.validationLabel.text = "";
+                self.storeAuthentificationToken(token: token);
                 ChatService.shared.connectToHub();
                 
-                let mainController = self.storyboard?.instantiateViewController(withIdentifier: "MainController")
-                self.present(mainController!, animated: true, completion: nil)
+                let mainController = self.storyboard?.instantiateViewController(withIdentifier: "MainController");
+                self.present(mainController!, animated: true, completion: nil);
             }.catch { (Error) in
                 UIViewController.removeSpinner(spinner: spinner);
-                self.validationLabel.text = "Invalid Credentials"
-                print(Error)
+                // TODO: Afficher le bon message d'erreur. En attente du serveur.
+                self.validationLabel.text = "Invalid Credentials";
+                print(Error);
         }
     }
     
-    @IBAction func registerPressed(_ sender: UIButton) {
-        let registerConroller = storyboard?.instantiateViewController(withIdentifier: "RegisterController") as! RegisterController
-        self.present(registerConroller, animated: true, completion: nil)
+    /**
+     When clicking on the register button, it brings us to the Register view.
+    */
+    @IBAction func registerPressed(_ sender: UIButton) -> Void {
+        let registerConroller = storyboard?.instantiateViewController(withIdentifier: "RegisterController") as! RegisterController;
+        self.present(registerConroller, animated: true, completion: nil);
     }
     
-    @objc func keyboardWillShow(notification: NSNotification) {
-        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
-            if self.view.frame.origin.y == 0 {
-                self.view.frame.origin.y -= keyboardSize.height / 3
+    // MARK: Class Object functions
+    
+    /**
+     When keyboard opens, the view will go up.
+    */
+    @objc func keyboardWillShow(notification: NSNotification) -> Void {
+        if let keyboardSize: CGRect = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+            if (self.view.frame.origin.y == 0) {
+                self.view.frame.origin.y -= keyboardSize.height / 3;
             }
         }
     }
     
-    @objc func keyboardWillHide(notification: NSNotification) {
-        if self.view.frame.origin.y != 0 {
-            self.view.frame.origin.y = 0
+    /**
+     When keyboard closes, the view will go back to normal.
+    */
+    @objc func keyboardWillHide(notification: NSNotification) -> Void {
+        if (self.view.frame.origin.y != 0) {
+            self.view.frame.origin.y = 0;
         }
     }
     
+    /**
+     Makes the Register button enabled while the fields are not filled.
+    */
     @objc func textFieldsWithoutErrors(sender: UITextField) -> Void {
-        sender.text = sender.text?.trimmingCharacters(in: .whitespaces)
+        sender.text = sender.text?.trimmingCharacters(in: .whitespaces);
         
         guard
             let username = self.emailField.text, !username.isEmpty,
@@ -87,29 +107,24 @@ class LoginController: UIViewController, UITextFieldDelegate {
         {
             self.loginButton.alpha = 0.5;
             self.loginButton.isUserInteractionEnabled = false;
-            return
+            return;
         }
         
         self.loginButton.alpha = 1;
         self.loginButton.isUserInteractionEnabled = true;
     }
     
-    func storeAuthentificationToken(token: String) {
-        UserDefaults.standard.set(token, forKey: "token")
+    // MARK: Private functions
+    
+    private func storeAuthentificationToken(token: String) -> Void {
+        UserDefaults.standard.set(token, forKey: "token");
         UserDefaults.standard.synchronize();
     }
     
-    private func setupAddTargetIsNotEmptyTextFields() {
+    private func setupAddTargetIsNotEmptyTextFields() -> Void {
         self.emailField.addTarget(self, action: #selector(textFieldsWithoutErrors),
-                                      for: .editingChanged)
+                                  for: .editingChanged);
         self.passwordField.addTarget(self, action: #selector(textFieldsWithoutErrors),
-                                     for: .editingChanged)
+                                     for: .editingChanged);
     }
-    
-//    func isValidEmail(email: String) -> Bool {
-//        let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
-//        let emailTest = NSPredicate(format: "SELF MATCHES %@", emailRegEx)
-//
-//        return emailTest.evaluate(with: email)
-//    }
 }
