@@ -9,9 +9,6 @@ using System.Windows.Ink;
 using System.Windows.Input;
 using System.Windows.Media;
 using PolyPaint.VueModeles;
-using System.Threading.Tasks;
-using PolyPaint.Common.Messages;
-using System;
 
 namespace PolyPaint.Utilitaires
 {
@@ -30,7 +27,8 @@ namespace PolyPaint.Utilitaires
             {
                 Rect box = strokes[i].GetBounds();
                 if (mouseLeftDownPoint.X >= box.Left && mouseLeftDownPoint.X <= box.Right &&
-                    mouseLeftDownPoint.Y <= box.Bottom && mouseLeftDownPoint.Y >= box.Top)
+                    mouseLeftDownPoint.Y <= box.Bottom && mouseLeftDownPoint.Y >= box.Top &&
+                    !vm.GetOnlineSelection().Values.Any(x => x.Any(y => y.Guid == ((AbstractStroke)strokes[i]).Guid.ToString())))
                 {
                     if (strokes[i] is UmlClassStroke)
                     {
