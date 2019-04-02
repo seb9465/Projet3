@@ -60,15 +60,16 @@ class CanvasController: UIViewController {
     }
     
     @IBAction func deleteButton(_ sender: Any) {
-        self.resetButtonColor();
-        if (self.editor.touchEventState == .DELETE) {
-            self.editor.changeTouchHandleState(to: .NONE);
-        } else {
-            self.deleteButton.tintColor = Constants.RED_COLOR;
-            self.editor.changeTouchHandleState(to: .DELETE)
-        }
-        
-        self.editor.deselect();
+//        self.resetButtonColor();
+//        if (self.editor.touchEventState == .DELETE) {
+//            self.editor.changeTouchHandleState(to: .NONE);
+//        } else {
+//            self.deleteButton.tintColor = Constants.RED_COLOR;
+//            self.editor.changeTouchHandleState(to: .DELETE)
+//        }
+//
+//        self.editor.deselect();
+        self.editor.deleteSelectedFigures()
     }
     
     @IBAction func lassoButton(_ sender: Any) {

@@ -147,6 +147,19 @@ class Editor {
         }
     }
     
+    public func deleteSelectedFigures() {
+        if (self.selectedFigures.isEmpty) {
+            return
+        }
+        
+        for figure in self.selectedFigures {
+            figure.removeFromSuperview()
+        }
+        
+        self.deselect()
+        self.selectedFigures.removeAll()
+    }
+    
     public func undo(view: UIView) -> Void {
         print(undoArray);
         if (undoArray.count > 0) {
