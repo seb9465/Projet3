@@ -191,7 +191,7 @@ namespace PolyPaint.Vues
         {
             SelectedCanvas = (SaveableCanvas)ImagePreviews.SelectedItem;
             List<DrawViewModel> drawViewModels = JsonConvert.DeserializeObject<List<DrawViewModel>>(SelectedCanvas.Base64Strokes);
-            if (SelectedCanvas.CanvasProtection != "")
+            if (SelectedCanvas.CanvasProtection != "" && SelectedCanvas.CanvasAutor != username)
             {
                 imageProtection = new ImageProtection();
                 if (imageProtection.PasswordEntered == SelectedCanvas.CanvasProtection)

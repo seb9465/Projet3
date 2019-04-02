@@ -15,9 +15,6 @@ using System.Windows.Shapes;
 
 namespace PolyPaint.Vues
 {
-    /// <summary>
-    /// Logique d'interaction pour ImageProtection.xaml
-    /// </summary>
     public partial class ResizeCanvas : Window
     {
         public double CanvasHeight;
