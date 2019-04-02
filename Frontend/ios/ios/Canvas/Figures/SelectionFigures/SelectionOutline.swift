@@ -71,7 +71,6 @@ class SelectionOutline: UIView {
     
     public func addUsernameSelecting(username: String) {
         if(username != "") {
-            print(username)
             let usernameTextLayer = CATextLayer()
             usernameTextLayer.string = username
             usernameTextLayer.frame = self.layer.bounds

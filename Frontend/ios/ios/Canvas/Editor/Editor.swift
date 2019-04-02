@@ -61,7 +61,7 @@ class Editor {
         }
         
         var selectionOutlines: [SelectionOutline] = []
-        for figure in figures {
+        for figure in figuresToSelect {
             let outline = SelectionOutline(
                 firstPoint: figure.frame.origin,
                 lastPoint: CGPoint(x: figure.frame.maxX, y: figure.frame.maxY),
@@ -72,7 +72,6 @@ class Editor {
             selectionOutlines.append(outline)
             self.editorView.addSubview(outline);
         }
-//        self.selectedFiguresDictionnary.updateValue(<#T##value: [DrawViewModel]##[DrawViewModel]#>, forKey: <#T##String#>)
         self.selectedOutlinesDictionnary.updateValue(selectionOutlines, forKey: username)
     }
     
@@ -487,9 +486,7 @@ extension Editor: CollaborationHubDelegate {
             
             // Remplacer la vielle figure par la nouvelle version
             print(drawViewModel.Guid)
-            for fig in figures {
-                print(fig.uuid.uuidString)
-            }
+
             if (self.figures.contains(where: {$0.uuid.uuidString.lowercased() == drawViewModel.Guid})) {
                 print("Figure overritten")
                 self.overriteFigure(figureId: drawViewModel.Guid!, newDrawViewModel: drawViewModel, username: itemMessage.Username)
@@ -498,9 +495,7 @@ extension Editor: CollaborationHubDelegate {
                 return
             }
             
-            // Creer un nouvelle figure
-            
-            // ici
+            self.insertFigure(drawViewModel: drawViewModel)
         }
 }
     
