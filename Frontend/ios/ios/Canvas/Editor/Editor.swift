@@ -371,7 +371,7 @@ extension Editor : TouchInputDelegate {
     
     func notifyTouchMoved(point: CGPoint, figure: Figure) {
         if (self.touchEventState == .SELECT || self.touchEventState == .TRANSLATE) {
-            if (!figure.isEqual(self.selectedFigures[0])) {
+            if (!self.selectedFigures.isEmpty && !figure.isEqual(self.selectedFigures[0])) {
                 return
             }
             self.touchEventState = .TRANSLATE;
