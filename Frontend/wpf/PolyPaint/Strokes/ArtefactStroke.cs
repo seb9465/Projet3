@@ -14,8 +14,8 @@ namespace PolyPaint.Strokes
 {
     public class ArtefactStroke : AbstractShapeStroke
     {
-        public ArtefactStroke(StylusPointCollection pts, InkCanvas surfaceDessin, string couleurBordure, string couleurRemplissage, double thicc)
-            : base(pts, surfaceDessin, "Artefact", couleurBordure, couleurRemplissage, thicc)
+        public ArtefactStroke(StylusPointCollection pts, InkCanvas surfaceDessin, string couleurBordure, string couleurRemplissage, double thicc, DashStyle dashStyle)
+            : base(pts, surfaceDessin, "Artefact", couleurBordure, couleurRemplissage, thicc, dashStyle)
         { }
 
         protected override void DrawCore(DrawingContext drawingContext, DrawingAttributes drawingAttributes)
@@ -58,18 +58,14 @@ namespace PolyPaint.Strokes
 
             drawingContext.DrawGeometry(Fill, Border, streamGeometry);
 
-            StreamGeometry cornerGeometry = new StreamGeometry();
-            using (StreamGeometryContext geometryContext = cornerGeometry.Open())
+
+            var cornerPoints = new Point[]
             {
-                geometryContext.BeginFigure(points[1], true, true);
-                var elbowPoints = new PointCollection
-                {
-                     intersection,
-                     points[2]
-                };
-                geometryContext.PolyLineTo(elbowPoints, true, true);
-            }
-            drawingContext.DrawGeometry(Brushes.Transparent, Border, cornerGeometry);
+                points[1],
+                intersection,
+                points[2]
+            };
+            DrawPolyline(drawingContext, null, Border, cornerPoints, FillRule.EvenOdd);
 
             if (IsDrawingDone)
             {

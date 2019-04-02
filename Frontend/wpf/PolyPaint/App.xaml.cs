@@ -1,10 +1,6 @@
-﻿using PolyPaint.Vues;
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Windows;
 
 namespace PolyPaint
@@ -17,6 +13,21 @@ namespace PolyPaint
         public App()
         {
             ShutdownMode = ShutdownMode.OnMainWindowClose;
+            Exit += Logout;
+        }
+
+        private void Logout(object sender, EventArgs e)
+        {
+            try
+            {
+                using (HttpClient client = new HttpClient())
+                {
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", (string)Application.Current.Properties["token"]);
+                    System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
+                    client.GetAsync($"{Config.URL}/api/user/logout").Wait();
+                }
+            }
+            catch { }
         }
     }
 }

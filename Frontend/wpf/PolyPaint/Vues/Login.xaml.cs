@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using PolyPaint.Common;
+using PolyPaint.Common.Collaboration;
 using PolyPaint.Modeles;
 using PolyPaint.VueModeles;
 using System;
@@ -26,7 +27,7 @@ namespace PolyPaint.Vues
 
         private void OfflineBtn_Click(object sender, RoutedEventArgs e)
         {
-            FenetreDessin fenetreDessin = new FenetreDessin(ViewStateEnum.Offline);
+            FenetreDessin fenetreDessin = new FenetreDessin(new List<DrawViewModel>(), new ChatClient());
             Application.Current.MainWindow = fenetreDessin;
             Close();
             fenetreDessin.Show();
@@ -34,7 +35,7 @@ namespace PolyPaint.Vues
 
         private async void LoginBtn_Click(object sender, RoutedEventArgs e)
         {
-           // errors_label.Content = "";
+            // errors_label.Content = "";
             LoginViewModel loginViewModel = new LoginViewModel()
             {
                 Username = usernameBox.Text,
@@ -49,15 +50,24 @@ namespace PolyPaint.Vues
                 client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
                 StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
                 HttpResponseMessage result = await client.PostAsync("/api/login", content);
-                string token = JsonConvert.DeserializeObject<string>(await result.Content.ReadAsStringAsync());
+                string token = "";
+                try
+                {
+                    token = JsonConvert.DeserializeObject<string>(await result.Content.ReadAsStringAsync());
+                }
+                catch (JsonReaderException exc)
+                {
+                    Console.WriteLine(exc.Message);
+                }
 
                 if (result.StatusCode == System.Net.HttpStatusCode.OK)
                 {
 
                     DecodeToken(token);
-                    FenetreDessin fenetreDessin = new FenetreDessin(ViewStateEnum.Online);
+                    //Application.Current.MainWindow = fenetreDessin;
+                    //Close();
+                    //fenetreDessin.Show();
 
-                    
                     List<SaveableCanvas> strokes;
                     using (client)
                     {
@@ -67,11 +77,14 @@ namespace PolyPaint.Vues
                         string responseString = await response.Content.ReadAsStringAsync();
                         strokes = JsonConvert.DeserializeObject<List<SaveableCanvas>>(responseString);
                     }
-                   
-                    Gallery gallery = new Gallery(strokes, fenetreDessin.surfaceDessin);
+
+                    ChatClient chatClient = new ChatClient();
+                    chatClient.Initialize((string)Application.Current.Properties["token"]);
+
+                    Gallery gallery = new Gallery(strokes, chatClient);
 
                     Application.Current.MainWindow = gallery;
-                    
+
 
                     Close();
                     gallery.Show();
@@ -91,7 +104,8 @@ namespace PolyPaint.Vues
             Close();
             register.Show();
         }
-        private void DecodeToken(string token) {
+        private void DecodeToken(string token)
+        {
             var handler = new JwtSecurityTokenHandler();
             var userToken = handler.ReadToken(token) as JwtSecurityToken;
             Application.Current.Properties.Add("token", token);

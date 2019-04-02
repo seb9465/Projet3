@@ -20,6 +20,7 @@ class LoginController: UIViewController, UITextFieldDelegate {
     @IBOutlet var validationLabel: UILabel!
     @IBOutlet var loginButton: UIButton!
     
+    @IBOutlet weak var offlineButton: RoundedCorners!
     override func viewDidLoad() {
         super.viewDidLoad()
         self.serverlabel.text = "Server: " + Constants.SERVER_BASE_URL
@@ -33,14 +34,18 @@ class LoginController: UIViewController, UITextFieldDelegate {
 //        let validEmail: Bool = isValidEmail(email: emailField.text!);
         
 //        AuthentificationAPI.login(username: emailField.text!, password: passwordField.text!)
-        AuthentificationAPI.login(username: "user.2", password: "!12345Aa")
+        AuthentificationAPI.login(username: "seb.cado", password: "!12345Aa")
+//        AuthentificationAPI.login(username: "seb.cado2", password: "!12345Aa")
             .done { (token) in
                 UIViewController.removeSpinner(spinner: sv);
                 self.validationLabel.text = ""
                 self.storeAuthentificationToken(token: token)
+                // Connect to chat
+                ChatService.shared.connectToHub();
+                
                 // Navigate to dashboard
-                let mainController = self.storyboard?.instantiateViewController(withIdentifier: "MainController") as! UINavigationController
-                self.present(mainController, animated: true, completion: nil)
+                let mainController = self.storyboard?.instantiateViewController(withIdentifier: "MainController")
+                self.present(mainController!, animated: true, completion: nil)
             }.catch { (Error) in
                 UIViewController.removeSpinner(spinner: sv);
                 self.validationLabel.text = "Invalid Credentials"

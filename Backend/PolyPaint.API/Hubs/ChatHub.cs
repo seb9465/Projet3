@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.SignalR;
 using Newtonsoft.Json;
 using PolyPaint.API.Handlers;
+using PolyPaint.Common.Messages;
 using PolyPaint.Core;
 using PolyPaint.DataAccess.Services;
 using System;

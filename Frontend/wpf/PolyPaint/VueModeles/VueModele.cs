@@ -7,17 +7,17 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Documents;
 using System.Windows.Ink;
 using System.Windows.Input;
 using System.Windows.Media;
 using Microsoft.AspNetCore.SignalR.Client;
 using PolyPaint.Common.Collaboration;
+using PolyPaint.Common.Messages;
 using PolyPaint.Modeles;
 using PolyPaint.Strokes;
 using PolyPaint.Structures;
 using PolyPaint.Utilitaires;
-using Xceed.Wpf.Toolkit;
+using PolyPaint.Vues;
 
 namespace PolyPaint.VueModeles
 {
@@ -27,17 +27,18 @@ namespace PolyPaint.VueModeles
     /// Expose des commandes et propriétés connectées au modèle aux des éléments de la vue peuvent se lier.
     /// Reçoit des avis de changement du modèle et envoie des avis de changements à la vue.
     /// </summary>
-    class VueModele : INotifyPropertyChanged
+    public class VueModele : INotifyPropertyChanged, IChatDataContext
     {
         public event PropertyChangedEventHandler PropertyChanged;
+        private StrokeBuilder rebuilder = new StrokeBuilder();
         private Editeur editeur = new Editeur();
         private string _currentRoom;
-        private ObservableCollection<Room> _rooms;
-        private ConcurrentDictionary<string, ObservableCollection<string>> _messagesByChannel { get; set; }
         private string _selectedBorder;
         private MediaPlayer mediaPlayer = new MediaPlayer();
+        private ConcurrentDictionary<string, List<DrawViewModel>> _onlineSelection { get; set; }
 
         public ChatClient ChatClient { get; set; }
+        public CollaborationClient CollaborationClient { get; set; }
 
         // Ensemble d'attributs qui définissent l'apparence d'un trait.
         public DrawingAttributes AttributsDessin { get; set; } = new DrawingAttributes();
@@ -48,13 +49,13 @@ namespace PolyPaint.VueModeles
         {
             get
             {
-                if (_messagesByChannel.Count == 0 || _currentRoom == null)
+                if (ChatClient.MessagesByChannel.Count == 0 || _currentRoom == null)
                 {
                     return new ObservableCollection<string>();
                 }
                 else
                 {
-                    return _messagesByChannel.GetOrAdd(_currentRoom, new ObservableCollection<string>());
+                    return ChatClient.MessagesByChannel.GetOrAdd(_currentRoom, new ObservableCollection<string>());
                 }
             }
             set { }
@@ -62,8 +63,8 @@ namespace PolyPaint.VueModeles
 
         public ObservableCollection<Room> Rooms
         {
-            get { return _rooms; }
-            set { _rooms = value; ProprieteModifiee(); }
+            get { return ChatClient.Rooms; }
+            set { ChatClient.Rooms = value; ProprieteModifiee(); }
         }
 
         public string CurrentRoom
@@ -129,6 +130,8 @@ namespace PolyPaint.VueModeles
             set { _selectedBorder = value; ProprieteModifiee(); }
         }
 
+        public DashStyle SelectedBorderDashStyle { get { return _selectedBorder == "" ? DashStyles.Solid : Tools.DashAssociations[_selectedBorder]; } }
+
         public Boolean IsStrokeSelected
         {
             get { return editeur.SelectedStrokes.Any(x => x is AbstractStroke) && editeur.SelectedStrokes.Count > 0; }
@@ -148,17 +151,35 @@ namespace PolyPaint.VueModeles
         public RelayCommand<Room> RoomConnect { get; set; }
         public RelayCommand<object> Reinitialiser { get; set; }
 
-        public void SelectItemOffline(InkCanvas surfaceDessin, Point mouseLeftDownPoint) => editeur.SelectItemOffline(surfaceDessin, mouseLeftDownPoint);
-        public void SelectItemOnline(InkCanvas surfaceDessin, SelectViewModel selectViewModel, string username) => editeur.SelectItemOnline(surfaceDessin, selectViewModel, username);
+        public StrokeCollection SelectItem(InkCanvas surfaceDessin, Point mouseLeftDownPoint)
+        {
+            editeur.OutilSelectionne = "select";
+            return editeur.SelectItem(surfaceDessin, mouseLeftDownPoint, this);
+        }
+        public StrokeCollection SelectItemLasso(InkCanvas surfaceDessin, Rect bounds)
+        {
+            editeur.OutilSelectionne = "select";
+            return editeur.SelectItemLasso(surfaceDessin, bounds, this);
+        }
+        public StrokeCollection SelectItems(InkCanvas surfaceDessin, StrokeCollection strokes)
+        {
+            editeur.OutilSelectionne = "select";
+            return editeur.SelectItems(surfaceDessin, strokes, this);
+        }
+        public void SelectNothing(InkCanvas surfaceDessin)
+        {
+            editeur.SelectItemLasso(surfaceDessin, Rect.Empty, this);
+        }
 
         /// <summary>
         /// Constructeur de VueModele
         /// On récupère certaines données initiales du modèle et on construit les commandes
         /// sur lesquelles la vue se connectera.
         /// </summary>
-        public VueModele()
+        public VueModele(ChatClient chatClient)
         {
-            ChatClient = new ChatClient();
+            ChatClient = chatClient;
+            CollaborationClient = new CollaborationClient();
 
             // On écoute pour des changements sur le modèle. Lorsqu'il y en a, EditeurProprieteModifiee est appelée.
             editeur.PropertyChanged += new PropertyChangedEventHandler(EditeurProprieteModifiee);
@@ -190,10 +211,9 @@ namespace PolyPaint.VueModeles
             ChatClient.ConnectedToChannelSender += ConnectedToRoomSender;
             ChatClient.DisconnectedFromChannel += DisconnectedFromRoom;
             ChatClient.DisconnectedFromChannelSender += DisconnectedFromRoomSender;
-
-            _messagesByChannel = new ConcurrentDictionary<string, ObservableCollection<string>>();
-            _rooms = new ObservableCollection<Room>();
+            
             _selectedBorder = "";
+            _onlineSelection = new ConcurrentDictionary<string, List<DrawViewModel>>();
         }
 
         /// <summary>
@@ -257,6 +277,7 @@ namespace PolyPaint.VueModeles
             {
                 stroke.SetBorderStyle(Tools.DashAssociations[border]);
             }
+            SendSelectedStrokes();
         }
 
         private void rotate(string side)
@@ -270,6 +291,7 @@ namespace PolyPaint.VueModeles
                 stroke.StylusPoints[0] = new StylusPoint(stylusPoint0.X, stylusPoint0.Y);
                 stroke.StylusPoints[1] = new StylusPoint(stylusPoint1.X, stylusPoint1.Y);
             }
+            SendSelectedStrokes();
         }
 
         public void ChangeSelection(InkCanvas surfaceDessin)
@@ -281,6 +303,16 @@ namespace PolyPaint.VueModeles
             HandleBorderColorChange(strokes);
             HandleFillColorChange(strokes);
             HandleBorderStyleChange(strokes);
+        }
+
+        public void ChangeOnlineSelection(ItemsMessage message)
+        {
+            _onlineSelection.AddOrUpdate(message.Username, message.Items, (k, v) => { return message.Items; });
+        }
+
+        public ConcurrentDictionary<string, List<DrawViewModel>> GetOnlineSelection()
+        {
+            return _onlineSelection;
         }
 
         private void HandleBorderColorChange(StrokeCollection strokes)
@@ -335,6 +367,11 @@ namespace PolyPaint.VueModeles
             }
         }
 
+        internal void SendSelectedStrokes()
+        {
+            CollaborationClient.CollaborativeDrawAsync(rebuilder.GetDrawViewModelsFromStrokes(editeur.SelectedStrokes));
+        }
+
         private void AddMessage(object sender, MessageArgs args)
         {
             AddMessageToRoom(args.ChannelId, $"{args.Timestamp} - {args.Username}: {args.Message}");
@@ -353,14 +390,14 @@ namespace PolyPaint.VueModeles
         {
             Application.Current.Dispatcher.Invoke(() =>
             {
-                if (!_messagesByChannel.Keys.Contains(roomName))
+                if (!ChatClient.MessagesByChannel.Keys.Contains(roomName))
                 {
-                    _messagesByChannel.GetOrAdd(roomName, new ObservableCollection<string>());
+                    ChatClient.MessagesByChannel.GetOrAdd(roomName, new ObservableCollection<string>());
                     ProprieteModifiee("MessagesListBox");
                 }
-                if (_rooms.FirstOrDefault(x => x.Title == roomName) == null)
+                if (ChatClient.Rooms.FirstOrDefault(x => x.Title == roomName) == null)
                 {
-                    _rooms.Add(new Room(roomName, false));
+                    ChatClient.Rooms.Add(new Room(roomName, false));
                     ProprieteModifiee("Rooms");
                 }
             });
@@ -375,7 +412,7 @@ namespace PolyPaint.VueModeles
         {
             Application.Current.Dispatcher.Invoke(() =>
             {
-                _messagesByChannel.AddOrUpdate(room, new ObservableCollection<string>() { message }, (k, v) =>
+                ChatClient.MessagesByChannel.AddOrUpdate(room, new ObservableCollection<string>() { message }, (k, v) =>
                 {
                     v.Add(message);
                     return v;
@@ -396,14 +433,14 @@ namespace PolyPaint.VueModeles
         {
             Application.Current.Dispatcher.Invoke(() =>
             {
-                var room = _rooms.FirstOrDefault(x => x.Title == e.Message);
+                var room = ChatClient.Rooms.FirstOrDefault(x => x.Title == e.Message);
                 if (room != null)
                 {
                     room.Connected = true;
                 }
                 else
                 {
-                    _rooms.Add(new Room(e.Message, true));
+                    ChatClient.Rooms.Add(new Room(e.Message, true));
                 }
             });
         }
@@ -417,16 +454,21 @@ namespace PolyPaint.VueModeles
         {
             Application.Current.Dispatcher.Invoke(() =>
             {
-                var room = _rooms.FirstOrDefault(x => x.Title == e.Message);
+                var room = ChatClient.Rooms.FirstOrDefault(x => x.Title == e.Message);
                 if (room != null)
                 {
                     room.Connected = false;
                 }
                 else
                 {
-                    _rooms.Add(new Room(e.Message, false));
+                    ChatClient.Rooms.Add(new Room(e.Message, false));
                 }
             });
+        }
+
+        public StrokeCollection GetSelectedStrokes()
+        {
+            return editeur.SelectedStrokes;
         }
     }
 }

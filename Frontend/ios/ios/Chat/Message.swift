@@ -14,16 +14,43 @@ import MessageKit
 // Used for the frontend-backend communication.
 
 class ChatMessage: Codable {
-    var username: String;
-    var message: String;
-    var channelId: String;
-    var timestamp: String;
+    
+    // MARK: Attributes
+    
+    private var _username: String;
+    private var _message: String;
+    private var _channelId: String;
+    private var _timestamp: String;
+    
+    // MARK: Constructor
     
     init(user: String, message: String, channelId: String, timestamp: String? = "") {
-        self.username = user;
-        self.message = message;
-        self.channelId = channelId;
-        self.timestamp = timestamp!;
+        self._username = user;
+        self._message = message;
+        self._channelId = channelId;
+        self._timestamp = timestamp!;
+    }
+    
+    // MARK: Getter - Setter
+    
+    public var username: String {
+        get { return self._username }
+        set { self._username = newValue }
+    }
+    
+    public var message: String {
+        get { return self._message }
+        set { self._message = newValue }
+    }
+    
+    public var channelId: String {
+        get { return self._channelId }
+        set { self._channelId = newValue }
+    }
+    
+    public var timestamp: String {
+        get { return self._timestamp }
+        set { self._timestamp = newValue }
     }
 }
 
@@ -31,14 +58,36 @@ class ChatMessage: Codable {
 // Used for the frontend-backend communication.
 
 class ConnectionMessage: Codable {
-    public var username: String;
-    public var canvasId: String;
-    public var channelId: String;
     
-    init(username: String?="", canvasId: String?="", channelId: String?="") {
-        self.username = username!;
-        self.canvasId = canvasId!;
-        self.channelId = channelId!;
+    // MARK: Attributes
+    
+    private var _username: String;
+    private var _canvasId: String;
+    private var _channelId: String;
+    
+    // MARK: Constructor
+    
+    init (username: String? = "", canvasId: String? = "", channelId: String? = "") {
+        self._username = username!;
+        self._canvasId = canvasId!;
+        self._channelId = channelId!;
+    }
+    
+    // MARK: Getter - Setter
+    
+    public var username: String {
+        get { return self._username }
+        set { self._username = newValue }
+    }
+    
+    public var canvasId: String {
+        get { return self._canvasId }
+        set { self._canvasId = newValue }
+    }
+    
+    public var channelId: String {
+        get { return self._channelId }
+        set { self._channelId = newValue }
     }
 }
 
@@ -46,16 +95,43 @@ class ConnectionMessage: Codable {
 // Data structure for the messages in the chat view.
 
 class Message {
-    var member: Member;
-    var text: String;
-    var timestamp: String;
-    var messageId: String;
     
-    init(member: Member, text: String? = "", timestamp: String? = "", messageId: String? = "") {
-        self.member = member;
-        self.text = text!;
-        self.timestamp = timestamp!;
-        self.messageId = messageId!;
+    // MARK: Attributes
+    
+    private var _member: Member;
+    private var _text: String;
+    private var _timestamp: String;
+    private var _messageId: String;
+    
+    // MARK: Constructor
+    
+    init (member: Member, text: String? = "", timestamp: String? = "", messageId: String? = "") {
+        self._member = member;
+        self._text = text!;
+        self._timestamp = timestamp!;
+        self._messageId = messageId!;
+    }
+    
+    // MARK: Getter - Setter
+    
+    public var member: Member {
+        get { return self._member }
+        set { self._member = newValue }
+    }
+    
+    public var text: String {
+        get { return self._text }
+        set { self._text = newValue }
+    }
+    
+    public var timestamp: String {
+        get { return self._timestamp }
+        set { self._timestamp = newValue }
+    }
+    
+    public var messageId: String {
+        get { return self._messageId }
+        set { self._messageId = newValue }
     }
 }
 
@@ -72,6 +148,7 @@ extension Message: MessageType {
         if(member.name == "SYSTEM") {
             return .custom(text);
         }
+        
         return .text(text);
     }
 }

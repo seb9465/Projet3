@@ -7,6 +7,8 @@ using System.Windows.Media;
 using System.Windows.Ink;
 using System.Linq;
 using PolyPaint.Strokes;
+using PolyPaint.VueModeles;
+using PolyPaint.Utilitaires;
 
 public class LineStrokeAdorner : Adorner
 {
@@ -63,6 +65,9 @@ public class LineStrokeAdorner : Adorner
         dragPos = Mouse.GetPosition(this);
         AdornedStroke.LastElbowPosition = dragPos;
         AdornedStroke.Redraw();
+        var rebuilder = new StrokeBuilder();
+        var drawViewModel = rebuilder.GetDrawViewModelsFromStrokes(new StrokeCollection() { AdornedStroke });
+        (AdornedStroke.SurfaceDessin.DataContext as VueModele).CollaborationClient.CollaborativeDrawAsync(drawViewModel);
         InvalidateArrange();
     }
 

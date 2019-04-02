@@ -23,6 +23,18 @@ namespace PolyPaint.Strokes
         public double Width { get; set; }
         public double Height { get; set; }
 
+        protected FormattedText Title { get; set; }
+        public string TitleString
+        {
+            get { return Title.Text; }
+            set
+            {
+                Title = new FormattedText(value, System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 12, Brushes.Black);
+                ProprieteModifiee("Title");
+                ProprieteModifiee();
+            }
+        }
+
         public List<Point> UnrotatedStylusPoints
         {
             get
@@ -50,9 +62,9 @@ namespace PolyPaint.Strokes
 
         public Guid Guid { get; set; } = Guid.NewGuid();
 
-        protected InkCanvas SurfaceDessin { get; set; }
+        public InkCanvas SurfaceDessin { get; set; }
 
-        public AbstractStroke(StylusPointCollection pts, InkCanvas surfaceDessin, string couleurBordure, string couleurRemplissage, double thicc)
+        public AbstractStroke(StylusPointCollection pts, InkCanvas surfaceDessin, string couleurBordure, string couleurRemplissage, double thicc, DashStyle borderStyle)
             : base(pts)
         {
             TopLeft = new Point();
@@ -64,6 +76,8 @@ namespace PolyPaint.Strokes
 
             Border = new Pen(new SolidColorBrush((Color)ColorConverter.ConvertFromString(couleurBordure)), thicc);
             Fill = new SolidColorBrush((Color)ColorConverter.ConvertFromString(couleurRemplissage));
+
+            SetBorderStyle(borderStyle);
 
             IsDrawingDone = false;
 
@@ -127,6 +141,38 @@ namespace PolyPaint.Strokes
         public void Redraw()
         {
             OnInvalidated(new EventArgs());
+        }
+
+        // Draw a polyline.
+        protected void DrawPolyline(DrawingContext drawingContext,
+            Brush brush, Pen pen, Point[] points, FillRule fill_rule)
+        {
+            DrawPolygonOrPolyline(
+                drawingContext, brush, pen, points, fill_rule, false);
+        }
+
+        // Draw a polygon or polyline.
+        private void DrawPolygonOrPolyline(
+            DrawingContext drawingContext,
+            Brush brush, Pen pen, Point[] points, FillRule fill_rule,
+            bool draw_polygon)
+        {
+            // Make a StreamGeometry to hold the drawing objects.
+            StreamGeometry geo = new StreamGeometry();
+            geo.FillRule = fill_rule;
+
+            // Open the context to use for drawing.
+            using (StreamGeometryContext context = geo.Open())
+            {
+                // Start at the first point.
+                context.BeginFigure(points[0], true, draw_polygon);
+
+                // Add the points after the first one.
+                context.PolyLineTo(points.Skip(1).ToArray(), true, false);
+            }
+
+            // Draw.
+            drawingContext.DrawGeometry(brush, pen, geo);
         }
     }
 }

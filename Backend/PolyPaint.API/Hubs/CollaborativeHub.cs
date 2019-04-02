@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using PolyPaint.API.Handlers;
 using PolyPaint.Common;
 using PolyPaint.Common.Collaboration;
+using PolyPaint.Common.Messages;
 using PolyPaint.Core;
 using PolyPaint.DataAccess.Services;
 using System;
@@ -18,16 +19,17 @@ namespace PolyPaint.API.Hubs
         public CollaborativeHub(UserService _userService) : base(_userService)
         { }
 
-        public async Task Draw(string canvasDrawing)
+        public async Task Draw(string itemsMessage)
         {
-            var drawViewModel = JsonConvert.DeserializeObject<DrawViewModel>(canvasDrawing);
+            var message = JsonConvert.DeserializeObject<ItemsMessage>(itemsMessage);
 
             var user = await GetUserFromToken(Context.User);
-            if (user != null)
+            if (user != null && message.Items.Count > 0)
             {
-                if (UserHandler.UserGroupMap.TryGetValue(drawViewModel.ChannelId, out var users) && users.Contains(user.Id))
+                var channelId = message.CanvasId;
+                if (UserHandler.UserGroupMap.TryGetValue(channelId, out var users) && users.Contains(user.Id))
                 {
-                    await Clients.Group(drawViewModel.ChannelId).SendAsync("Draw", JsonConvert.SerializeObject(drawViewModel));
+                    await Clients.OthersInGroup(channelId).SendAsync("Draw", JsonConvert.SerializeObject(message));
                 }
             }
         }
@@ -48,20 +50,24 @@ namespace PolyPaint.API.Hubs
             {
                 if (UserHandler.UserGroupMap.TryGetValue(channelId, out var users) && users.Contains(user.Id))
                 {
-                    await Clients.Group(channelId).SendAsync("Delete");
+                    await Clients.OthersInGroup(channelId).SendAsync("Delete");
                 }
             }
         }
 
 
-        public async Task Select(SelectViewModel selectViewModel)
+        public async Task Select(string itemsMessage)
         {
+            var message = JsonConvert.DeserializeObject<ItemsMessage>(itemsMessage);
+
             var user = await GetUserFromToken(Context.User);
             if (user != null)
             {
-                if (UserHandler.UserGroupMap.TryGetValue(selectViewModel.ChannelId, out var users) && users.Contains(user.Id))
+                var channelId = message.CanvasId;
+                if (UserHandler.UserGroupMap.TryGetValue(channelId, out var users) && users.Contains(user.Id))
                 {
-                    await Clients.Group(selectViewModel.ChannelId).SendAsync("Select", selectViewModel);
+                    message.Username = user.UserName;
+                    await Clients.OthersInGroup(channelId).SendAsync("Select", JsonConvert.SerializeObject(message));
                 }
             }
         }
@@ -73,7 +79,7 @@ namespace PolyPaint.API.Hubs
             {
                 if (UserHandler.UserGroupMap.TryGetValue(channelId, out var users) && users.Contains(user.Id))
                 {
-                    await Clients.Group(channelId).SendAsync("Reset");
+                    await Clients.OthersInGroup(channelId).SendAsync("Reset");
                 }
             }
         }

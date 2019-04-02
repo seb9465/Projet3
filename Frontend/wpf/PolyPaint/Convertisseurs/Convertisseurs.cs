@@ -64,12 +64,11 @@ namespace PolyPaint.Convertisseurs
         {
             switch (value)
             {
-                case "lasso":
-                    return InkCanvasEditingMode.Select;
                 case "efface_segment":
                     return InkCanvasEditingMode.EraseByPoint;
                 case "efface_trait":
                     return InkCanvasEditingMode.EraseByStroke;
+                case "lasso":
                 case "select":
                 case "uml_class":
                 case "rectangle":

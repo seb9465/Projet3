@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Win32;
 using Newtonsoft.Json;
 using PolyPaint.Common.Collaboration;
+using PolyPaint.Common.Messages;
 using PolyPaint.Modeles;
 using PolyPaint.Strokes;
 using PolyPaint.Structures;
@@ -10,9 +11,10 @@ using PolyPaint.Utilitaires;
 using PolyPaint.VueModeles;
 using PolyPaint.Vues;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -38,6 +40,7 @@ namespace PolyPaint
         private StrokeBuilder rebuilder = new StrokeBuilder();
         private AdornerLayer adornerLayer;
         private LineStrokeAdorner adorner;
+        private ConcurrentDictionary<string, OnlineSelectedAdorner> _onlineSelectedAdorners;
 
         public String canvasVisibility = "";
         public String canvasName = "";
@@ -56,32 +59,38 @@ namespace PolyPaint
         bool isMenuOpen = false;
         private ViewStateEnum _viewState { get; set; }
 
-        public FenetreDessin(ViewStateEnum viewState)
+        public FenetreDessin(List<DrawViewModel> drawViewModels, ChatClient chatClient)
         {
             InitializeComponent();
-            _viewState = viewState;
-            DataContext = new VueModele();
+            DataContext = new VueModele(chatClient);
+
+            (DataContext as VueModele).CollaborationClient.Initialize((string)Application.Current.Properties["token"]);
+            (DataContext as VueModele).CollaborationClient.DrawReceived += ReceiveDraw;
+            (DataContext as VueModele).CollaborationClient.SelectReceived += ReceiveSelect;
+            (DataContext as VueModele).CollaborationClient.DuplicateReceived += ReceiveDuplicate;
+            (DataContext as VueModele).CollaborationClient.DeleteReceived += ReceiveDelete;
+            (DataContext as VueModele).CollaborationClient.ResetReceived += ReceiveReset;
+            (DataContext as VueModele).PropertyChanged += VueModelePropertyChanged;
+
             DispatcherTimer dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
             dispatcherTimer.Tick += new EventHandler(SaveImage);
             dispatcherTimer.Interval = new TimeSpan(0, 1, 0);
             dispatcherTimer.Start();
             
 
-            if (_viewState == ViewStateEnum.Online)
-            {
-                object token = Application.Current.Properties["token"];
-                username = Application.Current.Properties["username"].ToString();
-                //token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6InVzZXIuMyIsIm5hbWVpZCI6Ijg4OTU2NjlhLTYyMmMtNDk2ZS1iZTkwLTI4YTQzMGE3NzhhZSIsImZhbWlseV9uYW1lIjoidXNlcjMiLCJuYmYiOjE1NTIyNTY1ODgsImV4cCI6NjE1NTIyNTY1MjgsImlhdCI6MTU1MjI1NjU4OCwiaXNzIjoiaHR0cHM6Ly9wb2x5cGFpbnQubWUiLCJhdWQiOiJodHRwczovL3BvbHlwYWludC5tZSJ9._CGBRWU961rt14S5FTx9QuzFkTCX86iel2PiMZ_PzMs";
-                ConnectToCollaborativeServer((string)token);
-                (DataContext as VueModele).ChatClient.Initialize((string)Application.Current.Properties["token"]);
-                (DataContext as VueModele).ChatClient.MessageReceived += ScrollDown;
-                externalChatWindow = new ChatWindow(DataContext);
-                Application.Current.Exit += OnClosing;
+            _onlineSelectedAdorners = new ConcurrentDictionary<string, OnlineSelectedAdorner>();
+            externalChatWindow = new ChatWindow(DataContext);
 
-            }
-            else
+            rebuilder.BuildStrokesFromDrawViewModels(drawViewModels, surfaceDessin);
+        }
+
+        private void VueModelePropertyChanged(object sender, PropertyChangedEventArgs args)
+        {
+            if (args.PropertyName == "OutilSelectionne" && (DataContext as VueModele).OutilSelectionne != "select")
             {
-                chatMenu.Visibility = Visibility.Collapsed;
+                (DataContext as VueModele).SelectNothing(surfaceDessin);
+                (DataContext as VueModele).CollaborationClient.CollaborativeSelectAsync(new List<DrawViewModel>());
+
             }
         }
 
@@ -113,27 +122,17 @@ namespace PolyPaint
 
         private async void DupliquerSelection(object sender, RoutedEventArgs e)
         {
-            if (_viewState == ViewStateEnum.Online)
-            {
-                await CollaborativeDuplicateAsync();
-            }
-            else
-            {
-                surfaceDessin.CopySelection();
-                surfaceDessin.Paste();
-            }
+            await (DataContext as VueModele).CollaborationClient.CollaborativeDuplicateAsync();
+
+            surfaceDessin.CopySelection();
+            surfaceDessin.Paste();
         }
 
         private async void SupprimerSelection(object sender, RoutedEventArgs e)
         {
-            if (_viewState == ViewStateEnum.Online)
-            {
-                await CollaborativeDeleteAsync();
-            }
-            else
-            {
-                surfaceDessin.CutSelection();
-            }
+            await (DataContext as VueModele).CollaborationClient.CollaborativeDeleteAsync();
+            surfaceDessin.CutSelection();
+
         }
         private void SaveImage(object sender, EventArgs e)
         {
@@ -226,7 +225,7 @@ namespace PolyPaint
                 strokes = JsonConvert.DeserializeObject<List<SaveableCanvas>>(responseString);
             }
             progressBar.Visibility = Visibility.Collapsed;
-            Gallery gallery = new Gallery(strokes, surfaceDessin);
+            Gallery gallery = new Gallery(strokes, (DataContext as VueModele).ChatClient);
 
             Application.Current.MainWindow = gallery;
 
@@ -237,7 +236,7 @@ namespace PolyPaint
             Close();
             gallery.Show();
         }
-
+        
         private byte[] GetBytesForStrokes()
         {
             MemoryStream ms = new MemoryStream();
@@ -329,48 +328,21 @@ namespace PolyPaint
             }
         }
 
-        private void OnClosing(object sender, EventArgs e)
-        {
-            try
-            {
-                using (HttpClient client = new HttpClient())
-                {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", (string)Application.Current.Properties["token"]);
-                    System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
-                    client.GetAsync($"{Config.URL}/api/user/logout").Wait();
-                }
-            }
-            catch { }
-        }
-
-
-        private async void InkCanvas_LeftMouseDown(object sender, MouseButtonEventArgs e)
+        private void InkCanvas_LeftMouseDown(object sender, MouseButtonEventArgs e)
         {
             mouseLeftDownPoint = e.GetPosition((IInputElement)sender);
 
             if ((DataContext as VueModele).OutilSelectionne == "select")
             {
-
-                if (_viewState == ViewStateEnum.Online)
-                {
-                    SelectViewModel selectViewModel = new SelectViewModel
-                    {
-                        MouseLeftDownPointX = mouseLeftDownPoint.X,
-                        MouseLeftDownPointY = mouseLeftDownPoint.Y,
-                        Owner = username,
-                    };
-                    await CollaborativeSelectAsync(selectViewModel);
-                }
-                else
-                {
-                    (DataContext as VueModele).SelectItemOffline(surfaceDessin, mouseLeftDownPoint);
-                }
+                (DataContext as VueModele).SelectItem(surfaceDessin, mouseLeftDownPoint);
             }
             else
             {
                 IsDrawing = true;
             }
         }
+
+
         private void InkCanvas_LeftMouseMove(object sender, MouseEventArgs e)
         {
             currentPoint = e.GetPosition((IInputElement)sender);
@@ -380,76 +352,49 @@ namespace PolyPaint
             }
         }
 
-        private async void InkCanvas_LeftMouseUp(object sender, MouseButtonEventArgs e)
+        private void InkCanvas_LeftMouseUp(object sender, MouseButtonEventArgs e)
         {
             if ((DataContext as VueModele).OutilSelectionne == "") return;
-            if (_viewState == ViewStateEnum.Online)
+            var bounds = Rect.Empty;
+            if (surfaceDessin.EditingMode == InkCanvasEditingMode.Select)
             {
-                StrokeCollection strokeInACollection = new StrokeCollection
-                {
-                    icEventManager.DrawingStroke
-                };
-                List<DrawViewModel> drawViewModel = rebuilder.GetDrawViewModelsFromStrokes(strokeInACollection);
-                await CollaborativeDrawAsync(drawViewModel[0]);
+                bounds = surfaceDessin.GetSelectionBounds();
             }
-            else
+
+            var selectedItems = new List<DrawViewModel>();
+            switch ((DataContext as VueModele).OutilSelectionne)
             {
-                icEventManager.EndDraw(surfaceDessin, (DataContext as VueModele).OutilSelectionne);
-            }
-            if ((DataContext as VueModele).OutilSelectionne == "change_text")
-            {
-                icEventManager.ChangeText(surfaceDessin, mouseLeftDownPoint);
+                case "change_text":
+                    icEventManager.ChangeText(surfaceDessin, mouseLeftDownPoint, (VueModele)DataContext);
+                    (DataContext as VueModele).SelectItem(surfaceDessin, e.GetPosition((IInputElement)sender));
+                    selectedItems = rebuilder.GetDrawViewModelsFromStrokes(surfaceDessin.GetSelectedStrokes());
+                    (DataContext as VueModele).CollaborationClient.CollaborativeSelectAsync(selectedItems);
+                    break;
+                case "select":
+                    selectedItems = rebuilder.GetDrawViewModelsFromStrokes(surfaceDessin.GetSelectedStrokes());
+                    (DataContext as VueModele).CollaborationClient.CollaborativeDrawAsync(selectedItems);
+                    (DataContext as VueModele).CollaborationClient.CollaborativeSelectAsync(selectedItems);
+                    break;
+                case "lasso":
+                    (DataContext as VueModele).SelectItemLasso(surfaceDessin, bounds);
+                    selectedItems = rebuilder.GetDrawViewModelsFromStrokes(surfaceDessin.GetSelectedStrokes());
+                    (DataContext as VueModele).CollaborationClient.CollaborativeDrawAsync(selectedItems);
+                    (DataContext as VueModele).CollaborationClient.CollaborativeSelectAsync(selectedItems);
+                    break;
+                default:
+                    icEventManager.EndDrawAsync(surfaceDessin, (DataContext as VueModele));
+                    break;
             }
 
             SendToCloud();
 
 
             IsDrawing = false;
-
-        }
-
-        public async void ConnectToCollaborativeServer(string accessToken)
-        {
-            Connection =
-                new HubConnectionBuilder()
-                .WithUrl($"{Config.URL}/signalr/collaborative", options =>
-                {
-                    options.AccessTokenProvider = () => Task.FromResult(accessToken);
-                })
-                .Build();
-
-            HandleMessages();
-            await Connection.StartAsync();
-        }
-
-
-        private async Task CollaborativeDrawAsync(DrawViewModel drawViewModel)
-        {
-            await Connection.InvokeAsync("Draw", JsonConvert.SerializeObject(drawViewModel));
-        }
-        private async Task CollaborativeSelectAsync(SelectViewModel selectViewModel)
-        {
-            await Connection.InvokeAsync("Select", selectViewModel);
-        }
-        private async Task CollaborativeDuplicateAsync()
-        {
-            object o = Clipboard.GetDataObject();
-
-            await Connection.InvokeAsync("Duplicate");
-        }
-        private async Task CollaborativeDeleteAsync()
-        {
-            await Connection.InvokeAsync("Delete");
-        }
-
-        private async Task CollaborativeResetAsync()
-        {
-            await Connection.InvokeAsync("Reset", "general");
         }
 
         private void MessageTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (!String.IsNullOrWhiteSpace(messageTextBox.Text))
+            if (!string.IsNullOrWhiteSpace(messageTextBox.Text))
             {
                 sendButton.IsEnabled = true;
             }
@@ -461,7 +406,7 @@ namespace PolyPaint
         private void AddImageToCanvas(object sender, RoutedEventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
-            Nullable<bool> result = openFileDialog.ShowDialog();
+            bool? result = openFileDialog.ShowDialog();
 
             ImageBrush ib = new ImageBrush
             {
@@ -494,7 +439,7 @@ namespace PolyPaint
             };
 
             // Show save file dialog box
-            Nullable<bool> result = saveFileDialog.ShowDialog();
+            bool? result = saveFileDialog.ShowDialog();
             MemoryStream ms = new MemoryStream(bitmap);
             System.Drawing.Image returnImage = System.Drawing.Image.FromStream(ms);
             using (System.Drawing.Image image = System.Drawing.Image.FromStream(new MemoryStream(bitmap)))
@@ -506,65 +451,67 @@ namespace PolyPaint
         }
         private async void Reinitialiser_Click(object sender, RoutedEventArgs e)
         {
-            if (_viewState == ViewStateEnum.Online)
-            {
-                await CollaborativeResetAsync();
-            }
+            await (DataContext as VueModele).CollaborationClient.CollaborativeResetAsync();
         }
 
-        private void HandleMessages()
+        private void ReceiveDraw(object sender, MessageArgs args)
         {
-            Connection.On<string, string, string>("ReceiveMessage", (username, message, timestamp) =>
+            Dispatcher.Invoke(() =>
             {
-                MessageReceived?.Invoke(this, new MessageArgs(username, message, timestamp));
+                var message = JsonConvert.DeserializeObject<ItemsMessage>(args.Message);
+                icEventManager.EndDraw(surfaceDessin, message.Items, username);
             });
-            Connection.On<string>("SystemMessage", (message) =>
+        }
+
+        private void ReceiveSelect(object sender, MessageArgs args)
+        {
+            Dispatcher.Invoke(() =>
             {
-                Console.WriteLine(message);
+                var message = JsonConvert.DeserializeObject<ItemsMessage>(args.Message);
+                (DataContext as VueModele).ChangeOnlineSelection(message);
+                if (_onlineSelectedAdorners.TryGetValue(message.Username, out var adorner))
+                    adornerLayer.Remove(adorner);
+
+                var pair = new KeyValuePair<string, List<DrawViewModel>>(message.Username, message.Items);
+                adornerLayer = AdornerLayer.GetAdornerLayer(surfaceDessin);
+                _onlineSelectedAdorners.AddOrUpdate(message.Username, new OnlineSelectedAdorner(surfaceDessin, pair), (k, v) => { return new OnlineSelectedAdorner(surfaceDessin, pair); });
+                adornerLayer.Add(_onlineSelectedAdorners[message.Username]);
             });
-            Connection.On<string>("Draw", (drawViewModelString) =>
+        }
+
+        private void ReceiveDuplicate(object sender, MessageArgs args)
+        {
+        }
+
+        private void ReceiveDelete(object sender, MessageArgs args)
+        {
+            Dispatcher.Invoke(() =>
             {
-                Dispatcher.Invoke(() =>
-                {
-                    DrawViewModel drawViewModel = JsonConvert.DeserializeObject<DrawViewModel>(drawViewModelString);
-                    icEventManager.EndDraw(surfaceDessin, drawViewModel, username);
-                });
+                surfaceDessin.CutSelection();
             });
-            Connection.On<SelectViewModel>("Select", (selectViewModel) =>
+        }
+
+        private void ReceiveReset(object sender, EventArgs args)
+        {
+            Dispatcher.Invoke(() =>
             {
-                Dispatcher.Invoke(() =>
-                {
-                    (DataContext as VueModele).SelectItemOnline(surfaceDessin, selectViewModel, username);
-                });
+                reinitialiser.Command = (DataContext as VueModele).Reinitialiser;
+                reinitialiser.Command.Execute(reinitialiser.CommandParameter);
             });
-            Connection.On("Duplicate", () =>
-            {
-                Dispatcher.Invoke(() =>
-                {
-                    surfaceDessin.CopySelection();
-                    surfaceDessin.Paste();
-                });
-            });
-            Connection.On("Delete", () =>
-            {
-                Dispatcher.Invoke(() =>
-                {
-                    surfaceDessin.CutSelection();
-                });
-            });
-            Connection.On("Reset", () =>
-            {
-                Dispatcher.Invoke(() =>
-                {
-                    reinitialiser.Command = (DataContext as VueModele).Reinitialiser;
-                    reinitialiser.Command.Execute(reinitialiser.CommandParameter);
-                });
-            });
+        }
+
+        private void SendSelectedStrokes(object sender, RoutedEventArgs e)
+        {
+            (DataContext as VueModele).SendSelectedStrokes();
         }
 
         void InkCanvas_SelectionMoving(object sender, InkCanvasSelectionEditingEventArgs e)
         {
             icEventManager.RedrawConnections(surfaceDessin, (DataContext as VueModele).OutilSelectionne, e.OldRectangle, e.NewRectangle);
+        }
+        private void ContextualMenu_Click(object sender, EventArgs e)
+        {
+            icEventManager.ContextualMenuClick(surfaceDessin, (sender as MenuItem).Name, (DataContext as VueModele));
         }
 
         private void hamburgerMenu_Click(object sender, RoutedEventArgs e)
@@ -587,7 +534,7 @@ namespace PolyPaint
 
         private void surfaceDessin_ChangeSelection(object sender, EventArgs e)
         {
-            (DataContext as VueModele).ChangeSelection((sender as InkCanvas));
+            (DataContext as VueModele).ChangeSelection(sender as InkCanvas);
             // Add the rotating strokes adorner to the InkPresenter.
             if (adorner != null)
                 adornerLayer.Remove(adorner);

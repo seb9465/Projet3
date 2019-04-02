@@ -9,41 +9,32 @@
 import UIKit
 
 class ChatRoomsControllerTableViewController: UITableViewController {
+    
     private let refreshTable = UIRefreshControl();
     
-    @objc private func refreshWeatherData(_ sender: Any) {
-        // Fetch Weather Data
+    @objc private func refreshData(_ sender: Any) {
         ChatService.shared.invokeFetchChannels();
         self.refreshTable.endRefreshing();
-        
     }
     
     @IBAction func backButton(_ sender: Any) {
-//        ChatService.shared.disconnectFromHub();
-        
+        ChatService.shared.currentChannel = nil;
         let storyboard = UIStoryboard(name: "Main", bundle: nil);
-        let view = storyboard.instantiateViewController(withIdentifier: "DashboardController");
-        navigationController?.pushViewController(view, animated: true);
+        let view = storyboard.instantiateViewController(withIdentifier: "MainController");
+        self.present(view, animated: true, completion: nil);
     }
     
     override func viewDidLoad() {
         self.tableView.separatorStyle = .none;
         self.registerTableViewCells();
-        print("[ CHATROOM ] View did load");
-        ChatService.shared.onFetchChannels(updateChannelsFct: self.updateChannels);
-//        ChatService.shared.invokeChannelsWhenConnected();
-        ChatService.shared.onCreateChannel(updateChannelsFct: self.updateChannels);
         
+        ChatService.shared.onFetchChannels(updateChannelsFct: self.updateChannels);
+        ChatService.shared.onCreateChannel(updateChannelsFct: self.updateChannels);
         ChatService.shared.invokeFetchChannels();
         
-        self.refreshTable.addTarget(self, action: #selector(refreshWeatherData(_:)), for: .valueChanged)
+        self.refreshTable.addTarget(self, action: #selector(refreshData(_:)), for: .valueChanged)
         self.tableView.addSubview(self.refreshTable);
         
-        // Uncomment the following line to preserve selection between presentations
-//         self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-//         self.navigationItem.rightBarButtonItem = self.editButtonItem
         self.navigationItem.rightBarButtonItems?.append(self.editButtonItem);
         
         super.viewDidLoad()

@@ -371,6 +371,7 @@
     <Compile Include="Config.cs" />
     <Compile Include="Convertisseurs\Convertisseurs.cs" />
     <Compile Include="Modeles\ChatClient.cs" />
+    <Compile Include="Modeles\CollaborationClient.cs" />
     <Compile Include="Modeles\Editeur.cs" />
     <Compile Include="Modeles\Room.cs" />
     <Compile Include="Modeles\SaveableElement.cs" />
@@ -387,6 +388,7 @@
     <Compile Include="Strokes\LineStroke.cs" />
     <Compile Include="Strokes\LineStrokeAdorner.cs" />
     <Compile Include="Strokes\ImageStroke.cs" />
+    <Compile Include="Strokes\OnlineSelectedAdorner.cs" />
     <Compile Include="Strokes\UnidirectionalAssociationStroke.cs" />
     <Compile Include="Strokes\ActivityStroke.cs" />
     <Compile Include="Strokes\PhaseStroke.cs" />
@@ -401,9 +403,14 @@
     <Compile Include="Utilitaires\StrokeBuilder.cs" />
     <Compile Include="Utilitaires\Tools.cs" />
     <Compile Include="VueModeles\CanvasViewModel.cs" />
+    <Compile Include="VueModeles\IChatDataContext.cs" />
     <Compile Include="VueModeles\RegistrationViewModel.cs" />
     <Compile Include="VueModeles\LoginViewModel.cs" />
+    <Compile Include="VueModeles\UserDataContext.cs" />
     <Compile Include="VueModeles\VueModele.cs" />
+    <Compile Include="Vues\EditLineTitleWindow.xaml.cs">
+      <DependentUpon>EditLineTitleWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Vues\EditTitleWindow.xaml.cs">
       <DependentUpon>EditTitleWindow.xaml</DependentUpon>
     </Compile>
@@ -427,6 +434,10 @@
     </Compile>
     <Compile Include="Vues\ViewStateEnum.cs" />
     <Page Include="Vues\ChatWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Vues\EditLineTitleWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

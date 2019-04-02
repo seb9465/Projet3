@@ -9,8 +9,8 @@ namespace PolyPaint.Strokes
 {
     public class LineStroke : AbstractLineStroke
     {
-        public LineStroke(StylusPointCollection pts, InkCanvas surfaceDessin, string couleurBordure, double thicc)
-            : base(pts, surfaceDessin, "0..0", "0..0", couleurBordure, "#FF000000", thicc, false)
+        public LineStroke(StylusPointCollection pts, InkCanvas surfaceDessin, string couleurBordure, double thicc, DashStyle dashStyle)
+            : base(pts, surfaceDessin, "", "", couleurBordure, "#FF000000", thicc, false, dashStyle)
         { }
 
         protected override void DrawCore(DrawingContext drawingContext, DrawingAttributes drawingAttributes)
@@ -34,19 +34,14 @@ namespace PolyPaint.Strokes
             StylusPoint stp = pts[0];
             StylusPoint sp = pts[1];
 
-            StreamGeometry elbowGeometry = new StreamGeometry();
-            using (StreamGeometryContext geometryContext = elbowGeometry.Open())
+            var elbowPoints = new Point[]
             {
-                geometryContext.BeginFigure(stp.ToPoint(), true, true);
-                var elbowPoints = new PointCollection
-                {
-                     LastElbowPosition,
-                     sp.ToPoint(),
-                     LastElbowPosition
-                };
-                geometryContext.PolyLineTo(elbowPoints, true, true);
-            }
-            drawingContext.DrawGeometry(Brushes.Transparent, Border, elbowGeometry);
+                stp.ToPoint(),
+                LastElbowPosition,
+                sp.ToPoint()
+            };
+            DrawPolyline(drawingContext, null, Border, elbowPoints, FillRule.EvenOdd);
+            DrawText(drawingContext);
         }
     }
 }

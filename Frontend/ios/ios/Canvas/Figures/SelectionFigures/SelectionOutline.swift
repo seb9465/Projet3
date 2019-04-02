@@ -21,13 +21,15 @@ class SelectionOutline: UIView {
 
     public var firstPoint: CGPoint!
     public var lastPoint: CGPoint!
+    public var associatedFigureID: UUID!;
     
     var border: CAShapeLayer!;
     var cornerAnchors: [CAShapeLayer] = []
     
-    init(firstPoint: CGPoint, lastPoint: CGPoint) {
+    init(firstPoint: CGPoint, lastPoint: CGPoint, associatedFigureID: UUID) {
         self.firstPoint = firstPoint
         self.lastPoint = lastPoint
+        self.associatedFigureID = associatedFigureID;
         
         let frameSize = CGSize(width: abs(firstPoint.x - lastPoint.x), height: abs(firstPoint.y - lastPoint.y))
         let frame = CGRect(origin: firstPoint, size: frameSize)

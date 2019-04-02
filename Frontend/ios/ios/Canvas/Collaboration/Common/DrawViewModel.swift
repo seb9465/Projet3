@@ -7,31 +7,42 @@
 //
 
 struct DrawViewModel: Codable {
-    var ItemType: ItemTypeEnum
-    var StylusPoints: [PolyPaintStylusPoint]
-    var OutilSelectionne: String
-    var Color: PolyPaintColor
-    var ChannelId: String
-    
-    init(ItemType: ItemTypeEnum, StylusPoints: [PolyPaintStylusPoint], OutilSelectionne: String, Color: PolyPaintColor, ChannelId: String) {
-        self.ItemType = ItemType
-        self.StylusPoints = StylusPoints
-        self.OutilSelectionne = OutilSelectionne
-        self.Color = Color
-        self.ChannelId = ChannelId
-    }
+    var Guid: String?
+    var owner: String?
+    var ItemType: ItemTypeEnum?
+    var StylusPoints: [PolyPaintStylusPoint]?
+    var FillColor: PolyPaintColor?
+    var BorderColor: PolyPaintColor?
+    var BorderThickness: Double?
+    var BorderStyle: String?
+    var ShapeTitle: String?
+    var Methods: [String]?
+    var Properties: [String]?
+    var SourceTitle: String?
+    var DestinationTitle: String?
+    var ChannelId: String?
+    var OutilSelectionne: String?
+    var LastElbowPosition: PolyPaintStylusPoint?
+    var ImageBytes: [UInt8]?
+    var Rotation: Double?
+
+    init() {}
 }
 
 enum ItemTypeEnum: Int, Codable {
-    case UMLClass
-    case UMLComment
-    case UMLPhaseFigure
-    case Actor
+    case Activity
     case Artefact
     case Phase
-    case Activity
-    case StraightLine
-    case DashedLine
+    case Comment
+    case Role
+    case UmlClass
+    case Text
+    case Agregation
+    case BidirectionalAssociation
+    case Composition
+    case Inheritance
+    case UniderectionalAssoication
+    case Image
 }
 
 struct PolyPaintStylusPoint: Codable {

@@ -115,7 +115,7 @@
                                                 <ColumnDefinition Width="202*"/>
                                             </Grid.ColumnDefinitions>
 
-                                            <ListBox ItemsSource="{Binding VueModele.Rooms}" Name="roomList" Margin="0,50,0,5" MaxHeight="190" Grid.ColumnSpan="2">
+                                            <ListBox ItemsSource="{Binding Rooms}" Name="roomList" Margin="0,50,0,5" MaxHeight="190" Grid.ColumnSpan="2">
                                                 <ListBox.ItemTemplate  >
                                                     <DataTemplate>
                                                         <Grid Margin="0,2" >

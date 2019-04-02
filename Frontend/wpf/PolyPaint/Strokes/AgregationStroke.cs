@@ -11,8 +11,8 @@ namespace PolyPaint.Strokes
 {
     public class AgregationStroke : AbstractLineStroke
     {
-        public AgregationStroke(StylusPointCollection pts, InkCanvas surfaceDessin, string couleurBordure, double tailleTrait)
-            : base(pts, surfaceDessin, "0..0", "0..0", couleurBordure, "#00000000", tailleTrait, true)
+        public AgregationStroke(StylusPointCollection pts, InkCanvas surfaceDessin, string couleurBordure, double tailleTrait, DashStyle dashStyle)
+            : base(pts, surfaceDessin, "", "", couleurBordure, "#00000000", tailleTrait, true, dashStyle)
         { }
 
         protected override void DrawCore(DrawingContext drawingContext, DrawingAttributes drawingAttributes)
@@ -72,21 +72,16 @@ namespace PolyPaint.Strokes
                 geometryContext.PolyLineTo(new PointCollection(points.Skip(1)), true, true);
             }
 
-            drawingContext.DrawGeometry(Fill, Border, streamGeometry);
+            drawingContext.DrawGeometry(null, Border, streamGeometry);
 
-            StreamGeometry elbowGeometry = new StreamGeometry();
-            using (StreamGeometryContext geometryContext = elbowGeometry.Open())
+            var elbowPoints = new Point[]
             {
-                geometryContext.BeginFigure(stp.ToPoint(), true, true);
-                var elbowPoints = new PointCollection
-                {
-                     LastElbowPosition,
-                     points[0],
-                     LastElbowPosition
-                };
-                geometryContext.PolyLineTo(elbowPoints, true, true);
-            }
-            drawingContext.DrawGeometry(Brushes.Transparent, Border, elbowGeometry);
+                stp.ToPoint(),
+                LastElbowPosition,
+                points[0]
+            };
+            DrawPolyline(drawingContext, null, Border, elbowPoints, FillRule.EvenOdd);
+            DrawText(drawingContext);
         }
     }
 }

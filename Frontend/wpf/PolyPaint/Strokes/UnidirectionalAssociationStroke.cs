@@ -1,19 +1,18 @@
 ﻿using PolyPaint.Utilitaires;
 using System;
-using System.Drawing.Drawing2D;
+using System.Windows.Media;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Ink;
 using System.Windows.Input;
-using System.Windows.Media;
 
 namespace PolyPaint.Strokes
 {
     public class UnidirectionalAssociationStroke : AbstractLineStroke
     {
-        public UnidirectionalAssociationStroke(StylusPointCollection pts, InkCanvas surfaceDessin, string couleurBordure, double thicc)
-            : base(pts, surfaceDessin, "0..0", "0..0", couleurBordure, "#FF000000", thicc, false)
+        public UnidirectionalAssociationStroke(StylusPointCollection pts, InkCanvas surfaceDessin, string couleurBordure, double thicc, DashStyle dashStyle)
+            : base(pts, surfaceDessin, "", "", couleurBordure, "#FF000000", thicc, false, dashStyle)
         { }
 
         protected override void DrawCore(DrawingContext drawingContext, DrawingAttributes drawingAttributes)
@@ -72,19 +71,14 @@ namespace PolyPaint.Strokes
 
             drawingContext.DrawGeometry(Fill, Border, streamGeometry);
 
-            StreamGeometry elbowGeometry = new StreamGeometry();
-            using (StreamGeometryContext geometryContext = elbowGeometry.Open())
+            var elbowPoints = new Point[]
             {
-                geometryContext.BeginFigure(stp.ToPoint(), true, true);
-                var elbowPoints = new PointCollection
-                {
-                     LastElbowPosition,
-                     points[0],
-                     LastElbowPosition
-                };
-                geometryContext.PolyLineTo(elbowPoints, true, true);
-            }
-            drawingContext.DrawGeometry(Brushes.Transparent, Border, elbowGeometry);
+                stp.ToPoint(),
+                LastElbowPosition,
+                points[0]
+            };
+            DrawPolyline(drawingContext, null, Border, elbowPoints, FillRule.EvenOdd);
+            DrawText(drawingContext);
         }
     }
 }

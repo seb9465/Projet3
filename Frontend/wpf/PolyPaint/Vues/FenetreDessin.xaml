@@ -230,7 +230,6 @@
                             BorderBrush="{Binding Path=SelectedBorder, Converter={StaticResource convertisseurBordure}, ConverterParameter=solid, UpdateSourceTrigger=PropertyChanged}" 
                             Background="{Binding Path=SelectedBorder, Converter={StaticResource convertisseurCouleurFond}, ConverterParameter=solid, UpdateSourceTrigger=PropertyChanged}"                                 
                             HorizontalContentAlignment="Center"
-                            IsEnabled="{Binding Path=IsStrokeSelected}"
                             Command="{Binding Path=ChooseBorder}"
                             CommandParameter="solid">
                                 <Rectangle Width="10" Height="2" Fill="Black" Stroke="Black" StrokeThickness="2" HorizontalAlignment="Center"/>
@@ -241,7 +240,6 @@
                             HorizontalContentAlignment="Center"                            
                             BorderBrush="{Binding Path=SelectedBorder, Converter={StaticResource convertisseurBordure}, ConverterParameter=dash, UpdateSourceTrigger=PropertyChanged}" 
                             Background="{Binding Path=SelectedBorder, Converter={StaticResource convertisseurCouleurFond}, ConverterParameter=dash, UpdateSourceTrigger=PropertyChanged}"
-                            IsEnabled="{Binding Path=IsStrokeSelected}"
                             Command="{Binding Path=ChooseBorder}"
                             CommandParameter="dash">
                                 <Grid>
@@ -335,7 +333,8 @@
                         UsingAlphaChannel="False"
                         ShowAvailableColors="True"
                         ShowStandardColors="True"
-                        ShowTabHeaders="False" />
+                        ShowTabHeaders="False"
+                        MouseLeftButtonUp="SendSelectedStrokes"/>
                     <xctk:ColorPicker x:Name="selecteurCouleurRemplissage"                             
                         VerticalContentAlignment="Stretch"
                         Background="#00000000"
@@ -347,13 +346,15 @@
                         UsingAlphaChannel="False"
                         ShowAvailableColors="True"
                         ShowStandardColors="True"
-                        ShowTabHeaders="False" />
+                        ShowTabHeaders="False"
+                        MouseLeftButtonUp="SendSelectedStrokes"/>
                     <Slider Width="100" Height="26" Minimum="1" Maximum="50"
                         Value="{Binding Path=TailleTrait, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                         Margin="12"
                         Foreground="OrangeRed"
                         IsEnabled="{Binding Path=IsStrokeSelected}"
-                        TickFrequency="10" TickPlacement="BottomRight" IsSnapToTickEnabled="False">
+                        TickFrequency="10" TickPlacement="BottomRight" IsSnapToTickEnabled="False"
+                        PreviewMouseUp="SendSelectedStrokes">
                     </Slider>
                 </StackPanel>
             </Border>
@@ -392,13 +393,26 @@
                            MouseLeave="surfaceDessin_MouseLeave"
                            MouseMove="surfaceDessin_MouseMove"
                            PreviewMouseMove="InkCanvas_LeftMouseMove"
-                           PreviewMouseUp="InkCanvas_LeftMouseUp"
-                           PreviewMouseDown="InkCanvas_LeftMouseDown"
+                           MouseUp="InkCanvas_LeftMouseUp"
+                           MouseDown="InkCanvas_LeftMouseDown"
                            SelectionMoving="InkCanvas_SelectionMoving"               
                            Strokes="{Binding Path=Traits, Mode=OneTime}"
                            EditingMode="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurModeEdition}, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
                            DefaultDrawingAttributes="{Binding Path=AttributsDessin, Mode=OneTime}"
-                           SelectionChanged="surfaceDessin_ChangeSelection" />
+                           SelectionChanged="surfaceDessin_ChangeSelection">
+                        <InkCanvas.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="Tout sélectionner" Click="ContextualMenu_Click" Name="SelectAll"/>
+                                <MenuItem Header="Inverser la sélection" Click="ContextualMenu_Click" Name="InvertSelection"/>
+                                <MenuItem Header="Inverser les couleurs de la sélection" Click="ContextualMenu_Click" Name="InvertColors"/>
+                                <MenuItem Header="Transformer toutes les...">
+                                    <MenuItem Header="Formes UML" Click="ContextualMenu_Click" Name="TransformAllShapes"/>
+                                    <MenuItem Header="Connexions UML" Click="ContextualMenu_Click" Name="TransformAllConnections"/>
+                                    <MenuItem Header="Formes et connexions UML" Click="ContextualMenu_Click" Name="TransformAllShapesAndConnections"/>
+                                </MenuItem>
+                            </ContextMenu>
+                        </InkCanvas.ContextMenu>
+                    </InkCanvas>
                     <Border.Effect>
                         <DropShadowEffect Opacity="0.3" BlurRadius="10"/>
                     </Border.Effect>

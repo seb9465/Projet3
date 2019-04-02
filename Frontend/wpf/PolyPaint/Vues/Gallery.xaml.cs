@@ -1,14 +1,18 @@
 ﻿using MaterialDesignThemes.Wpf;
 using Newtonsoft.Json;
 using PolyPaint.Common.Collaboration;
+using PolyPaint.Common.Messages;
 using PolyPaint.Modeles;
 using PolyPaint.Structures;
 using PolyPaint.Utilitaires;
 using PolyPaint.VueModeles;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -27,12 +31,6 @@ namespace PolyPaint.Vues
     /// Interaction logic for Gallery.xaml
     /// </summary>
     /// 
-    class UserDataContext
-    {
-        public VueModele VueModele { get; set; }
-        public List<SaveableCanvas> Canvas { get; set; }
-    }
-
     public partial class Gallery : Window
     {
         public List<SaveableCanvas> Canvas { get; set; }
@@ -40,7 +38,6 @@ namespace PolyPaint.Vues
         private ImageProtection imageProtection;
         private StrokeBuilder strokeBuilder = new StrokeBuilder();
         private string username = Application.Current.Properties["username"].ToString();
-        FenetreDessin fenetreDessin = new FenetreDessin(ViewStateEnum.Online);
 
         public String CanvasVisibility;
         public String CanvasName;
@@ -53,33 +50,34 @@ namespace PolyPaint.Vues
         private MediaPlayer mediaPlayer = new MediaPlayer();
         private InkCanvas SurfaceDessin { get; set; }
 
-        public Gallery(List<SaveableCanvas> strokes, InkCanvas drawingSurface)
+        public Gallery(List<SaveableCanvas> strokes, ChatClient chatClient)
         {
             InitializeComponent();
-            Canvas = ConvertStrokesToPNG(strokes, drawingSurface);
-            SurfaceDessin = drawingSurface;
+            Canvas = ConvertStrokesToPNG(strokes);
 
-
-            DataContext = new UserDataContext();
-            (DataContext as UserDataContext).VueModele = new VueModele();
-            (DataContext as UserDataContext).VueModele.ChatClient.Initialize((string)Application.Current.Properties["token"]);
-            (DataContext as UserDataContext).VueModele.ChatClient.MessageReceived += ScrollDown;
-            externalChatWindow = new ChatWindow((DataContext as UserDataContext).VueModele);
-            (DataContext as UserDataContext).Canvas = Canvas;
-          //  DataContext = Canvas; // Il faudrait reussir a utiliser plusieurs datacontext. Ici on a besoin du datacontext pour recuperer les donnee du chat ET des canvas. Cest pous ca que le chat marche pas dans la gallerie
+            DataContext = new UserDataContext(chatClient);
             
+            externalChatWindow = new ChatWindow(DataContext as UserDataContext);
+            (DataContext as UserDataContext).Canvas = Canvas;
+            //  DataContext = Canvas; // Il faudrait reussir a utiliser plusieurs datacontext. Ici on a besoin du datacontext pour recuperer les donnee du chat ET des canvas. Cest pous ca que le chat marche pas dans la gallerie
+
             usernameLabel.Content = username;
+            Closing += UnsubscribeDataContext;
         }
 
+        private void UnsubscribeDataContext(object sender, CancelEventArgs e)
+        {
+            (DataContext as UserDataContext).UnsubscribeChatClient();
+        }
 
         private void NewCanva_Click(object sender, RoutedEventArgs e)
         {
-            UploadToCloud uploadToCloud = new UploadToCloud();
+            UploadToCloud uploadToCloud = new UploadToCloud((DataContext as UserDataContext).ChatClient);
             Application.Current.MainWindow = uploadToCloud;
             this.Close();
+            DataContext = null;
             uploadToCloud.Show();
         }
-
 
         private void AddRoom(object sender, DialogClosingEventArgs eventArgs)
         {
@@ -87,7 +85,7 @@ namespace PolyPaint.Vues
 
             if (!string.IsNullOrWhiteSpace(roomTextBox.Text))
             {
-                (DataContext as VueModele).ChatClient.CreateChannel(roomTextBox.Text.Trim());
+                (DataContext as UserDataContext).ChatClient.CreateChannel(roomTextBox.Text.Trim());
             }
             clearRoomName(sender, eventArgs);
         }
@@ -115,7 +113,7 @@ namespace PolyPaint.Vues
         {
             if (!string.IsNullOrWhiteSpace(messageTextBox.Text))
             {
-                (DataContext as VueModele).ChatClient.SendMessage(messageTextBox.Text, (DataContext as VueModele).CurrentRoom);
+                (DataContext as UserDataContext).ChatClient.SendMessage(messageTextBox.Text, (DataContext as UserDataContext).CurrentRoom);
             }
             mediaPlayer.Open(new Uri("SoundEffects//send.mp3", UriKind.Relative));
             mediaPlayer.Volume = 100;
@@ -153,7 +151,7 @@ namespace PolyPaint.Vues
             }
         }
 
-        private List<SaveableCanvas> ConvertStrokesToPNG(List<SaveableCanvas> savedCanvas, InkCanvas drawingSurface)
+        private List<SaveableCanvas> ConvertStrokesToPNG(List<SaveableCanvas> savedCanvas)
         {
             List<SaveableCanvas> canvas = new List<SaveableCanvas>();
             if (savedCanvas != null)
@@ -198,9 +196,10 @@ namespace PolyPaint.Vues
                 imageProtection = new ImageProtection();
                 if (imageProtection.PasswordEntered == SelectedCanvas.CanvasProtection)
                 {
-                    strokeBuilder.BuildStrokesFromDrawViewModels(drawViewModels, SurfaceDessin);
+                    FenetreDessin fenetreDessin = new FenetreDessin(drawViewModels, (DataContext as UserDataContext).ChatClient);
                     Application.Current.MainWindow = fenetreDessin;
                     this.Close();
+                    DataContext = null;
                     fenetreDessin.Show();
                 }
                 else
@@ -211,9 +210,10 @@ namespace PolyPaint.Vues
             }
             else
             {
-                strokeBuilder.BuildStrokesFromDrawViewModels(drawViewModels, SurfaceDessin);
+                FenetreDessin fenetreDessin = new FenetreDessin(drawViewModels, (DataContext as UserDataContext).ChatClient);
                 Application.Current.MainWindow = fenetreDessin;
                 this.Close();
+                DataContext = null;
                 fenetreDessin.Show();
             }
         }

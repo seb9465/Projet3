@@ -14,4 +14,5 @@ enum TouchEventState {
     case CONNECTION
     case INSERT
     case DELETE
+    case NONE
 }
