@@ -418,6 +418,12 @@ extension Editor : TouchInputDelegate {
                     self.select(figure: figure);
                 }
             }
+            
+            var drawViewModels: [DrawViewModel] = []
+            for figure in selectedFigures {
+                drawViewModels.append(figure.exportViewModel()!)
+            }
+            CollaborationHub.shared.selectObjects(drawViewModels: drawViewModels)
 
             self.deselectLasso();
             self.touchEventState = .AREA_SELECT;
@@ -462,7 +468,7 @@ extension Editor : TouchInputDelegate {
 extension Editor: CollaborationHubDelegate {
     func updateSelection(itemMessage: ItemMessage) {
         self.selectedFiguresDictionnary.updateValue(itemMessage.Items, forKey: itemMessage.Username)
-        for pair in  self.selectedFiguresDictionnary {
+        for pair in self.selectedFiguresDictionnary {
             self.select(figure: self.figures.first(where: {$0.uuid.uuidString == pair.value[0].Guid})!, username: pair.key)
         }
     }
