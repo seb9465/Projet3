@@ -44,7 +44,7 @@ namespace PolyPaint
 
         public String canvasVisibility = "";
         public String canvasName = "";
-        public String canvasProtection= "";
+        public String canvasProtection = "";
         public String canvasAutor = "";
 
         private ChatWindow externalChatWindow;
@@ -76,12 +76,14 @@ namespace PolyPaint
             dispatcherTimer.Tick += new EventHandler(SaveImage);
             dispatcherTimer.Interval = new TimeSpan(0, 1, 0);
             dispatcherTimer.Start();
-            
+
 
             _onlineSelectedAdorners = new ConcurrentDictionary<string, OnlineSelectedAdorner>();
             externalChatWindow = new ChatWindow(DataContext);
 
             rebuilder.BuildStrokesFromDrawViewModels(drawViewModels, surfaceDessin);
+            (DataContext as VueModele).CollaborationClient.CollaborativeDrawAsync(drawViewModels);
+            (DataContext as VueModele).Traits = surfaceDessin.Strokes;
         }
 
         private void VueModelePropertyChanged(object sender, PropertyChangedEventArgs args)
@@ -174,7 +176,7 @@ namespace PolyPaint
 
                 List<DrawViewModel> customStrokes = JsonConvert.DeserializeObject<List<DrawViewModel>>(Encoding.UTF8.GetString(jsons));
 
-                // Rebuild the strokes
+                // Rebuild the strokes1
                 rebuilder.BuildStrokesFromDrawViewModels(customStrokes, surfaceDessin);
             }
             catch (ArgumentException) { } // Close Dialog Window
@@ -192,7 +194,7 @@ namespace PolyPaint
         {
             byte[] strokesBytes = GetBytesForStrokes();
             byte[] imageBytes = GetBytesForImage();
-            List<DrawViewModel> drawViewModels = strokeBuilder.GetDrawViewModelsFromStrokes(surfaceDessin.Strokes);
+            List<DrawViewModel> drawViewModels = strokeBuilder.GetDrawViewModelsFromStrokes((DataContext as VueModele).Traits);
             string json = JsonConvert.SerializeObject(drawViewModels);
             string imageToSend = Convert.ToBase64String(imageBytes);
             string CanvasId = DateTime.Now.ToString("yyyy.MM.dd.hh.mm.ss.ffff");
@@ -239,7 +241,7 @@ namespace PolyPaint
             Close();
             gallery.Show();
         }
-        
+
         private byte[] GetBytesForStrokes()
         {
             MemoryStream ms = new MemoryStream();
@@ -549,7 +551,7 @@ namespace PolyPaint
             adornerLayer.Add(adorner);
         }
 
-private void Disconnect_Click(object sender, RoutedEventArgs e)
+        private void Disconnect_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -567,7 +569,7 @@ private void Disconnect_Click(object sender, RoutedEventArgs e)
             Close();
             login.Show();
         }
-       
+
         void Window_Loaded(object sender, RoutedEventArgs e)
         {
         }

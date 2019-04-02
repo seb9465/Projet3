@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using PolyPaint.Common.Collaboration;
 using PolyPaint.Strokes;
+using PolyPaint.VueModeles;
 
 namespace PolyPaint.Utilitaires
 {
