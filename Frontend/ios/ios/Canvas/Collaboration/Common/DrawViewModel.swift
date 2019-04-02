@@ -104,4 +104,16 @@ struct PolyPaintColor: Codable {
         self.G = G
         self.B = B
     }
+    
+    init(color: UIColor)  {
+        var red: CGFloat = 0
+        var green: CGFloat = 0
+        var blue: CGFloat = 0
+        var alpha: CGFloat = 0
+        color.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
+        self.A = Int(alpha)
+        self.R = Int(red)
+        self.G = Int(green)
+        self.B = Int(blue)
+    }
 }

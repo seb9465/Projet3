@@ -230,24 +230,28 @@ extension Editor: SideToolbarDelegate {
         for figure in self.selectedFigures {
             (figure as! UmlFigure).setBorderColor(borderColor: color);
         }
+        CollaborationHub.shared.postNewFigure(figures: self.selectedFigures)
     }
     
     func setSelectedFigureFillColor(color: UIColor) {
         for figure in self.selectedFigures {
             (figure as! UmlFigure).setFillColor(fillColor: color)
         }
+        CollaborationHub.shared.postNewFigure(figures: self.selectedFigures)
     }
     
     func setSelectedFigureBorderStyle(isDashed: Bool) {
         for figure in self.selectedFigures {
             figure.setIsBorderDashed(isDashed: isDashed)
         }
+        CollaborationHub.shared.postNewFigure(figures: self.selectedFigures)
     }
     
     func setSelectedFigureLineWidth(width: CGFloat) {
         for figure in self.selectedFigures {
             figure.setLineWidth(width: width)
         }
+        CollaborationHub.shared.postNewFigure(figures: self.selectedFigures)
     }
     
     func setSelectedFigureName(name: String) {
@@ -255,8 +259,7 @@ extension Editor: SideToolbarDelegate {
             figure.setFigureName(name: name)
         }
     }
-    
-    
+
     func setSelectedFigureNameDidEnd() {
         CollaborationHub.shared.postNewFigure(figures: self.selectedFigures)
     }

@@ -115,16 +115,16 @@ class UmlClassFigure: UmlFigure {
     override func exportViewModel() -> DrawViewModel {
         let point1 = PolyPaintStylusPoint(X: Double(self.firstPoint.x), Y: Double(self.firstPoint.y), PressureFactor: 1)
         let point2 = PolyPaintStylusPoint(X: Double(self.lastPoint.x), Y: Double(self.lastPoint.y), PressureFactor: 1)
-        
+
         var drawViewModel: DrawViewModel = DrawViewModel()
         drawViewModel.Guid = self.uuid.uuidString.lowercased()
         drawViewModel.Owner = UserDefaults.standard.string(forKey: "username")
         drawViewModel.ItemType = ItemTypeEnum.UmlClass
         drawViewModel.StylusPoints = [point1, point2]
-        drawViewModel.FillColor = PolyPaintColor(A: 255, R: 255, G: 1, B: 1)
-        drawViewModel.BorderColor = PolyPaintColor(A: 255, R: 255, G: 1, B: 1)
-        drawViewModel.BorderThickness = 2.0
-        drawViewModel.BorderStyle = "solid"
+        drawViewModel.FillColor = PolyPaintColor(color: self.fillColor)
+        drawViewModel.BorderColor = PolyPaintColor(color: self.lineColor)
+        drawViewModel.BorderThickness = Double(self.lineWidth)
+        drawViewModel.BorderStyle = (self.isBorderDashed) ? "dashed" : "solid"
         drawViewModel.ShapeTitle = self.name
         drawViewModel.Methods = self.methods
         drawViewModel.Properties = self.attributes
