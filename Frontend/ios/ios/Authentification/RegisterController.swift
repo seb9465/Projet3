@@ -64,8 +64,8 @@ class RegisterController: UIViewController {
     // MARK: Actions
     
     @IBAction func registerButtonPressed(_ sender: UIButton) {
-        let registrationViewModel: RegistrationViewModel = RegistrationViewModel(firstName: self.firstNameField.text!, lastName: self.lastNameField.text!, email: self.usernameField.text!, username: self.emailField.text!, password: self.passwordField.text!);
-//        let registrationViewModel: RegistrationViewModel = RegistrationViewModel(firstName: "user", lastName: "hyped", email: "user.777713123@me.com", username: "user.777711221", password: "!12345");
+//        let registrationViewModel: RegistrationViewModel = RegistrationViewModel(firstName: self.firstNameField.text!, lastName: self.lastNameField.text!, email: self.emailField.text!, username: self.usernameField.text!, password: self.passwordField.text!);
+        let registrationViewModel: RegistrationViewModel = RegistrationViewModel(firstName: "user", lastName: "hyped", email: "user.777713123@me.com", username: "user.777711221", password: "!12345");
         spinner = UIViewController.displaySpinner(onView: self.view);
         registerUser(parameters: registrationViewModel.toJson())
             .done { response in
@@ -218,7 +218,6 @@ class RegisterController: UIViewController {
                     break;
                 case .success:
                     if (response.response?.statusCode == 400) {
-                        print(response.value!);
                         for err in response.value! {
                             let messageJSON: String = err.1.rawString()!;
                             let message: HttpResponseMessage = self.showError(messageJSON: messageJSON);
@@ -303,14 +302,17 @@ class RegisterController: UIViewController {
     
     @objc func keyboardWillHide(notification: NSNotification) {
         UIView.animate(withDuration: 0.3) {
-            self.constraintContentHeight.constant -= self.keyboardHeight
+            guard let heightConstraint = self.constraintContentHeight else { return }
+            guard let keybHeight = self.keyboardHeight else { return }
+            heightConstraint.constant -= self.keyboardHeight
         }
         
-        keyboardHeight = nil
+        self.keyboardHeight = nil
     }
 }
 
 // MARK: UITextFieldDelegate
+
 extension RegisterController: UITextFieldDelegate {
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         activeField = textField
