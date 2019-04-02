@@ -12,6 +12,7 @@ import JWTDecode
 
 protocol CollaborationHubDelegate {
     func updateCanvas(itemMessage: ItemMessage)
+    func updateSelection(itemMessage: ItemMessage)
     func updateClear();
 }
 
@@ -106,6 +107,28 @@ class CollaborationHub {
         });
     }
     
+    public func selectObjects(drawViewModels: [DrawViewModel]) -> Void {
+        let token = UserDefaults.standard.string(forKey: "token");
+        let jwt = try! decode(jwt: token!)
+        let username = jwt.claim(name: "unique_name").string
+        let itemMessage = ItemMessage(
+            CanvasId: "general",
+            Username: username!,
+            Items: drawViewModels
+            )
+        
+        let jsonEncoder = JSONEncoder()
+        let jsonData = try! jsonEncoder.encode(itemMessage)
+        let jsonString = String(data: jsonData, encoding: .utf8)
+        
+        self.hubConnection.invoke(method: "Select", arguments: [jsonString], invocationDidComplete: { (Error) in
+            if (Error != nil) {
+                print("Error calling select", Error!)
+                return
+            }
+        });
+    }
+    
     // Receive a figure from the collaboratibve Hub
     public func onDraw() -> Void {
         self.hubConnection.on(method: "Draw", callback: { (args, typeConverter) in
@@ -116,6 +139,18 @@ class CollaborationHub {
             let itemMessage: ItemMessage = try! JSONDecoder().decode(ItemMessage.self, from: jsonData!);
             
             self.delegate!.updateCanvas(itemMessage: itemMessage)
+        })
+    }
+    
+    public func onSelect() -> Void {
+        self.hubConnection.on(method: "Select", callback: { (args, typeConverter) in
+            print("[ Collab ] Received SELECT action")
+            
+            let jsonString: String = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self)!;
+            let jsonData = jsonString.data(using: .utf8)
+            let itemMessage: ItemMessage = try! JSONDecoder().decode(ItemMessage.self, from: jsonData!);
+            
+            self.delegate!.updateSelection(itemMessage: itemMessage)
         })
     }
     //

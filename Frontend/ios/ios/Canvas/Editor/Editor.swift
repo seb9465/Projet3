@@ -12,7 +12,7 @@ class Editor {
     public var editorView: EditorView = EditorView()
     //    public var sideToolbarController: SideToolbarController?
     public var sideToolbatControllers: [SideToolbarController] = []
-    
+    private var selectedFiguresDictionnary: [String : [DrawViewModel]] = [:]
     private var undoArray: [Figure] = []
     private var redoArray: [Figure] = [];
     private var figures: [Figure] = [];
@@ -425,6 +425,10 @@ extension Editor : TouchInputDelegate {
 }
 
 extension Editor: CollaborationHubDelegate {
+    func updateSelection(itemMessage: ItemMessage) {
+        self.selectedFiguresDictionnary.updateValue(itemMessage.Items, forKey: itemMessage.Username)
+    }
+    
     func updateCanvas(itemMessage: ItemMessage) {
         print(itemMessage)
         for drawViewModel in itemMessage.Items {
