@@ -5,10 +5,10 @@
 //  Created by William Sevigny on 2019-03-06.
 //  Copyright © 2019 LOG3000 equipe 12. All rights reserved.
 //
-
+import UIKit
 struct DrawViewModel: Codable {
     var Guid: String?
-    var owner: String?
+    var Owner: String?
     var ItemType: ItemTypeEnum?
     var StylusPoints: [PolyPaintStylusPoint]?
     var FillColor: PolyPaintColor?
@@ -43,6 +43,37 @@ enum ItemTypeEnum: Int, Codable {
     case Inheritance
     case UniderectionalAssoication
     case Image
+    
+    var description: String {
+        switch self {
+        case .Activity:
+            return "Activity"
+        case .Artefact:
+            return "Artefact"
+        case .Phase:
+            return "Phase"
+        case .Comment:
+            return "Comment"
+        case .Role:
+            return "Role"
+        case .UmlClass:
+            return "Class"
+        case .Text:
+            return "Text"
+        case .Agregation:
+            return "Connection"
+        case .BidirectionalAssociation:
+            return "Connection"
+        case .Composition:
+            return "Connection"
+        case .Inheritance:
+            return "Connection"
+        case .UniderectionalAssoication:
+            return "Connection"
+        case .Image:
+            return "Image"
+        }
+    }
 }
 
 struct PolyPaintStylusPoint: Codable {
@@ -54,6 +85,10 @@ struct PolyPaintStylusPoint: Codable {
         self.X = X
         self.Y = Y
         self.PressureFactor = PressureFactor
+    }
+    
+    func getCGPoint() -> CGPoint {
+        return CGPoint(x: self.X, y: self.Y)
     }
 }
 
@@ -68,5 +103,21 @@ struct PolyPaintColor: Codable {
         self.R = R
         self.G = G
         self.B = B
+    }
+    
+    init(color: UIColor)  {
+        var red: CGFloat = 0
+        var green: CGFloat = 0
+        var blue: CGFloat = 0
+        var alpha: CGFloat = 0
+        color.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
+        self.A = Int(alpha)
+        self.R = Int(red)
+        self.G = Int(green)
+        self.B = Int(blue)
+    }
+    
+    func getUIColor() -> UIColor {
+        return UIColor(red: CGFloat(self.R), green: CGFloat(self.G), blue: CGFloat(self.B), alpha: CGFloat(self.A))
     }
 }

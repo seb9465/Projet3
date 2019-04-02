@@ -29,6 +29,8 @@
 		3D73359D223739550021FA3C /* UmlClassFigure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D73359C223739550021FA3C /* UmlClassFigure.swift */; };
 		3D73359F22373D5E0021FA3C /* FigureFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D73359E22373D5E0021FA3C /* FigureFactory.swift */; };
 		3D77176921F7C8BC006244A8 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D77176821F7C8BC006244A8 /* Alamofire.framework */; };
+		3D8384F52253924F00AAD14E /* FigureNameCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D8384F32253924F00AAD14E /* FigureNameCell.swift */; };
+		3D8384F62253924F00AAD14E /* FigureNameCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3D8384F42253924F00AAD14E /* FigureNameCell.xib */; };
 		3DA5CA43224414D200087298 /* PublicGalleryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DA5CA42224414D200087298 /* PublicGalleryController.swift */; };
 		3DA5CA4722441A9200087298 /* GalleryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DA5CA4522441A9200087298 /* GalleryCell.swift */; };
 		3DA5CA4822441A9200087298 /* GalleryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3DA5CA4622441A9200087298 /* GalleryCell.xib */; };
@@ -101,19 +103,13 @@
 		C47715C4224149B5008F27E6 /* RotateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47715C2224149B5008F27E6 /* RotateCell.swift */; };
 		C47715C92241969F008F27E6 /* PropertiesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47715C82241969F008F27E6 /* PropertiesController.swift */; };
 		C47715CB2241C729008F27E6 /* FigureCellProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47715CA2241C729008F27E6 /* FigureCellProtocol.swift */; };
-		C489A464224A7C7600492CCB /* CommentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C489A466224A7C7600492CCB /* CommentCell.xib */; };
 		C489A467224A7C9900492CCB /* RotateCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C489A469224A7C9900492CCB /* RotateCell.xib */; };
 		C489A46A224A7CB500492CCB /* ClassAttributeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C489A46C224A7CB500492CCB /* ClassAttributeCell.xib */; };
 		C489A46D224A7CBB00492CCB /* AddAttributeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C489A46F224A7CBB00492CCB /* AddAttributeCell.xib */; };
 		C489A470224A7CC000492CCB /* AddMethodCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C489A472224A7CC000492CCB /* AddMethodCell.xib */; };
-		C489A476224A7F9700492CCB /* TextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C489A474224A7F9700492CCB /* TextCell.swift */; };
-		C489A478224A811200492CCB /* TextCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C489A47A224A811200492CCB /* TextCell.xib */; };
-		C489A47E224A982200492CCB /* PhaseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C489A47C224A982200492CCB /* PhaseCell.swift */; };
-		C489A47F224A982200492CCB /* PhaseCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C489A47D224A982200492CCB /* PhaseCell.xib */; };
 		C495FEBE22381BDF006E49F9 /* UMLImageFigure.swift in Sources */ = {isa = PBXBuildFile; fileRef = C495FEBD22381BDF006E49F9 /* UMLImageFigure.swift */; };
 		C495FEC22238248E006E49F9 /* Ressources in Resources */ = {isa = PBXBuildFile; fileRef = C495FEC12238248E006E49F9 /* Ressources */; };
 		C4D12706224418F3004B3641 /* UmlCommentFigure.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D12705224418F3004B3641 /* UmlCommentFigure.swift */; };
-		C4D1270B22441D85004B3641 /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D1270922441D85004B3641 /* CommentCell.swift */; };
 		C4D1270E224424E1004B3641 /* UmlArtefactFigure.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D1270D224424E1004B3641 /* UmlArtefactFigure.swift */; };
 		C4D12710224424FC004B3641 /* UmlPhaseFigure.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D1270F224424FC004B3641 /* UmlPhaseFigure.swift */; };
 		C4D1271222457750004B3641 /* LocalGalleryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D1271122457750004B3641 /* LocalGalleryController.swift */; };
@@ -156,6 +152,8 @@
 		3D73359C223739550021FA3C /* UmlClassFigure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UmlClassFigure.swift; sourceTree = "<group>"; };
 		3D73359E22373D5E0021FA3C /* FigureFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FigureFactory.swift; sourceTree = "<group>"; };
 		3D77176821F7C8BC006244A8 /* Alamofire.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Alamofire.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		3D8384F32253924F00AAD14E /* FigureNameCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FigureNameCell.swift; sourceTree = "<group>"; };
+		3D8384F42253924F00AAD14E /* FigureNameCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FigureNameCell.xib; sourceTree = "<group>"; };
 		3DA5CA42224414D200087298 /* PublicGalleryController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicGalleryController.swift; sourceTree = "<group>"; };
 		3DA5CA4522441A9200087298 /* GalleryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryCell.swift; sourceTree = "<group>"; };
 		3DA5CA4622441A9200087298 /* GalleryCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GalleryCell.xib; sourceTree = "<group>"; };
@@ -234,19 +232,13 @@
 		C47715C2224149B5008F27E6 /* RotateCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RotateCell.swift; sourceTree = "<group>"; };
 		C47715C82241969F008F27E6 /* PropertiesController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PropertiesController.swift; sourceTree = "<group>"; };
 		C47715CA2241C729008F27E6 /* FigureCellProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FigureCellProtocol.swift; sourceTree = "<group>"; };
-		C489A465224A7C7600492CCB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/CommentCell.xib; sourceTree = "<group>"; };
 		C489A468224A7C9900492CCB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/RotateCell.xib; sourceTree = "<group>"; };
 		C489A46B224A7CB500492CCB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/ClassAttributeCell.xib; sourceTree = "<group>"; };
 		C489A46E224A7CBB00492CCB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/AddAttributeCell.xib; sourceTree = "<group>"; };
 		C489A471224A7CC000492CCB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/AddMethodCell.xib; sourceTree = "<group>"; };
-		C489A474224A7F9700492CCB /* TextCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextCell.swift; sourceTree = "<group>"; };
-		C489A479224A811200492CCB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/TextCell.xib; sourceTree = "<group>"; };
-		C489A47C224A982200492CCB /* PhaseCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhaseCell.swift; sourceTree = "<group>"; };
-		C489A47D224A982200492CCB /* PhaseCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PhaseCell.xib; sourceTree = "<group>"; };
 		C495FEBD22381BDF006E49F9 /* UMLImageFigure.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UMLImageFigure.swift; path = ios/Canvas/Figures/UMLImageFigure.swift; sourceTree = SOURCE_ROOT; };
 		C495FEC12238248E006E49F9 /* Ressources */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Ressources; sourceTree = "<group>"; };
 		C4D12705224418F3004B3641 /* UmlCommentFigure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UmlCommentFigure.swift; sourceTree = "<group>"; };
-		C4D1270922441D85004B3641 /* CommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCell.swift; sourceTree = "<group>"; };
 		C4D1270D224424E1004B3641 /* UmlArtefactFigure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UmlArtefactFigure.swift; sourceTree = "<group>"; };
 		C4D1270F224424FC004B3641 /* UmlPhaseFigure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UmlPhaseFigure.swift; sourceTree = "<group>"; };
 		C4D1271122457750004B3641 /* LocalGalleryController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalGalleryController.swift; sourceTree = "<group>"; };
@@ -388,6 +380,15 @@
 				C4D1A8722252A3B00011F1BF /* ItemMessage.swift */,
 			);
 			path = Common;
+			sourceTree = "<group>";
+		};
+		3D8384F22253922D00AAD14E /* FigureNameCell */ = {
+			isa = PBXGroup;
+			children = (
+				3D8384F32253924F00AAD14E /* FigureNameCell.swift */,
+				3D8384F42253924F00AAD14E /* FigureNameCell.xib */,
+			);
+			path = FigureNameCell;
 			sourceTree = "<group>";
 		};
 		3DA5CA4422441A6F00087298 /* GalleryCell */ = {
@@ -690,40 +691,11 @@
 		C47715C72241959D008F27E6 /* PropertiesTable */ = {
 			isa = PBXGroup;
 			children = (
-				C489A47B224A959500492CCB /* PhaseCell */,
-				C489A473224A7F7E00492CCB /* TextCell */,
+				3D8384F22253922D00AAD14E /* FigureNameCell */,
 				3DE8F115223C32330052580B /* ClassCell */,
-				C4D1270822441D67004B3641 /* CommentCell */,
 				C47715C82241969F008F27E6 /* PropertiesController.swift */,
 			);
 			path = PropertiesTable;
-			sourceTree = "<group>";
-		};
-		C489A473224A7F7E00492CCB /* TextCell */ = {
-			isa = PBXGroup;
-			children = (
-				C489A474224A7F9700492CCB /* TextCell.swift */,
-				C489A47A224A811200492CCB /* TextCell.xib */,
-			);
-			path = TextCell;
-			sourceTree = "<group>";
-		};
-		C489A47B224A959500492CCB /* PhaseCell */ = {
-			isa = PBXGroup;
-			children = (
-				C489A47C224A982200492CCB /* PhaseCell.swift */,
-				C489A47D224A982200492CCB /* PhaseCell.xib */,
-			);
-			path = PhaseCell;
-			sourceTree = "<group>";
-		};
-		C4D1270822441D67004B3641 /* CommentCell */ = {
-			isa = PBXGroup;
-			children = (
-				C4D1270922441D85004B3641 /* CommentCell.swift */,
-				C489A466224A7C7600492CCB /* CommentCell.xib */,
-			);
-			path = CommentCell;
 			sourceTree = "<group>";
 		};
 		D66C1DCE238BFD31669CE467 /* Pods */ = {
@@ -838,17 +810,15 @@
 				B711B5F121F659A50096BF7F /* Assets.xcassets in Resources */,
 				3DA5CA512244406700087298 /* ConnectionSelectionCell.xib in Resources */,
 				B756794A220F5DC800F80B12 /* Chat.storyboard in Resources */,
-				C489A478224A811200492CCB /* TextCell.xib in Resources */,
 				B7B1B4482234725E00BEE17D /* ChatRoomsControllerTableViewController.xib in Resources */,
+				3D8384F62253924F00AAD14E /* FigureNameCell.xib in Resources */,
 				3DE8F11A223C43BD0052580B /* ClassCell.xib in Resources */,
 				3D2052AE224A97F300C488F1 /* FillCell.xib in Resources */,
-				C489A47F224A982200492CCB /* PhaseCell.xib in Resources */,
 				3DA5CA4822441A9200087298 /* GalleryCell.xib in Resources */,
 				C489A46D224A7CBB00492CCB /* AddAttributeCell.xib in Resources */,
 				C489A46A224A7CB500492CCB /* ClassAttributeCell.xib in Resources */,
 				C495FEC22238248E006E49F9 /* Ressources in Resources */,
 				B711B5EF21F659A30096BF7F /* Main.storyboard in Resources */,
-				C489A464224A7C7600492CCB /* CommentCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1002,7 +972,6 @@
 				3D4ED6C5224EF242005630CF /* ConnectionAnchor.swift in Sources */,
 				B7B1B4392231BE8000BEE17D /* MessageDataSourceExtension.swift in Sources */,
 				B7B1B4402231C06900BEE17D /* MessageLayoutExtension.swift in Sources */,
-				C489A47E224A982200492CCB /* PhaseCell.swift in Sources */,
 				B79117DF2234AE830008CB4C /* Channel.swift in Sources */,
 				B7A3A5C02203BF3B00031F64 /* ChatControler.swift in Sources */,
 				3DA5CA43224414D200087298 /* PublicGalleryController.swift in Sources */,
@@ -1014,7 +983,6 @@
 				3D6E955D2230839900BC7BE7 /* DrawViewModel.swift in Sources */,
 				C4D1271222457750004B3641 /* LocalGalleryController.swift in Sources */,
 				3DA5CA4C22443C4E00087298 /* UmlActivityFigure.swift in Sources */,
-				C4D1270B22441D85004B3641 /* CommentCell.swift in Sources */,
 				3DF6298B221C9FBC0052209A /* CanvasCell.swift in Sources */,
 				C4D12710224424FC004B3641 /* UmlPhaseFigure.swift in Sources */,
 				B7B1B4372231A41C00BEE17D /* MyCustomCell.swift in Sources */,
@@ -1025,6 +993,7 @@
 				B756794C220F608B00F80B12 /* Members.swift in Sources */,
 				C4D6BB2722384F5B00121695 /* AnchorPoints.swift in Sources */,
 				3D2565602225BDFE00BCE946 /* GalleryController.swift in Sources */,
+				3D8384F52253924F00AAD14E /* FigureNameCell.swift in Sources */,
 				B7B1B4352231A3FD00BEE17D /* MyCustomMessagesFlowLayout.swift in Sources */,
 				3DC07CC722205B7C0045E7DE /* ContextMenuCell.swift in Sources */,
 				B7B1B44A22348E9700BEE17D /* AddScreenViewController.swift in Sources */,
@@ -1037,7 +1006,6 @@
 				C495FEBE22381BDF006E49F9 /* UMLImageFigure.swift in Sources */,
 				3D73359F22373D5E0021FA3C /* FigureFactory.swift in Sources */,
 				B7567946220F33CD00F80B12 /* ChatService.swift in Sources */,
-				C489A476224A7F9700492CCB /* TextCell.swift in Sources */,
 				3D6E4C3D223ADE7000E391D4 /* BorderCell.swift in Sources */,
 				B7567948220F355F00F80B12 /* Constants.swift in Sources */,
 				C4D12706224418F3004B3641 /* UmlCommentFigure.swift in Sources */,
@@ -1096,14 +1064,6 @@
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
 		};
-		C489A466224A7C7600492CCB /* CommentCell.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				C489A465224A7C7600492CCB /* Base */,
-			);
-			name = CommentCell.xib;
-			sourceTree = "<group>";
-		};
 		C489A469224A7C9900492CCB /* RotateCell.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -1134,14 +1094,6 @@
 				C489A471224A7CC000492CCB /* Base */,
 			);
 			name = AddMethodCell.xib;
-			sourceTree = "<group>";
-		};
-		C489A47A224A811200492CCB /* TextCell.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				C489A479224A811200492CCB /* Base */,
-			);
-			name = TextCell.xib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -1269,14 +1221,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = Z9SQJM9KY3;
+				DEVELOPMENT_TEAM = PKMXAQ88Q4;
 				INFOPLIST_FILE = ios/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3.3;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "ca.polymtl.H18-LOG3900-122";
+				PRODUCT_BUNDLE_IDENTIFIER = "ca.polymtl.H18-LOG3900";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = 2;
@@ -1289,14 +1241,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = Z9SQJM9KY3;
+				DEVELOPMENT_TEAM = PKMXAQ88Q4;
 				INFOPLIST_FILE = ios/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3.3;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "ca.polymtl.H18-LOG3900-122";
+				PRODUCT_BUNDLE_IDENTIFIER = "ca.polymtl.H18-LOG3900";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = 2;

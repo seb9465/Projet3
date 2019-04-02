@@ -18,10 +18,10 @@ class UmlFigure : Figure {
     var delegate: TouchInputDelegate?
     
     // DrawViewModel common attributes
-    var name: String!
+//    var name: String!
     var figureColor: UIColor!
-    var lineColor: UIColor!
-    var lineWidth: CGFloat!
+//    var lineColor: UIColor!
+//    var lineWidth: CGFloat!
 //    var oldTouchedPoint: CGPoint!
     
     var incomingConnections : [ConnectionFigure: String] = [:]
@@ -54,13 +54,22 @@ class UmlFigure : Figure {
         self.initializeAnchorPoints()
     }
     
-    override init(drawViewModel: DrawViewModel) {
+    init(drawViewModel: DrawViewModel) {
+        let firstPoint: CGPoint = drawViewModel.StylusPoints![0].getCGPoint()
+        let lastPoint: CGPoint = drawViewModel.StylusPoints![1].getCGPoint()
+        let frameSize = CGSize(width: abs(firstPoint.x - lastPoint.x), height: abs(firstPoint.y - lastPoint.y))
+        let frame = CGRect(origin: firstPoint, size: frameSize)
+        super.init(frame: frame)
+        self.firstPoint = firstPoint
+        self.lastPoint = lastPoint
         self.uuid = UUID(uuidString: drawViewModel.Guid!)
         self.itemType = drawViewModel.ItemType!
-        self.figureColor = UIColor.red
-        self.lineColor = UIColor.black
+        self.figureColor = drawViewModel.FillColor?.getUIColor()
+        self.lineColor = drawViewModel.BorderColor?.getUIColor()
         self.currentAngle = drawViewModel.Rotation!
         self.lineWidth = CGFloat(drawViewModel.BorderThickness!)
+        self.backgroundColor = UIColor.clear
+        self.initializeAnchorPoints()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -83,12 +92,12 @@ class UmlFigure : Figure {
     }
     
     public func setFillColor(fillColor: UIColor) -> Void {
-        self.figureColor = fillColor;
+        self.figureColor = fillColor
         setNeedsDisplay();
     }
     
     public func setBorderColor(borderColor: UIColor) -> Void {
-        self.lineColor = borderColor;
+        self.lineColor = borderColor
         setNeedsDisplay();
     }
 

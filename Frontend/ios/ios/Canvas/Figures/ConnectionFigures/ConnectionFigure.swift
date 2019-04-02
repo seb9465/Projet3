@@ -18,7 +18,6 @@ class ConnectionFigure : Figure {
     
     var points: [Vertice: CGPoint] = [:]
     var anchors: [Vertice: ConnectionAnchor] = [:]
-    var itemType: ItemTypeEnum = ItemTypeEnum.UniderectionalAssoication
     
     init(origin: CGPoint, destination: CGPoint, itemType: ItemTypeEnum) {
         let frameOrigin = CGPoint(x: 0, y: 0)
@@ -43,10 +42,8 @@ class ConnectionFigure : Figure {
     }
     
     private func initializeAnchors() {
-//        self.anchors.updateValue(ConnectionAnchor(position: self.points[.ORIGIN]!), forKey: .ORIGIN)
         self.anchors.updateValue(ConnectionAnchor(position: self.points[.ELBOW]!), forKey: .ELBOW)
-//        self.anchors.updateValue(ConnectionAnchor(position: self.points[.DESTINATION]!), forKey: .DESTINATION)
-        
+    
         for pair in self.anchors {
             self.layer.addSublayer(pair.value)
         }
@@ -54,9 +51,6 @@ class ConnectionFigure : Figure {
     
     func updateOrigin(point: CGPoint) {
         self.points.updateValue(point, forKey: .ORIGIN)
-//        self.anchors[.ORIGIN]!.removeFromSuperlayer()
-//        self.anchors[.ORIGIN]! = ConnectionAnchor(position: point)
-//        self.layer.addSublayer(self.anchors[.ORIGIN]!)
         setNeedsDisplay()
     }
     

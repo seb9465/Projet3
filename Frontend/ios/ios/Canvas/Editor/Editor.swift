@@ -12,6 +12,8 @@ class Editor {
     public var editorView: EditorView = EditorView()
     //    public var sideToolbarController: SideToolbarController?
     public var sideToolbatControllers: [SideToolbarController] = []
+    private var selectedFiguresDictionnary: [String : [DrawViewModel]] = [:]
+    private var selectedOutlinesDictionnary: [String : [SelectionOutline]] = [:]
     
     private var undoArray: [Figure] = []
     private var redoArray: [Figure] = [];
@@ -37,13 +39,49 @@ class Editor {
         CollaborationHub.shared.delegate = self
         let rotation = UIRotationGestureRecognizer(target: self, action: #selector(self.rotatedView(_:)))
         self.editorView.addGestureRecognizer(rotation)
+   //     self.editorView.backgroundColor = UIColor.red
+   //     self.editorView.clipsToBounds = true
     }
     
+    func resize(width: CGFloat, heigth: CGFloat) {
+        print("resizing")
+        self.editorView.frame.size.width = width
+        self.editorView.frame.size.height = heigth
+        self.editorView.setNeedsDisplay()
+    }
+    
+    // Select made locally
     func select(figure: Figure) {
         self.selectedFigures.append(figure);
         self.selectionOutline.append(SelectionOutline(firstPoint: figure.frame.origin, lastPoint: CGPoint(x: figure.frame.maxX, y: figure.frame.maxY), associatedFigureID: figure.uuid));
         self.selectionOutline.last!.addSelectedFigureLayers();
         self.editorView.addSubview(self.selectionOutline.last!);
+    }
+    
+    // Selection recieved by hub
+    func select(drawViewModels: [DrawViewModel], username: String) {
+        // TODO - William | Move to select
+        self.selectedFiguresDictionnary.updateValue(drawViewModels, forKey: username)
+        var figuresToSelect: [Figure] = []
+        for figure in self.figures {
+            if (drawViewModels.contains(where: {$0.Guid == figure.uuid.uuidString.lowercased()})) {
+                figuresToSelect.append(figure)
+            }
+        }
+        
+        var selectionOutlines: [SelectionOutline] = []
+        for figure in figuresToSelect {
+            let outline = SelectionOutline(
+                firstPoint: figure.frame.origin,
+                lastPoint: CGPoint(x: figure.frame.maxX, y: figure.frame.maxY),
+                associatedFigureID: figure.uuid
+            )
+            outline.addUsernameSelecting(username: username)
+            outline.addSelectedFigureLayers()
+            selectionOutlines.append(outline)
+            self.editorView.addSubview(outline);
+        }
+        self.selectedOutlinesDictionnary.updateValue(selectionOutlines, forKey: username)
     }
     
     func selectLasso(touchPoint: CGPoint) {
@@ -60,9 +98,19 @@ class Editor {
             
             self.selectionOutline.removeAll();
         }
-        
+        CollaborationHub.shared.selectObjects(drawViewModels: [])
         self.deselectLasso();
         self.selectedFigures.removeAll();
+    }
+    
+    func deselect(username: String) {
+        self.selectedFiguresDictionnary.updateValue([], forKey: username)
+        if (selectedOutlinesDictionnary[username] != nil) {
+            for outline in self.selectedOutlinesDictionnary[username]! {
+                outline.removeFromSuperview()
+            }
+        }
+        self.selectedOutlinesDictionnary.updateValue([], forKey: username)
     }
     
     func deselectFigure(figure: Figure) {
@@ -83,6 +131,23 @@ class Editor {
         }
     }
     
+    public func insertFigure(drawViewModel: DrawViewModel) -> Void {
+        let figure = FigureFactory.shared.fromDrawViewModel(drawViewModel: drawViewModel)!
+        figure.delegate = self
+        self.figures.append(figure)
+        self.editorView.addSubview(figure)
+  //      self.resize(width: 100, heigth: 100)
+    }
+    
+    public func insertFigure(position: CGPoint) -> Void {
+        let figure = FigureFactory.shared.getFigure(type: self.currentFigureType, touchedPoint: position)!
+        figure.delegate = self
+        self.figures.append(figure)
+        self.editorView.addSubview(figure)
+        CollaborationHub.shared.postNewFigure(figures: [figure])
+  //      self.resize(width: 150, heigth: 150)
+    }
+    
     public func insertConnectionFigure(firstPoint: CGPoint, lastPoint: CGPoint, itemType: ItemTypeEnum) -> ConnectionFigure {
         let figure = ConnectionFigure(origin: self.initialTouchPoint, destination: lastPoint, itemType: itemType)
         self.editorView.addSubview(figure);
@@ -91,29 +156,18 @@ class Editor {
         return figure
     }
     
-    public func insertFigure(itemType: ItemTypeEnum, firstPoint: CGPoint, lastPoint: CGPoint) -> Void {
-        let figure = FigureFactory.shared.getFigure(itemType: itemType, firstPoint: firstPoint, lastPoint: lastPoint)!
-        figure.delegate = self
-        self.editorView.addSubview(figure);
-        self.figures.append(figure)
-        self.undoArray.append(figure);
-    }
-    
-    public func deleteFigure(tapPoint: CGPoint) -> Void {
-        let subview = self.editorView.hitTest(tapPoint, with: nil);
-        
-        if (self.subviewIsInUndoArray(subview: subview!)) {
-            var counter: Int = 0;
-            for v in self.undoArray {
-                if (v == subview) {
-                    self.redoArray.append(v);
-                    v.removeFromSuperview();
-                    self.undoArray.remove(at: counter);
-                    break;
-                }
-                counter += 1;
-            }
+    public func deleteSelectedFigures() {
+        if (self.selectedFigures.isEmpty) {
+            return
         }
+        
+        for figure in self.selectedFigures {
+            figure.removeFromSuperview()
+            self.figures.removeAll{$0 == figure}
+        }
+        
+        self.deselect()
+        self.selectedFigures.removeAll()
     }
     
     public func undo(view: UIView) -> Void {
@@ -187,35 +241,38 @@ extension Editor: SideToolbarDelegate {
         for figure in self.selectedFigures {
             (figure as! UmlFigure).setBorderColor(borderColor: color);
         }
-        
+        CollaborationHub.shared.postNewFigure(figures: self.selectedFigures)
+    }
+    
+    func setSelectedFigureFillColor(color: UIColor) {
+        for figure in self.selectedFigures {
+            (figure as! UmlFigure).setFillColor(fillColor: color)
+        }
+        CollaborationHub.shared.postNewFigure(figures: self.selectedFigures)
+    }
+    
+    func setSelectedFigureBorderStyle(isDashed: Bool) {
+        for figure in self.selectedFigures {
+            figure.setIsBorderDashed(isDashed: isDashed)
+        }
+        CollaborationHub.shared.postNewFigure(figures: self.selectedFigures)
+    }
+    
+    func setSelectedFigureLineWidth(width: CGFloat) {
+        for figure in self.selectedFigures {
+            figure.setLineWidth(width: width)
+        }
+        CollaborationHub.shared.postNewFigure(figures: self.selectedFigures)
     }
     
     func setSelectedFigureName(name: String) {
         for figure in self.selectedFigures {
-            (figure as! UmlClassFigure).setClassName(name: name);
+            figure.setFigureName(name: name)
         }
-        
     }
-    
-    func setSelectedComment(comment: String) {
-        for figure in self.selectedFigures {
-            (figure as! UmlCommentFigure).setComment(comment: comment);
-        }
-        
-    }
-    
-    func setSelectedPhase(phaseName: String) {
-        for figure in self.selectedFigures {
-            (figure as! UmlPhaseFigure).setPhaseName(phaseName: phaseName);
-        }
-        
-    }
-    
-    func setSelectedText(text: String) {
-        for figure in self.selectedFigures {
-            (figure as! UMLTextFigure).setText(text: text)
-        }
-        
+
+    func setSelectedFigureNameDidEnd() {
+        CollaborationHub.shared.postNewFigure(figures: self.selectedFigures)
     }
     
     func addClassMethod(name: String) {
@@ -224,6 +281,7 @@ extension Editor: SideToolbarDelegate {
         }
         
         self.updateSideToolBar()
+        CollaborationHub.shared.postNewFigure(figures: self.selectedFigures)
     }
     
     func removeClassMethod(name: String, index: Int) {
@@ -267,6 +325,7 @@ extension Editor: SideToolbarDelegate {
             self.deselectFigure(figure: tempFigure);
             self.select(figure: figure);
         }
+        CollaborationHub.shared.postNewFigure(figures: self.selectedFigures)
     }
     
     @objc private func rotatedView(_ sender: UIRotationGestureRecognizer) {
@@ -277,9 +336,9 @@ extension Editor: SideToolbarDelegate {
                 for figure in self.selectedFigures {
                     let tempFigure: Figure = figure;
                     if(self.oldRotationAngle < currentRotationAngle) {
-                        figure.rotate(orientation: .right);
+                        self.rotate(orientation: .right);
                     } else {
-                        figure.rotate(orientation: .left);
+                        self.rotate(orientation: .left);
                     }
                     self.deselectFigure(figure: tempFigure);
                     self.select(figure: figure);
@@ -307,16 +366,19 @@ extension Editor : TouchInputDelegate {
                 self.editorView.addSubview(connectionPreview)
                 self.touchEventState = .CONNECTION
                 return
-            } else if (action == "shape") {
-//                self.deselect()
-//                self.select(figure: figure!)
-//                self.updateSideToolBar()
-//                self.touchEventState = .TRANSLATE
+            }
+            if (action == "shape") {
+                //                self.deselect()
+                //                self.select(figure: figure!)
+                //                self.updateSideToolBar()
+                //                self.touchEventState = .TRANSLATE
                 return
-            } else if (action == "empty") {
+            }
+            if (action == "empty") {
                 self.deselect()
-                self.touchEventState = .AREA_SELECT
-                self.selectLasso(touchPoint: point);
+                self.updateSideToolBar()
+                //                self.touchEventState = .AREA_SELECT
+                //                self.selectLasso(touchPoint: point)
                 return
             }
             break;
@@ -325,15 +387,19 @@ extension Editor : TouchInputDelegate {
         case .TRANSLATE:
             break
         case .INSERT:
-            CollaborationHub.shared.postNewFigure(origin: point, itemType: currentFigureType)
+            self.insertFigure(position: point)
             break
         case .CONNECTION:
             break
         case .DELETE:
-            self.deleteFigure(tapPoint: point);
             self.deselect();
             break
         case .AREA_SELECT:
+            if (self.selectionLasso == nil) {
+                self.deselect();
+                self.selectLasso(touchPoint: point)
+                return
+            }
             self.selectionLasso.addNewTouchPoint(touchPoint: point);
             break
         case .NONE:
@@ -343,6 +409,9 @@ extension Editor : TouchInputDelegate {
     
     func notifyTouchMoved(point: CGPoint, figure: Figure) {
         if (self.touchEventState == .SELECT || self.touchEventState == .TRANSLATE) {
+            if (!self.selectedFigures.isEmpty && !figure.isEqual(self.selectedFigures[0])) {
+                return
+            }
             self.touchEventState = .TRANSLATE;
             let offset = CGPoint(x: point.x - self.previousTouchPoint.x, y: point.y - self.previousTouchPoint.y)
             for fig in self.selectedFigures {
@@ -352,45 +421,72 @@ extension Editor : TouchInputDelegate {
             }
             
             self.previousTouchPoint = point
-            
             return
-        } else if (self.touchEventState == .CONNECTION) {
+        }
+        
+        if (self.touchEventState == .CONNECTION) {
             self.connectionPreview.removeFromSuperview()
             self.connectionPreview = ConnectionFigure(origin: self.initialTouchPoint, destination: point, itemType: .UniderectionalAssoication)
             self.editorView.addSubview(self.connectionPreview)
+            return
         }
     }
     
     func notifyTouchEnded(point: CGPoint, figure: Figure?) {
         if (self.touchEventState == .CONNECTION) {
-            self.connectionPreview.removeFromSuperview()
-            let lastPoint = self.snap(point: point)
-            let connection = self.insertConnectionFigure(
-                firstPoint: self.initialTouchPoint,
-                lastPoint: lastPoint,
-                itemType: currentFigureType
-            );
-            self.touchEventState = .SELECT;
-        } else if (self.touchEventState == .AREA_SELECT) {
-            if (self.selectionLasso.shapeIsClosed) {
-                for figure in self.figures {
-                    if (self.selectionLasso.contains(figure: figure)) {
-                        self.select(figure: figure);
-                    }
-                }
-                self.deselectLasso();
-                self.touchEventState = .SELECT;
-            }
-            return
-        } else if (self.touchEventState == .TRANSLATE) {
-            self.touchEventState = .SELECT;
-        } else if (self.touchEventState == .SELECT) {
-            self.deselect()
-            self.select(figure: figure!)
-            self.updateSideToolBar()
+            self.handleConnectionTouchEnded(point: point)
             return
         }
         
+        if (self.touchEventState == .SELECT) {
+            if (figure == nil) {
+                return
+            }
+            self.deselect()
+            
+            if (self.isFigureSelected(figure: figure!)) {
+                return
+            }
+            self.select(figure: figure!)
+            self.updateSideToolBar()
+            CollaborationHub.shared.selectObjects(drawViewModels: [(figure!.exportViewModel())!])
+            return
+        }
+        
+        if (self.touchEventState == .AREA_SELECT) {
+            if (!self.selectionLasso.shapeIsClosed) {
+                return
+            }
+            for figure in self.figures {
+                if (self.selectionLasso.contains(figure: figure)) {
+                    self.select(figure: figure);
+                }
+            }
+            var drawViewModels: [DrawViewModel] = []
+            for figure in selectedFigures {
+                drawViewModels.append(figure.exportViewModel()!)
+            }
+            CollaborationHub.shared.selectObjects(drawViewModels: drawViewModels)
+            self.deselectLasso();
+            self.touchEventState = .AREA_SELECT
+            return
+        }
+        
+        if (self.touchEventState == .TRANSLATE) {
+            if (self.selectedFigures.isEmpty) {
+                self.touchEventState = .SELECT
+                return
+            }
+            
+            CollaborationHub.shared.postNewFigure(figures: [figure!])
+            var drawViewModels: [DrawViewModel] = []
+            for figure in selectedFigures {
+                drawViewModels.append(figure.exportViewModel()!)
+            }
+            CollaborationHub.shared.selectObjects(drawViewModels: drawViewModels)
+            self.touchEventState = .SELECT
+            return
+        }
     }
     
     func handleConnectionTouchEnded(point: CGPoint) {
@@ -423,20 +519,56 @@ extension Editor : TouchInputDelegate {
 }
 
 extension Editor: CollaborationHubDelegate {
+    func updateSelection(itemMessage: ItemMessage) {
+        if (itemMessage.Items.isEmpty) {
+            self.deselect(username: itemMessage.Username)
+            return
+        }
+        self.deselect(username: itemMessage.Username)
+        self.select(drawViewModels: itemMessage.Items, username: itemMessage.Username)
+    }
+    
     func updateCanvas(itemMessage: ItemMessage) {
         for drawViewModel in itemMessage.Items {
-            if (self.figures.contains(where: {$0.uuid.uuidString == drawViewModel.Guid})) {
-                // Handle quand il est la
+            if (self.figures.contains(where: {$0.uuid.uuidString.lowercased() == drawViewModel.Guid})) {
+                print("Figure overritten")
+                self.overriteFigure(figureId: drawViewModel.Guid!, newDrawViewModel: drawViewModel, username: itemMessage.Username)
+                self.deselect(username: itemMessage.Username)
+                self.select(drawViewModels: itemMessage.Items, username: itemMessage.Username)
                 return
             }
             
-            // Handle quand il est pas la
+            self.insertFigure(drawViewModel: drawViewModel)
         }
-        
-        self.insertFigure(itemType: itemType, firstPoint: firstPoint, lastPoint: lastPoint)
     }
     
     func updateClear() {
         self.clear()
+    }
+}
+
+extension Editor {
+    
+    func isFigureSelected(figure: Figure) -> Bool {
+        for pair in self.selectedFiguresDictionnary {
+            for selectedModel in pair.value {
+                if(selectedModel.Guid == figure.uuid.uuidString.lowercased()) {
+                    print("Already selected!")
+                    return true
+                }
+            }
+        }
+        return false
+    }
+    
+    
+    func overriteFigure(figureId: String, newDrawViewModel: DrawViewModel, username: String) {
+        let oldFigure = self.figures.first(where: {$0.uuid.uuidString.lowercased() == figureId})
+        self.figures.removeAll{$0 == oldFigure}
+        oldFigure?.removeFromSuperview()
+        let newFigure = FigureFactory.shared.fromDrawViewModel(drawViewModel: newDrawViewModel)!
+        newFigure.delegate = self
+        self.figures.append(newFigure)
+        self.editorView.addSubview(newFigure)
     }
 }
