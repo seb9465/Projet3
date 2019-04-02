@@ -80,7 +80,7 @@ class Editor {
             
             self.selectionOutline.removeAll();
         }
-        
+        CollaborationHub.shared.selectObjects(drawViewModels: [])
         self.deselectLasso();
         self.selectedFigures.removeAll();
     }
