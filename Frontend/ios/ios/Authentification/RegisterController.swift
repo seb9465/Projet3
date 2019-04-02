@@ -206,16 +206,6 @@ class RegisterController: UIViewController {
         let alert: UIAlertController = UIAlertController(title: "Registration complete!", message: "Welcome abord " + self.firstNameField.text!, preferredStyle: .alert);
         
         let okAction: UIAlertAction = UIAlertAction(title: "Sick, let me in!", style: .default, handler: { action in
-//            let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil);
-//            let viewController: UIViewController = mainStoryboard.instantiateViewController(withIdentifier: "LoginStoryboard");
-//
-//            let transition = CATransition()
-//            transition.duration = 0.5
-//            transition.type = CATransitionType.fade
-//            transition.subtype = CATransitionSubtype.fromBottom
-//            self.view.window?.layer.add(transition, forKey: kCATransition);
-//
-//            self.present(viewController, animated: false, completion: nil);
             self.dismiss(animated: true, completion: nil)
         });
         
