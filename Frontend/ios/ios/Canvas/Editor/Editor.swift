@@ -380,6 +380,7 @@ extension Editor : TouchInputDelegate {
             self.deselect()
             self.select(figure: figure!)
             self.updateSideToolBar()
+            CollaborationHub.shared.selectObjects(drawViewModels: [(figure!.exportViewModel())!])
             return
         }
         
@@ -436,6 +437,11 @@ extension Editor : TouchInputDelegate {
 extension Editor: CollaborationHubDelegate {
     func updateSelection(itemMessage: ItemMessage) {
         self.selectedFiguresDictionnary.updateValue(itemMessage.Items, forKey: itemMessage.Username)
+        for pair in  self.selectedFiguresDictionnary {
+            self.select(figure: self.figures.first(where: {$0.uuid.uuidString == pair.value[0].Guid})!)
+            
+//            pair.value[0]
+        }
     }
     
     func updateCanvas(itemMessage: ItemMessage) {
