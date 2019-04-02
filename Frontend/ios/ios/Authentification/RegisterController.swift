@@ -10,6 +10,16 @@ import UIKit
 import Alamofire
 import PromiseKit
 import AwaitKit
+import Alamofire_SwiftyJSON
+
+//class errorsMessage {
+//    public var _description: String;
+//    public var _code: String;
+//
+//    init (description: String, code: String) {
+//
+//    }
+//}
 
 let emailTest = NSPredicate(format: "SELF MATCHES %@", "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}")
 
@@ -27,28 +37,11 @@ class RegisterController: UIViewController {
     
     @IBAction func registerButtonPressed(_ sender: UIButton) {
 //        let registrationViewModel: RegistrationViewModel = RegistrationViewModel(firstName: self.firstNameField.text!, lastName: self.lastNameField.text!, email: self.usernameField.text!, username: self.emailField.text!, password: self.passwordField.text!);
-        let registrationViewModel: RegistrationViewModel = RegistrationViewModel(firstName: "sebaa", lastName: "cadoo", email: "sebb.cadoo", username: "sebb.cadoo@me.com", password: "!12345Aa");
+        let registrationViewModel: RegistrationViewModel = RegistrationViewModel(firstName: "sebaaaa", lastName: "cadoo", email: "sebbaa.cadoo@me.com", username: "sebbaa.cadoo", password: "!12345Aa");
         
         registerUser(parameters: registrationViewModel.toJson())
             .done { response in
-                print(response);
-                let alert: UIAlertController = UIAlertController(title: "Registration complete!", message: "Welcome abord " + self.firstNameField.text!, preferredStyle: .alert);
                 
-                let action: UIAlertAction = UIAlertAction(title: "Sick, let me in!", style: .default, handler: { action in
-                    let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil);
-                    let viewController: UIViewController = mainStoryboard.instantiateViewController(withIdentifier: "LoginStoryboard");
-                    
-                    let transition = CATransition()
-                    transition.duration = 0.5
-                    transition.type = CATransitionType.fade
-                    transition.subtype = CATransitionSubtype.fromBottom
-                    self.view.window?.layer.add(transition, forKey: kCATransition);
-                    
-                    self.present(viewController, animated: false, completion: nil);
-                });
-                
-                alert.addAction(action);
-                self.present(alert, animated: true, completion: nil);
             }
     }
     
@@ -92,9 +85,67 @@ class RegisterController: UIViewController {
     
     private func registerUser(parameters: [String: String?]) -> Promise<Any>{
         return Promise {seal in
-            Alamofire.request(Constants.REGISTER_URL as URLConvertible, method: .post, parameters: parameters as Parameters, encoding: JSONEncoding.default).responseJSON{ response in
+            Alamofire.request(Constants.REGISTER_URL as URLConvertible, method: .post, parameters: parameters as Parameters, encoding: JSONEncoding.default).responseSwiftyJSON{ response in
+                switch response.result {
+                case .success:
+                    var errors: [Any] = [];
+                    for err in response.value! {
+                        errors.append(err.1);
+                    }
+                    
+                    print(errors.count);
+                    break;
+                case .failure (let error):
+//                    print(error as! String);
+//                    let error: String = response.value as! String;
+//                    let indexStartOfText = error.index(error.startIndex, offsetBy: 1)
+//                    let indexEndOfText = error.index(error.endIndex, offsetBy: -2)
+//                    let substring = error[indexStartOfText..<indexEndOfText];
+                    break;
+                }
+//                if let status = response.response?.statusCode {
+//                    switch(status){
+//                    case 200:
+//                        self.present(self.buildOkAlert(), animated: true, completion: nil);
+//                    default:
+//                        var error: String = response.description as String;
+////                        print(error);
+//                        error = String(error.filter { !"\n\t\r".contains($0) })
+//                        let indexStartOfText = error.index(error.startIndex, offsetBy: 10)
+//                        let indexEndOfText = error.index(error.endIndex, offsetBy: -1)
+//                        let substring = error[indexStartOfText..<indexEndOfText];
+//                        print(substring);
+//                        let sub = substring.replacingOccurrences(of: "},", with: "};");
+//                        let errors: [String] = sub.components(separatedBy: ";");
+//
+////                        print(errors);
+//
+//                    }
+                
+                
                 seal.fulfill(response);
             };
         }
+    }
+    
+    private func buildOkAlert() -> UIAlertController {
+        let alert: UIAlertController = UIAlertController(title: "Registration complete!", message: "Welcome abord " + self.firstNameField.text!, preferredStyle: .alert);
+        
+        let okAction: UIAlertAction = UIAlertAction(title: "Sick, let me in!", style: .default, handler: { action in
+            let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil);
+            let viewController: UIViewController = mainStoryboard.instantiateViewController(withIdentifier: "LoginStoryboard");
+            
+            let transition = CATransition()
+            transition.duration = 0.5
+            transition.type = CATransitionType.fade
+            transition.subtype = CATransitionSubtype.fromBottom
+            self.view.window?.layer.add(transition, forKey: kCATransition);
+            
+            self.present(viewController, animated: false, completion: nil);
+        });
+        
+        alert.addAction(okAction);
+        
+        return alert;
     }
 }
