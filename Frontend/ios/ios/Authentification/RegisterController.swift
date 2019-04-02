@@ -49,7 +49,16 @@ class RegisterController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
     self.contentView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(returnTextView(gesture:))))
         
+        self.initErrorViews();
+        
         super.viewDidLoad();
+    }
+    
+    public func initErrorViews() -> Void {
+        self.emailErrorIcon.isHidden = true;
+        self.emailErrorText.isHidden = true;
+        self.pwdErrorIcon.isHidden = true;
+        self.pwdErrorText.isHidden = true;
     }
     
     // MARK: Actions
