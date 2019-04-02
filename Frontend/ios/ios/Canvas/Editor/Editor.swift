@@ -53,7 +53,7 @@ class Editor {
     func select(figures: [Figure], username: String) {
         var selectionOutlines: [SelectionOutline] = []
         for figure in figures {
-            var outline = SelectionOutline(
+            let outline = SelectionOutline(
                 firstPoint: figure.frame.origin,
                 lastPoint: CGPoint(x: figure.frame.maxX, y: figure.frame.maxY),
                 associatedFigureID: figure.uuid
@@ -83,6 +83,16 @@ class Editor {
         
         self.deselectLasso();
         self.selectedFigures.removeAll();
+    }
+    
+    func deselect(username: String) {
+        self.selectedFiguresDictionnary.updateValue([], forKey: username)
+        if (selectedOutlinesDictionnary[username] != nil) {
+            for outline in self.selectedOutlinesDictionnary[username]! {
+                outline.removeFromSuperview()
+            }
+        }
+        self.selectedOutlinesDictionnary.updateValue([], forKey: username)
     }
     
     func deselectFigure(figure: Figure) {
@@ -478,6 +488,12 @@ extension Editor : TouchInputDelegate {
 
 extension Editor: CollaborationHubDelegate {
     func updateSelection(itemMessage: ItemMessage) {
+        if (itemMessage.Items.isEmpty) {
+            self.deselect(username: itemMessage.Username)
+            return
+        }
+        
+        // TODO - William | Move to select
         self.selectedFiguresDictionnary.updateValue(itemMessage.Items, forKey: itemMessage.Username)
         var figuresToSelect: [Figure] = []
         for figure in self.figures {
