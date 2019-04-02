@@ -47,6 +47,7 @@ namespace PolyPaint
         private ChatWindow externalChatWindow;
         private MediaPlayer mediaPlayer = new MediaPlayer();
         private InkCanvasEventManager icEventManager = new InkCanvasEventManager();
+        private StrokeBuilder strokeBuilder = new StrokeBuilder();
         private bool IsDrawing = false;
         private Point currentPoint, mouseLeftDownPoint;
         private HubConnection Connection;
@@ -189,14 +190,15 @@ namespace PolyPaint
         {
             byte[] strokesBytes = GetBytesForStrokes();
             byte[] imageBytes = GetBytesForImage();
-            string strokesToSend = Convert.ToBase64String(strokesBytes);
+            List<DrawViewModel> drawViewModels = strokeBuilder.GetDrawViewModelsFromStrokes(surfaceDessin.Strokes);
+            string json = JsonConvert.SerializeObject(drawViewModels);
             string imageToSend = Convert.ToBase64String(imageBytes);
             string CanvasId = DateTime.Now.ToString("yyyy.MM.dd.hh.mm.ss.ffff");
             string CanvasName = canvasName;
             string CanvasVisibility = canvasVisibility;
             string CanvasProtection = canvasProtection;
             string CanvasAutor = canvasAutor;
-            SaveableCanvas canvas = new SaveableCanvas(CanvasId, CanvasName, strokesToSend, imageToSend, CanvasVisibility, CanvasProtection, CanvasAutor);
+            SaveableCanvas canvas = new SaveableCanvas(CanvasId, CanvasName, json, imageToSend, CanvasVisibility, CanvasProtection, CanvasAutor);
 
             string canvasJson = JsonConvert.SerializeObject(canvas);
             using (HttpClient client = new HttpClient())
@@ -227,15 +229,14 @@ namespace PolyPaint
             Gallery gallery = new Gallery(strokes, surfaceDessin);
 
             Application.Current.MainWindow = gallery;
-           
+
 
             surfaceDessin.Strokes.Clear();
-          //  surfaceDessin.Strokes.Add(gallery.SelectedCanvas.Strokes);
+            //  surfaceDessin.Strokes.Add(gallery.SelectedCanvas.Strokes);
 
             Close();
             gallery.Show();
         }
-        
 
         private byte[] GetBytesForStrokes()
         {

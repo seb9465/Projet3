@@ -1,6 +1,9 @@
 ﻿using MaterialDesignThemes.Wpf;
+using Newtonsoft.Json;
+using PolyPaint.Common.Collaboration;
 using PolyPaint.Modeles;
 using PolyPaint.Structures;
+using PolyPaint.Utilitaires;
 using PolyPaint.VueModeles;
 using System;
 using System.Collections.Generic;
@@ -27,14 +30,15 @@ namespace PolyPaint.Vues
     class UserDataContext
     {
         public VueModele VueModele { get; set; }
-        public List<CanvasViewModel> Canvas { get; set; }
+        public List<SaveableCanvas> Canvas { get; set; }
     }
 
     public partial class Gallery : Window
     {
-        public List<CanvasViewModel> Canvas { get; set; }
-        public CanvasViewModel SelectedCanvas { get; set; }
+        public List<SaveableCanvas> Canvas { get; set; }
+        public SaveableCanvas SelectedCanvas { get; set; }
         private ImageProtection imageProtection;
+        private StrokeBuilder strokeBuilder = new StrokeBuilder();
         private string username = Application.Current.Properties["username"].ToString();
         FenetreDessin fenetreDessin = new FenetreDessin(ViewStateEnum.Online);
 
@@ -47,11 +51,13 @@ namespace PolyPaint.Vues
         bool isMenuOpen = false;
         private ViewStateEnum _viewState { get; set; }
         private MediaPlayer mediaPlayer = new MediaPlayer();
+        private InkCanvas SurfaceDessin { get; set; }
 
         public Gallery(List<SaveableCanvas> strokes, InkCanvas drawingSurface)
         {
             InitializeComponent();
             Canvas = ConvertStrokesToPNG(strokes, drawingSurface);
+            SurfaceDessin = drawingSurface;
 
 
             DataContext = new UserDataContext();
@@ -147,18 +153,16 @@ namespace PolyPaint.Vues
             }
         }
 
-        private List<CanvasViewModel> ConvertStrokesToPNG(List<SaveableCanvas> savedCanvas, InkCanvas drawingSurface)
+        private List<SaveableCanvas> ConvertStrokesToPNG(List<SaveableCanvas> savedCanvas, InkCanvas drawingSurface)
         {
-            List<CanvasViewModel> canvas = new List<CanvasViewModel>();
+            List<SaveableCanvas> canvas = new List<SaveableCanvas>();
             if (savedCanvas != null)
             {
                 for (int item = 0; item < savedCanvas.Count; item++)
                 {
                     if (savedCanvas[item].CanvasAutor == username | savedCanvas[item].CanvasVisibility == "Public")
                     {
-                        var bitmapImage = (BitmapSource)new ImageSourceConverter().ConvertFrom(Convert.FromBase64String(savedCanvas[item].Base64Image));
-                        var strokes = GenerateStrokesFromBytes(Convert.FromBase64String(savedCanvas[item].Base64Strokes));
-                        canvas.Add(new CanvasViewModel(savedCanvas[item].CanvasId, savedCanvas[item].Name, bitmapImage, strokes, savedCanvas[item].CanvasVisibility, savedCanvas[item].CanvasProtection, savedCanvas[item].CanvasAutor));
+                        canvas.Add(new SaveableCanvas(savedCanvas[item].CanvasId, savedCanvas[item].Name, savedCanvas[item].Base64Strokes, savedCanvas[item].Base64Image, savedCanvas[item].CanvasVisibility, savedCanvas[item].CanvasProtection, savedCanvas[item].CanvasAutor));
                         for (int i = 0; i < canvas.Count - 1; i++)
                         {
                             if (savedCanvas[item].Name == canvas[i].Name)
@@ -187,13 +191,14 @@ namespace PolyPaint.Vues
 
         private void OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            SelectedCanvas = (CanvasViewModel)ImagePreviews.SelectedItem;
+            SelectedCanvas = (SaveableCanvas)ImagePreviews.SelectedItem;
+            List<DrawViewModel> drawViewModels = JsonConvert.DeserializeObject<List<DrawViewModel>>(SelectedCanvas.Base64Strokes);
             if (SelectedCanvas.CanvasProtection != "")
             {
                 imageProtection = new ImageProtection();
                 if (imageProtection.PasswordEntered == SelectedCanvas.CanvasProtection)
                 {
-                    fenetreDessin.surfaceDessin.Strokes.Add(SelectedCanvas.Strokes);
+                    strokeBuilder.BuildStrokesFromDrawViewModels(drawViewModels, SurfaceDessin);
                     Application.Current.MainWindow = fenetreDessin;
                     this.Close();
                     fenetreDessin.Show();
@@ -206,7 +211,7 @@ namespace PolyPaint.Vues
             }
             else
             {
-                fenetreDessin.surfaceDessin.Strokes.Add(SelectedCanvas.Strokes);
+                strokeBuilder.BuildStrokesFromDrawViewModels(drawViewModels, SurfaceDessin);
                 Application.Current.MainWindow = fenetreDessin;
                 this.Close();
                 fenetreDessin.Show();
