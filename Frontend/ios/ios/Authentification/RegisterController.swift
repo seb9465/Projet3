@@ -348,10 +348,11 @@ class RegisterController: UIViewController {
             let password = self.pwdErrorIcon, password.isHidden && !self.passwordField.text!.isEmpty
         else
         {
+            self.registerButton.alpha = 0.5;
+            self.registerButton.isUserInteractionEnabled = false;
             return
         }
-        // enable okButton if all conditions are met
-        self.registerButton.isHidden = false;
+        
         self.registerButton.alpha = 1;
         self.registerButton.isUserInteractionEnabled = true;
     }
