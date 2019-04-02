@@ -30,6 +30,8 @@ class RegisterController: UIViewController {
     @IBOutlet var pwdErrorText: UILabel!
     @IBOutlet var emailErrorIcon: UIButton!
     @IBOutlet var emailErrorText: UILabel!
+    @IBOutlet var usernameErrorIcon: UIButton!
+    @IBOutlet var usernameErrorText: UILabel!
     
     
     @IBOutlet var contentView: UIView!
@@ -49,28 +51,34 @@ class RegisterController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
     self.contentView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(returnTextView(gesture:))))
         
-        self.initErrorViews();
+        self.hideErrorViews();
         
         super.viewDidLoad();
     }
     
-    public func initErrorViews() -> Void {
+    public func hideErrorViews() -> Void {
         self.emailErrorIcon.isHidden = true;
         self.emailErrorText.isHidden = true;
         self.pwdErrorIcon.isHidden = true;
         self.pwdErrorText.isHidden = true;
+        self.usernameErrorIcon.isHidden = true;
+        self.usernameErrorText.isHidden = true;
     }
     
     // MARK: Actions
-    
+    var sv: UIView!;
     @IBAction func registerButtonPressed(_ sender: UIButton) {
 //        let registrationViewModel: RegistrationViewModel = RegistrationViewModel(firstName: self.firstNameField.text!, lastName: self.lastNameField.text!, email: self.usernameField.text!, username: self.emailField.text!, password: self.passwordField.text!);
-        let registrationViewModel: RegistrationViewModel = RegistrationViewModel(firstName: "sebaaaa", lastName: "cadoo", email: "sebbaa.cadoo@me.com", username: "sebbaa.cadoo", password: "!12345Aa");
-        let sv = UIViewController.displaySpinner(onView: self.view);
+        let registrationViewModel: RegistrationViewModel = RegistrationViewModel(firstName: "user", lastName: "hyped", email: "user.777713123@me.com", username: "user.777711221", password: "!12345Aa");
+        sv = UIViewController.displaySpinner(onView: self.view);
         registerUser(parameters: registrationViewModel.toJson())
             .done { response in
-                UIViewController.removeSpinner(spinner: sv);
-            }
+                
+            } .catch { (error) in
+//                self.present(self.buildFailureAlert(errorMessage: error.localizedDescription), animated: true);
+                print(error);
+                self.present(self.buildOkAlert(), animated: true);
+        }
     }
     
     // MARK: Actions
@@ -111,28 +119,34 @@ class RegisterController: UIViewController {
     
     // MARK: Private functions
     
-    private func registerUser(parameters: [String: String?]) -> Promise<Any>{
+    private func registerUser(parameters: [String: String?]) -> Promise<[HttpResponseMessage]>{
         return Promise {seal in
             Alamofire.request(Constants.REGISTER_URL as URLConvertible, method: .post, parameters: parameters as Parameters, encoding: JSONEncoding.default).responseSwiftyJSON{ response in
-                if (response.result.isFailure) {
-                    return;
-                }
-                
-                if (response.response?.statusCode == 400) {
-                    for err in response.value! {
-                        let messageJSON: String = err.1.rawString()!;
-                        self.showErrors(messageJSON: messageJSON);
+                UIViewController.removeSpinner(spinner: self.sv);
+                self.hideErrorViews();
+                var errors: [HttpResponseMessage] = [];
+                print(response);
+                print(response.result);
+                switch response.result {
+                case .failure(let error):
+                    seal.reject(error);
+                    break;
+                case .success:
+                    if (response.response?.statusCode == 400) {
+                        for err in response.value! {
+                            let messageJSON: String = err.1.rawString()!;
+                            let message: HttpResponseMessage = self.showError(messageJSON: messageJSON);
+                            errors.append(message);
+                        }
                     }
-                } else if (response.response?.statusCode == 200) {
-                    self.showOkAlert();
+                    break;
                 }
-                
-                seal.fulfill(response);
+                seal.fulfill(errors);
             };
         }
     }
     
-    private func showErrors(messageJSON: String) -> Void {
+    private func showError(messageJSON: String) -> HttpResponseMessage {
         let jsonData = messageJSON.data(using: .utf8);
         let message: HttpResponseMessage = try! JSONDecoder().decode(HttpResponseMessage.self, from: jsonData!);
         
@@ -143,33 +157,47 @@ class RegisterController: UIViewController {
             self.emailErrorText.isHidden = false;
             break;
         case "DuplicateUserName":
-            self.emailErrorText.text = "Username already exists";
-            
+            self.usernameErrorText.text = "Username already exists";
+            self.usernameErrorIcon.isHidden = false;
+            self.usernameErrorText.isHidden = false;
             break;
         default:
             break;
         }
         
-        
+        return message;
     }
     
-    private func showOkAlert() -> Void {
+    private func buildOkAlert() -> UIAlertController {
         let alert: UIAlertController = UIAlertController(title: "Registration complete!", message: "Welcome abord " + self.firstNameField.text!, preferredStyle: .alert);
         
         let okAction: UIAlertAction = UIAlertAction(title: "Sick, let me in!", style: .default, handler: { action in
-            let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil);
-            let viewController: UIViewController = mainStoryboard.instantiateViewController(withIdentifier: "LoginStoryboard");
-            
-            let transition = CATransition()
-            transition.duration = 0.5
-            transition.type = CATransitionType.fade
-            transition.subtype = CATransitionSubtype.fromBottom
-            self.view.window?.layer.add(transition, forKey: kCATransition);
-            
-            self.present(viewController, animated: false, completion: nil);
+//            let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil);
+//            let viewController: UIViewController = mainStoryboard.instantiateViewController(withIdentifier: "LoginStoryboard");
+//
+//            let transition = CATransition()
+//            transition.duration = 0.5
+//            transition.type = CATransitionType.fade
+//            transition.subtype = CATransitionSubtype.fromBottom
+//            self.view.window?.layer.add(transition, forKey: kCATransition);
+//
+//            self.present(viewController, animated: false, completion: nil);
+            self.dismiss(animated: true, completion: nil)
         });
         
         alert.addAction(okAction);
+        
+        return alert;
+    }
+    
+    private func buildFailureAlert(errorMessage: String) -> UIAlertController {
+        let alert: UIAlertController = UIAlertController(title: "Something went wrong", message: errorMessage, preferredStyle: .alert);
+        
+        let okAction: UIAlertAction = UIAlertAction(title: "Damn, alright I'll try again.", style: .default, handler: nil);
+        
+        alert.addAction(okAction);
+        
+        return alert;
     }
     
     @objc private func returnTextView(gesture: UIGestureRecognizer) {
