@@ -441,6 +441,11 @@ extension Editor : TouchInputDelegate {
             }
             
             CollaborationHub.shared.postNewFigure(figures: [figure!])
+            var drawViewModels: [DrawViewModel] = []
+            for figure in selectedFigures {
+                drawViewModels.append(figure.exportViewModel()!)
+            }
+            CollaborationHub.shared.selectObjects(drawViewModels: drawViewModels)
             self.touchEventState = .SELECT
             return
         }
