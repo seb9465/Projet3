@@ -243,7 +243,6 @@ namespace PolyPaint.Utilitaires
                         ImageSource imgSrc = biImg as ImageSource;
                         ImageBrush brush = new ImageBrush(imgSrc);
 
-                        (DrawingStroke as AbstractStroke).Guid = Guid.Parse(stroke.Guid);
                         if (TryGetByGuid(surfaceDessin, Guid.Parse(stroke.Guid), out var existingImageStroke))
                         {
                             DrawingStroke = existingImageStroke;
@@ -254,7 +253,7 @@ namespace PolyPaint.Utilitaires
                         {
                             DrawingStroke = new ImageStroke(pts, surfaceDessin, brush);
                         }
-                        (DrawingStroke as ICanvasable).AddToCanvas();
+                        SetShapeProperties(stroke, surfaceDessin);
                         break;
 
 

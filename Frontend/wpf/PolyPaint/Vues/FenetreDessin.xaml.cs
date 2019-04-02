@@ -430,6 +430,7 @@ namespace PolyPaint
 
             ImageStroke image = new ImageStroke(collection, surfaceDessin, ib);
             (image as ICanvasable).AddToCanvas();
+            (DataContext as VueModele).CollaborationClient.CollaborativeDrawAsync(rebuilder.GetDrawViewModelsFromStrokes(new StrokeCollection(new List<Stroke>() { image })));
         }
         private void DownloadCanvasAsJPG(object sender, RoutedEventArgs e)
         {
@@ -560,7 +561,7 @@ private void Disconnect_Click(object sender, RoutedEventArgs e)
                 }
             }
             catch { }
-
+            Application.Current.Properties.Clear();
             Login login = new Login();
             Application.Current.MainWindow = login;
             Close();
