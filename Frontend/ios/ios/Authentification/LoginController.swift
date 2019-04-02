@@ -21,29 +21,33 @@ class LoginController: UIViewController, UITextFieldDelegate {
     @IBOutlet var loginButton: UIButton!
     
     @IBOutlet weak var offlineButton: RoundedCorners!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         self.serverlabel.text = "Server: " + Constants.SERVER_BASE_URL
         self.autologinlabel.text = "Auto-login: true"
+        
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+        
+        // TODO: DÉCOMMENTÉ LES PROCHAINES LIGNES POUR LA VERSION RELEASE.
+//        self.loginButton.isUserInteractionEnabled = false;
+//        self.loginButton.alpha = 0.5;
+//        self.setupAddTargetIsNotEmptyTextFields();
     }
     
     @IBAction func loginPressed(_ sender: Any) {
         let sv = UIViewController.displaySpinner(onView: self.view);
-//        let validEmail: Bool = isValidEmail(email: emailField.text!);
         
-//        AuthentificationAPI.login(username: emailField.text!, password: passwordField.text!)
-        AuthentificationAPI.login(username: "user.3", password: "!12345Aa")
+        AuthentificationAPI.login(username: emailField.text!, password: passwordField.text!)
 //        AuthentificationAPI.login(username: "seb.cado2", password: "!12345Aa")
             .done { (token) in
                 UIViewController.removeSpinner(spinner: sv);
                 self.validationLabel.text = ""
                 self.storeAuthentificationToken(token: token)
-                // Connect to chat
                 ChatService.shared.connectToHub();
                 
-                // Navigate to dashboard
                 let mainController = self.storyboard?.instantiateViewController(withIdentifier: "MainController")
                 self.present(mainController!, animated: true, completion: nil)
             }.catch { (Error) in
@@ -51,12 +55,9 @@ class LoginController: UIViewController, UITextFieldDelegate {
                 self.validationLabel.text = "Invalid Credentials"
                 print(Error)
         }
-        
-//        CollaborationService
     }
     
     @IBAction func registerPressed(_ sender: UIButton) {
-        // Navigate to register page
         let registerConroller = storyboard?.instantiateViewController(withIdentifier: "RegisterController") as! RegisterController
         self.present(registerConroller, animated: true, completion: nil)
     }
@@ -75,16 +76,39 @@ class LoginController: UIViewController, UITextFieldDelegate {
         }
     }
     
+    @objc func textFieldsWithoutErrors(sender: UITextField) -> Void {
+        sender.text = sender.text?.trimmingCharacters(in: .whitespaces)
+        
+        guard
+            let username = self.emailField.text, !username.isEmpty,
+            let password = self.passwordField.text, password.isEmpty
+            else
+        {
+            self.loginButton.alpha = 0.5;
+            self.loginButton.isUserInteractionEnabled = false;
+            return
+        }
+        
+        self.loginButton.alpha = 1;
+        self.loginButton.isUserInteractionEnabled = true;
+    }
     
     func storeAuthentificationToken(token: String) {
         UserDefaults.standard.set(token, forKey: "token")
         UserDefaults.standard.synchronize();
     }
     
-    func isValidEmail(email: String) -> Bool {
-        let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
-        let emailTest = NSPredicate(format: "SELF MATCHES %@", emailRegEx)
-
-        return emailTest.evaluate(with: email)
+    private func setupAddTargetIsNotEmptyTextFields() {
+        self.emailField.addTarget(self, action: #selector(textFieldsWithoutErrors),
+                                      for: .editingChanged)
+        self.passwordField.addTarget(self, action: #selector(textFieldsWithoutErrors),
+                                     for: .editingChanged)
     }
+    
+//    func isValidEmail(email: String) -> Bool {
+//        let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
+//        let emailTest = NSPredicate(format: "SELF MATCHES %@", emailRegEx)
+//
+//        return emailTest.evaluate(with: email)
+//    }
 }
