@@ -45,6 +45,22 @@ namespace PolyPaint.Modeles{    public class CollaborationClient    {       
             }
             catch (Exception)
             { }
+        }        public async void CollaborativeDeleteAsync(List<DrawViewModel> drawViewModels)
+        {
+            try
+            {
+                await Delete(drawViewModels);
+            }
+            catch (Exception)
+            { }
+        }        public async void CollaborativeResetAsync()
+        {
+            try
+            {
+                await Reset();
+            }
+            catch (Exception)
+            { }
         }
         private async Task Draw(List<DrawViewModel> drawViewModels)
         {
@@ -75,20 +91,20 @@ namespace PolyPaint.Modeles{    public class CollaborationClient    {       
             catch (Exception) { }
         }
 
-        public async Task CollaborativeDeleteAsync()
+        public async Task Delete(List<DrawViewModel> drawViewModels)
         {
             try
             {
-                await Connection.InvokeAsync("Delete");
+                await Connection.InvokeAsync("Delete", JsonConvert.SerializeObject(new ItemsMessage("general", "", drawViewModels)));
             }
             catch (Exception) { }
         }
 
-        public async Task CollaborativeResetAsync()
+        public async Task Reset()
         {
             try
             {
-                await Connection.InvokeAsync("Reset", "general");
+                await Connection.InvokeAsync("Reset");
             }
             catch (Exception) { }
         }
