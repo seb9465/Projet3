@@ -356,8 +356,8 @@ namespace PolyPaint
             {
                 case "change_text":
                     icEventManager.ChangeText(surfaceDessin, mouseLeftDownPoint, (VueModele)DataContext);
-                    selectedItems = rebuilder.GetDrawViewModelsFromStrokes(surfaceDessin.GetSelectedStrokes());
                     (DataContext as VueModele).SelectItem(surfaceDessin, e.GetPosition((IInputElement)sender));
+                    selectedItems = rebuilder.GetDrawViewModelsFromStrokes(surfaceDessin.GetSelectedStrokes());
                     (DataContext as VueModele).CollaborationClient.CollaborativeSelectAsync(selectedItems);
                     break;
                 case "select":

@@ -12,7 +12,7 @@ namespace PolyPaint.Strokes
     public class UnidirectionalAssociationStroke : AbstractLineStroke
     {
         public UnidirectionalAssociationStroke(StylusPointCollection pts, InkCanvas surfaceDessin, string couleurBordure, double thicc, DashStyle dashStyle)
-            : base(pts, surfaceDessin, "0..0", "0..0", couleurBordure, "#FF000000", thicc, false, dashStyle)
+            : base(pts, surfaceDessin, "", "", couleurBordure, "#FF000000", thicc, false, dashStyle)
         { }
 
         protected override void DrawCore(DrawingContext drawingContext, DrawingAttributes drawingAttributes)

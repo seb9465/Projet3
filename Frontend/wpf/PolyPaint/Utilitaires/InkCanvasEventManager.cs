@@ -42,6 +42,11 @@ namespace PolyPaint.Utilitaires
                         var editWindow = new EditTitleWindow(strokes[i] as AbstractShapeStroke, surfaceDessin, vm);
                         editWindow.Show();
                     }
+                    else if (strokes[i] is AbstractLineStroke)
+                    {
+                        var editWindow = new EditLineTitleWindow(strokes[i] as AbstractLineStroke, surfaceDessin, vm);
+                        editWindow.Show();
+                    }
                     break;
                 }
             }

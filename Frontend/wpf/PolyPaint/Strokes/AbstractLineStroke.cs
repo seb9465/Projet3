@@ -93,32 +93,41 @@ namespace PolyPaint.Strokes
 
             if (StylusPoints[0].X < StylusPoints[1].X)
             {
-                var firstPoint = new Point(StylusPoints[0].X + 10, StylusPoints[0].Y);
-                var secondPoint = new Point(StylusPoints[1].X - Destination.Width - 10, StylusPoints[1].Y);
-
-                dc.PushTransform(new RotateTransform(firstAngle, firstPoint.X, firstPoint.Y));
+                var firstPoint = new Point(StylusPoints[0].X + 15, StylusPoints[0].Y - Source.Height);
+                dc.PushTransform(new RotateTransform(firstAngle, StylusPoints[0].X, StylusPoints[0].Y));
                 dc.DrawText(Source, firstPoint);
                 dc.Pop();
 
-                dc.PushTransform(new RotateTransform(secondAngle, secondPoint.X, secondPoint.Y));
+                var secondPoint = new Point(StylusPoints[1].X - Destination.Width - 15, StylusPoints[1].Y - Destination.Height);
+                dc.PushTransform(new RotateTransform(secondAngle, StylusPoints[1].X, StylusPoints[1].Y));
                 dc.DrawText(Destination, secondPoint);
+                dc.Pop();
+
+                var elbowPoint = new Point(LastElbowPosition.X + 15, LastElbowPosition.Y - Title.Height);
+                dc.PushTransform(new RotateTransform(secondAngle, LastElbowPosition.X, LastElbowPosition.Y));
+                dc.DrawText(Title, elbowPoint);
                 dc.Pop();
             }
             else
             {
-                var firstPoint = new Point(StylusPoints[0].X - Source.Width - 10, StylusPoints[0].Y);
-                var secondPoint = new Point(StylusPoints[1].X + 10, StylusPoints[1].Y);
+                firstAngle += 180;
+                secondAngle += 180;
 
-                dc.PushTransform(new RotateTransform(secondAngle, secondPoint.X, secondPoint.Y));
+                var secondPoint = new Point(StylusPoints[1].X + 15, StylusPoints[1].Y - Destination.Height);
+                dc.PushTransform(new RotateTransform(secondAngle, StylusPoints[1].X, StylusPoints[1].Y));
                 dc.DrawText(Destination, secondPoint);
                 dc.Pop();
 
-                dc.PushTransform(new RotateTransform(firstAngle, firstPoint.X, firstPoint.Y));
+                var firstPoint = new Point(StylusPoints[0].X - Source.Width - 15, StylusPoints[0].Y - Source.Height);
+                dc.PushTransform(new RotateTransform(firstAngle, StylusPoints[0].X, StylusPoints[0].Y));
                 dc.DrawText(Source, firstPoint);
                 dc.Pop();
-            }
 
-            dc.DrawText(Title, new Point(LastElbowPosition.X - Title.Width / 2, LastElbowPosition.Y));
+                var elbowPoint = new Point(LastElbowPosition.X - Title.Width - 15, LastElbowPosition.Y - Title.Height);
+                dc.PushTransform(new RotateTransform(secondAngle, LastElbowPosition.X, LastElbowPosition.Y));
+                dc.DrawText(Title, elbowPoint);
+                dc.Pop();
+            }
         }
     }
 }
