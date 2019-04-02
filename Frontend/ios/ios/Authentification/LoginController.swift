@@ -34,7 +34,7 @@ class LoginController: UIViewController, UITextFieldDelegate {
 //        let validEmail: Bool = isValidEmail(email: emailField.text!);
         
 //        AuthentificationAPI.login(username: emailField.text!, password: passwordField.text!)
-        AuthentificationAPI.login(username: "user.3", password: "!12345Aa")
+        AuthentificationAPI.login(username: "user.4", password: "!12345Aa")
 //        AuthentificationAPI.login(username: "seb.cado2", password: "!12345Aa")
             .done { (token) in
                 UIViewController.removeSpinner(spinner: sv);

@@ -63,6 +63,7 @@ class Editor {
             selectionOutlines.append(outline)
             self.editorView.addSubview(outline);
         }
+//        self.selectedFiguresDictionnary.updateValue(<#T##value: [DrawViewModel]##[DrawViewModel]#>, forKey: <#T##String#>)
         self.selectedOutlinesDictionnary.updateValue(selectionOutlines, forKey: username)
     }
     
@@ -517,6 +518,9 @@ extension Editor: CollaborationHubDelegate {
                 newFigure.delegate = self
                 self.figures.append(newFigure)
                 self.editorView.addSubview(newFigure)
+                self.deselect(username: itemMessage.Username)
+                self.selectedFiguresDictionnary.updateValue(itemMessage.Items, forKey: itemMessage.Username)
+                self.select(figures: [newFigure], username: itemMessage.Username)
                 return
             }
             
