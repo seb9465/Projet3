@@ -546,7 +546,7 @@ namespace PolyPaint
                 }
             }
             catch { }
-
+            Application.Current.Properties.Clear();
             Login login = new Login();
             Application.Current.MainWindow = login;
             Close();
