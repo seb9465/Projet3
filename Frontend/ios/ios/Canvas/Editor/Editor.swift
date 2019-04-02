@@ -290,6 +290,7 @@ extension Editor: SideToolbarDelegate {
         }
         
         self.updateSideToolBar()
+        CollaborationHub.shared.postNewFigure(figures: self.selectedFigures)
     }
     
     func addClassAttribute(name: String) {
@@ -298,6 +299,7 @@ extension Editor: SideToolbarDelegate {
         }
         
         self.updateSideToolBar()
+        CollaborationHub.shared.postNewFigure(figures: self.selectedFigures)
     }
     
     func removeClassAttribute(name: String, index: Int) {
@@ -306,6 +308,7 @@ extension Editor: SideToolbarDelegate {
         }
         
         self.updateSideToolBar()
+        CollaborationHub.shared.postNewFigure(figures: self.selectedFigures)
     }
     
     func updateSideToolBar() {
@@ -529,6 +532,7 @@ extension Editor: CollaborationHubDelegate {
     }
     
     func updateCanvas(itemMessage: ItemMessage) {
+        print(itemMessage.Items)
         for drawViewModel in itemMessage.Items {
             if (self.figures.contains(where: {$0.uuid.uuidString.lowercased() == drawViewModel.Guid})) {
                 print("Figure overritten")

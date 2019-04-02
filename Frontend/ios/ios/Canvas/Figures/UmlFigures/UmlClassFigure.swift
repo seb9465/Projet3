@@ -121,10 +121,10 @@ class UmlClassFigure: UmlFigure {
         drawViewModel.Owner = UserDefaults.standard.string(forKey: "username")
         drawViewModel.ItemType = ItemTypeEnum.UmlClass
         drawViewModel.StylusPoints = [point1, point2]
-        drawViewModel.FillColor = PolyPaintColor(color: self.fillColor)
+        drawViewModel.FillColor = PolyPaintColor(color: self.figureColor)
         drawViewModel.BorderColor = PolyPaintColor(color: self.lineColor)
         drawViewModel.BorderThickness = Double(self.lineWidth)
-        drawViewModel.BorderStyle = (self.isBorderDashed) ? "dashed" : "solid"
+        drawViewModel.BorderStyle = (self.isBorderDashed) ? "dash" : "solid"
         drawViewModel.ShapeTitle = self.name
         drawViewModel.Methods = self.methods
         drawViewModel.Properties = self.attributes
