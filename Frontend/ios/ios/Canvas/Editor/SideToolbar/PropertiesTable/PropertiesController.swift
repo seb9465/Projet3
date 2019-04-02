@@ -20,25 +20,28 @@ class PropertiesTableController: UIViewController {
         let classAttributesnib = UINib.init(nibName: "ClassCell", bundle: nil)
         self.propertiesTable.register(classAttributesnib, forCellReuseIdentifier: "ClassCell")
         
-        let commentAttributesnib = UINib.init(nibName: "CommentCell", bundle: nil)
-        self.propertiesTable.register(commentAttributesnib, forCellReuseIdentifier: "CommentCell")
-
-        let textAttributesnib = UINib.init(nibName: "TextCell", bundle: nil)
-        self.propertiesTable.register(textAttributesnib, forCellReuseIdentifier: "TextCell")
-        
-        let phaseAttributesnib = UINib.init(nibName: "PhaseCell", bundle: nil)
-        self.propertiesTable.register(phaseAttributesnib, forCellReuseIdentifier: "PhaseCell")
+        let commentAttributesnib = UINib.init(nibName: "FigureNameCell", bundle: nil)
+        self.propertiesTable.register(commentAttributesnib, forCellReuseIdentifier: "FigureNameCell")
     }
 }
 
 extension PropertiesTableController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if (self.editor.selectedFigures.isEmpty){
+        if (self.editor.selectedFigures.isEmpty) {
+            return 0
         }
+        
+        if (self.editor.selectedFigures[0] is UmlClassFigure) {
+            return 2
+        }
+        
         return 1
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if (indexPath.row == 0) {
+            return 80
+        }
         return 525
     }
     
@@ -47,56 +50,24 @@ extension PropertiesTableController: UITableViewDelegate, UITableViewDataSource 
             return UITableViewCell();
         }
         
-        switch(self.editor.selectedFigures[0]) {
-        case is UmlClassFigure:
-            switch(indexPath.row) {
-            case 0:
-                let cell = tableView.dequeueReusableCell(withIdentifier: "ClassCell", for: indexPath) as! ClassCell
-                cell.setUpTable()
-                cell.delegate = self.editor
-                cell.classNameField.text = (self.editor.selectedFigures[0] as! UmlClassFigure).className
-                cell.methods = (self.editor.selectedFigures[0] as! UmlClassFigure).methods
-                cell.methodsTableView.reloadData()
-                cell.attributes = (self.editor.selectedFigures[0] as! UmlClassFigure).attributes
-                cell.attributesTableView.reloadData()
-                return cell
-            default:
-                return UITableViewCell();
-            }
-        case is UmlCommentFigure:
-                switch(indexPath.row) {
-                case 0:
-                    let cell = tableView.dequeueReusableCell(withIdentifier: "CommentCell", for: indexPath) as! CommentCell
-                    cell.delegate = self.editor
-                    cell.commentTextbox.text = (self.editor.selectedFigures[0] as! UmlCommentFigure).comment
-                    return cell
-                default:
-                    return UITableViewCell();
-                }
-        case is UMLTextFigure:
-            switch(indexPath.row) {
-            case 0:
-                let cell = tableView.dequeueReusableCell(withIdentifier: "TextCell", for: indexPath) as! TextCell
-                cell.delegate = self.editor
-                cell.TextBoxField.text = (self.editor.selectedFigures[0] as! UMLTextFigure).text
-                return cell
-            default:
-                return UITableViewCell();
-            }
-            
-        case is UmlPhaseFigure:
-            switch(indexPath.row) {
-            case 0:
-                let cell = tableView.dequeueReusableCell(withIdentifier: "PhaseCell", for: indexPath) as! PhaseCell
-                cell.delegate = self.editor
-                cell.phaseNameTextField.text = (self.editor.selectedFigures[0] as! UmlPhaseFigure).phaseName
-                return cell
-            default:
-                return UITableViewCell();
-            }
-        default:
-            return UITableViewCell();
+        if (indexPath.row == 0) {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "FigureNameCell", for: indexPath) as! FigureNameCell
+            cell.setFigureTypeLabel(figureType: self.editor.selectedFigures[0].itemType.description + " Name")
+            cell.nameInputField.text = self.editor.selectedFigures[0].name
+            cell.delegate = self.editor
+            return cell
         }
+        
+        // Quand on selectionne une classe
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ClassCell", for: indexPath) as! ClassCell
+        cell.setUpTable()
+        cell.delegate = self.editor
+        cell.classNameField.text = (self.editor.selectedFigures[0] as! UmlClassFigure).name
+        cell.methods = (self.editor.selectedFigures[0] as! UmlClassFigure).methods
+        cell.methodsTableView.reloadData()
+        cell.attributes = (self.editor.selectedFigures[0] as! UmlClassFigure).attributes
+        cell.attributesTableView.reloadData()
+        return cell
     }
 }
 

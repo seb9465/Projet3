@@ -14,10 +14,16 @@ class UmlActivityFigure: UmlFigure {
     
     init(firstPoint: CGPoint, lastPoint: CGPoint) {
         super.init(firstPoint: firstPoint, lastPoint: lastPoint, width: BASE_WIDTH, height: BASE_WIDTH)
+        self.itemType = ItemTypeEnum.Activity
     }
     
     init(origin: CGPoint) {
         super.init(touchedPoint: origin, width: BASE_WIDTH, height: BASE_HEIGHT)
+        self.itemType = ItemTypeEnum.Activity
+    }
+    
+    override init(drawViewModel: DrawViewModel) {
+        super.init(drawViewModel: drawViewModel);
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -45,9 +51,9 @@ class UmlActivityFigure: UmlFigure {
         let point2 = PolyPaintStylusPoint(X: Double(self.lastPoint.x), Y: Double(self.lastPoint.y), PressureFactor: 1)
         
         var drawViewModel: DrawViewModel = DrawViewModel()
-        drawViewModel.Guid = self.uuid.uuidString
-        drawViewModel.owner = UserDefaults.standard.string(forKey: "username")
-        drawViewModel.ItemType = self.itemType
+        drawViewModel.Guid = self.uuid.uuidString.lowercased()
+        drawViewModel.Owner = UserDefaults.standard.string(forKey: "username")
+        drawViewModel.ItemType = ItemTypeEnum.Activity
         drawViewModel.StylusPoints = [point1, point2]
         drawViewModel.FillColor = PolyPaintColor(A: 255, R: 255, G: 1, B: 1)
         drawViewModel.BorderColor = PolyPaintColor(A: 255, R: 255, G: 1, B: 1)

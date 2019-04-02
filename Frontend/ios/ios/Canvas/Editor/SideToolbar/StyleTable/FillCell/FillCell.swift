@@ -9,6 +9,7 @@
 import UIKit
 
 class FillCell: UITableViewCell {
+    var delegate: SideToolbarDelegate?
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -16,9 +17,32 @@ class FillCell: UITableViewCell {
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
+        self.selectionStyle = UITableViewCell.SelectionStyle.none
         super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
+    }
+    
+    @IBAction func blueSelected(_ sender: UIButton) {
+        self.delegate?.setSelectedFigureFillColor(color: UIColor.blue)
+    }
+    
+    @IBAction func greenSelected(_ sender: UIButton) {
+        self.delegate?.setSelectedFigureFillColor(color: UIColor.green)
+    }
+    
+    @IBAction func yellowSelected(_ sender: UIButton) {
+        self.delegate?.setSelectedFigureFillColor(color: UIColor.yellow)
+    }
+    
+    @IBAction func redSelected(_ sender: UIButton) {
+        self.delegate?.setSelectedFigureFillColor(color: UIColor.red)
+    }
+    
+    @IBAction func blackSelected(_ sender: UIButton) {
+        self.delegate?.setSelectedFigureFillColor(color: UIColor.black)
+    }
+    
+    @IBAction func whiteSelected(_ sender: UIButton) {
+        self.delegate?.setSelectedFigureFillColor(color: UIColor.white)
     }
     
 }

@@ -79,6 +79,12 @@
                                             <action selector="selectFigureButton:" destination="Vts-He-P18" id="ZEn-to-nDy"/>
                                         </connections>
                                     </barButtonItem>
+                                    <barButtonItem title="Lasso" id="Ttp-DJ-46z">
+                                        <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <connections>
+                                            <action selector="lassoButton:" destination="Vts-He-P18" id="rPD-vK-NGN"/>
+                                        </connections>
+                                    </barButtonItem>
                                     <barButtonItem title="Delete" id="5ld-32-8cy">
                                         <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
@@ -95,7 +101,7 @@
                                 </connections>
                             </containerView>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" red="0.92143100499999997" green="0.92145264149999995" blue="0.92144101860000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <gestureRecognizers/>
                         <viewLayoutGuide key="safeArea" id="h7K-cJ-n3H"/>
                     </view>
@@ -103,6 +109,7 @@
                         <outlet property="deleteButton" destination="5ld-32-8cy" id="y06-F1-JC8"/>
                         <outlet property="exportButton" destination="yqP-yF-mGn" id="ydc-eg-QxN"/>
                         <outlet property="insertButton" destination="SLY-eP-ACv" id="oPa-Hm-WsF"/>
+                        <outlet property="lassoButton" destination="Ttp-DJ-46z" id="SF8-4U-zfW"/>
                         <outlet property="navigationBar" destination="P0r-rK-G4e" id="Xne-YZ-5HS"/>
                         <outlet property="selectButton" destination="Lts-nR-qFd" id="AOd-xa-kni"/>
                     </connections>
