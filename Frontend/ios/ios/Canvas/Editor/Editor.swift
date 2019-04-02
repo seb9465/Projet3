@@ -374,6 +374,7 @@ extension Editor : TouchInputDelegate {
             break
         case .AREA_SELECT:
             if (self.selectionLasso == nil) {
+                self.deselect();
                 self.selectLasso(touchPoint: point)
                 return
             }
@@ -433,7 +434,6 @@ extension Editor : TouchInputDelegate {
             if (!self.selectionLasso.shapeIsClosed) {
                 return
             }
-            
             for figure in self.figures {
                 if (self.selectionLasso.contains(figure: figure)) {
                     self.select(figure: figure);
