@@ -8,7 +8,8 @@
 
 import ChromaColorPicker
 import UIKit
-
+import Reachability
+import Foundation
 class CanvasController: UIViewController {
     
     // MARK: - Attributes
@@ -28,11 +29,23 @@ class CanvasController: UIViewController {
         super.viewDidLoad();
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+
         CollaborationHub.shared.connectToHub()
         
         self.view.addSubview(self.editor.editorView)
+        
+        setupNetwork()
     }
     
+    func setupNetwork() {
+        let reachability: Reachability?
+
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(reachabilityChanged(_:)),
+            name: .reachabilityChanged,
+            object: reachability
+    }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated);
         navigationController?.setNavigationBarHidden(true, animated: animated);
