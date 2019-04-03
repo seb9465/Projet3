@@ -120,6 +120,10 @@ class ChatRoomsControllerTableViewController: UITableViewController {
         let destination = storyboard.instantiateViewController(withIdentifier: "ChatView");
         navigationController?.pushViewController(destination, animated: true)
     }
+    
+    override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        self.tableView.reloadData();
+    }
  
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {

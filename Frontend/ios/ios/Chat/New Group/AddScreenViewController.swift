@@ -116,7 +116,8 @@ class AddScreenViewController: UIViewController, UITableViewDelegate, UITableVie
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "CustomTableViewCell") as? CustomTableViewCell;
         
-        cell?.chatRoomName.text = ChatService.shared.serverChannels.channels[indexPath.row].name;
+        cell?.chatRoomName.text = ChatService.shared.serverChannels.channels[indexPath.row].name.uppercased();
+        cell?.notificationLabel.text = "";
         
         return cell!
     }

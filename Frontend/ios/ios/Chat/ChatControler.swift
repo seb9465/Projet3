@@ -51,7 +51,7 @@ class MsgChatController: MessagesViewController, MsgChatProtocol {
         }
         
         // TODO: Make a function in the ChatService for this and the get.
-        ChatService.shared.messagesWhileAFK.removeAll();
+        ChatService.shared.messagesWhileAFK.removeValue(forKey: channelName);
         self.messagesCollectionView.reloadData();
     }
     
