@@ -42,7 +42,7 @@ class DashboardController: UIViewController, UITextFieldDelegate {
     @IBAction func createNewCanvas(_ sender: Any) {
         var newCanvas: Canvas = Canvas()
         newCanvas.canvasId = UUID().uuidString
-        canvasId = canvas.canvasId
+        canvasId = newCanvas.canvasId
         let createAlert = UIAlertController(title: "Create Canvas", message: "Please enter the new canvas name and it's visibility.", preferredStyle: .alert)
         createAlert.addTextField(configurationHandler: { (textField) in
             textField.placeholder = "Name"
