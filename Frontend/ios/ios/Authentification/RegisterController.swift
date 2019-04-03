@@ -58,10 +58,10 @@ class RegisterController: UIViewController {
         
         self.hideErrorViews();
         
-//        self.registerButton.isUserInteractionEnabled = false;
-//        self.registerButton.alpha = 0.5;
+        self.registerButton.isUserInteractionEnabled = false;
+        self.registerButton.alpha = 0.5;
         
-//        self.setupAddTargetWithoutErrorsTextFields();
+        self.setupAddTargetWithoutErrorsTextFields();
         
         super.viewDidLoad();
     }
@@ -71,8 +71,8 @@ class RegisterController: UIViewController {
     @IBAction func registerButtonPressed(_ sender: UIButton) {
         self.view.endEditing(true);
         
-//        let registrationViewModel: RegistrationViewModel = RegistrationViewModel(firstName: self.firstNameField.text!, lastName: self.lastNameField.text!, email: self.emailField.text!, username: self.usernameField.text!, password: self.passwordField.text!);
-        let registrationViewModel: RegistrationViewModel = RegistrationViewModel(firstName: "sebb", lastName: "cadoo", email: "seb.cado22@poly.ca", username: "seb.cado22", password: "!12345Aa");
+        let registrationViewModel: RegistrationViewModel = RegistrationViewModel(firstName: self.firstNameField.text!, lastName: self.lastNameField.text!, email: self.emailField.text!, username: self.usernameField.text!, password: self.passwordField.text!);
+        
         spinner = UIViewController.displaySpinner(onView: self.view);
         
         registerUser(parameters: registrationViewModel.toJson());
