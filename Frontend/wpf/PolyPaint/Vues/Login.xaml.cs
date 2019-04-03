@@ -27,7 +27,7 @@ namespace PolyPaint.Vues
 
         private void OfflineBtn_Click(object sender, RoutedEventArgs e)
         {
-            FenetreDessin fenetreDessin = new FenetreDessin(new List<DrawViewModel>(), new ChatClient(), "offline");
+            FenetreDessin fenetreDessin = new FenetreDessin(new List<DrawViewModel>(), new ChatClient(), "offline", 1000, 500);
             Application.Current.MainWindow = fenetreDessin;
             Close();
             fenetreDessin.Show();
