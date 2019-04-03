@@ -34,6 +34,11 @@ class Figure: UIView {
         setNeedsDisplay()
     }
     
+    public func setBorderColor(borderColor: UIColor) -> Void {
+        self.lineColor = borderColor
+        setNeedsDisplay();
+    }
+    
     public func setIsBorderDashed(isDashed: Bool) {
         self.isBorderDashed = isDashed
         setNeedsDisplay()

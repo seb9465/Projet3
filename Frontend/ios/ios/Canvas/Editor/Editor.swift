@@ -235,17 +235,6 @@ class Editor {
         }
         return nil
     }
-    
-    func snap(point: CGPoint) -> CGPoint{
-        for subview in self.editorView.subviews {
-            if let figure = subview as? UmlFigure {
-                if (figure.frame.contains(point)) {
-                    return figure.getClosestAnchorPoint(point: point)
-                }
-            }
-        }
-        return point
-    }
 }
 
 extension Editor {
@@ -257,7 +246,7 @@ extension Editor {
 extension Editor: SideToolbarDelegate {
     func setSelectedFigureBorderColor(color: UIColor) {
         for figure in self.selectedFigures {
-            (figure as! UmlFigure).setBorderColor(borderColor: color);
+            figure.setBorderColor(borderColor: color);
         }
         CollaborationHub.shared.postNewFigure(figures: self.selectedFigures)
     }

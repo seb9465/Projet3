@@ -86,11 +86,6 @@ class UmlFigure : Figure {
         self.figureColor = fillColor
         setNeedsDisplay();
     }
-    
-    public func setBorderColor(borderColor: UIColor) -> Void {
-        self.lineColor = borderColor
-        setNeedsDisplay();
-    }
 
     public func translate(by: CGPoint) {
         let translatedFrame = self.frame.offsetBy(dx: by.x, dy: by.y)
