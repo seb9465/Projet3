@@ -13,9 +13,11 @@ namespace PolyPaint.API.Controllers
     public class UserController : ControllerBase
     {
         private readonly UserService _userService;
-        public UserController(UserService userService)
+        private readonly CanvasService _canvasService;
+        public UserController(UserService userService, CanvasService canvasService)
         {
             _userService = userService;
+            _canvasService = canvasService;
         }
 
         [Authorize]
@@ -38,6 +40,15 @@ namespace PolyPaint.API.Controllers
             ClaimsPrincipal user = this.User;
             string userId = user.FindFirstValue(ClaimTypes.NameIdentifier);
             List<Canvas> canvas = await _userService.GetAllCanvas(userId);
+            return Ok(canvas);
+        }
+
+        [Authorize]
+        [HttpGet]
+        [Route("AllCanvas")]
+        public async Task<IActionResult> GetAllCanvas()
+        {
+            List<Canvas> canvas = _canvasService.GetAllCanvas();
             return Ok(canvas);
         }
 

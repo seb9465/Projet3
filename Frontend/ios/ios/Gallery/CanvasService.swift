@@ -45,18 +45,17 @@ extension CanvasService {
         }
     }
     
-    public static func SaveCanvas(name: String) -> Void {
+    public static func SaveCanvas(drawViewModels: [DrawViewModel]) -> Void {
         let fileManager = FileManager.default
         let documentsURL = fileManager.urls(for: .documentDirectory, in: .userDomainMask)[0]
         let canvasPath = documentsURL.appendingPathComponent("canvas")
-        let fileUrl = canvasPath.appendingPathComponent(name + ".json")
+        let fileUrl = canvasPath.appendingPathComponent("local" + ".json")
         
         // some convertion logic here to convert in base64
         do {
             try FileManager.default.createDirectory(atPath: canvasPath.path, withIntermediateDirectories: true, attributes: nil)
             
-            let canva: Canvas = Canvas(canvasId: UUID().uuidString,name: name,base64Strokes: "",base64Image: "")
-            if let encodedData = try? JSONEncoder().encode(canva){
+            if let encodedData = try? JSONEncoder().encode(drawViewModels){
                 do {
                     try encodedData.write(to: fileUrl)
                 }

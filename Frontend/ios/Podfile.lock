@@ -1,5 +1,8 @@
 PODS:
   - Alamofire (4.8.1)
+  - Alamofire-SwiftyJSON (3.0.0):
+    - Alamofire (~> 4.5)
+    - SwiftyJSON (~> 4.0.0)
   - AwaitKit (5.1.0):
     - PromiseKit (~> 6)
   - ChromaColorPicker (1.7.2)
@@ -24,9 +27,11 @@ PODS:
   - Reachability (3.2)
   - SwiftHUEColorPicker (0.4.1)
   - SwiftSignalRClient (0.4.1)
+  - SwiftyJSON (4.0.0)
 
 DEPENDENCIES:
   - Alamofire
+  - Alamofire-SwiftyJSON
   - AwaitKit
   - ChromaColorPicker
   - JWTDecode
@@ -37,10 +42,12 @@ DEPENDENCIES:
   - Reachability
   - SwiftHUEColorPicker
   - SwiftSignalRClient
+  - SwiftyJSON (~> 4.0)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - Alamofire
+    - Alamofire-SwiftyJSON
     - AwaitKit
     - ChromaColorPicker
     - JWTDecode
@@ -50,9 +57,11 @@ SPEC REPOS:
     - Reachability
     - SwiftHUEColorPicker
     - SwiftSignalRClient
+    - SwiftyJSON
 
 SPEC CHECKSUMS:
   Alamofire: 16ce2c353fb72865124ddae8a57c5942388f4f11
+  Alamofire-SwiftyJSON: 2b3649d57dc7bb2880fb8b86f8bb969397666916
   AwaitKit: a8a3d8982097ee09ac75f5c5d3952fbcc2f26f1c
   ChromaColorPicker: 78194fbae9f342d3781ac178c4d92c7652197d18
   JWTDecode: 85a405ab16d5473e99bd89ded1d535090ebd6a0e
@@ -62,6 +71,7 @@ SPEC CHECKSUMS:
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   SwiftHUEColorPicker: f3184dad471b5f05703a565a63e228426cb8fdbf
   SwiftSignalRClient: edd4e6e16c87370ca624c6868279483a2ffe4f1d
+  SwiftyJSON: 070dabdcb1beb81b247c65ffa3a79dbbfb3b48aa
 
 PODFILE CHECKSUM: 2599afef6012592172067fd0c6db9c0f2c504c2a
 

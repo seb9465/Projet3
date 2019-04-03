@@ -50,6 +50,7 @@ namespace PolyPaint.API
             services.AddScoped<RegisterService>();
             services.AddScoped<LoginService>();
             services.AddScoped<UserService>();
+            services.AddScoped<CanvasService>();
 
             AuthInitializer.AddJwtBearerAuthentication(services, Configuration, SIGNALR_URL);
             AuthInitializer.AddFacebookAuthentication(services, Configuration);

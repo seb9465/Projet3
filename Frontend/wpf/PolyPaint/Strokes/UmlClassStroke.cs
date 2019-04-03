@@ -76,7 +76,7 @@ namespace PolyPaint.Strokes
             nextHeight += 10;
             for (int i = 0; i < Properties.Count; i++)
             {
-                var tempFt = new FormattedText($"{Properties[i].Title}", System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 12, new SolidColorBrush(Colors.Black));
+                var tempFt = new FormattedText($"• {Properties[i].Title}", System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 12, new SolidColorBrush(Colors.Black));
                 drawingContext.DrawText(tempFt, new Point(UnrotatedTopLeft.X + 10, nextHeight));
                 nextHeight += 10 + tempFt.Height;
             }
@@ -84,7 +84,7 @@ namespace PolyPaint.Strokes
             nextHeight += 10;
             for (int i = 0; i < Methods.Count; i++)
             {
-                var tempFt = new FormattedText($"{Methods[i].Title}", System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 12, new SolidColorBrush(Colors.Black));
+                var tempFt = new FormattedText($"• {Methods[i].Title}", System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 12, new SolidColorBrush(Colors.Black));
                 drawingContext.DrawText(tempFt, new Point(UnrotatedTopLeft.X + 10, nextHeight));
                 nextHeight += 10 + tempFt.Height;
             }

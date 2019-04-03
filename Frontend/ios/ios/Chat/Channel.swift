@@ -8,28 +8,34 @@
 
 import Foundation
 
+// MARK: Channel class
+
 class Channel: Codable {
     public var name: String;
     public var connected: Bool;
     
-    init(name: String, connected: Bool) {
+    init (name: String, connected: Bool) {
         self.name = name;
         self.connected = connected;
     }
 }
 
+// MARK: ChannelMessage class
+
 class ChannelMessage: Codable {
     public var channel: Channel;
     
-    init(channel: Channel) {
+    init (channel: Channel) {
         self.channel = channel;
     }
 }
 
+// MARK: ChannelsMessage class
+
 class ChannelsMessage: Codable {
     public var channels: [Channel];
     
-    init(channels: [Channel]? = []) {
+    init (channels: [Channel]? = []) {
         self.channels = channels!;
     }
 }

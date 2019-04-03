@@ -25,12 +25,12 @@ namespace PolyPaint.Vues
             viewModel = vm;
         }
 
-        private async void Ok_Click(object sender, RoutedEventArgs e)
+        private void Ok_Click(object sender, RoutedEventArgs e)
         {
             var drawViewModel = strokeBuilder.GetDrawViewModelsFromStrokes(new StrokeCollection() { (Stroke)DataContext });
             Close();
             (DataContext as ICanvasable).Redraw();
-            await viewModel.CollaborationClient.CollaborativeDrawAsync(drawViewModel);
+            viewModel.CollaborationClient.CollaborativeDrawAsync(drawViewModel);
         }
     }
 }

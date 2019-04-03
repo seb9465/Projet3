@@ -17,6 +17,8 @@ target 'ios' do
   pod 'ChromaColorPicker'
   pod 'SwiftHUEColorPicker'
   pod 'Reachability'
+  pod 'Alamofire-SwiftyJSON'
+  pod 'SwiftyJSON', '~> 4.0'
 
   target 'iosTests' do
     inherit! :search_paths

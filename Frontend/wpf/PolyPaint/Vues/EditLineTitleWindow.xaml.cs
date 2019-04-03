@@ -8,14 +8,14 @@ using System.Windows.Ink;
 namespace PolyPaint.Vues
 {
     /// <summary>
-    /// Interaction logic for EditTitleWindow.xaml
+    /// Interaction logic for EditLineTitleWindow.xaml
     /// </summary>
-    public partial class EditTitleWindow : Window
+    public partial class EditLineTitleWindow : Window
     {
         StrokeBuilder strokeBuilder = new StrokeBuilder();
         VueModele viewModel { get; set; }
         public InkCanvas SurfaceDessin { get; set; }
-        public EditTitleWindow(AbstractShapeStroke stroke, InkCanvas surfaceDessin, VueModele vm)
+        public EditLineTitleWindow(AbstractLineStroke stroke, InkCanvas surfaceDessin, VueModele vm)
         {
             DataContext = stroke;
             SurfaceDessin = surfaceDessin;

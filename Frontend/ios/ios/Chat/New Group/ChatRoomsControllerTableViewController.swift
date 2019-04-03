@@ -9,42 +9,47 @@
 import UIKit
 
 class ChatRoomsControllerTableViewController: UITableViewController {
+    
+    @IBOutlet var backButton: UIBarButtonItem!
+    @IBOutlet var addButton: UIBarButtonItem!
+    
     private let refreshTable = UIRefreshControl();
     
-    @objc private func refreshWeatherData(_ sender: Any) {
-        // Fetch Weather Data
+    @objc private func refreshData(_ sender: Any) {
         ChatService.shared.invokeFetchChannels();
         self.refreshTable.endRefreshing();
-        
     }
     
     @IBAction func backButton(_ sender: Any) {
-//        ChatService.shared.disconnectFromHub();
         ChatService.shared.currentChannel = nil;
         let storyboard = UIStoryboard(name: "Main", bundle: nil);
         let view = storyboard.instantiateViewController(withIdentifier: "MainController");
-        self.present(view, animated: true, completion: nil);
+        
+        let transition = CATransition();
+        transition.duration = 0.3;
+        transition.type = CATransitionType.reveal;
+        transition.subtype = CATransitionSubtype.fromBottom;
+        self.view.window!.layer.add(transition, forKey: kCATransition);
+        
+        self.present(view, animated: false, completion: nil);
     }
     
     override func viewDidLoad() {
         self.tableView.separatorStyle = .none;
         self.registerTableViewCells();
-        print("[ CHATROOM ] View did load");
-        ChatService.shared.onFetchChannels(updateChannelsFct: self.updateChannels);
-//        ChatService.shared.invokeChannelsWhenConnected();
-        ChatService.shared.onCreateChannel(updateChannelsFct: self.updateChannels);
         
+        ChatService.shared.onFetchChannels(updateChannelsFct: self.updateChannels);
+        ChatService.shared.onCreateChannel(updateChannelsFct: self.updateChannels);
         ChatService.shared.invokeFetchChannels();
         
-        self.refreshTable.addTarget(self, action: #selector(refreshWeatherData(_:)), for: .valueChanged)
+        self.refreshTable.addTarget(self, action: #selector(refreshData(_:)), for: .valueChanged)
         self.tableView.addSubview(self.refreshTable);
         
-        // Uncomment the following line to preserve selection between presentations
-//         self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-//         self.navigationItem.rightBarButtonItem = self.editButtonItem
+        self.editButtonItem.tintColor = Constants.RED_COLOR;
         self.navigationItem.rightBarButtonItems?.append(self.editButtonItem);
+        
+        self.backButton.tintColor = Constants.RED_COLOR;
+        self.addButton.tintColor = Constants.RED_COLOR;
         
         super.viewDidLoad()
     }

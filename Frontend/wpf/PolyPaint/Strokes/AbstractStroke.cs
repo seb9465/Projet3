@@ -23,6 +23,18 @@ namespace PolyPaint.Strokes
         public double Width { get; set; }
         public double Height { get; set; }
 
+        protected FormattedText Title { get; set; }
+        public string TitleString
+        {
+            get { return Title.Text; }
+            set
+            {
+                Title = new FormattedText(value, System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 12, Brushes.Black);
+                ProprieteModifiee("Title");
+                ProprieteModifiee();
+            }
+        }
+
         public List<Point> UnrotatedStylusPoints
         {
             get
@@ -58,7 +70,6 @@ namespace PolyPaint.Strokes
             TopLeft = new Point();
             Width = 0;
             Height = 0;
-
 
             couleurBordure = couleurBordure == "" ? "#FF000000" : couleurBordure;
             couleurRemplissage = couleurRemplissage == "" ? "#FFFFFFFF" : couleurRemplissage;

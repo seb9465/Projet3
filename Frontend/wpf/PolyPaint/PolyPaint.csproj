@@ -403,9 +403,14 @@
     <Compile Include="Utilitaires\StrokeBuilder.cs" />
     <Compile Include="Utilitaires\Tools.cs" />
     <Compile Include="VueModeles\CanvasViewModel.cs" />
+    <Compile Include="VueModeles\IChatDataContext.cs" />
     <Compile Include="VueModeles\RegistrationViewModel.cs" />
     <Compile Include="VueModeles\LoginViewModel.cs" />
+    <Compile Include="VueModeles\UserDataContext.cs" />
     <Compile Include="VueModeles\VueModele.cs" />
+    <Compile Include="Vues\EditLineTitleWindow.xaml.cs">
+      <DependentUpon>EditLineTitleWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Vues\EditTitleWindow.xaml.cs">
       <DependentUpon>EditTitleWindow.xaml</DependentUpon>
     </Compile>
@@ -424,14 +429,18 @@
     <Compile Include="Vues\Gallery.xaml.cs">
       <DependentUpon>Gallery.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Vues\ResizeCanvas.xaml.cs">
+      <DependentUpon>ResizeCanvas.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Vues\UploadToCloud.xaml.cs">
       <DependentUpon>UploadToCloud.xaml</DependentUpon>
     </Compile>
     <Compile Include="Vues\ViewStateEnum.cs" />
-    <Compile Include="Vues\MenuProfile.xaml.cs">
-      <DependentUpon>MenuProfile.xaml</DependentUpon>
-    </Compile>
     <Page Include="Vues\ChatWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Vues\EditLineTitleWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -473,9 +482,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Vues\MenuProfile.xaml">
-      <SubType>Designer</SubType>
+    <Page Include="Vues\ResizeCanvas.xaml">
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Vues\UploadToCloud.xaml">
       <SubType>Designer</SubType>
