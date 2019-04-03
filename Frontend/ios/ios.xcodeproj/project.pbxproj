@@ -74,7 +74,6 @@
 		B756794A220F5DC800F80B12 /* Chat.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B7567949220F5DC800F80B12 /* Chat.storyboard */; };
 		B756794C220F608B00F80B12 /* Members.swift in Sources */ = {isa = PBXBuildFile; fileRef = B756794B220F608B00F80B12 /* Members.swift */; };
 		B775FE3F22135D6300B2EFE0 /* Spinner.swift in Sources */ = {isa = PBXBuildFile; fileRef = B775FE3E22135D6300B2EFE0 /* Spinner.swift */; };
-		B781B95922132BDB001C1BD8 /* Canvas.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B781B95822132BDB001C1BD8 /* Canvas.storyboard */; };
 		B781B95B22132C2F001C1BD8 /* CanvasController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B781B95A22132C2F001C1BD8 /* CanvasController.swift */; };
 		B78810572253083100D26BE7 /* HttpResponseMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B78810562253083100D26BE7 /* HttpResponseMessage.swift */; };
 		B79117DF2234AE830008CB4C /* Channel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B79117DE2234AE830008CB4C /* Channel.swift */; };
@@ -106,6 +105,7 @@
 		C489A470224A7CC000492CCB /* AddMethodCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C489A472224A7CC000492CCB /* AddMethodCell.xib */; };
 		C495FEBE22381BDF006E49F9 /* UMLImageFigure.swift in Sources */ = {isa = PBXBuildFile; fileRef = C495FEBD22381BDF006E49F9 /* UMLImageFigure.swift */; };
 		C495FEC22238248E006E49F9 /* Ressources in Resources */ = {isa = PBXBuildFile; fileRef = C495FEC12238248E006E49F9 /* Ressources */; };
+		C4AA4AD722552166005607E8 /* Canvas.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C4AA4AD922552166005607E8 /* Canvas.storyboard */; };
 		C4D12706224418F3004B3641 /* UmlCommentFigure.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D12705224418F3004B3641 /* UmlCommentFigure.swift */; };
 		C4D1270E224424E1004B3641 /* UmlArtefactFigure.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D1270D224424E1004B3641 /* UmlArtefactFigure.swift */; };
 		C4D12710224424FC004B3641 /* UmlPhaseFigure.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D1270F224424FC004B3641 /* UmlPhaseFigure.swift */; };
@@ -199,7 +199,6 @@
 		B7567949220F5DC800F80B12 /* Chat.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Chat.storyboard; sourceTree = "<group>"; };
 		B756794B220F608B00F80B12 /* Members.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Members.swift; sourceTree = "<group>"; };
 		B775FE3E22135D6300B2EFE0 /* Spinner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spinner.swift; sourceTree = "<group>"; };
-		B781B95822132BDB001C1BD8 /* Canvas.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Canvas.storyboard; sourceTree = "<group>"; };
 		B781B95A22132C2F001C1BD8 /* CanvasController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasController.swift; sourceTree = "<group>"; };
 		B78810562253083100D26BE7 /* HttpResponseMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpResponseMessage.swift; sourceTree = "<group>"; };
 		B79117DE2234AE830008CB4C /* Channel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Channel.swift; sourceTree = "<group>"; };
@@ -231,6 +230,7 @@
 		C489A471224A7CC000492CCB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/AddMethodCell.xib; sourceTree = "<group>"; };
 		C495FEBD22381BDF006E49F9 /* UMLImageFigure.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UMLImageFigure.swift; path = ios/Canvas/Figures/UMLImageFigure.swift; sourceTree = SOURCE_ROOT; };
 		C495FEC12238248E006E49F9 /* Ressources */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Ressources; sourceTree = "<group>"; };
+		C4AA4AD822552166005607E8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Canvas.storyboard; sourceTree = "<group>"; };
 		C4D12705224418F3004B3641 /* UmlCommentFigure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UmlCommentFigure.swift; sourceTree = "<group>"; };
 		C4D1270D224424E1004B3641 /* UmlArtefactFigure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UmlArtefactFigure.swift; sourceTree = "<group>"; };
 		C4D1270F224424FC004B3641 /* UmlPhaseFigure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UmlPhaseFigure.swift; sourceTree = "<group>"; };
@@ -618,7 +618,7 @@
 				3D6E95582230833300BC7BE7 /* Collaboration */,
 				3D22681A2236EE3300B2F604 /* Editor */,
 				3DB1363A2235B2730096FA04 /* Figures */,
-				B781B95822132BDB001C1BD8 /* Canvas.storyboard */,
+				C4AA4AD922552166005607E8 /* Canvas.storyboard */,
 				B781B95A22132C2F001C1BD8 /* CanvasController.swift */,
 			);
 			path = Canvas;
@@ -783,7 +783,7 @@
 				B711B5F421F659A50096BF7F /* LaunchScreen.storyboard in Resources */,
 				B7AADC6F22356FBE00F7C0EC /* CustomHeaderCell.xib in Resources */,
 				B7AADC6922355E8000F7C0EC /* CustomTableViewCell.xib in Resources */,
-				B781B95922132BDB001C1BD8 /* Canvas.storyboard in Resources */,
+				C4AA4AD722552166005607E8 /* Canvas.storyboard in Resources */,
 				3DABD3FA2241988500707D86 /* FigureSelectionCell.xib in Resources */,
 				3DE8F121223C44AF0052580B /* ClassMethodCell.xib in Resources */,
 				3D6E4C40223AE17B00E391D4 /* BorderCell.xib in Resources */,
@@ -1072,6 +1072,14 @@
 				C489A471224A7CC000492CCB /* Base */,
 			);
 			name = AddMethodCell.xib;
+			sourceTree = "<group>";
+		};
+		C4AA4AD922552166005607E8 /* Canvas.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C4AA4AD822552166005607E8 /* Base */,
+			);
+			name = Canvas.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
