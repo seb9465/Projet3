@@ -32,7 +32,7 @@ class UMLTextFigure: UmlFigure {
     }
 
     override func draw(_ rect: CGRect) {
-        let textRect = CGRect(x: 0, y: 0, width: BASE_WIDTH, height: BASE_HEIGHT).insetBy(dx: 5, dy: 5);
+        let textRect = CGRect(x: 0, y: 0, width: self.frame.width, height: self.frame.height).insetBy(dx: 5, dy: 5);
         let textLabel = UILabel(frame: textRect)
         textLabel.text = self.name
         textLabel.textAlignment = .center

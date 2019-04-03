@@ -34,7 +34,7 @@ class UmlCommentFigure: UmlFigure {
     }
     
     override func draw(_ rect: CGRect) {
-        let commentRect = CGRect(x: 0, y: 0, width: BASE_WIDTH, height: BASE_HEIGHT).insetBy(dx: 5, dy: 5);
+        let commentRect = CGRect(x: 0, y: 0, width: self.frame.width, height: self.frame.height).insetBy(dx: 5, dy: 5);
         
         let commentLabel = UILabel(frame: commentRect)
         commentLabel.text = self.name
