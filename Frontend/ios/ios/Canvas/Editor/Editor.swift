@@ -136,14 +136,18 @@ class Editor {
         figure.delegate = self
         self.figures.append(figure)
         self.editorView.addSubview(figure)
+        CanvasService.saveLocalCanvas(figures: self.figures)
+
   //      self.resize(width: 100, heigth: 100)
     }
     
     public func insertFigure(position: CGPoint) -> Void {
         let figure = FigureFactory.shared.getFigure(type: self.currentFigureType, touchedPoint: position)!
+        CanvasService.saveLocalCanvas(figures: self.figures)
         figure.delegate = self
         self.figures.append(figure)
         self.editorView.addSubview(figure)
+        CanvasService.saveLocalCanvas(figures: self.figures)
         CollaborationHub.shared.postNewFigure(figures: [figure])
   //      self.resize(width: 150, heigth: 150)
     }
@@ -159,6 +163,7 @@ class Editor {
         self.editorView.addSubview(figure!);
         self.figures.append(figure!)
         self.undoArray.append(figure!);
+        CanvasService.saveLocalCanvas(figures: self.figures)
         return figure!
     }
     
@@ -324,7 +329,7 @@ extension Editor: SideToolbarDelegate {
     }
     
     func save() -> Void{
-        CanvasService.SaveCanvas(drawViewModels: []);
+        CanvasService.saveLocalCanvas(figures: []);
     }
     
     func rotate(orientation: RotateOrientation) {

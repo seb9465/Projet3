@@ -18,7 +18,7 @@ class CanvasService {
 extension CanvasService {
     @discardableResult
     private static func get() -> Promise<Data> {
-        let url: URLConvertible = "https://polypaint.me/api/user/canvas"
+        let url: URLConvertible = "https://polypaint.me/api/user/AllCanvas"
         let headers = [
             "Authorization": "Bearer " + UserDefaults.standard.string(forKey: "token")!,
             "Accept": "application/json"
@@ -45,11 +45,16 @@ extension CanvasService {
         }
     }
     
-    public static func SaveCanvas(drawViewModels: [DrawViewModel]) -> Void {
+    public static func saveLocalCanvas(figures: [Figure]) -> Void {
         let fileManager = FileManager.default
         let documentsURL = fileManager.urls(for: .documentDirectory, in: .userDomainMask)[0]
         let canvasPath = documentsURL.appendingPathComponent("canvas")
         let fileUrl = canvasPath.appendingPathComponent("local" + ".json")
+        var drawViewModels: [DrawViewModel] = []
+        print("SAVING.... " + String(drawViewModels.count) + " figures")
+        for figure in figures {
+            drawViewModels.append(figure.exportViewModel()!)
+        }
         
         // some convertion logic here to convert in base64
         do {
