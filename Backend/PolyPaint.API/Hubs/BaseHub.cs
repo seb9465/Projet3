@@ -96,8 +96,10 @@ namespace PolyPaint.API.Hubs
             var user = await GetUserFromToken(Context.User);
             if (user != null)
             {
-                _userService.GetAllCanvas()
-                    .ForEach(async x => await DisconnectFromChannel(new ConnectionMessage(user.UserName, channelId: x.CanvasId).ToString()));
+                foreach(var canvasId in _userService.GetAllCanvas().Select(x => x.CanvasId))
+                {
+                    await DisconnectFromChannel(new ConnectionMessage(user.UserName, channelId: canvasId).ToString());          
+                }
                 await base.OnDisconnectedAsync(e);
             }
         }
