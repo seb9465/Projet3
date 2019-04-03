@@ -15,7 +15,6 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -126,13 +125,10 @@ namespace PolyPaint
             surfaceDessin.Paste();
         }
 
-        private void SupprimerSelection(object sender, RoutedEventArgs e)
+        private async void SupprimerSelection(object sender, RoutedEventArgs e)
         {
-            List<DrawViewModel> strokes = rebuilder.GetDrawViewModelsFromStrokes(surfaceDessin.GetSelectedStrokes());
+            await (DataContext as VueModele).CollaborationClient.CollaborativeDeleteAsync();
             surfaceDessin.CutSelection();
-            (DataContext as VueModele).CollaborationClient.CollaborativeSelectAsync(new List<DrawViewModel>());
-            (DataContext as VueModele).CollaborationClient.CollaborativeDeleteAsync(strokes);
-            SendToCloud();
 
         }
         private void SaveImage(object sender, EventArgs e)
@@ -457,11 +453,9 @@ namespace PolyPaint
             }
 
         }
-        private void Reinitialiser_Click(object sender, RoutedEventArgs e)
+        private async void Reinitialiser_Click(object sender, RoutedEventArgs e)
         {
-            (DataContext as VueModele).Reinitialiser.Execute(null);
-            (DataContext as VueModele).CollaborationClient.CollaborativeSelectAsync(new List<DrawViewModel>());
-            (DataContext as VueModele).CollaborationClient.CollaborativeResetAsync();
+            await (DataContext as VueModele).CollaborationClient.CollaborativeResetAsync();
             SendToCloud();
         }
 
@@ -498,8 +492,7 @@ namespace PolyPaint
         {
             Dispatcher.Invoke(() =>
             {
-                var message = JsonConvert.DeserializeObject<ItemsMessage>(args.Message);
-                surfaceDessin.Strokes.Remove(new StrokeCollection(surfaceDessin.Strokes.Where(x => message.Items.Any(y => y.Guid == (x as AbstractStroke).Guid.ToString()))));
+                surfaceDessin.CutSelection();
             });
         }
 
@@ -507,7 +500,8 @@ namespace PolyPaint
         {
             Dispatcher.Invoke(() =>
             {
-                (DataContext as VueModele).Reinitialiser.Execute(null);
+                reinitialiser.Command = (DataContext as VueModele).Reinitialiser;
+                reinitialiser.Command.Execute(reinitialiser.CommandParameter);
             });
         }
 
