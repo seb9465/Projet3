@@ -24,24 +24,4 @@ struct Canvas: Codable  {
         self.canvasAutor = canvasAutor;
         self.canvasProtection = canvasProtection;
     }
-    
-    init (coder aDecoder: NSCoder!) {
-        self.canvasId = aDecoder.decodeObject(forKey: "canvasId") as! String
-        self.name = aDecoder.decodeObject(forKey: "name") as! String
-        self.drawViewModels = aDecoder.decodeObject(forKey: "drawViewModels") as! String
-        self.image = aDecoder.decodeObject(forKey: "image") as! String
-        self.canvasVisibility = aDecoder.decodeObject(forKey: "canvasVisibility") as! String
-        self.canvasAutor = aDecoder.decodeObject(forKey: "canvasAutor") as! String
-        self.canvasProtection = aDecoder.decodeObject(forKey: "canvasProtection") as! String
-
-    }
-    func encodeWithCoder(aCoder: NSCoder!) {
-        aCoder.encode(canvasId, forKey:"canvasId")
-        aCoder.encode(name, forKey:"name")
-        aCoder.encode(drawViewModels, forKey:"drawViewModels")
-        aCoder.encode(image, forKey:"image")
-        aCoder.encode(canvasVisibility, forKey: "canvasVisibility")
-        aCoder.encode(canvasAutor, forKey: "canvasAutor")
-        aCoder.encode(canvasProtection, forKey: "canvasProtection")
-    }
 }

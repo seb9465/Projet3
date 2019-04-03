@@ -12,7 +12,8 @@ class GalleryCell: UICollectionViewCell {
 
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var nameLabel: UILabel!
-    
+    public var visibility: String = ""
+    public var password: String = ""
     override func awakeFromNib() {
         super.awakeFromNib()
         self.layer.cornerRadius = 5;
@@ -26,4 +27,7 @@ class GalleryCell: UICollectionViewCell {
         self.imageView.image = decodedimage
         self.imageView.setNeedsDisplay()
     }
+    
+    
+    
 }

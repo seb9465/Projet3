@@ -15,7 +15,7 @@ class PublicGalleryController: UIViewController {
     private var canvas : [Canvas] = []
     private let itemsPerRow: CGFloat = 4
     private let sectionInsets = UIEdgeInsets(top: 10.0, left: 10.0, bottom: 10.0, right: 10.0)
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -38,26 +38,63 @@ extension PublicGalleryController: UICollectionViewDelegate, UICollectionViewDat
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "GalleryCell", for: indexPath) as! GalleryCell
+        cell.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tap(_:))))
+        cell.visibility = canvas[indexPath.row].canvasVisibility
+        cell.password = canvas[indexPath.row].canvasProtection
+
         cell.nameLabel.text = canvas[indexPath.row].name
-                cell.setImageFromBytes(bytesString: canvas[indexPath.row].image)
+        cell.setImageFromBytes(bytesString: canvas[indexPath.row].image)
         return cell
+    }
+    
+    @objc func tap(_ sender: UITapGestureRecognizer) {
+        
+        let location = sender.location(in: self.collectionView)
+        let indexPath = self.collectionView.indexPathForItem(at: location)
+        
+        if let index = indexPath {
+            let cell = (self.collectionView.cellForItem(at: index) as! GalleryCell)
+            var enteredPassword = ""
+
+            if(cell.password != "") {
+                let passwordAlert = UIAlertController(title: "Password Required", message: "This canvas is password protected. Please enter the password to gain access.", preferredStyle: .alert)
+                passwordAlert.addTextField(configurationHandler: { (textField) in
+                    textField.placeholder = "password"
+                    textField.isSecureTextEntry = true
+                })
+                passwordAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+                passwordAlert.addAction(UIAlertAction(title: "Confirm", style: .default, handler: { alert in
+                    enteredPassword = passwordAlert.textFields![0].text!
+                    if(cell.password == enteredPassword) {
+                        print("good password")
+                        (self.parent?.parent as! DashboardController).openCanvas(canvasName: cell.nameLabel.text!)
+                    } else {
+                         let wrongPasswordAlert = UIAlertController(title: "Wrong password", message: "You have entered a wrong password.", preferredStyle: .alert)
+                        wrongPasswordAlert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
+                        self.present(wrongPasswordAlert, animated: true, completion: nil)
+                    }
+                }))
+            self.present(passwordAlert, animated: true, completion: nil)
+            }
+        }
     }
 }
 
 extension PublicGalleryController : UICollectionViewDelegateFlowLayout {
-
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let paddingSpace = sectionInsets.left * (itemsPerRow + 1)
         let availableWidth = view.frame.width - paddingSpace
         let widthPerItem = availableWidth / itemsPerRow
         return CGSize(width: widthPerItem, height: widthPerItem)
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return sectionInsets
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return sectionInsets.left
     }
