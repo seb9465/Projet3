@@ -31,7 +31,8 @@ class FigureFactory {
             case .Activity:
                 return UmlActivityFigure(drawViewModel: drawViewModel)
             case .Agregation:
-                return nil
+                return ConnectionAgregation(drawViewModel: drawViewModel)
+//                return nil
             case .BidirectionalAssociation:
                 return nil
             case .UniderectionalAssoication:

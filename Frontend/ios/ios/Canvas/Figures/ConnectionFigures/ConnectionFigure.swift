@@ -107,7 +107,7 @@ class ConnectionFigure : Figure {
         var drawViewModel: DrawViewModel = DrawViewModel()
         drawViewModel.Guid = self.uuid.uuidString.lowercased()
         drawViewModel.Owner = UserDefaults.standard.string(forKey: "username")
-        drawViewModel.ItemType = ItemTypeEnum.UmlClass
+        drawViewModel.ItemType = self.itemType
         drawViewModel.StylusPoints = [point1, point2]
         drawViewModel.FillColor = nil
         drawViewModel.BorderColor = PolyPaintColor(color: self.lineColor)

@@ -567,7 +567,7 @@ extension Editor: CollaborationHubDelegate {
                 self.select(drawViewModels: itemMessage.Items, username: itemMessage.Username)
                 return
             }
-            
+
             self.insertFigure(drawViewModel: drawViewModel)
         }
     }
