@@ -864,6 +864,7 @@
 				"${BUILT_PRODUCTS_DIR}/MessageInputBar/MessageInputBar.framework",
 				"${BUILT_PRODUCTS_DIR}/MessageKit/MessageKit.framework",
 				"${BUILT_PRODUCTS_DIR}/PromiseKit/PromiseKit.framework",
+				"${BUILT_PRODUCTS_DIR}/Reachability/Reachability.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftHUEColorPicker/SwiftHUEColorPicker.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftSignalRClient/SwiftSignalRClient.framework",
 			);
