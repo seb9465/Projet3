@@ -537,7 +537,7 @@ extension Editor : TouchInputDelegate {
             lastPoint: destinationFigure.getClosestAnchorPoint(point: point),
             itemType: currentFigureType
         )
-        
+        CollaborationHub.shared.postNewFigure(figures: [connection])
         let sourceAnchor: String = self.sourceFigure.getClosestAnchorPointName(point: self.initialTouchPoint)
         let destinationAnchor: String = destinationFigure.getClosestAnchorPointName(point: point)
         self.sourceFigure.addOutgoingConnection(connection: connection as! ConnectionFigure, anchor: sourceAnchor)
