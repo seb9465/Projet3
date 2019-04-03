@@ -36,7 +36,7 @@ class Editor {
     
     init() {
         self.editorView.delegate = self
-        CollaborationHub.shared.delegate = self
+        CollaborationHub.shared!.delegate = self
         let rotation = UIRotationGestureRecognizer(target: self, action: #selector(self.rotatedView(_:)))
         self.editorView.addGestureRecognizer(rotation)
    //     self.editorView.backgroundColor = UIColor.red
@@ -106,7 +106,7 @@ class Editor {
             
             self.selectionOutline.removeAll();
         }
-        CollaborationHub.shared.selectObjects(drawViewModels: [])
+        CollaborationHub.shared!.selectObjects(drawViewModels: [])
         self.deselectLasso();
         self.selectedFigures.removeAll();
     }
@@ -156,7 +156,7 @@ class Editor {
         self.figures.append(figure)
         self.editorView.addSubview(figure)
         CanvasService.saveLocalCanvas(figures: self.figures)
-        CollaborationHub.shared.postNewFigure(figures: [figure])
+        CollaborationHub.shared!.postNewFigure(figures: [figure])
   //      self.resize(width: 150, heigth: 150)
     }
     
@@ -248,28 +248,28 @@ extension Editor: SideToolbarDelegate {
         for figure in self.selectedFigures {
             figure.setBorderColor(borderColor: color);
         }
-        CollaborationHub.shared.postNewFigure(figures: self.selectedFigures)
+        CollaborationHub.shared!.postNewFigure(figures: self.selectedFigures)
     }
     
     func setSelectedFigureFillColor(color: UIColor) {
         for figure in self.selectedFigures {
             figure.setFillColor(fillColor: color)
         }
-        CollaborationHub.shared.postNewFigure(figures: self.selectedFigures)
+        CollaborationHub.shared!.postNewFigure(figures: self.selectedFigures)
     }
     
     func setSelectedFigureBorderStyle(isDashed: Bool) {
         for figure in self.selectedFigures {
             figure.setIsBorderDashed(isDashed: isDashed)
         }
-        CollaborationHub.shared.postNewFigure(figures: self.selectedFigures)
+        CollaborationHub.shared!.postNewFigure(figures: self.selectedFigures)
     }
     
     func setSelectedFigureLineWidth(width: CGFloat) {
         for figure in self.selectedFigures {
             figure.setLineWidth(width: width)
         }
-        CollaborationHub.shared.postNewFigure(figures: self.selectedFigures)
+        CollaborationHub.shared!.postNewFigure(figures: self.selectedFigures)
     }
     
     func setSelectedFigureName(name: String) {
@@ -279,7 +279,7 @@ extension Editor: SideToolbarDelegate {
     }
 
     func setSelectedFigureNameDidEnd() {
-        CollaborationHub.shared.postNewFigure(figures: self.selectedFigures)
+        CollaborationHub.shared!.postNewFigure(figures: self.selectedFigures)
     }
     
     func addClassMethod(name: String) {
@@ -288,7 +288,7 @@ extension Editor: SideToolbarDelegate {
         }
         
         self.updateSideToolBar()
-        CollaborationHub.shared.postNewFigure(figures: self.selectedFigures)
+        CollaborationHub.shared!.postNewFigure(figures: self.selectedFigures)
     }
     
     func removeClassMethod(name: String, index: Int) {
@@ -297,7 +297,7 @@ extension Editor: SideToolbarDelegate {
         }
         
         self.updateSideToolBar()
-        CollaborationHub.shared.postNewFigure(figures: self.selectedFigures)
+        CollaborationHub.shared!.postNewFigure(figures: self.selectedFigures)
     }
     
     func addClassAttribute(name: String) {
@@ -306,7 +306,7 @@ extension Editor: SideToolbarDelegate {
         }
         
         self.updateSideToolBar()
-        CollaborationHub.shared.postNewFigure(figures: self.selectedFigures)
+        CollaborationHub.shared!.postNewFigure(figures: self.selectedFigures)
     }
     
     func removeClassAttribute(name: String, index: Int) {
@@ -315,7 +315,7 @@ extension Editor: SideToolbarDelegate {
         }
         
         self.updateSideToolBar()
-        CollaborationHub.shared.postNewFigure(figures: self.selectedFigures)
+        CollaborationHub.shared!.postNewFigure(figures: self.selectedFigures)
     }
     
     func updateSideToolBar() {
@@ -335,7 +335,7 @@ extension Editor: SideToolbarDelegate {
             self.deselectFigure(figure: tempFigure);
             self.select(figure: figure);
         }
-        CollaborationHub.shared.postNewFigure(figures: self.selectedFigures)
+        CollaborationHub.shared!.postNewFigure(figures: self.selectedFigures)
     }
     
     @objc private func rotatedView(_ sender: UIRotationGestureRecognizer) {
@@ -473,7 +473,7 @@ extension Editor : TouchInputDelegate {
             }
             self.select(figure: figure!)
             self.updateSideToolBar()
-            CollaborationHub.shared.selectObjects(drawViewModels: [(figure!.exportViewModel())!])
+            CollaborationHub.shared!.selectObjects(drawViewModels: [(figure!.exportViewModel())!])
             return
         }
         
@@ -490,7 +490,7 @@ extension Editor : TouchInputDelegate {
             for figure in selectedFigures {
                 drawViewModels.append(figure.exportViewModel()!)
             }
-            CollaborationHub.shared.selectObjects(drawViewModels: drawViewModels)
+            CollaborationHub.shared!.selectObjects(drawViewModels: drawViewModels)
             self.deselectLasso();
             self.touchEventState = .AREA_SELECT
             return
@@ -502,12 +502,12 @@ extension Editor : TouchInputDelegate {
                 return
             }
             
-            CollaborationHub.shared.postNewFigure(figures: [figure!])
+            CollaborationHub.shared!.postNewFigure(figures: [figure!])
             var drawViewModels: [DrawViewModel] = []
             for figure in selectedFigures {
                 drawViewModels.append(figure.exportViewModel()!)
             }
-            CollaborationHub.shared.selectObjects(drawViewModels: drawViewModels)
+            CollaborationHub.shared!.selectObjects(drawViewModels: drawViewModels)
             self.touchEventState = .SELECT
             return
         }
@@ -532,7 +532,7 @@ extension Editor : TouchInputDelegate {
             lastPoint: destinationFigure.getClosestAnchorPoint(point: point),
             itemType: currentFigureType
         )
-        CollaborationHub.shared.postNewFigure(figures: [connection])
+        CollaborationHub.shared!.postNewFigure(figures: [connection])
         let sourceAnchor: String = self.sourceFigure.getClosestAnchorPointName(point: self.initialTouchPoint)
         let destinationAnchor: String = destinationFigure.getClosestAnchorPointName(point: point)
         self.sourceFigure.addOutgoingConnection(connection: connection as! ConnectionFigure, anchor: sourceAnchor)
