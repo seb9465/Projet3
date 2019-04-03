@@ -20,13 +20,11 @@ class CollaborationHub {
     // Singleton
     static var shared = CollaborationHub(channelId: "")
     var delegate: CollaborationHubDelegate?
-    var channelId: String
     var hubConnection: HubConnection;
     var _members: Members;
     
     
     init(channelId: String) {
-        self.channelId = channelId
         self.hubConnection = HubConnectionBuilder(url: URL(string: Constants.COLLABORATION_URL + "?ChannelId=" + channelId)!)
             .withHttpConnectionOptions() { (httpConnectionOptions) in
                 httpConnectionOptions.accessTokenProvider = {
@@ -52,6 +50,11 @@ class CollaborationHub {
         print("[ Collab ] Connecting to hub")
         self.hubConnection.start()
     }
+    public func disconnectFromHub() -> Void {
+        self.hubConnection.stop();
+        print("[ COLLAB ] Connection stopped");
+    }
+    
     
     public func onClientIsConnected() -> Void {
         self.hubConnection.on(method: "ClientIsConnected", callback: { (args, typeConverter) in
@@ -71,6 +74,31 @@ class CollaborationHub {
             }
         });
     }
+    
+    public func invokeDisconnectFromChannel() -> Void {
+        self.hubConnection.invoke(method: "DisconnectFromChannel", arguments: [], invocationDidComplete: { error in
+            print("[ Collab ] Invoked DisconnectFromChannel.");
+            if let e = error {
+                print("[ collab ] Error Invoking DisconnectFromChannel.");
+                print(e);
+            }
+        });
+    }
+    
+    private func onUserDisconnectFromChannel() -> Void {
+        self.hubConnection.on(method: "DisconnectFromChannel", callback: { args, typeConverter in
+            print("[ COLLAB ] On DisconnectFromChannel");
+            
+            let json: String = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self)!;
+            if let jsonData = json.data(using: .utf8) {
+                let obj: ConnectionMessage = try! JSONDecoder().decode(ConnectionMessage.self, from: jsonData);
+                if (self._members.isAlreadyInArray(memberName: obj.username)) {
+                    self._members.removeFromArray(member: self._members.getMemberByName(memberName: obj.username));
+                }
+            }
+        });
+    }
+    
     
     public func onConnectToChannel() -> Void {
         self.hubConnection.on(method: "ConnectToChannel", callback: { args, typeConverter in
@@ -96,7 +124,7 @@ class CollaborationHub {
         }
         
         let itemMessage = ItemMessage(
-            CanvasId: self.channelId,
+            CanvasId: canvasId,
             Username: username!,
             Items: viewModels
         )
@@ -118,7 +146,7 @@ class CollaborationHub {
         let jwt = try! decode(jwt: token!)
         let username = jwt.claim(name: "unique_name").string
         let itemMessage = ItemMessage(
-            CanvasId: self.channelId,
+            CanvasId: canvasId,
             Username: username!,
             Items: drawViewModels
             )

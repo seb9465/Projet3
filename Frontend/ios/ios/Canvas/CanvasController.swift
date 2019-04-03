@@ -12,7 +12,7 @@ import Reachability
 import Foundation
 var canvasId: String = ""
 
-class CanvasController: UIViewController {    
+class CanvasController: UIViewController {
     // MARK: - Attributes
     private var activeButton: UIBarButtonItem!;
     
@@ -164,8 +164,8 @@ class CanvasController: UIViewController {
     }
     @IBAction func quitButton(_ sender: Any) {
         let alert = UIAlertController(title: "Alert", message: "Would you like to quit ?", preferredStyle: .alert);
-        
         let yesAction: UIAlertAction = UIAlertAction(title: "Yes", style: .default) { _ in
+            CollaborationHub.shared.invokeDisconnectFromChannel()
             let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil);
             let viewController: UIViewController = mainStoryboard.instantiateViewController(withIdentifier: "MainController");
             self.present(viewController, animated: true, completion: nil);
