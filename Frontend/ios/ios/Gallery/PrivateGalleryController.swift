@@ -8,7 +8,7 @@
 
 import UIKit
 
-class PublicGalleryController: UIViewController {
+class PrivateGalleryController: UIViewController {
     
     @IBOutlet weak var collectionView: UICollectionView!
     
@@ -22,7 +22,7 @@ class PublicGalleryController: UIViewController {
         let nib = UINib.init(nibName: "GalleryCell", bundle: nil)
         self.collectionView.register(nib, forCellWithReuseIdentifier: "GalleryCell")
         
-        CanvasService.getAllCanvas()
+        CanvasService.getPrivateCanvas()
             .done { (retreivedCanvas) in
                 self.canvas = retreivedCanvas
                 self.collectionView.reloadData()
@@ -32,7 +32,7 @@ class PublicGalleryController: UIViewController {
     }
 }
 
-extension PublicGalleryController: UICollectionViewDelegate, UICollectionViewDataSource {
+extension PrivateGalleryController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return canvas.count
     }
@@ -40,12 +40,12 @@ extension PublicGalleryController: UICollectionViewDelegate, UICollectionViewDat
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "GalleryCell", for: indexPath) as! GalleryCell
         cell.nameLabel.text = canvas[indexPath.row].name
-                cell.setImageFromBytes(bytesString: canvas[indexPath.row].image)
+        cell.setImageFromBytes(bytesString: canvas[indexPath.row].image)
         return cell
     }
 }
 
-extension PublicGalleryController : UICollectionViewDelegateFlowLayout {
+extension PrivateGalleryController : UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let paddingSpace = sectionInsets.left * (itemsPerRow + 1)

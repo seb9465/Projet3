@@ -10,6 +10,7 @@ import UIKit
 
 class GalleryCell: UICollectionViewCell {
 
+    @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var nameLabel: UILabel!
     
     override func awakeFromNib() {
@@ -17,5 +18,12 @@ class GalleryCell: UICollectionViewCell {
         self.layer.cornerRadius = 5;
         // Initialization code
     }
-
+    
+    public func setImageFromBytes(bytesString: String) -> Void {
+        print("loading image")
+        let dataDecoded : Data = Data(base64Encoded: bytesString, options: .ignoreUnknownCharacters)!
+        let decodedimage = UIImage(data: dataDecoded)
+        self.imageView.image = decodedimage
+        self.imageView.setNeedsDisplay()
+    }
 }

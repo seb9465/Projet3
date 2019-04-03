@@ -107,6 +107,7 @@
 		C489A470224A7CC000492CCB /* AddMethodCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C489A472224A7CC000492CCB /* AddMethodCell.xib */; };
 		C495FEBE22381BDF006E49F9 /* UMLImageFigure.swift in Sources */ = {isa = PBXBuildFile; fileRef = C495FEBD22381BDF006E49F9 /* UMLImageFigure.swift */; };
 		C495FEC22238248E006E49F9 /* Ressources in Resources */ = {isa = PBXBuildFile; fileRef = C495FEC12238248E006E49F9 /* Ressources */; };
+		C4AA4AD62254FF64005607E8 /* PrivateGalleryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4AA4AD52254FF64005607E8 /* PrivateGalleryController.swift */; };
 		C4D12706224418F3004B3641 /* UmlCommentFigure.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D12705224418F3004B3641 /* UmlCommentFigure.swift */; };
 		C4D1270E224424E1004B3641 /* UmlArtefactFigure.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D1270D224424E1004B3641 /* UmlArtefactFigure.swift */; };
 		C4D12710224424FC004B3641 /* UmlPhaseFigure.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D1270F224424FC004B3641 /* UmlPhaseFigure.swift */; };
@@ -234,6 +235,7 @@
 		C489A471224A7CC000492CCB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/AddMethodCell.xib; sourceTree = "<group>"; };
 		C495FEBD22381BDF006E49F9 /* UMLImageFigure.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UMLImageFigure.swift; path = ios/Canvas/Figures/UMLImageFigure.swift; sourceTree = SOURCE_ROOT; };
 		C495FEC12238248E006E49F9 /* Ressources */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Ressources; sourceTree = "<group>"; };
+		C4AA4AD52254FF64005607E8 /* PrivateGalleryController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrivateGalleryController.swift; sourceTree = "<group>"; };
 		C4D12705224418F3004B3641 /* UmlCommentFigure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UmlCommentFigure.swift; sourceTree = "<group>"; };
 		C4D1270D224424E1004B3641 /* UmlArtefactFigure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UmlArtefactFigure.swift; sourceTree = "<group>"; };
 		C4D1270F224424FC004B3641 /* UmlPhaseFigure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UmlPhaseFigure.swift; sourceTree = "<group>"; };
@@ -530,6 +532,7 @@
 				3DE984D422262ECA004D036C /* Cells */,
 				3D25655F2225BDFE00BCE946 /* GalleryController.swift */,
 				3DA5CA42224414D200087298 /* PublicGalleryController.swift */,
+				C4AA4AD52254FF64005607E8 /* PrivateGalleryController.swift */,
 				C4D1271122457750004B3641 /* LocalGalleryController.swift */,
 				B74BE371221F40950001D62A /* CanvasService.swift */,
 				3DF62981221C9FB30052209A /* Canvas.swift */,
@@ -980,6 +983,7 @@
 				C4D6BB2722384F5B00121695 /* AnchorPoints.swift in Sources */,
 				3D2565602225BDFE00BCE946 /* GalleryController.swift in Sources */,
 				3D8384F52253924F00AAD14E /* FigureNameCell.swift in Sources */,
+				C4AA4AD62254FF64005607E8 /* PrivateGalleryController.swift in Sources */,
 				B7B1B4352231A3FD00BEE17D /* MyCustomMessagesFlowLayout.swift in Sources */,
 				3DC07CC722205B7C0045E7DE /* ContextMenuCell.swift in Sources */,
 				B7B1B44A22348E9700BEE17D /* AddScreenViewController.swift in Sources */,

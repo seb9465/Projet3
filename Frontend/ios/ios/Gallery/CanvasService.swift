@@ -36,9 +36,36 @@ extension CanvasService {
         }
     }
     
-    static func getAll() -> Promise<[Canvas]> {
+    private static func getPrivate() -> Promise<Data> {
+        let url: URLConvertible = "https://polypaint.me/api/user/Canvas"
+        let headers = [
+            "Authorization": "Bearer " + UserDefaults.standard.string(forKey: "token")!,
+            "Accept": "application/json"
+        ]
+        
+        return Promise { (seal) in
+            Alamofire.request(url, method: .get, encoding: JSONEncoding.default, headers: headers).responseJSON{ (response) in
+                switch response.result {
+                case .success( _):
+                    seal.fulfill(response.data!);
+                case .failure(let error):
+                    seal.reject(error)
+                }
+            }
+        }}
+    
+    static func getAllCanvas() -> Promise<[Canvas]> {
         return Promise { seal in
             CanvasService.get().done{ (data) in
+                let canvas = try JSONDecoder().decode([Canvas].self, from: data)
+                seal.fulfill(canvas)
+            }
+        }
+    }
+    
+    static func getPrivateCanvas() -> Promise<[Canvas]> {
+        return Promise { seal in
+            CanvasService.getPrivate().done{(data) in
                 let canvas = try JSONDecoder().decode([Canvas].self, from: data)
                 seal.fulfill(canvas)
             }
@@ -51,7 +78,7 @@ extension CanvasService {
         let canvasPath = documentsURL.appendingPathComponent("canvas")
         let fileUrl = canvasPath.appendingPathComponent("local" + ".json")
         var drawViewModels: [DrawViewModel] = []
-        print("SAVING.... " + String(drawViewModels.count) + " figures")
+        print("SAVING.... " + String(figures.count) + " figures")
         for figure in figures {
             drawViewModels.append(figure.exportViewModel()!)
         }
@@ -72,6 +99,8 @@ extension CanvasService {
             print("Folder exists already")
         }
     }
+    
+    
     
     public static func getLocalCanvas() -> [Canvas] {
         var canvas: [Canvas] = []
