@@ -40,7 +40,7 @@ namespace PolyPaint.Vues
             CanvasProtection = passwordTextBox.Password;
             CanvasAutor = Application.Current.Properties["username"].ToString();
 
-            FenetreDessin fenetreDessin = new FenetreDessin(new List<Common.Collaboration.DrawViewModel>(), ChatClient, CanvasName)
+            FenetreDessin fenetreDessin = new FenetreDessin(new List<Common.Collaboration.DrawViewModel>(), ChatClient, CanvasName, 1000, 500)
             {
                 canvasName = CanvasName,
                 canvasVisibility = CanvasVisibility,

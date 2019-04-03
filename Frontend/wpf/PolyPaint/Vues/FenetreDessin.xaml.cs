@@ -43,10 +43,13 @@ namespace PolyPaint
         private LineStrokeAdorner adorner;
         private ConcurrentDictionary<string, OnlineSelectedAdorner> _onlineSelectedAdorners;
 
-        public String canvasVisibility = "";
-        public String canvasName = "";
-        public String canvasProtection = "";
-        public String canvasAutor = "";
+        public string canvasVisibility = "";
+        public string canvasName = "";
+        public string canvasProtection = "";
+        public string canvasAutor = "";
+        public double canvasWidth = 1000;
+        public double canvasHeight = 500;
+
 
         private ChatWindow externalChatWindow;
         private MediaPlayer mediaPlayer = new MediaPlayer();
@@ -60,7 +63,7 @@ namespace PolyPaint
         bool isMenuOpen = false;
         private ViewStateEnum _viewState { get; set; }
 
-        public FenetreDessin(List<DrawViewModel> drawViewModels, ChatClient chatClient, string canvasChannel)
+        public FenetreDessin(List<DrawViewModel> drawViewModels, ChatClient chatClient, string canvasChannel, double width, double height)
         {
             InitializeComponent();
             DataContext = new VueModele(chatClient, canvasChannel);
@@ -71,6 +74,7 @@ namespace PolyPaint
             (DataContext as VueModele).CollaborationClient.DuplicateReceived += ReceiveDuplicate;
             (DataContext as VueModele).CollaborationClient.DeleteReceived += ReceiveDelete;
             (DataContext as VueModele).CollaborationClient.ResetReceived += ReceiveReset;
+            (DataContext as VueModele).CollaborationClient.ResizeCanvasReceived += ReceiveResizeCanvas;
             (DataContext as VueModele).PropertyChanged += VueModelePropertyChanged;
 
             DispatcherTimer dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
@@ -85,6 +89,11 @@ namespace PolyPaint
             rebuilder.BuildStrokesFromDrawViewModels(drawViewModels, surfaceDessin);
             (DataContext as VueModele).CollaborationClient.CollaborativeDrawAsync(drawViewModels);
             (DataContext as VueModele).Traits = surfaceDessin.Strokes;
+
+            surfaceDessin.Width = width;
+            surfaceDessin.Height = height;
+            canvasWidth = width;
+            canvasHeight = height;
         }
 
         private void VueModelePropertyChanged(object sender, PropertyChangedEventArgs args)
@@ -189,9 +198,13 @@ namespace PolyPaint
 
         private void ResizeCanva_Click(object sender, RoutedEventArgs e)
         {
-            ResizeCanvas resizeCanvas = new ResizeCanvas();
+            ResizeCanvas resizeCanvas = new ResizeCanvas(surfaceDessin.Width, surfaceDessin.Height);
             surfaceDessin.Width = resizeCanvas.CanvasWidth;
             surfaceDessin.Height = resizeCanvas.CanvasHeight;
+            canvasWidth = resizeCanvas.CanvasWidth;
+            canvasHeight = resizeCanvas.CanvasHeight;
+            (DataContext as VueModele).CollaborationClient.CollaborativeResizeCanvasAsync(new Point(surfaceDessin.Width, surfaceDessin.Height));
+            SendToCloud();
         }
 
         private async void SendToCloud()
@@ -201,11 +214,7 @@ namespace PolyPaint
             List<DrawViewModel> drawViewModels = strokeBuilder.GetDrawViewModelsFromStrokes((DataContext as VueModele).Traits);
             string json = JsonConvert.SerializeObject(drawViewModels);
             string CanvasId = DateTime.Now.ToString("yyyy.MM.dd.hh.mm.ss.ffff");
-            string CanvasName = canvasName;
-            string CanvasVisibility = canvasVisibility;
-            string CanvasProtection = canvasProtection;
-            string CanvasAutor = canvasAutor;
-            SaveableCanvas canvas = new SaveableCanvas(CanvasId, CanvasName, json, imageBytes, CanvasVisibility, CanvasProtection, CanvasAutor);
+            SaveableCanvas canvas = new SaveableCanvas(CanvasId, canvasName, json, imageBytes, canvasVisibility, canvasProtection, canvasAutor, canvasWidth, canvasHeight);
 
             string canvasJson = JsonConvert.SerializeObject(canvas);
             using (HttpClient client = new HttpClient())
@@ -508,6 +517,18 @@ namespace PolyPaint
             Dispatcher.Invoke(() =>
             {
                 (DataContext as VueModele).Reinitialiser.Execute(null);
+            });
+        }
+
+        private void ReceiveResizeCanvas(object sender, MessageArgs args)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                var sizeMessage = JsonConvert.DeserializeObject<SizeMessage>(args.Message);
+                surfaceDessin.Width = sizeMessage.Size.X;
+                surfaceDessin.Height = sizeMessage.Size.Y;
+                canvasWidth = sizeMessage.Size.X;
+                canvasHeight = sizeMessage.Size.Y;
             });
         }
 
