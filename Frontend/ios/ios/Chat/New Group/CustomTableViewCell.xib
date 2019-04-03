@@ -28,6 +28,13 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VhY-JD-WZf">
+                                <rect key="frame" x="199" y="0.0" width="81" height="84"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
@@ -48,6 +55,7 @@
             <connections>
                 <outlet property="cellView" destination="ei2-8p-taf" id="sYS-Ff-FVx"/>
                 <outlet property="chatRoomName" destination="jW1-C2-XQL" id="UWB-MZ-5mV"/>
+                <outlet property="notificationLabel" destination="VhY-JD-WZf" id="ZgN-rR-gZT"/>
                 <outlet property="tableViewCell" destination="H2p-sc-9uM" id="U7z-Kp-8gc"/>
             </connections>
             <point key="canvasLocation" x="137.109375" y="154.6875"/>
