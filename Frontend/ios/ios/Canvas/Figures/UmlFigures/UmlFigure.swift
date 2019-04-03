@@ -15,7 +15,7 @@ protocol TouchInputDelegate {
 }
 
 class UmlFigure : Figure {
-    var delegate: TouchInputDelegate?
+//    var delegate: TouchInputDelegate?
     
     // DrawViewModel common attributes
 //    var name: String!

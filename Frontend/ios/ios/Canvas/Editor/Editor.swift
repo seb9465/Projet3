@@ -25,7 +25,7 @@ class Editor {
     public var selectionOutline: [SelectionOutline] = [];
     
     // Connection Creation properties
-    public var connectionPreview: ConnectionFigure!
+    public var connectionPreview: Figure!
     public var sourceFigure: UmlFigure!
     public var currentFigureType: ItemTypeEnum = ItemTypeEnum.UmlClass;
     
@@ -148,12 +148,18 @@ class Editor {
   //      self.resize(width: 150, heigth: 150)
     }
     
-    public func insertConnectionFigure(firstPoint: CGPoint, lastPoint: CGPoint, itemType: ItemTypeEnum) -> ConnectionFigure {
-        let figure = ConnectionFigure(origin: self.initialTouchPoint, destination: lastPoint, itemType: itemType)
-        self.editorView.addSubview(figure);
-        self.figures.append(figure)
-        self.undoArray.append(figure);
-        return figure
+    public func insertConnectionFigure(firstPoint: CGPoint, lastPoint: CGPoint, itemType: ItemTypeEnum) -> Figure {
+        let figure = FigureFactory.shared.getFigure(
+            type: itemType,
+            source: firstPoint,
+            destination: lastPoint
+        )
+
+//        let figure = ConnectionFigure(origin: self.initialTouchPoint, destination: lastPoint, itemType: itemType)
+        self.editorView.addSubview(figure!);
+        self.figures.append(figure!)
+        self.undoArray.append(figure!);
+        return figure!
     }
     
     public func deleteSelectedFigures() {
@@ -363,13 +369,13 @@ extension Editor : TouchInputDelegate {
             self.initialTouchPoint = point
             self.previousTouchPoint = point
             
-            if (action == "anchor") {
-                self.sourceFigure = (figure as! UmlFigure)
-                self.connectionPreview = ConnectionFigure(origin: self.initialTouchPoint, destination: self.initialTouchPoint, itemType: .UniderectionalAssoication)
-                self.editorView.addSubview(connectionPreview)
-                self.touchEventState = .CONNECTION
-                return
-            }
+//            if (action == "anchor") {
+//                self.sourceFigure = (figure as! UmlFigure)
+//                self.connectionPreview = ConnectionFigure(origin: self.initialTouchPoint, destination: self.initialTouchPoint, itemType: .UniderectionalAssoication)
+//                self.editorView.addSubview(connectionPreview)
+//                self.touchEventState = .CONNECTION
+//                return
+//            }
             if (action == "shape") {
                 //                self.deselect()
                 //                self.select(figure: figure!)
@@ -391,8 +397,21 @@ extension Editor : TouchInputDelegate {
             break
         case .INSERT:
             self.insertFigure(position: point)
+            self.touchEventState = .SELECT
+            self.updateSideToolBar()
             break
         case .CONNECTION:
+            self.initialTouchPoint = point
+            self.previousTouchPoint = point
+            if (action == "anchor") {
+                self.sourceFigure = (figure as! UmlFigure)
+                print(self.currentFigureType)
+                self.connectionPreview = FigureFactory.shared.getFigure(type: self.currentFigureType, source: self.initialTouchPoint, destination: self.initialTouchPoint)
+//                self.connectionPreview = ConnectionFigure(origin: self.initialTouchPoint, destination: self.initialTouchPoint, itemType: self.currentFigureType)
+                self.editorView.addSubview(connectionPreview)
+                self.touchEventState = .CONNECTION
+                return
+            }
             break
         case .DELETE:
             self.deselect();
@@ -429,7 +448,8 @@ extension Editor : TouchInputDelegate {
         
         if (self.touchEventState == .CONNECTION) {
             self.connectionPreview.removeFromSuperview()
-            self.connectionPreview = ConnectionFigure(origin: self.initialTouchPoint, destination: point, itemType: .UniderectionalAssoication)
+            self.connectionPreview = FigureFactory.shared.getFigure(type: self.currentFigureType, source: self.initialTouchPoint, destination: point)
+//            self.connectionPreview = ConnectionFigure(origin: self.initialTouchPoint, destination: point, itemType: .UniderectionalAssoication)
             self.editorView.addSubview(self.connectionPreview)
             return
         }
@@ -506,7 +526,13 @@ extension Editor : TouchInputDelegate {
             return
         }
         
-        let connection: ConnectionFigure = self.insertConnectionFigure(
+//        let connection = FigureFactory.shared.getFigure(
+//            type: self.currentFigureType,
+//            source: self.initialTouchPoint,
+//            destination: destinationFigure.getClosestAnchorPoint(point: point)
+//        )
+        
+        let connection = self.insertConnectionFigure(
             firstPoint: self.initialTouchPoint,
             lastPoint: destinationFigure.getClosestAnchorPoint(point: point),
             itemType: currentFigureType
@@ -514,8 +540,8 @@ extension Editor : TouchInputDelegate {
         
         let sourceAnchor: String = self.sourceFigure.getClosestAnchorPointName(point: self.initialTouchPoint)
         let destinationAnchor: String = destinationFigure.getClosestAnchorPointName(point: point)
-        self.sourceFigure.addOutgoingConnection(connection: connection, anchor: sourceAnchor)
-        destinationFigure.addIncomingConnection(connection: connection, anchor: destinationAnchor)
+        self.sourceFigure.addOutgoingConnection(connection: connection as! ConnectionFigure, anchor: sourceAnchor)
+        destinationFigure.addIncomingConnection(connection: connection as! ConnectionFigure, anchor: destinationAnchor)
         self.touchEventState = .SELECT
         return
     }
@@ -564,7 +590,6 @@ extension Editor {
         }
         return false
     }
-    
     
     func overriteFigure(figureId: String, newDrawViewModel: DrawViewModel, username: String) {
         let oldFigure = self.figures.first(where: {$0.uuid.uuidString.lowercased() == figureId})

@@ -15,7 +15,7 @@ struct Constants {
 
     // Hubs
     static let CHAT_URL: String = Constants.SERVER_BASE_URL + "/signalr";
-    static let COLLABORATION_URL: String = Constants.SERVER_BASE_URL + "/signalr/collaborative"
+    static let COLLABORATION_URL: String = Constants.SERVER_BASE_URL + "/signalr/collaborative?channelId=general"
 
     // Endpoints
     static let LOGIN_URL: String = Constants.SERVER_BASE_URL + "/api/login";

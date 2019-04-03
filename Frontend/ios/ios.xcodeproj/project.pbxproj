@@ -36,8 +36,6 @@
 		3DA5CA4822441A9200087298 /* GalleryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3DA5CA4622441A9200087298 /* GalleryCell.xib */; };
 		3DA5CA4A2244395500087298 /* UmlActorFigure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DA5CA492244395500087298 /* UmlActorFigure.swift */; };
 		3DA5CA4C22443C4E00087298 /* UmlActivityFigure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DA5CA4B22443C4E00087298 /* UmlActivityFigure.swift */; };
-		3DA5CA502244406700087298 /* ConnectionSelectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DA5CA4E2244406700087298 /* ConnectionSelectionCell.swift */; };
-		3DA5CA512244406700087298 /* ConnectionSelectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3DA5CA4F2244406700087298 /* ConnectionSelectionCell.xib */; };
 		3DA5CA532244449900087298 /* ConnectionAssociationUni.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DA5CA522244449900087298 /* ConnectionAssociationUni.swift */; };
 		3DA5CA55224444B100087298 /* ConnectionAssociationBi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DA5CA54224444B100087298 /* ConnectionAssociationBi.swift */; };
 		3DA5CA57224444C100087298 /* ConnectionHeritage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DA5CA56224444C100087298 /* ConnectionHeritage.swift */; };
@@ -157,8 +155,6 @@
 		3DA5CA4622441A9200087298 /* GalleryCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GalleryCell.xib; sourceTree = "<group>"; };
 		3DA5CA492244395500087298 /* UmlActorFigure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UmlActorFigure.swift; sourceTree = "<group>"; };
 		3DA5CA4B22443C4E00087298 /* UmlActivityFigure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UmlActivityFigure.swift; sourceTree = "<group>"; };
-		3DA5CA4E2244406700087298 /* ConnectionSelectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionSelectionCell.swift; sourceTree = "<group>"; };
-		3DA5CA4F2244406700087298 /* ConnectionSelectionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ConnectionSelectionCell.xib; sourceTree = "<group>"; };
 		3DA5CA522244449900087298 /* ConnectionAssociationUni.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionAssociationUni.swift; sourceTree = "<group>"; };
 		3DA5CA54224444B100087298 /* ConnectionAssociationBi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionAssociationBi.swift; sourceTree = "<group>"; };
 		3DA5CA56224444C100087298 /* ConnectionHeritage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionHeritage.swift; sourceTree = "<group>"; };
@@ -394,15 +390,6 @@
 			path = GalleryCell;
 			sourceTree = "<group>";
 		};
-		3DA5CA4D2244404900087298 /* ConnectionSelectionCell */ = {
-			isa = PBXGroup;
-			children = (
-				3DA5CA4E2244406700087298 /* ConnectionSelectionCell.swift */,
-				3DA5CA4F2244406700087298 /* ConnectionSelectionCell.xib */,
-			);
-			path = ConnectionSelectionCell;
-			sourceTree = "<group>";
-		};
 		3DABD3D8224141B400707D86 /* AddAttributeCell */ = {
 			isa = PBXGroup;
 			children = (
@@ -435,7 +422,6 @@
 		3DABD3F3224196E800707D86 /* FigureTable */ = {
 			isa = PBXGroup;
 			children = (
-				3DA5CA4D2244404900087298 /* ConnectionSelectionCell */,
 				3DABD3F62241987000707D86 /* FigureSelectionCell */,
 				3DABD3F42241975C00707D86 /* FigureTableController.swift */,
 			);
@@ -802,7 +788,6 @@
 				3DE8F121223C44AF0052580B /* ClassMethodCell.xib in Resources */,
 				3D6E4C40223AE17B00E391D4 /* BorderCell.xib in Resources */,
 				B711B5F121F659A50096BF7F /* Assets.xcassets in Resources */,
-				3DA5CA512244406700087298 /* ConnectionSelectionCell.xib in Resources */,
 				B756794A220F5DC800F80B12 /* Chat.storyboard in Resources */,
 				B7B1B4482234725E00BEE17D /* ChatRoomsControllerTableViewController.xib in Resources */,
 				3D8384F62253924F00AAD14E /* FigureNameCell.xib in Resources */,
@@ -916,7 +901,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				3D2052AD224A97F300C488F1 /* FillCell.swift in Sources */,
-				3DA5CA502244406700087298 /* ConnectionSelectionCell.swift in Sources */,
 				3D66FC77223817E800EB7E93 /* SelectionOutline.swift in Sources */,
 				3DE8F125223C4AF00052580B /* AddMethodCell.swift in Sources */,
 				3DC967EB220A067900FA76CB /* LoginController.swift in Sources */,

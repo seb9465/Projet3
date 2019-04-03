@@ -8,6 +8,7 @@
 import UIKit
 
 class Figure: UIView {
+    var delegate: TouchInputDelegate?
     
     var firstPoint: CGPoint!
     var lastPoint: CGPoint!
