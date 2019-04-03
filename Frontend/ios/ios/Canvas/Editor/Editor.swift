@@ -53,24 +53,15 @@ class Editor {
     // Select made locally
     func select(figure: Figure) {
         self.selectedFigures.append(figure);
-        if (figure is ConnectionFigure) {
-            let frame = (figure as! ConnectionFigure).getSelectionFrame()
-            self.selectionOutline.append(
-                SelectionOutline(
-                    firstPoint: frame.origin,
-                    lastPoint: CGPoint(x: frame.maxX,y: frame.maxY),
-                    associatedFigureID: figure.uuid
-                )
-            );
-        } else {
-            self.selectionOutline.append(
-                SelectionOutline(
-                    firstPoint: figure.frame.origin,
-                    lastPoint: CGPoint(x: figure.frame.maxX,y: figure.frame.maxY),
-                    associatedFigureID: figure.uuid
-                )
-            );
-        }
+        let frame = figure.getSelectionFrame()
+        self.selectionOutline.append(
+            SelectionOutline(
+                firstPoint: frame.origin,
+                lastPoint: CGPoint(x: frame.maxX,y: frame.maxY),
+                associatedFigureID: figure.uuid
+            )
+        );
+        
         self.selectionOutline.last!.addSelectedFigureLayers();
         self.editorView.addSubview(self.selectionOutline.last!);
     }

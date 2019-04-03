@@ -44,6 +44,10 @@ class Figure: UIView {
         setNeedsDisplay()
     }
     
+    public func getSelectionFrame() -> CGRect {
+        return self.frame
+    }
+    
 //    public func setFillColor(color: UIColor) {
 //        self.fillColor = color
 //        setNeedsDisplay()

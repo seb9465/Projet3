@@ -79,7 +79,7 @@ class ConnectionFigure : Figure {
         setNeedsDisplay()
     }
     
-    func getSelectionFrame() -> CGRect{
+    override func getSelectionFrame() -> CGRect{
         var xi: CGFloat = 999999
         var yi: CGFloat = 999999
         var xf: CGFloat = -999999
