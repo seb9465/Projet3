@@ -17,7 +17,7 @@ class CanvasController: UIViewController {
     
     @IBOutlet weak var connectionLabel: UILabel!
     public var editor: Editor = Editor()
-    public var canvasName: String = ""
+    public var canvasId: String = ""
     var reach: Reachability?
 
     @IBOutlet weak var insertButton: UIBarButtonItem!
@@ -33,8 +33,8 @@ class CanvasController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
 
+        CollaborationHub.shared = CollaborationHub(channelId: canvasId)
         CollaborationHub.shared.connectToHub()
-        
         self.view.addSubview(self.editor.editorView)
         setupNetwork()
         
@@ -195,6 +195,8 @@ class CanvasController: UIViewController {
         if self.reach!.isReachableViaWiFi() || self.reach!.isReachableViaWWAN() {
             self.connectionLabel.text = "Online"
             self.connectionLabel.textColor = UIColor.green
+            CollaborationHub.shared = CollaborationHub(channelId: canvasId)
+            CollaborationHub.shared.connectToHub()
         } else {
             self.connectionLabel.text = "Offline"
             self.connectionLabel.textColor = UIColor.red

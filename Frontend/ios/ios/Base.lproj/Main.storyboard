@@ -477,6 +477,9 @@
                                 <state key="normal" title="New Canvas">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
+                                <connections>
+                                    <action selector="createNewCanvas:" destination="eTb-Zs-q24" eventType="touchUpInside" id="9CG-DB-fLh"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="p9k-FE-qKI" customClass="RoundedCorners" customModule="ios" customModuleProvider="target">
                                 <rect key="frame" x="873" y="76" width="131" height="44"/>

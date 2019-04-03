@@ -13,6 +13,7 @@ import Alamofire
 class CanvasService {
     // Singleton
     static let shared = CanvasService()
+    
 }
 
 extension CanvasService {
@@ -71,6 +72,45 @@ extension CanvasService {
             }
         }
     }
+    
+    public static func SaveOnline(canvas: Canvas) -> Promise<Bool> {
+        let credentials = ["CanvasId": canvas.canvasId, "canvasAutor":canvas.canvasAutor, "CanvasProtection":canvas.canvasProtection, "canvasVisibility":canvas.canvasVisibility, "DrawViewModels":canvas.drawViewModels,"Image":canvas.image, "Name":canvas.name]
+            let url = Constants.SAVE_URL as URLConvertible
+        let headers = ["Authorization": "Bearer " + UserDefaults.standard.string(forKey: "token")!];
+
+            return Promise { (seal) in
+                Manager.request(url, method: .post, parameters: credentials, encoding: JSONEncoding.default, headers: headers).validate()
+                    .responseString { (response) in
+                     switch response.result {
+                        case .success:
+                            seal.fulfill(true);
+
+                        case .failure(let Error):
+                            if let data = response.data {
+                                let json = String(data: data, encoding: String.Encoding.utf8)
+                                print("Failure Response: \(json)")
+                            }
+                            seal.reject(Error);
+                        }
+
+                };
+            }
+        }
+    
+    private static var Manager : Alamofire.SessionManager = {
+        // Create the server trust policies
+        let serverTrustPolicies: [String: ServerTrustPolicy] = [
+            "localhost": .disableEvaluation
+        ]
+        // Create custom manager
+        let configuration = URLSessionConfiguration.default
+        configuration.httpAdditionalHeaders = Alamofire.SessionManager.defaultHTTPHeaders
+        let manager = Alamofire.SessionManager(
+            configuration: URLSessionConfiguration.default,
+            serverTrustPolicyManager: ServerTrustPolicyManager(policies: serverTrustPolicies)
+        )
+        return manager
+    }()
     
     public static func saveLocalCanvas(figures: [Figure]) -> Void {
         let fileManager = FileManager.default

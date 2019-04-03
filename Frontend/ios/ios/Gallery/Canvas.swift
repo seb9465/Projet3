@@ -8,13 +8,23 @@
 import Foundation
 
 struct Canvas: Codable  {
-    let canvasId: String
-    let name: String
-    let drawViewModels: String
-    let image: String
-    let canvasVisibility: String
-    let canvasAutor: String
-    let canvasProtection: String
+    var canvasId: String
+    var name: String
+    var drawViewModels: String
+    var image: String
+    var canvasVisibility: String
+    var canvasAutor: String
+    var canvasProtection: String
+    init() {
+        self.canvasId = "";
+        self.name = "";
+        self.drawViewModels = "[]";
+        self.image = Base64Const.defaultPic;
+        self.canvasVisibility = "";
+        self.canvasAutor = "";
+        self.canvasProtection = "";
+    }
+
     init(canvasId: String, name: String, drawViewModels: String, image: String, canvasVisibility: String, canvasAutor: String, canvasProtection: String) {
         self.canvasId = canvasId;
         self.name = name;

@@ -39,4 +39,63 @@ class DashboardController: UIViewController, UITextFieldDelegate {
         
         self.present(viewController, animated: false, completion: nil);
     }
+    @IBAction func createNewCanvas(_ sender: Any) {
+        var newCanvas: Canvas = Canvas()
+        newCanvas.canvasId = UUID().uuidString
+        let createAlert = UIAlertController(title: "Create Canvas", message: "Please enter the new canvas name and it's visibility.", preferredStyle: .alert)
+        createAlert.addTextField(configurationHandler: { (textField) in
+            textField.placeholder = "Name"
+        })
+        let protectionAlert = UIAlertController(title: "Password Protection", message: "You can add a password to secure your canvas!", preferredStyle: .alert)
+        protectionAlert.addAction(UIAlertAction(title: "No Thanks", style: .cancel, handler: { action in
+            self.saveNewCanvas(canvas: newCanvas)
+        }))
+        protectionAlert.addAction(UIAlertAction(title: "Secure", style: .default, handler: { action in
+            newCanvas.canvasProtection = protectionAlert.textFields![0].text!
+            self.saveNewCanvas(canvas: newCanvas)
+        }))
+        protectionAlert.addTextField(configurationHandler: { (textField) in
+            protectionAlert.actions[1].isEnabled = false
+            textField.placeholder = "Password"
+            textField.isSecureTextEntry = true
+        })
+        
+        
+        createAlert.addAction(UIAlertAction(title: "Private", style: .default, handler: { action in
+            newCanvas.name = createAlert.textFields![0].text!
+            newCanvas.canvasVisibility = "Private"
+            
+            self.present(protectionAlert, animated: true, completion: nil)
+        }))
+        createAlert.addAction(UIAlertAction(title: "Public", style: .default, handler:{ action in
+            newCanvas.name = createAlert.textFields![0].text!
+            newCanvas.canvasVisibility = "Public"
+            self.present(protectionAlert, animated: true, completion: nil)
+        }))
+        createAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        createAlert.actions[0].isEnabled = false
+        createAlert.actions[1].isEnabled = false
+        
+        NotificationCenter.default.addObserver(forName: UITextField.textDidChangeNotification, object:createAlert.textFields?[0],
+                                               queue: OperationQueue.main) { (notification) -> Void in
+                                                let textField = createAlert.textFields?[0] as! UITextField
+                                                createAlert.actions[0].isEnabled = !textField.text!.isEmpty
+                                                createAlert.actions[1].isEnabled = !textField.text!.isEmpty
+        }
+        NotificationCenter.default.addObserver(forName: UITextField.textDidChangeNotification, object:protectionAlert.textFields?[0],
+                                               queue: OperationQueue.main) { (notification) -> Void in
+                                                let textField = protectionAlert.textFields?[0] as! UITextField
+                                                protectionAlert.actions[1].isEnabled = !textField.text!.isEmpty
+        }
+        self.present(createAlert, animated: true, completion: nil)
+    }
+    
+    public func saveNewCanvas(canvas: Canvas) {
+        CanvasService.SaveOnline(canvas: canvas).done { (success) in
+            print("SUCCESS")
+            let canvasController = UIStoryboard(name: "Canvas", bundle: nil).instantiateViewController(withIdentifier: "CanvasController") as! CanvasController
+            canvasController.canvasId = canvas.canvasId
+            self.present(canvasController, animated: true, completion: nil);
+        }
+    }
 }

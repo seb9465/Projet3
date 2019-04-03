@@ -18,14 +18,16 @@ protocol CollaborationHubDelegate {
 
 class CollaborationHub {
     // Singleton
-    static let shared = CollaborationHub()
+    static var shared = CollaborationHub(channelId: "")
     var delegate: CollaborationHubDelegate?
-    
+    var channelId: String
     var hubConnection: HubConnection;
     var _members: Members;
     
-    init() {
-        self.hubConnection = HubConnectionBuilder(url: URL(string: Constants.COLLABORATION_URL)!)
+    
+    init(channelId: String) {
+        self.channelId = channelId
+        self.hubConnection = HubConnectionBuilder(url: URL(string: Constants.COLLABORATION_URL + "?ChannelId=" + channelId)!)
             .withHttpConnectionOptions() { (httpConnectionOptions) in
                 httpConnectionOptions.accessTokenProvider = {
                     return UserDefaults.standard.string(forKey: "token")!;
@@ -60,11 +62,8 @@ class CollaborationHub {
     }
     
     public func connectToChannel() -> Void {
-        let json = try? JSONEncoder().encode(ConnectionMessage(channelId: "general"));
-        let jsondata: String = String(data: json!, encoding: .utf8)!;
-        
         print("[ Collab ] Invoked ConnectToChannel");
-        self.hubConnection.invoke(method: "ConnectToChannel", arguments: [jsondata], invocationDidComplete: { (error) in
+        self.hubConnection.invoke(method: "ConnectToChannel", arguments: [], invocationDidComplete: { (error) in
             if (error != nil) {
                 print("ERROR while invoking ConnectToChannel.");
                 print(error!);
@@ -97,7 +96,7 @@ class CollaborationHub {
         }
         
         let itemMessage = ItemMessage(
-            CanvasId: "general",
+            CanvasId: self.channelId,
             Username: username!,
             Items: viewModels
         )
@@ -119,7 +118,7 @@ class CollaborationHub {
         let jwt = try! decode(jwt: token!)
         let username = jwt.claim(name: "unique_name").string
         let itemMessage = ItemMessage(
-            CanvasId: "general",
+            CanvasId: self.channelId,
             Username: username!,
             Items: drawViewModels
             )

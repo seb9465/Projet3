@@ -69,7 +69,7 @@ extension GalleryController: UICollectionViewDelegate, UICollectionViewDataSourc
                     if(cell.password == enteredPassword) {
                         print("good password")
                         let canvasController = UIStoryboard(name: "Canvas", bundle: nil).instantiateViewController(withIdentifier: "CanvasController") as! CanvasController
-                        canvasController.canvasName = cell.nameLabel.text!
+                        canvasController.canvasId = cell.nameLabel.text!
                         self.present(canvasController, animated: true, completion: nil);
                     } else {
                          let wrongPasswordAlert = UIAlertController(title: "Wrong password", message: "You have entered a wrong password.", preferredStyle: .alert)
@@ -80,7 +80,7 @@ extension GalleryController: UICollectionViewDelegate, UICollectionViewDataSourc
             self.present(passwordAlert, animated: true, completion: nil)
             } else {
                 let canvasController = UIStoryboard(name: "Canvas", bundle: nil).instantiateViewController(withIdentifier: "CanvasController") as! CanvasController
-                canvasController.canvasName = cell.nameLabel.text!
+                canvasController.canvasId = cell.nameLabel.text!
 
                 self.present(canvasController, animated: true, completion: nil);      }
         }

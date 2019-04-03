@@ -106,6 +106,7 @@
 		C495FEBE22381BDF006E49F9 /* UMLImageFigure.swift in Sources */ = {isa = PBXBuildFile; fileRef = C495FEBD22381BDF006E49F9 /* UMLImageFigure.swift */; };
 		C495FEC22238248E006E49F9 /* Ressources in Resources */ = {isa = PBXBuildFile; fileRef = C495FEC12238248E006E49F9 /* Ressources */; };
 		C4AA4AD722552166005607E8 /* Canvas.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C4AA4AD922552166005607E8 /* Canvas.storyboard */; };
+		C4AA4ADB22553F4C005607E8 /* Base64Const.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4AA4ADA22553F4C005607E8 /* Base64Const.swift */; };
 		C4D12706224418F3004B3641 /* UmlCommentFigure.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D12705224418F3004B3641 /* UmlCommentFigure.swift */; };
 		C4D1270E224424E1004B3641 /* UmlArtefactFigure.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D1270D224424E1004B3641 /* UmlArtefactFigure.swift */; };
 		C4D12710224424FC004B3641 /* UmlPhaseFigure.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D1270F224424FC004B3641 /* UmlPhaseFigure.swift */; };
@@ -231,6 +232,7 @@
 		C495FEBD22381BDF006E49F9 /* UMLImageFigure.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UMLImageFigure.swift; path = ios/Canvas/Figures/UMLImageFigure.swift; sourceTree = SOURCE_ROOT; };
 		C495FEC12238248E006E49F9 /* Ressources */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Ressources; sourceTree = "<group>"; };
 		C4AA4AD822552166005607E8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Canvas.storyboard; sourceTree = "<group>"; };
+		C4AA4ADA22553F4C005607E8 /* Base64Const.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Base64Const.swift; sourceTree = "<group>"; };
 		C4D12705224418F3004B3641 /* UmlCommentFigure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UmlCommentFigure.swift; sourceTree = "<group>"; };
 		C4D1270D224424E1004B3641 /* UmlArtefactFigure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UmlArtefactFigure.swift; sourceTree = "<group>"; };
 		C4D1270F224424FC004B3641 /* UmlPhaseFigure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UmlPhaseFigure.swift; sourceTree = "<group>"; };
@@ -582,6 +584,7 @@
 				3DC967EC220A09C400FA76CB /* DashboardController.swift */,
 				B7567947220F355F00F80B12 /* Constants.swift */,
 				B775FE3E22135D6300B2EFE0 /* Spinner.swift */,
+				C4AA4ADA22553F4C005607E8 /* Base64Const.swift */,
 			);
 			path = ios;
 			sourceTree = "<group>";
@@ -969,6 +972,7 @@
 				3D2268192236E9F500B2F604 /* EditorView.swift in Sources */,
 				C43102E122132226008F1D80 /* SoundNotification.swift in Sources */,
 				B775FE3F22135D6300B2EFE0 /* Spinner.swift in Sources */,
+				C4AA4ADB22553F4C005607E8 /* Base64Const.swift in Sources */,
 				B756794C220F608B00F80B12 /* Members.swift in Sources */,
 				C4D6BB2722384F5B00121695 /* AnchorPoints.swift in Sources */,
 				3D8384F52253924F00AAD14E /* FigureNameCell.swift in Sources */,
