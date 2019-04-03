@@ -161,12 +161,13 @@ class ChatService {
             print("[ CHAT ] On FetchChannels");
             
             let channelsJson: String = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self)!;
-            
+            print(channelsJson);
             if let channelsJsonData = channelsJson.data(using: .utf8) {
                 let channels: ChannelsMessage = try! JSONDecoder().decode(ChannelsMessage.self, from: channelsJsonData);
                 self._userChannels.channels = [];
                 self._serverChannels.channels = [];
                 
+                print(channels.channels);
                 for channel in channels.channels {
                     if (channel.connected) {
                         self._userChannels.channels.append(channel);
@@ -186,7 +187,8 @@ class ChatService {
             }
         });
         
-        self.invokeFetchChannels();
+        self.invokeChannelsWhenConnected();
+//        self.invokeFetchChannels();
     }
     
     // MARK: Private functions
