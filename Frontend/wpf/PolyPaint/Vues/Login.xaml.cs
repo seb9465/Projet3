@@ -27,7 +27,7 @@ namespace PolyPaint.Vues
 
         private void OfflineBtn_Click(object sender, RoutedEventArgs e)
         {
-            FenetreDessin fenetreDessin = new FenetreDessin(new List<DrawViewModel>(), new ChatClient());
+            FenetreDessin fenetreDessin = new FenetreDessin(new List<DrawViewModel>(), new ChatClient(), "offline");
             Application.Current.MainWindow = fenetreDessin;
             Close();
             fenetreDessin.Show();
@@ -46,13 +46,14 @@ namespace PolyPaint.Vues
 
             using (HttpClient client = new HttpClient())
             {
-                client.BaseAddress = new System.Uri(Config.URL);
-                client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-                StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
-                HttpResponseMessage result = await client.PostAsync("/api/login", content);
+                HttpResponseMessage result = new HttpResponseMessage();
                 string token = "";
                 try
                 {
+                    client.BaseAddress = new System.Uri(Config.URL);
+                    client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+                    StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
+                    result = await client.PostAsync("/api/login", content);
                     token = JsonConvert.DeserializeObject<string>(await result.Content.ReadAsStringAsync());
                 }
                 catch (JsonReaderException exc)
@@ -64,9 +65,6 @@ namespace PolyPaint.Vues
                 {
 
                     DecodeToken(token);
-                    //Application.Current.MainWindow = fenetreDessin;
-                    //Close();
-                    //fenetreDessin.Show();
 
                     List<SaveableCanvas> strokes;
                     using (client)

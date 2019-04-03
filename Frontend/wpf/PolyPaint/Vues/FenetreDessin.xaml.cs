@@ -60,10 +60,10 @@ namespace PolyPaint
         bool isMenuOpen = false;
         private ViewStateEnum _viewState { get; set; }
 
-        public FenetreDessin(List<DrawViewModel> drawViewModels, ChatClient chatClient)
+        public FenetreDessin(List<DrawViewModel> drawViewModels, ChatClient chatClient, string canvasChannel)
         {
             InitializeComponent();
-            DataContext = new VueModele(chatClient);
+            DataContext = new VueModele(chatClient, canvasChannel);
 
             (DataContext as VueModele).CollaborationClient.Initialize((string)Application.Current.Properties["token"]);
             (DataContext as VueModele).CollaborationClient.DrawReceived += ReceiveDraw;
