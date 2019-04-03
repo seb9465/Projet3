@@ -10,11 +10,11 @@ import UIKit
 
 class ConnectionAgregation: ConnectionFigure {
     override func draw(_ rect: CGRect) {
+        self.lineColor.setStroke()
         let bezierPath = UIBezierPath()
         bezierPath.move(to: points[.ORIGIN]!)
         bezierPath.addLine(to: points[.ELBOW]!)
         bezierPath.addLine(to: points[.DESTINATION]!)
-        UIColor.black.setStroke()
         bezierPath.lineWidth = 2
         bezierPath.stroke()
         
@@ -42,7 +42,6 @@ class ConnectionAgregation: ConnectionFigure {
         bezierPath2.close()
         UIColor.white.setFill()
         bezierPath2.fill()
-        UIColor.black.setStroke()
         bezierPath2.lineWidth = 2
         bezierPath2.stroke()
     }

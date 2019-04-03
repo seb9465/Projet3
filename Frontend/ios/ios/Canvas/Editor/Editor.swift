@@ -53,7 +53,15 @@ class Editor {
     // Select made locally
     func select(figure: Figure) {
         self.selectedFigures.append(figure);
-        self.selectionOutline.append(SelectionOutline(firstPoint: figure.frame.origin, lastPoint: CGPoint(x: figure.frame.maxX, y: figure.frame.maxY), associatedFigureID: figure.uuid));
+        let frame = figure.getSelectionFrame()
+        self.selectionOutline.append(
+            SelectionOutline(
+                firstPoint: frame.origin,
+                lastPoint: CGPoint(x: frame.maxX,y: frame.maxY),
+                associatedFigureID: figure.uuid
+            )
+        );
+        
         self.selectionOutline.last!.addSelectedFigureLayers();
         self.editorView.addSubview(self.selectionOutline.last!);
     }
@@ -158,8 +166,7 @@ class Editor {
             source: firstPoint,
             destination: lastPoint
         )
-
-//        let figure = ConnectionFigure(origin: self.initialTouchPoint, destination: lastPoint, itemType: itemType)
+        figure!.delegate = self
         self.editorView.addSubview(figure!);
         self.figures.append(figure!)
         self.undoArray.append(figure!);
@@ -228,17 +235,6 @@ class Editor {
         }
         return nil
     }
-    
-    func snap(point: CGPoint) -> CGPoint{
-        for subview in self.editorView.subviews {
-            if let figure = subview as? UmlFigure {
-                if (figure.frame.contains(point)) {
-                    return figure.getClosestAnchorPoint(point: point)
-                }
-            }
-        }
-        return point
-    }
 }
 
 extension Editor {
@@ -250,14 +246,14 @@ extension Editor {
 extension Editor: SideToolbarDelegate {
     func setSelectedFigureBorderColor(color: UIColor) {
         for figure in self.selectedFigures {
-            (figure as! UmlFigure).setBorderColor(borderColor: color);
+            figure.setBorderColor(borderColor: color);
         }
         CollaborationHub.shared.postNewFigure(figures: self.selectedFigures)
     }
     
     func setSelectedFigureFillColor(color: UIColor) {
         for figure in self.selectedFigures {
-            (figure as! UmlFigure).setFillColor(fillColor: color)
+            figure.setFillColor(fillColor: color)
         }
         CollaborationHub.shared.postNewFigure(figures: self.selectedFigures)
     }
@@ -531,12 +527,6 @@ extension Editor : TouchInputDelegate {
             return
         }
         
-//        let connection = FigureFactory.shared.getFigure(
-//            type: self.currentFigureType,
-//            source: self.initialTouchPoint,
-//            destination: destinationFigure.getClosestAnchorPoint(point: point)
-//        )
-        
         let connection = self.insertConnectionFigure(
             firstPoint: self.initialTouchPoint,
             lastPoint: destinationFigure.getClosestAnchorPoint(point: point),
@@ -563,10 +553,9 @@ extension Editor: CollaborationHubDelegate {
     }
     
     func updateCanvas(itemMessage: ItemMessage) {
-        print(itemMessage.Items)
+//        print(itemMessage.Items)
         for drawViewModel in itemMessage.Items {
             if (self.figures.contains(where: {$0.uuid.uuidString.lowercased() == drawViewModel.Guid})) {
-                print("Figure overritten")
                 self.overriteFigure(figureId: drawViewModel.Guid!, newDrawViewModel: drawViewModel, username: itemMessage.Username)
                 self.deselect(username: itemMessage.Username)
                 self.select(drawViewModels: itemMessage.Items, username: itemMessage.Username)
@@ -574,7 +563,8 @@ extension Editor: CollaborationHubDelegate {
             }
 
             let figure = self.insertFigure(drawViewModel: drawViewModel)
-            if (drawViewModel.ItemType?.description == "connection") {
+            if (drawViewModel.ItemType?.description == "Connection") {
+                print("Connecting to other figures")
                 self.connectConnectionToFigures(drawViewModel: drawViewModel, connection: (figure as! ConnectionFigure))
             }
         }
@@ -592,7 +582,7 @@ extension Editor {
         for pair in self.selectedFiguresDictionnary {
             for selectedModel in pair.value {
                 if(selectedModel.Guid == figure.uuid.uuidString.lowercased()) {
-                    print("Already selected!")
+                    print("Selection cancelled: Figure already selected by another user")
                     return true
                 }
             }
@@ -606,15 +596,15 @@ extension Editor {
         oldFigure?.removeFromSuperview()
         let newFigure = FigureFactory.shared.fromDrawViewModel(drawViewModel: newDrawViewModel)!
         newFigure.delegate = self
+        self.figures.append(newFigure)
+        self.editorView.addSubview(newFigure)
         
         if (oldFigure is UmlFigure && newFigure is UmlFigure) {
+            print("Updating received Figure connections")
             (newFigure as! UmlFigure).outgoingConnections = (oldFigure as! UmlFigure).outgoingConnections
             (newFigure as! UmlFigure).incomingConnections = (oldFigure as! UmlFigure).incomingConnections
             (newFigure as! UmlFigure).updateConnections()
         }
-        
-        self.figures.append(newFigure)
-        self.editorView.addSubview(newFigure)
     }
     
     func connectConnectionToFigures(drawViewModel: DrawViewModel, connection: ConnectionFigure) {
@@ -622,12 +612,14 @@ extension Editor {
             if (figure is UmlFigure) {
                 for pair in (figure as! UmlFigure).anchorPoints!.anchorPointsSnapEdges {
                     let detectionDiameter: CGFloat = 10
+                    let globalPoint: CGPoint = figure.convert(pair.value, to: self.editorView)
                     let areaRect: CGRect = CGRect(
-                        x: pair.value.x - detectionDiameter/2,
-                        y: pair.value.y - detectionDiameter/2,
+                        x: globalPoint.x - detectionDiameter/2,
+                        y: globalPoint.y - detectionDiameter/2,
                         width: detectionDiameter,
                         height: detectionDiameter
                     )
+                    
                     if (areaRect.contains(drawViewModel.StylusPoints![0].getCGPoint())) {
                         // Add outgoing Connection to figure
                         (figure as! UmlFigure).addOutgoingConnection(connection: connection, anchor: pair.key)

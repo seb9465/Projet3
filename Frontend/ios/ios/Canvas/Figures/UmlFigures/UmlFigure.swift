@@ -8,6 +8,7 @@
 
 import UIKit
 import GLKit
+
 protocol TouchInputDelegate {
     func notifyTouchBegan(action: String, point: CGPoint, figure: Figure?)
     func notifyTouchMoved(point: CGPoint, figure: Figure)
@@ -15,24 +16,14 @@ protocol TouchInputDelegate {
 }
 
 class UmlFigure : Figure {
-//    var delegate: TouchInputDelegate?
-    
-    // DrawViewModel common attributes
-//    var name: String!
-    var figureColor: UIColor!
-//    var lineColor: UIColor!
-//    var lineWidth: CGFloat!
-//    var oldTouchedPoint: CGPoint!
-    
+
+//    var figureColor: UIColor!
+    var currentAngle: Double = 0
+    var anchorPoints: AnchorPoints?
     var incomingConnections : [ConnectionFigure: String] = [:]
     var outgoingConnections : [ConnectionFigure: String] = [:]
     
-    var currentAngle: Double = 0
-
-    var anchorPoints: AnchorPoints?;
-    
     init(firstPoint: CGPoint, lastPoint: CGPoint, width: CGFloat, height: CGFloat) {
-        
         let frameSize = CGSize(width: abs(firstPoint.x - lastPoint.x), height: abs(firstPoint.y - lastPoint.y))
         let frame = CGRect(origin: firstPoint, size: frameSize)
         
@@ -89,16 +80,6 @@ class UmlFigure : Figure {
         self.layer.addSublayer((self.anchorPoints?.anchorPointsTop)!)
         self.layer.addSublayer((self.anchorPoints?.anchorPointsLeft)!)
         self.layer.addSublayer((self.anchorPoints?.anchorPointsRight)!)
-    }
-    
-    public func setFillColor(fillColor: UIColor) -> Void {
-        self.figureColor = fillColor
-        setNeedsDisplay();
-    }
-    
-    public func setBorderColor(borderColor: UIColor) -> Void {
-        self.lineColor = borderColor
-        setNeedsDisplay();
     }
 
     public func translate(by: CGPoint) {
