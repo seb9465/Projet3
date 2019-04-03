@@ -126,7 +126,7 @@ namespace PolyPaint
             surfaceDessin.Paste();
         }
 
-        private void SupprimerSelection(object sender, RoutedEventArgs e)
+        private async void SupprimerSelection(object sender, RoutedEventArgs e)
         {
             List<DrawViewModel> strokes = rebuilder.GetDrawViewModelsFromStrokes(surfaceDessin.GetSelectedStrokes());
             surfaceDessin.CutSelection();
@@ -200,7 +200,6 @@ namespace PolyPaint
             byte[] imageBytes = GetBytesForImage();
             List<DrawViewModel> drawViewModels = strokeBuilder.GetDrawViewModelsFromStrokes((DataContext as VueModele).Traits);
             string json = JsonConvert.SerializeObject(drawViewModels);
-            string imageToSend = Convert.ToBase64String(imageBytes);
             string CanvasId = DateTime.Now.ToString("yyyy.MM.dd.hh.mm.ss.ffff");
             string CanvasName = canvasName;
             string CanvasVisibility = canvasVisibility;
@@ -229,7 +228,7 @@ namespace PolyPaint
             {
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", (string)Application.Current.Properties["token"]);
                 System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
-                HttpResponseMessage response = await client.GetAsync($"{Config.URL}/api/user/canvas");
+                HttpResponseMessage response = await client.GetAsync($"{Config.URL}/api/user/AllCanvas");
                 string responseString = await response.Content.ReadAsStringAsync();
                 strokes = JsonConvert.DeserializeObject<List<SaveableCanvas>>(responseString);
             }
@@ -238,9 +237,7 @@ namespace PolyPaint
 
             Application.Current.MainWindow = gallery;
 
-
             surfaceDessin.Strokes.Clear();
-            //  surfaceDessin.Strokes.Add(gallery.SelectedCanvas.Strokes);
 
             Close();
             gallery.Show();
@@ -460,7 +457,7 @@ namespace PolyPaint
             }
 
         }
-        private void Reinitialiser_Click(object sender, RoutedEventArgs e)
+        private async void Reinitialiser_Click(object sender, RoutedEventArgs e)
         {
             (DataContext as VueModele).Reinitialiser.Execute(null);
             (DataContext as VueModele).CollaborationClient.CollaborativeSelectAsync(new List<DrawViewModel>());
