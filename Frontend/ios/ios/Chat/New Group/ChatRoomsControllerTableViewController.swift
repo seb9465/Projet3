@@ -97,7 +97,18 @@ class ChatRoomsControllerTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "CustomTableViewCell") as? CustomTableViewCell;
         
-        cell?.chatRoomName.text = ChatService.shared.userChannels.channels[indexPath.row].name;
+        let roomName: String = ChatService.shared.userChannels.channels[indexPath.row].name;
+        
+        cell?.chatRoomName.text = roomName.uppercased();
+        
+        var notif: String = "";
+        
+        if (ChatService.shared.messagesWhileAFK.keys.contains(roomName)) {
+            notif += String(ChatService.shared.messagesWhileAFK[roomName]!.count);
+            notif += " unread messages";
+        }
+        
+        cell?.notificationLabel.text = notif;
         
         return cell!
     }
