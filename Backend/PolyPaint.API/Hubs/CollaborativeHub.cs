@@ -96,5 +96,18 @@ namespace PolyPaint.API.Hubs
                 await ConnectToChannel((new ConnectionMessage(channelId: channelId)).ToString());
             }
         }
+
+        public async Task ResizeCanvas(string sizeMessage)
+        {
+            var message = JsonConvert.DeserializeObject<SizeMessage>(sizeMessage);
+            var user = await GetUserFromToken(Context.User);
+            if (user != null)
+            {
+                if (UserHandler.TryGetByValue(user, out var channelId))
+                {
+                    await Clients.OthersInGroup(channelId).SendAsync("ResizeCanvas", JsonConvert.SerializeObject(message));
+                }
+            }
+        }
     }
 }

@@ -13,6 +13,8 @@ namespace PolyPaint.Core.DbModels
         [Required] public string canvasVisibility{ get; set; }
         public string canvasAutor { get; set; }
         public string canvasProtection { get; set; }
+        public double canvasWidth { get; set; } = 1000;
+        public double canvasHeight { get; set; } = 500;
 
         public Canvas()
         {
