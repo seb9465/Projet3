@@ -56,6 +56,7 @@ extension StyleTableController: UITableViewDelegate, UITableViewDataSource {
         case 1:
             let cell = tableView.dequeueReusableCell(withIdentifier: "BorderCell", for: indexPath) as! BorderCell
             cell.delegate = self.editor
+            cell.thicknessSlider.value = Float(editor.selectedFigures[0].lineWidth / 10)
             return cell
         case 2:
             let cell = tableView.dequeueReusableCell(withIdentifier: "RotateCell", for: indexPath) as! RotateCell
