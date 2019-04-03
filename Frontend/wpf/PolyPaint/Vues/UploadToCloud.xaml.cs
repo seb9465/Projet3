@@ -21,10 +21,6 @@ namespace PolyPaint.Vues
     /// </summary>
     public partial class UploadToCloud : Window
     {
-        public String CanvasVisibility;
-        public String CanvasName;
-        public String CanvasProtection;
-        public String CanvasAutor;
         public ChatClient ChatClient;
 
         public UploadToCloud(ChatClient chatClient)
@@ -35,18 +31,9 @@ namespace PolyPaint.Vues
 
         private void Ok_Click(object sender, RoutedEventArgs e)
         {
-            CanvasName = nameTextBox.Text;
-            CanvasVisibility = visibilityComboBox.Text;
-            CanvasProtection = passwordTextBox.Password;
-            CanvasAutor = Application.Current.Properties["username"].ToString();
+            var canvas = new SaveableCanvas(Guid.NewGuid().ToString(), nameTextBox.Text, "[]", new byte[0], visibilityComboBox.Text, passwordTextBox.Password, Application.Current.Properties["username"].ToString(), 1000, 500);
 
-            FenetreDessin fenetreDessin = new FenetreDessin(new List<Common.Collaboration.DrawViewModel>(), ChatClient, CanvasName, 1000, 500)
-            {
-                canvasName = CanvasName,
-                canvasVisibility = CanvasVisibility,
-                canvasProtection = CanvasProtection,
-                canvasAutor = CanvasAutor
-            };
+            FenetreDessin fenetreDessin = new FenetreDessin(new List<Common.Collaboration.DrawViewModel>(), canvas, ChatClient);
 
             Application.Current.MainWindow = fenetreDessin;
             Close();
