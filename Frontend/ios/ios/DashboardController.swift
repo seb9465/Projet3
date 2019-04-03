@@ -94,7 +94,7 @@ class DashboardController: UIViewController, UITextFieldDelegate {
         CanvasService.SaveOnline(canvas: canvas).done { (success) in
             print("SUCCESS")
             let canvasController = UIStoryboard(name: "Canvas", bundle: nil).instantiateViewController(withIdentifier: "CanvasController") as! CanvasController
-            canvasController.canvasId = canvas.canvasId
+            canvasId = canvas.canvasId
             self.present(canvasController, animated: true, completion: nil);
         }
     }
