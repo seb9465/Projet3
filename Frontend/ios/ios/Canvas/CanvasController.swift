@@ -8,14 +8,17 @@
 
 import ChromaColorPicker
 import UIKit
-
+import Reachability
+import Foundation
 class CanvasController: UIViewController {
     
     // MARK: - Attributes
     private var activeButton: UIBarButtonItem!;
     
+    @IBOutlet weak var connectionLabel: UILabel!
     public var editor: Editor = Editor()
-    
+    var reach: Reachability?
+
     @IBOutlet weak var insertButton: UIBarButtonItem!
     @IBOutlet var selectButton: UIBarButtonItem!
     @IBOutlet var deleteButton: UIBarButtonItem!
@@ -28,11 +31,28 @@ class CanvasController: UIViewController {
         super.viewDidLoad();
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+
         CollaborationHub.shared.connectToHub()
         
         self.view.addSubview(self.editor.editorView)
+        setupNetwork()
+        
     }
-    
+    func setupNetwork() {
+        self.reach = Reachability.forInternetConnection()
+        
+        // Tell the reachability that we DON'T want to be reachable on 3G/EDGE/CDMA
+        self.reach!.reachableOnWWAN = false
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(reachabilityChanged),
+            name: NSNotification.Name.reachabilityChanged,
+            object: nil
+        )
+        
+        self.reach!.startNotifier()
+
+    }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated);
         navigationController?.setNavigationBarHidden(true, animated: animated);
@@ -168,6 +188,16 @@ class CanvasController: UIViewController {
 //        if self.view.frame.origin.y != 0 {
 //            self.view.frame.origin.y = 0
 //        }
+    }
+    
+    @objc func reachabilityChanged(notification: NSNotification) {
+        if self.reach!.isReachableViaWiFi() || self.reach!.isReachableViaWWAN() {
+            self.connectionLabel.text = "Online"
+            self.connectionLabel.textColor = UIColor.green
+        } else {
+            self.connectionLabel.text = "Offline"
+            self.connectionLabel.textColor = UIColor.red
+        }
     }
 }
 
