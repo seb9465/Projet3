@@ -10,6 +10,9 @@ import UIKit
 
 class ChatRoomsControllerTableViewController: UITableViewController {
     
+    @IBOutlet var backButton: UIBarButtonItem!
+    @IBOutlet var addButton: UIBarButtonItem!
+    
     private let refreshTable = UIRefreshControl();
     
     @objc private func refreshData(_ sender: Any) {
@@ -21,7 +24,14 @@ class ChatRoomsControllerTableViewController: UITableViewController {
         ChatService.shared.currentChannel = nil;
         let storyboard = UIStoryboard(name: "Main", bundle: nil);
         let view = storyboard.instantiateViewController(withIdentifier: "MainController");
-        self.present(view, animated: true, completion: nil);
+        
+        let transition = CATransition();
+        transition.duration = 0.3;
+        transition.type = CATransitionType.reveal;
+        transition.subtype = CATransitionSubtype.fromBottom;
+        self.view.window!.layer.add(transition, forKey: kCATransition);
+        
+        self.present(view, animated: false, completion: nil);
     }
     
     override func viewDidLoad() {
@@ -35,7 +45,11 @@ class ChatRoomsControllerTableViewController: UITableViewController {
         self.refreshTable.addTarget(self, action: #selector(refreshData(_:)), for: .valueChanged)
         self.tableView.addSubview(self.refreshTable);
         
+        self.editButtonItem.tintColor = Constants.RED_COLOR;
         self.navigationItem.rightBarButtonItems?.append(self.editButtonItem);
+        
+        self.backButton.tintColor = Constants.RED_COLOR;
+        self.addButton.tintColor = Constants.RED_COLOR;
         
         super.viewDidLoad()
     }

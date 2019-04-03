@@ -356,12 +356,12 @@
                         ShowStandardColors="True"
                         ShowTabHeaders="False"
                         MouseLeftButtonUp="SendSelectedStrokes"/>
-                    <Slider Width="100" Height="26" Minimum="1" Maximum="50"
+                    <Slider Width="100" Height="26" Minimum="1" Maximum="10"
                         Value="{Binding Path=TailleTrait, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                         Margin="12"
                         Foreground="OrangeRed"
                         IsEnabled="{Binding Path=IsStrokeSelected}"
-                        TickFrequency="10" TickPlacement="BottomRight" IsSnapToTickEnabled="False"
+                        TickFrequency="1" TickPlacement="BottomRight" IsSnapToTickEnabled="False"
                         PreviewMouseUp="SendSelectedStrokes">
                     </Slider>
                 </StackPanel>

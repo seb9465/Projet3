@@ -75,13 +75,7 @@ class RegisterController: UIViewController {
         
         spinner = UIViewController.displaySpinner(onView: self.view);
         
-        registerUser(parameters: registrationViewModel.toJson())
-            .done { response in
-                
-            } .catch { (error) in
-                print(error);
-                self.present(self.buildOkAlert(), animated: true);
-            }
+        registerUser(parameters: registrationViewModel.toJson());
     }
     
     // MARK: Actions
@@ -216,31 +210,30 @@ class RegisterController: UIViewController {
         return errorMsg;
     }
     
-    private func registerUser(parameters: [String: String?]) -> Promise<[HttpResponseMessage]>{
-        return Promise {seal in
-            Alamofire.request(Constants.REGISTER_URL as URLConvertible, method: .post, parameters: parameters as Parameters, encoding: JSONEncoding.default).responseSwiftyJSON{ response in
-                UIViewController.removeSpinner(spinner: self.spinner);
-                self.hideErrorViews();
-                var errors: [HttpResponseMessage] = [];
-                
-                switch response.result {
-                case .failure(let error):
-                    seal.reject(error);
-                    break;
-                case .success:
-                    if (response.response?.statusCode == 400) {
-                        for err in response.value! {
-                            let messageJSON: String = err.1.rawString()!;
-                            let message: HttpResponseMessage = self.showError(messageJSON: messageJSON);
-                            errors.append(message);
-                        }
-                    }
-                    break;
+    private func registerUser(parameters: [String: String]) -> Void {
+        Alamofire.request(Constants.REGISTER_URL as URLConvertible, method: .post, parameters: parameters as Parameters, encoding: JSONEncoding.default).responseSwiftyJSON{ response in
+            UIViewController.removeSpinner(spinner: self.spinner);
+            self.hideErrorViews();
+            var errors: [HttpResponseMessage] = [];
+            
+            print(response.response?.statusCode as Any);
+            
+            switch response.response?.statusCode {
+            case 400:
+                for err in response.value! {
+                    let messageJSON: String = err.1.rawString()!;
+                    let message: HttpResponseMessage = self.showError(messageJSON: messageJSON);
+                    errors.append(message);
                 }
-                
-                seal.fulfill(errors);
-            };
-        }
+                break;
+            case 200:
+                self.present(self.buildOkAlert(), animated: true);
+                break;
+            default:
+                self.present(self.buildFailureAlert(), animated: true);
+                break;
+            }
+        };
     }
     
     private func showError(messageJSON: String) -> HttpResponseMessage {
@@ -277,8 +270,8 @@ class RegisterController: UIViewController {
         return alert;
     }
     
-    private func buildFailureAlert(errorMessage: String) -> UIAlertController {
-        let alert: UIAlertController = UIAlertController(title: "Something went wrong", message: errorMessage, preferredStyle: .alert);
+    private func buildFailureAlert() -> UIAlertController {
+        let alert: UIAlertController = UIAlertController(title: "Something went wrong", message: nil, preferredStyle: .alert);
         
         let okAction: UIAlertAction = UIAlertAction(title: "Damn, alright I'll try again.", style: .default, handler: nil);
         

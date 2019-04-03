@@ -27,6 +27,9 @@ class AddScreenViewController: UIViewController, UITableViewDelegate, UITableVie
         self.customCellRegistration();
         self.initRefreshControl();
         self.initChatServiceCommunication();
+        
+        self.cancelButton.tintColor = Constants.RED_COLOR;
+        self.saveButton.tintColor = Constants.RED_COLOR;
     }
     
     public func updateChannels() -> Void {
@@ -64,6 +67,13 @@ class AddScreenViewController: UIViewController, UITableViewDelegate, UITableVie
         // Going back to the ChatRoom.
         let storyboard = UIStoryboard(name: "Chat", bundle: nil);
         let view = storyboard.instantiateViewController(withIdentifier: "ChatRoomsView");
+        
+        let transition = CATransition();
+        transition.duration = 0.3;
+        transition.type = CATransitionType.reveal;
+        transition.subtype = CATransitionSubtype.fromBottom;
+        self.view.window!.layer.add(transition, forKey: kCATransition);
+        
         navigationController?.pushViewController(view, animated: false); // TODO: Adjust the animation transition.
     }
     
@@ -75,7 +85,14 @@ class AddScreenViewController: UIViewController, UITableViewDelegate, UITableVie
         // Back to the ChatRoom.
         let storyboard = UIStoryboard(name: "Chat", bundle: nil);
         let view = storyboard.instantiateViewController(withIdentifier: "ChatRoomsView");
-        navigationController?.pushViewController(view, animated: true);
+        
+        let transition = CATransition();
+        transition.duration = 0.3;
+        transition.type = CATransitionType.reveal;
+        transition.subtype = CATransitionSubtype.fromBottom;
+        self.view.window!.layer.add(transition, forKey: kCATransition);
+        
+        navigationController?.pushViewController(view, animated: false);
     }
     
     // MARK: Table View
@@ -108,8 +125,16 @@ class AddScreenViewController: UIViewController, UITableViewDelegate, UITableVie
         ChatService.shared.currentChannel = ChatService.shared.serverChannels.channels[indexPath.row];
         ChatService.shared.connectToGroup();
         ChatService.shared.currentChannel = nil;
+        
         let storyboard = UIStoryboard(name: "Chat", bundle: nil);
         let destination = storyboard.instantiateViewController(withIdentifier: "ChatRoomsView");
-        navigationController?.pushViewController(destination, animated: true);
+        
+        let transition = CATransition();
+        transition.duration = 0.3;
+        transition.type = CATransitionType.reveal;
+        transition.subtype = CATransitionSubtype.fromBottom;
+        self.view.window!.layer.add(transition, forKey: kCATransition);
+        
+        navigationController?.pushViewController(destination, animated: false);
     }
 }

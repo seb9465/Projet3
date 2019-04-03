@@ -17,15 +17,19 @@ class RegistrationViewModel {
     private var _email: String;
     private var _username: String;
     private var _password: String;
+    private var _isLoggedIn: Bool;
+    private var _isTutorialShown: Bool;
     
     // MARK: Constructor
     
-    init (firstName: String, lastName: String, email: String, username: String, password: String) {
+    init (firstName: String, lastName: String, email: String, username: String, password: String, isLoggedIn: Bool? = false, isTutorialShow: Bool? = false) {
         self._firstName = firstName;
         self._lastName = lastName;
         self._email = email;
         self._username = username;
         self._password = password;
+        self._isLoggedIn = isLoggedIn!;
+        self._isTutorialShown = isTutorialShow!;
     }
     
     // MARK: Getter - Setter
@@ -50,6 +54,14 @@ class RegistrationViewModel {
         get { return self._password }
     }
     
+    public var isLoggedIn: Bool {
+        get { return self._isLoggedIn }
+    }
+    
+    public var isTutorialShown: Bool {
+        get { return self._isTutorialShown }
+    }
+    
     // MARK: Public functions
     
     public func toJson() -> [String: String]{
@@ -59,6 +71,8 @@ class RegistrationViewModel {
             "username": self._username,
             "email": self._email,
             "password": self._password,
+            "isLoggedIn": self._isLoggedIn.description,
+            "isTutorialShown": self._isTutorialShown.description,
         ];
     }
 }
