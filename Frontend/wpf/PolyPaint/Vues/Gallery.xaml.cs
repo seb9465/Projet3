@@ -53,7 +53,7 @@ namespace PolyPaint.Vues
         public Gallery(List<SaveableCanvas> strokes, ChatClient chatClient)
         {
             InitializeComponent();
-            Canvas = ConvertStrokesToPNG(strokes);
+            Canvas = GetAvailableCanvas(strokes);
 
             DataContext = new UserDataContext(chatClient);
             
@@ -151,7 +151,7 @@ namespace PolyPaint.Vues
             }
         }
 
-        private List<SaveableCanvas> ConvertStrokesToPNG(List<SaveableCanvas> savedCanvas)
+        private List<SaveableCanvas> GetAvailableCanvas(List<SaveableCanvas> savedCanvas)
         {
             List<SaveableCanvas> canvas = new List<SaveableCanvas>();
             if (savedCanvas != null)

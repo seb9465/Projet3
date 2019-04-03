@@ -73,7 +73,7 @@ namespace PolyPaint.Vues
                     {
                         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", (string)Application.Current.Properties["token"]);
                         System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
-                        HttpResponseMessage response = await client.GetAsync($"{Config.URL}/api/user/canvas");
+                        HttpResponseMessage response = await client.GetAsync($"{Config.URL}/api/user/AllCanvas");
                         string responseString = await response.Content.ReadAsStringAsync();
                         strokes = JsonConvert.DeserializeObject<List<SaveableCanvas>>(responseString);
                     }
