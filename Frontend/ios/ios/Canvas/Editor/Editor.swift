@@ -131,14 +131,14 @@ class Editor {
         }
     }
     
-    public func insertFigure(drawViewModel: DrawViewModel) -> Void {
+    public func insertFigure(drawViewModel: DrawViewModel) -> Figure {
         let figure = FigureFactory.shared.fromDrawViewModel(drawViewModel: drawViewModel)!
         figure.delegate = self
         self.figures.append(figure)
         self.editorView.addSubview(figure)
         CanvasService.saveLocalCanvas(figures: self.figures)
 
-  //      self.resize(width: 100, heigth: 100)
+        return figure
     }
     
     public func insertFigure(position: CGPoint) -> Void {
@@ -573,7 +573,10 @@ extension Editor: CollaborationHubDelegate {
                 return
             }
 
-            self.insertFigure(drawViewModel: drawViewModel)
+            let figure = self.insertFigure(drawViewModel: drawViewModel)
+            if (drawViewModel.ItemType?.description == "connection") {
+                self.connectConnectionToFigures(drawViewModel: drawViewModel, connection: (figure as! ConnectionFigure))
+            }
         }
     }
     
@@ -582,6 +585,7 @@ extension Editor: CollaborationHubDelegate {
     }
 }
 
+// Logige de Select, Update de collaboration
 extension Editor {
     
     func isFigureSelected(figure: Figure) -> Bool {
@@ -602,7 +606,39 @@ extension Editor {
         oldFigure?.removeFromSuperview()
         let newFigure = FigureFactory.shared.fromDrawViewModel(drawViewModel: newDrawViewModel)!
         newFigure.delegate = self
+        
+        if (oldFigure is UmlFigure && newFigure is UmlFigure) {
+            (newFigure as! UmlFigure).outgoingConnections = (oldFigure as! UmlFigure).outgoingConnections
+            (newFigure as! UmlFigure).incomingConnections = (oldFigure as! UmlFigure).incomingConnections
+            (newFigure as! UmlFigure).updateConnections()
+        }
+        
         self.figures.append(newFigure)
         self.editorView.addSubview(newFigure)
+    }
+    
+    func connectConnectionToFigures(drawViewModel: DrawViewModel, connection: ConnectionFigure) {
+        for figure in self.figures {
+            if (figure is UmlFigure) {
+                for pair in (figure as! UmlFigure).anchorPoints!.anchorPointsSnapEdges {
+                    let detectionDiameter: CGFloat = 10
+                    let areaRect: CGRect = CGRect(
+                        x: pair.value.x - detectionDiameter/2,
+                        y: pair.value.y - detectionDiameter/2,
+                        width: detectionDiameter,
+                        height: detectionDiameter
+                    )
+                    if (areaRect.contains(drawViewModel.StylusPoints![0].getCGPoint())) {
+                        // Add outgoing Connection to figure
+                        (figure as! UmlFigure).addOutgoingConnection(connection: connection, anchor: pair.key)
+                    }
+ 
+                    if (areaRect.contains(drawViewModel.StylusPoints![1].getCGPoint())) {
+                        // Add incoming Connection to figure
+                        (figure as! UmlFigure).addIncomingConnection(connection: connection, anchor: pair.key)
+                    }
+                }
+            }
+        }
     }
 }
