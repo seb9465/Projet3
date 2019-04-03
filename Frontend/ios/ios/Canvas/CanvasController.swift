@@ -34,7 +34,7 @@ class CanvasController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
 
         CollaborationHub.shared = CollaborationHub(channelId: canvasId)
-        CollaborationHub.shared.connectToHub()
+        CollaborationHub.shared!.connectToHub()
         self.view.addSubview(self.editor.editorView)
         setupNetwork()
         
@@ -77,7 +77,7 @@ class CanvasController: UIViewController {
     }
     
     @IBAction func clearButton(_ sender: Any) {
-        CollaborationHub.shared.reset();
+        CollaborationHub.shared!.reset();
     }
     
     @IBAction func deleteButton(_ sender: Any) {
@@ -165,7 +165,7 @@ class CanvasController: UIViewController {
     @IBAction func quitButton(_ sender: Any) {
         let alert = UIAlertController(title: "Alert", message: "Would you like to quit ?", preferredStyle: .alert);
         let yesAction: UIAlertAction = UIAlertAction(title: "Yes", style: .default) { _ in
-            CollaborationHub.shared.invokeDisconnectFromChannel()
+            CollaborationHub.shared!.disconnectFromHub()
             let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil);
             let viewController: UIViewController = mainStoryboard.instantiateViewController(withIdentifier: "MainController");
             self.present(viewController, animated: true, completion: nil);
@@ -195,8 +195,6 @@ class CanvasController: UIViewController {
         if self.reach!.isReachableViaWiFi() || self.reach!.isReachableViaWWAN() {
             self.connectionLabel.text = "Online"
             self.connectionLabel.textColor = UIColor.green
-            CollaborationHub.shared = CollaborationHub(channelId: canvasId)
-            CollaborationHub.shared.connectToHub()
         } else {
             self.connectionLabel.text = "Offline"
             self.connectionLabel.textColor = UIColor.red

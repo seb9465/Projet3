@@ -42,6 +42,7 @@ class DashboardController: UIViewController, UITextFieldDelegate {
     @IBAction func createNewCanvas(_ sender: Any) {
         var newCanvas: Canvas = Canvas()
         newCanvas.canvasId = UUID().uuidString
+        canvasId = canvas.canvasId
         let createAlert = UIAlertController(title: "Create Canvas", message: "Please enter the new canvas name and it's visibility.", preferredStyle: .alert)
         createAlert.addTextField(configurationHandler: { (textField) in
             textField.placeholder = "Name"
@@ -92,9 +93,7 @@ class DashboardController: UIViewController, UITextFieldDelegate {
     
     public func saveNewCanvas(canvas: Canvas) {
         CanvasService.SaveOnline(canvas: canvas).done { (success) in
-            print("SUCCESS")
             let canvasController = UIStoryboard(name: "Canvas", bundle: nil).instantiateViewController(withIdentifier: "CanvasController") as! CanvasController
-            canvasId = canvas.canvasId
             self.present(canvasController, animated: true, completion: nil);
         }
     }

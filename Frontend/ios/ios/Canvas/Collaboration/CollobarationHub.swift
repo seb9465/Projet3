@@ -18,13 +18,15 @@ protocol CollaborationHubDelegate {
 
 class CollaborationHub {
     // Singleton
-    static var shared = CollaborationHub(channelId: "")
+    static var shared: CollaborationHub?
     var delegate: CollaborationHubDelegate?
-    var hubConnection: HubConnection;
+    var channelId: String
+    var hubConnection: HubConnection?;
     var _members: Members;
     
     
     init(channelId: String) {
+        self.channelId = channelId
         self.hubConnection = HubConnectionBuilder(url: URL(string: Constants.COLLABORATION_URL + "?ChannelId=" + channelId)!)
             .withHttpConnectionOptions() { (httpConnectionOptions) in
                 httpConnectionOptions.accessTokenProvider = {
@@ -48,25 +50,23 @@ class CollaborationHub {
     
     public func connectToHub() -> Void {
         print("[ Collab ] Connecting to hub")
-        self.hubConnection.start()
+        self.hubConnection!.start()
     }
     public func disconnectFromHub() -> Void {
-        self.hubConnection.stop();
-        print("[ COLLAB ] Connection stopped");
+        self.hubConnection!.stop();
+        self.hubConnection = nil
+        print("[ Collab ] Disconnecting from hub")
     }
     
-    
     public func onClientIsConnected() -> Void {
-        self.hubConnection.on(method: "ClientIsConnected", callback: { (args, typeConverter) in
+        self.hubConnection!.on(method: "ClientIsConnected", callback: { (args, typeConverter) in
             print("[ Collab ] On ClientIsConnected")
-            //            self.fetchChannels()
-            //            self.connectToChannel()
         })
     }
     
     public func connectToChannel() -> Void {
         print("[ Collab ] Invoked ConnectToChannel");
-        self.hubConnection.invoke(method: "ConnectToChannel", arguments: [], invocationDidComplete: { (error) in
+        self.hubConnection!.invoke(method: "ConnectToChannel", arguments: [], invocationDidComplete: { (error) in
             if (error != nil) {
                 print("ERROR while invoking ConnectToChannel.");
                 print(error!);
@@ -75,33 +75,8 @@ class CollaborationHub {
         });
     }
     
-    public func invokeDisconnectFromChannel() -> Void {
-        self.hubConnection.invoke(method: "DisconnectFromChannel", arguments: [], invocationDidComplete: { error in
-            print("[ Collab ] Invoked DisconnectFromChannel.");
-            if let e = error {
-                print("[ collab ] Error Invoking DisconnectFromChannel.");
-                print(e);
-            }
-        });
-    }
-    
-    private func onUserDisconnectFromChannel() -> Void {
-        self.hubConnection.on(method: "DisconnectFromChannel", callback: { args, typeConverter in
-            print("[ COLLAB ] On DisconnectFromChannel");
-            
-            let json: String = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self)!;
-            if let jsonData = json.data(using: .utf8) {
-                let obj: ConnectionMessage = try! JSONDecoder().decode(ConnectionMessage.self, from: jsonData);
-                if (self._members.isAlreadyInArray(memberName: obj.username)) {
-                    self._members.removeFromArray(member: self._members.getMemberByName(memberName: obj.username));
-                }
-            }
-        });
-    }
-    
-    
     public func onConnectToChannel() -> Void {
-        self.hubConnection.on(method: "ConnectToChannel", callback: { args, typeConverter in
+        self.hubConnection!.on(method: "ConnectToChannel", callback: { args, typeConverter in
             print("[ Collab ] On ConnectToChannel");
             
             let json: String = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self)!;
@@ -124,7 +99,7 @@ class CollaborationHub {
         }
         
         let itemMessage = ItemMessage(
-            CanvasId: canvasId,
+            CanvasId: self.channelId,
             Username: username!,
             Items: viewModels
         )
@@ -133,7 +108,7 @@ class CollaborationHub {
         let jsonData = try! jsonEncoder.encode(itemMessage)
         let jsonString = String(data: jsonData, encoding: .utf8)
 
-        self.hubConnection.invoke(method: "Draw", arguments: [jsonString], invocationDidComplete: { (Error) in
+        self.hubConnection!.invoke(method: "Draw", arguments: [jsonString], invocationDidComplete: { (Error) in
             if (Error != nil) {
                 print("Error calling draw", Error!)
                 return
@@ -146,7 +121,7 @@ class CollaborationHub {
         let jwt = try! decode(jwt: token!)
         let username = jwt.claim(name: "unique_name").string
         let itemMessage = ItemMessage(
-            CanvasId: canvasId,
+            CanvasId: self.channelId,
             Username: username!,
             Items: drawViewModels
             )
@@ -155,7 +130,7 @@ class CollaborationHub {
         let jsonData = try! jsonEncoder.encode(itemMessage)
         let jsonString = String(data: jsonData, encoding: .utf8)
         
-        self.hubConnection.invoke(method: "Select", arguments: [jsonString], invocationDidComplete: { (Error) in
+        self.hubConnection!.invoke(method: "Select", arguments: [jsonString], invocationDidComplete: { (Error) in
             if (Error != nil) {
                 print("Error calling select", Error!)
                 return
@@ -165,7 +140,7 @@ class CollaborationHub {
     
     // Receive a figure from the collaboratibve Hub
     public func onDraw() -> Void {
-        self.hubConnection.on(method: "Draw", callback: { (args, typeConverter) in
+        self.hubConnection!.on(method: "Draw", callback: { (args, typeConverter) in
             print("[ Collab ] Received new figure")
 
             let jsonString: String = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self)!;
@@ -177,7 +152,7 @@ class CollaborationHub {
     }
     
     public func onSelect() -> Void {
-        self.hubConnection.on(method: "Select", callback: { (args, typeConverter) in
+        self.hubConnection!.on(method: "Select", callback: { (args, typeConverter) in
             print("[ Collab ] Received SELECT action")
             
             let jsonString: String = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self)!;
@@ -189,14 +164,14 @@ class CollaborationHub {
     }
     
     public func onReset() -> Void {
-        self.hubConnection.on(method: "Reset", callback:{ args, typeConverter in
+        self.hubConnection!.on(method: "Reset", callback:{ args, typeConverter in
             print("[ Collab ] Received clear instruction")
             self.delegate!.updateClear();
         })
     }
     
     public func reset() -> Void {
-        self.hubConnection.invoke(method: "Reset", arguments: [], invocationDidComplete: { (Error) in
+        self.hubConnection!.invoke(method: "Reset", arguments: [], invocationDidComplete: { (Error) in
             if (Error != nil) {
                 print("Error calling Reset", Error!)
                 return

@@ -42,7 +42,7 @@ extension GalleryController: UICollectionViewDelegate, UICollectionViewDataSourc
         cell.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tap(_:))))
         cell.visibility = canvas[indexPath.row].canvasVisibility
         cell.password = canvas[indexPath.row].canvasProtection
-
+        cell.canvasId = canvas[indexPath.row].canvasId
         cell.nameLabel.text = canvas[indexPath.row].name
         cell.setImageFromBytes(bytesString: canvas[indexPath.row].image)
         return cell
@@ -55,6 +55,7 @@ extension GalleryController: UICollectionViewDelegate, UICollectionViewDataSourc
         
         if let index = indexPath {
             let cell = (self.collectionView.cellForItem(at: index) as! GalleryCell)
+            canvasId = cell.canvasId
             var enteredPassword = ""
 
             if(cell.password != "") {
@@ -69,7 +70,6 @@ extension GalleryController: UICollectionViewDelegate, UICollectionViewDataSourc
                     if(cell.password == enteredPassword) {
                         print("good password")
                         let canvasController = UIStoryboard(name: "Canvas", bundle: nil).instantiateViewController(withIdentifier: "CanvasController") as! CanvasController
-                        canvasId = cell.nameLabel.text!
                         self.present(canvasController, animated: true, completion: nil);
                     } else {
                          let wrongPasswordAlert = UIAlertController(title: "Wrong password", message: "You have entered a wrong password.", preferredStyle: .alert)
@@ -80,7 +80,6 @@ extension GalleryController: UICollectionViewDelegate, UICollectionViewDataSourc
             self.present(passwordAlert, animated: true, completion: nil)
             } else {
                 let canvasController = UIStoryboard(name: "Canvas", bundle: nil).instantiateViewController(withIdentifier: "CanvasController") as! CanvasController
-                        canvasId = cell.nameLabel.text!
 
                 self.present(canvasController, animated: true, completion: nil);      }
         }

@@ -14,6 +14,7 @@ class GalleryCell: UICollectionViewCell {
     @IBOutlet weak var nameLabel: UILabel!
     public var visibility: String = ""
     public var password: String = ""
+    public var canvasId: String = ""
     override func awakeFromNib() {
         super.awakeFromNib()
         self.layer.cornerRadius = 5;
