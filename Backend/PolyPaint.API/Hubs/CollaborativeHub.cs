@@ -85,5 +85,16 @@ namespace PolyPaint.API.Hubs
                 }
             }
         }
+
+        public override async Task OnConnectedAsync()
+        {
+            var user = await GetUserFromToken(Context.User);
+            if (user != null)
+            {
+                var channelId = (string)Context.GetHttpContext().Request.Query["channelId"];
+                await base.OnConnectedAsync();
+                await ConnectToChannel((new ConnectionMessage(channelId: channelId)).ToString());
+            }
+        }
     }
 }
