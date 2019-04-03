@@ -15,6 +15,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -127,8 +128,11 @@ namespace PolyPaint
 
         private async void SupprimerSelection(object sender, RoutedEventArgs e)
         {
-            await (DataContext as VueModele).CollaborationClient.CollaborativeDeleteAsync();
+            List<DrawViewModel> strokes = rebuilder.GetDrawViewModelsFromStrokes(surfaceDessin.GetSelectedStrokes());
             surfaceDessin.CutSelection();
+            (DataContext as VueModele).CollaborationClient.CollaborativeSelectAsync(new List<DrawViewModel>());
+            (DataContext as VueModele).CollaborationClient.CollaborativeDeleteAsync(strokes);
+            SendToCloud();
 
         }
         private void SaveImage(object sender, EventArgs e)
@@ -455,7 +459,9 @@ namespace PolyPaint
         }
         private async void Reinitialiser_Click(object sender, RoutedEventArgs e)
         {
-            await (DataContext as VueModele).CollaborationClient.CollaborativeResetAsync();
+            (DataContext as VueModele).Reinitialiser.Execute(null);
+            (DataContext as VueModele).CollaborationClient.CollaborativeSelectAsync(new List<DrawViewModel>());
+            (DataContext as VueModele).CollaborationClient.CollaborativeResetAsync();
             SendToCloud();
         }
 
@@ -492,7 +498,8 @@ namespace PolyPaint
         {
             Dispatcher.Invoke(() =>
             {
-                surfaceDessin.CutSelection();
+                var message = JsonConvert.DeserializeObject<ItemsMessage>(args.Message);
+                surfaceDessin.Strokes.Remove(new StrokeCollection(surfaceDessin.Strokes.Where(x => message.Items.Any(y => y.Guid == (x as AbstractStroke).Guid.ToString()))));
             });
         }
 
@@ -500,8 +507,7 @@ namespace PolyPaint
         {
             Dispatcher.Invoke(() =>
             {
-                reinitialiser.Command = (DataContext as VueModele).Reinitialiser;
-                reinitialiser.Command.Execute(reinitialiser.CommandParameter);
+                (DataContext as VueModele).Reinitialiser.Execute(null);
             });
         }
 
