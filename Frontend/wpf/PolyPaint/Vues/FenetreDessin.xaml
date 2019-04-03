@@ -32,17 +32,17 @@
              Width="120" Height="40"  Background="Gainsboro"  HorizontalAlignment="Left" BorderBrush="Gray" Margin="0,0,10,0" >
                 <StackPanel Orientation="Horizontal">
                     <materialDesign:PackIcon Kind="ArrowBack" Height="24" Width="24"/>
-                    <Label FontWeight="Bold">Gallerie</Label>
+                    <Label FontWeight="Bold">Gallery</Label>
                 </StackPanel>
             </Button>
             <Button Style="{StaticResource MaterialDesignRaisedLightButton}" Click="ResizeCanva_Click"
-             Width="220" Height="40" HorizontalAlignment="Right" Background="Gainsboro" BorderBrush="Gray" Margin="0,0,0,0" >
-                <Label FontWeight="Bold">Redimensionner le canevas</Label>
+             Width="140" Height="40" HorizontalAlignment="Right" Background="Gainsboro" BorderBrush="Gray" Margin="0,0,0,0" >
+                <Label FontWeight="Bold">Resize Canvas</Label>
             </Button>
             <Button Style="{StaticResource MaterialDesignRaisedLightButton}" Click="Disconnect_Click"
-             Width="150" Height="40" HorizontalAlignment="Right" Background="Gainsboro" BorderBrush="Gray" Margin="0,0,0,0" >
+             Width="140" Height="40" HorizontalAlignment="Right" Background="Gainsboro" BorderBrush="Gray" Margin="0,0,0,0" >
                 <StackPanel Orientation="Horizontal">
-                    <Label FontWeight="Bold">Déconnecter</Label>
+                    <Label FontWeight="Bold">Disconnect</Label>
                     <materialDesign:PackIcon Kind="LanDisconnect" Height="24" Width="24"/>
                 </StackPanel>
             </Button>
@@ -61,30 +61,30 @@
                         </LinearGradientBrush>
                     </StackPanel.Background>
                     <Button Name="load" Click="LoadImage"
-                    Style="{StaticResource MaterialDesignFloatingActionMiniButton}" HorizontalAlignment="Left" Margin="10" ToolTip="Charger un canevas">
+                    Style="{StaticResource MaterialDesignFloatingActionMiniButton}" HorizontalAlignment="Left" Margin="10" ToolTip="Load a canvas">
                         <materialDesign:PackIcon Kind="FileUploadOutline" Height="24" Width="24"/>
                     </Button>
-                    <Button  Style="{StaticResource MaterialDesignRaisedButton}" ToolTip="Ajouter une image au canevas" 
+                    <Button  Style="{StaticResource MaterialDesignRaisedButton}" ToolTip="Add a picture to canvas" 
                     x:Name="AddImage" Width="30" Height="30" Margin="5" Padding="0" Click="AddImageToCanvas" FontSize="18">
                         <materialDesign:PackIcon Kind="FileImage" />
                     </Button>
 
-                    <Button  Style="{StaticResource MaterialDesignRaisedButton}" ToolTip="Télécharger le canevas en image PNG." 
+                    <Button  Style="{StaticResource MaterialDesignRaisedButton}" ToolTip="Download canvas as PNG" 
                     x:Name="DownloadJPG" Width="30" Height="30" Margin="5" Padding="0" Click="DownloadCanvasAsJPG" FontSize="18">
                         <materialDesign:PackIcon Kind="FileDownload" />
                     </Button>
 
-                    <Button  Style="{StaticResource MaterialDesignRaisedButton}" ToolTip="Réinitialiser le canevas" 
+                    <Button  Style="{StaticResource MaterialDesignRaisedButton}" ToolTip="Reinitialize canvas" 
                     x:Name="reinitialiser" Width="30" Height="30" Margin="5" Padding="0" Click="Reinitialiser_Click" FontSize="18">
                         <materialDesign:PackIcon Kind="Recycle" />
                     </Button>
 
-                    <Button Style="{StaticResource MaterialDesignRaisedButton}" ToolTip="Annuler la dernière action" 
+                    <Button Style="{StaticResource MaterialDesignRaisedButton}" ToolTip="Undo" 
                         x:Name="empiler" Width="30" Height="30" Margin="5" Padding="0"  Command="{Binding Empiler}" FontSize="18">
                         <materialDesign:PackIcon Kind="UndoVariant" />
                     </Button>
                     <Button x:Name="depiler" Width="30" Height="30" Margin="5" Padding="0" Command="{Binding Depiler}" FontSize="18">
-                        <materialDesign:PackIcon Kind="RedoVariant" ToolTip="Refaire la dernière action" />
+                        <materialDesign:PackIcon Kind="RedoVariant" ToolTip="Redo" />
                     </Button>
 
                     <StackPanel Orientation="Horizontal">
@@ -93,19 +93,19 @@
                     <StackPanel Orientation="Vertical"  VerticalAlignment="Bottom" Margin="0,-2">
 
                         <Button Name="Copier" Click="DupliquerSelection"
-                        Style="{StaticResource MaterialDesignRaisedLightButton}" HorizontalAlignment="Left" ToolTip="Dupliquer la sélection" 
+                        Style="{StaticResource MaterialDesignRaisedLightButton}" HorizontalAlignment="Left" ToolTip="Duplicate selection" 
                         Background="Transparent" BorderBrush="Transparent">
                             <materialDesign:PackIcon Kind="ContentCopy" Height="17" Width="17" />
                         </Button>
                         <Button Name="Couper" Click="SupprimerSelection"
-                    Style="{StaticResource MaterialDesignRaisedLightButton}" HorizontalAlignment="Left" ToolTip="Couper la sélection"
+                    Style="{StaticResource MaterialDesignRaisedLightButton}" HorizontalAlignment="Left" ToolTip="Cut selection"
                         Background="Transparent" BorderBrush="Transparent">
                             <materialDesign:PackIcon Kind="ContentCut" Height="17" Width="17" />
                         </Button>
 
                     </StackPanel>
                     <Button Name="lasso"
-                        Style="{StaticResource MaterialDesignRaisedLightButton}" HorizontalAlignment="Left" ToolTip="Sélection Lasso" 
+                        Style="{StaticResource MaterialDesignRaisedLightButton}" HorizontalAlignment="Left" ToolTip="Lasso selection" 
                         BorderBrush="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurBordure}, ConverterParameter=lasso, UpdateSourceTrigger=PropertyChanged}" 
                             Background="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurCouleurFond}, ConverterParameter=lasso, UpdateSourceTrigger=PropertyChanged}" 
                             Command="{Binding Path=ChoisirOutil}"
@@ -115,7 +115,7 @@
                         </StackPanel>
                     </Button>
                     <Button Name="select"
-                        Style="{StaticResource MaterialDesignRaisedLightButton}" HorizontalAlignment="Left" ToolTip="Sélection" 
+                        Style="{StaticResource MaterialDesignRaisedLightButton}" HorizontalAlignment="Left" ToolTip="Select" 
                         BorderBrush="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurBordure}, ConverterParameter=select, UpdateSourceTrigger=PropertyChanged}" 
                             Background="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurCouleurFond}, ConverterParameter=select, UpdateSourceTrigger=PropertyChanged}" 
                             Command="{Binding Path=ChoisirOutil}"
@@ -125,7 +125,7 @@
                         </StackPanel>
                     </Button>
                     <Button Name="change_text"
-                        Style="{StaticResource MaterialDesignRaisedLightButton}" HorizontalAlignment="Left" ToolTip="Modifier le texte d'un objet" 
+                        Style="{StaticResource MaterialDesignRaisedLightButton}" HorizontalAlignment="Left" ToolTip="Change element's text" 
                         BorderBrush="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurBordure}, ConverterParameter=change_text, UpdateSourceTrigger=PropertyChanged}" 
                             Background="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurCouleurFond}, ConverterParameter=change_text, UpdateSourceTrigger=PropertyChanged}" 
                             Command="{Binding Path=ChoisirOutil}"
@@ -148,7 +148,7 @@
                         </StackPanel>
                     </Button>
                     <Button Name="activity"
-                        Style="{StaticResource MaterialDesignRaisedLightButton}" HorizontalAlignment="Left" ToolTip="Activité" 
+                        Style="{StaticResource MaterialDesignRaisedLightButton}" HorizontalAlignment="Left" ToolTip="Activity" 
                         BorderBrush="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurBordure}, ConverterParameter=activity, UpdateSourceTrigger=PropertyChanged}" 
                         Background="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurCouleurFond}, ConverterParameter=activity, UpdateSourceTrigger=PropertyChanged}" 
                         Command="{Binding Path=ChoisirOutil}"
@@ -158,7 +158,7 @@
                         </StackPanel>
                     </Button>
                     <Button Name="artefact"
-                        Style="{StaticResource MaterialDesignRaisedLightButton}" HorizontalAlignment="Left" ToolTip="Artéfact" 
+                        Style="{StaticResource MaterialDesignRaisedLightButton}" HorizontalAlignment="Left" ToolTip="Artefact" 
                         BorderBrush="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurBordure}, ConverterParameter=artefact, UpdateSourceTrigger=PropertyChanged}" 
                         Background="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurCouleurFond}, ConverterParameter=artefact, UpdateSourceTrigger=PropertyChanged}" 
                         Command="{Binding Path=ChoisirOutil}"
@@ -188,7 +188,7 @@
                         </StackPanel>
                     </Button>
                     <Button Name="uml_class"
-                        Style="{StaticResource MaterialDesignRaisedLightButton}" HorizontalAlignment="Left" ToolTip="Classe UML" 
+                        Style="{StaticResource MaterialDesignRaisedLightButton}" HorizontalAlignment="Left" ToolTip="UML class" 
                         BorderBrush="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurBordure}, ConverterParameter=uml_class, UpdateSourceTrigger=PropertyChanged}" 
                         Background="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurCouleurFond}, ConverterParameter=uml_class, UpdateSourceTrigger=PropertyChanged}" 
                         Command="{Binding Path=ChoisirOutil}"
@@ -198,7 +198,7 @@
                         </StackPanel>
                     </Button>
                     <Button Name="text"
-                        Style="{StaticResource MaterialDesignRaisedLightButton}" HorizontalAlignment="Left" ToolTip="Texte" 
+                        Style="{StaticResource MaterialDesignRaisedLightButton}" HorizontalAlignment="Left" ToolTip="Text" 
                         BorderBrush="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurBordure}, ConverterParameter=text, UpdateSourceTrigger=PropertyChanged}" 
                         Background="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurCouleurFond}, ConverterParameter=text, UpdateSourceTrigger=PropertyChanged}" 
                         Command="{Binding Path=ChoisirOutil}"
