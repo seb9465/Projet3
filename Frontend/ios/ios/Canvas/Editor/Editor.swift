@@ -78,9 +78,10 @@ class Editor {
         
         var selectionOutlines: [SelectionOutline] = []
         for figure in figuresToSelect {
+            let frame = figure.getSelectionFrame()
             let outline = SelectionOutline(
-                firstPoint: figure.frame.origin,
-                lastPoint: CGPoint(x: figure.frame.maxX, y: figure.frame.maxY),
+                firstPoint: frame.origin,
+                lastPoint: CGPoint(x: frame.maxX, y: frame.maxY),
                 associatedFigureID: figure.uuid
             )
             outline.addUsernameSelecting(username: username)
