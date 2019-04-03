@@ -563,10 +563,9 @@ extension Editor: CollaborationHubDelegate {
     }
     
     func updateCanvas(itemMessage: ItemMessage) {
-        print(itemMessage.Items)
+//        print(itemMessage.Items)
         for drawViewModel in itemMessage.Items {
             if (self.figures.contains(where: {$0.uuid.uuidString.lowercased() == drawViewModel.Guid})) {
-                print("Figure overritten")
                 self.overriteFigure(figureId: drawViewModel.Guid!, newDrawViewModel: drawViewModel, username: itemMessage.Username)
                 self.deselect(username: itemMessage.Username)
                 self.select(drawViewModels: itemMessage.Items, username: itemMessage.Username)
@@ -574,7 +573,8 @@ extension Editor: CollaborationHubDelegate {
             }
 
             let figure = self.insertFigure(drawViewModel: drawViewModel)
-            if (drawViewModel.ItemType?.description == "connection") {
+            if (drawViewModel.ItemType?.description == "Connection") {
+                print("Connecting to other figures")
                 self.connectConnectionToFigures(drawViewModel: drawViewModel, connection: (figure as! ConnectionFigure))
             }
         }
@@ -606,15 +606,15 @@ extension Editor {
         oldFigure?.removeFromSuperview()
         let newFigure = FigureFactory.shared.fromDrawViewModel(drawViewModel: newDrawViewModel)!
         newFigure.delegate = self
+        self.figures.append(newFigure)
+        self.editorView.addSubview(newFigure)
         
         if (oldFigure is UmlFigure && newFigure is UmlFigure) {
+            print("Updating received Figure connections")
             (newFigure as! UmlFigure).outgoingConnections = (oldFigure as! UmlFigure).outgoingConnections
             (newFigure as! UmlFigure).incomingConnections = (oldFigure as! UmlFigure).incomingConnections
             (newFigure as! UmlFigure).updateConnections()
         }
-        
-        self.figures.append(newFigure)
-        self.editorView.addSubview(newFigure)
     }
     
     func connectConnectionToFigures(drawViewModel: DrawViewModel, connection: ConnectionFigure) {
@@ -622,12 +622,14 @@ extension Editor {
             if (figure is UmlFigure) {
                 for pair in (figure as! UmlFigure).anchorPoints!.anchorPointsSnapEdges {
                     let detectionDiameter: CGFloat = 10
+                    let globalPoint: CGPoint = figure.convert(pair.value, to: self.editorView)
                     let areaRect: CGRect = CGRect(
-                        x: pair.value.x - detectionDiameter/2,
-                        y: pair.value.y - detectionDiameter/2,
+                        x: globalPoint.x - detectionDiameter/2,
+                        y: globalPoint.y - detectionDiameter/2,
                         width: detectionDiameter,
                         height: detectionDiameter
                     )
+                    
                     if (areaRect.contains(drawViewModel.StylusPoints![0].getCGPoint())) {
                         // Add outgoing Connection to figure
                         (figure as! UmlFigure).addOutgoingConnection(connection: connection, anchor: pair.key)
