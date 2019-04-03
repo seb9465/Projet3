@@ -58,10 +58,10 @@ class RegisterController: UIViewController {
         
         self.hideErrorViews();
         
-        self.registerButton.isUserInteractionEnabled = false;
-        self.registerButton.alpha = 0.5;
+//        self.registerButton.isUserInteractionEnabled = false;
+//        self.registerButton.alpha = 0.5;
         
-        self.setupAddTargetWithoutErrorsTextFields();
+//        self.setupAddTargetWithoutErrorsTextFields();
         
         super.viewDidLoad();
     }
@@ -72,17 +72,10 @@ class RegisterController: UIViewController {
         self.view.endEditing(true);
         
 //        let registrationViewModel: RegistrationViewModel = RegistrationViewModel(firstName: self.firstNameField.text!, lastName: self.lastNameField.text!, email: self.emailField.text!, username: self.usernameField.text!, password: self.passwordField.text!);
-        let registrationViewModel: RegistrationViewModel = RegistrationViewModel(firstName: "seb", lastName: "cado", email: "seb.cado2@poly.ca", username: "seb.cado2", password: "!12345Aa");
+        let registrationViewModel: RegistrationViewModel = RegistrationViewModel(firstName: "sebb", lastName: "cadoo", email: "seb.cado22@poly.ca", username: "seb.cado22", password: "!12345Aa");
         spinner = UIViewController.displaySpinner(onView: self.view);
         
-        registerUser(parameters: registrationViewModel.toJson())
-            .done { response in
-                
-            } .catch { error in
-                print("ERRORS");
-                print(error);
-                self.present(self.buildOkAlert(), animated: true);
-            }
+        registerUser(parameters: registrationViewModel.toJson());
     }
     
     // MARK: Actions
@@ -217,33 +210,30 @@ class RegisterController: UIViewController {
         return errorMsg;
     }
     
-    private func registerUser(parameters: [String: String]) -> Promise<Any>{
-        return Promise {seal in
-            Alamofire.request(Constants.REGISTER_URL as URLConvertible, method: .post, parameters: parameters as Parameters, encoding: JSONEncoding.default).responseSwiftyJSON{ response in
-                UIViewController.removeSpinner(spinner: self.spinner);
-                self.hideErrorViews();
-                var errors: [HttpResponseMessage] = [];
-                
-                print(response.response?.statusCode);
-                
-                switch response.response?.statusCode {
-                case 400:
-                    for err in response.value! {
-                        let messageJSON: String = err.1.rawString()!;
-                        let message: HttpResponseMessage = self.showError(messageJSON: messageJSON);
-                        errors.append(message);
-                    }
-                    seal.resolve(errors, nil);
-                    break;
-                case 200:
-                    seal.fulfill(response);
-                    break;
-                default:
-                    break;
+    private func registerUser(parameters: [String: String]) -> Void {
+        Alamofire.request(Constants.REGISTER_URL as URLConvertible, method: .post, parameters: parameters as Parameters, encoding: JSONEncoding.default).responseSwiftyJSON{ response in
+            UIViewController.removeSpinner(spinner: self.spinner);
+            self.hideErrorViews();
+            var errors: [HttpResponseMessage] = [];
+            
+            print(response.response?.statusCode as Any);
+            
+            switch response.response?.statusCode {
+            case 400:
+                for err in response.value! {
+                    let messageJSON: String = err.1.rawString()!;
+                    let message: HttpResponseMessage = self.showError(messageJSON: messageJSON);
+                    errors.append(message);
                 }
-                
-            };
-        }
+                break;
+            case 200:
+                self.present(self.buildOkAlert(), animated: true);
+                break;
+            default:
+                self.present(self.buildFailureAlert(), animated: true);
+                break;
+            }
+        };
     }
     
     private func showError(messageJSON: String) -> HttpResponseMessage {
@@ -280,8 +270,8 @@ class RegisterController: UIViewController {
         return alert;
     }
     
-    private func buildFailureAlert(errorMessage: String) -> UIAlertController {
-        let alert: UIAlertController = UIAlertController(title: "Something went wrong", message: errorMessage, preferredStyle: .alert);
+    private func buildFailureAlert() -> UIAlertController {
+        let alert: UIAlertController = UIAlertController(title: "Something went wrong", message: nil, preferredStyle: .alert);
         
         let okAction: UIAlertAction = UIAlertAction(title: "Damn, alright I'll try again.", style: .default, handler: nil);
         
