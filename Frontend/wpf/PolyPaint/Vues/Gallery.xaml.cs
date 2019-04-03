@@ -53,7 +53,7 @@ namespace PolyPaint.Vues
         public Gallery(List<SaveableCanvas> strokes, ChatClient chatClient)
         {
             InitializeComponent();
-            Canvas = ConvertStrokesToPNG(strokes);
+            Canvas = GetAvailableCanvas(strokes);
 
             DataContext = new UserDataContext(chatClient);
             
@@ -151,7 +151,7 @@ namespace PolyPaint.Vues
             }
         }
 
-        private List<SaveableCanvas> ConvertStrokesToPNG(List<SaveableCanvas> savedCanvas)
+        private List<SaveableCanvas> GetAvailableCanvas(List<SaveableCanvas> savedCanvas)
         {
             List<SaveableCanvas> canvas = new List<SaveableCanvas>();
             if (savedCanvas != null)
@@ -185,7 +185,7 @@ namespace PolyPaint.Vues
                 imageProtection = new ImageProtection();
                 if (imageProtection.PasswordEntered == SelectedCanvas.CanvasProtection)
                 {
-                    FenetreDessin fenetreDessin = new FenetreDessin(drawViewModels, (DataContext as UserDataContext).ChatClient)
+                    FenetreDessin fenetreDessin = new FenetreDessin(drawViewModels, (DataContext as UserDataContext).ChatClient, SelectedCanvas.Name)
                     {
                         canvasAutor = SelectedCanvas.CanvasAutor,
                         canvasName = SelectedCanvas.Name,
@@ -204,7 +204,7 @@ namespace PolyPaint.Vues
             }
             else
             {
-                FenetreDessin fenetreDessin = new FenetreDessin(drawViewModels, (DataContext as UserDataContext).ChatClient)
+                FenetreDessin fenetreDessin = new FenetreDessin(drawViewModels, (DataContext as UserDataContext).ChatClient, SelectedCanvas.Name)
                 {
                     canvasAutor = SelectedCanvas.CanvasAutor,
                     canvasName = SelectedCanvas.Name,
