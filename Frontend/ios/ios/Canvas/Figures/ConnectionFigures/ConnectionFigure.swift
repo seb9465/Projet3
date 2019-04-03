@@ -30,6 +30,24 @@ class ConnectionFigure : Figure {
         self.initializeAnchors()
     }
     
+    init(drawViewModel: DrawViewModel) {
+        let firstPoint: CGPoint = drawViewModel.StylusPoints![0].getCGPoint()
+        let lastPoint: CGPoint = drawViewModel.StylusPoints![1].getCGPoint()
+        let frameSize = CGSize(width: abs(firstPoint.x - lastPoint.x), height: abs(firstPoint.y - lastPoint.y))
+        let frame = CGRect(origin: firstPoint, size: frameSize)
+        super.init(frame: frame)
+        self.firstPoint = firstPoint
+        self.lastPoint = lastPoint
+        self.uuid = UUID(uuidString: drawViewModel.Guid!)
+        self.itemType = drawViewModel.ItemType!
+        self.lineColor = drawViewModel.BorderColor?.getUIColor()
+        self.lineWidth = CGFloat(drawViewModel.BorderThickness!)
+        self.backgroundColor = UIColor.clear
+        self.initializePoints(origin: firstPoint, destination: lastPoint)
+        self.points.updateValue(drawViewModel.LastElbowPosition!.getCGPoint(), forKey: .ELBOW)
+        self.initializeAnchors()
+    }
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -80,6 +98,32 @@ class ConnectionFigure : Figure {
             }
         }
         return false
+    }
+    
+    override func exportViewModel() -> DrawViewModel? {
+        let point1 = PolyPaintStylusPoint(point: self.points[.ORIGIN]!)
+        let point2 = PolyPaintStylusPoint(point: self.points[.DESTINATION]!)
+        
+        var drawViewModel: DrawViewModel = DrawViewModel()
+        drawViewModel.Guid = self.uuid.uuidString.lowercased()
+        drawViewModel.Owner = UserDefaults.standard.string(forKey: "username")
+        drawViewModel.ItemType = ItemTypeEnum.UmlClass
+        drawViewModel.StylusPoints = [point1, point2]
+        drawViewModel.FillColor = nil
+        drawViewModel.BorderColor = PolyPaintColor(color: self.lineColor)
+        drawViewModel.BorderThickness = Double(self.lineWidth)
+        drawViewModel.BorderStyle = (self.isBorderDashed) ? "dash" : "solid"
+        drawViewModel.ShapeTitle = self.name
+        drawViewModel.Methods = nil
+        drawViewModel.Properties = nil
+        drawViewModel.SourceTitle = nil
+        drawViewModel.DestinationTitle = nil
+        drawViewModel.ChannelId = "general"
+        drawViewModel.OutilSelectionne = nil
+        drawViewModel.LastElbowPosition = PolyPaintStylusPoint(point: self.points[.ELBOW]!)
+        drawViewModel.ImageBytes = nil
+        drawViewModel.Rotation = nil
+        return drawViewModel
     }
 }
 

@@ -87,6 +87,12 @@ struct PolyPaintStylusPoint: Codable {
         self.PressureFactor = PressureFactor
     }
     
+    init(point: CGPoint) {
+        self.X = Double(point.x)
+        self.Y = Double(point.y)
+        self.PressureFactor = 1
+    }
+    
     func getCGPoint() -> CGPoint {
         return CGPoint(x: self.X, y: self.Y)
     }
