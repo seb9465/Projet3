@@ -253,7 +253,7 @@ extension Editor: SideToolbarDelegate {
     
     func setSelectedFigureFillColor(color: UIColor) {
         for figure in self.selectedFigures {
-            (figure as! UmlFigure).setFillColor(fillColor: color)
+            figure.setFillColor(fillColor: color)
         }
         CollaborationHub.shared.postNewFigure(figures: self.selectedFigures)
     }

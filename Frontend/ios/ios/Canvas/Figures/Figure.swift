@@ -16,7 +16,7 @@ class Figure: UIView {
     var uuid: UUID!
     var name: String = "name"
     var isBorderDashed: Bool = false
-    var fillColor: UIColor! = UIColor.clear
+    var figureColor: UIColor! = UIColor.clear
     var lineColor: UIColor! = UIColor.black
     var lineWidth: CGFloat! = 2
     
@@ -39,6 +39,11 @@ class Figure: UIView {
         setNeedsDisplay();
     }
     
+    public func setFillColor(fillColor: UIColor) -> Void {
+        self.figureColor = fillColor
+        setNeedsDisplay();
+    }
+    
     public func setIsBorderDashed(isDashed: Bool) {
         self.isBorderDashed = isDashed
         setNeedsDisplay()
@@ -52,11 +57,6 @@ class Figure: UIView {
     public func getSelectionFrame() -> CGRect {
         return self.frame
     }
-    
-//    public func setFillColor(color: UIColor) {
-//        self.fillColor = color
-//        setNeedsDisplay()
-//    }
     
     public func exportViewModel() -> DrawViewModel? {return nil}
 

@@ -17,7 +17,7 @@ protocol TouchInputDelegate {
 
 class UmlFigure : Figure {
 
-    var figureColor: UIColor!
+//    var figureColor: UIColor!
     var currentAngle: Double = 0
     var anchorPoints: AnchorPoints?
     var incomingConnections : [ConnectionFigure: String] = [:]
@@ -80,11 +80,6 @@ class UmlFigure : Figure {
         self.layer.addSublayer((self.anchorPoints?.anchorPointsTop)!)
         self.layer.addSublayer((self.anchorPoints?.anchorPointsLeft)!)
         self.layer.addSublayer((self.anchorPoints?.anchorPointsRight)!)
-    }
-    
-    public func setFillColor(fillColor: UIColor) -> Void {
-        self.figureColor = fillColor
-        setNeedsDisplay();
     }
 
     public func translate(by: CGPoint) {
