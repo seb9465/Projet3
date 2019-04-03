@@ -19,8 +19,6 @@ using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
-using System.Threading.Tasks;
-using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -43,12 +41,7 @@ namespace PolyPaint
         private LineStrokeAdorner adorner;
         private ConcurrentDictionary<string, OnlineSelectedAdorner> _onlineSelectedAdorners;
 
-        public string canvasVisibility = "";
-        public string canvasName = "";
-        public string canvasProtection = "";
-        public string canvasAutor = "";
-        public double canvasWidth = 1000;
-        public double canvasHeight = 500;
+        public SaveableCanvas Canvas = new SaveableCanvas();
 
 
         private ChatWindow externalChatWindow;
@@ -63,10 +56,10 @@ namespace PolyPaint
         bool isMenuOpen = false;
         private ViewStateEnum _viewState { get; set; }
 
-        public FenetreDessin(List<DrawViewModel> drawViewModels, ChatClient chatClient, string canvasChannel, double width, double height)
+        public FenetreDessin(List<DrawViewModel> drawViewModels, SaveableCanvas canvas, ChatClient chatClient)
         {
             InitializeComponent();
-            DataContext = new VueModele(chatClient, canvasChannel);
+            DataContext = new VueModele(chatClient, canvas);
 
             (DataContext as VueModele).CollaborationClient.Initialize((string)Application.Current.Properties["token"]);
             (DataContext as VueModele).CollaborationClient.DrawReceived += ReceiveDraw;
@@ -90,10 +83,9 @@ namespace PolyPaint
             (DataContext as VueModele).CollaborationClient.CollaborativeDrawAsync(drawViewModels);
             (DataContext as VueModele).Traits = surfaceDessin.Strokes;
 
-            surfaceDessin.Width = width;
-            surfaceDessin.Height = height;
-            canvasWidth = width;
-            canvasHeight = height;
+            surfaceDessin.Width = canvas.CanvasWidth;
+            surfaceDessin.Height = canvas.CanvasHeight;
+            Canvas = canvas;
         }
 
         private void VueModelePropertyChanged(object sender, PropertyChangedEventArgs args)
@@ -201,8 +193,8 @@ namespace PolyPaint
             ResizeCanvas resizeCanvas = new ResizeCanvas(surfaceDessin.Width, surfaceDessin.Height);
             surfaceDessin.Width = resizeCanvas.CanvasWidth;
             surfaceDessin.Height = resizeCanvas.CanvasHeight;
-            canvasWidth = resizeCanvas.CanvasWidth;
-            canvasHeight = resizeCanvas.CanvasHeight;
+            Canvas.CanvasWidth = resizeCanvas.CanvasWidth;
+            Canvas.CanvasHeight = resizeCanvas.CanvasHeight;
             (DataContext as VueModele).CollaborationClient.CollaborativeResizeCanvasAsync(new Point(surfaceDessin.Width, surfaceDessin.Height));
             SendToCloud();
         }
@@ -213,10 +205,10 @@ namespace PolyPaint
             byte[] imageBytes = GetBytesForImage();
             List<DrawViewModel> drawViewModels = strokeBuilder.GetDrawViewModelsFromStrokes((DataContext as VueModele).Traits);
             string json = JsonConvert.SerializeObject(drawViewModels);
-            string CanvasId = DateTime.Now.ToString("yyyy.MM.dd.hh.mm.ss.ffff");
-            SaveableCanvas canvas = new SaveableCanvas(CanvasId, canvasName, json, imageBytes, canvasVisibility, canvasProtection, canvasAutor, canvasWidth, canvasHeight);
+            Canvas.DrawViewModels = json;
+            Canvas.Image = imageBytes;
 
-            string canvasJson = JsonConvert.SerializeObject(canvas);
+            string canvasJson = JsonConvert.SerializeObject(Canvas);
             using (HttpClient client = new HttpClient())
             {
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", (string)Application.Current.Properties["token"]);
@@ -527,8 +519,8 @@ namespace PolyPaint
                 var sizeMessage = JsonConvert.DeserializeObject<SizeMessage>(args.Message);
                 surfaceDessin.Width = sizeMessage.Size.X;
                 surfaceDessin.Height = sizeMessage.Size.Y;
-                canvasWidth = sizeMessage.Size.X;
-                canvasHeight = sizeMessage.Size.Y;
+                Canvas.CanvasWidth = sizeMessage.Size.X;
+                Canvas.CanvasHeight = sizeMessage.Size.Y;
             });
         }
 

@@ -2,6 +2,7 @@
 {
     public class SaveableCanvas
     {
+        public SaveableCanvas() { }
         public SaveableCanvas(string canvasId, string name, string drawViewModels, byte[] image, string canvasVisibility, string canvasProtection, string canvasAutor, double canvasWidth, double canvasHeight)
         {
             CanvasId = canvasId;

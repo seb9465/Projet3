@@ -58,7 +58,7 @@ namespace PolyPaint.Vues
             Canvas = GetAvailableCanvas(strokes);
 
             DataContext = new UserDataContext(chatClient);
-            
+
             externalChatWindow = new ChatWindow(DataContext as UserDataContext);
             (DataContext as UserDataContext).Canvas = Canvas;
             //  DataContext = Canvas; // Il faudrait reussir a utiliser plusieurs datacontext. Ici on a besoin du datacontext pour recuperer les donnee du chat ET des canvas. Cest pous ca que le chat marche pas dans la gallerie
@@ -190,22 +190,16 @@ namespace PolyPaint.Vues
                 string responseString = await response.Content.ReadAsStringAsync();
                 canvases = JsonConvert.DeserializeObject<List<SaveableCanvas>>(responseString);
             }
-            SelectedCanvas = canvases.OrderByDescending(x => x.CanvasId).FirstOrDefault(x => x.Name == (ImagePreviews.SelectedItem as SaveableCanvas).Name);
+            SelectedCanvas = canvases.FirstOrDefault(x => x.CanvasId == (ImagePreviews.SelectedItem as SaveableCanvas).CanvasId);
             List<DrawViewModel> drawViewModels = JsonConvert.DeserializeObject<List<DrawViewModel>>(SelectedCanvas.DrawViewModels);
             if (SelectedCanvas.CanvasProtection != "" && SelectedCanvas.CanvasAutor != username)
             {
                 imageProtection = new ImageProtection();
                 if (imageProtection.PasswordEntered == SelectedCanvas.CanvasProtection)
                 {
-                    FenetreDessin fenetreDessin = new FenetreDessin(drawViewModels, (DataContext as UserDataContext).ChatClient, SelectedCanvas.Name, SelectedCanvas.CanvasWidth, SelectedCanvas.CanvasHeight)
-                    {
-                        canvasAutor = SelectedCanvas.CanvasAutor,
-                        canvasName = SelectedCanvas.Name,
-                        canvasVisibility = SelectedCanvas.CanvasVisibility,
-                        canvasProtection = SelectedCanvas.CanvasProtection
-                    };
+                    FenetreDessin fenetreDessin = new FenetreDessin(drawViewModels, SelectedCanvas, (DataContext as UserDataContext).ChatClient);
                     Application.Current.MainWindow = fenetreDessin;
-                    this.Close();
+                    Close();
                     fenetreDessin.Show();
                 }
                 else
@@ -216,15 +210,9 @@ namespace PolyPaint.Vues
             }
             else
             {
-                FenetreDessin fenetreDessin = new FenetreDessin(drawViewModels, (DataContext as UserDataContext).ChatClient, SelectedCanvas.Name, SelectedCanvas.CanvasWidth, SelectedCanvas.CanvasHeight)
-                {
-                    canvasAutor = SelectedCanvas.CanvasAutor,
-                    canvasName = SelectedCanvas.Name,
-                    canvasVisibility = SelectedCanvas.CanvasVisibility,
-                    canvasProtection = SelectedCanvas.CanvasProtection
-                };
+                FenetreDessin fenetreDessin = new FenetreDessin(drawViewModels, SelectedCanvas, (DataContext as UserDataContext).ChatClient);
                 Application.Current.MainWindow = fenetreDessin;
-                this.Close();
+                Close();
                 fenetreDessin.Show();
             }
         }
