@@ -88,15 +88,16 @@ namespace PolyPaint.API.Hubs
             if (user != null)
             {
                 await base.OnConnectedAsync();
-                await ConnectToChannel((new ConnectionMessage(channelId: "general")).ToString());
-                // await Clients.Caller.SendAsync("ClientIsConnected");
             }
         }
 
         public override async Task OnDisconnectedAsync(Exception e)
         {
-            if (_userService.TryGetUserId(Context.User, out var userId))
+            var user = await GetUserFromToken(Context.User);
+            if (user != null)
             {
+                _userService.GetAllCanvas()
+                    .ForEach(async x => await DisconnectFromChannel(new ConnectionMessage(user.UserName, channelId: x.CanvasId).ToString()));
                 await base.OnDisconnectedAsync(e);
             }
         }

@@ -56,6 +56,11 @@ namespace PolyPaint.DataAccess.Services
             return user.Canvas;
         }
 
+        public List<Canvas> GetAllCanvas()
+        {
+            return _ctx.Canvas.ToList();
+        }
+
         public async Task<ApplicationUser> FindByIdAsync(string userId)
         {
             return await _userManager.Users.SingleAsync(u => u.Id == userId);
