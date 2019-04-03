@@ -27,6 +27,9 @@ class AddScreenViewController: UIViewController, UITableViewDelegate, UITableVie
         self.customCellRegistration();
         self.initRefreshControl();
         self.initChatServiceCommunication();
+        
+        self.cancelButton.tintColor = Constants.RED_COLOR;
+        self.saveButton.tintColor = Constants.RED_COLOR;
     }
     
     public func updateChannels() -> Void {
