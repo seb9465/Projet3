@@ -33,8 +33,9 @@ class ConnectionFigure : Figure {
     init(drawViewModel: DrawViewModel) {
         let firstPoint: CGPoint = drawViewModel.StylusPoints![0].getCGPoint()
         let lastPoint: CGPoint = drawViewModel.StylusPoints![1].getCGPoint()
-        let frameSize = CGSize(width: abs(firstPoint.x - lastPoint.x), height: abs(firstPoint.y - lastPoint.y))
-        let frame = CGRect(origin: firstPoint, size: frameSize)
+        let frameOrigin = CGPoint(x: 0, y: 0)
+        let frameSize = CGSize(width: 774, height: 698)
+        let frame = CGRect(origin: frameOrigin, size: frameSize)
         super.init(frame: frame)
         self.firstPoint = firstPoint
         self.lastPoint = lastPoint
