@@ -324,7 +324,7 @@ extension Editor: SideToolbarDelegate {
     }
     
     func save() -> Void{
-        CanvasService.SaveCanvas(name: "TestSaveCanva");
+        CanvasService.SaveCanvas(drawViewModels: []);
     }
     
     func rotate(orientation: RotateOrientation) {
