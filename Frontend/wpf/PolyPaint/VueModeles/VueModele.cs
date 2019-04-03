@@ -180,10 +180,10 @@ namespace PolyPaint.VueModeles
         /// On récupère certaines données initiales du modèle et on construit les commandes
         /// sur lesquelles la vue se connectera.
         /// </summary>
-        public VueModele(ChatClient chatClient)
+        public VueModele(ChatClient chatClient, string canvasChannel)
         {
             ChatClient = chatClient;
-            CollaborationClient = new CollaborationClient();
+            CollaborationClient = new CollaborationClient(canvasChannel);
 
             // On écoute pour des changements sur le modèle. Lorsqu'il y en a, EditeurProprieteModifiee est appelée.
             editeur.PropertyChanged += new PropertyChangedEventHandler(EditeurProprieteModifiee);

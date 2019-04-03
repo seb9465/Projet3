@@ -1,4 +1,5 @@
 ﻿using PolyPaint.Modeles;
+using PolyPaint.VueModeles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,7 +40,7 @@ namespace PolyPaint.Vues
             CanvasProtection = passwordTextBox.Password;
             CanvasAutor = Application.Current.Properties["username"].ToString();
 
-            FenetreDessin fenetreDessin = new FenetreDessin(new List<Common.Collaboration.DrawViewModel>(), ChatClient)
+            FenetreDessin fenetreDessin = new FenetreDessin(new List<Common.Collaboration.DrawViewModel>(), ChatClient, CanvasName)
             {
                 canvasName = CanvasName,
                 canvasVisibility = CanvasVisibility,
@@ -48,7 +49,7 @@ namespace PolyPaint.Vues
             };
 
             Application.Current.MainWindow = fenetreDessin;
-            this.Close();
+            Close();
             fenetreDessin.Show();
             Close();
         }

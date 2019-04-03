@@ -319,17 +319,12 @@ namespace PolyPaint.Utilitaires
                 drawingStroke.ItemType = _strokeTypes[stroke.GetType()];
                 drawingStroke.Guid = stroke.Guid.ToString();
                 drawingStroke.Rotation = stroke.Rotation;
-                List<PolyPaintStylusPoint> points = new List<PolyPaintStylusPoint>();
-                foreach (StylusPoint point in stroke.StylusPoints.ToList())
-                {
-                    points.Add(new PolyPaintStylusPoint()
-                    {
-                        PressureFactor = point.PressureFactor,
-                        X = point.X,
-                        Y = point.Y,
-                    });
-                }
-                drawingStroke.StylusPoints = points;
+
+                var stylusPoint0 = new PolyPaintStylusPoint() { PressureFactor = stroke.StylusPoints[0].PressureFactor, X = stroke.TopLeft.X, Y = stroke.TopLeft.Y};
+                var bottomRight = new Point(stroke.TopLeft.X + stroke.Width, stroke.TopLeft.Y + stroke.Height);
+                var stylusPoint1 = new PolyPaintStylusPoint() { PressureFactor = stroke.StylusPoints[1].PressureFactor, X = bottomRight.X, Y = bottomRight.Y};
+                drawingStroke.StylusPoints = new List<PolyPaintStylusPoint>() { stylusPoint0, stylusPoint1 };
+
                 drawingStroke.FillColor = new PolyPaintColor()
                 {
                     A = (stroke.Fill as SolidColorBrush).Color.A,
