@@ -113,6 +113,7 @@
                         <viewLayoutGuide key="safeArea" id="h7K-cJ-n3H"/>
                     </view>
                     <connections>
+                        <outlet property="connectionLabel" destination="HVO-Oe-0TK" id="375-IB-DIx"/>
                         <outlet property="deleteButton" destination="5ld-32-8cy" id="y06-F1-JC8"/>
                         <outlet property="exportButton" destination="yqP-yF-mGn" id="ydc-eg-QxN"/>
                         <outlet property="insertButton" destination="SLY-eP-ACv" id="oPa-Hm-WsF"/>
