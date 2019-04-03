@@ -53,7 +53,24 @@ class Editor {
     // Select made locally
     func select(figure: Figure) {
         self.selectedFigures.append(figure);
-        self.selectionOutline.append(SelectionOutline(firstPoint: figure.frame.origin, lastPoint: CGPoint(x: figure.frame.maxX, y: figure.frame.maxY), associatedFigureID: figure.uuid));
+        if (figure is ConnectionFigure) {
+            let frame = (figure as! ConnectionFigure).getSelectionFrame()
+            self.selectionOutline.append(
+                SelectionOutline(
+                    firstPoint: frame.origin,
+                    lastPoint: CGPoint(x: frame.maxX,y: frame.maxY),
+                    associatedFigureID: figure.uuid
+                )
+            );
+        } else {
+            self.selectionOutline.append(
+                SelectionOutline(
+                    firstPoint: figure.frame.origin,
+                    lastPoint: CGPoint(x: figure.frame.maxX,y: figure.frame.maxY),
+                    associatedFigureID: figure.uuid
+                )
+            );
+        }
         self.selectionOutline.last!.addSelectedFigureLayers();
         self.editorView.addSubview(self.selectionOutline.last!);
     }
@@ -158,8 +175,7 @@ class Editor {
             source: firstPoint,
             destination: lastPoint
         )
-
-//        let figure = ConnectionFigure(origin: self.initialTouchPoint, destination: lastPoint, itemType: itemType)
+        figure!.delegate = self
         self.editorView.addSubview(figure!);
         self.figures.append(figure!)
         self.undoArray.append(figure!);
@@ -531,12 +547,6 @@ extension Editor : TouchInputDelegate {
             return
         }
         
-//        let connection = FigureFactory.shared.getFigure(
-//            type: self.currentFigureType,
-//            source: self.initialTouchPoint,
-//            destination: destinationFigure.getClosestAnchorPoint(point: point)
-//        )
-        
         let connection = self.insertConnectionFigure(
             firstPoint: self.initialTouchPoint,
             lastPoint: destinationFigure.getClosestAnchorPoint(point: point),
@@ -592,7 +602,7 @@ extension Editor {
         for pair in self.selectedFiguresDictionnary {
             for selectedModel in pair.value {
                 if(selectedModel.Guid == figure.uuid.uuidString.lowercased()) {
-                    print("Already selected!")
+                    print("Selection cancelled: Figure already selected by another user")
                     return true
                 }
             }

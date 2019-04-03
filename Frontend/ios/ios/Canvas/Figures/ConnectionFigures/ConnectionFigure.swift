@@ -79,6 +79,33 @@ class ConnectionFigure : Figure {
         setNeedsDisplay()
     }
     
+    func getSelectionFrame() -> CGRect{
+        var xi: CGFloat = 999999
+        var yi: CGFloat = 999999
+        var xf: CGFloat = -999999
+        var yf: CGFloat = -999999
+
+        // Gets origin and max point for frame
+        for pair in self.points {
+            if (pair.value.x < xi) {
+                xi = pair.value.x
+            }
+            if (pair.value.y < yi) {
+                yi = pair.value.y
+            }
+            if (pair.value.x > xf) {
+                xf = pair.value.x
+            }
+            if (pair.value.y > yf) {
+                yf = pair.value.y
+            }
+        }
+        let origin: CGPoint = CGPoint(x: xi - 5, y: yi - 5)
+        let size: CGSize = CGSize(width: abs(xf - xi) + 10, height: abs(yf - yi) + 10)
+
+        return CGRect(origin: origin, size: size)
+    }
+    
     override func draw(_ rect: CGRect) {
         //// Bezier Drawing
         let bezierPath = UIBezierPath()
@@ -142,7 +169,11 @@ extension ConnectionFigure {
         setNeedsDisplay()
     }
     
-    public override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {}
+    public override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        let touch = touches.first
+        guard let point = touch?.location(in: self.superview) else { return }
+        self.delegate?.notifyTouchEnded(point: point, figure: self)
+    }
     
     public override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {}
 }

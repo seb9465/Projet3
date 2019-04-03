@@ -121,7 +121,6 @@ struct PolyPaintColor: Codable {
         self.R = Int(red * 255)
         self.G = Int(green * 255)
         self.B = Int(blue * 255)
-        print(self)
     }
     
     func getUIColor() -> UIColor {
