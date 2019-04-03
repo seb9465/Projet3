@@ -3,7 +3,11 @@ using PolyPaint.Common.Collaboration;
 using PolyPaint.Common.Messages;
 using PolyPaint.Structures;using System;using System.Collections.Generic;using System.Threading.Tasks;using System.Windows;
 
-namespace PolyPaint.Modeles{    public class CollaborationClient    {        public event EventHandler<MessageArgs> DrawReceived;        public event EventHandler<MessageArgs> ResetReceived;        public event EventHandler<MessageArgs> DeleteReceived;        public event EventHandler<MessageArgs> SelectReceived;        public event EventHandler<MessageArgs> DuplicateReceived;        private HubConnection Connection { get; set; }        private List<Channel> Channels { get; set; }        public CollaborationClient()        { }        public async void Initialize(string accessToken)        {            Connection =                new HubConnectionBuilder()                .WithUrl($"{Config.URL}/signalr/collaborative", options =>                {                    options.AccessTokenProvider = () => Task.FromResult(accessToken);                })                .Build();            HandleMessages();            await Connection.StartAsync();        }        private void HandleMessages()
+namespace PolyPaint.Modeles{    public class CollaborationClient    {        public event EventHandler<MessageArgs> DrawReceived;        public event EventHandler<MessageArgs> ResetReceived;        public event EventHandler<MessageArgs> DeleteReceived;        public event EventHandler<MessageArgs> SelectReceived;        public event EventHandler<MessageArgs> DuplicateReceived;        private HubConnection Connection { get; set; }        private List<Channel> Channels { get; set; }        private string ChannelId { get; set; }        public CollaborationClient(string channelId)        { ChannelId = channelId; }        public async void Initialize(string accessToken)        {            Connection =                new HubConnectionBuilder()                .WithUrl($"{Config.URL}/signalr/collaborative?channelId={ChannelId}", options =>                {                    options.AccessTokenProvider = () => Task.FromResult(accessToken);                })                .Build();            HandleMessages();            try
+            {
+                await Connection.StartAsync();            }
+            catch (Exception)
+            { }        }        private void HandleMessages()
         {
             Connection.On<string>("Draw", (drawViewModelString) =>
             {
@@ -17,7 +21,7 @@ namespace PolyPaint.Modeles{    public class CollaborationClient    {       
             {
                 DuplicateReceived?.Invoke(this, new MessageArgs(message: drawViewModelString));
             });
-            Connection.On<string>("Delete", (drawViewModelString) =>
+            Connection.On<string>("Cut", (drawViewModelString) =>
             {
                 DeleteReceived?.Invoke(this, new MessageArgs(message: drawViewModelString));
             });
@@ -25,23 +29,55 @@ namespace PolyPaint.Modeles{    public class CollaborationClient    {       
             {
                 ResetReceived?.Invoke(this, new MessageArgs());
             });
-        }
-        public async Task CollaborativeDrawAsync(List<DrawViewModel> drawViewModels)
+        }        public async void CollaborativeDrawAsync(List<DrawViewModel> drawViewModels)
         {
             try
             {
-                await Connection.InvokeAsync("Draw", JsonConvert.SerializeObject(new ItemsMessage("general", "", drawViewModels)));
+                await Draw(drawViewModels);
+            }
+            catch (Exception)
+            { }
+        }        public async void CollaborativeSelectAsync(List<DrawViewModel> drawViewModels)
+        {
+            try
+            {
+                await Select(drawViewModels);
+            }
+            catch (Exception)
+            { }
+        }        public async void CollaborativeDeleteAsync(List<DrawViewModel> drawViewModels)
+        {
+            try
+            {
+                await Delete(drawViewModels);
+            }
+            catch (Exception)
+            { }
+        }        public async void CollaborativeResetAsync()
+        {
+            try
+            {
+                await Reset();
+            }
+            catch (Exception)
+            { }
+        }
+        private async Task Draw(List<DrawViewModel> drawViewModels)
+        {
+            try
+            {
+                await Connection.InvokeAsync("Draw", JsonConvert.SerializeObject(new ItemsMessage(ChannelId, "", drawViewModels)));
             }
             catch (Exception) { }
         }
 
-        public async Task CollaborativeSelectAsync(List<DrawViewModel> drawViewModels)
+        private async Task Select(List<DrawViewModel> drawViewModels)
         {
             try
             {
-                await Connection.InvokeAsync("Select", JsonConvert.SerializeObject(new ItemsMessage("general", "", drawViewModels)));
+                await Connection.InvokeAsync("Select", JsonConvert.SerializeObject(new ItemsMessage(ChannelId, "", drawViewModels)));
             }
-            catch (Exception e) { }
+            catch (Exception) { }
         }
 
         public async Task CollaborativeDuplicateAsync()
@@ -55,22 +91,43 @@ namespace PolyPaint.Modeles{    public class CollaborationClient    {       
             catch (Exception) { }
         }
 
-        public async Task CollaborativeDeleteAsync()
+        public async Task Delete(List<DrawViewModel> drawViewModels)
         {
             try
             {
-                await Connection.InvokeAsync("Delete");
+                await Connection.InvokeAsync("Cut", JsonConvert.SerializeObject(new ItemsMessage(ChannelId, "", drawViewModels)));
             }
             catch (Exception) { }
         }
 
-        public async Task CollaborativeResetAsync()
+        public async Task Reset()
         {
             try
             {
-                await Connection.InvokeAsync("Reset", "general");
+                await Connection.InvokeAsync("Reset");
             }
             catch (Exception) { }
+        }
+
+        public async void CreateGroup(string canvasName)
+        {
+            try
+            {
+                await CollabCreateGroupAsync(canvasName);
+                await CollabConnectToGroupAsync(canvasName);
+            }
+            catch (Exception)
+            {
+            }
+        }
+
+        private async Task CollabConnectToGroupAsync(string canvasName)
+        {
+            await Connection.SendAsync("ConnectToChannel", (new ConnectionMessage(channelId: canvasName)).ToString());
+        }
+
+        private async Task CollabCreateGroupAsync(string canvasName)
+        {            await Connection.SendAsync("CreateChannel", (new ChannelMessage(new Channel(canvasName, false))).ToString());
         }
     }
 }

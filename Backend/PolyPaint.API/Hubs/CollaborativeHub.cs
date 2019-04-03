@@ -43,18 +43,20 @@ namespace PolyPaint.API.Hubs
                 }
             }
             */
-        public async Task Delete(string channelId)
+        public async Task Cut(string itemsMessage)
         {
+            var message = JsonConvert.DeserializeObject<ItemsMessage>(itemsMessage);
+
             var user = await GetUserFromToken(Context.User);
-            if (user != null)
+            if (user != null && message.Items.Count > 0)
             {
+                var channelId = message.CanvasId;
                 if (UserHandler.UserGroupMap.TryGetValue(channelId, out var users) && users.Contains(user.Id))
                 {
-                    await Clients.OthersInGroup(channelId).SendAsync("Delete");
+                    await Clients.OthersInGroup(channelId).SendAsync("Cut", JsonConvert.SerializeObject(message));
                 }
             }
         }
-
 
         public async Task Select(string itemsMessage)
         {
@@ -72,15 +74,26 @@ namespace PolyPaint.API.Hubs
             }
         }
 
-        public async Task Reset(string channelId)
+        public async Task Reset()
         {
             var user = await GetUserFromToken(Context.User);
             if (user != null)
             {
-                if (UserHandler.UserGroupMap.TryGetValue(channelId, out var users) && users.Contains(user.Id))
+                if (UserHandler.TryGetByValue(user, out var channelId))
                 {
                     await Clients.OthersInGroup(channelId).SendAsync("Reset");
                 }
+            }
+        }
+
+        public override async Task OnConnectedAsync()
+        {
+            var user = await GetUserFromToken(Context.User);
+            if (user != null)
+            {
+                var channelId = (string)Context.GetHttpContext().Request.Query["channelId"];
+                await base.OnConnectedAsync();
+                await ConnectToChannel((new ConnectionMessage(channelId: channelId)).ToString());
             }
         }
     }

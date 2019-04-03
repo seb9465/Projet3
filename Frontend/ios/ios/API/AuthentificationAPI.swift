@@ -40,7 +40,7 @@ class AuthentificationAPI {
                             seal.fulfill(userToken);
                         
                         case .failure(let Error):
-                            seal.reject(Error)
+                            seal.reject(Error);
                     }
             };
         }

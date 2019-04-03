@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using PolyPaint.Common;
+using PolyPaint.Common.Collaboration;
 using PolyPaint.Modeles;
 using PolyPaint.VueModeles;
 using System;
@@ -26,7 +27,7 @@ namespace PolyPaint.Vues
 
         private void OfflineBtn_Click(object sender, RoutedEventArgs e)
         {
-            FenetreDessin fenetreDessin = new FenetreDessin(ViewStateEnum.Offline);
+            FenetreDessin fenetreDessin = new FenetreDessin(new List<DrawViewModel>(), new ChatClient(), "offline");
             Application.Current.MainWindow = fenetreDessin;
             Close();
             fenetreDessin.Show();
@@ -45,13 +46,14 @@ namespace PolyPaint.Vues
 
             using (HttpClient client = new HttpClient())
             {
-                client.BaseAddress = new System.Uri(Config.URL);
-                client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-                StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
-                HttpResponseMessage result = await client.PostAsync("/api/login", content);
+                HttpResponseMessage result = new HttpResponseMessage();
                 string token = "";
                 try
                 {
+                    client.BaseAddress = new System.Uri(Config.URL);
+                    client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+                    StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
+                    result = await client.PostAsync("/api/login", content);
                     token = JsonConvert.DeserializeObject<string>(await result.Content.ReadAsStringAsync());
                 }
                 catch (JsonReaderException exc)
@@ -63,28 +65,27 @@ namespace PolyPaint.Vues
                 {
 
                     DecodeToken(token);
-                    FenetreDessin fenetreDessin = new FenetreDessin(ViewStateEnum.Online);
-                    Application.Current.MainWindow = fenetreDessin;
+
+                    List<SaveableCanvas> strokes;
+                    using (client)
+                    {
+                        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", (string)Application.Current.Properties["token"]);
+                        System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
+                        HttpResponseMessage response = await client.GetAsync($"{Config.URL}/api/user/AllCanvas");
+                        string responseString = await response.Content.ReadAsStringAsync();
+                        strokes = JsonConvert.DeserializeObject<List<SaveableCanvas>>(responseString);
+                    }
+
+                    ChatClient chatClient = new ChatClient();
+                    chatClient.Initialize((string)Application.Current.Properties["token"]);
+
+                    Gallery gallery = new Gallery(strokes, chatClient);
+
+                    Application.Current.MainWindow = gallery;
+
+
                     Close();
-                    fenetreDessin.Show();
-
-                    //List<SaveableCanvas> strokes;
-                    //using (client)
-                    //{
-                    //    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", (string)Application.Current.Properties["token"]);
-                    //    System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
-                    //    HttpResponseMessage response = await client.GetAsync($"{Config.URL}/api/user/canvas");
-                    //    string responseString = await response.Content.ReadAsStringAsync();
-                    //    strokes = JsonConvert.DeserializeObject<List<SaveableCanvas>>(responseString);
-                    //}
-                   
-                    //Gallery gallery = new Gallery(strokes, fenetreDessin.surfaceDessin);
-
-                    //Application.Current.MainWindow = gallery;
-                    
-
-                    //Close();
-                    //gallery.Show();
+                    gallery.Show();
                 }
                 else
                 {

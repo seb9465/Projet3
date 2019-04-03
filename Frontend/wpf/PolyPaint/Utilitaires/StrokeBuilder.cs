@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using PolyPaint.Common.Collaboration;
 using PolyPaint.Strokes;
+using PolyPaint.VueModeles;
 
 namespace PolyPaint.Utilitaires
 {
@@ -243,7 +244,6 @@ namespace PolyPaint.Utilitaires
                         ImageSource imgSrc = biImg as ImageSource;
                         ImageBrush brush = new ImageBrush(imgSrc);
 
-                        (DrawingStroke as AbstractStroke).Guid = Guid.Parse(stroke.Guid);
                         if (TryGetByGuid(surfaceDessin, Guid.Parse(stroke.Guid), out var existingImageStroke))
                         {
                             DrawingStroke = existingImageStroke;
@@ -254,7 +254,7 @@ namespace PolyPaint.Utilitaires
                         {
                             DrawingStroke = new ImageStroke(pts, surfaceDessin, brush);
                         }
-                        (DrawingStroke as ICanvasable).AddToCanvas();
+                        SetShapeProperties(stroke, surfaceDessin);
                         break;
 
 
@@ -276,6 +276,7 @@ namespace PolyPaint.Utilitaires
         private void SetLineProperties(DrawViewModel stroke, InkCanvas surfaceDessin)
         {
             (DrawingStroke as AbstractStroke).Guid = Guid.Parse(stroke.Guid);
+            (DrawingStroke as AbstractStroke).TitleString = stroke.ShapeTitle;
             (DrawingStroke as AbstractLineStroke).SourceString = stroke.SourceTitle;
             (DrawingStroke as AbstractLineStroke).DestinationString = stroke.DestinationTitle;
             (DrawingStroke as AbstractStroke).SetBorderStyle(Tools.DashAssociations[stroke.BorderStyle]);
@@ -296,9 +297,8 @@ namespace PolyPaint.Utilitaires
         private void SetShapeProperties(DrawViewModel stroke, InkCanvas surfaceDessin)
         {
             (DrawingStroke as AbstractStroke).Guid = Guid.Parse(stroke.Guid);
-            (DrawingStroke as AbstractShapeStroke).TitleString = stroke.ShapeTitle;
-            (DrawingStroke as AbstractShapeStroke).TitleString = stroke.ShapeTitle;
             (DrawingStroke as AbstractStroke).Rotation = stroke.Rotation;
+            (DrawingStroke as AbstractStroke).TitleString = stroke.ShapeTitle;
 
             (DrawingStroke as ICanvasable).AddToCanvas();
         }
@@ -319,17 +319,12 @@ namespace PolyPaint.Utilitaires
                 drawingStroke.ItemType = _strokeTypes[stroke.GetType()];
                 drawingStroke.Guid = stroke.Guid.ToString();
                 drawingStroke.Rotation = stroke.Rotation;
-                List<PolyPaintStylusPoint> points = new List<PolyPaintStylusPoint>();
-                foreach (StylusPoint point in stroke.StylusPoints.ToList())
-                {
-                    points.Add(new PolyPaintStylusPoint()
-                    {
-                        PressureFactor = point.PressureFactor,
-                        X = point.X,
-                        Y = point.Y,
-                    });
-                }
-                drawingStroke.StylusPoints = points;
+
+                var stylusPoint0 = new PolyPaintStylusPoint() { PressureFactor = stroke.StylusPoints[0].PressureFactor, X = stroke.TopLeft.X, Y = stroke.TopLeft.Y};
+                var bottomRight = new Point(stroke.TopLeft.X + stroke.Width, stroke.TopLeft.Y + stroke.Height);
+                var stylusPoint1 = new PolyPaintStylusPoint() { PressureFactor = stroke.StylusPoints[1].PressureFactor, X = bottomRight.X, Y = bottomRight.Y};
+                drawingStroke.StylusPoints = new List<PolyPaintStylusPoint>() { stylusPoint0, stylusPoint1 };
+
                 drawingStroke.FillColor = new PolyPaintColor()
                 {
                     A = (stroke.Fill as SolidColorBrush).Color.A,
@@ -346,10 +341,10 @@ namespace PolyPaint.Utilitaires
                 };
                 drawingStroke.BorderThickness = stroke.Border.Thickness;
                 drawingStroke.BorderStyle = Tools.DashAssociations.First(x => x.Value == stroke.BorderStyle).Key;
+                drawingStroke.ShapeTitle = (stroke as AbstractStroke).TitleString;
 
                 if ((stroke as AbstractShapeStroke != null))
                 {
-                    drawingStroke.ShapeTitle = (stroke as AbstractShapeStroke).TitleString;
                     if (stroke as UmlClassStroke != null)
                     {
                         drawingStroke.Methods = new List<string>();

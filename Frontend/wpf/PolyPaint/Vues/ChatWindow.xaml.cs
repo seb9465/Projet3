@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.SignalR.Client;
 using PolyPaint.Structures;
 using System.ComponentModel;
 using MaterialDesignThemes.Wpf;
+using PolyPaint.Modeles;
 
 namespace PolyPaint.Vues
 {
@@ -26,7 +27,6 @@ namespace PolyPaint.Vues
         {
             InitializeComponent();
             DataContext = dataContext;
-            (DataContext as VueModele).ChatClient.MessageReceived += ScrollDown;
     }
 
         private void DataWindow_Closing(object sender, CancelEventArgs e)
@@ -38,9 +38,9 @@ namespace PolyPaint.Vues
                 if (window.GetType() == typeof(FenetreDessin))
                 {
                     (window as FenetreDessin).chatWrapper.Visibility = Visibility.Visible;
-                } else if (window.GetType() == typeof(MenuProfile))
+                } else if (window.GetType() == typeof(Gallery))
                 {
-                    (window as MenuProfile).chatWrapper.Visibility = Visibility.Visible;
+                    (window as Gallery).chatWrapper.Visibility = Visibility.Visible;
                 }
             }
         }
@@ -59,7 +59,7 @@ namespace PolyPaint.Vues
 
             if (!string.IsNullOrWhiteSpace(roomTextBox.Text))
             {
-                (DataContext as VueModele).ChatClient.CreateChannel(roomTextBox.Text.Trim());
+                (DataContext as IChatDataContext).ChatClient.CreateChannel(roomTextBox.Text.Trim());
             }
             clearRoomName(sender, eventArgs);
         }
@@ -73,7 +73,7 @@ namespace PolyPaint.Vues
         {
             if (!string.IsNullOrWhiteSpace(messageTextBox.Text))
             {
-                (DataContext as VueModele).ChatClient.SendMessage(messageTextBox.Text, (DataContext as VueModele).CurrentRoom);
+                (DataContext as IChatDataContext).ChatClient.SendMessage(messageTextBox.Text, (DataContext as IChatDataContext).CurrentRoom);
             }
             mediaPlayer.Open(new Uri("SoundEffects//send.mp3", UriKind.Relative));
             mediaPlayer.Volume = 100;

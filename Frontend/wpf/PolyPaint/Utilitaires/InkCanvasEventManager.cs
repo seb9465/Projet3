@@ -9,9 +9,6 @@ using System.Windows.Ink;
 using System.Windows.Input;
 using System.Windows.Media;
 using PolyPaint.VueModeles;
-using System.Threading.Tasks;
-using PolyPaint.Common.Messages;
-using System;
 
 namespace PolyPaint.Utilitaires
 {
@@ -30,7 +27,8 @@ namespace PolyPaint.Utilitaires
             {
                 Rect box = strokes[i].GetBounds();
                 if (mouseLeftDownPoint.X >= box.Left && mouseLeftDownPoint.X <= box.Right &&
-                    mouseLeftDownPoint.Y <= box.Bottom && mouseLeftDownPoint.Y >= box.Top)
+                    mouseLeftDownPoint.Y <= box.Bottom && mouseLeftDownPoint.Y >= box.Top &&
+                    !vm.GetOnlineSelection().Values.Any(x => x.Any(y => y.Guid == ((AbstractStroke)strokes[i]).Guid.ToString())))
                 {
                     if (strokes[i] is UmlClassStroke)
                     {
@@ -40,6 +38,11 @@ namespace PolyPaint.Utilitaires
                     else if (strokes[i] is AbstractShapeStroke)
                     {
                         var editWindow = new EditTitleWindow(strokes[i] as AbstractShapeStroke, surfaceDessin, vm);
+                        editWindow.Show();
+                    }
+                    else if (strokes[i] is AbstractLineStroke)
+                    {
+                        var editWindow = new EditLineTitleWindow(strokes[i] as AbstractLineStroke, surfaceDessin, vm);
                         editWindow.Show();
                     }
                     break;
@@ -121,12 +124,10 @@ namespace PolyPaint.Utilitaires
         internal void EndDraw(InkCanvas surfaceDessin, List<DrawViewModel> drawViewModels, string username)
         {
             StrokeBuilder builder = new StrokeBuilder();
-
             builder.BuildStrokesFromDrawViewModels(drawViewModels, surfaceDessin);
-            DrawingStroke = null;
         }
 
-        internal async Task EndDrawAsync(InkCanvas surfaceDessin, VueModele vm)
+        internal void EndDrawAsync(InkCanvas surfaceDessin, VueModele vm)
         {
             if (DrawingStroke != null)
             {
@@ -141,8 +142,8 @@ namespace PolyPaint.Utilitaires
                     StrokeBuilder rebuilder = new StrokeBuilder();
                     List<DrawViewModel> allo = rebuilder.GetDrawViewModelsFromStrokes(new StrokeCollection { DrawingStroke });
                     vm.SelectItem(surfaceDessin, ((AbstractStroke)DrawingStroke).Center);
-                    await vm.CollaborationClient.CollaborativeDrawAsync(allo);
-                    await vm.CollaborationClient.CollaborativeSelectAsync(allo);
+                    vm.CollaborationClient.CollaborativeDrawAsync(allo);
+                    vm.CollaborationClient.CollaborativeSelectAsync(allo);
                 }
                 DrawingStroke = null;
             }
@@ -181,11 +182,12 @@ namespace PolyPaint.Utilitaires
             {
                 for (int i = 0; i < 2; i++)
                 {
-                    surfaceDessin.Strokes.Where(x => x is AbstractLineStroke &&
+                    var strokes = surfaceDessin.Strokes.Where(x => x is AbstractLineStroke &&
                         !surfaceDessin.GetSelectedStrokes().Contains(x) &&
                         Point.Subtract(x.StylusPoints[i].ToPoint(), pt).Length <= Config.MIN_DISTANCE_ANCHORS)
-                        .ToList()
-                        .ForEach(x => RedrawPoint(x, i, new Vector(shiftInX, shiftInY)));
+                        .ToList();
+                    strokes.ForEach(x => RedrawPoint(x, i, new Vector(shiftInX, shiftInY)));
+                    
                 }
             }
         }
@@ -196,7 +198,7 @@ namespace PolyPaint.Utilitaires
             (stroke as ICanvasable).AddToCanvas();
         }
 
-        internal async void ContextualMenuClick(InkCanvas surfaceDessin, string header, VueModele vm)
+        internal void ContextualMenuClick(InkCanvas surfaceDessin, string header, VueModele vm)
         {
             var rebuilder = new StrokeBuilder();
             switch (header)
@@ -204,7 +206,7 @@ namespace PolyPaint.Utilitaires
                 case "SelectAll":
                     vm.SelectItems(surfaceDessin, surfaceDessin.Strokes);
                     var list = rebuilder.GetDrawViewModelsFromStrokes(surfaceDessin.GetSelectedStrokes());
-                    await vm.CollaborationClient.CollaborativeSelectAsync(list);
+                    vm.CollaborationClient.CollaborativeSelectAsync(list);
                     break;
                 case "InvertSelection":
                     StrokeCollection strokesToSelect = new StrokeCollection();
@@ -215,28 +217,28 @@ namespace PolyPaint.Utilitaires
                     }
                     vm.SelectItems(surfaceDessin, strokesToSelect);
                     list = rebuilder.GetDrawViewModelsFromStrokes(surfaceDessin.GetSelectedStrokes());
-                    await vm.CollaborationClient.CollaborativeSelectAsync(list);
+                    vm.CollaborationClient.CollaborativeSelectAsync(list);
                     break;
                 case "InvertColors":
                     InvertStrokesColors(surfaceDessin);
                     list = rebuilder.GetDrawViewModelsFromStrokes(surfaceDessin.GetSelectedStrokes());
-                    await vm.CollaborationClient.CollaborativeDrawAsync(list);
+                    vm.CollaborationClient.CollaborativeDrawAsync(list);
                     break;
                 case "TransformAllShapes":
                     TransformAllShapes(surfaceDessin, vm);
                     list = rebuilder.GetDrawViewModelsFromStrokes(new StrokeCollection(surfaceDessin.Strokes.Where(x => x is AbstractShapeStroke && (!vm.GetOnlineSelection().Values.Any(y => y.Any(z => z.Guid == ((AbstractStroke)x).Guid.ToString()))))));
-                    await vm.CollaborationClient.CollaborativeDrawAsync(list);
+                    vm.CollaborationClient.CollaborativeDrawAsync(list);
                     break;
                 case "TransformAllConnections":
                     TransformAllConnections(surfaceDessin, vm);
                     list = rebuilder.GetDrawViewModelsFromStrokes(new StrokeCollection(surfaceDessin.Strokes.Where(x => x is AbstractLineStroke && (!vm.GetOnlineSelection().Values.Any(y => y.Any(z => z.Guid == ((AbstractStroke)x).Guid.ToString()))))));
-                    await vm.CollaborationClient.CollaborativeDrawAsync(list);
+                    vm.CollaborationClient.CollaborativeDrawAsync(list);
                     break;
                 case "TransformAllShapesAndConnections":
                     TransformAllShapes(surfaceDessin, vm);
                     TransformAllConnections(surfaceDessin, vm);
                     list = rebuilder.GetDrawViewModelsFromStrokes(new StrokeCollection(surfaceDessin.Strokes.Where(x => x is AbstractStroke && (!vm.GetOnlineSelection().Values.Any(y => y.Any(z => z.Guid == ((AbstractStroke)x).Guid.ToString()))))));
-                    await vm.CollaborationClient.CollaborativeDrawAsync(list);
+                    vm.CollaborationClient.CollaborativeDrawAsync(list);
                     break;
             }
         }

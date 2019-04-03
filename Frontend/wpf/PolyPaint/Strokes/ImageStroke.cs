@@ -20,6 +20,7 @@ namespace PolyPaint.Strokes
         {
             Brush = brush;
             SurfaceDessin = surfaceDessin;
+            TitleString = "";
         }
 
         protected override void DrawCore(DrawingContext drawingContext, DrawingAttributes drawingAttributes)
@@ -38,7 +39,21 @@ namespace PolyPaint.Strokes
             Width = Math.Abs(StylusPoints[1].X - StylusPoints[0].X);
             Height = Math.Abs(StylusPoints[1].Y - StylusPoints[0].Y);
 
-            drawingContext.DrawRectangle(Brush, null, new Rect(TopLeft, new Point(TopLeft.X + Width, TopLeft.Y + Height)));
+            PointCollection points = new PointCollection();
+            points.Add(UnrotatedTopLeft);
+            points.Add(new Point(UnrotatedTopLeft.X + UnrotatedWidth, UnrotatedTopLeft.Y + UnrotatedHeight));
+            points = new PointCollection(points.ToList().Select(x => Tools.RotatePoint(x, Center, Rotation)));
+
+            TransformGroup tg = new TransformGroup();
+            tg.Children.Add(new RotateTransform(Rotation, Center.X, Center.Y));
+            if (Rotation / 90 % 2 != 0)
+                tg.Children.Add(new ScaleTransform(Width / Height, Height / Width, Center.X, Center.Y));
+            Brush.Transform = tg;
+
+            drawingContext.DrawRectangle(Brush, null, new Rect(
+                points[0],
+                points[1]
+            ));
         }
     }
 }
