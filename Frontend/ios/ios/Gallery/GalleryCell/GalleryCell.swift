@@ -22,7 +22,6 @@ class GalleryCell: UICollectionViewCell {
     }
     
     public func setImageFromBytes(bytesString: String) -> Void {
-        print("loading image")
         let dataDecoded : Data = Data(base64Encoded: bytesString, options: .ignoreUnknownCharacters)!
         let decodedimage = UIImage(data: dataDecoded)
         self.imageView.image = decodedimage

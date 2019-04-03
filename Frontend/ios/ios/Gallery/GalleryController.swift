@@ -17,7 +17,7 @@ class GalleryController: UIViewController {
     private let sectionInsets = UIEdgeInsets(top: 10.0, left: 10.0, bottom: 10.0, right: 10.0)
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        let spinner = UIViewController.displaySpinner(onView: self.view);
         let nib = UINib.init(nibName: "GalleryCell", bundle: nil)
         self.collectionView.register(nib, forCellWithReuseIdentifier: "GalleryCell")
         
@@ -25,6 +25,7 @@ class GalleryController: UIViewController {
             .done { (retreivedCanvas) in
                 self.canvas = retreivedCanvas
                 self.collectionView.reloadData()
+                UIViewController.removeSpinner(spinner: spinner);
             }.catch { (Error) in
                 print("Fetch for canvas failed", Error)
         }

@@ -36,7 +36,6 @@ class Editor {
     
     init() {
         self.editorView.delegate = self
-        CollaborationHub.shared!.delegate = self
         let rotation = UIRotationGestureRecognizer(target: self, action: #selector(self.rotatedView(_:)))
         self.editorView.addGestureRecognizer(rotation)
    //     self.editorView.backgroundColor = UIColor.red

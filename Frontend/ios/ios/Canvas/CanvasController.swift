@@ -35,6 +35,7 @@ class CanvasController: UIViewController {
 
         CollaborationHub.shared = CollaborationHub(channelId: canvasId)
         CollaborationHub.shared!.connectToHub()
+        CollaborationHub.shared!.delegate = self.editor
         self.view.addSubview(self.editor.editorView)
         setupNetwork()
         
