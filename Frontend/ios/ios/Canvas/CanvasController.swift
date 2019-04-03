@@ -17,6 +17,7 @@ class CanvasController: UIViewController {
     
     @IBOutlet weak var connectionLabel: UILabel!
     public var editor: Editor = Editor()
+    public var canvasName: String = ""
     var reach: Reachability?
 
     @IBOutlet weak var insertButton: UIBarButtonItem!

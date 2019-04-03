@@ -39,8 +39,4 @@ class DashboardController: UIViewController, UITextFieldDelegate {
         
         self.present(viewController, animated: false, completion: nil);
     }
-    
-    public func openCanvas(canvasName: String) {
-        
-    }
 }
