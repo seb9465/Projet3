@@ -146,7 +146,7 @@ class ConnectionFigure : Figure {
         drawViewModel.Properties = nil
         drawViewModel.SourceTitle = nil
         drawViewModel.DestinationTitle = nil
-        drawViewModel.ChannelId = "general"
+        drawViewModel.ChannelId = canvasId
         drawViewModel.OutilSelectionne = nil
         drawViewModel.LastElbowPosition = PolyPaintStylusPoint(point: self.points[.ELBOW]!)
         drawViewModel.ImageBytes = nil

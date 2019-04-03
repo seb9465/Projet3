@@ -10,14 +10,14 @@ import ChromaColorPicker
 import UIKit
 import Reachability
 import Foundation
-class CanvasController: UIViewController {
-    
+var canvasId: String = ""
+
+class CanvasController: UIViewController {    
     // MARK: - Attributes
     private var activeButton: UIBarButtonItem!;
     
     @IBOutlet weak var connectionLabel: UILabel!
     public var editor: Editor = Editor()
-    public var canvasId: String = ""
     var reach: Reachability?
 
     @IBOutlet weak var insertButton: UIBarButtonItem!

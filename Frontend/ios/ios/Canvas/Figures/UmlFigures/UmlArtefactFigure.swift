@@ -88,7 +88,7 @@ class UmlArtefactFigure: UmlFigure {
         drawViewModel.Properties = nil
         drawViewModel.SourceTitle = nil
         drawViewModel.DestinationTitle = nil
-        drawViewModel.ChannelId = "general"
+        drawViewModel.ChannelId = canvasId
         drawViewModel.OutilSelectionne = nil
         drawViewModel.LastElbowPosition = nil
         drawViewModel.ImageBytes = nil
