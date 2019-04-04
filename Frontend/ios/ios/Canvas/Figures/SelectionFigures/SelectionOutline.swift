@@ -17,6 +17,8 @@ protocol SelectionOutlineProtocol {
 }
 
 class SelectionOutline: UIView {
+    var delegate: TouchInputDelegate?
+    
     private let radius: CGFloat = 5.0;
     public var firstPoint: CGPoint!
     public var lastPoint: CGPoint!
@@ -25,15 +27,16 @@ class SelectionOutline: UIView {
     var border: CAShapeLayer!;
     var cornerAnchors: [CAShapeLayer] = []
     
-    init(firstPoint: CGPoint, lastPoint: CGPoint, associatedFigureID: UUID) {
+    init(firstPoint: CGPoint, lastPoint: CGPoint, associatedFigureID: UUID, delegate: TouchInputDelegate) {
         self.firstPoint = firstPoint
         self.lastPoint = lastPoint
         self.associatedFigureID = associatedFigureID;
+        self.delegate = delegate
         
         let frameSize = CGSize(width: abs(firstPoint.x - lastPoint.x), height: abs(firstPoint.y - lastPoint.y))
         let frame = CGRect(origin: firstPoint, size: frameSize)
         super.init(frame: frame)
-        self.isUserInteractionEnabled = false
+//        self.isUserInteractionEnabled = false
         self.setInitialSelectedDashedBorder(bounds: self.bounds);
         self.setInitialSelectedCornerCirles(firstPoint: firstPoint, lastPoint: lastPoint)
     }
@@ -122,7 +125,35 @@ class SelectionOutline: UIView {
         self.frame = translatedFrame
     }
     
-    override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
-        return !(self.border.path?.contains(point))!
+//    override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
+//        return true
+////        return !(self.border.path?.contains(point))!
+//    }
+}
+
+extension SelectionOutline {
+    public override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        let touch = touches.first
+        guard let point = touch?.location(in: self.superview) else { return }
+        self.delegate?.notifyTouchBegan(action: "selection", point: point, figure: nil)
+    }
+    
+    public override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        let touch = touches.first
+        guard let point = touch?.location(in: self.superview) else { return }
+        
+        self.delegate?.notifyTouchMoved(point: point, figure: nil)
+    }
+    
+    public override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        let touch = touches.first
+        guard let point = touch?.location(in: self.superview) else { return }
+        self.delegate?.notifyTouchEnded(point: point, figure: nil)
+    }
+    
+    public override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
+        let touch = touches.first
+        guard let point = touch?.location(in: self.superview) else { return }
+        self.delegate?.notifyTouchEnded(point: point, figure: nil)
     }
 }

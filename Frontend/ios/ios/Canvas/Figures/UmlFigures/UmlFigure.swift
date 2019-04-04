@@ -11,7 +11,7 @@ import GLKit
 
 protocol TouchInputDelegate {
     func notifyTouchBegan(action: String, point: CGPoint, figure: Figure?)
-    func notifyTouchMoved(point: CGPoint, figure: Figure)
+    func notifyTouchMoved(point: CGPoint, figure: Figure?)
     func notifyTouchEnded(point: CGPoint, figure: Figure?)
 }
 
@@ -83,7 +83,7 @@ class UmlFigure : Figure {
         self.layer.addSublayer((self.anchorPoints?.anchorPointsRight)!)
     }
 
-    public func translate(by: CGPoint) {
+    override func translate(by: CGPoint) {
         let translatedFrame = self.frame.offsetBy(dx: by.x, dy: by.y)
         self.frame = translatedFrame
         self.firstPoint = self.frame.origin

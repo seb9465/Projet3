@@ -76,6 +76,17 @@ class ConnectionFigure : Figure {
         }
     }
     
+    override func translate(by: CGPoint) {
+        let newOrigin: CGPoint = CGPoint(x: self.points[.ORIGIN]!.x + by.x, y: self.points[.ORIGIN]!.y + by.y)
+        let newElbow: CGPoint = CGPoint(x: self.points[.ELBOW]!.x + by.x, y: self.points[.ELBOW]!.y + by.y)
+        let newDestination: CGPoint = CGPoint(x: self.points[.DESTINATION]!.x + by.x, y: self.points[.DESTINATION]!.y + by.y)
+        self.points.updateValue(newOrigin, forKey: .ORIGIN)
+        self.points.updateValue(newElbow, forKey: .ELBOW)
+        self.points.updateValue(newDestination, forKey: .DESTINATION)
+        self.updateElbowAnchor(point: newElbow)
+        setNeedsDisplay()
+    }
+    
     func updateOrigin(point: CGPoint) {
         self.points.updateValue(point, forKey: .ORIGIN)
         setNeedsDisplay()
@@ -85,6 +96,12 @@ class ConnectionFigure : Figure {
         self.points.updateValue(point, forKey: .DESTINATION)
 
         setNeedsDisplay()
+    }
+    
+    private func updateElbowAnchor(point: CGPoint) {
+        self.anchors[.ELBOW]!.removeFromSuperlayer()
+        self.anchors[.ELBOW]! = ConnectionAnchor(position: point)
+        self.layer.addSublayer(self.anchors[.ELBOW]!)
     }
     
     override func getSelectionFrame() -> CGRect{
@@ -244,9 +261,7 @@ extension ConnectionFigure {
         let touch = touches.first
         guard let point = touch?.location(in: self.superview) else { return }
         self.points[.ELBOW]! = point
-        self.anchors[.ELBOW]!.removeFromSuperlayer()
-        self.anchors[.ELBOW]! = ConnectionAnchor(position: point)
-        self.layer.addSublayer(self.anchors[.ELBOW]!)
+        self.updateElbowAnchor(point: point)
         setNeedsDisplay()
     }
     
