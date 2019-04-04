@@ -30,10 +30,13 @@
     <StackPanel>
         <DockPanel>
             <Button Style="{StaticResource MaterialDesignRaisedLightButton}" Click="ImportFromCloud"
-             Width="120" Height="40"  Background="Gainsboro"  HorizontalAlignment="Left" BorderBrush="Gray" Margin="0,0,10,0" >
+             Height="40"  Background="Gainsboro"  HorizontalAlignment="Left" BorderBrush="Gray" Margin="0,0,10,0" >
                 <StackPanel Orientation="Horizontal">
                     <materialDesign:PackIcon Kind="ArrowBack" Height="24" Width="24"/>
                     <Label FontWeight="Bold">Gallery</Label>
+                    <Grid Name="progressBar"  Visibility="Collapsed" Margin="10,0,0,0">
+                        <ProgressBar  Style="{StaticResource MaterialDesignCircularProgressBar}" Value="0" IsIndeterminate="True" Width="20" Height="20" />
+                    </Grid>
                 </StackPanel>
             </Button>
             <Button Style="{StaticResource MaterialDesignRaisedLightButton}" Click="ResizeCanva_Click"
@@ -427,10 +430,7 @@
                         <DropShadowEffect Opacity="0.3" BlurRadius="10"/>
                     </Border.Effect>
                 </Border>
-                <Grid Name="progressBar"  Visibility="Collapsed">
-                    <Label HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,80" Foreground="OrangeRed">opening gallery</Label>
-                    <ProgressBar  Style="{StaticResource MaterialDesignCircularProgressBar}" Value="0" IsIndeterminate="True" Width="50" Height="50" />
-                </Grid>
+                
             </Grid>
             <StackPanel x:Name="chatMenu" Background="Gainsboro" Width="70"  HorizontalAlignment="Right" Height="700" >
 

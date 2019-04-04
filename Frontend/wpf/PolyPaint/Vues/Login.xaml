@@ -24,6 +24,7 @@
                 <PasswordBox Name="passwordBox" HorizontalAlignment="Left" Height="30" Margin="35,50,0,0" VerticalAlignment="Top" Width="205" PasswordChanged="FieldsUpdate"/>
             </StackPanel>
                 <Button Content="Login"  Width="160px" VerticalAlignment="Top" Margin="0,80,0,0" Name="loginBtn" Click="LoginBtn_Click" Height="Auto"/>
-            </StackPanel>
+                <TextBlock x:Name="loginError" TextWrapping="Wrap" TextAlignment="Center" Margin="0,30,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="#DDFF0000" Width="140"/>
+        </StackPanel>
     </Grid>
 </Window>

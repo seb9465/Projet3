@@ -90,7 +90,7 @@ namespace PolyPaint.Vues
                 else
                 {
                     string error = await result.Content.ReadAsStringAsync();
-                    //errors_label.Content = error.ToString();
+                    loginError.Text = error.ToString();
                 }
             }
         }
