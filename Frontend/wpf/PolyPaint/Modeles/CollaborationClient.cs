@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.SignalR.Client;using Newtonsoft.Json;
 using PolyPaint.Common.Collaboration;
 using PolyPaint.Common.Messages;
-using PolyPaint.Structures;using System;using System.Collections.Generic;using System.Threading.Tasks;using System.Windows;
+using PolyPaint.Structures;using PolyPaint.Utilitaires;
+using System;using System.Collections.Generic;using System.Threading.Tasks;using System.Windows;
 
-namespace PolyPaint.Modeles{    public class CollaborationClient    {        public event EventHandler<MessageArgs> DrawReceived;        public event EventHandler<MessageArgs> ResetReceived;        public event EventHandler<MessageArgs> ResizeCanvasReceived;        public event EventHandler<MessageArgs> DeleteReceived;        public event EventHandler<MessageArgs> SelectReceived;        public event EventHandler<MessageArgs> DuplicateReceived;        private HubConnection Connection { get; set; }        private List<Channel> Channels { get; set; }        private string ChannelId { get; set; }        public CollaborationClient(string channelId)        { ChannelId = channelId; }        public async void Initialize(string accessToken)        {            Connection =                new HubConnectionBuilder()                .WithUrl($"{Config.URL}/signalr/collaborative?channelId={ChannelId}", options =>                {                    options.AccessTokenProvider = () => Task.FromResult(accessToken);                })                .Build();            HandleMessages();            try
+namespace PolyPaint.Modeles{    public class CollaborationClient    {        public event EventHandler<MessageArgs> DrawReceived;        public event EventHandler<MessageArgs> ResetReceived;        public event EventHandler<MessageArgs> ResizeCanvasReceived;        public event EventHandler<MessageArgs> DeleteReceived;        public event EventHandler<MessageArgs> SelectReceived;        public event EventHandler<MessageArgs> DuplicateReceived;        public event EventHandler<RoutedEventArgs> ClientConnected;        private HubConnection Connection { get; set; }        private List<Channel> Channels { get; set; }        private string ChannelId { get; set; }        public CollaborationClient(string channelId)        { ChannelId = channelId; }        public async void Initialize(string accessToken)        {            Connection =                new HubConnectionBuilder()                .WithUrl($"{Config.URL}/signalr/collaborative?channelId={ChannelId}", options =>                {                    options.AccessTokenProvider = () => Task.FromResult(accessToken);                })                .Build();            HandleMessages();            try
             {
                 await Connection.StartAsync();            }
             catch (Exception)
@@ -32,6 +33,12 @@ namespace PolyPaint.Modeles{    public class CollaborationClient    {       
             Connection.On<string>("ResizeCanvas", (sizeMessageString) =>
             {
                 ResizeCanvasReceived?.Invoke(this, new MessageArgs(message: sizeMessageString));
+            });
+            Connection.On<string>("ConnectToChannel", (connectionMessage) =>
+            {
+                var message = JsonConvert.DeserializeObject<ConnectionMessage>(connectionMessage);
+                Console.WriteLine($"[ COLLAB ] Connected to channel: {message.ChannelId}");
+                ClientConnected?.Invoke(this, new RoutedEventArgs());
             });
         }        public async void CollaborativeDrawAsync(List<DrawViewModel> drawViewModels)
         {
@@ -151,6 +158,9 @@ namespace PolyPaint.Modeles{    public class CollaborationClient    {       
 
         private async Task CollabCreateGroupAsync(string canvasName)
         {            await Connection.SendAsync("CreateChannel", (new ChannelMessage(new Channel(canvasName, false))).ToString());
+        }        public async Task Disconnect()
+        {
+            await Connection.StopAsync();
         }
     }
 }

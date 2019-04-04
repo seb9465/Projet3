@@ -1,4 +1,6 @@
-﻿namespace PolyPaint.Modeles
+﻿using System.Windows;
+
+namespace PolyPaint.Modeles
 {
     public class SaveableCanvas
     {
@@ -24,6 +26,6 @@
         public string CanvasAutor { get; set; }
         public double CanvasWidth { get; set; }
         public double CanvasHeight { get; set; }
-
+        public Visibility IsProtected { get { return CanvasProtection.Length > 0 ? Visibility.Visible : Visibility.Collapsed; } }
     }
 }

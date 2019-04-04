@@ -408,6 +408,9 @@
     <Compile Include="VueModeles\LoginViewModel.cs" />
     <Compile Include="VueModeles\UserDataContext.cs" />
     <Compile Include="VueModeles\VueModele.cs" />
+    <Compile Include="Vues\ActivateProtection.xaml.cs">
+      <DependentUpon>ActivateProtection.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Vues\EditLineTitleWindow.xaml.cs">
       <DependentUpon>EditLineTitleWindow.xaml</DependentUpon>
     </Compile>
@@ -423,6 +426,9 @@
     <Compile Include="Vues\Login.xaml.cs">
       <DependentUpon>Login.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Vues\PromptPassword.xaml.cs">
+      <DependentUpon>PromptPassword.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Vues\Register.xaml.cs">
       <DependentUpon>Register.xaml</DependentUpon>
     </Compile>
@@ -436,6 +442,10 @@
       <DependentUpon>UploadToCloud.xaml</DependentUpon>
     </Compile>
     <Compile Include="Vues\ViewStateEnum.cs" />
+    <Page Include="Vues\ActivateProtection.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Vues\ChatWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -471,6 +481,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Vues\Login.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Vues\PromptPassword.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

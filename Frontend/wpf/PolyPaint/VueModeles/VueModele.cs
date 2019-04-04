@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Ink;
@@ -72,6 +73,22 @@ namespace PolyPaint.VueModeles
             get { return _currentRoom; }
             set { _currentRoom = value; ProprieteModifiee("CurrentRoom"); ProprieteModifiee("MessagesListBox"); }
         }
+
+        private bool _canvasProtection;
+        public bool CanvasProtection
+        {
+            get { return _canvasProtection; }
+            set { _canvasProtection = value; ProprieteModifiee(); }
+        }
+
+        private bool _isCreatedByUser;
+        public bool IsCreatedByUser
+        {
+            get { return _isCreatedByUser; }
+            set { _isCreatedByUser = value; ProprieteModifiee(); }
+        }
+
+        public SaveableCanvas Canvas { get; set; }
 
         public string OutilSelectionne
         {
@@ -184,6 +201,9 @@ namespace PolyPaint.VueModeles
         {
             ChatClient = chatClient;
             CollaborationClient = new CollaborationClient(canvas.CanvasId);
+            _canvasProtection = canvas.CanvasProtection.Length > 0;
+            Canvas = canvas;
+            IsCreatedByUser = Canvas.CanvasAutor == Application.Current.Properties["username"].ToString();
 
             // On écoute pour des changements sur le modèle. Lorsqu'il y en a, EditeurProprieteModifiee est appelée.
             editeur.PropertyChanged += new PropertyChangedEventHandler(EditeurProprieteModifiee);
@@ -230,6 +250,18 @@ namespace PolyPaint.VueModeles
         protected virtual void ProprieteModifiee([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        internal async Task UnsubscribeChatClient()
+        {
+            ChatClient.MessageReceived -= AddMessage;
+            ChatClient.ChannelsReceived -= InitializeChatRooms;
+            ChatClient.ChannelCreated -= AddRoomItem;
+            ChatClient.ConnectedToChannel -= ConnectedToRoom;
+            ChatClient.ConnectedToChannelSender -= ConnectedToRoomSender;
+            ChatClient.DisconnectedFromChannel -= DisconnectedFromRoom;
+            ChatClient.DisconnectedFromChannelSender -= DisconnectedFromRoomSender;
+            await ChatClient.Disconnect();
         }
 
         /// <summary>
