@@ -592,6 +592,7 @@ extension Editor {
     
     func overriteFigure(figureId: String, newDrawViewModel: DrawViewModel, username: String) {
         let oldFigure = self.figures.first(where: {$0.uuid.uuidString.lowercased() == figureId})
+        
         self.figures.removeAll{$0 == oldFigure}
         oldFigure?.removeFromSuperview()
         let newFigure = FigureFactory.shared.fromDrawViewModel(drawViewModel: newDrawViewModel)!
@@ -599,11 +600,16 @@ extension Editor {
         self.figures.append(newFigure)
         self.editorView.addSubview(newFigure)
         
+        if (oldFigure is ConnectionFigure && newFigure is ConnectionFigure) {
+            self.updateConnectionBindings(oldConnection: oldFigure as! ConnectionFigure, newConnection: newFigure as! ConnectionFigure)
+        }
+        
         if (oldFigure is UmlFigure && newFigure is UmlFigure) {
             print("Updating received Figure connections")
             (newFigure as! UmlFigure).outgoingConnections = (oldFigure as! UmlFigure).outgoingConnections
             (newFigure as! UmlFigure).incomingConnections = (oldFigure as! UmlFigure).incomingConnections
             (newFigure as! UmlFigure).updateConnections()
+            return
         }
     }
     
@@ -611,6 +617,7 @@ extension Editor {
         for figure in self.figures {
             if (figure is UmlFigure) {
                 for pair in (figure as! UmlFigure).anchorPoints!.anchorPointsSnapEdges {
+                    // Create a detection area around connection figure extremities
                     let detectionDiameter: CGFloat = 10
                     let globalPoint: CGPoint = figure.convert(pair.value, to: self.editorView)
                     let areaRect: CGRect = CGRect(
@@ -621,14 +628,30 @@ extension Editor {
                     )
                     
                     if (areaRect.contains(drawViewModel.StylusPoints![0].getCGPoint())) {
-                        // Add outgoing Connection to figure
                         (figure as! UmlFigure).addOutgoingConnection(connection: connection, anchor: pair.key)
                     }
  
                     if (areaRect.contains(drawViewModel.StylusPoints![1].getCGPoint())) {
-                        // Add incoming Connection to figure
                         (figure as! UmlFigure).addIncomingConnection(connection: connection, anchor: pair.key)
                     }
+                }
+            }
+        }
+    }
+    
+    func updateConnectionBindings(oldConnection: ConnectionFigure, newConnection: ConnectionFigure) {
+        for figure in self.figures {
+            if (figure is UmlFigure) {
+                // Replace incoming connections
+                if let incomingAnchor: String = (figure as! UmlFigure).incomingConnections[oldConnection] {
+                (figure as! UmlFigure).incomingConnections.removeValue(forKey: oldConnection)
+                (figure as! UmlFigure).incomingConnections.updateValue(incomingAnchor, forKey: newConnection)
+                }
+                
+                // Replace outgoing connections
+                if let outgoingAnchor: String = (figure as! UmlFigure).outgoingConnections[oldConnection] {
+                    (figure as! UmlFigure).outgoingConnections.removeValue(forKey: oldConnection)
+                    (figure as! UmlFigure).outgoingConnections.updateValue(outgoingAnchor, forKey: newConnection)
                 }
             }
         }
