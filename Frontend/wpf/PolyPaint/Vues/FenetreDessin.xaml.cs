@@ -69,6 +69,8 @@ namespace PolyPaint
             (DataContext as VueModele).CollaborationClient.DeleteReceived += ReceiveDelete;
             (DataContext as VueModele).CollaborationClient.ResetReceived += ReceiveReset;
             (DataContext as VueModele).CollaborationClient.ResizeCanvasReceived += ReceiveResizeCanvas;
+            (DataContext as VueModele).CollaborationClient.KickedReceived += LeaveCanvas;
+            (DataContext as VueModele).CollaborationClient.ProtectionChanged += HandleProtectionChanged;
             (DataContext as VueModele).CollaborationClient.ClientConnected += SendSelectedStrokesToOthers;
             (DataContext as VueModele).PropertyChanged += VueModelePropertyChanged;
 
@@ -87,6 +89,15 @@ namespace PolyPaint
             surfaceDessin.Width = canvas.CanvasWidth;
             surfaceDessin.Height = canvas.CanvasHeight;
             Canvas = canvas;
+        }
+
+        private void HandleProtectionChanged(object sender, MessageArgs e)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                var protectionMessage = JsonConvert.DeserializeObject<ProtectionMessage>(e.Message);
+                (DataContext as VueModele).CanvasProtection = protectionMessage.IsProtected;
+            });
         }
 
         private void VueModelePropertyChanged(object sender, PropertyChangedEventArgs args)
@@ -211,6 +222,7 @@ namespace PolyPaint
                     {
                         Canvas.CanvasProtection = promptPassword.Password;
                         SendToCloud();
+                        (DataContext as VueModele).CollaborationClient.CollaborativeChangeProtectionAsync(Canvas.CanvasId, true);
                     }
                     else
                     {
@@ -224,6 +236,7 @@ namespace PolyPaint
             {
                 Canvas.CanvasProtection = "";
                 SendToCloud();
+                (DataContext as VueModele).CollaborationClient.CollaborativeChangeProtectionAsync(Canvas.CanvasId, false);
             }
         }
 
@@ -639,15 +652,25 @@ namespace PolyPaint
             (DataContext as VueModele).CollaborationClient.DeleteReceived -= ReceiveDelete;
             (DataContext as VueModele).CollaborationClient.ResetReceived -= ReceiveReset;
             (DataContext as VueModele).CollaborationClient.ResizeCanvasReceived -= ReceiveResizeCanvas;
+            (DataContext as VueModele).CollaborationClient.KickedReceived -= LeaveCanvas;
+            (DataContext as VueModele).CollaborationClient.ProtectionChanged -= HandleProtectionChanged;
             (DataContext as VueModele).CollaborationClient.ClientConnected -= SendSelectedStrokesToOthers;
             (DataContext as VueModele).PropertyChanged -= VueModelePropertyChanged;
             await (DataContext as VueModele).CollaborationClient.Disconnect();
             await (DataContext as VueModele).UnsubscribeChatClient();
         }
 
+        private void LeaveCanvas(object sender, MessageArgs e)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                ImportFromCloud(sender, new RoutedEventArgs());
+                MessageBox.Show("You got kicked out of the canvas");
+            });
+        }
+
         void Window_Loaded(object sender, RoutedEventArgs e)
         {
         }
     }
-
 }

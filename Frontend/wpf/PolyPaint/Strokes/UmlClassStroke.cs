@@ -70,7 +70,7 @@ namespace PolyPaint.Strokes
         {
             var nextHeight = UnrotatedTopLeft.Y + 10;
 
-            drawingContext.DrawText(Title, new Point(UnrotatedTopLeft.X + 10, nextHeight));
+            drawingContext.DrawText(Title, new Point(UnrotatedTopLeft.X + UnrotatedWidth / 2.0 - Title.Width / 2.0, nextHeight));
             nextHeight += 10 + Title.Height;
             drawingContext.DrawLine(Border, new Point(UnrotatedTopLeft.X, nextHeight), new Point(UnrotatedTopLeft.X + UnrotatedWidth, nextHeight));
             nextHeight += 10;
