@@ -90,6 +90,7 @@ extension CanvasService {
                                 let json = String(data: data, encoding: String.Encoding.utf8)
                                 print("Failure Response: \(json)")
                             }
+                            seal.fulfill(false)
                             seal.reject(Error);
                         }
 
@@ -112,32 +113,14 @@ extension CanvasService {
         return manager
     }()
     
-    public static func saveLocalCanvas(figures: [Figure]) -> Void {
-        let fileManager = FileManager.default
-        let documentsURL = fileManager.urls(for: .documentDirectory, in: .userDomainMask)[0]
-        let canvasPath = documentsURL.appendingPathComponent("canvas")
-        let fileUrl = canvasPath.appendingPathComponent("local" + ".json")
+    public static func saveOnNewFigure(figures: [Figure], editor: Editor) -> Void {
         var drawViewModels: [DrawViewModel] = []
-        print("SAVING.... " + String(figures.count) + " figures")
         for figure in figures {
             drawViewModels.append(figure.exportViewModel()!)
         }
-        
-        // some convertion logic here to convert in base64
-        do {
-            try FileManager.default.createDirectory(atPath: canvasPath.path, withIntermediateDirectories: true, attributes: nil)
-            
-            if let encodedData = try? JSONEncoder().encode(drawViewModels){
-                do {
-                    try encodedData.write(to: fileUrl)
-                }
-                catch {
-                    print("Failed to write JSON data: \(error.localizedDescription)")
-                }
-            }
-        } catch {
-            print("Folder exists already")
-        }
+        currentCanvas.drawViewModels = String(data: try! JSONEncoder().encode(drawViewModels), encoding: .utf8)!
+        currentCanvas.image = (editor.export().pngData()?.base64EncodedString())!
+        self.SaveOnline(canvas: currentCanvas)
     }
     
     

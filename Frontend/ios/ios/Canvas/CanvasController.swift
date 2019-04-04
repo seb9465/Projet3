@@ -181,7 +181,7 @@ class CanvasController: UIViewController {
         }
     }
     @IBAction func saveButton(_ sender: Any) {
-        self.editor.save();
+        self.editor.export();
     }
     @IBAction func quitButton(_ sender: Any) {
         let alert = UIAlertController(title: "Alert", message: "Would you like to quit ?", preferredStyle: .alert);
@@ -215,17 +215,25 @@ class CanvasController: UIViewController {
     @objc func reachabilityChanged(notification: NSNotification) {
         if self.reach!.isReachableViaWiFi() || self.reach!.isReachableViaWWAN() {
             CollaborationHub.shared!.disconnectFromHub()
-            currentCanvas.image = (self.exportPNG().pngData()?.base64EncodedString())!
             var viewModels : [DrawViewModel] = []
             for figure in self.editor.figures {
                 viewModels.append(figure.exportViewModel()!)
             }
-            currentCanvas.drawViewModels = String(data: try! JSONEncoder().encode(viewModels), encoding: .utf8)!
-            CanvasService.SaveOnline(canvas: currentCanvas).done({(succes) in 
-                let updatedAlert = UIAlertController(title: "Canvas Updated", message: "All your modification while being offline were saved to the cloud!", preferredStyle: .alert)
-                updatedAlert.addAction(UIAlertAction(title: "OK", style: .default))
-                self.present(updatedAlert, animated: true, completion: nil);
-            })
+            let viewModelsSorted = viewModels.sorted(by: { $0.ItemType!.rawValue < $1.ItemType!.rawValue })
+                let existingViewModel = String(data: try! JSONEncoder().encode(viewModelsSorted), encoding: .utf8)!
+
+                currentCanvas.image = (self.exportPNG().pngData()?.base64EncodedString())!
+                currentCanvas.drawViewModels = existingViewModel
+                CanvasService.SaveOnline(canvas: currentCanvas).done({(succes) in
+                    if(succes) {
+                    let updatedAlert = UIAlertController(title: "Canvas Updated", message: "All your modification while being offline were saved to the cloud!", preferredStyle: .alert)
+                    updatedAlert.addAction(UIAlertAction(title: "OK", style: .default))
+                    self.present(updatedAlert, animated: true, completion: nil);
+                    } else {
+                    let errorAlert = UIAlertController(title: "Canvas Update Error", message: "Error while updating from cache.", preferredStyle: .alert)
+                    errorAlert.addAction(UIAlertAction(title: "OK", style: .default))
+                    self.present(errorAlert, animated: true, completion: nil);
+                    }})
             SoundNotification.play(sound: .EndVideo)
             self.connectionLabel.textColor = UIColor.green
             self.connectionLabel.text = "Online"
