@@ -179,6 +179,7 @@ namespace PolyPaint.Modeles
             // We travel the StrokeCollection inversely to select the first plan item first
             // if some items overlap.
             StrokeCollection strokeToSelect = new StrokeCollection();
+            PhaseStroke potentialPhase = null;
             for (int i = traits.Count - 1; i >= 0; i--)
             {
                 Rect box = traits[i].GetBounds();
@@ -187,12 +188,21 @@ namespace PolyPaint.Modeles
                 {
                     if (!vm.GetOnlineSelection().Values.Any(x => x.Any(y => y.Guid == ((AbstractStroke)traits[i]).Guid.ToString())))
                     {
+                        if (traits[i] is PhaseStroke)
+                        {
+                            potentialPhase = (PhaseStroke)traits[i];
+                            continue;
+                        }
                         strokeToSelect.Add(traits[i]);
                         surfaceDessin.Select(strokeToSelect);
                     }
-
                     break;
                 }
+            }
+            if (strokeToSelect.Count == 0 && potentialPhase != null)
+            {
+                strokeToSelect.Add(potentialPhase);
+                surfaceDessin.Select(strokeToSelect);
             }
             return strokeToSelect;
         }
