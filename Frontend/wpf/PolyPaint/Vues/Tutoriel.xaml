@@ -19,7 +19,7 @@
         <TextBlock HorizontalAlignment="Center" MaxWidth="500" TextWrapping="Wrap">
             Tutorial text goes here lalalalaa Tutorial text goes here lalalalaa Tutorial text goes here lalalalaa Tutorial text goes here lalalalaa Tutorial text goes here lalalalaaTutorial text goes here lalalalaa
         </TextBlock>
-        <ToggleButton Width="40" Height="40" x:Name="nextButton" Style="{StaticResource MaterialDesignActionToggleButton}" Foreground="Black" Background="Transparent" Click="_Click"  HorizontalAlignment="Right" Margin="0,0,-10,-80">
+        <ToggleButton Width="40" Height="40" x:Name="nextButton" Style="{StaticResource MaterialDesignActionToggleButton}" Foreground="Black" Background="Transparent" Click="nextPage_Click"  HorizontalAlignment="Right" Margin="0,0,-10,-80">
             <ToggleButton.Content>
                 <Image Source="/Resources/curl.png"  />
             </ToggleButton.Content>
