@@ -28,16 +28,13 @@ class DashboardController: UIViewController, UITextFieldDelegate {
         AuthentificationAPI.logout()
         UserDefaults.standard.removePersistentDomain(forName: "token");
         
-        let mainView: UIStoryboard = UIStoryboard(name: "Main", bundle: nil);
-        let viewController : UIViewController = mainView.instantiateViewController(withIdentifier: "LoginStoryboard") as UIViewController;
-        
         let transition = CATransition();
         transition.duration = 0.3;
         transition.type = CATransitionType.reveal;
         transition.subtype = CATransitionSubtype.fromBottom;
         self.view.window!.layer.add(transition, forKey: kCATransition);
         
-        self.present(viewController, animated: false, completion: nil);
+        self.dismiss(animated: true, completion: nil)
     }
     @IBAction func createNewCanvas(_ sender: Any) {
         var newCanvas: Canvas = Canvas()
