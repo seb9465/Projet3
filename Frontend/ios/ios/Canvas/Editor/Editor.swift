@@ -574,7 +574,8 @@ extension Editor: CollaborationHubDelegate {
     }
     
     public func loadCanvas(drawViewModels: [DrawViewModel]) {
-        for drawViewModel in drawViewModels  {
+        let drawViewModelsSorted = drawViewModels.sorted(by: { $0.ItemType!.rawValue < $1.ItemType!.rawValue })
+        for drawViewModel in drawViewModelsSorted  {
             insertNewDrawViewModel(drawViewModel: drawViewModel)
         }
     }
