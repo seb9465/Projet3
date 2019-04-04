@@ -10,6 +10,15 @@ namespace PolyPaint.API.Handlers
         public readonly static ConcurrentDictionary<string, List<string>> UserGroupMap
             = new ConcurrentDictionary<string, List<string>>();
 
+        // key: ConnectionId, value: Group
+        public readonly static ConcurrentDictionary<string, string> UserConnections
+            = new ConcurrentDictionary<string, string>();
+
+        public static void AddOrUpdateConnectionMap(string connectionId, string groupId)
+        {
+            UserConnections.AddOrUpdate(connectionId, groupId, (k, v) => { return groupId; });
+        }
+
         public static void AddOrUpdateMap(string group, string id)
         {
             UserGroupMap.AddOrUpdate(group, new List<string>() { id }, (k, v) =>

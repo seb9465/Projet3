@@ -112,14 +112,38 @@ namespace PolyPaint.API.Hubs
             var user = await GetUserFromToken(Context.User);
             if (user != null)
             {
-                await Groups.AddToGroupAsync(Context.ConnectionId, connectionMessage.ChannelId);
-                UserHandler.AddOrUpdateMap(connectionMessage.ChannelId, user.Id);
+                await AddToGroup(Context.ConnectionId, connectionMessage.ChannelId);
                 var returnMessage = new ConnectionMessage(user.UserName, channelId: connectionMessage.ChannelId);
                 await Clients.OthersInGroup(connectionMessage.ChannelId).SendAsync(
                     "ConnectToChannel",
                     returnMessage.ToString()
                 );
                 await Clients.Caller.SendAsync("ConnectToChannelSender", returnMessage.ToString());
+            }
+        }
+
+        public async Task ChangeProtection(string protectionMessage)
+        {
+            var message = JsonConvert.DeserializeObject<ProtectionMessage>(protectionMessage);
+
+            var user = await GetUserFromToken(Context.User);
+            if (user != null)
+            {
+                var channelId = message.ChannelId;
+                if (UserHandler.UserGroupMap.TryGetValue(channelId, out var users) && users.Contains(user.Id))
+                {
+                    if (message.IsProtected)
+                    {
+
+                        await Clients.OthersInGroup(channelId).SendAsync("Kicked");
+                        foreach (var other in UserHandler.UserConnections.Where(pair => pair.Value == channelId)
+                            .Select(pair => pair.Key))
+                        {
+                            await RemoveFromGroup(other, channelId);
+                        }
+                    }
+                    await Clients.OthersInGroup(channelId).SendAsync("ChangeProtection", message.ToString());
+                }
             }
         }
     }

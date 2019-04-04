@@ -51,7 +51,7 @@ namespace PolyPaint.API.Hubs
             var user = await GetUserFromToken(Context.User);
             if (user != null)
             {
-                await Groups.AddToGroupAsync(Context.ConnectionId, connectionMessage.ChannelId);
+                await AddToGroup(Context.ConnectionId, connectionMessage.ChannelId);
                 UserHandler.AddOrUpdateMap(connectionMessage.ChannelId, user.Id);
                 var returnMessage = new ConnectionMessage(user.UserName, channelId: connectionMessage.ChannelId);
                 await Clients.Group(connectionMessage.ChannelId).SendAsync(
@@ -62,13 +62,19 @@ namespace PolyPaint.API.Hubs
             }
         }
 
+        protected async Task AddToGroup(string connectionId, string channelId)
+        {
+            await Groups.AddToGroupAsync(connectionId, channelId);
+            UserHandler.AddOrUpdateConnectionMap(connectionId, channelId);
+        }
+
         public async Task DisconnectFromChannel(string message)
         {
             var connectionMessage = JsonConvert.DeserializeObject<ConnectionMessage>(message);
             var user = await GetUserFromToken(Context.User);
             if (user != null)
             {
-                await Groups.RemoveFromGroupAsync(Context.ConnectionId, connectionMessage.ChannelId);
+                await RemoveFromGroup(Context.ConnectionId, connectionMessage.ChannelId);
                 if (UserHandler.UserGroupMap.TryGetValue(connectionMessage.ChannelId, out var list))
                 {
                     list.Remove(user.Id);
@@ -80,6 +86,12 @@ namespace PolyPaint.API.Hubs
                     await Clients.Caller.SendAsync("DisconnectFromChannelSender", returnMessage.ToString());
                 }
             }
+        }
+
+        protected async Task RemoveFromGroup(string connectionId, string channelId)
+        {
+            await Groups.RemoveFromGroupAsync(connectionId, channelId);
+            UserHandler.UserConnections.Remove(connectionId, out var _);
         }
 
         public override async Task OnConnectedAsync()
@@ -96,9 +108,9 @@ namespace PolyPaint.API.Hubs
             var user = await GetUserFromToken(Context.User);
             if (user != null)
             {
-                foreach(var canvasId in _userService.GetAllCanvas().Select(x => x.CanvasId))
+                foreach (var canvasId in _userService.GetAllCanvas().Select(x => x.CanvasId))
                 {
-                    await DisconnectFromChannel(new ConnectionMessage(user.UserName, channelId: canvasId).ToString());          
+                    await DisconnectFromChannel(new ConnectionMessage(user.UserName, channelId: canvasId).ToString());
                 }
                 await base.OnDisconnectedAsync(e);
             }
