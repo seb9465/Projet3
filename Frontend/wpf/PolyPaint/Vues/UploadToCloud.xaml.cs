@@ -1,32 +1,43 @@
 ﻿using PolyPaint.Modeles;
-using PolyPaint.VueModeles;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace PolyPaint.Vues
 {
     /// <summary>
     /// Logique d'interaction pour UploadToCloud.xaml
     /// </summary>
-    public partial class UploadToCloud : Window
+    public partial class UploadToCloud : Window, INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
         public ChatClient ChatClient;
+        private bool _isProtected;
+        public bool IsProtected
+        {
+            get { return _isProtected; }
+            set
+            {
+                _isProtected = value;
+                ProprieteModifiee();
+                if (passwordTextBox != null && !_isProtected) passwordTextBox.Clear();
+            }
+        }
 
         public UploadToCloud(ChatClient chatClient)
         {
+            DataContext = this;
             InitializeComponent();
             ChatClient = chatClient;
+            _isProtected = protectionComboBox.Text == "Protected";
+        }
+
+        protected virtual void ProprieteModifiee([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         private void Ok_Click(object sender, RoutedEventArgs e)
@@ -39,6 +50,11 @@ namespace PolyPaint.Vues
             Close();
             fenetreDessin.Show();
             Close();
+        }
+
+        private void protectionComboBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            IsProtected = (string)((ComboBoxItem)e.AddedItems[0]).Content == "Protected";
         }
     }
 }

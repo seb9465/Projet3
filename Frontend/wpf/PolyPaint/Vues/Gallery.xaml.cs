@@ -1,31 +1,20 @@
 ﻿using MaterialDesignThemes.Wpf;
 using Newtonsoft.Json;
 using PolyPaint.Common.Collaboration;
-using PolyPaint.Common.Messages;
 using PolyPaint.Modeles;
 using PolyPaint.Structures;
 using PolyPaint.Utilitaires;
 using PolyPaint.VueModeles;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Ink;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace PolyPaint.Vues
 {
@@ -194,19 +183,16 @@ namespace PolyPaint.Vues
             List<DrawViewModel> drawViewModels = JsonConvert.DeserializeObject<List<DrawViewModel>>(SelectedCanvas.DrawViewModels);
             if (SelectedCanvas.CanvasProtection != "" && SelectedCanvas.CanvasAutor != username)
             {
-                imageProtection = new ImageProtection();
-                if (imageProtection.PasswordEntered == SelectedCanvas.CanvasProtection)
+                var prompt = new PromptPassword(SelectedCanvas, drawViewModels, (DataContext as UserDataContext).ChatClient);
+                prompt.Closing += (a, n) =>
                 {
-                    FenetreDessin fenetreDessin = new FenetreDessin(drawViewModels, SelectedCanvas, (DataContext as UserDataContext).ChatClient);
-                    Application.Current.MainWindow = fenetreDessin;
-                    Close();
-                    fenetreDessin.Show();
-                }
-                else
-                {
-                    SelectedCanvas = null;
-                    MessageBox.Show("Wrong password");
-                }
+                    if(prompt.Password == SelectedCanvas.CanvasProtection)
+                    {
+                        Close();
+                    }
+                };
+                prompt.ShowDialog();
+                SelectedCanvas = null;
             }
             else
             {

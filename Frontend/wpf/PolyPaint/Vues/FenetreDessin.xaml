@@ -25,6 +25,7 @@
         <convertisseurs:ConvertisseurModeEdition x:Key="convertisseurModeEdition" />
         <convertisseurs:ConvertisseurRoomCouleurFond x:Key="convertisseurRoomCouleurFond" />
         <convertisseurs:ConvertisseurRoomContent x:Key="convertisseurRoomContent" />
+        <convertisseurs:ConvertisseurCanvasProtectionText x:Key="convertisseurCanvasProtectionText" />
     </Window.Resources>
     <StackPanel>
         <DockPanel>
@@ -39,6 +40,10 @@
              Width="140" Height="40" HorizontalAlignment="Right" Background="Gainsboro" BorderBrush="Gray" Margin="0,0,0,0" >
                 <Label FontWeight="Bold">Resize Canvas</Label>
             </Button>
+            <ToggleButton Margin="30,0,0,0" Style="{StaticResource MaterialDesignSwitchToggleButton}" Click="ToggleProtection" 
+                IsChecked="{Binding CanvasProtection}"
+                IsEnabled="{Binding Path=IsCreatedByUser}"/>
+            <TextBlock VerticalAlignment="Center" Margin="10,0,0,0" Text="{Binding CanvasProtection, Converter={StaticResource convertisseurCanvasProtectionText}, UpdateSourceTrigger=PropertyChanged}" />
             <Button Style="{StaticResource MaterialDesignRaisedLightButton}" Click="Disconnect_Click"
              Width="140" Height="40" HorizontalAlignment="Right" Background="Gainsboro" BorderBrush="Gray" Margin="0,0,0,0" >
                 <StackPanel Orientation="Horizontal">
