@@ -45,7 +45,7 @@ namespace PolyPaint.API.Hubs
             }
         }
 
-        public async Task ConnectToChannel(string message)
+        public virtual async Task ConnectToChannel(string message)
         {
             var connectionMessage = JsonConvert.DeserializeObject<ConnectionMessage>(message);
             var user = await GetUserFromToken(Context.User);
