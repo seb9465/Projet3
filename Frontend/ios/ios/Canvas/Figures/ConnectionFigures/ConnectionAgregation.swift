@@ -12,11 +12,13 @@ class ConnectionAgregation: ConnectionFigure {
     override func draw(_ rect: CGRect) {
         self.lineColor.setStroke()
         let bezierPath = UIBezierPath()
+        let bezierPath2 = UIBezierPath()
+        
         bezierPath.move(to: points[.ORIGIN]!)
         bezierPath.addLine(to: points[.ELBOW]!)
         bezierPath.addLine(to: points[.DESTINATION]!)
-        bezierPath.lineWidth = 2
-        bezierPath.stroke()
+        bezierPath.lineWidth = self.lineWidth
+       
         
         let arrowLength: CGFloat = 14
         let dx = points[.DESTINATION]!.x - points[.ELBOW]!.x
@@ -33,7 +35,13 @@ class ConnectionAgregation: ConnectionFigure {
         let midx = (x2 + x) / 2
         let midy = (y2 + y) / 2
         
-        let bezierPath2 = UIBezierPath()
+        if (self.isBorderDashed) {
+            bezierPath.setLineDash([4,4], count: 1, phase: 0)
+            bezierPath2.setLineDash([4,4], count: 1, phase: 0)
+        }
+        
+        bezierPath.stroke()
+        
         bezierPath2.move(to: CGPoint(x: midx - (points[.DESTINATION]!.x - midx), y: midy - (points[.DESTINATION]!.y - midy)))
         bezierPath2.addLine(to: CGPoint(x: x, y: y))
         bezierPath2.addLine(to: points[.DESTINATION]!)
@@ -42,7 +50,7 @@ class ConnectionAgregation: ConnectionFigure {
         bezierPath2.close()
         UIColor.white.setFill()
         bezierPath2.fill()
-        bezierPath2.lineWidth = 2
+        bezierPath2.lineWidth = self.lineWidth
         bezierPath2.stroke()
     }
 }

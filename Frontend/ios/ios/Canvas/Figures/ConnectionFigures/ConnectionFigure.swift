@@ -43,6 +43,7 @@ class ConnectionFigure : Figure {
         self.itemType = drawViewModel.ItemType!
         self.lineColor = drawViewModel.BorderColor?.getUIColor()
         self.lineWidth = CGFloat(drawViewModel.BorderThickness!)
+        self.isBorderDashed = (drawViewModel.BorderStyle! == "dash") ? true : false
         self.backgroundColor = UIColor.clear
         self.initializePoints(origin: firstPoint, destination: lastPoint)
         self.points.updateValue(drawViewModel.LastElbowPosition!.getCGPoint(), forKey: .ELBOW)
