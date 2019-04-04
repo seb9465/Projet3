@@ -31,6 +31,8 @@ class Figure: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func translate(by: CGPoint) {}
+    
     public func setFigureName(name: String) {
         self.name = name
         setNeedsDisplay()

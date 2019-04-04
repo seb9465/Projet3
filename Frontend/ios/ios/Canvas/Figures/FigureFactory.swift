@@ -32,15 +32,14 @@ class FigureFactory {
                 return UmlActivityFigure(drawViewModel: drawViewModel)
             case .Agregation:
                 return ConnectionAgregation(drawViewModel: drawViewModel)
-//                return nil
             case .BidirectionalAssociation:
-                return nil
+                return ConnectionAssociationBi(drawViewModel: drawViewModel)
             case .UniderectionalAssoication:
-                return nil
+                return ConnectionAssociationUni(drawViewModel: drawViewModel)
             case .Composition:
-                return nil
+                return ConnectionComposition(drawViewModel: drawViewModel)
             case .Inheritance:
-                return nil
+                return ConnectionHeritage(drawViewModel: drawViewModel)
         }
     }
     
@@ -51,7 +50,6 @@ class FigureFactory {
             return UmlClassFigure(origin: touchedPoint!)
         case .Role:
             return UmlActorFigure(origin: touchedPoint!)
-//            return UmlImageFigure(origin: touchedPoint, figureType: UMLImageFigureType.actor)
         case .Artefact:
             return UmlArtefactFigure(origin: touchedPoint!)
         case .Activity:
@@ -65,16 +63,16 @@ class FigureFactory {
         case .Image:
             return UMLTextFigure(origin: touchedPoint!)
         case .Agregation:
-//            return nil
             return ConnectionAgregation(origin: source!, destination: destination!, itemType: type)
         case .BidirectionalAssociation:
-            return nil
+            return ConnectionAssociationBi(origin: source!, destination: destination!, itemType: type)
         case .UniderectionalAssoication:
-            return nil
+            return ConnectionAssociationUni(origin: source!, destination: destination!, itemType: type)
         case .Composition:
-            return nil
+            return ConnectionComposition(origin: source!, destination: destination!, itemType: type)
+//            return nil
         case .Inheritance:
-            return nil
+            return ConnectionHeritage(origin: source!, destination: destination!, itemType: type)
         }
     }
 }

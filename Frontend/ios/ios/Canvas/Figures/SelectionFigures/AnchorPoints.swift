@@ -18,8 +18,8 @@ protocol AnchorPointsProtocol{
 
 class AnchorPoints {
     
-    var anchorDiameter: CGFloat = 14
-    var anchorRadius: CGFloat = 7
+    var anchorDiameter: CGFloat = 6
+    var anchorRadius: CGFloat = 3
     
     var anchorPointsTop: CAShapeLayer!;
     var anchorPointsLeft: CAShapeLayer!;
