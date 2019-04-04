@@ -112,8 +112,7 @@ class ChatService {
             print("[ CHAT ] Invoked FetchChannels");
             
             if let e = error {
-                print("ERROR while invoking FetchChannels");
-                print(e);
+                print("ERROR while invoking FetchChannels : ", e);
                 self.invokeChannelsWhenConnected();
             }
         });
@@ -186,9 +185,9 @@ class ChatService {
                 }
             }
         });
-        
+        print(self._connected);
         self.invokeChannelsWhenConnected();
-//        self.invokeFetchChannels();
+        self.invokeFetchChannels();
     }
     
     // MARK: Private functions
