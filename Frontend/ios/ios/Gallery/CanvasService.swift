@@ -96,7 +96,7 @@ extension CanvasService {
                 };
             }
         }
-    
+
     private static var Manager : Alamofire.SessionManager = {
         // Create the server trust policies
         let serverTrustPolicies: [String: ServerTrustPolicy] = [

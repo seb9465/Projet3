@@ -11,10 +11,15 @@ import UIKit
 class GalleryCell: UICollectionViewCell {
 
     @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var lockImage: UIImageView!
     @IBOutlet weak var nameLabel: UILabel!
+    public var image: String = ""
     public var visibility: String = ""
     public var password: String = ""
     public var canvasId: String = ""
+    public var author: String = ""
+    public var drawViewModels: String = ""
+
     override func awakeFromNib() {
         super.awakeFromNib()
         self.layer.cornerRadius = 5;
@@ -25,9 +30,12 @@ class GalleryCell: UICollectionViewCell {
         let dataDecoded : Data = Data(base64Encoded: bytesString, options: .ignoreUnknownCharacters)!
         let decodedimage = UIImage(data: dataDecoded)
         self.imageView.image = decodedimage
+        if(!self.password.isEmpty) {
+            self.lockImage.isHidden = false
+        } else {
+            self.lockImage.isHidden = true
+        }
+        self.lockImage.setNeedsDisplay()
         self.imageView.setNeedsDisplay()
     }
-    
-    
-    
 }

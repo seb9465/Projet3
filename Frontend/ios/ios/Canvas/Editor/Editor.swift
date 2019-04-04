@@ -17,7 +17,7 @@ class Editor {
     
     private var undoArray: [Figure] = []
     private var redoArray: [Figure] = [];
-    private var figures: [Figure] = [];
+    public var figures: [Figure] = [];
     private var oldRotationAngle: Int = 0
     
     public var selectedFigures: [Figure] = [];
@@ -561,12 +561,21 @@ extension Editor: CollaborationHubDelegate {
                 self.select(drawViewModels: itemMessage.Items, username: itemMessage.Username)
                 return
             }
+                self.insertNewDrawViewModel(drawViewModel: drawViewModel)
+        }
+    }
 
-            let figure = self.insertFigure(drawViewModel: drawViewModel)
-            if (drawViewModel.ItemType?.description == "Connection") {
-                print("Connecting to other figures")
-                self.connectConnectionToFigures(drawViewModel: drawViewModel, connection: (figure as! ConnectionFigure))
-            }
+    public func insertNewDrawViewModel(drawViewModel: DrawViewModel) {
+        let figure = self.insertFigure(drawViewModel: drawViewModel)
+        if (drawViewModel.ItemType?.description == "Connection") {
+            print("Connecting to other figures")
+            self.connectConnectionToFigures(drawViewModel: drawViewModel, connection: (figure as! ConnectionFigure))
+        }
+    }
+    
+    public func loadCanvas(drawViewModels: [DrawViewModel]) {
+        for drawViewModel in drawViewModels  {
+            insertNewDrawViewModel(drawViewModel: drawViewModel)
         }
     }
     
