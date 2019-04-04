@@ -25,23 +25,34 @@
         <convertisseurs:ConvertisseurModeEdition x:Key="convertisseurModeEdition" />
         <convertisseurs:ConvertisseurRoomCouleurFond x:Key="convertisseurRoomCouleurFond" />
         <convertisseurs:ConvertisseurRoomContent x:Key="convertisseurRoomContent" />
+        <convertisseurs:ConvertisseurCanvasProtectionText x:Key="convertisseurCanvasProtectionText" />
     </Window.Resources>
     <StackPanel>
         <DockPanel>
             <Button Style="{StaticResource MaterialDesignRaisedLightButton}" Click="ImportFromCloud"
-             Width="120" Height="40"  Background="Gainsboro"  HorizontalAlignment="Left" BorderBrush="Gray" Margin="0,0,10,0" >
+             Height="40"  Background="Gainsboro"  HorizontalAlignment="Left" BorderBrush="Gray" Margin="0,0,10,0" >
                 <StackPanel Orientation="Horizontal">
                     <materialDesign:PackIcon Kind="ArrowBack" Height="24" Width="24"/>
                     <Label FontWeight="Bold">Gallery</Label>
+                    <Grid Name="progressBar"  Visibility="Collapsed" Margin="10,0,0,0">
+                        <ProgressBar  Style="{StaticResource MaterialDesignCircularProgressBar}" Value="0" IsIndeterminate="True" Width="20" Height="20" />
+                    </Grid>
                 </StackPanel>
             </Button>
             <Button Style="{StaticResource MaterialDesignRaisedLightButton}" Click="ResizeCanva_Click"
-             Width="150" Height="40" HorizontalAlignment="Right" Background="Gainsboro" BorderBrush="Gray" Margin="0,0,0,0" >
-                Resize Canvas
+             Width="140" Height="40" HorizontalAlignment="Right" Background="Gainsboro" BorderBrush="Gray" Margin="0,0,0,0" >
+                <Label FontWeight="Bold">Resize Canvas</Label>
             </Button>
+            <ToggleButton Margin="30,0,0,0" Style="{StaticResource MaterialDesignSwitchToggleButton}" Click="ToggleProtection" 
+                IsChecked="{Binding CanvasProtection}"
+                IsEnabled="{Binding Path=IsCreatedByUser}"/>
+            <TextBlock VerticalAlignment="Center" Margin="10,0,0,0" Text="{Binding CanvasProtection, Converter={StaticResource convertisseurCanvasProtectionText}, UpdateSourceTrigger=PropertyChanged}" />
             <Button Style="{StaticResource MaterialDesignRaisedLightButton}" Click="Disconnect_Click"
-             Width="60" Height="40" HorizontalAlignment="Right" Background="Gainsboro" BorderBrush="Gray" Margin="0,0,0,0" >
-                <materialDesign:PackIcon Kind="LanDisconnect" Height="24" Width="24"/>
+             Width="140" Height="40" HorizontalAlignment="Right" Background="Gainsboro" BorderBrush="Gray" Margin="0,0,0,0" >
+                <StackPanel Orientation="Horizontal">
+                    <Label FontWeight="Bold">Disconnect</Label>
+                    <materialDesign:PackIcon Kind="LanDisconnect" Height="24" Width="24"/>
+                </StackPanel>
             </Button>
         </DockPanel>
 
@@ -58,30 +69,30 @@
                         </LinearGradientBrush>
                     </StackPanel.Background>
                     <Button Name="load" Click="LoadImage"
-                    Style="{StaticResource MaterialDesignFloatingActionMiniButton}" HorizontalAlignment="Left" Margin="10" ToolTip="Charger un canevas">
+                    Style="{StaticResource MaterialDesignFloatingActionMiniButton}" HorizontalAlignment="Left" Margin="10" ToolTip="Load a canvas">
                         <materialDesign:PackIcon Kind="FileUploadOutline" Height="24" Width="24"/>
                     </Button>
-                    <Button  Style="{StaticResource MaterialDesignRaisedButton}" ToolTip="Ajouter une image au canevas" 
+                    <Button  Style="{StaticResource MaterialDesignRaisedButton}" ToolTip="Add a picture to canvas" 
                     x:Name="AddImage" Width="30" Height="30" Margin="5" Padding="0" Click="AddImageToCanvas" FontSize="18">
                         <materialDesign:PackIcon Kind="FileImage" />
                     </Button>
 
-                    <Button  Style="{StaticResource MaterialDesignRaisedButton}" ToolTip="Télécharger le canevas en image PNG." 
+                    <Button  Style="{StaticResource MaterialDesignRaisedButton}" ToolTip="Download canvas as PNG" 
                     x:Name="DownloadJPG" Width="30" Height="30" Margin="5" Padding="0" Click="DownloadCanvasAsJPG" FontSize="18">
                         <materialDesign:PackIcon Kind="FileDownload" />
                     </Button>
 
-                    <Button  Style="{StaticResource MaterialDesignRaisedButton}" ToolTip="Réinitialiser le canevas" 
+                    <Button  Style="{StaticResource MaterialDesignRaisedButton}" ToolTip="Reinitialize canvas" 
                     x:Name="reinitialiser" Width="30" Height="30" Margin="5" Padding="0" Click="Reinitialiser_Click" FontSize="18">
                         <materialDesign:PackIcon Kind="Recycle" />
                     </Button>
 
-                    <Button Style="{StaticResource MaterialDesignRaisedButton}" ToolTip="Annuler la dernière action" 
+                    <Button Style="{StaticResource MaterialDesignRaisedButton}" ToolTip="Undo" 
                         x:Name="empiler" Width="30" Height="30" Margin="5" Padding="0"  Command="{Binding Empiler}" FontSize="18">
                         <materialDesign:PackIcon Kind="UndoVariant" />
                     </Button>
                     <Button x:Name="depiler" Width="30" Height="30" Margin="5" Padding="0" Command="{Binding Depiler}" FontSize="18">
-                        <materialDesign:PackIcon Kind="RedoVariant" ToolTip="Refaire la dernière action" />
+                        <materialDesign:PackIcon Kind="RedoVariant" ToolTip="Redo" />
                     </Button>
 
                     <StackPanel Orientation="Horizontal">
@@ -90,19 +101,19 @@
                     <StackPanel Orientation="Vertical"  VerticalAlignment="Bottom" Margin="0,-2">
 
                         <Button Name="Copier" Click="DupliquerSelection"
-                        Style="{StaticResource MaterialDesignRaisedLightButton}" HorizontalAlignment="Left" ToolTip="Dupliquer la sélection" 
+                        Style="{StaticResource MaterialDesignRaisedLightButton}" HorizontalAlignment="Left" ToolTip="Duplicate selection" 
                         Background="Transparent" BorderBrush="Transparent">
                             <materialDesign:PackIcon Kind="ContentCopy" Height="17" Width="17" />
                         </Button>
                         <Button Name="Couper" Click="SupprimerSelection"
-                    Style="{StaticResource MaterialDesignRaisedLightButton}" HorizontalAlignment="Left" ToolTip="Couper la sélection"
+                    Style="{StaticResource MaterialDesignRaisedLightButton}" HorizontalAlignment="Left" ToolTip="Cut selection"
                         Background="Transparent" BorderBrush="Transparent">
                             <materialDesign:PackIcon Kind="ContentCut" Height="17" Width="17" />
                         </Button>
 
                     </StackPanel>
                     <Button Name="lasso"
-                        Style="{StaticResource MaterialDesignRaisedLightButton}" HorizontalAlignment="Left" ToolTip="Sélection Lasso" 
+                        Style="{StaticResource MaterialDesignRaisedLightButton}" HorizontalAlignment="Left" ToolTip="Lasso selection" 
                         BorderBrush="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurBordure}, ConverterParameter=lasso, UpdateSourceTrigger=PropertyChanged}" 
                             Background="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurCouleurFond}, ConverterParameter=lasso, UpdateSourceTrigger=PropertyChanged}" 
                             Command="{Binding Path=ChoisirOutil}"
@@ -112,7 +123,7 @@
                         </StackPanel>
                     </Button>
                     <Button Name="select"
-                        Style="{StaticResource MaterialDesignRaisedLightButton}" HorizontalAlignment="Left" ToolTip="Sélection" 
+                        Style="{StaticResource MaterialDesignRaisedLightButton}" HorizontalAlignment="Left" ToolTip="Select" 
                         BorderBrush="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurBordure}, ConverterParameter=select, UpdateSourceTrigger=PropertyChanged}" 
                             Background="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurCouleurFond}, ConverterParameter=select, UpdateSourceTrigger=PropertyChanged}" 
                             Command="{Binding Path=ChoisirOutil}"
@@ -122,7 +133,7 @@
                         </StackPanel>
                     </Button>
                     <Button Name="change_text"
-                        Style="{StaticResource MaterialDesignRaisedLightButton}" HorizontalAlignment="Left" ToolTip="Modifier le texte d'un objet" 
+                        Style="{StaticResource MaterialDesignRaisedLightButton}" HorizontalAlignment="Left" ToolTip="Change element's text" 
                         BorderBrush="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurBordure}, ConverterParameter=change_text, UpdateSourceTrigger=PropertyChanged}" 
                             Background="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurCouleurFond}, ConverterParameter=change_text, UpdateSourceTrigger=PropertyChanged}" 
                             Command="{Binding Path=ChoisirOutil}"
@@ -145,7 +156,7 @@
                         </StackPanel>
                     </Button>
                     <Button Name="activity"
-                        Style="{StaticResource MaterialDesignRaisedLightButton}" HorizontalAlignment="Left" ToolTip="Activité" 
+                        Style="{StaticResource MaterialDesignRaisedLightButton}" HorizontalAlignment="Left" ToolTip="Activity" 
                         BorderBrush="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurBordure}, ConverterParameter=activity, UpdateSourceTrigger=PropertyChanged}" 
                         Background="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurCouleurFond}, ConverterParameter=activity, UpdateSourceTrigger=PropertyChanged}" 
                         Command="{Binding Path=ChoisirOutil}"
@@ -155,7 +166,7 @@
                         </StackPanel>
                     </Button>
                     <Button Name="artefact"
-                        Style="{StaticResource MaterialDesignRaisedLightButton}" HorizontalAlignment="Left" ToolTip="Artéfact" 
+                        Style="{StaticResource MaterialDesignRaisedLightButton}" HorizontalAlignment="Left" ToolTip="Artefact" 
                         BorderBrush="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurBordure}, ConverterParameter=artefact, UpdateSourceTrigger=PropertyChanged}" 
                         Background="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurCouleurFond}, ConverterParameter=artefact, UpdateSourceTrigger=PropertyChanged}" 
                         Command="{Binding Path=ChoisirOutil}"
@@ -185,7 +196,7 @@
                         </StackPanel>
                     </Button>
                     <Button Name="uml_class"
-                        Style="{StaticResource MaterialDesignRaisedLightButton}" HorizontalAlignment="Left" ToolTip="Classe UML" 
+                        Style="{StaticResource MaterialDesignRaisedLightButton}" HorizontalAlignment="Left" ToolTip="UML class" 
                         BorderBrush="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurBordure}, ConverterParameter=uml_class, UpdateSourceTrigger=PropertyChanged}" 
                         Background="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurCouleurFond}, ConverterParameter=uml_class, UpdateSourceTrigger=PropertyChanged}" 
                         Command="{Binding Path=ChoisirOutil}"
@@ -195,7 +206,7 @@
                         </StackPanel>
                     </Button>
                     <Button Name="text"
-                        Style="{StaticResource MaterialDesignRaisedLightButton}" HorizontalAlignment="Left" ToolTip="Texte" 
+                        Style="{StaticResource MaterialDesignRaisedLightButton}" HorizontalAlignment="Left" ToolTip="Text" 
                         BorderBrush="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurBordure}, ConverterParameter=text, UpdateSourceTrigger=PropertyChanged}" 
                         Background="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurCouleurFond}, ConverterParameter=text, UpdateSourceTrigger=PropertyChanged}" 
                         Command="{Binding Path=ChoisirOutil}"
@@ -391,8 +402,8 @@
                       DragStarted="GlisserCommence" DragCompleted="GlisserTermine"
                       />
                 <Border BorderThickness="5,5,0,0" Grid.ColumnSpan="2" Margin="0,0,-696,-236" Grid.RowSpan="2">
-                    <InkCanvas ClipToBounds="True" Grid.Column="0" Grid.Row="0" Name="surfaceDessin" Margin="10" Width="1200" Height="550"
-                           HorizontalAlignment="Left" VerticalAlignment="Top" MaxWidth="1200" MaxHeight="550"
+                        <InkCanvas ClipToBounds="True" Grid.Column="0" Grid.Row="0" Name="surfaceDessin" Margin="10" Width="1000" Height="500"
+                           HorizontalAlignment="Left" VerticalAlignment="Top"
                            MouseMove="surfaceDessin_MouseMove"
                            PreviewMouseMove="InkCanvas_LeftMouseMove"
                            MouseUp="InkCanvas_LeftMouseUp"
@@ -414,17 +425,14 @@
                                 </MenuItem>
                             </ContextMenu>
                         </InkCanvas.ContextMenu>
-                    </InkCanvas>
+                        </InkCanvas>
                     <Border.Effect>
                         <DropShadowEffect Opacity="0.3" BlurRadius="10"/>
                     </Border.Effect>
                 </Border>
-                <Grid Name="progressBar"  Visibility="Collapsed">
-                    <Label HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,80" Foreground="OrangeRed">opening gallery</Label>
-                    <ProgressBar  Style="{StaticResource MaterialDesignCircularProgressBar}" Value="0" IsIndeterminate="True" Width="50" Height="50" />
-                </Grid>
+                
             </Grid>
-            <StackPanel x:Name="chatMenu" Background="Gainsboro" Width="70"  HorizontalAlignment="Right" Height="700" >
+            <StackPanel x:Name="chatMenu" Background="#cccccc" Width="70"  HorizontalAlignment="Right" Height="700" >
 
                 <ToggleButton x:Name="hamburgerMenu" Style="{StaticResource MaterialDesignActionToggleButton}" Foreground="Black" Background="Transparent" Click="hamburgerMenu_Click" Margin="0,10,20,0" HorizontalAlignment="Right">
                     <ToggleButton.Content>
@@ -446,15 +454,15 @@
                             </StackPanel>
                             <StackPanel Orientation="Vertical">
 
-                                <materialDesign:DialogHost DialogClosing="AddRoom" Style="{StaticResource MaterialDesignEmbeddedDialogHost}" Margin="-55,-30,0,20" Width="320"  HorizontalAlignment="Center" Height="150">
+                                <materialDesign:DialogHost DialogClosing="AddRoom" Style="{StaticResource MaterialDesignEmbeddedDialogHost}" Margin="-55,-30,0,20" Width="320"  HorizontalAlignment="Center" Height="180">
                                     <materialDesign:DialogHost.DialogContent>
                                         <StackPanel Margin="15">
                                             <TextBlock>
                                                 Create a new chatroom
                                             </TextBlock>
-                                            <TextBox MaxLength="12" Margin="0 8 0 0" HorizontalAlignment="Stretch" x:Name="roomTextBox" />
+                                            <TextBox MaxLength="12" Margin="0 0 0 0" HorizontalAlignment="Stretch" x:Name="roomTextBox" />
                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                                                <Button Style="{StaticResource MaterialDesignFlatButton}" IsDefault="True" Margin="0 8 8 0" Command="materialDesign:DialogHost.CloseDialogCommand">
+                                                <Button Style="{StaticResource MaterialDesignFlatButton}" IsDefault="True" Margin="0 3 8 0" Command="materialDesign:DialogHost.CloseDialogCommand">
                                                     <Button.CommandParameter>
                                                         <system:Boolean xmlns:system="clr-namespace:System;assembly=mscorlib">
                                                             True
@@ -462,7 +470,7 @@
                                                     </Button.CommandParameter>
                                                     ADD
                                                 </Button>
-                                                <Button Style="{StaticResource MaterialDesignFlatButton}" IsCancel="True"  Margin="0 8 8 0" Command="materialDesign:DialogHost.CloseDialogCommand" Click="clearRoomName">
+                                                <Button Style="{StaticResource MaterialDesignFlatButton}" IsCancel="True"  Margin="0 3 8 0" Command="materialDesign:DialogHost.CloseDialogCommand" Click="clearRoomName">
                                                     <Button.CommandParameter>
                                                         <system:Boolean xmlns:system="clr-namespace:System;assembly=mscorlib">
                                                             False
@@ -485,7 +493,7 @@
                                                     <DataTemplate>
                                                         <Grid Margin="0,2" >
                                                             <RadioButton GroupName="ChatRooms" Command="{Binding Path=DataContext.ChoisirRoom, ElementName=roomList}" CommandParameter="{Binding Title}" />
-                                                            <TextBlock Text="{Binding Title}" Margin="20,0,50,0"/>
+                                                            <TextBlock Text="{Binding Title}" Margin="20,0,50,0" Width="200"/>
                                                             <Button Background="{Binding Connected, Converter={StaticResource convertisseurRoomCouleurFond}, UpdateSourceTrigger=PropertyChanged}"
                                                         Content="{Binding Connected, Converter={StaticResource convertisseurRoomContent}, UpdateSourceTrigger=PropertyChanged}"
                                                         Width="100" Height="20" FontSize="10" BorderBrush="Transparent" Foreground="Black" Margin="120,0,0,0"
@@ -508,9 +516,9 @@
                                         </Grid>
                                     </Border>
                                 </materialDesign:DialogHost>
-                                <Grid x:Name="chat" Height="257" x:FieldModifier="public">
+                                <Grid x:Name="chat" Height="225" x:FieldModifier="public">
                                     <TextBlock Text="{Binding CurrentRoom, StringFormat='Room: {0}'}" Margin="35,-10,0,0" />
-                                    <ListBox ItemsSource="{Binding MessagesListBox, UpdateSourceTrigger=PropertyChanged}" x:Name="messagesList" HorizontalAlignment="Left" Height="190" Margin="30,10,0,0" VerticalAlignment="Top" Width="400"  BorderThickness="1" BorderBrush="Gray">
+                                    <ListBox ItemsSource="{Binding MessagesListBox, UpdateSourceTrigger=PropertyChanged}" x:Name="messagesList" HorizontalAlignment="Left" Height="160" Margin="30,10,0,0" VerticalAlignment="Top" Width="400"  BorderThickness="1" BorderBrush="Gray">
                                         <ListBox.ItemTemplate>
                                             <DataTemplate>
                                                 <TextBlock Text="{Binding Path=.}" TextWrapping="Wrap"></TextBlock>

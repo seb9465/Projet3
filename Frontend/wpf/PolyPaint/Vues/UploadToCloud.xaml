@@ -6,22 +6,23 @@
          xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:local="clr-namespace:PolyPaint.Vues"
         mc:Ignorable="d"
-        Title="UploadToCloud" Height="308.667" Width="432.889">
+        Title="UploadToCloud" Height="285.105" Width="401.08">
     <Grid>
         <Label Content="Name:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" />
-        <TextBox Name="nameTextBox" HorizontalAlignment="Left" Height="25" Margin="85,10,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="280"/>
-        <Label Content="Visibility :" HorizontalAlignment="Left" Margin="10,80,0,0" VerticalAlignment="Top"/>
-        <ComboBox  Margin="10,-10,0,80"  Width="275" Name="visibilityComboBox">
-            <ComboBoxItem>
-                Public
-            </ComboBoxItem>
-            <ComboBoxItem>
-                Private
-            </ComboBoxItem>
+        <TextBox Name="nameTextBox" HorizontalAlignment="Left" Height="25" Margin="85,11,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="280"/>
+        <Label Content="Visibility :" HorizontalAlignment="Left" Margin="10,60,0,0" VerticalAlignment="Top"/>
+        <ComboBox Name="visibilityComboBox" SelectedIndex="0" Margin="85,54,28,0" VerticalAlignment="Top" Height="28">
+            <ComboBoxItem Content="Public"/>
+            <ComboBoxItem Content="Private"/>
         </ComboBox>
-        <Label Content="Password :" HorizontalAlignment="Left" Margin="10,150,0,0" VerticalAlignment="Top"/>
-        <PasswordBox Name="passwordTextBox" HorizontalAlignment="Left" Height="25" Margin="85,150,0,0" VerticalAlignment="Top" Width="280"/>
-        
-        <Button Content="Ok" HorizontalAlignment="Left" Margin="290,210,0,0" VerticalAlignment="Top" Width="75" Click="Ok_Click"/>
+        <Label Content="Protection :" HorizontalAlignment="Left" Margin="10,106,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.51,1.711"/>
+        <ComboBox Name="protectionComboBox" SelectedIndex="0" Margin="85,104,28,0" Height="28" VerticalAlignment="Top" SelectionChanged="protectionComboBox_SelectionChanged">
+            <ComboBoxItem Content="Not Protected"/>
+            <ComboBoxItem Content="Protected"/>
+        </ComboBox>
+        <Label Content="Password :" HorizontalAlignment="Left" Margin="10,144,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.51,1.711"/>
+        <PasswordBox IsEnabled="{Binding IsProtected, UpdateSourceTrigger=PropertyChanged}" Name="passwordTextBox" HorizontalAlignment="Left" Height="25" Margin="85,145,0,0" VerticalAlignment="Top" Width="280"/>
+
+        <Button Content="Ok" HorizontalAlignment="Left" Margin="290,188,0,0" VerticalAlignment="Top" Width="75" Click="Ok_Click"/>
     </Grid>
 </Window>

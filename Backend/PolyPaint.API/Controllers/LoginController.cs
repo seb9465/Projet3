@@ -35,7 +35,10 @@ namespace PolyPaint.API.Controllers
                 }
                 else
                 {
-                    return BadRequest("Credentials are invalid");
+                    var errorList = ModelState.ToDictionary(
+                    state => state.Key,
+                    state => state.Value.Errors.Select(e => e.ErrorMessage).ToArray());
+                    return BadRequest(errorList);
                 }
             }
             else
