@@ -11,6 +11,8 @@ import UIKit
 import Reachability
 import Foundation
 var canvasId: String = ""
+var currentCanvasString: String = "[]"
+var currentCanvas: Canvas = Canvas()
 
 class CanvasController: UIViewController {
     // MARK: - Attributes
@@ -33,12 +35,20 @@ class CanvasController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
 
+        self.loadCanvas()
         CollaborationHub.shared = CollaborationHub(channelId: canvasId)
         CollaborationHub.shared!.connectToHub()
         CollaborationHub.shared!.delegate = self.editor
         self.view.addSubview(self.editor.editorView)
         setupNetwork()
         
+    }
+    
+    public func loadCanvas() {
+        print("loading canvas")
+        var data: Data = currentCanvasString.data(using: String.Encoding.utf8)!
+        let drawViewModels: [DrawViewModel] = try! JSONDecoder().decode(Array<DrawViewModel>.self, from: data)
+        self.editor.loadCanvas(drawViewModels: drawViewModels)
     }
     func setupNetwork() {
         self.reach = Reachability.forInternetConnection()
@@ -134,11 +144,16 @@ class CanvasController: UIViewController {
     }
     
     @IBAction func exportButtonPressed(_ sender: Any) {
-        UIGraphicsBeginImageContextWithOptions(self.editor.editorView.bounds.size, false, 0.0);
-        self.editor.editorView.drawHierarchy(in: self.editor.editorView.bounds, afterScreenUpdates: true);
-        let image = UIGraphicsGetImageFromCurrentImageContext();
-        UIGraphicsEndImageContext();
-        UIImageWriteToSavedPhotosAlbum(image!, self, #selector(image(_:didFinishSavingWithError:contextInfo:)), nil);
+        let image = self.exportPNG()
+        UIImageWriteToSavedPhotosAlbum(image, self, #selector(image(_:didFinishSavingWithError:contextInfo:)), nil);
+    }
+    
+    public func exportPNG() -> UIImage {
+    UIGraphicsBeginImageContextWithOptions(self.editor.editorView.bounds.size, false, 0.0);
+    self.editor.editorView.drawHierarchy(in: self.editor.editorView.bounds, afterScreenUpdates: true);
+    let image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+        return image!
     }
     
     private func resetButtonColor() -> Void {
@@ -148,6 +163,11 @@ class CanvasController: UIViewController {
         self.lassoButton.tintColor = UIColor.black;
     }
     
+    private func initializeConnection() {
+        CollaborationHub.shared = CollaborationHub(channelId: canvasId)
+        CollaborationHub.shared!.connectToHub()
+        CollaborationHub.shared!.delegate = self.editor
+    }
     @objc private func image(_ image: UIImage, didFinishSavingWithError error: Error?, contextInfo: UnsafeRawPointer) {
         if let error = error {
             let ac = UIAlertController(title: "Exportation error", message: error.localizedDescription, preferredStyle: .alert)
@@ -194,11 +214,27 @@ class CanvasController: UIViewController {
     
     @objc func reachabilityChanged(notification: NSNotification) {
         if self.reach!.isReachableViaWiFi() || self.reach!.isReachableViaWWAN() {
-            self.connectionLabel.text = "Online"
+            CollaborationHub.shared!.disconnectFromHub()
+            currentCanvas.image = (self.exportPNG().pngData()?.base64EncodedString())!
+            var viewModels : [DrawViewModel] = []
+            for figure in self.editor.figures {
+                viewModels.append(figure.exportViewModel()!)
+            }
+            currentCanvas.drawViewModels = String(data: try! JSONEncoder().encode(viewModels), encoding: .utf8)!
+            CanvasService.SaveOnline(canvas: currentCanvas).done({(succes) in 
+                let updatedAlert = UIAlertController(title: "Canvas Updated", message: "All your modification while being offline were saved to the cloud!", preferredStyle: .alert)
+                updatedAlert.addAction(UIAlertAction(title: "OK", style: .default))
+                self.present(updatedAlert, animated: true, completion: nil);
+            })
+            SoundNotification.play(sound: .EndVideo)
             self.connectionLabel.textColor = UIColor.green
+            self.connectionLabel.text = "Online"
+            self.initializeConnection()
+
         } else {
             self.connectionLabel.text = "Offline"
             self.connectionLabel.textColor = UIColor.red
+            SoundNotification.play(sound: .BeginVideo)
         }
     }
 }

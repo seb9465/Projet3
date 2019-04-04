@@ -45,6 +45,9 @@ extension GalleryController: UICollectionViewDelegate, UICollectionViewDataSourc
         cell.password = canvas[indexPath.row].canvasProtection
         cell.canvasId = canvas[indexPath.row].canvasId
         cell.nameLabel.text = canvas[indexPath.row].name
+        cell.drawViewModels = canvas[indexPath.row].drawViewModels
+        cell.author = canvas[indexPath.row].canvasAutor
+        cell.image = canvas[indexPath.row].image
         cell.setImageFromBytes(bytesString: canvas[indexPath.row].image)
         return cell
     }
@@ -57,9 +60,11 @@ extension GalleryController: UICollectionViewDelegate, UICollectionViewDataSourc
         if let index = indexPath {
             let cell = (self.collectionView.cellForItem(at: index) as! GalleryCell)
             canvasId = cell.canvasId
+            currentCanvasString = cell.drawViewModels
+            currentCanvas = Canvas(canvasId: cell.canvasId, name: cell.nameLabel.text!, drawViewModels: cell.drawViewModels, image: cell.image, canvasVisibility: cell.visibility, canvasAutor: cell.author, canvasProtection: cell.password)
             var enteredPassword = ""
-
             if(cell.password != "") {
+              
                 let passwordAlert = UIAlertController(title: "Password Required", message: "This canvas is password protected. Please enter the password to gain access.", preferredStyle: .alert)
                 passwordAlert.addTextField(configurationHandler: { (textField) in
                     textField.placeholder = "password"
