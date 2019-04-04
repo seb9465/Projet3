@@ -10,9 +10,10 @@ namespace PolyPaint.Core.DbModels
         [Required] public string Name { get; set; }
         [Required] public string DrawViewModels { get; set; }
         [Required] public string Image { get; set; }
-        [Required] public string canvasVisibility{ get; set; }
+        [Required] public string canvasVisibility { get; set; }
         public string canvasAutor { get; set; }
         public string canvasProtection { get; set; }
+        public string canvasPassword { get; set; }
         public double canvasWidth { get; set; } = 1000;
         public double canvasHeight { get; set; } = 500;
 
