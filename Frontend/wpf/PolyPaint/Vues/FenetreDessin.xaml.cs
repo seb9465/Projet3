@@ -141,7 +141,6 @@ namespace PolyPaint
             (DataContext as VueModele).CollaborationClient.CollaborativeSelectAsync(new List<DrawViewModel>());
             (DataContext as VueModele).CollaborationClient.CollaborativeDeleteAsync(strokes);
             SendToCloud();
-
         }
 
         private void LoadImage(object sender, RoutedEventArgs e)
@@ -176,10 +175,10 @@ namespace PolyPaint
         private void ResizeCanva_Click(object sender, RoutedEventArgs e)
         {
             ResizeCanvas resizeCanvas = new ResizeCanvas(surfaceDessin.Width, surfaceDessin.Height);
-            surfaceDessin.Width = resizeCanvas.CanvasWidth;
-            surfaceDessin.Height = resizeCanvas.CanvasHeight;
-            Canvas.CanvasWidth = resizeCanvas.CanvasWidth;
-            Canvas.CanvasHeight = resizeCanvas.CanvasHeight;
+            surfaceDessin.Width = resizeCanvas.CanvasWidth > Config.MAX_CANVAS_WIDTH ? Config.MAX_CANVAS_WIDTH : resizeCanvas.CanvasWidth;
+            surfaceDessin.Height = resizeCanvas.CanvasHeight > Config.MAX_CANVAS_HEIGHT ? Config.MAX_CANVAS_HEIGHT : resizeCanvas.CanvasHeight;
+            Canvas.CanvasWidth = resizeCanvas.CanvasWidth  > Config.MAX_CANVAS_WIDTH ? Config.MAX_CANVAS_WIDTH : resizeCanvas.CanvasWidth;
+            Canvas.CanvasHeight = resizeCanvas.CanvasHeight > Config.MAX_CANVAS_HEIGHT ? Config.MAX_CANVAS_HEIGHT : resizeCanvas.CanvasHeight;
             (DataContext as VueModele).CollaborationClient.CollaborativeResizeCanvasAsync(new Point(surfaceDessin.Width, surfaceDessin.Height));
             SendToCloud();
         }
