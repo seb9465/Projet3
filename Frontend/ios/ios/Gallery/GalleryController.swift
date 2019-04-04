@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import Reachability
 class GalleryController: UIViewController {
     
     @IBOutlet weak var collectionView: UICollectionView!
@@ -16,21 +16,55 @@ class GalleryController: UIViewController {
     private let itemsPerRow: CGFloat = 4
     private let sectionInsets = UIEdgeInsets(top: 10.0, left: 10.0, bottom: 10.0, right: 10.0)
     private var canvasController: CanvasController = CanvasController()
+    private var spinner: UIView = UIView.init()
+    var reach: Reachability?
     override func viewDidLoad() {
         super.viewDidLoad()
         let nib = UINib.init(nibName: "GalleryCell", bundle: nil)
         self.collectionView.register(nib, forCellWithReuseIdentifier: "GalleryCell")
         self.canvasController = UIStoryboard(name: "Canvas", bundle: nil).instantiateViewController(withIdentifier: "CanvasController") as! CanvasController
+
     }
     override func viewWillAppear(_ animated: Bool){
-        let spinner = UIViewController.displaySpinner(onView: self.view);
+        self.setupNetwork()
+        spinner = UIViewController.displaySpinner(onView: self.view);
+        self.loadCanvas()
+        UIViewController.removeSpinner(spinner: spinner);
+    }
+    
+    func loadCanvas() {
         CanvasService.getAllCanvas()
             .done { (retreivedCanvas) in
                 self.canvas = retreivedCanvas
                 self.collectionView.reloadData()
-                UIViewController.removeSpinner(spinner: spinner);
             }.catch { (Error) in
                 print("Fetch for canvas failed", Error)
+        }
+    }
+    
+    func setupNetwork() {
+        self.reach = Reachability.forInternetConnection()
+        
+        // Tell the reachability that we DON'T want to be reachable on 3G/EDGE/CDMA
+        self.reach!.reachableOnWWAN = false
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(reachabilityChanged),
+            name: NSNotification.Name.reachabilityChanged,
+            object: nil
+        )
+        
+        self.reach!.startNotifier()
+    }
+    @objc func reachabilityChanged(notification: NSNotification) {
+        if self.reach!.isReachableViaWiFi() || self.reach!.isReachableViaWWAN() {
+            spinner = UIViewController.displaySpinner(onView: self.view)
+            self.loadCanvas()
+            UIViewController.removeSpinner(spinner: spinner);
+            SoundNotification.play(sound: .EndVideo)
+        } else {
+            SoundNotification.play(sound: .BeginVideo)
+            UIViewController.removeSpinner(spinner: spinner);
         }
     }
     deinit {
@@ -82,6 +116,7 @@ extension GalleryController: UICollectionViewDelegate, UICollectionViewDataSourc
                     if(cell.password == enteredPassword) {
                         print("good password")
                         self.canvasController = UIStoryboard(name: "Canvas", bundle: nil).instantiateViewController(withIdentifier: "CanvasController") as! CanvasController
+                        NotificationCenter.default.removeObserver(self)
                         self.present(self.canvasController, animated: true, completion: nil);
                     } else {
                          let wrongPasswordAlert = UIAlertController(title: "Wrong password", message: "You have entered a wrong password.", preferredStyle: .alert)
@@ -92,7 +127,7 @@ extension GalleryController: UICollectionViewDelegate, UICollectionViewDataSourc
             self.present(passwordAlert, animated: true, completion: nil)
             } else {
                 self.canvasController = UIStoryboard(name: "Canvas", bundle: nil).instantiateViewController(withIdentifier: "CanvasController") as! CanvasController
-
+                NotificationCenter.default.removeObserver(self)
                 self.present(self.canvasController, animated: true, completion: nil);      }
         }
     }

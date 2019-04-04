@@ -188,6 +188,7 @@ class CanvasController: UIViewController {
         let yesAction: UIAlertAction = UIAlertAction(title: "Yes", style: .default) { _ in
             CollaborationHub.shared!.disconnectFromHub()
             currentCanvas = Canvas()
+            currentCanvasString = "[]"
             self.dismiss(animated: true, completion: nil)
         }
         let noAction: UIAlertAction = UIAlertAction(title: "No", style: .default, handler: nil);

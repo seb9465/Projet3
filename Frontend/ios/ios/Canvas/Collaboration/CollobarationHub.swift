@@ -53,9 +53,11 @@ class CollaborationHub {
         self.hubConnection!.start()
     }
     public func disconnectFromHub() -> Void {
+        if(self.hubConnection != nil){
         self.hubConnection!.stop();
         self.hubConnection = nil
         print("[ Collab ] Disconnecting from hub")
+        }
     }
     
     public func onClientIsConnected() -> Void {
