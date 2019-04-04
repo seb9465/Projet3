@@ -100,7 +100,6 @@ namespace PolyPaint.API.Hubs
             if (user != null)
             {
                 await base.OnConnectedAsync();
-                await Clients.Caller.SendAsync("ClientIsConnected");
             }
         }
 
