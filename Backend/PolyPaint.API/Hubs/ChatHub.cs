@@ -39,7 +39,6 @@ namespace PolyPaint.API.Hubs
         public override async Task OnConnectedAsync()
         {
             await base.OnConnectedAsync();
-            await ConnectToChannel((new ConnectionMessage(channelId: "general")).ToString());
             await Clients.Caller.SendAsync("ClientIsConnected");
         }
     }
