@@ -449,11 +449,34 @@ extension Editor : TouchInputDelegate {
                 return
             }
             self.touchEventState = .TRANSLATE;
-            let offset = CGPoint(x: point.x - self.previousTouchPoint.x, y: point.y - self.previousTouchPoint.y)
+            // out of bounds
+            let xOffset = CGFloat(point.x - self.previousTouchPoint.x)
+            let yOffset = CGFloat(point.y - self.previousTouchPoint.y)
+            let offset = CGPoint(x: xOffset, y: yOffset)
+
             for fig in self.selectedFigures {
                 let tmpOutlineIndex: Int = self.selectionOutline.firstIndex(where: { $0.associatedFigureID == fig.uuid })!;
+                let boundTouched: BoundTouched? = self.isOutOfBounds(view: self.selectionOutline[tmpOutlineIndex])
+
+                switch(boundTouched) {
+                case .Up?:
+                    break
+                case .Down?:
+                    if(yOffset > 0) {
+                        return
+                    }
+                case .Left?:
+                    break
+                case .Right?:
+                    if(xOffset > 0) {
+                        return
+                    }
+                case .none:
+                    break
+                }
                 (fig as! UmlFigure).translate(by: offset)
                 self.selectionOutline[tmpOutlineIndex].translate(by: offset)
+
             }
             
             self.previousTouchPoint = point
@@ -552,6 +575,29 @@ extension Editor : TouchInputDelegate {
         destinationFigure.addIncomingConnection(connection: connection as! ConnectionFigure, anchor: destinationAnchor)
         self.touchEventState = .SELECT
         return
+    }
+    
+    public func isOutOfBounds(view: UIView) -> BoundTouched? {
+        let intersectedFrame = self.editorView.bounds.intersection(view.frame)
+       /*
+        if(abs(intersectedFrame.origin.x - view.frame.origin.x) >  1) {
+            // needs works
+            print("im out en x gauche?")
+        }
+        if(abs(intersectedFrame.origin.y - view.frame.origin.y) > 1) {
+            // needs works
+            print("im out en y haut")
+        }
+ */
+        if(abs(intersectedFrame.size.width - view.frame.width) > 1) {
+            print("im out à droite?")
+            return .Right
+        }
+        if(abs(intersectedFrame.size.height - view.frame.size.height) > 1) {
+            print("im out en y bas?")
+            return .Down
+        }
+        return nil
     }
 }
 
@@ -679,4 +725,12 @@ extension Editor {
             }
         }
     }
+}
+
+
+enum BoundTouched {
+    case Up
+    case Down
+    case Left
+    case Right
 }
