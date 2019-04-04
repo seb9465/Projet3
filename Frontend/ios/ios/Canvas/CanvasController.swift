@@ -187,6 +187,7 @@ class CanvasController: UIViewController {
         let alert = UIAlertController(title: "Alert", message: "Would you like to quit ?", preferredStyle: .alert);
         let yesAction: UIAlertAction = UIAlertAction(title: "Yes", style: .default) { _ in
             CollaborationHub.shared!.disconnectFromHub()
+            currentCanvas = Canvas()
             self.dismiss(animated: true, completion: nil)
         }
         let noAction: UIAlertAction = UIAlertAction(title: "No", style: .default, handler: nil);
@@ -242,6 +243,9 @@ class CanvasController: UIViewController {
             self.connectionLabel.textColor = UIColor.red
             SoundNotification.play(sound: .BeginVideo)
         }
+    }
+    deinit {
+
     }
 }
 

@@ -18,10 +18,12 @@ class GalleryController: UIViewController {
     private var canvasController: CanvasController = CanvasController()
     override func viewDidLoad() {
         super.viewDidLoad()
-        let spinner = UIViewController.displaySpinner(onView: self.view);
         let nib = UINib.init(nibName: "GalleryCell", bundle: nil)
         self.collectionView.register(nib, forCellWithReuseIdentifier: "GalleryCell")
         self.canvasController = UIStoryboard(name: "Canvas", bundle: nil).instantiateViewController(withIdentifier: "CanvasController") as! CanvasController
+    }
+    override func viewWillAppear(_ animated: Bool){
+        let spinner = UIViewController.displaySpinner(onView: self.view);
         CanvasService.getAllCanvas()
             .done { (retreivedCanvas) in
                 self.canvas = retreivedCanvas
