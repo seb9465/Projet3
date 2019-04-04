@@ -29,6 +29,7 @@ namespace PolyPaint.API.Hubs
                 var channelId = message.CanvasId;
                 if (UserHandler.UserGroupMap.TryGetValue(channelId, out var users) && users.Contains(user.Id))
                 {
+                    message.Username = user.UserName;
                     await Clients.OthersInGroup(channelId).SendAsync("Draw", JsonConvert.SerializeObject(message));
                 }
             }
