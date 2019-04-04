@@ -15,9 +15,13 @@ enum Vertice {
 }
 
 class ConnectionFigure : Figure {
+    private let fontSize: CGFloat = 12
     
     var points: [Vertice: CGPoint] = [:]
     var anchors: [Vertice: ConnectionAnchor] = [:]
+    var nameLabel: UILabel!
+    var sourceLabel: UILabel!
+    var destinationLabel: UILabel!
     
     init(origin: CGPoint, destination: CGPoint, itemType: ItemTypeEnum) {
         let frameOrigin = CGPoint(x: 0, y: 0)
@@ -37,6 +41,9 @@ class ConnectionFigure : Figure {
         let frameSize = CGSize(width: 774, height: 698)
         let frame = CGRect(origin: frameOrigin, size: frameSize)
         super.init(frame: frame)
+        self.name = drawViewModel.ShapeTitle!
+        self.destinationName = drawViewModel.DestinationTitle!
+        self.sourceName = drawViewModel.SourceTitle!
         self.firstPoint = firstPoint
         self.lastPoint = lastPoint
         self.uuid = UUID(uuidString: drawViewModel.Guid!)
@@ -107,6 +114,78 @@ class ConnectionFigure : Figure {
         return CGRect(origin: origin, size: size)
     }
     
+    func drawNameLabel() {
+        if (self.nameLabel != nil) {
+            self.nameLabel.removeFromSuperview()
+        }
+        let labelOrigin = CGPoint(x: self.points[.ELBOW]!.x, y: self.points[.ELBOW]!.y - 15)
+        let labeSize = CGSize(width: 75, height: 15)
+        let labelFrame = CGRect(origin: labelOrigin, size: labeSize)
+        
+        self.nameLabel = UILabel(frame: labelFrame)
+        self.nameLabel.isUserInteractionEnabled = false
+        self.nameLabel.text = self.name
+        self.nameLabel.font = self.nameLabel.font.withSize(fontSize)
+        self.nameLabel.textAlignment = .left
+        self.nameLabel.backgroundColor = UIColor.clear
+        
+        let dx = points[.DESTINATION]!.x - points[.ELBOW]!.x
+        let dy = points[.DESTINATION]!.y - points[.ELBOW]!.y
+        let angle = atan2(dy, dx)
+        self.nameLabel.setAnchorPoint(CGPoint(x: 0, y: 1))
+        self.nameLabel.transform = CGAffineTransform(rotationAngle: angle)
+        
+        self.addSubview(self.nameLabel)
+    }
+    
+    func drawSourceLabel() {
+        if (self.sourceLabel != nil) {
+            self.sourceLabel.removeFromSuperview()
+        }
+        let labelOrigin = CGPoint(x: self.points[.ORIGIN]!.x, y: self.points[.ORIGIN]!.y - 15)
+        let labeSize = CGSize(width: 75, height: 15)
+        let labelFrame = CGRect(origin: labelOrigin, size: labeSize)
+        
+        self.sourceLabel = UILabel(frame: labelFrame)
+        self.sourceLabel.isUserInteractionEnabled = false
+        self.sourceLabel.text = "self.name"
+        self.sourceLabel.font = self.nameLabel.font.withSize(fontSize)
+        self.sourceLabel.textAlignment = .right
+        self.sourceLabel.backgroundColor = UIColor.clear
+        
+        let dx = points[.ELBOW]!.x - points[.ORIGIN]!.x
+        let dy = points[.ELBOW]!.y - points[.ORIGIN]!.y
+        let angle = atan2(dy, dx)
+        self.sourceLabel.setAnchorPoint(CGPoint(x: 0, y: 1))
+        self.sourceLabel.transform = CGAffineTransform(rotationAngle: angle)
+        
+        self.addSubview(self.sourceLabel)
+    }
+    
+    func drawDestinationLabel() {
+        if (self.destinationLabel != nil) {
+            self.destinationLabel.removeFromSuperview()
+        }
+        let labelOrigin = CGPoint(x: self.points[.DESTINATION]!.x - 75, y: self.points[.DESTINATION]!.y - 15)
+        let labeSize = CGSize(width: 75, height: 15)
+        let labelFrame = CGRect(origin: labelOrigin, size: labeSize)
+        
+        self.destinationLabel = UILabel(frame: labelFrame)
+        self.destinationLabel.isUserInteractionEnabled = false
+        self.destinationLabel.text = "self.name"
+        self.destinationLabel.font = self.nameLabel.font.withSize(fontSize)
+        self.destinationLabel.textAlignment = .left
+        self.destinationLabel.backgroundColor = UIColor.clear
+        
+        let dx = points[.DESTINATION]!.x - points[.ELBOW]!.x
+        let dy = points[.DESTINATION]!.y - points[.ELBOW]!.y
+        let angle = atan2(dy, dx)
+        self.destinationLabel.setAnchorPoint(CGPoint(x: 1, y: 1))
+        self.destinationLabel.transform = CGAffineTransform(rotationAngle: angle)
+        
+        self.addSubview(self.destinationLabel)
+    }
+    
     override func draw(_ rect: CGRect) {
         //// Bezier Drawing
         let bezierPath = UIBezierPath()
@@ -120,10 +199,11 @@ class ConnectionFigure : Figure {
     
     // Only fire touchedBegan when user taps on an anchor
     override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
-        guard let sublayers = self.layer.sublayers as? [CAShapeLayer] else { return false }
-        for layer in sublayers{
-            if let path = layer.path, path.contains(point) {
-                return true
+        for layer in self.layer.sublayers!{
+            if (layer is CAShapeLayer) {
+                if let path = (layer as! CAShapeLayer).path, path.contains(point) {
+                    return true
+                }
             }
         }
         return false
@@ -145,8 +225,8 @@ class ConnectionFigure : Figure {
         drawViewModel.ShapeTitle = self.name
         drawViewModel.Methods = nil
         drawViewModel.Properties = nil
-        drawViewModel.SourceTitle = nil
-        drawViewModel.DestinationTitle = nil
+        drawViewModel.SourceTitle = self.sourceName
+        drawViewModel.DestinationTitle = self.destinationName
         drawViewModel.ChannelId = canvasId
         drawViewModel.OutilSelectionne = nil
         drawViewModel.LastElbowPosition = PolyPaintStylusPoint(point: self.points[.ELBOW]!)
@@ -177,4 +257,25 @@ extension ConnectionFigure {
     }
     
     public override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {}
+}
+
+extension UIView {
+    func setAnchorPoint(_ point: CGPoint) {
+        var newPoint = CGPoint(x: bounds.size.width * point.x, y: bounds.size.height * point.y)
+        var oldPoint = CGPoint(x: bounds.size.width * layer.anchorPoint.x, y: bounds.size.height * layer.anchorPoint.y);
+        
+        newPoint = newPoint.applying(transform)
+        oldPoint = oldPoint.applying(transform)
+        
+        var position = layer.position
+        
+        position.x -= oldPoint.x
+        position.x += newPoint.x
+        
+        position.y -= oldPoint.y
+        position.y += newPoint.y
+        
+        layer.position = position
+        layer.anchorPoint = point
+    }
 }

@@ -52,5 +52,9 @@ class ConnectionAgregation: ConnectionFigure {
         bezierPath2.fill()
         bezierPath2.lineWidth = self.lineWidth
         bezierPath2.stroke()
+        
+        self.drawNameLabel()
+        self.drawSourceLabel()
+        self.drawDestinationLabel()
     }
 }

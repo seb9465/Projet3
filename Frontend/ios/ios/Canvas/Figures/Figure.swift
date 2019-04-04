@@ -19,7 +19,9 @@ class Figure: UIView {
     var figureColor: UIColor! = UIColor.clear
     var lineColor: UIColor! = UIColor.black
     var lineWidth: CGFloat! = 2
-    
+    var sourceName: String! = ""
+    var destinationName: String! = ""
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.uuid = UUID()
