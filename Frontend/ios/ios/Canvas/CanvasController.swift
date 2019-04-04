@@ -187,9 +187,7 @@ class CanvasController: UIViewController {
         let alert = UIAlertController(title: "Alert", message: "Would you like to quit ?", preferredStyle: .alert);
         let yesAction: UIAlertAction = UIAlertAction(title: "Yes", style: .default) { _ in
             CollaborationHub.shared!.disconnectFromHub()
-            let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil);
-            let viewController: UIViewController = mainStoryboard.instantiateViewController(withIdentifier: "MainController");
-            self.present(viewController, animated: true, completion: nil);
+            self.dismiss(animated: true, completion: nil)
         }
         let noAction: UIAlertAction = UIAlertAction(title: "No", style: .default, handler: nil);
         

@@ -15,12 +15,13 @@ class GalleryController: UIViewController {
     private var canvas : [Canvas] = []
     private let itemsPerRow: CGFloat = 4
     private let sectionInsets = UIEdgeInsets(top: 10.0, left: 10.0, bottom: 10.0, right: 10.0)
+    private var canvasController: CanvasController = CanvasController()
     override func viewDidLoad() {
         super.viewDidLoad()
         let spinner = UIViewController.displaySpinner(onView: self.view);
         let nib = UINib.init(nibName: "GalleryCell", bundle: nil)
         self.collectionView.register(nib, forCellWithReuseIdentifier: "GalleryCell")
-        
+        self.canvasController = UIStoryboard(name: "Canvas", bundle: nil).instantiateViewController(withIdentifier: "CanvasController") as! CanvasController
         CanvasService.getAllCanvas()
             .done { (retreivedCanvas) in
                 self.canvas = retreivedCanvas
@@ -29,6 +30,9 @@ class GalleryController: UIViewController {
             }.catch { (Error) in
                 print("Fetch for canvas failed", Error)
         }
+    }
+    deinit {
+        self.canvas = []
     }
 }
 
@@ -75,8 +79,8 @@ extension GalleryController: UICollectionViewDelegate, UICollectionViewDataSourc
                     enteredPassword = passwordAlert.textFields![0].text!
                     if(cell.password == enteredPassword) {
                         print("good password")
-                        let canvasController = UIStoryboard(name: "Canvas", bundle: nil).instantiateViewController(withIdentifier: "CanvasController") as! CanvasController
-                        self.present(canvasController, animated: true, completion: nil);
+                        self.canvasController = UIStoryboard(name: "Canvas", bundle: nil).instantiateViewController(withIdentifier: "CanvasController") as! CanvasController
+                        self.present(self.canvasController, animated: true, completion: nil);
                     } else {
                          let wrongPasswordAlert = UIAlertController(title: "Wrong password", message: "You have entered a wrong password.", preferredStyle: .alert)
                         wrongPasswordAlert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
@@ -85,9 +89,9 @@ extension GalleryController: UICollectionViewDelegate, UICollectionViewDataSourc
                 }))
             self.present(passwordAlert, animated: true, completion: nil)
             } else {
-                let canvasController = UIStoryboard(name: "Canvas", bundle: nil).instantiateViewController(withIdentifier: "CanvasController") as! CanvasController
+                self.canvasController = UIStoryboard(name: "Canvas", bundle: nil).instantiateViewController(withIdentifier: "CanvasController") as! CanvasController
 
-                self.present(canvasController, animated: true, completion: nil);      }
+                self.present(self.canvasController, animated: true, completion: nil);      }
         }
     }
 }
