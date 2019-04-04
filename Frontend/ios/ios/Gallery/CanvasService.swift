@@ -107,9 +107,10 @@ extension CanvasService {
         let configuration = URLSessionConfiguration.default
         configuration.httpAdditionalHeaders = Alamofire.SessionManager.defaultHTTPHeaders
         let manager = Alamofire.SessionManager(
-            configuration: URLSessionConfiguration.default,
+            configuration: URLSessionConfiguration.background(withIdentifier: "com.polypaint.background"),
             serverTrustPolicyManager: ServerTrustPolicyManager(policies: serverTrustPolicies)
         )
+        manager.startRequestsImmediately = true
         return manager
     }()
     
@@ -121,27 +122,5 @@ extension CanvasService {
         currentCanvas.drawViewModels = String(data: try! JSONEncoder().encode(drawViewModels), encoding: .utf8)!
         currentCanvas.image = (editor.export().pngData()?.base64EncodedString())!
         self.SaveOnline(canvas: currentCanvas)
-    }
-    
-    
-    
-    public static func getLocalCanvas() -> [Canvas] {
-        var canvas: [Canvas] = []
-        let fileManager = FileManager.default
-        let documentsURL = fileManager.urls(for: .documentDirectory, in: .userDomainMask)[0]
-        let canvasPath = documentsURL.appendingPathComponent("canvas")
-        do {
-            let fileURLs = try fileManager.contentsOfDirectory(at: canvasPath, includingPropertiesForKeys: nil)
-            
-            for file in fileURLs {
-                let jsonData = try Data(contentsOf: file)
-                let decoder = JSONDecoder()
-                let canva = try decoder.decode(Canvas.self, from: jsonData)
-                canvas.append(canva)
-            }
-        } catch {
-            print("Error while enumerating files \(documentsURL.path): \(error.localizedDescription)")
-        }
-        return canvas;
     }
 }
