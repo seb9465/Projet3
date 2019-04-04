@@ -29,7 +29,7 @@
     </Window.Resources>
     <StackPanel>
         <DockPanel>
-            <Button Style="{StaticResource MaterialDesignRaisedLightButton}" Click="ImportFromCloud"
+            <Button Style="{StaticResource MaterialDesignRaisedLightButton}" Click="ImportFromCloud" IsEnabled="{Binding Path=IsConnected}"
              Height="40"  Background="Gainsboro"  HorizontalAlignment="Left" BorderBrush="Gray" Margin="0,0,10,0" >
                 <StackPanel Orientation="Horizontal">
                     <materialDesign:PackIcon Kind="ArrowBack" Height="24" Width="24"/>

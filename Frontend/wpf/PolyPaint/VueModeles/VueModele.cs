@@ -87,6 +87,12 @@ namespace PolyPaint.VueModeles
             get { return _isCreatedByUser; }
             set { _isCreatedByUser = value; ProprieteModifiee(); }
         }
+        private bool _isConnected = true;
+        public bool IsConnected
+        {
+            get { return _isConnected; }
+            set { _isConnected = value; ProprieteModifiee(); }
+        }
 
         public SaveableCanvas Canvas { get; set; }
 
