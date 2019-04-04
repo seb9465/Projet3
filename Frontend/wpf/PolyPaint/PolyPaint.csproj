@@ -438,6 +438,9 @@
     <Compile Include="Vues\ResizeCanvas.xaml.cs">
       <DependentUpon>ResizeCanvas.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Vues\Tutoriel.xaml.cs">
+      <DependentUpon>Tutoriel.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Vues\UploadToCloud.xaml.cs">
       <DependentUpon>UploadToCloud.xaml</DependentUpon>
     </Compile>
@@ -499,6 +502,10 @@
     <Page Include="Vues\ResizeCanvas.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Vues\Tutoriel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Vues\UploadToCloud.xaml">
       <SubType>Designer</SubType>
