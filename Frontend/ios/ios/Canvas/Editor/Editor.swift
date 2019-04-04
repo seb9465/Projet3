@@ -460,12 +460,18 @@ extension Editor : TouchInputDelegate {
 
                 switch(boundTouched) {
                 case .Up?:
+                    if(yOffset < 0) {
+                        return
+                    }
                     break
                 case .Down?:
                     if(yOffset > 0) {
                         return
                     }
                 case .Left?:
+                    if(xOffset < 0) {
+                        return
+                    }
                     break
                 case .Right?:
                     if(xOffset > 0) {
@@ -579,22 +585,17 @@ extension Editor : TouchInputDelegate {
     
     public func isOutOfBounds(view: UIView) -> BoundTouched? {
         let intersectedFrame = self.editorView.bounds.intersection(view.frame)
-       /*
-        if(abs(intersectedFrame.origin.x - view.frame.origin.x) >  1) {
-            // needs works
-            print("im out en x gauche?")
+        let safetySpace: CGFloat = 1
+        if(abs(intersectedFrame.minX - (view.frame.minX - safetySpace)) >  1) {
+            return .Left
         }
-        if(abs(intersectedFrame.origin.y - view.frame.origin.y) > 1) {
-            // needs works
-            print("im out en y haut")
+        if(abs(intersectedFrame.minY - (view.frame.minY - safetySpace)) > 1) {
+            return .Up
         }
- */
-        if(abs(intersectedFrame.size.width - view.frame.width) > 1) {
-            print("im out à droite?")
+        if(abs(intersectedFrame.maxX - (view.frame.maxX + safetySpace)) > 1) {
             return .Right
         }
-        if(abs(intersectedFrame.size.height - view.frame.size.height) > 1) {
-            print("im out en y bas?")
+        if(abs(intersectedFrame.maxY - (view.frame.maxY + safetySpace)) > 1) {
             return .Down
         }
         return nil
