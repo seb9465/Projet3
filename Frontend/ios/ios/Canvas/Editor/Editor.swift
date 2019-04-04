@@ -146,19 +146,19 @@ class Editor {
         figure.delegate = self
         self.figures.append(figure)
         self.editorView.addSubview(figure)
-        CanvasService.saveLocalCanvas(figures: self.figures)
+        CanvasService.saveOnNewFigure(figures: self.figures, editor: self)
 
         return figure
     }
     
     public func insertFigure(position: CGPoint) -> Void {
         let figure = FigureFactory.shared.getFigure(type: self.currentFigureType, touchedPoint: position)!
-        CanvasService.saveLocalCanvas(figures: self.figures)
         figure.delegate = self
         self.figures.append(figure)
         self.editorView.addSubview(figure)
-        CanvasService.saveLocalCanvas(figures: self.figures)
         CollaborationHub.shared!.postNewFigure(figures: [figure])
+        CanvasService.saveOnNewFigure(figures: self.figures, editor: self)
+
   //      self.resize(width: 150, heigth: 150)
     }
     
@@ -172,7 +172,7 @@ class Editor {
         self.editorView.addSubview(figure!);
         self.figures.append(figure!)
         self.undoArray.append(figure!);
-        CanvasService.saveLocalCanvas(figures: self.figures)
+        CanvasService.saveOnNewFigure(figures: self.figures, editor: self)
         return figure!
     }
     
@@ -251,6 +251,7 @@ extension Editor: SideToolbarDelegate {
             figure.setBorderColor(borderColor: color);
         }
         CollaborationHub.shared!.postNewFigure(figures: self.selectedFigures)
+        CanvasService.saveOnNewFigure(figures: self.figures, editor: self)
     }
     
     func setSelectedFigureFillColor(color: UIColor) {
@@ -258,6 +259,7 @@ extension Editor: SideToolbarDelegate {
             figure.setFillColor(fillColor: color)
         }
         CollaborationHub.shared!.postNewFigure(figures: self.selectedFigures)
+        CanvasService.saveOnNewFigure(figures: self.figures, editor: self)
     }
     
     func setSelectedFigureBorderStyle(isDashed: Bool) {
@@ -265,6 +267,7 @@ extension Editor: SideToolbarDelegate {
             figure.setIsBorderDashed(isDashed: isDashed)
         }
         CollaborationHub.shared!.postNewFigure(figures: self.selectedFigures)
+        CanvasService.saveOnNewFigure(figures: self.figures, editor: self)
     }
     
     func setSelectedFigureLineWidth(width: CGFloat) {
@@ -272,6 +275,7 @@ extension Editor: SideToolbarDelegate {
             figure.setLineWidth(width: width)
         }
         CollaborationHub.shared!.postNewFigure(figures: self.selectedFigures)
+        CanvasService.saveOnNewFigure(figures: self.figures, editor: self)
     }
     
     func setSelectedFigureName(name: String) {
@@ -282,6 +286,7 @@ extension Editor: SideToolbarDelegate {
 
     func setSelectedFigureNameDidEnd() {
         CollaborationHub.shared!.postNewFigure(figures: self.selectedFigures)
+        CanvasService.saveOnNewFigure(figures: self.figures, editor: self)
     }
     
     func addClassMethod(name: String) {
@@ -291,6 +296,7 @@ extension Editor: SideToolbarDelegate {
         
         self.updateSideToolBar()
         CollaborationHub.shared!.postNewFigure(figures: self.selectedFigures)
+        CanvasService.saveOnNewFigure(figures: self.figures, editor: self)
     }
     
     func removeClassMethod(name: String, index: Int) {
@@ -300,6 +306,7 @@ extension Editor: SideToolbarDelegate {
         
         self.updateSideToolBar()
         CollaborationHub.shared!.postNewFigure(figures: self.selectedFigures)
+        CanvasService.saveOnNewFigure(figures: self.figures, editor: self)
     }
     
     func addClassAttribute(name: String) {
@@ -309,6 +316,7 @@ extension Editor: SideToolbarDelegate {
         
         self.updateSideToolBar()
         CollaborationHub.shared!.postNewFigure(figures: self.selectedFigures)
+        CanvasService.saveOnNewFigure(figures: self.figures, editor: self)
     }
     
     func removeClassAttribute(name: String, index: Int) {
@@ -318,6 +326,7 @@ extension Editor: SideToolbarDelegate {
         
         self.updateSideToolBar()
         CollaborationHub.shared!.postNewFigure(figures: self.selectedFigures)
+        CanvasService.saveOnNewFigure(figures: self.figures, editor: self)
     }
     
     func updateSideToolBar() {
@@ -326,8 +335,12 @@ extension Editor: SideToolbarDelegate {
         }
     }
     
-    func save() -> Void{
-        CanvasService.saveLocalCanvas(figures: []);
+    func export() -> UIImage{
+        UIGraphicsBeginImageContextWithOptions(self.editorView.bounds.size, false, 0.0);
+        self.editorView.drawHierarchy(in: self.editorView.bounds, afterScreenUpdates: true);
+        let image = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+        return image!
     }
     
     func rotate(orientation: RotateOrientation) {
@@ -431,11 +444,40 @@ extension Editor : TouchInputDelegate {
     func notifyTouchMoved(point: CGPoint, figure: Figure?) {
         if (self.touchEventState == .TRANSLATE) {
             self.touchEventState = .TRANSLATE;
-            let offset = CGPoint(x: point.x - self.previousTouchPoint.x, y: point.y - self.previousTouchPoint.y)
+            // out of bounds
+            let xOffset = CGFloat(point.x - self.previousTouchPoint.x)
+            let yOffset = CGFloat(point.y - self.previousTouchPoint.y)
+            let offset = CGPoint(x: xOffset, y: yOffset)
+
             for figure in self.selectedFigures {
                 let tmpOutlineIndex: Int = self.selectionOutline.firstIndex(where: { $0.associatedFigureID == figure.uuid })!;
+                let boundTouched: BoundTouched? = self.isOutOfBounds(view: self.selectionOutline[tmpOutlineIndex])
+
+                switch(boundTouched) {
+                case .Up?:
+                    if(yOffset < 0) {
+                        return
+                    }
+                    break
+                case .Down?:
+                    if(yOffset > 0) {
+                        return
+                    }
+                case .Left?:
+                    if(xOffset < 0) {
+                        return
+                    }
+                    break
+                case .Right?:
+                    if(xOffset > 0) {
+                        return
+                    }
+                case .none:
+                    break
+                }
                 figure.translate(by: offset)
                 self.selectionOutline[tmpOutlineIndex].translate(by: offset)
+
             }
             
             self.previousTouchPoint = point
@@ -539,6 +581,24 @@ extension Editor : TouchInputDelegate {
         self.touchEventState = .SELECT
         return
     }
+    
+    public func isOutOfBounds(view: UIView) -> BoundTouched? {
+        let intersectedFrame = self.editorView.bounds.intersection(view.frame)
+        let safetySpace: CGFloat = 1
+        if(abs(intersectedFrame.minX - (view.frame.minX - safetySpace)) >  1) {
+            return .Left
+        }
+        if(abs(intersectedFrame.minY - (view.frame.minY - safetySpace)) > 1) {
+            return .Up
+        }
+        if(abs(intersectedFrame.maxX - (view.frame.maxX + safetySpace)) > 1) {
+            return .Right
+        }
+        if(abs(intersectedFrame.maxY - (view.frame.maxY + safetySpace)) > 1) {
+            return .Down
+        }
+        return nil
+    }
 }
 
 extension Editor: CollaborationHubDelegate {
@@ -618,8 +678,8 @@ extension Editor {
             (newFigure as! UmlFigure).outgoingConnections = (oldFigure as! UmlFigure).outgoingConnections
             (newFigure as! UmlFigure).incomingConnections = (oldFigure as! UmlFigure).incomingConnections
             (newFigure as! UmlFigure).updateConnections()
-            return
         }
+        CanvasService.saveOnNewFigure(figures: self.figures, editor: self)
     }
     
     func connectConnectionToFigures(drawViewModel: DrawViewModel, connection: ConnectionFigure) {
@@ -665,4 +725,12 @@ extension Editor {
             }
         }
     }
+}
+
+
+enum BoundTouched {
+    case Up
+    case Down
+    case Left
+    case Right
 }
