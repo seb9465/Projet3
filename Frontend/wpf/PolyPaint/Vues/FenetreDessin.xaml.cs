@@ -82,7 +82,6 @@ namespace PolyPaint
             externalChatWindow = new ChatWindow(DataContext);
 
             rebuilder.BuildStrokesFromDrawViewModels(drawViewModels, surfaceDessin);
-            (DataContext as VueModele).CollaborationClient.CollaborativeDrawAsync(drawViewModels);
             (DataContext as VueModele).Traits = surfaceDessin.Strokes;
 
             surfaceDessin.Width = canvas.CanvasWidth;
