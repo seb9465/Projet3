@@ -19,6 +19,8 @@ namespace PolyPaint.Vues
     /// </summary>
     public partial class Tutoriel : Window
     {
+
+        int page = 0;
         public Tutoriel()
         {
             InitializeComponent();
@@ -27,7 +29,20 @@ namespace PolyPaint.Vues
 
         private void nextPage_Click(object sender, RoutedEventArgs e)
         {
-
+            page++;
+            switch (page)
+            {
+                case 1:
+                    tutorialImage.Source = new BitmapImage(new Uri(@"/Resources/capture.png", UriKind.Relative));
+                    tutorialText.Text = "test test test test test test test test test test test test ";
+                    break;
+                case 2:
+                    tutorialImage.Source = new BitmapImage(new Uri(@"/Resources/cloud.png", UriKind.Relative));
+                    tutorialText.Text = "test test test test";
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }

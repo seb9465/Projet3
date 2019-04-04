@@ -12,20 +12,15 @@
             Welcome to the editor mode tutorial
         </Label>
         <Border BorderBrush="#595959" BorderThickness="2" HorizontalAlignment="Center" Margin="0,20,0,20" Background="Gainsboro">
-            <Image Source="/Resources/capture.png" Width="350" Margin="3" />
+            <Image Name="tutorialImage" Source="/Resources/capture.png" Width="350" Height="190" Margin="3" />
         </Border>
 
 
-        <TextBlock HorizontalAlignment="Center" MaxWidth="500" TextWrapping="Wrap">
+        <TextBlock Name="tutorialText" HorizontalAlignment="Center" MaxWidth="500" TextWrapping="Wrap">
             Tutorial text goes here lalalalaa Tutorial text goes here lalalalaa Tutorial text goes here lalalalaa Tutorial text goes here lalalalaa Tutorial text goes here lalalalaaTutorial text goes here lalalalaa
         </TextBlock>
-        <ToggleButton Width="40" Height="40" x:Name="nextButton" Style="{StaticResource MaterialDesignActionToggleButton}" Foreground="Black" Background="Transparent" Click="nextPage_Click"  HorizontalAlignment="Right" Margin="0,0,-10,-80">
-            <ToggleButton.Content>
-                <Image Source="/Resources/curl.png"  />
-            </ToggleButton.Content>
-            <materialDesign:ToggleButtonAssist.OnContent>
-                <materialDesign:PackIcon Kind="KeyboardArrowRight"  Width="30" Height="30"  />
-            </materialDesign:ToggleButtonAssist.OnContent>
-        </ToggleButton>
+        <Button Style="{StaticResource MaterialDesignRaisedLightButton}" Click="nextPage_Click" HorizontalAlignment="Right" Background="Transparent" BorderBrush="Transparent" Margin="0,0,-10,-50" >
+            <Image Source="/Resources/curl.png"  />
+        </Button>
     </StackPanel>
 </Window>
