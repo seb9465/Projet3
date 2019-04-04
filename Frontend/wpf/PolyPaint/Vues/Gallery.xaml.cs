@@ -120,14 +120,16 @@ namespace PolyPaint.Vues
                 chatMenu.Width = 70;
                 chatTab.Visibility = Visibility.Collapsed;
                 isMenuOpen = false;
-                canvasStackPanel.Width = 1070;
+                canvasStackPanel.Width = 950;
+                canvasStackPanel.Margin = new Thickness(70, 0, 0, 0);
             }
             else
             {
                 chatMenu.Width = 500;
                 chatTab.Visibility = Visibility.Visible;
                 isMenuOpen = true;
-                canvasStackPanel.Width = 620;
+                canvasStackPanel.Width = 640;
+                canvasStackPanel.Margin = new Thickness(0,0,0,0);
             }
         }
 
