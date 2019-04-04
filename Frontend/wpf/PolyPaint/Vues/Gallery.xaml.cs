@@ -24,6 +24,7 @@ namespace PolyPaint.Vues
     /// 
     public partial class Gallery : Window
     {
+
         public List<SaveableCanvas> Canvas { get; set; }
         public SaveableCanvas SelectedCanvas { get; set; }
         private ImageProtection imageProtection;
@@ -64,10 +65,7 @@ namespace PolyPaint.Vues
         private void NewCanva_Click(object sender, RoutedEventArgs e)
         {
             UploadToCloud uploadToCloud = new UploadToCloud((DataContext as UserDataContext).ChatClient);
-            Application.Current.MainWindow = uploadToCloud;
             this.Close();
-            DataContext = null;
-            uploadToCloud.Show();
         }
 
         private void AddRoom(object sender, DialogClosingEventArgs eventArgs)

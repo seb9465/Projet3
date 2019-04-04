@@ -33,6 +33,7 @@ namespace PolyPaint.Vues
             InitializeComponent();
             ChatClient = chatClient;
             _isProtected = protectionComboBox.Text == "Protected";
+            this.ShowDialog();
         }
 
         protected virtual void ProprieteModifiee([CallerMemberName] string propertyName = null)
@@ -49,7 +50,6 @@ namespace PolyPaint.Vues
             Application.Current.MainWindow = fenetreDessin;
             Close();
             fenetreDessin.Show();
-            Close();
         }
 
         private void protectionComboBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
