@@ -11,7 +11,7 @@ import UIKit
 
 struct Constants {
     // Server Address
-    static let SERVER_BASE_URL: String = "http://10.200.23.222:3000";
+    static let SERVER_BASE_URL: String = "https://polypaint.me";
 
     // Hubs
     static let CHAT_URL: String = Constants.SERVER_BASE_URL + "/signalr";
