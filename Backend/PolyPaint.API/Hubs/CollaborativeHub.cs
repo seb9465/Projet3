@@ -113,6 +113,7 @@ namespace PolyPaint.API.Hubs
             if (user != null)
             {
                 await AddToGroup(Context.ConnectionId, connectionMessage.ChannelId);
+                UserHandler.AddOrUpdateMap(connectionMessage.ChannelId, user.Id);
                 var returnMessage = new ConnectionMessage(user.UserName, channelId: connectionMessage.ChannelId);
                 await Clients.OthersInGroup(connectionMessage.ChannelId).SendAsync(
                     "ConnectToChannel",
@@ -137,6 +138,7 @@ namespace PolyPaint.API.Hubs
 
                         await Clients.OthersInGroup(channelId).SendAsync("Kicked");
                         foreach (var other in UserHandler.UserConnections.Where(pair => pair.Value == channelId)
+                            .Where(pair => pair.Key != Context.ConnectionId)
                             .Select(pair => pair.Key))
                         {
                             await RemoveFromGroup(other, channelId);

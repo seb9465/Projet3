@@ -1,6 +1,6 @@
 namespace PolyPaint.Common.Messages
 {
-    public class ProtectionMessage
+    public class ProtectionMessage : BaseMessage
     {
         public string ChannelId { get; set; }
         public bool IsProtected { get; set; }
