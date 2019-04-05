@@ -32,11 +32,11 @@ class DashboardController: UIViewController, UITextFieldDelegate {
         
         self.viewContainerChat.sizeToFit(); // Adjusting frame size
         self.viewContainerChat.isHidden = true;
-        self.viewContainerChat.layer.cornerRadius = 5.0;
-        self.viewContainerChat.layer.shadowColor = UIColor.black.cgColor;
-        self.viewContainerChat.layer.shadowOffset = CGSize.zero;
-        self.viewContainerChat.layer.shadowOpacity = 0.3;
-        self.viewContainerChat.layer.shadowRadius = 2;
+        self.viewContainerChat.layer.cornerRadius = Constants.ChatView.cornerRadius;
+        self.viewContainerChat.layer.shadowColor = Constants.ChatView.shadowColor;
+        self.viewContainerChat.layer.shadowOffset = Constants.ChatView.shadowOffset;
+        self.viewContainerChat.layer.shadowOpacity = Constants.ChatView.shadowOpacity;
+        self.viewContainerChat.layer.shadowRadius = Constants.ChatView.shadowRadius;
         self.viewContainerChat.layer.masksToBounds = false;
     }
     

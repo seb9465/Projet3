@@ -153,11 +153,11 @@ class CanvasController: UIViewController {
         self.chatViewContainer.sizeToFit();
         self.view.bringSubviewToFront(self.chatViewContainer);
         self.chatViewContainer.isHidden = true;
-        self.chatViewContainer.layer.cornerRadius = 5.0;
-        self.chatViewContainer.layer.shadowColor = UIColor.black.cgColor;
-        self.chatViewContainer.layer.shadowOffset = CGSize.zero;
-        self.chatViewContainer.layer.shadowOpacity = 0.3;
-        self.chatViewContainer.layer.shadowRadius = 2;
+        self.chatViewContainer.layer.cornerRadius = Constants.ChatView.cornerRadius;
+        self.chatViewContainer.layer.shadowColor = Constants.ChatView.shadowColor;
+        self.chatViewContainer.layer.shadowOffset = Constants.ChatView.shadowOffset;
+        self.chatViewContainer.layer.shadowOpacity = Constants.ChatView.shadowOpacity;
+        self.chatViewContainer.layer.shadowRadius = Constants.ChatView.shadowRadius;
         self.chatViewContainer.layer.masksToBounds = false;
     }
     
