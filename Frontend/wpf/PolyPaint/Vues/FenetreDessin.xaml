@@ -410,6 +410,7 @@
                            MouseDown="InkCanvas_LeftMouseDown"
                            SelectionMoving="InkCanvas_SelectionMoving"               
                            Strokes="{Binding Path=Traits, Mode=OneTime}"
+                           PreviewKeyDown="surfaceDessin_PreviewKeyDown"
                            EditingMode="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurModeEdition}, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
                            DefaultDrawingAttributes="{Binding Path=AttributsDessin, Mode=OneTime}"
                            SelectionChanged="surfaceDessin_ChangeSelection">

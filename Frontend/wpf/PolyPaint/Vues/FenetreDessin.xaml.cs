@@ -106,7 +106,6 @@ namespace PolyPaint
             {
                 (DataContext as VueModele).SelectNothing(surfaceDessin);
                 (DataContext as VueModele).CollaborationClient.CollaborativeSelectAsync(new List<DrawViewModel>());
-
             }
         }
 
@@ -131,18 +130,44 @@ namespace PolyPaint
                 surfaceDessin.EditingMode = InkCanvasEditingMode.None;
         }
 
-        private async void DupliquerSelection(object sender, RoutedEventArgs e)
+        private void DupliquerSelection(object sender, RoutedEventArgs e)
         {
-            await (DataContext as VueModele).CollaborationClient.CollaborativeDuplicateAsync();
 
-            surfaceDessin.CopySelection();
-            surfaceDessin.Paste();
+            var strokes = rebuilder.GetDrawViewModelsFromStrokes(surfaceDessin.GetSelectedStrokes());
+            if (strokes.Count != 0)
+            {
+                Clipboard.SetText(JsonConvert.SerializeObject(strokes));
+            }
+
+            try
+            {
+                var drawviewmodels = JsonConvert.DeserializeObject<List<DrawViewModel>>(Clipboard.GetText());
+                drawviewmodels.ForEach(x => x.Guid = Guid.NewGuid().ToString());
+                drawviewmodels.ForEach(x => x.StylusPoints.ForEach(y => y.X += 20));
+                drawviewmodels.ForEach(x => x.StylusPoints.ForEach(y => y.Y += 20));
+                rebuilder.BuildStrokesFromDrawViewModels(drawviewmodels, surfaceDessin);
+                var sCollection = StrokeBuilder.BuildStrokeCollectionFromDVMs(drawviewmodels, surfaceDessin);
+
+
+                (DataContext as VueModele).CollaborationClient.CollaborativeDrawAsync(drawviewmodels);
+                (DataContext as VueModele).CollaborationClient.CollaborativeSelectAsync(drawviewmodels);
+                SendToCloud();
+                Dispatcher.Invoke(() =>
+                {
+                    (DataContext as VueModele).SelectItems(surfaceDessin, sCollection);
+                });
+            }
+            catch (Exception allo)
+            {
+                Console.WriteLine(allo.ToString());
+            }
         }
 
-        private async void SupprimerSelection(object sender, RoutedEventArgs e)
+        private void SupprimerSelection(object sender, RoutedEventArgs e)
         {
             List<DrawViewModel> strokes = rebuilder.GetDrawViewModelsFromStrokes(surfaceDessin.GetSelectedStrokes());
             surfaceDessin.CutSelection();
+            Clipboard.SetText(JsonConvert.SerializeObject(strokes));
             (DataContext as VueModele).CollaborationClient.CollaborativeSelectAsync(new List<DrawViewModel>());
             (DataContext as VueModele).CollaborationClient.CollaborativeDeleteAsync(strokes);
             SendToCloud();
@@ -667,6 +692,14 @@ namespace PolyPaint
                 ImportFromCloud(sender, new RoutedEventArgs());
                 MessageBox.Show("You got kicked out of the canvas");
             });
+        }
+
+        private void surfaceDessin_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Delete)
+            {
+                e.Handled = true;
+            }
         }
 
         void Window_Loaded(object sender, RoutedEventArgs e)
