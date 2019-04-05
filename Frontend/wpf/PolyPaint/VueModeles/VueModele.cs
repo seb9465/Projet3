@@ -346,6 +346,14 @@ namespace PolyPaint.VueModeles
             HandleBorderColorChange(strokes);
             HandleFillColorChange(strokes);
             HandleBorderStyleChange(strokes);
+            HandleThiccnessChange(strokes);
+        }
+
+        private void HandleThiccnessChange(StrokeCollection strokes)
+        {
+            if (strokes.Count() != 0)
+                TailleTrait = (int)((AbstractStroke)strokes.First()).Border.Thickness;
+            ProprieteModifiee("TailleTrait");
         }
 
         public void ChangeOnlineSelection(ItemsMessage message)
