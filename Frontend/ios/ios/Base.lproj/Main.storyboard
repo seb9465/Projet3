@@ -536,9 +536,16 @@
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>
-                                    <action selector="windowChatTrigger:" destination="eTb-Zs-q24" eventType="touchUpInside" id="AJy-sK-Ik8"/>
+                                    <action selector="windowChatTrigger:" destination="eTb-Zs-q24" eventType="touchUpInside" id="R8m-j7-FX1"/>
                                 </connections>
                             </button>
+                            <containerView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wRI-Wo-NFL">
+                                <rect key="frame" x="683" y="147" width="321" height="567"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                <connections>
+                                    <segue destination="6Ue-BN-htd" kind="embed" id="B07-49-CB1"/>
+                                </connections>
+                            </containerView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="Mrk-5T-hni"/>
@@ -546,6 +553,7 @@
                     <connections>
                         <outlet property="logoutButton" destination="p9k-FE-qKI" id="ulq-v1-ocK"/>
                         <outlet property="usernameLabel" destination="DPA-sG-7nO" id="GgY-UD-Jy6"/>
+                        <outlet property="viewContainerChat" destination="wRI-Wo-NFL" id="fXi-3T-KcQ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ktH-qe-LBO" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -623,6 +631,14 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Jgd-rp-4PY" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1488" y="1155"/>
+        </scene>
+        <!--Chat-->
+        <scene sceneID="eXv-UL-1mH">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Chat" id="6Ue-BN-htd" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="rfT-A7-yGH" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1960" y="223"/>
         </scene>
     </scenes>
 </document>

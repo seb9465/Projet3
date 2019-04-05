@@ -14,6 +14,9 @@ class DashboardController: UIViewController, UITextFieldDelegate {
     
     @IBOutlet weak var usernameLabel: UILabel!
     @IBOutlet var logoutButton: RoundedCorners!
+    @IBOutlet var viewContainerChat: UIView!
+    
+    private var isChatOpen: Bool = false;
     
     override func viewDidLoad() { self.navigationItem.setHidesBackButton(true, animated:true);
         super.viewDidLoad();
@@ -25,6 +28,8 @@ class DashboardController: UIViewController, UITextFieldDelegate {
         ChatService.shared.initOnReceivingMessage(insertMessage:{_ in });
         ChatService.shared.connectToUserChatRooms();
         ChatService.shared.connectToHub();
+        
+        self.viewContainerChat.isHidden = true;
     }
     
     @IBAction func logoutButton(_ sender: Any) {
@@ -42,12 +47,13 @@ class DashboardController: UIViewController, UITextFieldDelegate {
         
         self.present(viewController, animated: false, completion: nil);
     }
-    
     @IBAction func windowChatTrigger(_ sender: Any) {
-        let chatroomsVC = ChatRoomsControllerTableViewController();
-        self.addChild(chatroomsVC);
-        self.view.addSubview(chatroomsVC.view);
-        
+        if (self.isChatOpen) {
+            self.viewContainerChat.isHidden = true;
+            self.isChatOpen = false;
+        } else {
+            self.viewContainerChat.isHidden = false;
+            self.isChatOpen = true;
+        }
     }
-    
 }
