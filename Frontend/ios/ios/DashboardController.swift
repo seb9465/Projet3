@@ -24,12 +24,14 @@ class DashboardController: UIViewController, UITextFieldDelegate {
         let jwt = try! decode(jwt: token!)
         usernameLabel.text = jwt.claim(name: "unique_name").string
         
-        
         ChatService.shared.initOnReceivingMessage(insertMessage:{_ in });
         ChatService.shared.connectToUserChatRooms();
         ChatService.shared.connectToHub();
         
+        self.viewContainerChat.sizeToFit(); // Adjusting frame size
         self.viewContainerChat.isHidden = true;
+        self.viewContainerChat.layer.borderWidth = 1;
+        self.viewContainerChat.layer.borderColor = UIColor.black.cgColor;
     }
     
     @IBAction func logoutButton(_ sender: Any) {

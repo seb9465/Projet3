@@ -61,7 +61,7 @@ class ChatRoomsControllerTableViewController: UITableViewController {
         self.backButton.tintColor = Constants.RED_COLOR;
         self.addButton.tintColor = Constants.RED_COLOR;
         
-        super.viewDidLoad()
+        super.viewDidLoad();
     }
     
     private func registerTableViewCells() {
@@ -72,6 +72,9 @@ class ChatRoomsControllerTableViewController: UITableViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        if (self.view.frame.width < 400) {
+            self.navigationItem.hidesBackButton = true;
+        }
         
         super.viewDidAppear(animated);
     }
@@ -129,14 +132,6 @@ class ChatRoomsControllerTableViewController: UITableViewController {
         let storyboard = UIStoryboard(name: "Chat", bundle: nil);
         let destination = storyboard.instantiateViewController(withIdentifier: "ChatView");
         navigationController?.pushViewController(destination, animated: true);
-        
-//        guard let childVC = self.storyboard?.instantiateViewController(withIdentifier: "ChatView") as? MsgChatController else {
-//            return
-//        }
-//
-//        childVC.view.autoresizingMask = [.flexibleHeight, .flexibleWidth]
-//        childVC.view.frame = self.view.bounds
-//        self.present(childVC, animated: true, completion: nil);
     }
     
     override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {

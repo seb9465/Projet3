@@ -540,7 +540,7 @@
                                 </connections>
                             </button>
                             <containerView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wRI-Wo-NFL">
-                                <rect key="frame" x="683" y="147" width="321" height="567"/>
+                                <rect key="frame" x="606" y="147" width="398" height="601"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                 <connections>
                                     <segue destination="6Ue-BN-htd" kind="embed" id="B07-49-CB1"/>
