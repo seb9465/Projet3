@@ -13,22 +13,29 @@ class CanvasController: UIViewController {
     
     // MARK: - Attributes
     private var activeButton: UIBarButtonItem!;
-    
     public var editor: Editor = Editor()
+    
+    // MARK: Outlets
     
     @IBOutlet weak var insertButton: UIBarButtonItem!
     @IBOutlet var selectButton: UIBarButtonItem!
     @IBOutlet var deleteButton: UIBarButtonItem!
     @IBOutlet weak var lassoButton: UIBarButtonItem!
-    
     @IBOutlet weak var exportButton: UIBarButtonItem!
+    @IBOutlet var chatViewButton: UIBarButtonItem!
+    
     @IBOutlet var navigationBar: UIToolbar!
+    @IBOutlet var chatViewContainer: UIView!
+    
+    // MARK: Timing functions
     
     override func viewDidLoad() {
         super.viewDidLoad();
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
         CollaborationHub.shared.connectToHub()
+        
+        self.initChatViewContainer();
         
         self.view.addSubview(self.editor.editorView)
     }
@@ -36,6 +43,7 @@ class CanvasController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated);
         navigationController?.setNavigationBarHidden(true, animated: animated);
+        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -60,15 +68,6 @@ class CanvasController: UIViewController {
     }
     
     @IBAction func deleteButton(_ sender: Any) {
-//        self.resetButtonColor();
-//        if (self.editor.touchEventState == .DELETE) {
-//            self.editor.changeTouchHandleState(to: .NONE);
-//        } else {
-//            self.deleteButton.tintColor = Constants.RED_COLOR;
-//            self.editor.changeTouchHandleState(to: .DELETE)
-//        }
-//
-//        self.editor.deselect();
         self.editor.deleteSelectedFigures()
     }
     
@@ -119,6 +118,73 @@ class CanvasController: UIViewController {
         UIImageWriteToSavedPhotosAlbum(image!, self, #selector(image(_:didFinishSavingWithError:contextInfo:)), nil);
     }
     
+    @IBAction func chatViewButton(_ sender: Any) {
+        if (self.chatViewContainer.isHidden) {
+            self.chatViewButton.tintColor = Constants.RED_COLOR;
+//            self.chatViewContainer.isHidden = false;
+//            self.view.bringSubviewToFront(self.chatViewContainer);
+            
+            UIView.animate(withDuration: 0.35,
+                           delay: 0.0,
+                           usingSpringWithDamping: 0.9,
+                           initialSpringVelocity: 1,
+                           options: [],
+                           animations: {
+                            self.chatViewContainer.isHidden = false;
+                            self.view.bringSubviewToFront(self.chatViewContainer);
+                            self.view.layoutIfNeeded()
+                            },
+                           completion: nil
+            );
+        } else {
+            self.chatViewButton.tintColor = UIColor.black;
+            UIView.animate(withDuration: 0.35,
+                           delay: 0.0,
+                           usingSpringWithDamping: 0.9,
+                           initialSpringVelocity: 1,
+                           options: [],
+                           animations: {
+                            self.chatViewContainer.isHidden = true;
+                            self.view.layoutIfNeeded()
+                            },
+                           completion: nil
+            );
+//            self.chatViewContainer.isHidden = true;
+        }
+    }
+    
+    @IBAction func saveButton(_ sender: Any) {
+        self.editor.save();
+    }
+    
+    @IBAction func quitButton(_ sender: Any) {
+        let alert = UIAlertController(title: "Alert", message: "Would you like to quit ?", preferredStyle: .alert);
+        
+        let yesAction: UIAlertAction = UIAlertAction(title: "Yes", style: .default) { _ in
+            let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil);
+            let viewController: UIViewController = mainStoryboard.instantiateViewController(withIdentifier: "MainController");
+            self.present(viewController, animated: true, completion: nil);
+        }
+        let noAction: UIAlertAction = UIAlertAction(title: "No", style: .default, handler: nil);
+        
+        alert.addAction(yesAction);
+        alert.addAction(noAction);
+        
+        self.present(alert, animated: true, completion: nil);
+    }
+    
+    private func initChatViewContainer() -> Void {
+        self.chatViewContainer.sizeToFit();
+        self.view.bringSubviewToFront(self.chatViewContainer);
+        self.chatViewContainer.isHidden = true;
+        self.chatViewContainer.layer.cornerRadius = Constants.ChatView.cornerRadius;
+        self.chatViewContainer.layer.shadowColor = Constants.ChatView.shadowColor;
+        self.chatViewContainer.layer.shadowOffset = Constants.ChatView.shadowOffset;
+        self.chatViewContainer.layer.shadowOpacity = Constants.ChatView.shadowOpacity;
+        self.chatViewContainer.layer.shadowRadius = Constants.ChatView.shadowRadius;
+        self.chatViewContainer.layer.masksToBounds = false;
+    }
+    
     private func resetButtonColor() -> Void {
         self.selectButton.tintColor = UIColor.black;
         self.deleteButton.tintColor = UIColor.black;
@@ -137,37 +203,6 @@ class CanvasController: UIViewController {
             ac.addAction(UIAlertAction(title: "OK", style: .default))
             present(ac, animated: true)
         }
-    }
-    @IBAction func saveButton(_ sender: Any) {
-        self.editor.save();
-    }
-    @IBAction func quitButton(_ sender: Any) {
-        let alert = UIAlertController(title: "Alert", message: "Would you like to quit ?", preferredStyle: .alert);
-        
-        let yesAction: UIAlertAction = UIAlertAction(title: "Yes", style: .default) { _ in
-            let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil);
-            let viewController: UIViewController = mainStoryboard.instantiateViewController(withIdentifier: "MainController");
-            self.present(viewController, animated: true, completion: nil);
-        }
-        let noAction: UIAlertAction = UIAlertAction(title: "No", style: .default, handler: nil);
-        
-        alert.addAction(yesAction);
-        alert.addAction(noAction);
-        
-        self.present(alert, animated: true, completion: nil);
-    }
-    @objc func keyboardWillShow(notification: NSNotification) {
-//        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
-//            if self.view.frame.origin.y == 0 {
-//                self.view.frame.origin.y -= keyboardSize.height
-//            }
-//        }
-    }
-    
-    @objc func keyboardWillHide(notification: NSNotification) {
-//        if self.view.frame.origin.y != 0 {
-//            self.view.frame.origin.y = 0
-//        }
     }
 }
 

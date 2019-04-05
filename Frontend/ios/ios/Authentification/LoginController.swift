@@ -94,7 +94,7 @@ class LoginController: UIViewController, UITextFieldDelegate {
     }
     
     /**
-     Makes the Register button enabled while the fields are not filled.
+     Makes the Login button enabled while the fields are not filled.
     */
     @objc func textFieldsWithoutErrors(sender: UITextField) -> Void {
         sender.text = sender.text?.trimmingCharacters(in: .whitespaces);

@@ -9,17 +9,20 @@
 import Foundation
 import UIKit
 
-class AddScreenViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class AddScreenViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
     
     // MARK: Class Attributes
     
     private let refreshControl = UIRefreshControl();
+    
+    // MARK: Outlets
     
     @IBOutlet var tableView: UITableView!
     @IBOutlet var cancelButton: UIBarButtonItem!
     @IBOutlet var saveButton: UIBarButtonItem!
     @IBOutlet var channelName: UITextField!
     
+    // MARK: Timing functions
     
     override func viewDidLoad() {
         super.viewDidLoad();
@@ -31,7 +34,43 @@ class AddScreenViewController: UIViewController, UITableViewDelegate, UITableVie
         
         self.cancelButton.tintColor = Constants.RED_COLOR;
         self.saveButton.tintColor = Constants.RED_COLOR;
+        self.saveButton.isEnabled = false;
+        self.channelName.addTarget(self, action: #selector(editingChanged), for: .editingChanged);
     }
+    
+    // MARK: Actions
+    
+    @IBAction func cancelButton(_ sender: Any) {
+        self.navigationController?.popViewController(animated: true);
+    }
+    
+    
+    @IBAction func saveButton(_ sender: Any) {
+        if (!(self.channelName.text?.isEmpty)!) {
+            ChatService.shared.createNewChannel(channelName: channelName.text!);
+        }
+        
+        self.navigationController?.popViewController(animated: true);
+    }
+    
+    // MARK: Object functions
+    
+    @objc private func refreshRooms(_ sender: Any) {
+        ChatService.shared.invokeFetchChannels();
+        self.refreshControl.endRefreshing();
+    }
+    
+    @objc func editingChanged(_ textField: UITextField) {
+        guard
+            let channelName = textField.text, !channelName.isEmpty
+            else {
+                self.saveButton.isEnabled = false
+                return
+        }
+        self.saveButton.isEnabled = true
+    }
+    
+    // MARK: Public functions
     
     public func updateChannels() -> Void {
         self.tableView.reloadData();
@@ -51,30 +90,9 @@ class AddScreenViewController: UIViewController, UITableViewDelegate, UITableVie
         ChatService.shared.invokeFetchChannels();
     }
     
-    @objc private func refreshRooms(_ sender: Any) {
-        ChatService.shared.invokeFetchChannels();
-        self.refreshControl.endRefreshing();
-        
-    }
-    
     private func initRefreshControl() -> Void {
         refreshControl.addTarget(self, action: #selector(refreshRooms(_:)), for: .valueChanged)
         self.tableView.addSubview(self.refreshControl);
-    }
-    
-    // MARK: Actions
-    
-    @IBAction func cancelButton(_ sender: Any) {
-        self.navigationController?.popViewController(animated: true);
-    }
-    
-    
-    @IBAction func saveButton(_ sender: Any) {
-        if (!(self.channelName.text?.isEmpty)!) {
-            ChatService.shared.createNewChannel(channelName: channelName.text!);
-        }
-        
-        self.navigationController?.popViewController(animated: true);
     }
     
     // MARK: Table View
@@ -108,17 +126,6 @@ class AddScreenViewController: UIViewController, UITableViewDelegate, UITableVie
         ChatService.shared.currentChannel = ChatService.shared.serverChannels.channels[indexPath.row];
         ChatService.shared.connectToGroup();
         ChatService.shared.currentChannel = nil;
-        
-//        let storyboard = UIStoryboard(name: "Chat", bundle: nil);
-//        let destination = storyboard.instantiateViewController(withIdentifier: "ChatRoomsView");
-//
-//        let transition = CATransition();
-//        transition.duration = 0.3;
-//        transition.type = CATransitionType.reveal;
-//        transition.subtype = CATransitionSubtype.fromBottom;
-//        self.view.window!.layer.add(transition, forKey: kCATransition);
-//
-//        navigationController?.pushViewController(destination, animated: false);
         
         self.navigationController?.popViewController(animated: true);
     }
