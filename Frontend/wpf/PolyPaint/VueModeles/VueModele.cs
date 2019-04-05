@@ -87,6 +87,12 @@ namespace PolyPaint.VueModeles
             get { return _isCreatedByUser; }
             set { _isCreatedByUser = value; ProprieteModifiee(); }
         }
+        private bool _isConnected = true;
+        public bool IsConnected
+        {
+            get { return _isConnected; }
+            set { _isConnected = value; ProprieteModifiee(); }
+        }
 
         public SaveableCanvas Canvas { get; set; }
 
@@ -340,6 +346,14 @@ namespace PolyPaint.VueModeles
             HandleBorderColorChange(strokes);
             HandleFillColorChange(strokes);
             HandleBorderStyleChange(strokes);
+            HandleThiccnessChange(strokes);
+        }
+
+        private void HandleThiccnessChange(StrokeCollection strokes)
+        {
+            if (strokes.Count() != 0)
+                TailleTrait = (int)((AbstractStroke)strokes.First()).Border.Thickness;
+            ProprieteModifiee("TailleTrait");
         }
 
         public void ChangeOnlineSelection(ItemsMessage message)

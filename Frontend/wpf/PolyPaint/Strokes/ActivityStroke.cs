@@ -79,10 +79,10 @@ namespace PolyPaint.Strokes
             AnchorPoints[3] = new Point(UnrotatedTopLeft.X + 1.0 / 6.0 * UnrotatedWidth, UnrotatedTopLeft.Y + UnrotatedHeight / 2.0);
             AnchorPoints = AnchorPoints.ToList().Select(x => Tools.RotatePoint(x, Center, Rotation)).ToArray();
 
-            drawingContext.DrawEllipse(brush, null, AnchorPoints[0], 2, 2);
-            drawingContext.DrawEllipse(brush, null, AnchorPoints[1], 2, 2);
-            drawingContext.DrawEllipse(brush, null, AnchorPoints[2], 2, 2);
-            drawingContext.DrawEllipse(brush, null, AnchorPoints[3], 2, 2);
+            drawingContext.DrawEllipse(brush, null, AnchorPoints[0], 3, 3);
+            drawingContext.DrawEllipse(brush, null, AnchorPoints[1], 3, 3);
+            drawingContext.DrawEllipse(brush, null, AnchorPoints[2], 3, 3);
+            drawingContext.DrawEllipse(brush, null, AnchorPoints[3], 3, 3);
         }
     }
 }
