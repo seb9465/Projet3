@@ -71,8 +71,8 @@ class ChatService {
     
     // MARK: Public functions
     
-    public func initOnReceivingMessage(currentMemberName: String? = "", insertMessage: @escaping (_ message: Message) -> Void) {
-        self.onSendMessage(currentMemberName: currentMemberName, insertMessage: insertMessage);
+    public func initOnReceivingMessage(currentMemberName: String? = "", insertMessage: @escaping (_ message: Message) -> Void, updateChatRooms: @escaping () -> Void) {
+        self.onSendMessage(currentMemberName: currentMemberName, insertMessage: insertMessage, updateChatRooms: updateChatRooms);
     }
     
     public func initOnAnotherUserConnection(insertMessage: @escaping (_ message: Message) -> Void) -> Void {
@@ -285,7 +285,7 @@ class ChatService {
         });
     }
     
-    private func onSendMessage(currentMemberName: String?, insertMessage: @escaping (_ message: Message) -> Void) -> Void {
+    private func onSendMessage(currentMemberName: String?, insertMessage: @escaping (_ message: Message) -> Void, updateChatRooms: @escaping () -> Void) -> Void {
         self._hubConnection.on(method: "SendMessage", callback: { args, typeConverter in
             print("[ CHAT ] On SendMessage");
             let messageJson: String = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self)!;
@@ -320,7 +320,8 @@ class ChatService {
                         } else {
                             self._messagesWhileAFK.merge(tmp, uniquingKeysWith: { (first, _) in first })
                         }
-                        print(self._messagesWhileAFK);
+                        
+                        updateChatRooms();
                     }
                 }
             }

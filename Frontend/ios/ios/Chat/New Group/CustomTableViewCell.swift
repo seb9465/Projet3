@@ -36,7 +36,7 @@ class CustomTableViewCell: UITableViewCell {
         self.notificationLabel.layer.backgroundColor = UIColor.white.cgColor;
     }
     
-    public func hideCircleLabel() -> Void {
+    public func hideCircleLabel() -> Void {
         self.notificationLabel.layer.backgroundColor = UIColor.clear.cgColor;
     }
 }

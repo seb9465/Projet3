@@ -52,11 +52,14 @@ class ChatRoomsControllerTableViewController: UITableViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        ChatService.shared.currentChannel = nil;
         ChatService.shared.onFetchChannels(updateChannelsFct: self.updateChannels);
         ChatService.shared.onCreateChannel(updateChannelsFct: self.updateChannels);
+        ChatService.shared.initOnReceivingMessage(insertMessage: {_ in }, updateChatRooms: self.updateChannels);
         ChatService.shared.invokeFetchChannels();
+        
         self.navigationItem.leftBarButtonItem?.isEnabled = false;
-        print("frame : ", self.view.frame);
+        
         super.viewDidAppear(animated);
     }
     

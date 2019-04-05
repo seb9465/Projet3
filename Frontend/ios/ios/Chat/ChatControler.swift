@@ -31,7 +31,7 @@ class MsgChatController: MessagesViewController, MsgChatProtocol {
         
         self.initDelegate();
         
-        ChatService.shared.initOnReceivingMessage(currentMemberName: self.member.name, insertMessage: self.insertMessage)
+        ChatService.shared.initOnReceivingMessage(currentMemberName: self.member.name, insertMessage: self.insertMessage, updateChatRooms: { })
         ChatService.shared.initOnAnotherUserConnection(insertMessage: self.insertMessage);
         
 //        self.navigationItem.hidesBackButton = true;

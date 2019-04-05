@@ -27,7 +27,7 @@ class DashboardController: UIViewController, UITextFieldDelegate {
         usernameLabel.text = jwt.claim(name: "unique_name").string
         
         ChatService.shared.connectToUserChatRooms();
-        ChatService.shared.initOnReceivingMessage(insertMessage:{_ in });
+        ChatService.shared.initOnReceivingMessage(insertMessage:{_ in }, updateChatRooms: { });
         ChatService.shared.connectToHub();
         
         self.viewContainerChat.sizeToFit(); // Adjusting frame size
