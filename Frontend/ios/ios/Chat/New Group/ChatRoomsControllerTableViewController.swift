@@ -56,6 +56,7 @@ class ChatRoomsControllerTableViewController: UITableViewController {
         ChatService.shared.onCreateChannel(updateChannelsFct: self.updateChannels);
         ChatService.shared.invokeFetchChannels();
         self.navigationItem.leftBarButtonItem?.isEnabled = false;
+        print("frame : ", self.view.frame);
         super.viewDidAppear(animated);
     }
     
