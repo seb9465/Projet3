@@ -38,7 +38,9 @@ class Editor {
     init() {
         self.editorView.delegate = self
         let rotation = UIRotationGestureRecognizer(target: self, action: #selector(self.rotatedView(_:)))
+        let pinch = UIPinchGestureRecognizer(target: self, action: #selector(self.rotatedView(_:)))
         self.editorView.addGestureRecognizer(rotation)
+        self.editorView.addGestureRecognizer(pinch)
    //     self.editorView.backgroundColor = UIColor.red
    //     self.editorView.clipsToBounds = true
     }

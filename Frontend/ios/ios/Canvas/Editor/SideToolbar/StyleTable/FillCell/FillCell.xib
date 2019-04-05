@@ -34,7 +34,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="omK-e3-jbD" customClass="RoundedCorners" customModule="ios" customModuleProvider="target">
-                        <rect key="frame" x="16" y="65" width="25" height="25"/>
+                        <rect key="frame" x="16" y="65" width="30" height="50"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" red="0.016804177310000001" green="0.19835099580000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <fontDescription key="fontDescription" type="boldSystem" pointSize="23"/>
@@ -46,7 +46,7 @@
                         </connections>
                     </button>
                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jwc-JR-6Ag" customClass="RoundedCorners" customModule="ios" customModuleProvider="target">
-                        <rect key="frame" x="52" y="65" width="25" height="25"/>
+                        <rect key="frame" x="52" y="65" width="30" height="50"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" name="systemGreenColor" catalog="System" colorSpace="catalog"/>
                         <fontDescription key="fontDescription" type="boldSystem" pointSize="23"/>
@@ -57,20 +57,8 @@
                             <action selector="greenSelected:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="TNn-BX-tfw"/>
                         </connections>
                     </button>
-                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6SP-Sb-aLa" customClass="RoundedCorners" customModule="ios" customModuleProvider="target">
-                        <rect key="frame" x="85" y="65" width="25" height="25"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" name="systemYellowColor" catalog="System" colorSpace="catalog"/>
-                        <fontDescription key="fontDescription" type="boldSystem" pointSize="23"/>
-                        <state key="normal">
-                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        </state>
-                        <connections>
-                            <action selector="yellowSelected:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="gBb-zQ-STn"/>
-                        </connections>
-                    </button>
                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8gv-Lr-fOi" customClass="RoundedCorners" customModule="ios" customModuleProvider="target">
-                        <rect key="frame" x="118" y="65" width="25" height="25"/>
+                        <rect key="frame" x="128" y="65" width="30" height="50"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" name="systemRedColor" catalog="System" colorSpace="catalog"/>
                         <fontDescription key="fontDescription" type="boldSystem" pointSize="23"/>
@@ -82,7 +70,7 @@
                         </connections>
                     </button>
                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pPS-8U-0hc" customClass="RoundedCorners" customModule="ios" customModuleProvider="target">
-                        <rect key="frame" x="151" y="65" width="25" height="25"/>
+                        <rect key="frame" x="166" y="64" width="30" height="50"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <fontDescription key="fontDescription" type="boldSystem" pointSize="23"/>
@@ -94,7 +82,7 @@
                         </connections>
                     </button>
                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QPu-oD-93j" customClass="RoundedCorners" customModule="ios" customModuleProvider="target">
-                        <rect key="frame" x="184" y="65" width="25" height="25"/>
+                        <rect key="frame" x="204" y="64" width="30" height="50"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" red="1" green="0.41960784309999999" blue="0.41960784309999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <fontDescription key="fontDescription" type="boldSystem" pointSize="23"/>
@@ -103,6 +91,18 @@
                         </state>
                         <connections>
                             <action selector="whiteSelected:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="8CP-Tr-0Ro"/>
+                        </connections>
+                    </button>
+                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6SP-Sb-aLa" customClass="RoundedCorners" customModule="ios" customModuleProvider="target">
+                        <rect key="frame" x="91" y="64" width="30" height="50"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" name="systemYellowColor" catalog="System" colorSpace="catalog"/>
+                        <fontDescription key="fontDescription" type="boldSystem" pointSize="23"/>
+                        <state key="normal">
+                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </state>
+                        <connections>
+                            <action selector="yellowSelected:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="gBb-zQ-STn"/>
                         </connections>
                     </button>
                 </subviews>

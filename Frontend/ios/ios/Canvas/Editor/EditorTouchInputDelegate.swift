@@ -70,6 +70,7 @@ extension Editor : TouchInputDelegate {
     private func handleSelectTouchBegin(action: String, point: CGPoint) {
         self.initialTouchPoint = point
         self.previousTouchPoint = point
+        print(action)
         
         if (action == "selection") {
             if (!(self.selectedFigures[0] is ConnectionFigure)) {

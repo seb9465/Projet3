@@ -37,8 +37,14 @@ class SelectionOutline: UIView {
         let frame = CGRect(origin: firstPoint, size: frameSize)
         super.init(frame: frame)
 //        self.isUserInteractionEnabled = false
+        self.isMultipleTouchEnabled = true
         self.setInitialSelectedDashedBorder(bounds: self.bounds);
         self.setInitialSelectedCornerCirles(firstPoint: firstPoint, lastPoint: lastPoint)
+    }
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -120,21 +126,41 @@ class SelectionOutline: UIView {
 //        setNeedsDisplay();
     }
     
+    // Create a detection area around connection figure extremities
+    func isPointOnAnchor(point: CGPoint) -> Bool{
+        let detectionDiameter: CGFloat = 50
+        let areaRect: CGRect = CGRect(
+            x: point.x - detectionDiameter/2,
+            y: point.y - detectionDiameter/2,
+            width: detectionDiameter,
+            height: detectionDiameter
+        )
+        
+        guard let sublayers = self.layer.sublayers as? [CAShapeLayer] else { return false }
+        for layer in sublayers{
+//            print("Point", point)
+//            print(layer.position)
+            if (areaRect.contains(layer.position)) {
+                return true
+            }
+        }
+        return false
+    }
+    
     public func translate(by: CGPoint) {
         let translatedFrame = self.frame.offsetBy(dx: by.x, dy: by.y)
         self.frame = translatedFrame
     }
-    
-//    override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
-//        return true
-////        return !(self.border.path?.contains(point))!
-//    }
 }
 
 extension SelectionOutline {
     public override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         let touch = touches.first
+        guard let localPoint = touch?.location(in: self) else { return }
         guard let point = touch?.location(in: self.superview) else { return }
+        
+//        print(event?.touches(for: self)?.count)
+
         self.delegate?.notifyTouchBegan(action: "selection", point: point, figure: nil)
     }
     
