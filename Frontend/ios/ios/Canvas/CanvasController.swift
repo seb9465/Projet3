@@ -128,10 +128,30 @@ class CanvasController: UIViewController {
         }
     }
     
+    @IBAction func saveButton(_ sender: Any) {
+        self.editor.save();
+    }
+    
+    @IBAction func quitButton(_ sender: Any) {
+        let alert = UIAlertController(title: "Alert", message: "Would you like to quit ?", preferredStyle: .alert);
+        
+        let yesAction: UIAlertAction = UIAlertAction(title: "Yes", style: .default) { _ in
+            let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil);
+            let viewController: UIViewController = mainStoryboard.instantiateViewController(withIdentifier: "MainController");
+            self.present(viewController, animated: true, completion: nil);
+        }
+        let noAction: UIAlertAction = UIAlertAction(title: "No", style: .default, handler: nil);
+        
+        alert.addAction(yesAction);
+        alert.addAction(noAction);
+        
+        self.present(alert, animated: true, completion: nil);
+    }
+    
     private func initChatViewContainer() -> Void {
         self.chatViewContainer.sizeToFit();
         self.view.bringSubviewToFront(self.chatViewContainer);
-        self.chatViewContainer.isHidden = true;
+//        self.chatViewContainer.isHidden = true;
         self.chatViewContainer.layer.cornerRadius = 5.0;
         self.chatViewContainer.layer.shadowColor = UIColor.black.cgColor;
         self.chatViewContainer.layer.shadowOffset = CGSize.zero;
@@ -158,37 +178,6 @@ class CanvasController: UIViewController {
             ac.addAction(UIAlertAction(title: "OK", style: .default))
             present(ac, animated: true)
         }
-    }
-    @IBAction func saveButton(_ sender: Any) {
-        self.editor.save();
-    }
-    @IBAction func quitButton(_ sender: Any) {
-        let alert = UIAlertController(title: "Alert", message: "Would you like to quit ?", preferredStyle: .alert);
-        
-        let yesAction: UIAlertAction = UIAlertAction(title: "Yes", style: .default) { _ in
-            let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil);
-            let viewController: UIViewController = mainStoryboard.instantiateViewController(withIdentifier: "MainController");
-            self.present(viewController, animated: true, completion: nil);
-        }
-        let noAction: UIAlertAction = UIAlertAction(title: "No", style: .default, handler: nil);
-        
-        alert.addAction(yesAction);
-        alert.addAction(noAction);
-        
-        self.present(alert, animated: true, completion: nil);
-    }
-    @objc func keyboardWillShow(notification: NSNotification) {
-//        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
-//            if self.view.frame.origin.y == 0 {
-//                self.view.frame.origin.y -= keyboardSize.height
-//            }
-//        }
-    }
-    
-    @objc func keyboardWillHide(notification: NSNotification) {
-//        if self.view.frame.origin.y != 0 {
-//            self.view.frame.origin.y = 0
-//        }
     }
 }
 

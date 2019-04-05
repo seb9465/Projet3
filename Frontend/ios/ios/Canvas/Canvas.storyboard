@@ -107,10 +107,10 @@
                                 </connections>
                             </containerView>
                             <containerView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="g7X-4N-AQk">
-                                <rect key="frame" x="604" y="109" width="400" height="620"/>
+                                <rect key="frame" x="616" y="53" width="400" height="620"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                 <connections>
-                                    <segue destination="dTo-tR-BiJ" kind="embed" id="bAG-n4-c8y"/>
+                                    <segue destination="coJ-Ch-zUI" kind="embed" id="4mB-LM-KMP"/>
                                 </connections>
                             </containerView>
                         </subviews>
@@ -227,12 +227,12 @@
             <point key="canvasLocation" x="1352" y="-107"/>
         </scene>
         <!--Chat-->
-        <scene sceneID="XsM-TB-sFf">
+        <scene sceneID="CdN-L1-6qT">
             <objects>
-                <viewControllerPlaceholder storyboardName="Chat" id="dTo-tR-BiJ" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="hcM-du-KUI" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <viewControllerPlaceholder storyboardName="Chat" id="coJ-Ch-zUI" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="gWW-Tu-drh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="795" y="-525"/>
+            <point key="canvasLocation" x="713" y="-526"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="qKX-OW-qvx">
