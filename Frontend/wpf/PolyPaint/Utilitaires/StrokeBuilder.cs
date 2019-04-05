@@ -342,9 +342,19 @@ namespace PolyPaint.Utilitaires
                 drawingStroke.Guid = stroke.Guid.ToString();
                 drawingStroke.Rotation = stroke.Rotation;
 
-                var stylusPoint0 = new PolyPaintStylusPoint() { PressureFactor = stroke.StylusPoints[0].PressureFactor, X = stroke.TopLeft.X, Y = stroke.TopLeft.Y };
-                var bottomRight = new Point(stroke.TopLeft.X + stroke.Width, stroke.TopLeft.Y + stroke.Height);
-                var stylusPoint1 = new PolyPaintStylusPoint() { PressureFactor = stroke.StylusPoints[1].PressureFactor, X = bottomRight.X, Y = bottomRight.Y };
+                PolyPaintStylusPoint stylusPoint0;
+                PolyPaintStylusPoint stylusPoint1;
+                if (stroke is AbstractLineStroke)
+                {
+                    stylusPoint0 = new PolyPaintStylusPoint() { PressureFactor = stroke.StylusPoints[0].PressureFactor, X = stroke.StylusPoints[0].X, Y = stroke.StylusPoints[0].Y };
+                    stylusPoint1 = new PolyPaintStylusPoint() { PressureFactor = stroke.StylusPoints[1].PressureFactor, X = stroke.StylusPoints[1].X, Y = stroke.StylusPoints[1].Y };
+                }
+                else
+                {
+                    stylusPoint0 = new PolyPaintStylusPoint() { PressureFactor = stroke.StylusPoints[0].PressureFactor, X = stroke.TopLeft.X, Y = stroke.TopLeft.Y };
+                    var bottomRight = new Point(stroke.TopLeft.X + stroke.Width, stroke.TopLeft.Y + stroke.Height);
+                    stylusPoint1 = new PolyPaintStylusPoint() { PressureFactor = stroke.StylusPoints[1].PressureFactor, X = bottomRight.X, Y = bottomRight.Y };
+                }
                 drawingStroke.StylusPoints = new List<PolyPaintStylusPoint>() { stylusPoint0, stylusPoint1 };
 
                 drawingStroke.FillColor = new PolyPaintColor()
