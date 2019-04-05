@@ -48,9 +48,7 @@ class ChatRoomsControllerTableViewController: UITableViewController {
         self.tableView.separatorStyle = .none;
         self.registerTableViewCells();
         
-        ChatService.shared.onFetchChannels(updateChannelsFct: self.updateChannels);
-        ChatService.shared.onCreateChannel(updateChannelsFct: self.updateChannels);
-        ChatService.shared.invokeFetchChannels();
+        
         
         self.refreshTable.addTarget(self, action: #selector(refreshData(_:)), for: .valueChanged)
         self.tableView.addSubview(self.refreshTable);
@@ -72,7 +70,9 @@ class ChatRoomsControllerTableViewController: UITableViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        
+        ChatService.shared.onFetchChannels(updateChannelsFct: self.updateChannels);
+        ChatService.shared.onCreateChannel(updateChannelsFct: self.updateChannels);
+        ChatService.shared.invokeFetchChannels();
         self.navigationItem.leftBarButtonItem?.isEnabled = false;
         super.viewDidAppear(animated);
     }
