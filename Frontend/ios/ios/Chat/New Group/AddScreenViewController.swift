@@ -64,6 +64,7 @@ class AddScreenViewController: UIViewController, UITableViewDelegate, UITableVie
     // MARK: Text field function
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        print(textField.text);
         if ((textField.text?.isEmpty)!) {
             self.saveButton.isEnabled = false;
         } else {
