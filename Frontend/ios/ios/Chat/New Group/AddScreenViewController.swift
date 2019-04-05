@@ -38,6 +38,38 @@ class AddScreenViewController: UIViewController, UITableViewDelegate, UITableVie
         self.channelName.addTarget(self, action: #selector(editingChanged), for: .editingChanged);
     }
     
+    // MARK: Actions
+    
+    @IBAction func cancelButton(_ sender: Any) {
+        self.navigationController?.popViewController(animated: true);
+    }
+    
+    
+    @IBAction func saveButton(_ sender: Any) {
+        if (!(self.channelName.text?.isEmpty)!) {
+            ChatService.shared.createNewChannel(channelName: channelName.text!);
+        }
+        
+        self.navigationController?.popViewController(animated: true);
+    }
+    
+    // MARK: Object functions
+    
+    @objc private func refreshRooms(_ sender: Any) {
+        ChatService.shared.invokeFetchChannels();
+        self.refreshControl.endRefreshing();
+    }
+    
+    @objc func editingChanged(_ textField: UITextField) {
+        guard
+            let channelName = textField.text, !channelName.isEmpty
+            else {
+                self.saveButton.isEnabled = false
+                return
+        }
+        self.saveButton.isEnabled = true
+    }
+    
     // MARK: Public functions
     
     public func updateChannels() -> Void {
@@ -61,42 +93,6 @@ class AddScreenViewController: UIViewController, UITableViewDelegate, UITableVie
     private func initRefreshControl() -> Void {
         refreshControl.addTarget(self, action: #selector(refreshRooms(_:)), for: .valueChanged)
         self.tableView.addSubview(self.refreshControl);
-    }
-    
-    // MARK: Text field function
-    
-    @objc func editingChanged(_ textField: UITextField) {
-        print(textField.text);
-        guard
-            let channelName = textField.text, !channelName.isEmpty
-            else {
-                self.saveButton.isEnabled = false
-                return
-        }
-        self.saveButton.isEnabled = true
-    }
-    
-    // MARK: Actions
-    
-    @IBAction func cancelButton(_ sender: Any) {
-        self.navigationController?.popViewController(animated: true);
-    }
-    
-    
-    @IBAction func saveButton(_ sender: Any) {
-        if (!(self.channelName.text?.isEmpty)!) {
-            ChatService.shared.createNewChannel(channelName: channelName.text!);
-        }
-        
-        self.navigationController?.popViewController(animated: true);
-    }
-    
-    // MARK: Object functions
-    
-    @objc private func refreshRooms(_ sender: Any) {
-        ChatService.shared.invokeFetchChannels();
-        self.refreshControl.endRefreshing();
-        
     }
     
     // MARK: Table View
