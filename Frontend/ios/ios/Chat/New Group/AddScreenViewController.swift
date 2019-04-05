@@ -15,11 +15,14 @@ class AddScreenViewController: UIViewController, UITableViewDelegate, UITableVie
     
     private let refreshControl = UIRefreshControl();
     
+    // MARK: Outlets
+    
     @IBOutlet var tableView: UITableView!
     @IBOutlet var cancelButton: UIBarButtonItem!
     @IBOutlet var saveButton: UIBarButtonItem!
     @IBOutlet var channelName: UITextField!
     
+    // MARK: Timing functions
     
     override func viewDidLoad() {
         super.viewDidLoad();
@@ -32,6 +35,8 @@ class AddScreenViewController: UIViewController, UITableViewDelegate, UITableVie
         self.cancelButton.tintColor = Constants.RED_COLOR;
         self.saveButton.tintColor = Constants.RED_COLOR;
     }
+    
+    // MARK: Public functions
     
     public func updateChannels() -> Void {
         self.tableView.reloadData();
@@ -108,17 +113,6 @@ class AddScreenViewController: UIViewController, UITableViewDelegate, UITableVie
         ChatService.shared.currentChannel = ChatService.shared.serverChannels.channels[indexPath.row];
         ChatService.shared.connectToGroup();
         ChatService.shared.currentChannel = nil;
-        
-//        let storyboard = UIStoryboard(name: "Chat", bundle: nil);
-//        let destination = storyboard.instantiateViewController(withIdentifier: "ChatRoomsView");
-//
-//        let transition = CATransition();
-//        transition.duration = 0.3;
-//        transition.type = CATransitionType.reveal;
-//        transition.subtype = CATransitionSubtype.fromBottom;
-//        self.view.window!.layer.add(transition, forKey: kCATransition);
-//
-//        navigationController?.pushViewController(destination, animated: false);
         
         self.navigationController?.popViewController(animated: true);
     }

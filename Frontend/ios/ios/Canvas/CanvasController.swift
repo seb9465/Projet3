@@ -13,16 +13,21 @@ class CanvasController: UIViewController {
     
     // MARK: - Attributes
     private var activeButton: UIBarButtonItem!;
-    
     public var editor: Editor = Editor()
+    
+    // MARK: Outlets
     
     @IBOutlet weak var insertButton: UIBarButtonItem!
     @IBOutlet var selectButton: UIBarButtonItem!
     @IBOutlet var deleteButton: UIBarButtonItem!
     @IBOutlet weak var lassoButton: UIBarButtonItem!
-    
     @IBOutlet weak var exportButton: UIBarButtonItem!
+    @IBOutlet var chatViewButton: UIBarButtonItem!
+    
     @IBOutlet var navigationBar: UIToolbar!
+    @IBOutlet var chatViewContainer: UIView!
+    
+    // MARK: Timing functions
     
     override func viewDidLoad() {
         super.viewDidLoad();
@@ -36,6 +41,7 @@ class CanvasController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated);
         navigationController?.setNavigationBarHidden(true, animated: animated);
+        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -60,15 +66,6 @@ class CanvasController: UIViewController {
     }
     
     @IBAction func deleteButton(_ sender: Any) {
-//        self.resetButtonColor();
-//        if (self.editor.touchEventState == .DELETE) {
-//            self.editor.changeTouchHandleState(to: .NONE);
-//        } else {
-//            self.deleteButton.tintColor = Constants.RED_COLOR;
-//            self.editor.changeTouchHandleState(to: .DELETE)
-//        }
-//
-//        self.editor.deselect();
         self.editor.deleteSelectedFigures()
     }
     
@@ -117,6 +114,10 @@ class CanvasController: UIViewController {
         let image = UIGraphicsGetImageFromCurrentImageContext();
         UIGraphicsEndImageContext();
         UIImageWriteToSavedPhotosAlbum(image!, self, #selector(image(_:didFinishSavingWithError:contextInfo:)), nil);
+    }
+    
+    @IBAction func chatViewButton(_ sender: Any) {
+        
     }
     
     private func resetButtonColor() -> Void {
