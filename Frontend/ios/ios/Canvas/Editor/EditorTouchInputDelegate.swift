@@ -69,6 +69,10 @@ extension Editor : TouchInputDelegate {
         print(action)
         
         if (action == "selection") {
+            if (self.selectedFigures.isEmpty) {
+                return
+            }
+            
             if (!(self.selectedFigures[0] is ConnectionFigure)) {
                 self.touchEventState = .TRANSLATE
                 return
@@ -160,7 +164,6 @@ extension Editor : TouchInputDelegate {
         if (self.touchEventState == .CONNECTION) {
             self.connectionPreview.removeFromSuperview()
             self.connectionPreview = FigureFactory.shared.getFigure(type: self.currentFigureType, source: self.initialTouchPoint, destination: point)
-            //            self.connectionPreview = ConnectionFigure(origin: self.initialTouchPoint, destination: point, itemType: .UniderectionalAssoication)
             self.editorView.addSubview(self.connectionPreview)
             return
         }
