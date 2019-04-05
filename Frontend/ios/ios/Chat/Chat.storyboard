@@ -15,15 +15,15 @@
             <objects>
                 <tableViewController storyboardIdentifier="ChatRoomsView" id="AbL-dl-DlD" customClass="ChatRoomsControllerTableViewController" customModule="ios" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="cxO-c3-Yhe">
-                        <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
+                        <rect key="frame" x="0.0" y="0.0" width="400" height="620"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="VfQ-bB-D0P">
-                                <rect key="frame" x="0.0" y="28" width="1024" height="44"/>
+                                <rect key="frame" x="0.0" y="28" width="400" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="VfQ-bB-D0P" id="RHt-SX-9lo">
-                                    <rect key="frame" x="0.0" y="0.0" width="1024" height="43.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="400" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                             </tableViewCell>
@@ -49,6 +49,7 @@
                             <outlet property="backBarButtonItem" destination="2yi-Jh-1El" id="Aad-bf-3Cl"/>
                         </connections>
                     </navigationItem>
+                    <size key="freeformSize" width="400" height="620"/>
                     <connections>
                         <outlet property="addButton" destination="4pS-QW-lYR" id="x1s-qx-NuZ"/>
                         <outlet property="backButton" destination="2yi-Jh-1El" id="vwx-CJ-6AK"/>
@@ -150,11 +151,12 @@
             <objects>
                 <viewController storyboardIdentifier="ChatView" title="Chat View Controller" id="hjx-CS-J5Y" customClass="MsgChatController" customModule="ios" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="lcR-1e-tlA">
-                        <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
+                        <rect key="frame" x="0.0" y="0.0" width="400" height="620"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="lHM-Vd-zJ9"/>
                     </view>
+                    <size key="freeformSize" width="400" height="620"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XJE-uq-8KV" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -165,8 +167,9 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="nlp-Eb-Z0w" sceneMemberID="viewController">
                     <toolbarItems/>
+                    <size key="freeformSize" width="400" height="620"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="96E-Ju-0lp">
-                        <rect key="frame" x="0.0" y="20" width="1024" height="50"/>
+                        <rect key="frame" x="0.0" y="20" width="400" height="50"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
