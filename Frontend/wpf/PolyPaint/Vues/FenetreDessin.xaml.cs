@@ -600,7 +600,7 @@ namespace PolyPaint
             var selectedStrokes = surfaceDessin.GetSelectedStrokes();
             if (selectedStrokes.Count == 1 && selectedStrokes[0] is AbstractLineStroke && ((AbstractLineStroke)selectedStrokes[0]).Snapped)
                 e.Cancel = true;
-            icEventManager.RedrawConnections(surfaceDessin, (DataContext as VueModele).OutilSelectionne, e.OldRectangle, e.NewRectangle);
+            icEventManager.RedrawConnections(surfaceDessin, (DataContext as VueModele).OutilSelectionne, e.OldRectangle, e.NewRectangle, DataContext as VueModele);
         }
         private void ContextualMenu_Click(object sender, EventArgs e)
         {

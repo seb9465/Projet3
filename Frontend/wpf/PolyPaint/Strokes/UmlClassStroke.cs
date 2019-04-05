@@ -108,26 +108,26 @@ namespace PolyPaint.Strokes
 
         private void addProperty(string bidon)
         {
-            Properties.Add(new Property("NewProperty"));
-            ProprieteModifiee("Properties");
+            (SurfaceDessin.Strokes.FirstOrDefault(x => (x as AbstractStroke).Guid == Guid) as UmlClassStroke).Properties.Add(new Property("NewProperty"));
+            (SurfaceDessin.Strokes.FirstOrDefault(x => (x as AbstractStroke).Guid == Guid) as UmlClassStroke).ProprieteModifiee("Properties");
         }
 
         private void addMethod(string bidon)
         {
-            Methods.Add(new Method("NewMethod"));
-            ProprieteModifiee("Methods");
+            (SurfaceDessin.Strokes.FirstOrDefault(x => (x as AbstractStroke).Guid == Guid) as UmlClassStroke).Methods.Add(new Method("NewMethod"));
+            (SurfaceDessin.Strokes.FirstOrDefault(x => (x as AbstractStroke).Guid == Guid) as UmlClassStroke).ProprieteModifiee("Methods");
         }
 
         private void removeFromProperties(string prop)
         {
-            Properties.Remove(Properties.FirstOrDefault(x => x.Title == prop));
-            ProprieteModifiee("Properties");
+            (SurfaceDessin.Strokes.FirstOrDefault(x => (x as AbstractStroke).Guid == Guid) as UmlClassStroke).Properties.Remove((SurfaceDessin.Strokes.FirstOrDefault(x => (x as AbstractStroke).Guid == Guid) as UmlClassStroke).Properties.FirstOrDefault(x => x.Title == prop));
+            (SurfaceDessin.Strokes.FirstOrDefault(x => (x as AbstractStroke).Guid == Guid) as UmlClassStroke).ProprieteModifiee("Properties");
         }
 
         private void removeFromMethods(string method)
         {
-            Methods.Remove(Methods.FirstOrDefault(x => x.Title == method));
-            ProprieteModifiee("Methods");
+            (SurfaceDessin.Strokes.FirstOrDefault(x => (x as AbstractStroke).Guid == Guid) as UmlClassStroke).Methods.Remove((SurfaceDessin.Strokes.FirstOrDefault(x => (x as AbstractStroke).Guid == Guid) as UmlClassStroke).Methods.FirstOrDefault(x => x.Title == method));
+            (SurfaceDessin.Strokes.FirstOrDefault(x => (x as AbstractStroke).Guid == Guid) as UmlClassStroke).ProprieteModifiee("Methods");
         }
     }
 

@@ -149,12 +149,12 @@ namespace PolyPaint.Utilitaires
             }
         }
 
-        public void RedrawConnections(InkCanvas surfaceDessin, string outilSelectionne, Rect oldRectangle, Rect newRectangle)
+        public void RedrawConnections(InkCanvas surfaceDessin, string outilSelectionne, Rect oldRectangle, Rect newRectangle, VueModele vm)
         {
-            UpdateAnchorPointsPosition(surfaceDessin, oldRectangle, newRectangle);
+            UpdateAnchorPointsPosition(surfaceDessin, oldRectangle, newRectangle, vm);
         }
 
-        private void UpdateAnchorPointsPosition(InkCanvas surfaceDessin, Rect oldRectangle, Rect newRectangle)
+        private void UpdateAnchorPointsPosition(InkCanvas surfaceDessin, Rect oldRectangle, Rect newRectangle, VueModele vm)
         {
             double shiftInX = newRectangle.Left - oldRectangle.Left;
             double shiftInY = newRectangle.Top - oldRectangle.Top;
@@ -172,11 +172,11 @@ namespace PolyPaint.Utilitaires
                 affectedAnchorPoints.Add(new Point(topLeft.X, topLeft.Y + height / 2));
             }
 
-            RedrawLineOnAffectedAnchorPoints(surfaceDessin, affectedAnchorPoints, shiftInX, shiftInY);
+            RedrawLineOnAffectedAnchorPoints(surfaceDessin, affectedAnchorPoints, shiftInX, shiftInY, vm);
         }
 
         private void RedrawLineOnAffectedAnchorPoints(InkCanvas surfaceDessin, List<Point> affectedAnchorPoints,
-                                                      double shiftInX, double shiftInY)
+                                                      double shiftInX, double shiftInY, VueModele vm)
         {
             foreach (Point pt in affectedAnchorPoints)
             {
@@ -187,7 +187,8 @@ namespace PolyPaint.Utilitaires
                         Point.Subtract(x.StylusPoints[i].ToPoint(), pt).Length <= Config.MIN_DISTANCE_ANCHORS)
                         .ToList();
                     strokes.ForEach(x => RedrawPoint(x, i, new Vector(shiftInX, shiftInY)));
-                    
+                    var strokeBuilder = new StrokeBuilder();
+                    vm.CollaborationClient.CollaborativeDrawAsync(strokeBuilder.GetDrawViewModelsFromStrokes(new StrokeCollection(strokes)));
                 }
             }
         }
