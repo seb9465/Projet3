@@ -45,7 +45,13 @@ class LoginController: UIViewController, UITextFieldDelegate {
     */
     @IBAction func loginPressed(_ sender: Any) -> Void {
         let spinner = UIViewController.displaySpinner(onView: self.view);
+        let token = UserDefaults.standard.string(forKey: "token");
         
+        if(token != nil) {
+            print("should logout")
+            AuthentificationAPI.logout()
+            UserDefaults.standard.removePersistentDomain(forName: "token");
+        }
 //        AuthentificationAPI.login(username: emailField.text!, password: passwordField.text!)
         AuthentificationAPI.login(username: "william.sevigny", password: "!12345Aa")
 //        AuthentificationAPI.login(username: "seb.cado2", password: "!12345Aa")
