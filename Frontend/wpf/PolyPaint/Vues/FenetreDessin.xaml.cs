@@ -50,6 +50,7 @@ namespace PolyPaint
         private InkCanvasEventManager icEventManager = new InkCanvasEventManager();
         private StrokeBuilder strokeBuilder = new StrokeBuilder();
         private bool IsDrawing = false;
+        private bool IsDragging = false;
         private Point currentPoint, mouseLeftDownPoint;
         private HubConnection Connection;
         public event EventHandler MessageReceived;
@@ -570,6 +571,9 @@ namespace PolyPaint
 
         void InkCanvas_SelectionMoving(object sender, InkCanvasSelectionEditingEventArgs e)
         {
+            var selectedStrokes = surfaceDessin.GetSelectedStrokes();
+            if (selectedStrokes.Count == 1 && selectedStrokes[0] is AbstractLineStroke && ((AbstractLineStroke)selectedStrokes[0]).Snapped)
+                e.Cancel = true;
             icEventManager.RedrawConnections(surfaceDessin, (DataContext as VueModele).OutilSelectionne, e.OldRectangle, e.NewRectangle);
         }
         private void ContextualMenu_Click(object sender, EventArgs e)
