@@ -34,6 +34,7 @@ class AddScreenViewController: UIViewController, UITableViewDelegate, UITableVie
         
         self.cancelButton.tintColor = Constants.RED_COLOR;
         self.saveButton.tintColor = Constants.RED_COLOR;
+        self.saveButton.isEnabled = false;
     }
     
     // MARK: Public functions
@@ -63,15 +64,24 @@ class AddScreenViewController: UIViewController, UITableViewDelegate, UITableVie
     
     // MARK: Text field function
     
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+    func textFieldDidBeginEditing(_ textField: UITextField) {
         print(textField.text);
+        print((textField.text?.isEmpty)!);
         if ((textField.text?.isEmpty)!) {
             self.saveButton.isEnabled = false;
         } else {
             self.saveButton.isEnabled = true;
         }
-        
-        return true;
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        print(textField.text);
+        print((textField.text?.isEmpty)!);
+        if ((textField.text?.isEmpty)!) {
+            self.saveButton.isEnabled = false;
+        } else {
+            self.saveButton.isEnabled = true;
+        }
     }
     
     // MARK: Actions
