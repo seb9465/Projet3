@@ -67,7 +67,7 @@ namespace PolyPaint.API.Controllers
 
             if (token != null)
             {
-                return Ok("Login Successful " + token);
+                return Ok(token);
             }
             else
             {
