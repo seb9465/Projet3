@@ -141,7 +141,8 @@ namespace PolyPaint
                 drawviewmodels.ForEach(x => x.StylusPoints.ForEach(y => y.X += 20));
                 drawviewmodels.ForEach(x => x.StylusPoints.ForEach(y => y.Y += 20));
                 rebuilder.BuildStrokesFromDrawViewModels(drawviewmodels, surfaceDessin);
-                var sCollection = StrokeBuilder.BuildStrokeCollectionFromDVMs(drawviewmodels, surfaceDessin);
+
+                StrokeCollection sCollection = new StrokeCollection(surfaceDessin.Strokes.Where(x => drawviewmodels.Select(y => y.Guid).Contains((x as AbstractStroke).Guid.ToString())).ToList());
 
 
                 (DataContext as VueModele).CollaborationClient.CollaborativeDrawAsync(drawviewmodels);
