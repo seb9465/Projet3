@@ -38,6 +38,11 @@ class DashboardController: UIViewController, UITextFieldDelegate {
         self.viewContainerChat.layer.masksToBounds = false;
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        self.viewContainerChat.removeFromSuperview();
+        self.viewContainerChat = nil;
+    }
+    
     @IBAction func logoutButton(_ sender: Any) {
         AuthentificationAPI.logout()
         UserDefaults.standard.removePersistentDomain(forName: "token");

@@ -35,7 +35,7 @@ class CanvasController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
         CollaborationHub.shared.connectToHub()
         
-        self.initChatViewContainer();
+//        self.initChatViewContainer();
         
         self.view.addSubview(self.editor.editorView)
     }

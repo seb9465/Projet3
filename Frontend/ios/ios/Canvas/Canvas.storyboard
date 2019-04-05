@@ -226,10 +226,10 @@
             </objects>
             <point key="canvasLocation" x="1352" y="-107"/>
         </scene>
-        <!--Storyboard Reference-->
+        <!--Chat-->
         <scene sceneID="XsM-TB-sFf">
             <objects>
-                <viewControllerPlaceholder id="dTo-tR-BiJ" sceneMemberID="viewController"/>
+                <viewControllerPlaceholder storyboardName="Chat" id="dTo-tR-BiJ" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hcM-du-KUI" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="795" y="-525"/>
