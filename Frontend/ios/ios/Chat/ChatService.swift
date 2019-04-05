@@ -153,7 +153,16 @@ class ChatService {
     }
     
     public func disconnectFromCurrentChatRoom() -> Void {
-        self.invokeDisconnectFromChannel();
+        let json = try? JSONEncoder().encode(ConnectionMessage(channelId: self._currentChannel.name));
+        let jsondata: String = String(data: json!, encoding: .utf8)!;
+        
+        self._hubConnection.invoke(method: "DisconnectFromChannel", arguments: [jsondata], invocationDidComplete: { error in
+            print("[ CHAT ] Invoked DisconnectFromChannel.");
+            if let e = error {
+                print("[ CHAT ] Error Invoking DisconnectFromChannel.");
+                print(e);
+            }
+        });
     }
     
     public func connectToUserChatRooms() -> Void {
@@ -343,19 +352,6 @@ class ChatService {
             
             if error != nil {
                 print("ERROR while invoking ConnectToChannel");
-            }
-        });
-    }
-    
-    private func invokeDisconnectFromChannel() -> Void {
-        let json = try? JSONEncoder().encode(ConnectionMessage(channelId: self._currentChannel.name));
-        let jsondata: String = String(data: json!, encoding: .utf8)!;
-        
-        self._hubConnection.invoke(method: "DisconnectFromChannel", arguments: [jsondata], invocationDidComplete: { error in
-            print("[ CHAT ] Invoked DisconnectFromChannel.");
-            if let e = error {
-                print("[ CHAT ] Error Invoking DisconnectFromChannel.");
-                print(e);
             }
         });
     }
