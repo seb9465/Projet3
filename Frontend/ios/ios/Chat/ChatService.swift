@@ -297,6 +297,7 @@ class ChatService {
                     memberFromMessage = self._members.getMemberByName(memberName: message.username);
                 } else {
                     memberFromMessage = Member( name: message.username, color: .random );
+                    self._members.addMember(member: memberFromMessage);
                 }
                 
                 let newMessage = Message(

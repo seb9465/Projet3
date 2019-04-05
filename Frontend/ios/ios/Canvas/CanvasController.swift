@@ -121,8 +121,6 @@ class CanvasController: UIViewController {
     @IBAction func chatViewButton(_ sender: Any) {
         if (self.chatViewContainer.isHidden) {
             self.chatViewButton.tintColor = Constants.RED_COLOR;
-//            self.chatViewContainer.isHidden = false;
-//            self.view.bringSubviewToFront(self.chatViewContainer);
             
             UIView.animate(withDuration: 0.35,
                            delay: 0.0,
@@ -149,7 +147,6 @@ class CanvasController: UIViewController {
                             },
                            completion: nil
             );
-//            self.chatViewContainer.isHidden = true;
         }
     }
     
