@@ -19,8 +19,6 @@ class CanvasController: UIViewController {
     
     @IBOutlet weak var connectionLabel: UILabel!
     public var editor: Editor = Editor()
-    var reach: Reachability?
-
     @IBOutlet weak var insertButton: UIBarButtonItem!
     @IBOutlet var selectButton: UIBarButtonItem!
     @IBOutlet var deleteButton: UIBarButtonItem!
@@ -44,7 +42,6 @@ class CanvasController: UIViewController {
         
     }
     public func loadCanvas() {
-        print("loading canvas")
         var data: Data = currentCanvas.drawViewModels.data(using: String.Encoding.utf8)!
         let drawViewModels: [DrawViewModel] = try! JSONDecoder().decode(Array<DrawViewModel>.self, from: data)
         self.editor.loadCanvas(drawViewModels: drawViewModels)
@@ -52,19 +49,13 @@ class CanvasController: UIViewController {
         print(String(currentCanvas.canvasWidth) + String(currentCanvas.canvasHeight))
     }
     func setupNetwork() {
-        self.reach = Reachability.forInternetConnection()
-        
-        // Tell the reachability that we DON'T want to be reachable on 3G/EDGE/CDMA
-        self.reach!.reachableOnWWAN = false
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(reachabilityChanged),
             name: NSNotification.Name.reachabilityChanged,
             object: nil
         )
-        
-        self.reach!.startNotifier()
-
+        self.setupInternetConnectionState()
     }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated);
@@ -205,7 +196,7 @@ class CanvasController: UIViewController {
     }
     
     @objc func reachabilityChanged(notification: NSNotification) {
-        if self.reach!.isReachableViaWiFi() || self.reach!.isReachableViaWWAN() {
+        if reach!.isReachableViaWiFi() || reach!.isReachableViaWWAN() {
             CollaborationHub.shared!.disconnectFromHub()
             var viewModels : [DrawViewModel] = []
             for figure in self.editor.figures {
@@ -237,7 +228,7 @@ class CanvasController: UIViewController {
     }
     
     public func setupInternetConnectionState() {
-          if self.reach!.isReachableViaWiFi() || self.reach!.isReachableViaWWAN() {
+          if reach!.isReachableViaWiFi() || reach!.isReachableViaWWAN() {
             self.connectionLabel.textColor = UIColor.green
             self.connectionLabel.text = "Online"
             self.quitButton.isEnabled = true
