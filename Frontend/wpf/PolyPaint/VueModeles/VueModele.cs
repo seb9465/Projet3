@@ -31,6 +31,7 @@ namespace PolyPaint.VueModeles
     public class VueModele : INotifyPropertyChanged, IChatDataContext
     {
         public event PropertyChangedEventHandler PropertyChanged;
+        public event EventHandler OnRotation;
         private StrokeBuilder rebuilder = new StrokeBuilder();
         private Editeur editeur = new Editeur();
         private string _currentRoom;
@@ -328,6 +329,11 @@ namespace PolyPaint.VueModeles
             foreach (AbstractStroke stroke in editeur.SelectedStrokes.Where(x => x is AbstractStroke))
             {
                 stroke.Rotation = (stroke.Rotation + increment) % 360;
+                if(stroke is AbstractLineStroke)
+                {
+                    var elbow = (stroke as AbstractLineStroke).ElbowPosRelative;
+                    (stroke as AbstractLineStroke).ElbowPosRelative = (Vector)Tools.RotatePoint(new Point(elbow.X, elbow.Y), new Point(), increment);
+                }
                 var stylusPoint0 = Tools.RotatePoint(stroke.StylusPoints[0].ToPoint(), stroke.Center, increment);
                 var stylusPoint1 = Tools.RotatePoint(stroke.StylusPoints[1].ToPoint(), stroke.Center, increment);
                 stroke.StylusPoints[0] = new StylusPoint(stylusPoint0.X, stylusPoint0.Y);
@@ -335,6 +341,7 @@ namespace PolyPaint.VueModeles
             }
             SendSelectedStrokes();
             CollaborationClient.CollaborativeSelectAsync(rebuilder.GetDrawViewModelsFromStrokes(editeur.SelectedStrokes));
+            OnRotation?.Invoke(this, new EventArgs());
         }
 
         public void ChangeSelection(InkCanvas surfaceDessin)

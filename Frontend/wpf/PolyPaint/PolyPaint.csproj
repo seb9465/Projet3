@@ -442,6 +442,9 @@
       <DependentUpon>UploadToCloud.xaml</DependentUpon>
     </Compile>
     <Compile Include="Vues\ViewStateEnum.cs" />
+    <Compile Include="Vues\WebBrowserWindow.xaml.cs">
+      <DependentUpon>WebBrowserWindow.xaml</DependentUpon>
+    </Compile>
     <Page Include="Vues\ActivateProtection.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -501,6 +504,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Vues\UploadToCloud.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Vues\WebBrowserWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
