@@ -10,7 +10,6 @@ import UIKit
 
 class EditorView: UIView {
     var delegate: TouchInputDelegate?
-    
     init() {
         var viewFrame : CGRect = CGRect(x: 250, y: 0, width: UIScreen.main.bounds.width - 250, height: UIScreen.main.bounds.height - 70)
         viewFrame = viewFrame.offsetBy(dx:0, dy: 70)
@@ -27,25 +26,25 @@ class EditorView: UIView {
         super.draw(rect)
     }
 }
-
-// Touch Interaction Logic
-extension EditorView {
-    public override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        let touch = touches.first
-        guard let point = touch?.location(in: self) else { return }
-        self.delegate?.notifyTouchBegan(action: "empty", point: point, figure: nil)
-    }
     
-    public override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        let touch = touches.first
-        guard let point = touch?.location(in: self) else { return }
+    // Touch Interaction Logic
+    extension EditorView {
+        public override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+            let touch = touches.first
+            guard let point = touch?.location(in: self) else { return }
+            self.delegate?.notifyTouchBegan(action: "empty", point: point, figure: nil)
+        }
         
-        self.delegate?.notifyTouchMoved(point: point, figure: nil)
-    }
-    
-    public override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        let touch = touches.first
-        guard let point = touch?.location(in: self) else { return }
-        self.delegate?.notifyTouchEnded(point: point, figure: nil)
-    }
+        public override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+            let touch = touches.first
+            guard let point = touch?.location(in: self) else { return }
+            
+            self.delegate?.notifyTouchMoved(point: point, figure: nil)
+        }
+        
+        public override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+            let touch = touches.first
+            guard let point = touch?.location(in: self) else { return }
+            self.delegate?.notifyTouchEnded(point: point, figure: nil)
+        }
 }

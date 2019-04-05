@@ -9,6 +9,7 @@ import UIKit
 
 extension Editor : TouchInputDelegate {
     func notifyTouchBegan(action: String, point: CGPoint, figure: Figure?) {
+        print(self.touchEventState)
         switch (self.touchEventState) {
         case .SELECT:
             self.handleSelectTouchBegin(action: action, point: point)
@@ -75,6 +76,7 @@ extension Editor : TouchInputDelegate {
                 self.touchEventState = .TRANSLATE
                 return
             }
+            
             // Check if user is selecting the elbow
             if ((self.selectedFigures[0] as! ConnectionFigure).isPointOnElbow(point: point)) {
                 self.touchEventState = .ELBOW

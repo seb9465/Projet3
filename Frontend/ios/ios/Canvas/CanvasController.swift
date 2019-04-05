@@ -16,7 +16,7 @@ var currentCanvas: Canvas = Canvas()
 class CanvasController: UIViewController {
     // MARK: - Attributes
     private var activeButton: UIBarButtonItem!;
-    
+    var resizeAnchorPoints: CanvasResizePoints?
     @IBOutlet weak var connectionLabel: UILabel!
     public var editor: Editor = Editor()
     @IBOutlet weak var insertButton: UIBarButtonItem!
@@ -29,18 +29,20 @@ class CanvasController: UIViewController {
     @IBOutlet weak var pasteButton: UIBarButtonItem!
     @IBOutlet weak var exportButton: UIBarButtonItem!
     @IBOutlet var navigationBar: UIToolbar!
-    
     override func viewDidLoad() {
         super.viewDidLoad();
         self.pasteButton.isEnabled = false
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
-
+        
         self.loadCanvas()
         CollaborationHub.shared = CollaborationHub(channelId: canvasId)
         CollaborationHub.shared!.connectToHub()
         CollaborationHub.shared!.delegate = self.editor
+        self.resizeAnchorPoints = CanvasResizePoints(frame: self.editor.editorView.frame, delegate: self.editor.editorView.delegate)
         self.view.addSubview(self.editor.editorView)
+        self.view.addSubview(self.resizeAnchorPoints!)
+        
         setupNetwork()
         
     }
@@ -153,10 +155,10 @@ class CanvasController: UIViewController {
     }
     
     public func exportPNG() -> UIImage {
-    UIGraphicsBeginImageContextWithOptions(self.editor.editorView.bounds.size, false, 0.0);
-    self.editor.editorView.drawHierarchy(in: self.editor.editorView.bounds, afterScreenUpdates: true);
-    let image = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
+        UIGraphicsBeginImageContextWithOptions(self.editor.editorView.bounds.size, false, 0.0);
+        self.editor.editorView.drawHierarchy(in: self.editor.editorView.bounds, afterScreenUpdates: true);
+        let image = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
         return image!
     }
     
@@ -184,7 +186,7 @@ class CanvasController: UIViewController {
             present(ac, animated: true)
         }
     }
-
+    
     @IBAction func quitButtonPressed(_ sender: Any) {
         let alert = UIAlertController(title: "Alert", message: "Would you like to quit ?", preferredStyle: .alert);
         let yesAction: UIAlertAction = UIAlertAction(title: "Yes", style: .default) { _ in
@@ -201,17 +203,17 @@ class CanvasController: UIViewController {
         self.present(alert, animated: true, completion: nil);
     }
     @objc func keyboardWillShow(notification: NSNotification) {
-//        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
-//            if self.view.frame.origin.y == 0 {
-//                self.view.frame.origin.y -= keyboardSize.height
-//            }
-//        }
+        //        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+        //            if self.view.frame.origin.y == 0 {
+        //                self.view.frame.origin.y -= keyboardSize.height
+        //            }
+        //        }
     }
     
     @objc func keyboardWillHide(notification: NSNotification) {
-//        if self.view.frame.origin.y != 0 {
-//            self.view.frame.origin.y = 0
-//        }
+        //        if self.view.frame.origin.y != 0 {
+        //            self.view.frame.origin.y = 0
+        //        }
     }
     
     @objc func reachabilityChanged(notification: NSNotification) {
@@ -222,36 +224,36 @@ class CanvasController: UIViewController {
                 viewModels.append(figure.exportViewModel()!)
             }
             let viewModelsSorted = viewModels.sorted(by: { $0.ItemType!.rawValue < $1.ItemType!.rawValue })
-                let existingViewModel = String(data: try! JSONEncoder().encode(viewModelsSorted), encoding: .utf8)!
-
-                currentCanvas.image = (self.exportPNG().pngData()?.base64EncodedString())!
-                currentCanvas.drawViewModels = existingViewModel
-                CanvasService.SaveOnline(canvas: currentCanvas).done({(succes) in
-                    if(succes) {
+            let existingViewModel = String(data: try! JSONEncoder().encode(viewModelsSorted), encoding: .utf8)!
+            
+            currentCanvas.image = (self.exportPNG().pngData()?.base64EncodedString())!
+            currentCanvas.drawViewModels = existingViewModel
+            CanvasService.SaveOnline(canvas: currentCanvas).done({(succes) in
+                if(succes) {
                     let updatedAlert = UIAlertController(title: "Canvas Updated", message: "All your modification while being offline were saved to the cloud!", preferredStyle: .alert)
                     updatedAlert.addAction(UIAlertAction(title: "OK", style: .default))
                     self.present(updatedAlert, animated: true, completion: nil);
-                    } else {
+                } else {
                     let errorAlert = UIAlertController(title: "Canvas Update Error", message: "Error while updating from cache.", preferredStyle: .alert)
                     errorAlert.addAction(UIAlertAction(title: "OK", style: .default))
                     self.present(errorAlert, animated: true, completion: nil);
-                    }})
+                }})
             SoundNotification.play(sound: .EndVideo)
-
+            
             self.initializeConnection()
         } else {
-
-        SoundNotification.play(sound: .BeginVideo)
+            
+            SoundNotification.play(sound: .BeginVideo)
         }
         self.setupInternetConnectionState()
     }
     
     public func setupInternetConnectionState() {
-          if reach!.isReachableViaWiFi() || reach!.isReachableViaWWAN() {
+        if reach!.isReachableViaWiFi() || reach!.isReachableViaWWAN() {
             self.connectionLabel.textColor = UIColor.green
             self.connectionLabel.text = "Online"
             self.quitButton.isEnabled = true
-          } else {
+        } else {
             self.connectionLabel.text = "Offline"
             self.connectionLabel.textColor = UIColor.red
             self.quitButton.isEnabled = false
@@ -260,4 +262,3 @@ class CanvasController: UIViewController {
     deinit {
     }
 }
-
