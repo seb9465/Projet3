@@ -35,6 +35,7 @@ class AddScreenViewController: UIViewController, UITableViewDelegate, UITableVie
         self.cancelButton.tintColor = Constants.RED_COLOR;
         self.saveButton.tintColor = Constants.RED_COLOR;
         self.saveButton.isEnabled = false;
+        self.channelName.addTarget(self, action: #selector(editingChanged), for: .editingChanged);
     }
     
     // MARK: Public functions
@@ -65,8 +66,9 @@ class AddScreenViewController: UIViewController, UITableViewDelegate, UITableVie
     // MARK: Text field function
     
     @objc func editingChanged(_ textField: UITextField) {
+        print(textField.text);
         guard
-            let channelName = self.channelName.text, !channelName.isEmpty
+            let channelName = textField.text, !channelName.isEmpty
             else {
                 self.saveButton.isEnabled = false
                 return
