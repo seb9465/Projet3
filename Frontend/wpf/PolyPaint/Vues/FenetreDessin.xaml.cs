@@ -642,6 +642,7 @@ namespace PolyPaint
             (DataContext as VueModele).CollaborationClient.KickedReceived -= LeaveCanvas;
             (DataContext as VueModele).CollaborationClient.ProtectionChanged -= HandleProtectionChanged;
             (DataContext as VueModele).CollaborationClient.ClientConnected -= SendSelectedStrokesToOthers;
+            (DataContext as VueModele).CollaborationClient.CollaborativeSelectAsync(new List<DrawViewModel>());
             (DataContext as VueModele).PropertyChanged -= VueModelePropertyChanged;
             await (DataContext as VueModele).CollaborationClient.Disconnect();
             await (DataContext as VueModele).UnsubscribeChatClient();
