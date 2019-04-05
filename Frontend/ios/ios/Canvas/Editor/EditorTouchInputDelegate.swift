@@ -112,7 +112,6 @@ extension Editor : TouchInputDelegate {
                 let offset = CGPoint(x: xOffset, y: yOffset)
                 figure.translate(by: offset)
                 self.selectionOutline[tmpOutlineIndex].translate(by: offset)
-                
             }
             
             self.previousTouchPoint = point
@@ -173,7 +172,7 @@ extension Editor : TouchInputDelegate {
                 self.touchEventState = .SELECT
                 return
             }
-            
+            CanvasService.saveOnNewFigure(figures: self.figures, editor: self)
             CollaborationHub.shared!.postNewFigure(figures: self.selectedFigures)
             var drawViewModels: [DrawViewModel] = []
             for figure in selectedFigures {
@@ -194,6 +193,8 @@ extension Editor : TouchInputDelegate {
             print("Insert floating connection figure.")
             self.insertConnectionFigure(firstPoint: self.initialTouchPoint, lastPoint: point, itemType: currentFigureType)
             self.touchEventState = .SELECT
+            CollaborationHub.shared!.postNewFigure(figures: self.selectedFigures)
+            CanvasService.saveOnNewFigure(figures: self.figures, editor: self)
             return
         }
         

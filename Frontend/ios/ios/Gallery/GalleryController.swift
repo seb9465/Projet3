@@ -8,6 +8,7 @@
 
 import UIKit
 import Reachability
+import JWTDecode
 class GalleryController: UIViewController {
     
     @IBOutlet weak var collectionView: UICollectionView!
@@ -26,9 +27,6 @@ class GalleryController: UIViewController {
     override func viewWillAppear(_ animated: Bool){
         self.setupNetwork()
         self.loadCanvas()
-    }
-    @IBAction func updateGallery(_ sender: Any) {
-        self.viewWillAppear(true)
     }
     
     func loadCanvas() {
@@ -70,20 +68,20 @@ extension GalleryController: UICollectionViewDelegate, UICollectionViewDataSourc
         cell.drawViewModels = canvas[indexPath.row].drawViewModels
         cell.author = canvas[indexPath.row].canvasAutor
         cell.image = canvas[indexPath.row].image
+        cell.width = canvas[indexPath.row].canvasWidth
+        cell.height = canvas[indexPath.row].canvasHeight
         cell.setImageFromBytes(bytesString: canvas[indexPath.row].image)
         return cell
     }
     
     @objc func tap(_ sender: UITapGestureRecognizer) {
-        
         let location = sender.location(in: self.collectionView)
         let indexPath = self.collectionView.indexPathForItem(at: location)
         
         if let index = indexPath {
             let cell = (self.collectionView.cellForItem(at: index) as! GalleryCell)
             canvasId = cell.canvasId
-            currentCanvasString = cell.drawViewModels
-            currentCanvas = Canvas(canvasId: cell.canvasId, name: cell.nameLabel.text!, drawViewModels: cell.drawViewModels, image: cell.image, canvasVisibility: cell.visibility, canvasAutor: cell.author, canvasProtection: cell.password)
+            currentCanvas = Canvas(canvasId: cell.canvasId, name: cell.nameLabel.text!, drawViewModels: cell.drawViewModels, image: cell.image, canvasVisibility: cell.visibility, canvasAutor: cell.author, canvasProtection: cell.password, canvasWidth: cell.width, canvasHeight: cell.height)
             var enteredPassword = ""
             if(cell.password != "") {
               

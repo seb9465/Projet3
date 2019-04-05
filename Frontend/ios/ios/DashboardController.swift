@@ -12,6 +12,7 @@ import Alamofire
 
 class DashboardController: UIViewController, UITextFieldDelegate {
     
+    @IBOutlet weak var galleryView: UIView!
     @IBOutlet weak var usernameLabel: UILabel!
     @IBOutlet var logoutButton: RoundedCorners!
     
@@ -24,6 +25,9 @@ class DashboardController: UIViewController, UITextFieldDelegate {
         ChatService.shared.connectToUserChatRooms();
     }
     
+    @IBAction func updateGallery(_ sender: Any) {
+        
+    }
     @IBAction func logoutButton(_ sender: Any) {
         AuthentificationAPI.logout()
         UserDefaults.standard.removePersistentDomain(forName: "token");

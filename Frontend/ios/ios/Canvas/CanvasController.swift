@@ -11,7 +11,6 @@ import UIKit
 import Reachability
 import Foundation
 var canvasId: String = ""
-var currentCanvasString: String = "[]"
 var currentCanvas: Canvas = Canvas()
 
 class CanvasController: UIViewController {
@@ -44,12 +43,13 @@ class CanvasController: UIViewController {
         setupNetwork()
         
     }
-    
     public func loadCanvas() {
         print("loading canvas")
-        var data: Data = currentCanvasString.data(using: String.Encoding.utf8)!
+        var data: Data = currentCanvas.drawViewModels.data(using: String.Encoding.utf8)!
         let drawViewModels: [DrawViewModel] = try! JSONDecoder().decode(Array<DrawViewModel>.self, from: data)
         self.editor.loadCanvas(drawViewModels: drawViewModels)
+        self.editor.resize(width: CGFloat(currentCanvas.canvasWidth), heigth: CGFloat(currentCanvas.canvasHeight))
+        print(String(currentCanvas.canvasWidth) + String(currentCanvas.canvasHeight))
     }
     func setupNetwork() {
         self.reach = Reachability.forInternetConnection()
@@ -181,7 +181,6 @@ class CanvasController: UIViewController {
         let yesAction: UIAlertAction = UIAlertAction(title: "Yes", style: .default) { _ in
             CollaborationHub.shared!.disconnectFromHub()
             currentCanvas = Canvas()
-            currentCanvasString = "[]"
             self.dismiss(animated: true, completion: nil)
         }
         let noAction: UIAlertAction = UIAlertAction(title: "No", style: .default, handler: nil);
