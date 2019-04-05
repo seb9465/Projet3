@@ -9,12 +9,16 @@
 import UIKit
 import Alamofire
 import Reachability
+var reach: Reachability?
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        reach = Reachability.forInternetConnection()
+        reach!.reachableOnWWAN = false
+        reach!.startNotifier()
         return true
     }
     

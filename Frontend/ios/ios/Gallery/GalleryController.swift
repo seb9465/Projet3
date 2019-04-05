@@ -25,7 +25,6 @@ class GalleryController: UIViewController {
         self.canvasController = UIStoryboard(name: "Canvas", bundle: nil).instantiateViewController(withIdentifier: "CanvasController") as! CanvasController
     }
     override func viewWillAppear(_ animated: Bool){
-        self.setupNetwork()
         self.loadCanvas()
     }
     
@@ -40,12 +39,6 @@ class GalleryController: UIViewController {
                 print("Fetch for canvas failed", Error)
                 UIViewController.removeSpinner(spinner: spinner);
         }
-    }
-    
-    func setupNetwork() {
-        self.reach = Reachability.forInternetConnection()
-        self.reach!.reachableOnWWAN = false
-        self.reach!.startNotifier()
     }
 
     deinit {
@@ -96,7 +89,6 @@ extension GalleryController: UICollectionViewDelegate, UICollectionViewDataSourc
                     if(cell.password == enteredPassword) {
                         print("good password")
                         self.canvasController = UIStoryboard(name: "Canvas", bundle: nil).instantiateViewController(withIdentifier: "CanvasController") as! CanvasController
-                        NotificationCenter.default.removeObserver(self)
                         self.present(self.canvasController, animated: true, completion: nil);
                     } else {
                          let wrongPasswordAlert = UIAlertController(title: "Wrong password", message: "You have entered a wrong password.", preferredStyle: .alert)
@@ -107,7 +99,6 @@ extension GalleryController: UICollectionViewDelegate, UICollectionViewDataSourc
             self.present(passwordAlert, animated: true, completion: nil)
             } else {
                 self.canvasController = UIStoryboard(name: "Canvas", bundle: nil).instantiateViewController(withIdentifier: "CanvasController") as! CanvasController
-                NotificationCenter.default.removeObserver(self)
                 self.present(self.canvasController, animated: true, completion: nil);      }
         }
     }
