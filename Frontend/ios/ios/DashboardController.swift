@@ -42,4 +42,12 @@ class DashboardController: UIViewController, UITextFieldDelegate {
         
         self.present(viewController, animated: false, completion: nil);
     }
+    
+    @IBAction func windowChatTrigger(_ sender: Any) {
+        let chatroomsVC = ChatRoomsControllerTableViewController();
+        self.addChild(chatroomsVC);
+        self.view.addSubview(chatroomsVC.view);
+        
+    }
+    
 }
