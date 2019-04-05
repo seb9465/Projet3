@@ -107,7 +107,7 @@
                                 </connections>
                             </containerView>
                             <containerView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="g7X-4N-AQk">
-                                <rect key="frame" x="616" y="53" width="400" height="620"/>
+                                <rect key="frame" x="606" y="128" width="400" height="620"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                 <connections>
                                     <segue destination="coJ-Ch-zUI" kind="embed" id="4mB-LM-KMP"/>
