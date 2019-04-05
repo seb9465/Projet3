@@ -146,8 +146,6 @@ class Editor {
         figure.delegate = self
         self.figures.append(figure)
         self.editorView.addSubview(figure)
-        CanvasService.saveOnNewFigure(figures: self.figures, editor: self)
-
         return figure
     }
     
@@ -172,7 +170,6 @@ class Editor {
         self.editorView.addSubview(figure!);
         self.figures.append(figure!)
         self.undoArray.append(figure!);
-        CanvasService.saveOnNewFigure(figures: self.figures, editor: self)
         return figure!
     }
     
@@ -209,12 +206,18 @@ class Editor {
     }
     
     public func clear() -> Void {
-        for v in self.undoArray {
-            v.removeFromSuperview();
+        print("clearing")
+        for view in self.editorView.subviews {
+            view.removeFromSuperview()
         }
+        self.selectedFigures.removeAll()
+        self.editorView.setNeedsDisplay()
+        self.selectionOutline.removeAll()
+        self.figures.removeAll()
         self.undoArray.removeAll();
         self.redoArray.removeAll();
         self.deselect();
+        CanvasService.saveOnNewFigure(figures: self.figures, editor: self)
     }
     
     public func subviewIsInUndoArray(subview: UIView) -> Bool {
@@ -574,6 +577,8 @@ extension Editor : TouchInputDelegate {
             itemType: currentFigureType
         )
         CollaborationHub.shared!.postNewFigure(figures: [connection])
+        CanvasService.saveOnNewFigure(figures: self.figures, editor: self)
+
         let sourceAnchor: String = self.sourceFigure.getClosestAnchorPointName(point: self.initialTouchPoint)
         let destinationAnchor: String = destinationFigure.getClosestAnchorPointName(point: point)
         self.sourceFigure.addOutgoingConnection(connection: connection as! ConnectionFigure, anchor: sourceAnchor)
@@ -678,9 +683,7 @@ extension Editor {
             (newFigure as! UmlFigure).outgoingConnections = (oldFigure as! UmlFigure).outgoingConnections
             (newFigure as! UmlFigure).incomingConnections = (oldFigure as! UmlFigure).incomingConnections
             (newFigure as! UmlFigure).updateConnections()
-        }
-        CanvasService.saveOnNewFigure(figures: self.figures, editor: self)
-    }
+        }    }
     
     func connectConnectionToFigures(drawViewModel: DrawViewModel, connection: ConnectionFigure) {
         for figure in self.figures {

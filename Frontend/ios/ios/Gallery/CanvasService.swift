@@ -9,7 +9,7 @@
 import UIKit
 import PromiseKit
 import Alamofire
-
+import JWTDecode
 class CanvasService {
     // Singleton
     static let shared = CanvasService()
@@ -55,10 +55,14 @@ extension CanvasService {
             }
         }}
     
-    static func getAllCanvas() -> Promise<[Canvas]> {
+    static func getAllCanvas(includePrivate: Bool) -> Promise<[Canvas]> {
         return Promise { seal in
             CanvasService.get().done{ (data) in
-                let canvas = try JSONDecoder().decode([Canvas].self, from: data)
+                var canvas = try JSONDecoder().decode([Canvas].self, from: data)
+                let token = UserDefaults.standard.string(forKey: "token");
+                let jwt = try! decode(jwt: token!)
+                let username = jwt.claim(name: "unique_name").string
+                canvas.removeAll(where: {$0.canvasVisibility == "Private" && $0.canvasAutor != username})
                 seal.fulfill(canvas)
             }
         }

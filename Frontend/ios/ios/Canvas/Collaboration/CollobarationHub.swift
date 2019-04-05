@@ -45,6 +45,7 @@ class CollaborationHub {
         self.onDraw()
         self.onReset()
         self.onSelect()
+        self.onCut()
         //        self.onFetchChannels()
     }
     
@@ -138,6 +139,40 @@ class CollaborationHub {
                 return
             }
         });
+    }
+    
+    public func CutObjects(drawViewModels: [DrawViewModel]) -> Void {
+        let token = UserDefaults.standard.string(forKey: "token");
+        let jwt = try! decode(jwt: token!)
+        let username = jwt.claim(name: "unique_name").string
+        let itemMessage = ItemMessage(
+            CanvasId: self.channelId,
+            Username: username!,
+            Items: drawViewModels
+        )
+        let jsonEncoder = JSONEncoder()
+        let jsonData = try! jsonEncoder.encode(itemMessage)
+        let jsonString = String(data: jsonData, encoding: .utf8)
+        
+        self.hubConnection!.invoke(method: "Cut", arguments: [jsonString], invocationDidComplete: { (Error) in
+            if (Error != nil) {
+                print("Error calling Cut", Error!)
+                return
+            }
+        })
+    }
+    
+    public func onCut() -> Void {
+        self.hubConnection!.on(method: "Cut", callback: { (args, typeConverter) in
+            print("[ Collab ] Delete received... To Implement")
+            /*
+            let jsonString: String = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self)!;
+            let jsonData = jsonString.data(using: .utf8)
+            let itemMessage: ItemMessage = try! JSONDecoder().decode(ItemMessage.self, from: jsonData!);
+            
+            self.delegate!.updateCanvas(itemMessage: itemMessage)
+ */
+        })
     }
     
     // Receive a figure from the collaboratibve Hub
