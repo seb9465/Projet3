@@ -64,24 +64,14 @@ class AddScreenViewController: UIViewController, UITableViewDelegate, UITableVie
     
     // MARK: Text field function
     
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        print(textField.text);
-        print((textField.text?.isEmpty)!);
-        if ((textField.text?.isEmpty)!) {
-            self.saveButton.isEnabled = false;
-        } else {
-            self.saveButton.isEnabled = true;
+    @objc func editingChanged(_ textField: UITextField) {
+        guard
+            let channelName = self.channelName.text, !channelName.isEmpty
+            else {
+                self.saveButton.isEnabled = false
+                return
         }
-    }
-    
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        print(textField.text);
-        print((textField.text?.isEmpty)!);
-        if ((textField.text?.isEmpty)!) {
-            self.saveButton.isEnabled = false;
-        } else {
-            self.saveButton.isEnabled = true;
-        }
+        self.saveButton.isEnabled = true
     }
     
     // MARK: Actions
