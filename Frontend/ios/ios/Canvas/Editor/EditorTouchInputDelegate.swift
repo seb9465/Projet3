@@ -47,6 +47,12 @@ extension Editor : TouchInputDelegate {
             }
             
             if (action == "empty") {
+                let floatingFigures: [ItemTypeEnum] = [.UniderectionalAssoication, .BidirectionalAssociation, .Line]
+                if (!floatingFigures.contains(self.currentFigureType)) {
+                    self.touchEventState = .SELECT
+                    return
+                }
+                
                 self.connectionPreview = FigureFactory.shared.getFigure(type: self.currentFigureType, source: self.initialTouchPoint, destination: self.initialTouchPoint)
                 self.editorView.addSubview(connectionPreview)
                 self.touchEventState = .CONNECTION

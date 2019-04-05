@@ -43,6 +43,7 @@ enum ItemTypeEnum: Int, Codable {
     case Inheritance
     case UniderectionalAssoication
     case Image
+    case Line
     
     var description: String {
         switch self {
@@ -72,6 +73,8 @@ enum ItemTypeEnum: Int, Codable {
             return "Connection"
         case .Image:
             return "Image"
+        case .Line:
+            return "Connection"
         }
     }
 }

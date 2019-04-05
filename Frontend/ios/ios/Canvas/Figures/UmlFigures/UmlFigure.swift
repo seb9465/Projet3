@@ -53,6 +53,7 @@ class UmlFigure : Figure {
         super.init(frame: frame)
         self.firstPoint = firstPoint
         self.lastPoint = lastPoint
+        self.name = drawViewModel.ShapeTitle!
         self.isBorderDashed = (drawViewModel.BorderStyle! == "dash") ? true : false
         self.uuid = UUID(uuidString: drawViewModel.Guid!)
         self.itemType = drawViewModel.ItemType!

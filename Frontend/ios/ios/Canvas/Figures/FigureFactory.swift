@@ -40,6 +40,8 @@ class FigureFactory {
                 return ConnectionComposition(drawViewModel: drawViewModel)
             case .Inheritance:
                 return ConnectionHeritage(drawViewModel: drawViewModel)
+            case .Line:
+                return ConnectionFigure(drawViewModel: drawViewModel)
         }
     }
     
@@ -70,9 +72,10 @@ class FigureFactory {
             return ConnectionAssociationUni(origin: source!, destination: destination!, itemType: type)
         case .Composition:
             return ConnectionComposition(origin: source!, destination: destination!, itemType: type)
-//            return nil
         case .Inheritance:
             return ConnectionHeritage(origin: source!, destination: destination!, itemType: type)
+        case .Line:
+            return ConnectionFigure(origin: source!, destination: destination!, itemType: type)
         }
     }
 }
