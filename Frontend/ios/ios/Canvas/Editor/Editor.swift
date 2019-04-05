@@ -47,8 +47,11 @@ class Editor {
     
     func resize(width: CGFloat, heigth: CGFloat) {
         print("resizing")
-        self.editorView.frame.size.width = width
-        self.editorView.frame.size.height = heigth
+        let origin: CGPoint = CGPoint(x: 250, y: 70)
+        let size = CGSize(width: width, height: heigth)
+        let newFrame: CGRect = CGRect(origin: origin, size: size)
+        self.editorView.frame = newFrame
+        self.editorView.updateCanvasAnchor()
         self.editorView.setNeedsDisplay()
     }
     

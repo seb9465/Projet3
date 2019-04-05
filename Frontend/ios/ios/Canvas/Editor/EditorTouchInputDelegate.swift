@@ -36,12 +36,6 @@ extension Editor : TouchInputDelegate {
             }
             
             if (action == "empty") {
-                //                let floatingFigures: [ItemTypeEnum] = [.UniderectionalAssoication, .BidirectionalAssociation, .Line]
-                //                if (!floatingFigures.contains(self.currentFigureType)) {
-                //                    self.touchEventState = .SELECT
-                //                    return
-                //                }
-                
                 self.connectionPreview = FigureFactory.shared.getFigure(type: self.currentFigureType, source: self.initialTouchPoint, destination: self.initialTouchPoint)
                 self.editorView.addSubview(connectionPreview)
                 self.touchEventState = .CONNECTION
@@ -64,6 +58,8 @@ extension Editor : TouchInputDelegate {
             break
         case .NONE:
             break
+        case .CANVAS_RESIZE:
+            break
         }
     }
     
@@ -73,6 +69,10 @@ extension Editor : TouchInputDelegate {
         print(action)
         
         if (action == "selection") {
+            if (self.selectedFigures.isEmpty) {
+                return
+            }
+            
             if (!(self.selectedFigures[0] is ConnectionFigure)) {
                 self.touchEventState = .TRANSLATE
                 return
@@ -95,6 +95,12 @@ extension Editor : TouchInputDelegate {
             return
         }
         
+        if (action == "canvas_anchor") {
+            print("allo, je resize le canvas")
+            self.touchEventState = .CANVAS_RESIZE
+            return
+        }
+
         if (action == "empty") {
             self.deselect()
             self.updateSideToolBar()
@@ -149,12 +155,17 @@ extension Editor : TouchInputDelegate {
             return
         }
         
+        if (self.touchEventState == .CANVAS_RESIZE) {
+            self.resize(width: point.x, heigth: point.y)
+            self.editorView.updateCanvasAnchor()
+            return
+        }
+        
         if (self.touchEventState == .CONNECTION) {
             if(self.connectionPreview != nil){
                 self.connectionPreview.removeFromSuperview()
             }
             self.connectionPreview = FigureFactory.shared.getFigure(type: self.currentFigureType, source: self.initialTouchPoint, destination: point)
-            //            self.connectionPreview = ConnectionFigure(origin: self.initialTouchPoint, destination: point, itemType: .UniderectionalAssoication)
             self.editorView.addSubview(self.connectionPreview)
             return
         }
@@ -218,6 +229,11 @@ extension Editor : TouchInputDelegate {
         }
         
         if (self.touchEventState == .ELBOW) {
+            self.touchEventState = .SELECT
+            return
+        }
+        if (self.touchEventState == .CANVAS_RESIZE) {
+            self.resize(width: point.x, heigth: point.y)
             self.touchEventState = .SELECT
             return
         }
