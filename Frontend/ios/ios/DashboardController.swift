@@ -12,11 +12,13 @@ import Alamofire
 
 class DashboardController: UIViewController, UITextFieldDelegate {
     
+    // MARK: Outlets
+    
     @IBOutlet weak var usernameLabel: UILabel!
     @IBOutlet var logoutButton: RoundedCorners!
     @IBOutlet var viewContainerChat: UIView!
     
-    private var isChatOpen: Bool = false;
+    // MARK: Timing functions
     
     override func viewDidLoad() { self.navigationItem.setHidesBackButton(true, animated:true);
         super.viewDidLoad();
@@ -38,6 +40,8 @@ class DashboardController: UIViewController, UITextFieldDelegate {
         self.viewContainerChat.layer.masksToBounds = false;
     }
     
+    // MARK: Actions
+    
     @IBAction func logoutButton(_ sender: Any) {
         AuthentificationAPI.logout()
         UserDefaults.standard.removePersistentDomain(forName: "token");
@@ -53,13 +57,12 @@ class DashboardController: UIViewController, UITextFieldDelegate {
         
         self.present(viewController, animated: false, completion: nil);
     }
+    
     @IBAction func windowChatTrigger(_ sender: Any) {
-        if (self.isChatOpen) {
-            self.viewContainerChat.isHidden = true;
-            self.isChatOpen = false;
-        } else {
+        if (self.viewContainerChat.isHidden) {
             self.viewContainerChat.isHidden = false;
-            self.isChatOpen = true;
+        } else {
+            self.viewContainerChat.isHidden = true;
         }
     }
 }
