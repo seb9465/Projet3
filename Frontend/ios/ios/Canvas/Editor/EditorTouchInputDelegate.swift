@@ -36,12 +36,6 @@ extension Editor : TouchInputDelegate {
             }
             
             if (action == "empty") {
-//                let floatingFigures: [ItemTypeEnum] = [.UniderectionalAssoication, .BidirectionalAssociation, .Line]
-//                if (!floatingFigures.contains(self.currentFigureType)) {
-//                    self.touchEventState = .SELECT
-//                    return
-//                }
-                
                 self.connectionPreview = FigureFactory.shared.getFigure(type: self.currentFigureType, source: self.initialTouchPoint, destination: self.initialTouchPoint)
                 self.editorView.addSubview(connectionPreview)
                 self.touchEventState = .CONNECTION
@@ -63,6 +57,8 @@ extension Editor : TouchInputDelegate {
         case .ELBOW:
             break
         case .NONE:
+            break
+        case .CANVAS_RESIZE:
             break
         }
     }
@@ -92,6 +88,12 @@ extension Editor : TouchInputDelegate {
             }
             
             self.touchEventState = .TRANSLATE
+            return
+        }
+        
+        if (action == "canvas_anchor") {
+            print("allo, je resize le canvas")
+            self.touchEventState = .CANVAS_RESIZE
             return
         }
 
@@ -146,6 +148,12 @@ extension Editor : TouchInputDelegate {
         
         if (self.touchEventState == .ELBOW) {
             (self.selectedFigures[0] as! ConnectionFigure).updateElbowAnchor(point: point)
+            return
+        }
+        
+        if (self.touchEventState == .CANVAS_RESIZE) {
+            self.resize(width: point.x, heigth: point.y)
+            self.editorView.updateCanvasAnchor()
             return
         }
         
@@ -216,6 +224,11 @@ extension Editor : TouchInputDelegate {
         }
         
         if (self.touchEventState == .ELBOW) {
+            self.touchEventState = .SELECT
+            return
+        }
+        if (self.touchEventState == .CANVAS_RESIZE) {
+            self.resize(width: point.x, heigth: point.y)
             self.touchEventState = .SELECT
             return
         }

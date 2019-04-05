@@ -114,7 +114,7 @@
 		C4D1271422459521004B3641 /* UMLTextFigure.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D1271322459521004B3641 /* UMLTextFigure.swift */; };
 		C4D1A8732252A3B00011F1BF /* ItemMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D1A8722252A3B00011F1BF /* ItemMessage.swift */; };
 		C4D6BB2722384F5B00121695 /* AnchorPoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D6BB2622384F5B00121695 /* AnchorPoints.swift */; };
-		C4F5ECF52257967B0046F258 /* CanvasResizePoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4F5ECF42257967B0046F258 /* CanvasResizePoints.swift */; };
+		C4F5ECF52257967B0046F258 /* CanvasAnchor.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4F5ECF42257967B0046F258 /* CanvasAnchor.swift */; };
 		C5724AD99504D99A25966BB9 /* Pods_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6CD8C54089242A6862A3C2E4 /* Pods_ios.framework */; };
 /* End PBXBuildFile section */
 
@@ -242,7 +242,7 @@
 		C4D1271322459521004B3641 /* UMLTextFigure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UMLTextFigure.swift; sourceTree = "<group>"; };
 		C4D1A8722252A3B00011F1BF /* ItemMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemMessage.swift; sourceTree = "<group>"; };
 		C4D6BB2622384F5B00121695 /* AnchorPoints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnchorPoints.swift; sourceTree = "<group>"; };
-		C4F5ECF42257967B0046F258 /* CanvasResizePoints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasResizePoints.swift; sourceTree = "<group>"; };
+		C4F5ECF42257967B0046F258 /* CanvasAnchor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasAnchor.swift; sourceTree = "<group>"; };
 		C6C9AA086604975DCA6FF292 /* Pods-iosTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iosTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-iosTests/Pods-iosTests.debug.xcconfig"; sourceTree = "<group>"; };
 		E7966B3EFE20A93B4BE0DB10 /* Pods-ios.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ios.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ios/Pods-ios.debug.xcconfig"; sourceTree = "<group>"; };
 		FF4400EA77DC6188B44EF010 /* Pods-ios.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ios.release.xcconfig"; path = "Pods/Target Support Files/Pods-ios/Pods-ios.release.xcconfig"; sourceTree = "<group>"; };
@@ -321,7 +321,7 @@
 				3D66FC76223817E800EB7E93 /* SelectionOutline.swift */,
 				B79D8448224A7AC100537981 /* SelectionLasso.swift */,
 				3D4ED6C4224EF242005630CF /* ConnectionAnchor.swift */,
-				C4F5ECF42257967B0046F258 /* CanvasResizePoints.swift */,
+				C4F5ECF42257967B0046F258 /* CanvasAnchor.swift */,
 			);
 			path = SelectionFigures;
 			sourceTree = "<group>";
@@ -950,7 +950,7 @@
 				B7A3A5C22203C27600031F64 /* Message.swift in Sources */,
 				B7B1B43E2231C03900BEE17D /* MessageDisplayExtension.swift in Sources */,
 				B7B1B4472234725E00BEE17D /* ChatRoomsControllerTableViewController.swift in Sources */,
-				C4F5ECF52257967B0046F258 /* CanvasResizePoints.swift in Sources */,
+				C4F5ECF52257967B0046F258 /* CanvasAnchor.swift in Sources */,
 				B7F9F6AF2252CE41004C6AE8 /* RegistrationViewModel.swift in Sources */,
 				3DA5CA4722441A9200087298 /* GalleryCell.swift in Sources */,
 				3DE8F114223C26890052580B /* SideToolbarDelegate.swift in Sources */,

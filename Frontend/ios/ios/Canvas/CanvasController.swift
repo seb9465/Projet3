@@ -16,7 +16,6 @@ var currentCanvas: Canvas = Canvas()
 class CanvasController: UIViewController {
     // MARK: - Attributes
     private var activeButton: UIBarButtonItem!;
-    var resizeAnchorPoints: CanvasResizePoints?
     @IBOutlet weak var connectionLabel: UILabel!
     public var editor: Editor = Editor()
     @IBOutlet weak var insertButton: UIBarButtonItem!
@@ -39,9 +38,8 @@ class CanvasController: UIViewController {
         CollaborationHub.shared = CollaborationHub(channelId: canvasId)
         CollaborationHub.shared!.connectToHub()
         CollaborationHub.shared!.delegate = self.editor
-        self.resizeAnchorPoints = CanvasResizePoints(frame: self.editor.editorView.frame, delegate: self.editor.editorView.delegate)
         self.view.addSubview(self.editor.editorView)
-        self.view.addSubview(self.resizeAnchorPoints!)
+//        self.view.addSubview(self.resizeAnchorPoints!)
         
         setupNetwork()
         
