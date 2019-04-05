@@ -38,21 +38,26 @@ namespace PolyPaint.Strokes
             }
         }
 
-        public Point LastElbowPosition { get; set; }
+        public Point LastElbowPosition
+        {
+            get { return StylusPoints[0].ToPoint() + ElbowPosRelative; }
+            set { }
+        }
+        public Vector ElbowPosRelative { get; set; }
 
         public AbstractLineStroke(StylusPointCollection stylusPoints, InkCanvas surfaceDessin, string from, string to, string couleurBordure, string couleurRemplissage, double thicc, bool isRelation, DashStyle dashStyle)
             : base(stylusPoints, surfaceDessin, couleurBordure, couleurRemplissage, thicc, dashStyle)
         {
             IsRelation = isRelation;
             BothAttached = false;
-            LastElbowPosition = new Point((stylusPoints[0].X + stylusPoints[1].X) / 2, (stylusPoints[0].Y + stylusPoints[1].Y) / 2);
+            ElbowPosRelative = new Vector((stylusPoints[1].X - stylusPoints[0].X) / 2, (stylusPoints[1].Y - stylusPoints[0].Y) / 2);
             Source = new FormattedText(from, System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 12, Brushes.Black);
             Destination = new FormattedText(to, System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 12, Brushes.Black);
             Title = new FormattedText("", System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 12, Brushes.Black);
 
             Invalidated += (object sender, EventArgs e) =>
             {
-                LastElbowPosition = new Point((StylusPoints[0].X + StylusPoints[1].X) / 2, (StylusPoints[0].Y + StylusPoints[1].Y) / 2);
+                ElbowPosRelative = new Vector((StylusPoints[1].X - StylusPoints[0].X) / 2, (StylusPoints[1].Y - StylusPoints[0].Y) / 2);
             };
         }
 

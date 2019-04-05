@@ -75,6 +75,7 @@ namespace PolyPaint
             (DataContext as VueModele).CollaborationClient.ClientConnected += SendSelectedStrokesToOthers;
             (DataContext as VueModele).PropertyChanged += VueModelePropertyChanged;
 
+            (DataContext as VueModele).OnRotation += UpdateAdorner;
 
             _onlineSelectedAdorners = new ConcurrentDictionary<string, OnlineSelectedAdorner>();
             externalChatWindow = new ChatWindow(DataContext);
@@ -602,6 +603,18 @@ namespace PolyPaint
                 e.Cancel = true;
             icEventManager.RedrawConnections(surfaceDessin, (DataContext as VueModele).OutilSelectionne, e.OldRectangle, e.NewRectangle, DataContext as VueModele);
         }
+
+        void UpdateAdorner(object sender, EventArgs e)
+        {
+            if (adorner != null)
+                adornerLayer.Remove(adorner);
+
+            adornerLayer = AdornerLayer.GetAdornerLayer(surfaceDessin);
+            adorner = new LineStrokeAdorner(surfaceDessin);
+
+            adornerLayer.Add(adorner);
+        }
+
         private void ContextualMenu_Click(object sender, EventArgs e)
         {
             icEventManager.ContextualMenuClick(surfaceDessin, (sender as MenuItem).Name, (DataContext as VueModele));

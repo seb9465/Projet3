@@ -280,8 +280,11 @@ namespace PolyPaint.Utilitaires
             (DrawingStroke as AbstractLineStroke).SourceString = stroke.SourceTitle;
             (DrawingStroke as AbstractLineStroke).DestinationString = stroke.DestinationTitle;
             (DrawingStroke as AbstractStroke).SetBorderStyle(Tools.DashAssociations[stroke.BorderStyle]);
-            (DrawingStroke as AbstractLineStroke).LastElbowPosition = new Point(stroke.LastElbowPosition.X,
-                                                                                stroke.LastElbowPosition.Y);
+            (DrawingStroke as AbstractLineStroke).ElbowPosRelative =
+                Point.Subtract(
+                    new Point(stroke.LastElbowPosition.X, stroke.LastElbowPosition.Y),
+                    new Point(stroke.StylusPoints[0].X, stroke.StylusPoints[0].Y)
+                    );
 
             if (TryGetByGuid(surfaceDessin, Guid.Parse(stroke.Guid), out var existingStroke))
             {
@@ -300,8 +303,11 @@ namespace PolyPaint.Utilitaires
             (DrawingStroke as AbstractLineStroke).SourceString = stroke.SourceTitle;
             (DrawingStroke as AbstractLineStroke).DestinationString = stroke.DestinationTitle;
             (DrawingStroke as AbstractStroke).SetBorderStyle(Tools.DashAssociations[stroke.BorderStyle]);
-            (DrawingStroke as AbstractLineStroke).LastElbowPosition = new Point(stroke.LastElbowPosition.X,
-                                                                                stroke.LastElbowPosition.Y);
+            (DrawingStroke as AbstractLineStroke).ElbowPosRelative =
+                Point.Subtract(
+                    new Point(stroke.LastElbowPosition.X, stroke.LastElbowPosition.Y),
+                    new Point(stroke.StylusPoints[0].X, stroke.StylusPoints[0].Y)
+                    );
         }
 
         private static void SetShapeProperties(DrawViewModel stroke, InkCanvas surfaceDessin, ref Stroke DrawingStroke)

@@ -35,7 +35,7 @@ public class LineStrokeAdorner : Adorner
             Cursor = Cursors.SizeAll,
             Width = 15,
             Height = 15,
-            Background = Brushes.Blue
+            Background = Brushes.Blue,
         };
 
         handle.DragDelta += new DragDeltaEventHandler(DragDelta);
@@ -63,7 +63,7 @@ public class LineStrokeAdorner : Adorner
     void DragCompleted(object sender, DragCompletedEventArgs e)
     {
         dragPos = Mouse.GetPosition(this);
-        AdornedStroke.LastElbowPosition = dragPos;
+        AdornedStroke.ElbowPosRelative = Point.Subtract(dragPos, AdornedStroke.StylusPoints[0].ToPoint());
         AdornedStroke.Redraw();
         var rebuilder = new StrokeBuilder();
         var drawViewModel = rebuilder.GetDrawViewModelsFromStrokes(new StrokeCollection() { AdornedStroke });
