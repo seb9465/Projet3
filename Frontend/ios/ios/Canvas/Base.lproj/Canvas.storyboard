@@ -25,19 +25,7 @@
                                     <barButtonItem title="Quit" id="4Er-Gx-QB8">
                                         <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
-                                            <action selector="quitButton:" destination="Vts-He-P18" id="KcM-sA-VDA"/>
-                                        </connections>
-                                    </barButtonItem>
-                                    <barButtonItem title="New" id="ic3-cN-C5G">
-                                        <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <connections>
-                                            <action selector="clearButton:" destination="Vts-He-P18" id="JlR-Gh-chb"/>
-                                        </connections>
-                                    </barButtonItem>
-                                    <barButtonItem title="Save" id="Cwu-WP-ULr">
-                                        <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <connections>
-                                            <action selector="saveButton:" destination="Vts-He-P18" id="hnc-dA-amp"/>
+                                            <action selector="quitButtonPressed:" destination="Vts-He-P18" id="xGi-Np-bzb"/>
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem title="Export" id="yqP-yF-mGn" userLabel="Export">
@@ -45,9 +33,6 @@
                                         <connections>
                                             <action selector="exportButtonPressed:" destination="Vts-He-P18" id="c5G-3f-Ps3"/>
                                         </connections>
-                                    </barButtonItem>
-                                    <barButtonItem title="Load" id="8N0-s0-ZU2">
-                                        <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </barButtonItem>
                                     <barButtonItem title="Clear" id="cJl-7R-Nql">
                                         <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -119,6 +104,7 @@
                         <outlet property="insertButton" destination="SLY-eP-ACv" id="oPa-Hm-WsF"/>
                         <outlet property="lassoButton" destination="Ttp-DJ-46z" id="SF8-4U-zfW"/>
                         <outlet property="navigationBar" destination="P0r-rK-G4e" id="Xne-YZ-5HS"/>
+                        <outlet property="quitButton" destination="4Er-Gx-QB8" id="gU4-l3-2x6"/>
                         <outlet property="selectButton" destination="Lts-nR-qFd" id="AOd-xa-kni"/>
                     </connections>
                 </viewController>

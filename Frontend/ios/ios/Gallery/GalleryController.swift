@@ -8,6 +8,7 @@
 
 import UIKit
 import Reachability
+import JWTDecode
 class GalleryController: UIViewController {
     
     @IBOutlet weak var collectionView: UICollectionView!
@@ -16,57 +17,37 @@ class GalleryController: UIViewController {
     private let itemsPerRow: CGFloat = 4
     private let sectionInsets = UIEdgeInsets(top: 10.0, left: 10.0, bottom: 10.0, right: 10.0)
     private var canvasController: CanvasController = CanvasController()
-    private var spinner: UIView = UIView.init()
     var reach: Reachability?
     override func viewDidLoad() {
         super.viewDidLoad()
         let nib = UINib.init(nibName: "GalleryCell", bundle: nil)
         self.collectionView.register(nib, forCellWithReuseIdentifier: "GalleryCell")
         self.canvasController = UIStoryboard(name: "Canvas", bundle: nil).instantiateViewController(withIdentifier: "CanvasController") as! CanvasController
-
     }
     override func viewWillAppear(_ animated: Bool){
         self.setupNetwork()
-        spinner = UIViewController.displaySpinner(onView: self.view);
         self.loadCanvas()
-        UIViewController.removeSpinner(spinner: spinner);
     }
     
     func loadCanvas() {
-        CanvasService.getAllCanvas()
+        let spinner = UIViewController.displaySpinner(onView: self.view);
+        CanvasService.getAllCanvas(includePrivate: false)
             .done { (retreivedCanvas) in
                 self.canvas = retreivedCanvas
                 self.collectionView.reloadData()
+                UIViewController.removeSpinner(spinner: spinner);
             }.catch { (Error) in
                 print("Fetch for canvas failed", Error)
+                UIViewController.removeSpinner(spinner: spinner);
         }
     }
     
     func setupNetwork() {
         self.reach = Reachability.forInternetConnection()
-        
-        // Tell the reachability that we DON'T want to be reachable on 3G/EDGE/CDMA
         self.reach!.reachableOnWWAN = false
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(reachabilityChanged),
-            name: NSNotification.Name.reachabilityChanged,
-            object: nil
-        )
-        
         self.reach!.startNotifier()
     }
-    @objc func reachabilityChanged(notification: NSNotification) {
-        if self.reach!.isReachableViaWiFi() || self.reach!.isReachableViaWWAN() {
-            spinner = UIViewController.displaySpinner(onView: self.view)
-            self.loadCanvas()
-            UIViewController.removeSpinner(spinner: spinner);
-            SoundNotification.play(sound: .EndVideo)
-        } else {
-            SoundNotification.play(sound: .BeginVideo)
-            UIViewController.removeSpinner(spinner: spinner);
-        }
-    }
+
     deinit {
         self.canvas = []
     }
@@ -78,7 +59,6 @@ extension GalleryController: UICollectionViewDelegate, UICollectionViewDataSourc
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "GalleryCell", for: indexPath) as! GalleryCell
         cell.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tap(_:))))
         cell.visibility = canvas[indexPath.row].canvasVisibility
@@ -88,20 +68,20 @@ extension GalleryController: UICollectionViewDelegate, UICollectionViewDataSourc
         cell.drawViewModels = canvas[indexPath.row].drawViewModels
         cell.author = canvas[indexPath.row].canvasAutor
         cell.image = canvas[indexPath.row].image
+        cell.width = canvas[indexPath.row].canvasWidth
+        cell.height = canvas[indexPath.row].canvasHeight
         cell.setImageFromBytes(bytesString: canvas[indexPath.row].image)
         return cell
     }
     
     @objc func tap(_ sender: UITapGestureRecognizer) {
-        
         let location = sender.location(in: self.collectionView)
         let indexPath = self.collectionView.indexPathForItem(at: location)
         
         if let index = indexPath {
             let cell = (self.collectionView.cellForItem(at: index) as! GalleryCell)
             canvasId = cell.canvasId
-            currentCanvasString = cell.drawViewModels
-            currentCanvas = Canvas(canvasId: cell.canvasId, name: cell.nameLabel.text!, drawViewModels: cell.drawViewModels, image: cell.image, canvasVisibility: cell.visibility, canvasAutor: cell.author, canvasProtection: cell.password)
+            currentCanvas = Canvas(canvasId: cell.canvasId, name: cell.nameLabel.text!, drawViewModels: cell.drawViewModels, image: cell.image, canvasVisibility: cell.visibility, canvasAutor: cell.author, canvasProtection: cell.password, canvasWidth: cell.width, canvasHeight: cell.height)
             var enteredPassword = ""
             if(cell.password != "") {
               

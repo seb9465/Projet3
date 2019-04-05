@@ -11,7 +11,6 @@ import UIKit
 import Reachability
 import Foundation
 var canvasId: String = ""
-var currentCanvasString: String = "[]"
 var currentCanvas: Canvas = Canvas()
 
 class CanvasController: UIViewController {
@@ -26,6 +25,7 @@ class CanvasController: UIViewController {
     @IBOutlet var selectButton: UIBarButtonItem!
     @IBOutlet var deleteButton: UIBarButtonItem!
     @IBOutlet weak var lassoButton: UIBarButtonItem!
+    @IBOutlet weak var quitButton: UIBarButtonItem!
     
     @IBOutlet weak var exportButton: UIBarButtonItem!
     @IBOutlet var navigationBar: UIToolbar!
@@ -43,12 +43,13 @@ class CanvasController: UIViewController {
         setupNetwork()
         
     }
-    
     public func loadCanvas() {
         print("loading canvas")
-        var data: Data = currentCanvasString.data(using: String.Encoding.utf8)!
+        var data: Data = currentCanvas.drawViewModels.data(using: String.Encoding.utf8)!
         let drawViewModels: [DrawViewModel] = try! JSONDecoder().decode(Array<DrawViewModel>.self, from: data)
         self.editor.loadCanvas(drawViewModels: drawViewModels)
+        self.editor.resize(width: CGFloat(currentCanvas.canvasWidth), heigth: CGFloat(currentCanvas.canvasHeight))
+        print(String(currentCanvas.canvasWidth) + String(currentCanvas.canvasHeight))
     }
     func setupNetwork() {
         self.reach = Reachability.forInternetConnection()
@@ -88,20 +89,14 @@ class CanvasController: UIViewController {
     }
     
     @IBAction func clearButton(_ sender: Any) {
+        self.editor.clear()
         CollaborationHub.shared!.reset();
+        
     }
     
     @IBAction func deleteButton(_ sender: Any) {
-//        self.resetButtonColor();
-//        if (self.editor.touchEventState == .DELETE) {
-//            self.editor.changeTouchHandleState(to: .NONE);
-//        } else {
-//            self.deleteButton.tintColor = Constants.RED_COLOR;
-//            self.editor.changeTouchHandleState(to: .DELETE)
-//        }
-//
-//        self.editor.deselect();
         self.editor.deleteSelectedFigures()
+        CollaborationHub.shared!.CutObjects(drawViewModels: [])
     }
     
     @IBAction func lassoButton(_ sender: Any) {
@@ -180,15 +175,12 @@ class CanvasController: UIViewController {
             present(ac, animated: true)
         }
     }
-    @IBAction func saveButton(_ sender: Any) {
-        self.editor.export();
-    }
-    @IBAction func quitButton(_ sender: Any) {
+
+    @IBAction func quitButtonPressed(_ sender: Any) {
         let alert = UIAlertController(title: "Alert", message: "Would you like to quit ?", preferredStyle: .alert);
         let yesAction: UIAlertAction = UIAlertAction(title: "Yes", style: .default) { _ in
             CollaborationHub.shared!.disconnectFromHub()
             currentCanvas = Canvas()
-            currentCanvasString = "[]"
             self.dismiss(animated: true, completion: nil)
         }
         let noAction: UIAlertAction = UIAlertAction(title: "No", style: .default, handler: nil);
@@ -235,18 +227,27 @@ class CanvasController: UIViewController {
                     self.present(errorAlert, animated: true, completion: nil);
                     }})
             SoundNotification.play(sound: .EndVideo)
+
+            self.initializeConnection()
+        } else {
+
+        SoundNotification.play(sound: .BeginVideo)
+        }
+        self.setupInternetConnectionState()
+    }
+    
+    public func setupInternetConnectionState() {
+          if self.reach!.isReachableViaWiFi() || self.reach!.isReachableViaWWAN() {
             self.connectionLabel.textColor = UIColor.green
             self.connectionLabel.text = "Online"
-            self.initializeConnection()
-
-        } else {
+            self.quitButton.isEnabled = true
+          } else {
             self.connectionLabel.text = "Offline"
             self.connectionLabel.textColor = UIColor.red
-            SoundNotification.play(sound: .BeginVideo)
+            self.quitButton.isEnabled = false
         }
     }
     deinit {
-
     }
 }
 

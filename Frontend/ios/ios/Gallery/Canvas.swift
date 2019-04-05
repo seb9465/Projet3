@@ -15,6 +15,8 @@ struct Canvas: Codable  {
     var canvasVisibility: String
     var canvasAutor: String
     var canvasProtection: String
+    var canvasWidth: Float
+    var canvasHeight: Float
     init() {
         self.canvasId = "";
         self.name = "";
@@ -23,9 +25,11 @@ struct Canvas: Codable  {
         self.canvasVisibility = "";
         self.canvasAutor = "";
         self.canvasProtection = "";
+        self.canvasWidth = 100
+        self.canvasHeight = 100
     }
 
-    init(canvasId: String, name: String, drawViewModels: String, image: String, canvasVisibility: String, canvasAutor: String, canvasProtection: String) {
+    init(canvasId: String, name: String, drawViewModels: String, image: String, canvasVisibility: String, canvasAutor: String, canvasProtection: String, canvasWidth: Float, canvasHeight: Float) {
         self.canvasId = canvasId;
         self.name = name;
         self.drawViewModels = drawViewModels;
@@ -33,5 +37,7 @@ struct Canvas: Codable  {
         self.canvasVisibility = canvasVisibility;
         self.canvasAutor = canvasAutor;
         self.canvasProtection = canvasProtection;
+        self.canvasHeight = canvasHeight
+        self.canvasWidth = canvasWidth
     }
 }

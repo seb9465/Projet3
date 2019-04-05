@@ -201,7 +201,7 @@ extension Editor : TouchInputDelegate {
                 self.touchEventState = .SELECT
                 return
             }
-            
+            CanvasService.saveOnNewFigure(figures: self.figures, editor: self)
             CollaborationHub.shared!.postNewFigure(figures: self.selectedFigures)
             var drawViewModels: [DrawViewModel] = []
             for figure in selectedFigures {
@@ -268,6 +268,8 @@ extension Editor : TouchInputDelegate {
             let destinationAnchor: String = destinationFigure.getClosestAnchorPointName(point: point)
             destinationFigure.addIncomingConnection(connection: connection as! ConnectionFigure, anchor: destinationAnchor)
             self.touchEventState = .SELECT
+            CollaborationHub.shared!.postNewFigure(figures: self.selectedFigures)
+            CanvasService.saveOnNewFigure(figures: self.figures, editor: self)
             return
         }
         

@@ -19,6 +19,8 @@ class GalleryCell: UICollectionViewCell {
     public var canvasId: String = ""
     public var author: String = ""
     public var drawViewModels: String = ""
+    public var width: Float = 100
+    public var height: Float = 100
 
     override func awakeFromNib() {
         super.awakeFromNib()
