@@ -34,6 +34,16 @@ class ChatRoomsControllerTableViewController: UITableViewController {
         self.present(view, animated: false, completion: nil);
     }
     
+    @IBAction func addButtonTrigger(_ sender: Any) {
+        guard let childVC = self.storyboard?.instantiateViewController(withIdentifier: "AddScreenViewController") as? AddScreenViewController else {
+            return
+        }
+        
+        childVC.view.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+        childVC.view.frame = self.view.bounds
+        self.present(childVC, animated: true, completion: nil);
+    }
+    
     override func viewDidLoad() {
         self.tableView.separatorStyle = .none;
         self.registerTableViewCells();
