@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3D099FB82256B72D00650721 /* Editor_TouchInputDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D099FB72256B72D00650721 /* Editor_TouchInputDelegate.swift */; };
 		3D0A917322388F6E002FCB74 /* ConnectionFigure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D0A917222388F6E002FCB74 /* ConnectionFigure.swift */; };
 		3D0F8D06224062690034DA1A /* SideToolbarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D0F8D05224062690034DA1A /* SideToolbarController.swift */; };
 		3D121EDC22209E070074C61C /* PlaceHolderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D121EDB22209E070074C61C /* PlaceHolderCell.swift */; };
@@ -127,6 +128,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3D099FB72256B72D00650721 /* Editor_TouchInputDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Editor_TouchInputDelegate.swift; sourceTree = "<group>"; };
 		3D0A917222388F6E002FCB74 /* ConnectionFigure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionFigure.swift; sourceTree = "<group>"; };
 		3D0F8D05224062690034DA1A /* SideToolbarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideToolbarController.swift; sourceTree = "<group>"; };
 		3D121EDB22209E070074C61C /* PlaceHolderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceHolderCell.swift; sourceTree = "<group>"; };
@@ -294,6 +296,7 @@
 				3D2268182236E9F500B2F604 /* EditorView.swift */,
 				3D22681B2236EE8400B2F604 /* Editor.swift */,
 				3D6E4C36223AD53300E391D4 /* TouchEventState.swift */,
+				3D099FB72256B72D00650721 /* Editor_TouchInputDelegate.swift */,
 			);
 			path = Editor;
 			sourceTree = "<group>";
@@ -927,6 +930,7 @@
 				3D6E4C37223AD53300E391D4 /* TouchEventState.swift in Sources */,
 				3DABD3F52241975C00707D86 /* FigureTableController.swift in Sources */,
 				3DC967ED220A09C400FA76CB /* DashboardController.swift in Sources */,
+				3D099FB82256B72D00650721 /* Editor_TouchInputDelegate.swift in Sources */,
 				3DABD3E02241433C00707D86 /* ClassAttributeCell.swift in Sources */,
 				3DB1363E2235B3130096FA04 /* FigureProtocol.swift in Sources */,
 				3DDE25192202B2AF0082E735 /* RoundedCorners.swift in Sources */,
