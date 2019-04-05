@@ -72,10 +72,8 @@ class ChatRoomsControllerTableViewController: UITableViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        if (self.view.frame.width < 400) {
-            self.navigationItem.leftBarButtonItem?.isEnabled = false;
-        }
         
+        self.navigationItem.leftBarButtonItem?.isEnabled = false;
         super.viewDidAppear(animated);
     }
     
