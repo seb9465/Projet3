@@ -95,14 +95,12 @@ class ChatRoomsControllerTableViewController: UITableViewController {
         
         cell?.chatRoomName.text = roomName.uppercased();
         
-        var notif: String = "";
-        
         if (ChatService.shared.messagesWhileAFK.keys.contains(roomName)) {
-            notif += String(ChatService.shared.messagesWhileAFK[roomName]!.count);
-            notif += " unread messages";
+            cell?.notificationLabel.text = String(ChatService.shared.messagesWhileAFK[roomName]!.count);
+            cell?.showCircleLabel();
+        } else {
+            cell?.hideCircleLabel();
         }
-        
-        cell?.notificationLabel.text = notif;
         
         return cell!
     }
