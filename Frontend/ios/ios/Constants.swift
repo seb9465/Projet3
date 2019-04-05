@@ -35,7 +35,7 @@ struct Constants {
         static let cornerRadius: CGFloat = 5.0;
         static let shadowColor: CGColor = UIColor.black.cgColor;
         static let shadowOffset: CGSize = CGSize.zero;
-        static let shadowOpacity: Float = 0.4;
+        static let shadowOpacity: Float = 0.5;
         static let shadowRadius: CGFloat = 3.0;
     }
 }

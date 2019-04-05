@@ -121,11 +121,35 @@ class CanvasController: UIViewController {
     @IBAction func chatViewButton(_ sender: Any) {
         if (self.chatViewContainer.isHidden) {
             self.chatViewButton.tintColor = Constants.RED_COLOR;
-            self.chatViewContainer.isHidden = false;
-            self.view.bringSubviewToFront(self.chatViewContainer);
+//            self.chatViewContainer.isHidden = false;
+//            self.view.bringSubviewToFront(self.chatViewContainer);
+            
+            UIView.animate(withDuration: 0.35,
+                           delay: 0.0,
+                           usingSpringWithDamping: 0.9,
+                           initialSpringVelocity: 1,
+                           options: [],
+                           animations: {
+                            self.chatViewContainer.isHidden = false;
+                            self.view.bringSubviewToFront(self.chatViewContainer);
+                            self.view.layoutIfNeeded()
+                            },
+                           completion: nil
+            );
         } else {
             self.chatViewButton.tintColor = UIColor.black;
-            self.chatViewContainer.isHidden = true;
+            UIView.animate(withDuration: 0.35,
+                           delay: 0.0,
+                           usingSpringWithDamping: 0.9,
+                           initialSpringVelocity: 1,
+                           options: [],
+                           animations: {
+                            self.chatViewContainer.isHidden = true;
+                            self.view.layoutIfNeeded()
+                            },
+                           completion: nil
+            );
+//            self.chatViewContainer.isHidden = true;
         }
     }
     
