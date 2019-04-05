@@ -35,6 +35,8 @@ class CanvasController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
         CollaborationHub.shared.connectToHub()
         
+        self.initChatViewContainer();
+        
         self.view.addSubview(self.editor.editorView)
     }
     
@@ -117,7 +119,24 @@ class CanvasController: UIViewController {
     }
     
     @IBAction func chatViewButton(_ sender: Any) {
-        
+        if (self.chatViewContainer.isHidden) {
+            self.chatViewButton.tintColor = Constants.RED_COLOR;
+            self.chatViewContainer.isHidden = false;
+        } else {
+            self.chatViewButton.tintColor = UIColor.black;
+            self.chatViewContainer.isHidden = true;
+        }
+    }
+    
+    private func initChatViewContainer() -> Void {
+        self.chatViewContainer.sizeToFit();
+        self.chatViewContainer.isHidden = true;
+        self.chatViewContainer.layer.cornerRadius = 5.0;
+        self.chatViewContainer.layer.shadowColor = UIColor.black.cgColor;
+        self.chatViewContainer.layer.shadowOffset = CGSize.zero;
+        self.chatViewContainer.layer.shadowOpacity = 0.3;
+        self.chatViewContainer.layer.shadowRadius = 2;
+        self.chatViewContainer.layer.masksToBounds = false;
     }
     
     private func resetButtonColor() -> Void {
