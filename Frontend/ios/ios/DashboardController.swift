@@ -32,6 +32,7 @@ class DashboardController: UIViewController, UITextFieldDelegate {
         self.viewContainerChat.isHidden = true;
         self.viewContainerChat.layer.borderWidth = 1;
         self.viewContainerChat.layer.borderColor = UIColor.black.cgColor;
+        self.viewContainerChat.layer.cornerRadius = 5.0;
     }
     
     @IBAction func logoutButton(_ sender: Any) {
