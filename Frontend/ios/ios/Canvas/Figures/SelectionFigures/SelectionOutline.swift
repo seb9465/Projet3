@@ -90,7 +90,6 @@ class SelectionOutline: UIView {
         self.border.removeFromSuperlayer()
         self.frame = newFrame
         self.initializeLayers()
-        //        setNeedsDisplay()
     }
     
     public func addUsernameSelecting(username: String) {

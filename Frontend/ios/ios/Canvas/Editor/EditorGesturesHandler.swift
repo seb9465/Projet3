@@ -42,7 +42,6 @@ extension Editor {
         
         let A = sender.location(ofTouch: 0, in: self.editorView)
         let B = sender.location(ofTouch: 1, in: self.editorView)
-        
         let xD = abs( A.x - B.x )
         let yD = abs( A.y - B.y )
         
@@ -53,6 +52,7 @@ extension Editor {
         let xScale = xD - self.initialPinchDistance.x
         let yScale = yD - self.initialPinchDistance.y
         
+        // To be fixed later
         self.initialPinchDistance = CGPoint(x: xD, y: yD)
         (self.selectedFigures[0] as! UmlFigure).resize(by: CGPoint(x: xScale, y: yScale))
         let outlineIndex: Int = self.selectionOutlines.firstIndex(where: { $0.associatedFigureID == self.selectedFigures[0].uuid })!

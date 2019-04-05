@@ -152,6 +152,8 @@ extension Editor : TouchInputDelegate {
         
         if (self.touchEventState == .ELBOW) {
             (self.selectedFigures[0] as! ConnectionFigure).updateElbowAnchor(point: point)
+            let outlineIndex: Int = self.selectionOutlines.firstIndex(where: { $0.associatedFigureID == self.selectedFigures[0].uuid })!
+            self.selectionOutlines[outlineIndex].updateOutline(newFrame: self.selectedFigures[0].getSelectionFrame())
             return
         }
         
