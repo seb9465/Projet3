@@ -25,11 +25,14 @@ class CanvasController: UIViewController {
     @IBOutlet weak var lassoButton: UIBarButtonItem!
     @IBOutlet weak var quitButton: UIBarButtonItem!
     
+    @IBOutlet weak var cutButton: UIBarButtonItem!
+    @IBOutlet weak var pasteButton: UIBarButtonItem!
     @IBOutlet weak var exportButton: UIBarButtonItem!
     @IBOutlet var navigationBar: UIToolbar!
     
     override func viewDidLoad() {
         super.viewDidLoad();
+        self.pasteButton.isEnabled = false
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
 
@@ -79,6 +82,21 @@ class CanvasController: UIViewController {
         self.editor.redo(view: self.view);
     }
     
+    @IBAction func cutButtonPressed(_ sender: Any) {
+        self.editor.cut()
+        if(self.editor.clipboard.count > 0) {
+            self.pasteButton.isEnabled = true
+        }
+    }
+    @IBAction func copyButtonPressed(_ sender: Any) {
+        self.editor.copy()
+        if(self.editor.clipboard.count > 0) {
+            self.pasteButton.isEnabled = true
+        }
+    }
+    @IBAction func pasteButtonPressed(_ sender: Any) {
+        self.editor.paste()
+    }
     @IBAction func clearButton(_ sender: Any) {
         self.editor.clear()
         CollaborationHub.shared!.reset();
@@ -172,6 +190,7 @@ class CanvasController: UIViewController {
         let yesAction: UIAlertAction = UIAlertAction(title: "Yes", style: .default) { _ in
             CollaborationHub.shared!.disconnectFromHub()
             currentCanvas = Canvas()
+            NotificationCenter.default.removeObserver(self)
             self.dismiss(animated: true, completion: nil)
         }
         let noAction: UIAlertAction = UIAlertAction(title: "No", style: .default, handler: nil);

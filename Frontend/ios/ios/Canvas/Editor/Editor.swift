@@ -33,6 +33,8 @@ class Editor {
     var initialTouchPoint: CGPoint!
     var previousTouchPoint: CGPoint!
     
+    var clipboard: [Figure] = []
+    
     init() {
         self.editorView.delegate = self
         let rotation = UIRotationGestureRecognizer(target: self, action: #selector(self.rotatedView(_:)))
@@ -140,6 +142,31 @@ class Editor {
         }
     }
     
+    func copy() {
+        self.clipboard = self.selectedFigures
+    }
+    
+    func paste() {
+        for figure in self.clipboard {
+            var viewModel = figure.exportViewModel()!
+            viewModel.Guid = UUID().uuidString
+            viewModel.StylusPoints![0].X = viewModel.StylusPoints![0].X + 10
+            viewModel.StylusPoints![0].Y = viewModel.StylusPoints![0].Y + 10
+            viewModel.StylusPoints![1].X = viewModel.StylusPoints![1].X + 10
+            viewModel.StylusPoints![1].Y = viewModel.StylusPoints![1].Y + 10
+            self.select(figure: figure)
+            self.insertFigure(drawViewModel: viewModel)
+        }
+        self.deselect()
+        CollaborationHub.shared!.postNewFigure(figures: self.clipboard)
+        CanvasService.saveOnNewFigure(figures: self.figures, editor: self)
+    }
+    
+    func cut() {
+        self.copy()
+        self.deleteSelectedFigures()
+    }
+    
     public func insertFigure(drawViewModel: DrawViewModel) -> Figure {
         let figure = FigureFactory.shared.fromDrawViewModel(drawViewModel: drawViewModel)!
         figure.delegate = self
@@ -174,14 +201,16 @@ class Editor {
         if (self.selectedFigures.isEmpty) {
             return
         }
-        
+        var viewModelsToDelete: [DrawViewModel] = []
         for figure in self.selectedFigures {
             figure.removeFromSuperview()
+            viewModelsToDelete.append(figure.exportViewModel()!)
             self.figures.removeAll{$0 == figure}
         }
-        
         self.deselect()
         self.selectedFigures.removeAll()
+        CollaborationHub.shared?.CutObjects(drawViewModels: viewModelsToDelete)
+        CanvasService.saveOnNewFigure(figures: self.figures, editor: self)
     }
     
     public func undo(view: UIView) -> Void {

@@ -52,6 +52,30 @@
                                             <action selector="redoButton:" destination="Vts-He-P18" id="2RI-2W-Sfy"/>
                                         </connections>
                                     </barButtonItem>
+                                    <barButtonItem title="Cut" id="cBy-5K-qpS">
+                                        <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <connections>
+                                            <action selector="cutButtonPressed:" destination="Vts-He-P18" id="DGb-Kz-z4c"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem title="Copy" id="nIT-3F-zGF" userLabel="Copy">
+                                        <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <connections>
+                                            <action selector="copyButtonPressed:" destination="Vts-He-P18" id="b6h-7d-Aci"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem title="Paste" id="BjU-u4-eJ6" userLabel="Paste">
+                                        <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <connections>
+                                            <action selector="pasteButtonPressed:" destination="Vts-He-P18" id="ZyN-In-isq"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem title="Delete" id="5ld-32-8cy">
+                                        <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <connections>
+                                            <action selector="deleteButton:" destination="Vts-He-P18" id="O21-i5-hoW"/>
+                                        </connections>
+                                    </barButtonItem>
                                     <barButtonItem title="Insert" id="SLY-eP-ACv" userLabel="Insert Button">
                                         <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
@@ -68,12 +92,6 @@
                                         <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
                                             <action selector="lassoButton:" destination="Vts-He-P18" id="rPD-vK-NGN"/>
-                                        </connections>
-                                    </barButtonItem>
-                                    <barButtonItem title="Delete" id="5ld-32-8cy">
-                                        <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <connections>
-                                            <action selector="deleteButton:" destination="Vts-He-P18" id="O21-i5-hoW"/>
                                         </connections>
                                     </barButtonItem>
                                 </items>
@@ -99,11 +117,13 @@
                     </view>
                     <connections>
                         <outlet property="connectionLabel" destination="HVO-Oe-0TK" id="375-IB-DIx"/>
+                        <outlet property="cutButton" destination="cBy-5K-qpS" id="I39-ed-WFl"/>
                         <outlet property="deleteButton" destination="5ld-32-8cy" id="y06-F1-JC8"/>
                         <outlet property="exportButton" destination="yqP-yF-mGn" id="ydc-eg-QxN"/>
                         <outlet property="insertButton" destination="SLY-eP-ACv" id="oPa-Hm-WsF"/>
                         <outlet property="lassoButton" destination="Ttp-DJ-46z" id="SF8-4U-zfW"/>
                         <outlet property="navigationBar" destination="P0r-rK-G4e" id="Xne-YZ-5HS"/>
+                        <outlet property="pasteButton" destination="BjU-u4-eJ6" id="OB9-tG-azy"/>
                         <outlet property="quitButton" destination="4Er-Gx-QB8" id="gU4-l3-2x6"/>
                         <outlet property="selectButton" destination="Lts-nR-qFd" id="AOd-xa-kni"/>
                     </connections>
