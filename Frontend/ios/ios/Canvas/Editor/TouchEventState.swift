@@ -10,6 +10,7 @@ enum TouchEventState {
     case SELECT
     case AREA_SELECT
     case REZISE
+    case ELBOW
     case TRANSLATE
     case CONNECTION
     case INSERT

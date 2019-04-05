@@ -11,19 +11,7 @@ extension Editor : TouchInputDelegate {
     func notifyTouchBegan(action: String, point: CGPoint, figure: Figure?) {
         switch (self.touchEventState) {
         case .SELECT:
-            print(action)
-            self.initialTouchPoint = point
-            self.previousTouchPoint = point
-            
-            if (action == "selection") {
-                self.touchEventState = .TRANSLATE
-                return
-            }
-            if (action == "empty") {
-                self.deselect()
-                self.updateSideToolBar()
-                return
-            }
+            self.handleSelectTouchBegin(action: action, point: point)
             break;
         case .REZISE:
             break
@@ -47,11 +35,11 @@ extension Editor : TouchInputDelegate {
             }
             
             if (action == "empty") {
-                let floatingFigures: [ItemTypeEnum] = [.UniderectionalAssoication, .BidirectionalAssociation, .Line]
-                if (!floatingFigures.contains(self.currentFigureType)) {
-                    self.touchEventState = .SELECT
-                    return
-                }
+//                let floatingFigures: [ItemTypeEnum] = [.UniderectionalAssoication, .BidirectionalAssociation, .Line]
+//                if (!floatingFigures.contains(self.currentFigureType)) {
+//                    self.touchEventState = .SELECT
+//                    return
+//                }
                 
                 self.connectionPreview = FigureFactory.shared.getFigure(type: self.currentFigureType, source: self.initialTouchPoint, destination: self.initialTouchPoint)
                 self.editorView.addSubview(connectionPreview)
@@ -71,8 +59,43 @@ extension Editor : TouchInputDelegate {
             }
             self.selectionLasso.addNewTouchPoint(touchPoint: point);
             break
+        case .ELBOW:
+            break
         case .NONE:
-            break;
+            break
+        }
+    }
+    
+    private func handleSelectTouchBegin(action: String, point: CGPoint) {
+        self.initialTouchPoint = point
+        self.previousTouchPoint = point
+        
+        if (action == "selection") {
+            if (!(self.selectedFigures[0] is ConnectionFigure)) {
+                self.touchEventState = .TRANSLATE
+                return
+            }
+            // Check if user is selecting the elbow
+            if ((self.selectedFigures[0] as! ConnectionFigure).isPointOnElbow(point: point)) {
+                self.touchEventState = .ELBOW
+                return
+            }
+            
+            if ((self.selectedFigures[0] as! ConnectionFigure).isOriginAnchored(umlFigures: self.figures.filter({$0 is UmlFigure}) as! [UmlFigure])) {
+                return
+            }
+            if ((self.selectedFigures[0] as! ConnectionFigure).isDestinationAnchored(umlFigures: self.figures.filter({$0 is UmlFigure}) as! [UmlFigure])) {
+                return
+            }
+            
+            self.touchEventState = .TRANSLATE
+            return
+        }
+
+        if (action == "empty") {
+            self.deselect()
+            self.updateSideToolBar()
+            return
         }
     }
     
@@ -118,6 +141,11 @@ extension Editor : TouchInputDelegate {
             return
         }
         
+        if (self.touchEventState == .ELBOW) {
+            (self.selectedFigures[0] as! ConnectionFigure).updateElbowAnchor(point: point)
+            return
+        }
+        
         if (self.touchEventState == .CONNECTION) {
             self.connectionPreview.removeFromSuperview()
             self.connectionPreview = FigureFactory.shared.getFigure(type: self.currentFigureType, source: self.initialTouchPoint, destination: point)
@@ -130,6 +158,7 @@ extension Editor : TouchInputDelegate {
     func notifyTouchEnded(point: CGPoint, figure: Figure?) {
         if (self.touchEventState == .CONNECTION) {
             self.handleConnectionTouchEnded(point: point)
+            self.sourceFigure = nil
             return
         }
         
@@ -182,6 +211,11 @@ extension Editor : TouchInputDelegate {
             self.touchEventState = .SELECT
             return
         }
+        
+        if (self.touchEventState == .ELBOW) {
+            self.touchEventState = .SELECT
+            return
+        }
     }
     
     func handleConnectionTouchEnded(point: CGPoint) {
@@ -189,15 +223,58 @@ extension Editor : TouchInputDelegate {
             self.connectionPreview.removeFromSuperview()
         }
         
-        guard let destinationFigure: UmlFigure = self.getFigureContaining(point: point) else {
-            print("Insert floating connection figure.")
-            self.insertConnectionFigure(firstPoint: self.initialTouchPoint, lastPoint: point, itemType: currentFigureType)
+        let floatingFigures: [ItemTypeEnum] = [.UniderectionalAssoication, .BidirectionalAssociation, .Line]
+
+        // Case 1 - Floating
+        if (self.sourceFigure == nil && self.getFigureContaining(point: point) == nil) {
+            if (!floatingFigures.contains(self.currentFigureType)) {
+                self.touchEventState = .SELECT
+                return
+            }
+            let connection = self.insertConnectionFigure(firstPoint: self.initialTouchPoint, lastPoint: point, itemType: currentFigureType)
+            CollaborationHub.shared!.postNewFigure(figures: [connection])
+            self.touchEventState = .SELECT
+            return
+        }
+
+        // Case 2 - Origin anchored
+        if (self.sourceFigure != nil && self.getFigureContaining(point: point) == nil) {
+            if (!floatingFigures.contains(self.currentFigureType)) {
+                self.touchEventState = .SELECT
+                return
+            }
+            let connection = self.insertConnectionFigure(firstPoint: self.initialTouchPoint, lastPoint: point, itemType: currentFigureType)
+            CollaborationHub.shared!.postNewFigure(figures: [connection])
+
+            let sourceAnchor: String = self.sourceFigure.getClosestAnchorPointName(point: self.initialTouchPoint)
+            self.sourceFigure.addOutgoingConnection(connection: connection as! ConnectionFigure, anchor: sourceAnchor)
+            self.touchEventState = .SELECT
+            return
+        }
+
+        // Case 3 - Destination Anchored
+        if (self.sourceFigure == nil && self.getFigureContaining(point: point) != nil) {
+            if (!floatingFigures.contains(self.currentFigureType)) {
+                self.touchEventState = .SELECT
+                return
+            }
+            let destinationFigure: UmlFigure = self.getFigureContaining(point: point)!
+            let connection = self.insertConnectionFigure(
+                firstPoint: self.initialTouchPoint,
+                lastPoint: destinationFigure.getClosestAnchorPoint(point: point),
+                itemType: currentFigureType
+            )
+            CollaborationHub.shared!.postNewFigure(figures: [connection])
+            let destinationAnchor: String = destinationFigure.getClosestAnchorPointName(point: point)
+            destinationFigure.addIncomingConnection(connection: connection as! ConnectionFigure, anchor: destinationAnchor)
             self.touchEventState = .SELECT
             CollaborationHub.shared!.postNewFigure(figures: self.selectedFigures)
             CanvasService.saveOnNewFigure(figures: self.figures, editor: self)
             return
         }
         
+        // Case 4 - All Anchored
+        let destinationFigure: UmlFigure = self.getFigureContaining(point: point)!
         if (destinationFigure.isEqual(self.sourceFigure)) {
             print("Insert cancelled: Cannot connect figure to itself.")
             self.touchEventState = .SELECT

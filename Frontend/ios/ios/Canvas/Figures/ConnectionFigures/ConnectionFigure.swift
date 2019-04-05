@@ -98,10 +98,12 @@ class ConnectionFigure : Figure {
         setNeedsDisplay()
     }
     
-    private func updateElbowAnchor(point: CGPoint) {
+    func updateElbowAnchor(point: CGPoint) {
         self.anchors[.ELBOW]!.removeFromSuperlayer()
         self.anchors[.ELBOW]! = ConnectionAnchor(position: point)
         self.layer.addSublayer(self.anchors[.ELBOW]!)
+        self.points[.ELBOW]! = point
+        setNeedsDisplay()
     }
     
     override func getSelectionFrame() -> CGRect{
@@ -129,6 +131,35 @@ class ConnectionFigure : Figure {
         let size: CGSize = CGSize(width: abs(xf - xi) + 10, height: abs(yf - yi) + 10)
 
         return CGRect(origin: origin, size: size)
+    }
+    
+    func isOriginAnchored(umlFigures: [UmlFigure]) -> Bool {
+        for umlFigure in umlFigures {
+            if (umlFigure.outgoingConnections[self] != nil) {
+                return true
+            }
+        }
+        return false
+    }
+    
+    func isDestinationAnchored(umlFigures: [UmlFigure]) -> Bool {
+        for umlFigure in umlFigures {
+            if (umlFigure.incomingConnections[self] != nil) {
+                return true
+            }
+        }
+        return false
+    }
+    
+    func isPointOnElbow(point: CGPoint) -> Bool{
+        for layer in self.layer.sublayers!{
+            if (layer is CAShapeLayer) {
+                if let path = (layer as! CAShapeLayer).path, path.contains(point) {
+                    return true
+                }
+            }
+        }
+        return false
     }
     
     func drawNameLabel() {
@@ -258,11 +289,11 @@ extension ConnectionFigure {
     public override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {}
     
     public override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        let touch = touches.first
-        guard let point = touch?.location(in: self.superview) else { return }
-        self.points[.ELBOW]! = point
-        self.updateElbowAnchor(point: point)
-        setNeedsDisplay()
+//        let touch = touches.first
+//        guard let point = touch?.location(in: self.superview) else { return }
+//        self.points[.ELBOW]! = point
+//        self.updateElbowAnchor(point: point)
+//        setNeedsDisplay()
     }
     
     public override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
