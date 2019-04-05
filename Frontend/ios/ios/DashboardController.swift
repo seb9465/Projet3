@@ -14,6 +14,9 @@ class DashboardController: UIViewController, UITextFieldDelegate {
     
     @IBOutlet weak var usernameLabel: UILabel!
     @IBOutlet var logoutButton: RoundedCorners!
+    @IBOutlet var viewContainerChat: UIView!
+    
+    private var isChatOpen: Bool = false;
     
     override func viewDidLoad() { self.navigationItem.setHidesBackButton(true, animated:true);
         super.viewDidLoad();
@@ -21,10 +24,18 @@ class DashboardController: UIViewController, UITextFieldDelegate {
         let jwt = try! decode(jwt: token!)
         usernameLabel.text = jwt.claim(name: "unique_name").string
         
-        
-        ChatService.shared.initOnReceivingMessage(insertMessage:{_ in });
         ChatService.shared.connectToUserChatRooms();
+        ChatService.shared.initOnReceivingMessage(insertMessage:{_ in });
         ChatService.shared.connectToHub();
+        
+        self.viewContainerChat.sizeToFit(); // Adjusting frame size
+        self.viewContainerChat.isHidden = true;
+        self.viewContainerChat.layer.cornerRadius = 5.0;
+        self.viewContainerChat.layer.shadowColor = UIColor.black.cgColor;
+        self.viewContainerChat.layer.shadowOffset = CGSize.zero;
+        self.viewContainerChat.layer.shadowOpacity = 0.3;
+        self.viewContainerChat.layer.shadowRadius = 2;
+        self.viewContainerChat.layer.masksToBounds = false;
     }
     
     @IBAction func logoutButton(_ sender: Any) {
@@ -41,5 +52,14 @@ class DashboardController: UIViewController, UITextFieldDelegate {
         self.view.window!.layer.add(transition, forKey: kCATransition);
         
         self.present(viewController, animated: false, completion: nil);
+    }
+    @IBAction func windowChatTrigger(_ sender: Any) {
+        if (self.isChatOpen) {
+            self.viewContainerChat.isHidden = true;
+            self.isChatOpen = false;
+        } else {
+            self.viewContainerChat.isHidden = false;
+            self.isChatOpen = true;
+        }
     }
 }

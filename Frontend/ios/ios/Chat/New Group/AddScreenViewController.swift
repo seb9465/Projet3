@@ -20,6 +20,7 @@ class AddScreenViewController: UIViewController, UITableViewDelegate, UITableVie
     @IBOutlet var saveButton: UIBarButtonItem!
     @IBOutlet var channelName: UITextField!
     
+    
     override func viewDidLoad() {
         super.viewDidLoad();
         
@@ -64,35 +65,16 @@ class AddScreenViewController: UIViewController, UITableViewDelegate, UITableVie
     // MARK: Actions
     
     @IBAction func cancelButton(_ sender: Any) {
-        // Going back to the ChatRoom.
-        let storyboard = UIStoryboard(name: "Chat", bundle: nil);
-        let view = storyboard.instantiateViewController(withIdentifier: "ChatRoomsView");
-        
-        let transition = CATransition();
-        transition.duration = 0.3;
-        transition.type = CATransitionType.reveal;
-        transition.subtype = CATransitionSubtype.fromBottom;
-        self.view.window!.layer.add(transition, forKey: kCATransition);
-        
-        navigationController?.pushViewController(view, animated: false); // TODO: Adjust the animation transition.
+        self.navigationController?.popViewController(animated: true);
     }
     
     
     @IBAction func saveButton(_ sender: Any) {
-        // Adding the channel on the server.
-        ChatService.shared.createNewChannel(channelName: channelName.text!);
+        if (!(self.channelName.text?.isEmpty)!) {
+            ChatService.shared.createNewChannel(channelName: channelName.text!);
+        }
         
-        // Back to the ChatRoom.
-        let storyboard = UIStoryboard(name: "Chat", bundle: nil);
-        let view = storyboard.instantiateViewController(withIdentifier: "ChatRoomsView");
-        
-        let transition = CATransition();
-        transition.duration = 0.3;
-        transition.type = CATransitionType.reveal;
-        transition.subtype = CATransitionSubtype.fromBottom;
-        self.view.window!.layer.add(transition, forKey: kCATransition);
-        
-        navigationController?.pushViewController(view, animated: false);
+        self.navigationController?.popViewController(animated: true);
     }
     
     // MARK: Table View
@@ -127,15 +109,17 @@ class AddScreenViewController: UIViewController, UITableViewDelegate, UITableVie
         ChatService.shared.connectToGroup();
         ChatService.shared.currentChannel = nil;
         
-        let storyboard = UIStoryboard(name: "Chat", bundle: nil);
-        let destination = storyboard.instantiateViewController(withIdentifier: "ChatRoomsView");
+//        let storyboard = UIStoryboard(name: "Chat", bundle: nil);
+//        let destination = storyboard.instantiateViewController(withIdentifier: "ChatRoomsView");
+//
+//        let transition = CATransition();
+//        transition.duration = 0.3;
+//        transition.type = CATransitionType.reveal;
+//        transition.subtype = CATransitionSubtype.fromBottom;
+//        self.view.window!.layer.add(transition, forKey: kCATransition);
+//
+//        navigationController?.pushViewController(destination, animated: false);
         
-        let transition = CATransition();
-        transition.duration = 0.3;
-        transition.type = CATransitionType.reveal;
-        transition.subtype = CATransitionSubtype.fromBottom;
-        self.view.window!.layer.add(transition, forKey: kCATransition);
-        
-        navigationController?.pushViewController(destination, animated: false);
+        self.navigationController?.popViewController(animated: true);
     }
 }
