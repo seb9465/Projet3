@@ -14,6 +14,7 @@ protocol CollaborationHubDelegate {
     func updateCanvas(itemMessage: ItemMessage)
     func updateSelection(itemMessage: ItemMessage)
     func updateClear();
+    func delete(username: String)
 }
 
 class CollaborationHub {
@@ -165,13 +166,12 @@ class CollaborationHub {
     public func onCut() -> Void {
         self.hubConnection!.on(method: "Cut", callback: { (args, typeConverter) in
             print("[ Collab ] Delete received... To Implement")
-            /*
+            
             let jsonString: String = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self)!;
             let jsonData = jsonString.data(using: .utf8)
             let itemMessage: ItemMessage = try! JSONDecoder().decode(ItemMessage.self, from: jsonData!);
             
-            self.delegate!.updateCanvas(itemMessage: itemMessage)
- */
+            self.delegate!.delete(username: itemMessage.Username)
         })
     }
     

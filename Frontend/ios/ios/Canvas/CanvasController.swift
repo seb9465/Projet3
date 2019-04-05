@@ -41,7 +41,6 @@ class CanvasController: UIViewController {
         CollaborationHub.shared!.delegate = self.editor
         self.resizeAnchorPoints = CanvasResizePoints(frame: self.editor.editorView.frame, delegate: self.editor.editorView.delegate)
         self.view.addSubview(self.editor.editorView)
-        self.view.addSubview(self.resizeAnchorPoints!)
         
         setupNetwork()
         
@@ -86,12 +85,6 @@ class CanvasController: UIViewController {
     
     @IBAction func cutButtonPressed(_ sender: Any) {
         self.editor.cut()
-        if(self.editor.clipboard.count > 0) {
-            self.pasteButton.isEnabled = true
-        }
-    }
-    @IBAction func copyButtonPressed(_ sender: Any) {
-        self.editor.copy()
         if(self.editor.clipboard.count > 0) {
             self.pasteButton.isEnabled = true
         }
@@ -232,6 +225,7 @@ class CanvasController: UIViewController {
                 if(succes) {
                     let updatedAlert = UIAlertController(title: "Canvas Updated", message: "All your modification while being offline were saved to the cloud!", preferredStyle: .alert)
                     updatedAlert.addAction(UIAlertAction(title: "OK", style: .default))
+                    CollaborationHub.shared?.postNewFigure(figures: self.editor.figures)
                     self.present(updatedAlert, animated: true, completion: nil);
                 } else {
                     let errorAlert = UIAlertController(title: "Canvas Update Error", message: "Error while updating from cache.", preferredStyle: .alert)
@@ -239,10 +233,8 @@ class CanvasController: UIViewController {
                     self.present(errorAlert, animated: true, completion: nil);
                 }})
             SoundNotification.play(sound: .EndVideo)
-            
             self.initializeConnection()
         } else {
-            
             SoundNotification.play(sound: .BeginVideo)
         }
         self.setupInternetConnectionState()

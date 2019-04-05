@@ -36,11 +36,11 @@ extension Editor : TouchInputDelegate {
             }
             
             if (action == "empty") {
-//                let floatingFigures: [ItemTypeEnum] = [.UniderectionalAssoication, .BidirectionalAssociation, .Line]
-//                if (!floatingFigures.contains(self.currentFigureType)) {
-//                    self.touchEventState = .SELECT
-//                    return
-//                }
+                //                let floatingFigures: [ItemTypeEnum] = [.UniderectionalAssoication, .BidirectionalAssociation, .Line]
+                //                if (!floatingFigures.contains(self.currentFigureType)) {
+                //                    self.touchEventState = .SELECT
+                //                    return
+                //                }
                 
                 self.connectionPreview = FigureFactory.shared.getFigure(type: self.currentFigureType, source: self.initialTouchPoint, destination: self.initialTouchPoint)
                 self.editorView.addSubview(connectionPreview)
@@ -94,7 +94,7 @@ extension Editor : TouchInputDelegate {
             self.touchEventState = .TRANSLATE
             return
         }
-
+        
         if (action == "empty") {
             self.deselect()
             self.updateSideToolBar()
@@ -150,7 +150,9 @@ extension Editor : TouchInputDelegate {
         }
         
         if (self.touchEventState == .CONNECTION) {
-            self.connectionPreview.removeFromSuperview()
+            if(self.connectionPreview != nil){
+                self.connectionPreview.removeFromSuperview()
+            }
             self.connectionPreview = FigureFactory.shared.getFigure(type: self.currentFigureType, source: self.initialTouchPoint, destination: point)
             //            self.connectionPreview = ConnectionFigure(origin: self.initialTouchPoint, destination: point, itemType: .UniderectionalAssoication)
             self.editorView.addSubview(self.connectionPreview)
@@ -227,7 +229,7 @@ extension Editor : TouchInputDelegate {
         }
         
         let floatingFigures: [ItemTypeEnum] = [.UniderectionalAssoication, .BidirectionalAssociation, .Line]
-
+        
         // Case 1 - Floating
         if (self.sourceFigure == nil && self.getFigureContaining(point: point) == nil) {
             if (!floatingFigures.contains(self.currentFigureType)) {
@@ -239,7 +241,7 @@ extension Editor : TouchInputDelegate {
             self.touchEventState = .SELECT
             return
         }
-
+        
         // Case 2 - Origin anchored
         if (self.sourceFigure != nil && self.getFigureContaining(point: point) == nil) {
             if (!floatingFigures.contains(self.currentFigureType)) {
@@ -248,13 +250,13 @@ extension Editor : TouchInputDelegate {
             }
             let connection = self.insertConnectionFigure(firstPoint: self.initialTouchPoint, lastPoint: point, itemType: currentFigureType)
             CollaborationHub.shared!.postNewFigure(figures: [connection])
-
+            
             let sourceAnchor: String = self.sourceFigure.getClosestAnchorPointName(point: self.initialTouchPoint)
             self.sourceFigure.addOutgoingConnection(connection: connection as! ConnectionFigure, anchor: sourceAnchor)
             self.touchEventState = .SELECT
             return
         }
-
+        
         // Case 3 - Destination Anchored
         if (self.sourceFigure == nil && self.getFigureContaining(point: point) != nil) {
             if (!floatingFigures.contains(self.currentFigureType)) {

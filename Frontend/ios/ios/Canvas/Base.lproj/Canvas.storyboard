@@ -58,13 +58,7 @@
                                             <action selector="cutButtonPressed:" destination="Vts-He-P18" id="DGb-Kz-z4c"/>
                                         </connections>
                                     </barButtonItem>
-                                    <barButtonItem title="Copy" id="nIT-3F-zGF" userLabel="Copy">
-                                        <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <connections>
-                                            <action selector="copyButtonPressed:" destination="Vts-He-P18" id="b6h-7d-Aci"/>
-                                        </connections>
-                                    </barButtonItem>
-                                    <barButtonItem title="Paste" id="BjU-u4-eJ6" userLabel="Paste">
+                                    <barButtonItem title="Duplicate" id="BjU-u4-eJ6" userLabel="Paste">
                                         <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
                                             <action selector="pasteButtonPressed:" destination="Vts-He-P18" id="ZyN-In-isq"/>

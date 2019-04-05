@@ -149,6 +149,7 @@ class Editor {
     }
     
     func paste() {
+        self.copy()
         for figure in self.clipboard {
             var viewModel = figure.exportViewModel()!
             viewModel.Guid = UUID().uuidString
@@ -213,6 +214,24 @@ class Editor {
         self.selectedFigures.removeAll()
         CollaborationHub.shared?.CutObjects(drawViewModels: viewModelsToDelete)
         CanvasService.saveOnNewFigure(figures: self.figures, editor: self)
+    }
+    
+    public func deleteSelectedFigures(username: String) {
+        let figuresToDelete = self.selectedFiguresDictionnary[username]
+        self.selectedFiguresDictionnary[username] = []
+        /*
+        var figureToDelete: [Figure] = []
+        for figure in self.figures {
+            if((figuresToDelete?.contains(where: {$0.Guid == figure.uuid.uuidString}))!) {
+                figure.removeFromSuperview()
+                figureToDelete.append(figure)
+            }
+        }
+        for figure in figureToDelete {
+            self.figures.removeAll{$0 == figure}
+        }
+         */
+        self.deselect(username: username)
     }
     
     public func undo(view: UIView) -> Void {
@@ -432,6 +451,10 @@ extension Editor: CollaborationHubDelegate {
             }
                 self.insertNewDrawViewModel(drawViewModel: drawViewModel)
         }
+    }
+    
+    func delete(username: String) {
+        self.deleteSelectedFigures(username: username)
     }
 
     public func insertNewDrawViewModel(drawViewModel: DrawViewModel) {

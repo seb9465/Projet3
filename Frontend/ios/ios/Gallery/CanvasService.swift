@@ -78,12 +78,12 @@ extension CanvasService {
     }
     
     public static func SaveOnline(canvas: Canvas) -> Promise<Bool> {
-        let credentials = ["CanvasId": canvas.canvasId, "canvasAutor":canvas.canvasAutor, "CanvasProtection":canvas.canvasProtection, "canvasVisibility":canvas.canvasVisibility, "DrawViewModels":canvas.drawViewModels,"Image":canvas.image, "Name":canvas.name]
+        let canvas = ["CanvasId": canvas.canvasId, "canvasAutor":canvas.canvasAutor, "CanvasProtection":canvas.canvasProtection, "canvasVisibility":canvas.canvasVisibility, "DrawViewModels":canvas.drawViewModels,"Image":canvas.image, "Name":canvas.name, "canvasWidth": String(canvas.canvasWidth), "canvasHeight": String(canvas.canvasHeight)]
             let url = Constants.SAVE_URL as URLConvertible
         let headers = ["Authorization": "Bearer " + UserDefaults.standard.string(forKey: "token")!];
 
             return Promise { (seal) in
-                Manager.request(url, method: .post, parameters: credentials, encoding: JSONEncoding.default, headers: headers).validate()
+                Manager.request(url, method: .post, parameters: canvas, encoding: JSONEncoding.default, headers: headers).validate()
                     .responseString { (response) in
                      switch response.result {
                         case .success:
