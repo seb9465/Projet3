@@ -109,15 +109,17 @@ class AddScreenViewController: UIViewController, UITableViewDelegate, UITableVie
         ChatService.shared.connectToGroup();
         ChatService.shared.currentChannel = nil;
         
-        let storyboard = UIStoryboard(name: "Chat", bundle: nil);
-        let destination = storyboard.instantiateViewController(withIdentifier: "ChatRoomsView");
+//        let storyboard = UIStoryboard(name: "Chat", bundle: nil);
+//        let destination = storyboard.instantiateViewController(withIdentifier: "ChatRoomsView");
+//
+//        let transition = CATransition();
+//        transition.duration = 0.3;
+//        transition.type = CATransitionType.reveal;
+//        transition.subtype = CATransitionSubtype.fromBottom;
+//        self.view.window!.layer.add(transition, forKey: kCATransition);
+//
+//        navigationController?.pushViewController(destination, animated: false);
         
-        let transition = CATransition();
-        transition.duration = 0.3;
-        transition.type = CATransitionType.reveal;
-        transition.subtype = CATransitionSubtype.fromBottom;
-        self.view.window!.layer.add(transition, forKey: kCATransition);
-        
-        navigationController?.pushViewController(destination, animated: false);
+        self.navigationController?.popViewController(animated: true);
     }
 }

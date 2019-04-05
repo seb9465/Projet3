@@ -82,8 +82,8 @@ class ChatService {
     }
     
     public func invokeChannelsWhenConnected() -> Void {
-        print("[ CHAT ] Invoke Channels when Connected");
         self._hubConnection.on(method: "ClientIsConnected", callback: { args, typeConverter in
+            print("[ CHAT ] On ClientIsConnected");
             self.invokeFetchChannels();
         });
     }
@@ -187,7 +187,7 @@ class ChatService {
         });
         print(self._connected);
         self.invokeChannelsWhenConnected();
-        self.invokeFetchChannels();
+//        self.invokeFetchChannels();
     }
     
     // MARK: Private functions
