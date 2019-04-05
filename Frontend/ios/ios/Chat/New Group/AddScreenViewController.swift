@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class AddScreenViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class AddScreenViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
     
     // MARK: Class Attributes
     
@@ -56,15 +56,21 @@ class AddScreenViewController: UIViewController, UITableViewDelegate, UITableVie
         ChatService.shared.invokeFetchChannels();
     }
     
-    @objc private func refreshRooms(_ sender: Any) {
-        ChatService.shared.invokeFetchChannels();
-        self.refreshControl.endRefreshing();
-        
-    }
-    
     private func initRefreshControl() -> Void {
         refreshControl.addTarget(self, action: #selector(refreshRooms(_:)), for: .valueChanged)
         self.tableView.addSubview(self.refreshControl);
+    }
+    
+    // MARK: Text field function
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        if ((textField.text?.isEmpty)!) {
+            self.saveButton.isEnabled = false;
+        } else {
+            self.saveButton.isEnabled = true;
+        }
+        
+        return true;
     }
     
     // MARK: Actions
@@ -80,6 +86,14 @@ class AddScreenViewController: UIViewController, UITableViewDelegate, UITableVie
         }
         
         self.navigationController?.popViewController(animated: true);
+    }
+    
+    // MARK: Object functions
+    
+    @objc private func refreshRooms(_ sender: Any) {
+        ChatService.shared.invokeFetchChannels();
+        self.refreshControl.endRefreshing();
+        
     }
     
     // MARK: Table View
