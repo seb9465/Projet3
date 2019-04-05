@@ -235,7 +235,7 @@ class ConnectionFigure : Figure {
         drawViewModel.Owner = UserDefaults.standard.string(forKey: "username")
         drawViewModel.ItemType = self.itemType
         drawViewModel.StylusPoints = [point1, point2]
-        drawViewModel.FillColor = nil
+        drawViewModel.FillColor = PolyPaintColor(color: UIColor.clear)
         drawViewModel.BorderColor = PolyPaintColor(color: self.lineColor)
         drawViewModel.BorderThickness = Double(self.lineWidth)
         drawViewModel.BorderStyle = (self.isBorderDashed) ? "dash" : "solid"
