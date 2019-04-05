@@ -68,7 +68,7 @@ namespace PolyPaint.API.Hubs
             UserHandler.AddOrUpdateConnectionMap(connectionId, channelId);
         }
 
-        public async Task DisconnectFromChannel(string message)
+        public virtual async Task DisconnectFromChannel(string message)
         {
             var connectionMessage = JsonConvert.DeserializeObject<ConnectionMessage>(message);
             var user = await GetUserFromToken(Context.User);
@@ -108,9 +108,10 @@ namespace PolyPaint.API.Hubs
             var user = await GetUserFromToken(Context.User);
             if (user != null)
             {
-                foreach (var canvasId in _userService.GetAllCanvas().Select(x => x.CanvasId))
+                foreach (var group in UserHandler.UserGroupMap.Where(pair => pair.Value.Contains(user.Id)))
                 {
-                    await DisconnectFromChannel(new ConnectionMessage(user.UserName, channelId: canvasId).ToString());
+                    group.Value.Remove(user.Id);
+                    await RemoveFromGroup(Context.ConnectionId, group.Key);
                 }
                 await base.OnDisconnectedAsync(e);
             }
