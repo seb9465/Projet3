@@ -31,23 +31,26 @@ class UmlArtefactFigure: UmlFigure {
     }
     
     override func draw(_ rect: CGRect) {
-        // original width = 97.5
+        let nameLabelHeight: CGFloat = 30
+        let inset: CGFloat = (self.lineWidth > 5) ? self.lineWidth : 5
+        let width = self.frame.width - inset
+        let height = self.frame.height - inset - nameLabelHeight
         
         //// Bezier 2 Drawing
         let bezier2Path = UIBezierPath()
-        bezier2Path.move(to: CGPoint(x: 0, y: self.frame.height))
-        bezier2Path.addLine(to: CGPoint(x: 69.5, y: self.frame.height))
-        bezier2Path.addLine(to: CGPoint(x: 69.5, y: 25))
-        bezier2Path.addLine(to: CGPoint(x: 47.83, y: 25))
-        bezier2Path.addLine(to: CGPoint(x: 47.5, y: 0))
-        bezier2Path.addLine(to: CGPoint(x: 0, y: 0))
-        bezier2Path.addLine(to: CGPoint(x: 0, y: self.frame.height))
+        bezier2Path.move(to: CGPoint(x: inset, y: height))
+        bezier2Path.addLine(to: CGPoint(x: width, y: height))
+        bezier2Path.addLine(to: CGPoint(x: width, y: 25))
+        bezier2Path.addLine(to: CGPoint(x: width - 20, y: 25))
+        bezier2Path.addLine(to: CGPoint(x: width - 20, y: inset))
+        bezier2Path.addLine(to: CGPoint(x: inset, y: inset))
+        bezier2Path.addLine(to: CGPoint(x: inset, y: height))
         bezier2Path.close()
         
         //// Bezier 3 Drawing
         let bezier3Path = UIBezierPath()
-        bezier3Path.move(to: CGPoint(x: 47.5, y: 0))
-        bezier3Path.addLine(to: CGPoint(x: 69.5, y: 25))
+        bezier3Path.move(to: CGPoint(x: width - 20, y: inset))
+        bezier3Path.addLine(to: CGPoint(x: width, y: 25))
 
         self.figureColor.setFill()
         self.lineColor.setStroke()
@@ -64,10 +67,10 @@ class UmlArtefactFigure: UmlFigure {
         bezier3Path.fill()
 
         
-        let textRect = CGRect(x: 0, y: 0, width: BASE_WIDTH, height: 50).insetBy(dx: 5, dy: 5);
+        let textRect = CGRect(x: 0, y: self.frame.height - nameLabelHeight - 5, width: self.frame.width, height: nameLabelHeight)
         let nameLabel = UILabel(frame: textRect)
         nameLabel.text = self.name
-        nameLabel.contentMode = .bottom
+        nameLabel.contentMode = .top
         nameLabel.textAlignment = .center
         nameLabel.drawText(in: textRect)
     }

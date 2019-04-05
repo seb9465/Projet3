@@ -9,8 +9,8 @@
 import UIKit
 
 class UmlActorFigure: UmlFigure {
-    let BASE_WIDTH: CGFloat = 75
-    let BASE_HEIGHT: CGFloat = 100
+    let BASE_WIDTH: CGFloat = 50
+    let BASE_HEIGHT: CGFloat = 150
     
     init(firstPoint: CGPoint, lastPoint: CGPoint) {
         super.init(firstPoint: firstPoint, lastPoint: lastPoint, width: BASE_WIDTH, height: BASE_WIDTH)
@@ -32,63 +32,65 @@ class UmlActorFigure: UmlFigure {
     }
     
     override func draw(_ rect: CGRect) {
-        //// Group
+        let nameLabelHeight: CGFloat = 30
+        let inset: CGFloat = (self.lineWidth > 5) ? self.lineWidth : 5
+        let width = self.frame.width - 2 * inset
+        let height = self.frame.height - inset - nameLabelHeight
+
         //// Oval Drawing
-        let ovalPath = UIBezierPath(ovalIn: CGRect(x: 25, y: 11.5, width: 27, height: 26))
-        
-        
-        //// Bezier Drawing
+        let ovalPath = UIBezierPath(ovalIn: CGRect(x: inset, y: inset, width: width, height: 2*height/5 - inset))
+
+        //// Body
         let bezierPath = UIBezierPath()
-        bezierPath.move(to: CGPoint(x: 38.26, y: 39.17))
-        bezierPath.addLine(to: CGPoint(x: 38.26, y: 73.75))
+        bezierPath.move(to: CGPoint(x: inset + width / 2, y: 2*height/5))
+        bezierPath.addLine(to: CGPoint(x: inset + width / 2, y: 4*height/5))
 
-        //// Bezier 2 Drawing
+        //// Bras
         let bezier2Path = UIBezierPath()
-        bezier2Path.move(to: CGPoint(x: 38.26, y: 39.17))
-        bezier2Path.addLine(to: CGPoint(x: 63.5, y: 39.17))
+        bezier2Path.move(to: CGPoint(x: inset, y: 2*height/5))
+        bezier2Path.addLine(to: CGPoint(x: inset + width, y: 2*height/5))
 
-        //// Bezier 3 Drawing
-        let bezier3Path = UIBezierPath()
-        bezier3Path.move(to: CGPoint(x: 10.5, y: 39.17))
-        bezier3Path.addLine(to: CGPoint(x: 38.26, y: 39.17))
 
         //// Bezier 4 Drawing
         let bezier4Path = UIBezierPath()
-        bezier4Path.move(to: CGPoint(x: 38.26, y: 73.75))
-        bezier4Path.addLine(to: CGPoint(x: 18.07, y: 92.19))
+        bezier4Path.move(to: CGPoint(x: inset + width/2, y: 4*height/5))
+        bezier4Path.addLine(to: CGPoint(x: inset, y: height))
         
         //// Bezier 5 Drawing
         let bezier5Path = UIBezierPath()
-        bezier5Path.move(to: CGPoint(x: 38.26, y: 73.75))
-        bezier5Path.addLine(to: CGPoint(x: 58.45, y: 94.5))
+        bezier5Path.move(to: CGPoint(x: inset + width/2, y: 4*height/5))
+        bezier5Path.addLine(to: CGPoint(x: inset + width, y: height))
 
         self.lineColor.setStroke()
         self.figureColor.setFill()
         ovalPath.lineWidth = self.lineWidth
         bezierPath.lineWidth = self.lineWidth
         bezier2Path.lineWidth = self.lineWidth
-        bezier3Path.lineWidth = self.lineWidth
         bezier4Path.lineWidth = self.lineWidth
         bezier5Path.lineWidth = self.lineWidth
+
         if(self.isBorderDashed) {
             bezierPath.setLineDash([4,4], count: 1, phase: 0)
             bezier2Path.setLineDash([4,4], count: 1, phase: 0)
-            bezier3Path.setLineDash([4,4], count: 1, phase: 0)
             bezier4Path.setLineDash([4,4], count: 1, phase: 0)
             bezier5Path.setLineDash([4,4], count: 1, phase: 0)
         }
         ovalPath.fill()
         bezierPath.fill()
         bezier2Path.fill()
-        bezier3Path.fill()
         bezier4Path.fill()
         bezier5Path.fill()
         ovalPath.stroke()
         bezierPath.stroke()
         bezier2Path.stroke()
-        bezier3Path.stroke()
         bezier4Path.stroke()
         bezier5Path.stroke()
+        let textRect = CGRect(x: 0, y: self.frame.height - nameLabelHeight - 5, width: self.frame.width, height: nameLabelHeight)
+        let nameLabel = UILabel(frame: textRect)
+        nameLabel.text = self.name
+        nameLabel.contentMode = .top
+        nameLabel.textAlignment = .center
+        nameLabel.drawText(in: textRect)
     }
     
     override func exportViewModel() -> DrawViewModel {
