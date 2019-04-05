@@ -116,8 +116,8 @@ extension Editor : TouchInputDelegate {
             var yOffset = CGFloat(point.y - self.previousTouchPoint.y)
             
             for figure in self.selectedFigures {
-                let tmpOutlineIndex: Int = self.selectionOutline.firstIndex(where: { $0.associatedFigureID == figure.uuid })!;
-                let boundTouched: BoundTouched? = self.isOutOfBounds(view: self.selectionOutline[tmpOutlineIndex])
+                let tmpOutlineIndex: Int = self.selectionOutlines.firstIndex(where: { $0.associatedFigureID == figure.uuid })!;
+                let boundTouched: BoundTouched? = self.isOutOfBounds(view: self.selectionOutlines[tmpOutlineIndex])
                 
                 switch(boundTouched) {
                 case .Up?:
@@ -143,7 +143,7 @@ extension Editor : TouchInputDelegate {
                 }
                 let offset = CGPoint(x: xOffset, y: yOffset)
                 figure.translate(by: offset)
-                self.selectionOutline[tmpOutlineIndex].translate(by: offset)
+                self.selectionOutlines[tmpOutlineIndex].translate(by: offset)
             }
             
             self.previousTouchPoint = point

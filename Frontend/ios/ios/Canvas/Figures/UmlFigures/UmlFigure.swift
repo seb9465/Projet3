@@ -17,7 +17,6 @@ protocol TouchInputDelegate {
 
 class UmlFigure : Figure {
 
-//    var figureColor: UIColor!
     var currentAngle: Double = 0
     var anchorPoints: AnchorPoints?
     var incomingConnections : [ConnectionFigure: String] = [:]
@@ -83,6 +82,14 @@ class UmlFigure : Figure {
         self.layer.addSublayer((self.anchorPoints?.anchorPointsLeft)!)
         self.layer.addSublayer((self.anchorPoints?.anchorPointsRight)!)
     }
+    
+    private func updateAnchorPoints() {
+        self.anchorPoints?.anchorPointsBottom.removeFromSuperlayer()
+        self.anchorPoints?.anchorPointsTop.removeFromSuperlayer()
+        self.anchorPoints?.anchorPointsLeft.removeFromSuperlayer()
+        self.anchorPoints?.anchorPointsRight.removeFromSuperlayer()
+        self.initializeAnchorPoints()
+    }
 
     override func translate(by: CGPoint) {
         let translatedFrame = self.frame.offsetBy(dx: by.x, dy: by.y)
@@ -90,6 +97,17 @@ class UmlFigure : Figure {
         self.firstPoint = self.frame.origin
         self.lastPoint = CGPoint(x: self.frame.maxX, y: self.frame.maxY)
         self.updateConnections()
+    }
+    
+    func resize(by: CGPoint) {
+        let newSize : CGSize = CGSize(width: self.frame.width + by.x, height: self.frame.height + by.y)
+        let newOrigin: CGPoint = CGPoint(x: self.frame.origin.x - by.x/2, y: self.frame.origin.y - by.y/2)
+        let resizedFrame = CGRect(origin: newOrigin, size: newSize)
+        self.frame = resizedFrame
+        self.lastPoint = CGPoint(x: self.frame.maxX, y: self.frame.maxY)
+        self.updateAnchorPoints()
+        self.updateConnections()
+        setNeedsDisplay()
     }
     
     override public func rotate(orientation: RotateOrientation) -> Void {

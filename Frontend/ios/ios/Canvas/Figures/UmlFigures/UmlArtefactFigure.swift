@@ -31,21 +31,23 @@ class UmlArtefactFigure: UmlFigure {
     }
     
     override func draw(_ rect: CGRect) {
+        // original width = 97.5
+        
         //// Bezier 2 Drawing
         let bezier2Path = UIBezierPath()
-        bezier2Path.move(to: CGPoint(x: 4.5, y: 97.5))
-        bezier2Path.addLine(to: CGPoint(x: 69.5, y: 97.5))
-        bezier2Path.addLine(to: CGPoint(x: 69.5, y: 23.9))
-        bezier2Path.addLine(to: CGPoint(x: 47.83, y: 23.9))
-        bezier2Path.addLine(to: CGPoint(x: 47.5, y: 5.5))
-        bezier2Path.addLine(to: CGPoint(x: 4.5, y: 5.5))
-        bezier2Path.addLine(to: CGPoint(x: 4.5, y: 97.5))
+        bezier2Path.move(to: CGPoint(x: 0, y: self.frame.height))
+        bezier2Path.addLine(to: CGPoint(x: 69.5, y: self.frame.height))
+        bezier2Path.addLine(to: CGPoint(x: 69.5, y: 25))
+        bezier2Path.addLine(to: CGPoint(x: 47.83, y: 25))
+        bezier2Path.addLine(to: CGPoint(x: 47.5, y: 0))
+        bezier2Path.addLine(to: CGPoint(x: 0, y: 0))
+        bezier2Path.addLine(to: CGPoint(x: 0, y: self.frame.height))
         bezier2Path.close()
         
         //// Bezier 3 Drawing
         let bezier3Path = UIBezierPath()
-        bezier3Path.move(to: CGPoint(x: 47.5, y: 5.5))
-        bezier3Path.addLine(to: CGPoint(x: 69.5, y: 23.5))
+        bezier3Path.move(to: CGPoint(x: 47.5, y: 0))
+        bezier3Path.addLine(to: CGPoint(x: 69.5, y: 25))
 
         self.figureColor.setFill()
         self.lineColor.setStroke()

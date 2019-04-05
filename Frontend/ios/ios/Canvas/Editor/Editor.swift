@@ -21,7 +21,10 @@ class Editor {
     
     var selectedFigures: [Figure] = [];
     var selectionLasso: SelectionLasso! = nil;
-    var selectionOutline: [SelectionOutline] = [];
+    
+    // Selections locales
+//    var localSelections: [Figure : SelectionOutline] = [:]
+    var selectionOutlines: [SelectionOutline] = [];
     
     // Connection Creation properties
     var connectionPreview: Figure!
@@ -33,12 +36,15 @@ class Editor {
     var initialTouchPoint: CGPoint!
     var previousTouchPoint: CGPoint!
     
+    // Pinch gesture properties
+    var initialPinchDistance: CGPoint = CGPoint.zero
+    
     var clipboard: [Figure] = []
     
     init() {
         self.editorView.delegate = self
         let rotation = UIRotationGestureRecognizer(target: self, action: #selector(self.rotatedView(_:)))
-        let pinch = UIPinchGestureRecognizer(target: self, action: #selector(self.rotatedView(_:)))
+        let pinch = UIPinchGestureRecognizer(target: self, action: #selector(self.resizeFigure(_:)))
         self.editorView.addGestureRecognizer(rotation)
         self.editorView.addGestureRecognizer(pinch)
    //     self.editorView.backgroundColor = UIColor.red
@@ -57,19 +63,10 @@ class Editor {
     
     // Select made locally
     func select(figure: Figure) {
-        self.selectedFigures.append(figure);
-        let frame = figure.getSelectionFrame()
-        self.selectionOutline.append(
-            SelectionOutline(
-                firstPoint: frame.origin,
-                lastPoint: CGPoint(x: frame.maxX,y: frame.maxY),
-                associatedFigureID: figure.uuid,
-                delegate: self
-            )
-        );
-        
-        self.selectionOutline.last!.addSelectedFigureLayers();
-        self.editorView.addSubview(self.selectionOutline.last!);
+        let selectionOutline: SelectionOutline = SelectionOutline(frame: figure.getSelectionFrame(), associatedFigureID: figure.uuid, delegate: self)
+        self.editorView.addSubview(selectionOutline)
+        self.selectedFigures.append(figure)
+        self.selectionOutlines.append(selectionOutline)
     }
     
     // Selection recieved by hub
@@ -92,7 +89,6 @@ class Editor {
                 delegate: self
             )
             outline.addUsernameSelecting(username: username)
-            outline.addSelectedFigureLayers()
             selectionOutlines.append(outline)
             self.editorView.addSubview(outline);
         }
@@ -106,12 +102,12 @@ class Editor {
     }
     
     func deselect() {
-        if (self.selectionOutline.count > 0) {
-            for outline in self.selectionOutline {
+        if (self.selectionOutlines.count > 0) {
+            for outline in self.selectionOutlines {
                 outline.removeFromSuperview();
             }
             
-            self.selectionOutline.removeAll();
+            self.selectionOutlines.removeAll();
         }
         CollaborationHub.shared!.selectObjects(drawViewModels: [])
         self.deselectLasso();
@@ -130,10 +126,10 @@ class Editor {
     }
     
     func deselectFigure(figure: Figure) {
-        if (self.selectionOutline.count > 0) {
-            let tmpOutlineIndex: Int = self.selectionOutline.firstIndex(where: { $0.associatedFigureID == figure.uuid })!;
-            self.selectionOutline[tmpOutlineIndex].removeFromSuperview();
-            self.selectionOutline.remove(at: tmpOutlineIndex);
+        if (self.selectionOutlines.count > 0) {
+            let tmpOutlineIndex: Int = self.selectionOutlines.firstIndex(where: { $0.associatedFigureID == figure.uuid })!;
+            self.selectionOutlines[tmpOutlineIndex].removeFromSuperview();
+            self.selectionOutlines.remove(at: tmpOutlineIndex);
         }
         
         self.deselectLasso();
@@ -262,7 +258,7 @@ class Editor {
         }
         self.selectedFigures.removeAll()
         self.editorView.setNeedsDisplay()
-        self.selectionOutline.removeAll()
+        self.selectionOutlines.removeAll()
         self.figures.removeAll()
         self.undoArray.removeAll();
         self.redoArray.removeAll();
@@ -405,30 +401,6 @@ extension Editor: SideToolbarDelegate {
             self.select(figure: figure);
         }
         CollaborationHub.shared!.postNewFigure(figures: self.selectedFigures)
-    }
-    
-    @objc private func rotatedView(_ sender: UIRotationGestureRecognizer) {
-        if(!self.selectedFigures.isEmpty && sender.state == .changed) {
-            let currentRotationAngle = Int(rad2deg(sender.rotation));
-            
-            if(currentRotationAngle % 45 == 0) {    // 45 degree pour faciliter la gesture
-                for figure in self.selectedFigures {
-                    let tempFigure: Figure = figure;
-                    if(self.oldRotationAngle < currentRotationAngle) {
-                        self.rotate(orientation: .right);
-                    } else {
-                        self.rotate(orientation: .left);
-                    }
-                    self.deselectFigure(figure: tempFigure);
-                    self.select(figure: figure);
-                }
-            }
-            oldRotationAngle = currentRotationAngle;
-        }
-    }
-    
-    func rad2deg(_ number: CGFloat) -> CGFloat {
-        return number * 180 / .pi
     }
 }
 
