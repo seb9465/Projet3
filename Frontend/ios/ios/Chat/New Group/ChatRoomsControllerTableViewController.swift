@@ -10,7 +10,7 @@ import UIKit
 
 class ChatRoomsControllerTableViewController: UITableViewController {
     
-    @IBOutlet var backButton: UIBarButtonItem!
+//    @IBOutlet var backButton: UIBarButtonItem!
     @IBOutlet var addButton: UIBarButtonItem!
     
     private let refreshTable = UIRefreshControl();
@@ -20,19 +20,19 @@ class ChatRoomsControllerTableViewController: UITableViewController {
         self.refreshTable.endRefreshing();
     }
     
-    @IBAction func backButton(_ sender: Any) {
-        ChatService.shared.currentChannel = nil;
-        let storyboard = UIStoryboard(name: "Main", bundle: nil);
-        let view = storyboard.instantiateViewController(withIdentifier: "MainController");
-        
-        let transition = CATransition();
-        transition.duration = 0.3;
-        transition.type = CATransitionType.reveal;
-        transition.subtype = CATransitionSubtype.fromBottom;
-        self.view.window!.layer.add(transition, forKey: kCATransition);
-        
-        self.present(view, animated: false, completion: nil);
-    }
+//    @IBAction func backButton(_ sender: Any) {
+//        ChatService.shared.currentChannel = nil;
+//        let storyboard = UIStoryboard(name: "Main", bundle: nil);
+//        let view = storyboard.instantiateViewController(withIdentifier: "MainController");
+//
+//        let transition = CATransition();
+//        transition.duration = 0.3;
+//        transition.type = CATransitionType.reveal;
+//        transition.subtype = CATransitionSubtype.fromBottom;
+//        self.view.window!.layer.add(transition, forKey: kCATransition);
+//
+//        self.present(view, animated: false, completion: nil);
+//    }
     
     @IBAction func addButtonTrigger(_ sender: Any) {
         guard let childVC = self.storyboard?.instantiateViewController(withIdentifier: "AddScreenViewController") as? AddScreenViewController else {
@@ -58,7 +58,7 @@ class ChatRoomsControllerTableViewController: UITableViewController {
         self.editButtonItem.tintColor = Constants.RED_COLOR;
         self.navigationItem.rightBarButtonItems?.append(self.editButtonItem);
         
-        self.backButton.tintColor = Constants.RED_COLOR;
+//        self.backButton.tintColor = Constants.RED_COLOR;
         self.addButton.tintColor = Constants.RED_COLOR;
         
         super.viewDidLoad();
