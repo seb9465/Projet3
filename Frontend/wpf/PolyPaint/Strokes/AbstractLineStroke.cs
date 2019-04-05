@@ -13,6 +13,10 @@ namespace PolyPaint.Strokes
     {
         public bool IsRelation { get; set; }
         public bool BothAttached { get; set; }
+        private bool FirstPointSnapped { get; set; }
+        private bool SecondPointSnapped { get; set; }
+        private Point NewFirstPoint { get; set; }
+        private Point NewSecondPoint { get; set; }
         protected FormattedText Source { get; set; }
         public string SourceString
         {
@@ -60,7 +64,7 @@ namespace PolyPaint.Strokes
             Point firstPoint = new Point(StylusPoints[0].X, StylusPoints[0].Y);
             Point secondPoint = new Point(StylusPoints[1].X, StylusPoints[1].Y);
 
-            List<Point> anchors = new List<Point>();
+            List<Anchor> anchors = new List<Anchor>();
             foreach (AbstractShapeStroke stroke in SurfaceDessin.Strokes.Where(x => x is AbstractShapeStroke))
             {
                 anchors.AddRange(stroke.AnchorPoints);
@@ -68,16 +72,38 @@ namespace PolyPaint.Strokes
 
             if (anchors.Count > 0)
             {
-                var firstCloseVector = (Vector)anchors.OrderBy(x => Point.Subtract(x, firstPoint).Length).First();
-                var firstDistance = Vector.Subtract(firstCloseVector, (Vector)firstPoint).Length;
-                var newFirstPoint = firstDistance < Config.MIN_DISTANCE_ANCHORS ? (Point)firstCloseVector : StylusPoints[0].ToPoint();
+                if (!FirstPointSnapped)
+                {
+                    var firstCloseVector = (Vector)anchors.OrderBy(x => Point.Subtract(x, firstPoint).Length).First();
+                    var firstDistance = Vector.Subtract(firstCloseVector, (Vector)firstPoint).Length;
+                    if (firstDistance < Config.MIN_DISTANCE_ANCHORS)
+                    {
+                        NewFirstPoint =  (Point)firstCloseVector;
+                        FirstPointSnapped = true;
+                    }
+                    else
+                    {
+                        NewFirstPoint = StylusPoints[0].ToPoint();
+                    }
+                }
 
-                var secondCloseVector = (Vector)anchors.OrderBy(x => Point.Subtract(x, secondPoint).Length).First();
-                var secondDistance = Vector.Subtract(secondCloseVector, (Vector)secondPoint).Length;
-                var newSecondPoint = secondDistance < Config.MIN_DISTANCE_ANCHORS ? (Point)secondCloseVector : StylusPoints[1].ToPoint();
+                if (!SecondPointSnapped)
+                {
+                    var secondCloseVector = (Vector)anchors.OrderBy(x => Point.Subtract(x, secondPoint).Length).First();
+                    var secondDistance = Vector.Subtract(secondCloseVector, (Vector)secondPoint).Length;
+                    if (secondDistance < Config.MIN_DISTANCE_ANCHORS)
+                    {
+                        NewSecondPoint = (Point)secondCloseVector;
+                        SecondPointSnapped = true;
+                    }
+                    else
+                    {
+                        NewSecondPoint = StylusPoints[1].ToPoint();
+                    }
+                }
 
-                BothAttached = firstDistance < Config.MIN_DISTANCE_ANCHORS && secondDistance < Config.MIN_DISTANCE_ANCHORS;
-                return new StylusPointCollection(new Point[] { newFirstPoint, newSecondPoint });
+                BothAttached = FirstPointSnapped && SecondPointSnapped;
+                return new StylusPointCollection(new Point[] { NewFirstPoint, NewSecondPoint });
             }
             else
             {
