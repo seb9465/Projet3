@@ -34,25 +34,16 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="30o-RZ-lDu">
-                        <barButtonItem key="leftBarButtonItem" title="Back" id="2yi-Jh-1El">
-                            <connections>
-                                <action selector="backButton:" destination="AbL-dl-DlD" id="4b1-ms-ANq"/>
-                            </connections>
-                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="4pS-QW-lYR">
                             <connections>
                                 <action selector="addButtonTrigger:" destination="AbL-dl-DlD" id="Xub-hz-nSw"/>
                                 <segue destination="hHY-Lh-5Ti" kind="show" id="0Mv-Am-aOS"/>
                             </connections>
                         </barButtonItem>
-                        <connections>
-                            <outlet property="backBarButtonItem" destination="2yi-Jh-1El" id="Aad-bf-3Cl"/>
-                        </connections>
                     </navigationItem>
                     <size key="freeformSize" width="400" height="620"/>
                     <connections>
                         <outlet property="addButton" destination="4pS-QW-lYR" id="x1s-qx-NuZ"/>
-                        <outlet property="backButton" destination="2yi-Jh-1El" id="vwx-CJ-6AK"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZqB-f9-rXf" userLabel="First Responder" sceneMemberID="firstResponder"/>
