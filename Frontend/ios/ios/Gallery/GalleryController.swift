@@ -9,6 +9,7 @@
 import UIKit
 import Reachability
 import JWTDecode
+
 class GalleryController: UIViewController {
     
     @IBOutlet weak var collectionView: UICollectionView!
@@ -18,12 +19,14 @@ class GalleryController: UIViewController {
     private let sectionInsets = UIEdgeInsets(top: 10.0, left: 10.0, bottom: 10.0, right: 10.0)
     private var canvasController: CanvasController = CanvasController()
     var reach: Reachability?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         let nib = UINib.init(nibName: "GalleryCell", bundle: nil)
         self.collectionView.register(nib, forCellWithReuseIdentifier: "GalleryCell")
         self.canvasController = UIStoryboard(name: "Canvas", bundle: nil).instantiateViewController(withIdentifier: "CanvasController") as! CanvasController
     }
+    
     override func viewWillAppear(_ animated: Bool){
         self.loadCanvas()
     }
