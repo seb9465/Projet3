@@ -59,12 +59,17 @@ class CanvasController: UIViewController {
             self.protectionLabel.isHidden = false;
             self.switchButton.isHidden = false
             self.switchButton.isOn = currentCanvas.canvasProtection != ""
+            if(self.switchButton.isOn) {
+                self.protectionLabel.text = "Password Protection is ON"
+            } else {
+                self.protectionLabel.text = "Password Protection is OFF"
+            }
         } else {
             self.protectionLabel.isHidden = true;
             self.switchButton.isHidden = true
             self.switchButton.isOn = false
+            self.protectionLabel.text = "Password Protection is OFF"
         }
-        
     }
     func setupNetwork() {
         NotificationCenter.default.addObserver(
@@ -206,12 +211,13 @@ class CanvasController: UIViewController {
             }))
             passwordAlert.addAction(UIAlertAction(title: "Confirm", style: .default, handler: { alert in
                 let enteredPassword = passwordAlert.textFields![0].text!
-                // kick le monde
+                self.protectionLabel.text = "Password Protection is ON"
                 currentCanvas.canvasProtection = enteredPassword
                 CanvasService.SaveOnline(canvas: currentCanvas)
             }))
             self.present(passwordAlert, animated: true, completion: nil)
         } else {
+            self.protectionLabel.text = "Password Protection is OFF"
             currentCanvas.canvasProtection = ""
             CanvasService.SaveOnline(canvas: currentCanvas)
         }
