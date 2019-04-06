@@ -105,6 +105,7 @@ class UmlFigure : Figure {
         let newOrigin: CGPoint = CGPoint(x: self.frame.origin.x - by.x/2, y: self.frame.origin.y - by.y/2)
         let resizedFrame = CGRect(origin: newOrigin, size: newSize)
         self.frame = resizedFrame
+        self.firstPoint = newOrigin
         self.lastPoint = CGPoint(x: self.frame.maxX, y: self.frame.maxY)
         self.updateAnchorPoints()
         self.updateConnections()

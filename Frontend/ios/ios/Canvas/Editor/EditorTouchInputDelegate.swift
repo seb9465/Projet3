@@ -204,11 +204,8 @@ extension Editor : TouchInputDelegate {
                     self.select(figure: figure);
                 }
             }
-            var drawViewModels: [DrawViewModel] = []
-            for figure in selectedFigures {
-                drawViewModels.append(figure.exportViewModel()!)
-            }
-            CollaborationHub.shared!.selectObjects(drawViewModels: drawViewModels)
+
+            CollaborationHub.shared!.selectObjects(drawViewModels: self.getSelectedFiguresDrawviewModels())
             self.deselectLasso();
             self.touchEventState = .AREA_SELECT
             return
@@ -220,14 +217,17 @@ extension Editor : TouchInputDelegate {
                 return
             }
             CanvasService.saveOnNewFigure(figures: self.figures, editor: self)
+
+            // UPDATE Affected ConnectionFigures
             var figuresToUpdate = self.selectedFigures
-            figuresToUpdate.append(contentsOf: (self.selectedFigures[0] as! UmlFigure).getAnchoredConnections())
-            CollaborationHub.shared!.postNewFigure(figures: figuresToUpdate)
-            var drawViewModels: [DrawViewModel] = []
             for figure in selectedFigures {
-                drawViewModels.append(figure.exportViewModel()!)
+                if (figure is UmlFigure) {
+                    figuresToUpdate.append(contentsOf: (figure as! UmlFigure).getAnchoredConnections())
+                }
             }
-            CollaborationHub.shared!.selectObjects(drawViewModels: drawViewModels)
+
+            CollaborationHub.shared!.postNewFigure(figures: self.selectedFigures)
+            CollaborationHub.shared!.selectObjects(drawViewModels: self.getSelectedFiguresDrawviewModels())
             self.touchEventState = .SELECT
             return
         }
