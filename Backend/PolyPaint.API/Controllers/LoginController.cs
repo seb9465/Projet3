@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -26,17 +27,20 @@ namespace PolyPaint.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Login([FromBody]LoginViewModel loginViewModel)
         {
-            string token = await _loginService.Login(loginViewModel);
+            String token;
+            try {
+            token = await _loginService.Login(loginViewModel);
+            } catch(Exception e) {
+                return BadRequest(e.Message);
+            }
             if (ModelState.IsValid)
             {
                 if (token != null)
                 {
                     return Ok(token);
-                }
-                else
-                {
-                    return BadRequest("Credentials are invalid");
-                }
+                } else {
+                    return BadRequest();
+}
             }
             else
             {
@@ -64,11 +68,26 @@ namespace PolyPaint.API.Controllers
 
             if (token != null)
             {
-                return Ok("Login Successful " + token);
+                return Ok(token);
             }
             else
             {
                 return Ok("Une erreur est survenue lors du login");
+            }
+        }
+        [HttpPost]
+        [Route("ios-callback")]
+        public async Task<IActionResult> IOSCallback([FromBody]FacebookLoginInfo facebook)
+        {
+            string token = await _loginService.HandleIOSLogin(facebook);
+
+            if (token != null)
+            {
+                return Ok(token);
+            }
+            else
+            {
+                return Ok("Failed to receive token");
             }
         }
     }

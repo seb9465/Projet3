@@ -46,6 +46,26 @@ class AuthentificationAPI {
         }
     }
     
+    static func fbLogin(accessToken: String, username: String, email: String) -> Promise<String> {
+        let credentials = ["accessToken": accessToken, "username": username, "email": email]
+        let url = Constants.FB_LOGIN_URL as URLConvertible
+        
+        return Promise { (seal) in
+            Manager.request(url, method: .post, parameters: credentials, encoding: JSONEncoding.default).validate()
+                .responseString { (response) in
+                    switch response.result {
+                    case .success:
+                        print("FB DONE")
+                        let userToken = response.value!
+                        seal.fulfill(userToken);
+                        
+                    case .failure(let Error):
+                        seal.reject(Error);
+                    }
+            };
+        }
+    }
+    
     static func logout() -> Void {
         let headers = ["Authorization": "Bearer " + UserDefaults.standard.string(forKey: "token")!];
         

@@ -61,7 +61,7 @@
                                     <barButtonItem title="Duplicate" id="BjU-u4-eJ6" userLabel="Paste">
                                         <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
-                                            <action selector="pasteButtonPressed:" destination="Vts-He-P18" id="ZyN-In-isq"/>
+                                            <action selector="duplicateButtonPressed:" destination="Vts-He-P18" id="ZyN-In-isq"/>
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem title="Delete" id="5ld-32-8cy">
@@ -88,6 +88,15 @@
                                             <action selector="lassoButton:" destination="Vts-He-P18" id="rPD-vK-NGN"/>
                                         </connections>
                                     </barButtonItem>
+                                    <barButtonItem style="plain" id="MeA-86-Ay2">
+                                        <switch key="customView" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" id="RsE-TN-IVY">
+                                            <rect key="frame" x="712" y="9.5" width="51" height="31"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <connections>
+                                                <action selector="switchButtonChangedWithSender:" destination="Vts-He-P18" eventType="valueChanged" id="5As-3f-grU"/>
+                                            </connections>
+                                        </switch>
+                                    </barButtonItem>
                                 </items>
                             </toolbar>
                             <containerView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oVb-fS-ct1">
@@ -104,6 +113,13 @@
                                 <color key="textColor" red="0.0" green="1" blue="0.32939402817876973" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Password protection is ON" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CBO-ut-RYj">
+                                <rect key="frame" x="741" y="35" width="263" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="0.92143100499999997" green="0.92145264149999995" blue="0.92144101860000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <gestureRecognizers/>
@@ -117,9 +133,11 @@
                         <outlet property="insertButton" destination="SLY-eP-ACv" id="oPa-Hm-WsF"/>
                         <outlet property="lassoButton" destination="Ttp-DJ-46z" id="SF8-4U-zfW"/>
                         <outlet property="navigationBar" destination="P0r-rK-G4e" id="Xne-YZ-5HS"/>
-                        <outlet property="pasteButton" destination="BjU-u4-eJ6" id="OB9-tG-azy"/>
+                        <outlet property="duplicateButton" destination="BjU-u4-eJ6" id="OB9-tG-azy"/>
+                        <outlet property="protectionLabel" destination="CBO-ut-RYj" id="Gnd-Wf-th0"/>
                         <outlet property="quitButton" destination="4Er-Gx-QB8" id="gU4-l3-2x6"/>
                         <outlet property="selectButton" destination="Lts-nR-qFd" id="AOd-xa-kni"/>
+                        <outlet property="switchButton" destination="RsE-TN-IVY" id="mRe-f5-d36"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YaL-1F-IzF" userLabel="First Responder" sceneMemberID="firstResponder"/>

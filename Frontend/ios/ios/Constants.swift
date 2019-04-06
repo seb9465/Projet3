@@ -20,6 +20,8 @@ struct Constants {
 
     // Endpoints
     static let LOGIN_URL: String = Constants.SERVER_BASE_URL + "/api/login";
+    static let FB_LOGIN_URL: String = Constants.SERVER_BASE_URL + "/api/login/ios-callback";
+
     static let REGISTER_URL: String = Constants.SERVER_BASE_URL + "/api/register";
     static let LOGOUT_URL: String = Constants.SERVER_BASE_URL + "/api/user/logout";
     static let SAVE_URL: String = Constants.SERVER_BASE_URL + "/api/user/canvas";

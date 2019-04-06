@@ -17,7 +17,7 @@ class EditorView: UIView {
         viewFrame = viewFrame.offsetBy(dx:0, dy: 70)
         super.init(frame: viewFrame)
         self.clipsToBounds = true
-        self.backgroundColor = UIColor(red: 255, green: 255, blue: 255, alpha: 1.0)
+       self.backgroundColor = UIColor(red: 255, green: 255, blue: 255, alpha: 1.0)
     }
     
     required init?(coder aDecoder: NSCoder) {

@@ -13,12 +13,11 @@ class Editor {
     var sideToolbatControllers: [SideToolbarController] = []
     var selectedFiguresDictionnary: [String : [DrawViewModel]] = [:]
     var selectedOutlinesDictionnary: [String : [SelectionOutline]] = [:]
-    
     var undoArray: [Figure] = []
     var redoArray: [Figure] = [];
     var figures: [Figure] = [];
     var oldRotationAngle: Int = 0
-    
+    var delegate: EditorDelegate?
     var selectedFigures: [Figure] = [];
     var selectionLasso: SelectionLasso! = nil;
     
@@ -52,7 +51,8 @@ class Editor {
     }
     
     func resize(width: CGFloat, heigth: CGFloat) {
-        print("resizing")
+        currentCanvas.canvasHeight = Float(heigth)
+        currentCanvas.canvasWidth = Float(width)
         let origin: CGPoint = CGPoint(x: 250, y: 70)
         let size = CGSize(width: width, height: heigth)
         let newFrame: CGRect = CGRect(origin: origin, size: size)
@@ -60,7 +60,6 @@ class Editor {
         self.editorView.updateCanvasAnchor()
         self.editorView.setNeedsDisplay()
     }
-    
     // Select made locally
     func select(figure: Figure) {
         let selectionOutline: SelectionOutline = SelectionOutline(frame: figure.getSelectionFrame(), associatedFigureID: figure.uuid, delegate: self)
@@ -141,30 +140,32 @@ class Editor {
         }
     }
     
-    func copy() {
-        self.clipboard = self.selectedFigures
+    public func copy() -> Void {
+        self.clipboard = self.selectedFigures;
     }
     
-    func paste() {
-        self.copy()
-        for figure in self.clipboard {
-            var viewModel = figure.exportViewModel()!
-            viewModel.Guid = UUID().uuidString
-            viewModel.StylusPoints![0].X = viewModel.StylusPoints![0].X + 10
-            viewModel.StylusPoints![0].Y = viewModel.StylusPoints![0].Y + 10
-            viewModel.StylusPoints![1].X = viewModel.StylusPoints![1].X + 10
-            viewModel.StylusPoints![1].Y = viewModel.StylusPoints![1].Y + 10
-            self.select(figure: figure)
-            self.insertFigure(drawViewModel: viewModel)
+    public func duplicate() -> Void {
+        if (self.selectedFigures.count > 0) {
+            self.copy();
+            self.deselect();
         }
-        self.deselect()
-        CollaborationHub.shared!.postNewFigure(figures: self.clipboard)
-        CanvasService.saveOnNewFigure(figures: self.figures, editor: self)
+         for figure in self.clipboard {
+            var viewModel = figure.exportViewModel()!;
+            viewModel.Guid = UUID().uuidString;
+            viewModel.StylusPoints![0].X = viewModel.StylusPoints![0].X + 20;
+            viewModel.StylusPoints![0].Y = viewModel.StylusPoints![0].Y + 20;
+            viewModel.StylusPoints![1].X = viewModel.StylusPoints![1].X + 20;
+            viewModel.StylusPoints![1].Y = viewModel.StylusPoints![1].Y + 20;
+            self.select(figure: figure);
+            self.insertFigure(drawViewModel: viewModel);
+        }
+        CollaborationHub.shared!.postNewFigure(figures: self.clipboard);
+        CanvasService.saveOnNewFigure(figures: self.figures, editor: self);
     }
     
-    func cut() {
-        self.copy()
-        self.deleteSelectedFigures()
+    public func cut() -> Void {
+        self.copy();
+        self.deleteSelectedFigures();
     }
     
     public func insertFigure(drawViewModel: DrawViewModel) -> Figure {
@@ -405,6 +406,10 @@ extension Editor: SideToolbarDelegate {
 }
 
 extension Editor: CollaborationHubDelegate {
+    func resizeCanvas(size: PolyPaintStylusPoint) {
+        self.resize(width: CGFloat(size.X), heigth: CGFloat(size.Y))
+    }
+    
     func updateSelection(itemMessage: ItemMessage) {
         if (itemMessage.Items.isEmpty) {
             self.deselect(username: itemMessage.Username)
@@ -429,6 +434,12 @@ extension Editor: CollaborationHubDelegate {
     
     func delete(username: String) {
         self.deleteSelectedFigures(username: username)
+    }
+    
+    func getKicked() {
+        self.deselect()
+        CollaborationHub.shared!.disconnectFromHub()
+        self.delegate?.getKicked()
     }
 
     public func insertNewDrawViewModel(drawViewModel: DrawViewModel) {

@@ -110,6 +110,9 @@
 		C495FEC22238248E006E49F9 /* Ressources in Resources */ = {isa = PBXBuildFile; fileRef = C495FEC12238248E006E49F9 /* Ressources */; };
 		C4AA4AD722552166005607E8 /* Canvas.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C4AA4AD922552166005607E8 /* Canvas.storyboard */; };
 		C4AA4ADB22553F4C005607E8 /* Base64Const.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4AA4ADA22553F4C005607E8 /* Base64Const.swift */; };
+		C4C17D3C2258FC4000A27872 /* ProtectionMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C17D3B2258FC4000A27872 /* ProtectionMessage.swift */; };
+		C4C17D3E2258FECC00A27872 /* EditorDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C17D3D2258FECC00A27872 /* EditorDelegate.swift */; };
+		C4C17D402259068900A27872 /* SizeMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C17D3F2259068900A27872 /* SizeMessage.swift */; };
 		C4D12706224418F3004B3641 /* UmlCommentFigure.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D12705224418F3004B3641 /* UmlCommentFigure.swift */; };
 		C4D1270E224424E1004B3641 /* UmlArtefactFigure.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D1270D224424E1004B3641 /* UmlArtefactFigure.swift */; };
 		C4D12710224424FC004B3641 /* UmlPhaseFigure.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D1270F224424FC004B3641 /* UmlPhaseFigure.swift */; };
@@ -240,6 +243,9 @@
 		C495FEC12238248E006E49F9 /* Ressources */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Ressources; sourceTree = "<group>"; };
 		C4AA4AD822552166005607E8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Canvas.storyboard; sourceTree = "<group>"; };
 		C4AA4ADA22553F4C005607E8 /* Base64Const.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Base64Const.swift; sourceTree = "<group>"; };
+		C4C17D3B2258FC4000A27872 /* ProtectionMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtectionMessage.swift; sourceTree = "<group>"; };
+		C4C17D3D2258FECC00A27872 /* EditorDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorDelegate.swift; sourceTree = "<group>"; };
+		C4C17D3F2259068900A27872 /* SizeMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SizeMessage.swift; sourceTree = "<group>"; };
 		C4D12705224418F3004B3641 /* UmlCommentFigure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UmlCommentFigure.swift; sourceTree = "<group>"; };
 		C4D1270D224424E1004B3641 /* UmlArtefactFigure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UmlArtefactFigure.swift; sourceTree = "<group>"; };
 		C4D1270F224424FC004B3641 /* UmlPhaseFigure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UmlPhaseFigure.swift; sourceTree = "<group>"; };
@@ -304,6 +310,7 @@
 				3D6E4C36223AD53300E391D4 /* TouchEventState.swift */,
 				3D099FB72256B72D00650721 /* EditorTouchInputDelegate.swift */,
 				3D22E1642257E97E007DF61B /* EditorGesturesHandler.swift */,
+				C4C17D3D2258FECC00A27872 /* EditorDelegate.swift */,
 			);
 			path = Editor;
 			sourceTree = "<group>";
@@ -392,6 +399,8 @@
 			children = (
 				3D6E955C2230839900BC7BE7 /* DrawViewModel.swift */,
 				C4D1A8722252A3B00011F1BF /* ItemMessage.swift */,
+				C4C17D3B2258FC4000A27872 /* ProtectionMessage.swift */,
+				C4C17D3F2259068900A27872 /* SizeMessage.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -868,7 +877,12 @@
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/Alamofire-SwiftyJSON/Alamofire_SwiftyJSON.framework",
 				"${BUILT_PRODUCTS_DIR}/AwaitKit/AwaitKit.framework",
+				"${BUILT_PRODUCTS_DIR}/Bolts/Bolts.framework",
 				"${BUILT_PRODUCTS_DIR}/ChromaColorPicker/ChromaColorPicker.framework",
+				"${BUILT_PRODUCTS_DIR}/FBSDKCoreKit/FBSDKCoreKit.framework",
+				"${BUILT_PRODUCTS_DIR}/FBSDKLoginKit/FBSDKLoginKit.framework",
+				"${BUILT_PRODUCTS_DIR}/FacebookCore/FacebookCore.framework",
+				"${BUILT_PRODUCTS_DIR}/FacebookLogin/FacebookLogin.framework",
 				"${BUILT_PRODUCTS_DIR}/JWTDecode/JWTDecode.framework",
 				"${BUILT_PRODUCTS_DIR}/MessageInputBar/MessageInputBar.framework",
 				"${BUILT_PRODUCTS_DIR}/MessageKit/MessageKit.framework",
@@ -885,7 +899,12 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire_SwiftyJSON.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AwaitKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Bolts.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ChromaColorPicker.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKCoreKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKLoginKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FacebookCore.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FacebookLogin.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JWTDecode.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MessageInputBar.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MessageKit.framework",
@@ -961,12 +980,14 @@
 				3DABD3DB224141DE00707D86 /* AddAttributeCell.swift in Sources */,
 				B74BE372221F40950001D62A /* CanvasService.swift in Sources */,
 				3DE8F118223C32700052580B /* ClassCell.swift in Sources */,
+				C4C17D3E2258FECC00A27872 /* EditorDelegate.swift in Sources */,
 				B7A3A5C22203C27600031F64 /* Message.swift in Sources */,
 				B7B1B43E2231C03900BEE17D /* MessageDisplayExtension.swift in Sources */,
 				B7B1B4472234725E00BEE17D /* ChatRoomsControllerTableViewController.swift in Sources */,
 				C4F5ECF52257967B0046F258 /* CanvasAnchor.swift in Sources */,
 				B7F9F6AF2252CE41004C6AE8 /* RegistrationViewModel.swift in Sources */,
 				3DA5CA4722441A9200087298 /* GalleryCell.swift in Sources */,
+				C4C17D3C2258FC4000A27872 /* ProtectionMessage.swift in Sources */,
 				3DE8F114223C26890052580B /* SideToolbarDelegate.swift in Sources */,
 				C4D1270E224424E1004B3641 /* UmlArtefactFigure.swift in Sources */,
 				3DA5CA532244449900087298 /* ConnectionAssociationUni.swift in Sources */,
@@ -1009,6 +1030,7 @@
 				C4D1271422459521004B3641 /* UMLTextFigure.swift in Sources */,
 				3DA5CA4A2244395500087298 /* UmlActorFigure.swift in Sources */,
 				B781B95B22132C2F001C1BD8 /* CanvasController.swift in Sources */,
+				C4C17D402259068900A27872 /* SizeMessage.swift in Sources */,
 				C495FEBE22381BDF006E49F9 /* UMLImageFigure.swift in Sources */,
 				3D73359F22373D5E0021FA3C /* FigureFactory.swift in Sources */,
 				B7567946220F33CD00F80B12 /* ChatService.swift in Sources */,
@@ -1242,7 +1264,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "ca.polymtl.H18-LOG3900c";
+				PRODUCT_BUNDLE_IDENTIFIER = ca.polymtl.prod;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = 2;
@@ -1262,7 +1284,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "ca.polymtl.H18-LOG3900c";
+				PRODUCT_BUNDLE_IDENTIFIER = ca.polymtl.prod;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = 2;
