@@ -11,6 +11,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace PolyPaint.Vues
@@ -27,7 +28,7 @@ namespace PolyPaint.Vues
 
         private void OfflineBtn_Click(object sender, RoutedEventArgs e)
         {
-            FenetreDessin fenetreDessin = new FenetreDessin(new List<DrawViewModel>(), new ChatClient(), "offline");
+            FenetreDessin fenetreDessin = new FenetreDessin(new List<DrawViewModel>(), new SaveableCanvas(), new ChatClient());
             Application.Current.MainWindow = fenetreDessin;
             Close();
             fenetreDessin.Show();
@@ -90,7 +91,7 @@ namespace PolyPaint.Vues
                 else
                 {
                     string error = await result.Content.ReadAsStringAsync();
-                    //errors_label.Content = error.ToString();
+                    loginError.Text = error.ToString();
                 }
             }
         }
@@ -130,6 +131,45 @@ namespace PolyPaint.Vues
             else
             {
                 loginBtn.IsEnabled = true;
+            }
+        }
+
+        private async void Button_ClickAsync(object sender, RoutedEventArgs e)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                string token = "";
+                client.BaseAddress = new Uri(Config.URL);
+                var web = new WebBrowserWindow();
+                web.ShowDialog();
+                token = web.Token;
+
+                if (token != null)
+                {
+
+                    DecodeToken(token);
+
+                    List<SaveableCanvas> strokes;
+                    using (client)
+                    {
+                        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", (string)Application.Current.Properties["token"]);
+                        System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
+                        HttpResponseMessage response = await client.GetAsync($"{Config.URL}/api/user/AllCanvas");
+                        string responseString = await response.Content.ReadAsStringAsync();
+                        strokes = JsonConvert.DeserializeObject<List<SaveableCanvas>>(responseString);
+                    }
+
+                    ChatClient chatClient = new ChatClient();
+                    chatClient.Initialize((string)Application.Current.Properties["token"]);
+
+                    Gallery gallery = new Gallery(strokes, chatClient);
+
+                    Application.Current.MainWindow = gallery;
+
+
+                    Close();
+                    gallery.Show();
+                }
             }
         }
     }

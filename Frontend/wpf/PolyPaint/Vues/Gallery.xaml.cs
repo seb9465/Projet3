@@ -1,29 +1,20 @@
 ﻿using MaterialDesignThemes.Wpf;
 using Newtonsoft.Json;
 using PolyPaint.Common.Collaboration;
-using PolyPaint.Common.Messages;
 using PolyPaint.Modeles;
 using PolyPaint.Structures;
 using PolyPaint.Utilitaires;
 using PolyPaint.VueModeles;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.IO;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Ink;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace PolyPaint.Vues
 {
@@ -56,7 +47,7 @@ namespace PolyPaint.Vues
             Canvas = GetAvailableCanvas(strokes);
 
             DataContext = new UserDataContext(chatClient);
-            
+
             externalChatWindow = new ChatWindow(DataContext as UserDataContext);
             (DataContext as UserDataContext).Canvas = Canvas;
             //  DataContext = Canvas; // Il faudrait reussir a utiliser plusieurs datacontext. Ici on a besoin du datacontext pour recuperer les donnee du chat ET des canvas. Cest pous ca que le chat marche pas dans la gallerie
@@ -129,14 +120,16 @@ namespace PolyPaint.Vues
                 chatMenu.Width = 70;
                 chatTab.Visibility = Visibility.Collapsed;
                 isMenuOpen = false;
-                canvasStackPanel.Width = 1070;
+                canvasStackPanel.Width = 950;
+                canvasStackPanel.Margin = new Thickness(70, 0, 0, 0);
             }
             else
             {
                 chatMenu.Width = 500;
                 chatTab.Visibility = Visibility.Visible;
                 isMenuOpen = true;
-                canvasStackPanel.Width = 620;
+                canvasStackPanel.Width = 640;
+                canvasStackPanel.Margin = new Thickness(0,0,0,0);
             }
         }
 
@@ -160,7 +153,7 @@ namespace PolyPaint.Vues
                 {
                     if (savedCanvas[item].CanvasAutor == username | savedCanvas[item].CanvasVisibility == "Public")
                     {
-                        canvas.Add(new SaveableCanvas(savedCanvas[item].CanvasId, savedCanvas[item].Name, savedCanvas[item].DrawViewModels, savedCanvas[item].Image, savedCanvas[item].CanvasVisibility, savedCanvas[item].CanvasProtection, savedCanvas[item].CanvasAutor));
+                        canvas.Add(new SaveableCanvas(savedCanvas[item].CanvasId, savedCanvas[item].Name, savedCanvas[item].DrawViewModels, savedCanvas[item].Image, savedCanvas[item].CanvasVisibility, savedCanvas[item].CanvasProtection, savedCanvas[item].CanvasAutor, savedCanvas[item].CanvasWidth, savedCanvas[item].CanvasHeight));
                         for (int i = 0; i < canvas.Count - 1; i++)
                         {
                             if (savedCanvas[item].Name == canvas[i].Name)
@@ -176,43 +169,38 @@ namespace PolyPaint.Vues
             return canvas;
         }
 
-        private void OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             SelectedCanvas = (SaveableCanvas)ImagePreviews.SelectedItem;
+            var canvases = new List<SaveableCanvas>();
+            using (HttpClient client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", (string)Application.Current.Properties["token"]);
+                System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
+                HttpResponseMessage response = await client.GetAsync($"{Config.URL}/api/user/AllCanvas");
+                string responseString = await response.Content.ReadAsStringAsync();
+                canvases = JsonConvert.DeserializeObject<List<SaveableCanvas>>(responseString);
+            }
+            SelectedCanvas = canvases.FirstOrDefault(x => x.CanvasId == (ImagePreviews.SelectedItem as SaveableCanvas).CanvasId);
             List<DrawViewModel> drawViewModels = JsonConvert.DeserializeObject<List<DrawViewModel>>(SelectedCanvas.DrawViewModels);
             if (SelectedCanvas.CanvasProtection != "" && SelectedCanvas.CanvasAutor != username)
             {
-                imageProtection = new ImageProtection();
-                if (imageProtection.PasswordEntered == SelectedCanvas.CanvasProtection)
+                var prompt = new PromptPassword(SelectedCanvas, drawViewModels, (DataContext as UserDataContext).ChatClient);
+                prompt.Closing += (a, n) =>
                 {
-                    FenetreDessin fenetreDessin = new FenetreDessin(drawViewModels, (DataContext as UserDataContext).ChatClient, SelectedCanvas.Name)
+                    if(prompt.Password == SelectedCanvas.CanvasProtection)
                     {
-                        canvasAutor = SelectedCanvas.CanvasAutor,
-                        canvasName = SelectedCanvas.Name,
-                        canvasVisibility = SelectedCanvas.CanvasVisibility,
-                        canvasProtection = SelectedCanvas.CanvasProtection
-                    };
-                    Application.Current.MainWindow = fenetreDessin;
-                    this.Close();
-                    fenetreDessin.Show();
-                }
-                else
-                {
-                    SelectedCanvas = null;
-                    MessageBox.Show("Wrong password");
-                }
+                        Close();
+                    }
+                };
+                prompt.ShowDialog();
+                SelectedCanvas = null;
             }
             else
             {
-                FenetreDessin fenetreDessin = new FenetreDessin(drawViewModels, (DataContext as UserDataContext).ChatClient, SelectedCanvas.Name)
-                {
-                    canvasAutor = SelectedCanvas.CanvasAutor,
-                    canvasName = SelectedCanvas.Name,
-                    canvasVisibility = SelectedCanvas.CanvasVisibility,
-                    canvasProtection = SelectedCanvas.CanvasProtection
-                };
+                FenetreDessin fenetreDessin = new FenetreDessin(drawViewModels, SelectedCanvas, (DataContext as UserDataContext).ChatClient);
                 Application.Current.MainWindow = fenetreDessin;
-                this.Close();
+                Close();
                 fenetreDessin.Show();
             }
         }

@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Windows;
 
 namespace PolyPaint.Modeles
 {
     public class SaveableCanvas
     {
-        public SaveableCanvas(string canvasId, string name, string drawViewModels, byte[] image, string canvasVisibility, string canvasProtection, string canvasAutor)
+        public SaveableCanvas() { }
+        public SaveableCanvas(string canvasId, string name, string drawViewModels, byte[] image, string canvasVisibility, string canvasProtection, string canvasAutor, double canvasWidth, double canvasHeight)
         {
             CanvasId = canvasId;
             Name = name;
@@ -17,6 +14,8 @@ namespace PolyPaint.Modeles
             CanvasVisibility = canvasVisibility;
             CanvasProtection = canvasProtection;
             CanvasAutor = canvasAutor;
+            CanvasWidth = canvasWidth;
+            CanvasHeight = canvasHeight;
         }
         public string CanvasId { get; set; }
         public string Name { get; set; }
@@ -25,6 +24,8 @@ namespace PolyPaint.Modeles
         public string CanvasVisibility { get; set; }
         public string CanvasProtection { get; set; }
         public string CanvasAutor { get; set; }
-
+        public double CanvasWidth { get; set; }
+        public double CanvasHeight { get; set; }
+        public Visibility IsProtected { get { return CanvasProtection.Length > 0 ? Visibility.Visible : Visibility.Collapsed; } }
     }
 }

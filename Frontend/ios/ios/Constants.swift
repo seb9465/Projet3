@@ -34,5 +34,14 @@ struct Constants {
         let formatter = DateFormatter();
         formatter.dateFormat = "HH:mm:ss";
         return formatter;
-    }()
+    }();
+    
+    // Constants for the Chat View Container.
+    struct ChatView {
+        static let cornerRadius: CGFloat = 5.0;
+        static let shadowColor: CGColor = UIColor.black.cgColor;
+        static let shadowOffset: CGSize = CGSize.zero;
+        static let shadowOpacity: Float = 0.5;
+        static let shadowRadius: CGFloat = 3.0;
+    }
 }

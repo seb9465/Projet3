@@ -31,7 +31,11 @@ class CanvasController: UIViewController {
     @IBOutlet weak var cutButton: UIBarButtonItem!
     @IBOutlet weak var duplicateButton: UIBarButtonItem!
     @IBOutlet weak var exportButton: UIBarButtonItem!
+    @IBOutlet var chatViewButton: UIBarButtonItem!
+    
     @IBOutlet var navigationBar: UIToolbar!
+    @IBOutlet var chatViewContainer: UIView!
+
     override func viewDidLoad() {
         super.viewDidLoad();
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
@@ -42,6 +46,8 @@ class CanvasController: UIViewController {
         CollaborationHub.shared!.connectToHub()
         CollaborationHub.shared!.delegate = self.editor
         self.editor.delegate = self
+        self.initChatViewContainer();
+
         self.view.addSubview(self.editor.editorView)
         setupNetwork()
         
@@ -83,6 +89,7 @@ class CanvasController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated);
         navigationController?.setNavigationBarHidden(true, animated: animated);
+        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -179,28 +186,40 @@ class CanvasController: UIViewController {
         return image!
     }
     
-    private func resetButtonColor() -> Void {
-        self.selectButton.tintColor = UIColor.black;
-        self.deleteButton.tintColor = UIColor.black;
-        self.insertButton.tintColor = UIColor.black;
-        self.lassoButton.tintColor = UIColor.black;
-    }
-    
-    private func initializeConnection() {
+     private func initializeConnection() {
         CollaborationHub.shared = CollaborationHub(channelId: canvasId)
         CollaborationHub.shared!.connectToHub()
         CollaborationHub.shared!.delegate = self.editor
     }
-    @objc private func image(_ image: UIImage, didFinishSavingWithError error: Error?, contextInfo: UnsafeRawPointer) {
-        if let error = error {
-            let ac = UIAlertController(title: "Exportation error", message: error.localizedDescription, preferredStyle: .alert)
-            ac.addAction(UIAlertAction(title: "OK", style: .default))
+    @IBAction func chatViewButton(_ sender: Any) {
+        if (self.chatViewContainer.isHidden) {
+            self.chatViewButton.tintColor = Constants.RED_COLOR;
             
-            present(ac, animated: true)
+            UIView.animate(withDuration: 0.35,
+                           delay: 0.0,
+                           usingSpringWithDamping: 0.9,
+                           initialSpringVelocity: 1,
+                           options: [],
+                           animations: {
+                            self.chatViewContainer.isHidden = false;
+                            self.view.bringSubviewToFront(self.chatViewContainer);
+                            self.view.layoutIfNeeded()
+                            },
+                           completion: nil
+            );
         } else {
-            let ac = UIAlertController(title: "Saved!", message: "Your canvas has been saved to your photos.", preferredStyle: .alert)
-            ac.addAction(UIAlertAction(title: "OK", style: .default))
-            present(ac, animated: true)
+            self.chatViewButton.tintColor = UIColor.black;
+            UIView.animate(withDuration: 0.35,
+                           delay: 0.0,
+                           usingSpringWithDamping: 0.9,
+                           initialSpringVelocity: 1,
+                           options: [],
+                           animations: {
+                            self.chatViewContainer.isHidden = true;
+                            self.view.layoutIfNeeded()
+                            },
+                           completion: nil
+            );
         }
     }
     
@@ -301,7 +320,36 @@ class CanvasController: UIViewController {
             self.quitButton.isEnabled = false
         }
     }
-    deinit {
+    private func initChatViewContainer() -> Void {
+        self.chatViewContainer.sizeToFit();
+        self.view.bringSubviewToFront(self.chatViewContainer);
+        self.chatViewContainer.isHidden = true;
+        self.chatViewContainer.layer.cornerRadius = Constants.ChatView.cornerRadius;
+        self.chatViewContainer.layer.shadowColor = Constants.ChatView.shadowColor;
+        self.chatViewContainer.layer.shadowOffset = Constants.ChatView.shadowOffset;
+        self.chatViewContainer.layer.shadowOpacity = Constants.ChatView.shadowOpacity;
+        self.chatViewContainer.layer.shadowRadius = Constants.ChatView.shadowRadius;
+        self.chatViewContainer.layer.masksToBounds = false;
+    }
+    
+    private func resetButtonColor() -> Void {
+        self.selectButton.tintColor = UIColor.black;
+        self.deleteButton.tintColor = UIColor.black;
+        self.insertButton.tintColor = UIColor.black;
+        self.lassoButton.tintColor = UIColor.black;
+    }
+    
+    @objc private func image(_ image: UIImage, didFinishSavingWithError error: Error?, contextInfo: UnsafeRawPointer) {
+        if let error = error {
+            let ac = UIAlertController(title: "Exportation error", message: error.localizedDescription, preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: "OK", style: .default))
+            
+            present(ac, animated: true)
+        } else {
+            let ac = UIAlertController(title: "Saved!", message: "Your canvas has been saved to your photos.", preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: "OK", style: .default))
+            present(ac, animated: true)
+        }
     }
 }
 

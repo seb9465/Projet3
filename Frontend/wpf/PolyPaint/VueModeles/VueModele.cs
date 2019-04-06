@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Ink;
@@ -30,6 +31,7 @@ namespace PolyPaint.VueModeles
     public class VueModele : INotifyPropertyChanged, IChatDataContext
     {
         public event PropertyChangedEventHandler PropertyChanged;
+        public event EventHandler OnRotation;
         private StrokeBuilder rebuilder = new StrokeBuilder();
         private Editeur editeur = new Editeur();
         private string _currentRoom;
@@ -72,6 +74,28 @@ namespace PolyPaint.VueModeles
             get { return _currentRoom; }
             set { _currentRoom = value; ProprieteModifiee("CurrentRoom"); ProprieteModifiee("MessagesListBox"); }
         }
+
+        private bool _canvasProtection;
+        public bool CanvasProtection
+        {
+            get { return _canvasProtection; }
+            set { _canvasProtection = value; ProprieteModifiee(); }
+        }
+
+        private bool _isCreatedByUser;
+        public bool IsCreatedByUser
+        {
+            get { return _isCreatedByUser; }
+            set { _isCreatedByUser = value; ProprieteModifiee(); }
+        }
+        private bool _isConnected = true;
+        public bool IsConnected
+        {
+            get { return _isConnected; }
+            set { _isConnected = value; ProprieteModifiee(); }
+        }
+
+        public SaveableCanvas Canvas { get; set; }
 
         public string OutilSelectionne
         {
@@ -180,10 +204,13 @@ namespace PolyPaint.VueModeles
         /// On récupère certaines données initiales du modèle et on construit les commandes
         /// sur lesquelles la vue se connectera.
         /// </summary>
-        public VueModele(ChatClient chatClient, string canvasChannel)
+        public VueModele(ChatClient chatClient, SaveableCanvas canvas)
         {
             ChatClient = chatClient;
-            CollaborationClient = new CollaborationClient(canvasChannel);
+            CollaborationClient = new CollaborationClient(canvas.CanvasId);
+            _canvasProtection = canvas.CanvasProtection.Length > 0;
+            Canvas = canvas;
+            IsCreatedByUser = Canvas.CanvasAutor == Application.Current.Properties["username"].ToString();
 
             // On écoute pour des changements sur le modèle. Lorsqu'il y en a, EditeurProprieteModifiee est appelée.
             editeur.PropertyChanged += new PropertyChangedEventHandler(EditeurProprieteModifiee);
@@ -230,6 +257,18 @@ namespace PolyPaint.VueModeles
         protected virtual void ProprieteModifiee([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        internal async Task UnsubscribeChatClient()
+        {
+            ChatClient.MessageReceived -= AddMessage;
+            ChatClient.ChannelsReceived -= InitializeChatRooms;
+            ChatClient.ChannelCreated -= AddRoomItem;
+            ChatClient.ConnectedToChannel -= ConnectedToRoom;
+            ChatClient.ConnectedToChannelSender -= ConnectedToRoomSender;
+            ChatClient.DisconnectedFromChannel -= DisconnectedFromRoom;
+            ChatClient.DisconnectedFromChannelSender -= DisconnectedFromRoomSender;
+            await ChatClient.Disconnect();
         }
 
         /// <summary>
@@ -290,6 +329,11 @@ namespace PolyPaint.VueModeles
             foreach (AbstractStroke stroke in editeur.SelectedStrokes.Where(x => x is AbstractStroke))
             {
                 stroke.Rotation = (stroke.Rotation + increment) % 360;
+                if(stroke is AbstractLineStroke)
+                {
+                    var elbow = (stroke as AbstractLineStroke).ElbowPosRelative;
+                    (stroke as AbstractLineStroke).ElbowPosRelative = (Vector)Tools.RotatePoint(new Point(elbow.X, elbow.Y), new Point(), increment);
+                }
                 var stylusPoint0 = Tools.RotatePoint(stroke.StylusPoints[0].ToPoint(), stroke.Center, increment);
                 var stylusPoint1 = Tools.RotatePoint(stroke.StylusPoints[1].ToPoint(), stroke.Center, increment);
                 stroke.StylusPoints[0] = new StylusPoint(stylusPoint0.X, stylusPoint0.Y);
@@ -297,6 +341,7 @@ namespace PolyPaint.VueModeles
             }
             SendSelectedStrokes();
             CollaborationClient.CollaborativeSelectAsync(rebuilder.GetDrawViewModelsFromStrokes(editeur.SelectedStrokes));
+            OnRotation?.Invoke(this, new EventArgs());
         }
 
         public void ChangeSelection(InkCanvas surfaceDessin)
@@ -308,6 +353,14 @@ namespace PolyPaint.VueModeles
             HandleBorderColorChange(strokes);
             HandleFillColorChange(strokes);
             HandleBorderStyleChange(strokes);
+            HandleThiccnessChange(strokes);
+        }
+
+        private void HandleThiccnessChange(StrokeCollection strokes)
+        {
+            if (strokes.Count() != 0)
+                TailleTrait = (int)((AbstractStroke)strokes.First()).Border.Thickness;
+            ProprieteModifiee("TailleTrait");
         }
 
         public void ChangeOnlineSelection(ItemsMessage message)

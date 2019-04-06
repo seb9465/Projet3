@@ -6,6 +6,14 @@ using System.Windows.Media;
 
 namespace PolyPaint.Convertisseurs
 {
+    class ConvertisseurCanvasProtectionText: IValueConverter
+    {
+        public object Convert(object value, Type targetType, object param, System.Globalization.CultureInfo culture)
+        {
+            return (bool)value ? "Protection is On" : "Protection is Off";
+        }
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture) => System.Windows.DependencyProperty.UnsetValue;
+    }
 
     class ConvertisseurRoomCouleurFond : IValueConverter
     {

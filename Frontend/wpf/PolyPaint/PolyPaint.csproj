@@ -368,6 +368,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AnchorPosition.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="Convertisseurs\Convertisseurs.cs" />
     <Compile Include="Modeles\ChatClient.cs" />
@@ -408,6 +409,9 @@
     <Compile Include="VueModeles\LoginViewModel.cs" />
     <Compile Include="VueModeles\UserDataContext.cs" />
     <Compile Include="VueModeles\VueModele.cs" />
+    <Compile Include="Vues\ActivateProtection.xaml.cs">
+      <DependentUpon>ActivateProtection.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Vues\EditLineTitleWindow.xaml.cs">
       <DependentUpon>EditLineTitleWindow.xaml</DependentUpon>
     </Compile>
@@ -423,6 +427,9 @@
     <Compile Include="Vues\Login.xaml.cs">
       <DependentUpon>Login.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Vues\PromptPassword.xaml.cs">
+      <DependentUpon>PromptPassword.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Vues\Register.xaml.cs">
       <DependentUpon>Register.xaml</DependentUpon>
     </Compile>
@@ -436,6 +443,13 @@
       <DependentUpon>UploadToCloud.xaml</DependentUpon>
     </Compile>
     <Compile Include="Vues\ViewStateEnum.cs" />
+    <Compile Include="Vues\WebBrowserWindow.xaml.cs">
+      <DependentUpon>WebBrowserWindow.xaml</DependentUpon>
+    </Compile>
+    <Page Include="Vues\ActivateProtection.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Vues\ChatWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -474,6 +488,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Vues\PromptPassword.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Vues\Register.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -487,6 +505,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Vues\UploadToCloud.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Vues\WebBrowserWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -515,6 +537,7 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <Resource Include="Resources\SF-Pro-Text-Regular.otf" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

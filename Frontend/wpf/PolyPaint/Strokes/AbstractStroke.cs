@@ -23,13 +23,13 @@ namespace PolyPaint.Strokes
         public double Width { get; set; }
         public double Height { get; set; }
 
-        protected FormattedText Title { get; set; }
+        protected virtual FormattedText Title { get; set; }
         public string TitleString
         {
             get { return Title.Text; }
             set
             {
-                Title = new FormattedText(value, System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 12, Brushes.Black);
+                Title = new FormattedText(value, System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, Config.T_FACE, 17, Brushes.Black);
                 ProprieteModifiee("Title");
                 ProprieteModifiee();
             }

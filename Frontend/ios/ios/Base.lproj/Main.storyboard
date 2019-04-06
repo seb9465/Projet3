@@ -432,18 +432,6 @@
                                     <segue destination="Mrs-wb-JuW" kind="embed" id="b63-aG-Hmh"/>
                                 </connections>
                             </containerView>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kYd-KD-3cM" customClass="RoundedCorners" customModule="ios" customModuleProvider="target">
-                                <rect key="frame" x="734" y="76" width="131" height="44"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="1" green="0.41960784309999999" blue="0.41960784309999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
-                                <state key="normal" title="Chat">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                </state>
-                                <connections>
-                                    <segue destination="dDl-qJ-RPL" kind="show" id="uEy-ua-63S"/>
-                                </connections>
-                            </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="PolyPaint Pro" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GOc-NE-l60">
                                 <rect key="frame" x="20" y="46" width="221" height="43"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -470,8 +458,15 @@
                                     <action selector="logoutButton:" destination="eTb-Zs-q24" eventType="touchUpInside" id="aK9-ZQ-xlh"/>
                                 </connections>
                             </button>
+                            <containerView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wRI-Wo-NFL">
+                                <rect key="frame" x="606" y="128" width="400" height="620"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                <connections>
+                                    <segue destination="6Ue-BN-htd" kind="embed" id="B07-49-CB1"/>
+                                </connections>
+                            </containerView>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Kti-Cb-B64" customClass="RoundedCorners" customModule="ios" customModuleProvider="target">
-                                <rect key="frame" x="595" y="76" width="131" height="44"/>
+                                <rect key="frame" x="722" y="76" width="131" height="44"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="1" green="0.41960784309999999" blue="0.41960784309999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
@@ -480,6 +475,18 @@
                                 </state>
                                 <connections>
                                     <action selector="createNewCanvas:" destination="eTb-Zs-q24" eventType="touchUpInside" id="9CG-DB-fLh"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Co4-to-R3M" customClass="RoundedCorners" customModule="ios" customModuleProvider="target">
+                                <rect key="frame" x="583" y="76" width="131" height="44"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="1" green="0.41960784309999999" blue="0.41960784309999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
+                                <state key="normal" title="Window Chat">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="windowChatTrigger:" destination="eTb-Zs-q24" eventType="touchUpInside" id="R8m-j7-FX1"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -491,6 +498,7 @@
                         <outlet property="galleryView" destination="1hT-WF-jwz" id="qz5-z4-fUZ"/>
                         <outlet property="logoutButton" destination="p9k-FE-qKI" id="ulq-v1-ocK"/>
                         <outlet property="usernameLabel" destination="DPA-sG-7nO" id="GgY-UD-Jy6"/>
+                        <outlet property="viewContainerChat" destination="wRI-Wo-NFL" id="fXi-3T-KcQ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ktH-qe-LBO" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -533,6 +541,14 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5dZ-Ri-KE5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2236" y="834"/>
+        </scene>
+        <!--Chat-->
+        <scene sceneID="eXv-UL-1mH">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Chat" id="6Ue-BN-htd" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="rfT-A7-yGH" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1960" y="223"/>
         </scene>
     </scenes>
 </document>

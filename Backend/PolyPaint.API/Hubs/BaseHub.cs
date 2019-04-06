@@ -45,13 +45,13 @@ namespace PolyPaint.API.Hubs
             }
         }
 
-        public async Task ConnectToChannel(string message)
+        public virtual async Task ConnectToChannel(string message)
         {
             var connectionMessage = JsonConvert.DeserializeObject<ConnectionMessage>(message);
             var user = await GetUserFromToken(Context.User);
             if (user != null)
             {
-                await Groups.AddToGroupAsync(Context.ConnectionId, connectionMessage.ChannelId);
+                await AddToGroup(Context.ConnectionId, connectionMessage.ChannelId);
                 UserHandler.AddOrUpdateMap(connectionMessage.ChannelId, user.Id);
                 var returnMessage = new ConnectionMessage(user.UserName, channelId: connectionMessage.ChannelId);
                 await Clients.Group(connectionMessage.ChannelId).SendAsync(
@@ -62,13 +62,19 @@ namespace PolyPaint.API.Hubs
             }
         }
 
-        public async Task DisconnectFromChannel(string message)
+        protected async Task AddToGroup(string connectionId, string channelId)
+        {
+            await Groups.AddToGroupAsync(connectionId, channelId);
+            UserHandler.AddOrUpdateConnectionMap(connectionId, channelId);
+        }
+
+        public virtual async Task DisconnectFromChannel(string message)
         {
             var connectionMessage = JsonConvert.DeserializeObject<ConnectionMessage>(message);
             var user = await GetUserFromToken(Context.User);
             if (user != null)
             {
-                await Groups.RemoveFromGroupAsync(Context.ConnectionId, connectionMessage.ChannelId);
+                await RemoveFromGroup(Context.ConnectionId, connectionMessage.ChannelId);
                 if (UserHandler.UserGroupMap.TryGetValue(connectionMessage.ChannelId, out var list))
                 {
                     list.Remove(user.Id);
@@ -82,21 +88,31 @@ namespace PolyPaint.API.Hubs
             }
         }
 
+        protected async Task RemoveFromGroup(string connectionId, string channelId)
+        {
+            await Groups.RemoveFromGroupAsync(connectionId, channelId);
+            UserHandler.UserConnections.Remove(connectionId, out var _);
+        }
+
         public override async Task OnConnectedAsync()
         {
             var user = await GetUserFromToken(Context.User);
             if (user != null)
             {
                 await base.OnConnectedAsync();
-                await ConnectToChannel((new ConnectionMessage(channelId: "general")).ToString());
-                // await Clients.Caller.SendAsync("ClientIsConnected");
             }
         }
 
         public override async Task OnDisconnectedAsync(Exception e)
         {
-            if (_userService.TryGetUserId(Context.User, out var userId))
+            var user = await GetUserFromToken(Context.User);
+            if (user != null)
             {
+                foreach (var group in UserHandler.UserGroupMap.Where(pair => pair.Value.Contains(user.Id)))
+                {
+                    group.Value.Remove(user.Id);
+                    await RemoveFromGroup(Context.ConnectionId, group.Key);
+                }
                 await base.OnDisconnectedAsync(e);
             }
         }

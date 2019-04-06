@@ -15,14 +15,28 @@ class DashboardController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var galleryView: UIView!
     @IBOutlet weak var usernameLabel: UILabel!
     @IBOutlet var logoutButton: RoundedCorners!
+    @IBOutlet var viewContainerChat: UIView!
+    
+    // MARK: Timing functions
     
     override func viewDidLoad() { self.navigationItem.setHidesBackButton(true, animated:true);
         super.viewDidLoad();
         let token = UserDefaults.standard.string(forKey: "token");
         let jwt = try! decode(jwt: token!)
         usernameLabel.text = jwt.claim(name: "unique_name").string
-        ChatService.shared.initOnReceivingMessage(insertMessage:{_ in });
+        
         ChatService.shared.connectToUserChatRooms();
+        ChatService.shared.initOnReceivingMessage(insertMessage:{_ in }, updateChatRooms: { });
+        ChatService.shared.connectToHub();
+        
+        self.viewContainerChat.sizeToFit(); // Adjusting frame size
+        self.viewContainerChat.isHidden = true;
+        self.viewContainerChat.layer.cornerRadius = Constants.ChatView.cornerRadius;
+        self.viewContainerChat.layer.shadowColor = Constants.ChatView.shadowColor;
+        self.viewContainerChat.layer.shadowOffset = Constants.ChatView.shadowOffset;
+        self.viewContainerChat.layer.shadowOpacity = Constants.ChatView.shadowOpacity;
+        self.viewContainerChat.layer.shadowRadius = Constants.ChatView.shadowRadius;
+        self.viewContainerChat.layer.masksToBounds = false;
     }
     
     @IBAction func updateGallery(_ sender: Any) {
@@ -102,6 +116,14 @@ class DashboardController: UIViewController, UITextFieldDelegate {
         CanvasService.SaveOnline(canvas: canvas).done { (success) in
             let canvasController = UIStoryboard(name: "Canvas", bundle: nil).instantiateViewController(withIdentifier: "CanvasController") as! CanvasController
             self.present(canvasController, animated: true, completion: nil);
+        }
+    }
+    
+    @IBAction func windowChatTrigger(_ sender: Any) {
+        if (self.viewContainerChat.isHidden) {
+            self.viewContainerChat.isHidden = false;
+        } else {
+            self.viewContainerChat.isHidden = true;
         }
     }
 }

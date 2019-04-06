@@ -10,7 +10,6 @@ import UIKit
 
 class ChatRoomsControllerTableViewController: UITableViewController {
     
-    @IBOutlet var backButton: UIBarButtonItem!
     @IBOutlet var addButton: UIBarButtonItem!
     
     private let refreshTable = UIRefreshControl();
@@ -20,27 +19,19 @@ class ChatRoomsControllerTableViewController: UITableViewController {
         self.refreshTable.endRefreshing();
     }
     
-    @IBAction func backButton(_ sender: Any) {
-        ChatService.shared.currentChannel = nil;
-        let storyboard = UIStoryboard(name: "Main", bundle: nil);
-        let view = storyboard.instantiateViewController(withIdentifier: "MainController");
+    @IBAction func addButtonTrigger(_ sender: Any) {
+        guard let childVC = self.storyboard?.instantiateViewController(withIdentifier: "AddScreenViewController") as? AddScreenViewController else {
+            return
+        }
         
-        let transition = CATransition();
-        transition.duration = 0.3;
-        transition.type = CATransitionType.reveal;
-        transition.subtype = CATransitionSubtype.fromBottom;
-        self.view.window!.layer.add(transition, forKey: kCATransition);
-        
-        self.present(view, animated: false, completion: nil);
+        childVC.view.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+        childVC.view.frame = self.view.bounds
+        self.present(childVC, animated: true, completion: nil);
     }
     
     override func viewDidLoad() {
         self.tableView.separatorStyle = .none;
         self.registerTableViewCells();
-        
-        ChatService.shared.onFetchChannels(updateChannelsFct: self.updateChannels);
-        ChatService.shared.onCreateChannel(updateChannelsFct: self.updateChannels);
-        ChatService.shared.invokeFetchChannels();
         
         self.refreshTable.addTarget(self, action: #selector(refreshData(_:)), for: .valueChanged)
         self.tableView.addSubview(self.refreshTable);
@@ -48,10 +39,9 @@ class ChatRoomsControllerTableViewController: UITableViewController {
         self.editButtonItem.tintColor = Constants.RED_COLOR;
         self.navigationItem.rightBarButtonItems?.append(self.editButtonItem);
         
-        self.backButton.tintColor = Constants.RED_COLOR;
         self.addButton.tintColor = Constants.RED_COLOR;
         
-        super.viewDidLoad()
+        super.viewDidLoad();
     }
     
     private func registerTableViewCells() {
@@ -62,6 +52,13 @@ class ChatRoomsControllerTableViewController: UITableViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        ChatService.shared.currentChannel = nil;
+        ChatService.shared.onFetchChannels(updateChannelsFct: self.updateChannels);
+        ChatService.shared.onCreateChannel(updateChannelsFct: self.updateChannels);
+        ChatService.shared.initOnReceivingMessage(insertMessage: {_ in }, updateChatRooms: self.updateChannels);
+        ChatService.shared.invokeFetchChannels();
+        
+        self.navigationItem.leftBarButtonItem?.isEnabled = false;
         
         super.viewDidAppear(animated);
     }
@@ -97,7 +94,16 @@ class ChatRoomsControllerTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "CustomTableViewCell") as? CustomTableViewCell;
         
-        cell?.chatRoomName.text = ChatService.shared.userChannels.channels[indexPath.row].name;
+        let roomName: String = ChatService.shared.userChannels.channels[indexPath.row].name;
+        
+        cell?.chatRoomName.text = roomName.uppercased();
+        
+        if (ChatService.shared.messagesWhileAFK.keys.contains(roomName)) {
+            cell?.notificationLabel.text = String(ChatService.shared.messagesWhileAFK[roomName]!.count);
+            cell?.showCircleLabel();
+        } else {
+            cell?.hideCircleLabel();
+        }
         
         return cell!
     }
@@ -107,7 +113,11 @@ class ChatRoomsControllerTableViewController: UITableViewController {
         
         let storyboard = UIStoryboard(name: "Chat", bundle: nil);
         let destination = storyboard.instantiateViewController(withIdentifier: "ChatView");
-        navigationController?.pushViewController(destination, animated: true)
+        navigationController?.pushViewController(destination, animated: true);
+    }
+    
+    override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        self.tableView.reloadData();
     }
  
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
@@ -118,6 +128,6 @@ class ChatRoomsControllerTableViewController: UITableViewController {
             self.tableView.reloadData();
         } else if editingStyle == .insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
+        }
     }
 }

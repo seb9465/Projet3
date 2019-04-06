@@ -63,7 +63,6 @@ class LoginController: UIViewController, UITextFieldDelegate, WKUIDelegate {
                 UIViewController.removeSpinner(spinner: spinner);
                 self.validationLabel.text = "";
                 self.storeAuthentificationToken(token: token);
-                ChatService.shared.connectToHub();
                 
                 let mainController = self.storyboard?.instantiateViewController(withIdentifier: "MainController");
                 self.present(mainController!, animated: true, completion: nil);
