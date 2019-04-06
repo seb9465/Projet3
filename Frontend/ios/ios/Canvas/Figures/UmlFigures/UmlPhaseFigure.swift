@@ -15,22 +15,25 @@ class UmlPhaseFigure: UmlFigure {
     init(firstPoint: CGPoint, lastPoint: CGPoint) {
         super.init(firstPoint: firstPoint, lastPoint: lastPoint, width: BASE_WIDTH, height: BASE_WIDTH)
         self.itemType = ItemTypeEnum.Phase
+        self.initializeAnchorPoints()
     }
     
     override init(drawViewModel: DrawViewModel) {
         super.init(drawViewModel: drawViewModel);
         self.name = drawViewModel.ShapeTitle!
+        self.initializeAnchorPoints()
     }
     
     init(origin: CGPoint) {
         super.init(touchedPoint: origin, width: BASE_WIDTH, height: BASE_HEIGHT)
         self.itemType = ItemTypeEnum.Phase
+        self.initializeAnchorPoints()
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     override func draw(_ rect: CGRect) {
          let outerRect = CGRect(x: 0, y: 0, width: self.frame.width, height: self.frame.height).insetBy(dx: 5, dy: 5);
         let phaneNameRect = CGRect(x: 0, y: 0, width: self.frame.width, height: 50).insetBy(dx: 5, dy: 5);

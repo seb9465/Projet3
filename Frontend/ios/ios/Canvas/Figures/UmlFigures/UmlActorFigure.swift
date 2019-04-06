@@ -21,18 +21,27 @@ class UmlActorFigure: UmlFigure {
     init(origin: CGPoint) {
         super.init(touchedPoint: origin, width: BASE_WIDTH, height: BASE_HEIGHT)
         self.itemType = ItemTypeEnum.Role
+        self.initializeAnchorPoints()
     }
     
     override init(drawViewModel: DrawViewModel) {
         super.init(drawViewModel: drawViewModel);
+        self.initializeAnchorPoints()
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func initializeAnchorPoints() {
+        self.anchorPoints = AnchorPoints(width: self.frame.width, height: self.frame.height - nameLabelHeight)
+        self.layer.addSublayer((self.anchorPoints?.anchorPointsBottom)!)
+        self.layer.addSublayer((self.anchorPoints?.anchorPointsTop)!)
+        self.layer.addSublayer((self.anchorPoints?.anchorPointsLeft)!)
+        self.layer.addSublayer((self.anchorPoints?.anchorPointsRight)!)
+    }
+    
     override func draw(_ rect: CGRect) {
-        let nameLabelHeight: CGFloat = 30
         let inset: CGFloat = (self.lineWidth > 5) ? self.lineWidth : 5
         let width = self.frame.width - 2 * inset
         let height = self.frame.height - inset - nameLabelHeight

@@ -9,42 +9,52 @@
 import UIKit
 
 class UmlActivityFigure: UmlFigure {
-    let BASE_WIDTH: CGFloat = 125
-    let BASE_HEIGHT: CGFloat = 80
+    let BASE_WIDTH: CGFloat = 115
+    let BASE_HEIGHT: CGFloat = 100
     
     init(firstPoint: CGPoint, lastPoint: CGPoint) {
         super.init(firstPoint: firstPoint, lastPoint: lastPoint, width: BASE_WIDTH, height: BASE_WIDTH)
         self.itemType = ItemTypeEnum.Activity
+        self.initializeAnchorPoints()
     }
     
     init(origin: CGPoint) {
         super.init(touchedPoint: origin, width: BASE_WIDTH, height: BASE_HEIGHT)
         self.itemType = ItemTypeEnum.Activity
+        self.initializeAnchorPoints()
     }
     
     override init(drawViewModel: DrawViewModel) {
         super.init(drawViewModel: drawViewModel);
+        self.initializeAnchorPoints()
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func initializeAnchorPoints() {
+        self.anchorPoints = AnchorPoints(width: self.frame.width, height: self.frame.height - nameLabelHeight)
+        self.layer.addSublayer((self.anchorPoints?.anchorPointsBottom)!)
+        self.layer.addSublayer((self.anchorPoints?.anchorPointsTop)!)
+        self.layer.addSublayer((self.anchorPoints?.anchorPointsLeft)!)
+        self.layer.addSublayer((self.anchorPoints?.anchorPointsRight)!)
+    }
+    
     override func draw(_ rect: CGRect) {
-        let nameLabelHeight: CGFloat = 30
         let inset: CGFloat = (self.lineWidth > 5) ? self.lineWidth : 5
         let width = self.frame.width - inset
         let height = self.frame.height - inset - nameLabelHeight
         
         //// Bezier Drawing
         let bezierPath = UIBezierPath()
-        bezierPath.move(to: CGPoint(x: 25 + inset, y: height/2))
+        bezierPath.move(to: CGPoint(x: 20 + inset, y: height/2))
         bezierPath.addLine(to: CGPoint(x: inset, y: inset))
-        bezierPath.addLine(to: CGPoint(x: width - 25, y: inset))
+        bezierPath.addLine(to: CGPoint(x: width - 20, y: inset))
         bezierPath.addLine(to: CGPoint(x: width, y: height/2))
-        bezierPath.addLine(to: CGPoint(x: width - 25, y: height))
+        bezierPath.addLine(to: CGPoint(x: width - 20, y: height))
         bezierPath.addLine(to: CGPoint(x: inset, y: height))
-        bezierPath.addLine(to: CGPoint(x: 25 + inset, y: height/2))
+        bezierPath.addLine(to: CGPoint(x: 20 + inset, y: height/2))
         bezierPath.close()
 
         if(self.isBorderDashed) {

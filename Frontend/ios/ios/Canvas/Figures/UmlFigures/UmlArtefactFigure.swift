@@ -9,29 +9,39 @@
 import UIKit
 
 class UmlArtefactFigure: UmlFigure {
-    let BASE_WIDTH: CGFloat = 75
-    let BASE_HEIGHT: CGFloat = 100
+    let BASE_WIDTH: CGFloat = 100
+    let BASE_HEIGHT: CGFloat = 150
     
     init(firstPoint: CGPoint, lastPoint: CGPoint) {
         super.init(firstPoint: firstPoint, lastPoint: lastPoint, width: BASE_WIDTH, height: BASE_WIDTH)
         self.itemType = ItemTypeEnum.Artefact
+        self.initializeAnchorPoints()
     }
     
     override init(drawViewModel: DrawViewModel) {
         super.init(drawViewModel: drawViewModel);
+        self.initializeAnchorPoints()
     }
     
     init(origin: CGPoint) {
         super.init(touchedPoint: origin, width: BASE_WIDTH, height: BASE_HEIGHT)
         self.itemType = ItemTypeEnum.Artefact
+        self.initializeAnchorPoints()
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func initializeAnchorPoints() {
+        self.anchorPoints = AnchorPoints(width: self.frame.width, height: self.frame.height - nameLabelHeight)
+        self.layer.addSublayer((self.anchorPoints?.anchorPointsBottom)!)
+        self.layer.addSublayer((self.anchorPoints?.anchorPointsTop)!)
+        self.layer.addSublayer((self.anchorPoints?.anchorPointsLeft)!)
+        self.layer.addSublayer((self.anchorPoints?.anchorPointsRight)!)
+    }
+    
     override func draw(_ rect: CGRect) {
-        let nameLabelHeight: CGFloat = 30
         let inset: CGFloat = (self.lineWidth > 5) ? self.lineWidth : 5
         let width = self.frame.width - inset
         let height = self.frame.height - inset - nameLabelHeight
@@ -70,7 +80,7 @@ class UmlArtefactFigure: UmlFigure {
         let textRect = CGRect(x: 0, y: self.frame.height - nameLabelHeight - 5, width: self.frame.width, height: nameLabelHeight)
         let nameLabel = UILabel(frame: textRect)
         nameLabel.text = self.name
-        nameLabel.contentMode = .top
+        nameLabel.backgroundColor = UIColor.white
         nameLabel.textAlignment = .center
         nameLabel.drawText(in: textRect)
     }

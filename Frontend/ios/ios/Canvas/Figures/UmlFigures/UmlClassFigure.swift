@@ -21,17 +21,20 @@ class UmlClassFigure: UmlFigure {
     init(origin: CGPoint) {
         super.init(touchedPoint: origin, width: BASE_WIDTH, height: BASE_HEIGHT)
         self.itemType = ItemTypeEnum.UmlClass
+        self.initializeAnchorPoints()
     }
     
     init(firstPoint: CGPoint, lastPoint: CGPoint) {
         super.init(firstPoint: firstPoint, lastPoint: lastPoint, width: BASE_WIDTH, height: BASE_WIDTH)
         self.itemType = ItemTypeEnum.UmlClass
+        self.initializeAnchorPoints()
     }
     
     override init(drawViewModel: DrawViewModel) {
         super.init(drawViewModel: drawViewModel);
         self.methods = drawViewModel.Methods!
         self.attributes = drawViewModel.Properties!
+        self.initializeAnchorPoints()
     }
     
     required init?(coder aDecoder: NSCoder) {

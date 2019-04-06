@@ -21,6 +21,7 @@ class UmlFigure : Figure {
     var anchorPoints: AnchorPoints?
     var incomingConnections : [ConnectionFigure: String] = [:]
     var outgoingConnections : [ConnectionFigure: String] = [:]
+    var nameLabelHeight: CGFloat = 30
     
     init(firstPoint: CGPoint, lastPoint: CGPoint, width: CGFloat, height: CGFloat) {
         let frameSize = CGSize(width: abs(firstPoint.x - lastPoint.x), height: abs(firstPoint.y - lastPoint.y))
@@ -41,7 +42,7 @@ class UmlFigure : Figure {
         self.firstPoint = CGPoint(x: touchedPoint.x - width/2, y: touchedPoint.y - height/2)
         self.lastPoint = CGPoint(x: touchedPoint.x + width/2, y: touchedPoint.y + height/2)
         self.initializeBaseStyle()
-        self.initializeAnchorPoints()
+//        self.initializeAnchorPoints()
     }
     
     init(drawViewModel: DrawViewModel) {
@@ -61,7 +62,7 @@ class UmlFigure : Figure {
         self.currentAngle = drawViewModel.Rotation!
         self.lineWidth = CGFloat(drawViewModel.BorderThickness!)
         self.backgroundColor = UIColor.clear
-        self.initializeAnchorPoints()
+//        self.initializeAnchorPoints()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -75,7 +76,7 @@ class UmlFigure : Figure {
         self.backgroundColor = UIColor.clear;
     }
     
-    private func initializeAnchorPoints() {
+    func initializeAnchorPoints() {
         self.anchorPoints = AnchorPoints(width: self.frame.width, height: self.frame.height)
         self.layer.addSublayer((self.anchorPoints?.anchorPointsBottom)!)
         self.layer.addSublayer((self.anchorPoints?.anchorPointsTop)!)

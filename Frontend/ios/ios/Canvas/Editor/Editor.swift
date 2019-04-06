@@ -93,7 +93,6 @@ class Editor {
             self.editorView.addSubview(outline);
         }
         self.selectedOutlinesDictionnary.updateValue(selectionOutlines, forKey: username)
-        print("SELECT hihi", self.selectedOutlinesDictionnary)
     }
     
     func selectLasso(touchPoint: CGPoint) {
@@ -118,7 +117,6 @@ class Editor {
         self.selectedFiguresDictionnary.updateValue([], forKey: username)
         if (selectedOutlinesDictionnary[username] != nil) {
             for outline in self.selectedOutlinesDictionnary[username]! {
-                print("SELECTION REMOVED HIHI")
                 outline.removeFromSuperview()
             }
         }
@@ -234,7 +232,6 @@ class Editor {
     }
     
     public func undo(view: UIView) -> Void {
-        print(undoArray);
         if (undoArray.count > 0) {
             let figure: Figure = undoArray.popLast()!;
             self.redoArray.append(figure);
@@ -421,7 +418,6 @@ extension Editor: CollaborationHubDelegate {
                 self.overriteFigure(figureId: drawViewModel.Guid!, newDrawViewModel: drawViewModel, username: itemMessage.Username)
                 self.deselect(username: itemMessage.Username)
                 self.select(drawViewModels: itemMessage.Items, username: itemMessage.Username)
-                print("AFTER DRAW", self.selectedOutlinesDictionnary)
                 return
             }
                 self.insertNewDrawViewModel(drawViewModel: drawViewModel)
@@ -493,7 +489,7 @@ extension Editor {
             if (figure is UmlFigure) {
                 for pair in (figure as! UmlFigure).anchorPoints!.anchorPointsSnapEdges {
                     // Create a detection area around connection figure extremities
-                    let detectionDiameter: CGFloat = 10
+                    let detectionDiameter: CGFloat = 24
                     let globalPoint: CGPoint = figure.convert(pair.value, to: self.editorView)
                     let areaRect: CGRect = CGRect(
                         x: globalPoint.x - detectionDiameter/2,
@@ -504,10 +500,12 @@ extension Editor {
                     
                     if (areaRect.contains(drawViewModel.StylusPoints![0].getCGPoint())) {
                         (figure as! UmlFigure).addOutgoingConnection(connection: connection, anchor: pair.key)
+                        (figure as! UmlFigure).updateConnections()
                     }
  
                     if (areaRect.contains(drawViewModel.StylusPoints![1].getCGPoint())) {
                         (figure as! UmlFigure).addIncomingConnection(connection: connection, anchor: pair.key)
+                        (figure as! UmlFigure).updateConnections()
                     }
                 }
             }
