@@ -12,13 +12,20 @@ import JWTDecode
 
 class GalleryController: UIViewController {
     
+    // MARK: Outlets
+    
     @IBOutlet weak var collectionView: UICollectionView!
+    
+    // MARK: Class Attributes
     
     private var canvas : [Canvas] = []
     private let itemsPerRow: CGFloat = 4
     private let sectionInsets = UIEdgeInsets(top: 10.0, left: 10.0, bottom: 10.0, right: 10.0)
     private var canvasController: CanvasController = CanvasController()
-    var reach: Reachability?
+    private var reach: Reachability?
+    private var spinner;
+    
+    // MARK: Timing functions
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,8 +38,17 @@ class GalleryController: UIViewController {
         self.loadCanvas()
     }
     
-    func loadCanvas() {
-        let spinner = UIViewController.displaySpinner(onView: self.view);
+    // MARK: Private functions
+    
+    private func loadCanvas() {
+        self.spinner = UIViewController.displaySpinner(onView: self.view);
+        self.updateDataGallery();
+    }
+    deinit {
+        self.canvas = []
+    }
+    
+    private func updateDataGallery() -> Void {
         CanvasService.getAllCanvas(includePrivate: false)
             .done { (retreivedCanvas) in
                 self.canvas = retreivedCanvas
@@ -41,11 +57,7 @@ class GalleryController: UIViewController {
             }.catch { (Error) in
                 print("Fetch for canvas failed", Error)
                 UIViewController.removeSpinner(spinner: spinner);
-        }
-    }
-
-    deinit {
-        self.canvas = []
+            }
     }
 }
 
