@@ -52,9 +52,10 @@ class LoginController: UIViewController, UITextFieldDelegate, WKUIDelegate {
         let token = UserDefaults.standard.string(forKey: "token");
         
         if(token != nil) {
-            print("should logout")
             AuthentificationAPI.logout()
             UserDefaults.standard.removePersistentDomain(forName: "token");
+            UserDefaults.standard.removePersistentDomain(forName: "id");
+
         }
         //        AuthentificationAPI.login(username: emailField.text!, password: passwordField.text!)
         AuthentificationAPI.login(username: "william.sevigny", password: "!12345Aa")
@@ -62,7 +63,7 @@ class LoginController: UIViewController, UITextFieldDelegate, WKUIDelegate {
             .done { (token) in
                 UIViewController.removeSpinner(spinner: spinner);
                 self.validationLabel.text = "";
-                self.storeAuthentificationToken(token: token);
+                self.storeAuthentificationToken(token: token, id: "");
                 
                 let mainController = self.storyboard?.instantiateViewController(withIdentifier: "MainController");
                 self.present(mainController!, animated: true, completion: nil);
@@ -125,8 +126,9 @@ class LoginController: UIViewController, UITextFieldDelegate, WKUIDelegate {
     
     // MARK: Private functions
     
-    private func storeAuthentificationToken(token: String) -> Void {
+    private func storeAuthentificationToken(token: String, id: String) -> Void {
         UserDefaults.standard.set(token, forKey: "token");
+        UserDefaults.standard.set(id, forKey: "id");
         UserDefaults.standard.synchronize();
     }
     
@@ -157,7 +159,7 @@ class LoginController: UIViewController, UITextFieldDelegate, WKUIDelegate {
                         let facebookResponse = response.dictionaryValue as! [String: String]
                         print(facebookResponse)
                         AuthentificationAPI.fbLogin(accessToken: accessToken.authenticationToken, username: facebookResponse["id"]!, email: facebookResponse["email"]!, firstName: facebookResponse["first_name"]!, lastName: facebookResponse["last_name"]!).done({ (token) in
-                            self.storeAuthentificationToken(token: token);
+                            self.storeAuthentificationToken(token: token,id: facebookResponse["id"]!);
                             
                             let mainController = self.storyboard?.instantiateViewController(withIdentifier: "MainController");
                             self.present(mainController!, animated: true, completion: nil);
