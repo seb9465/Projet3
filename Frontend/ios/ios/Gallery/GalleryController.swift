@@ -29,9 +29,9 @@ class GalleryController: UIViewController {
     // MARK: Timing functions
     
     override func viewDidLoad() {
-        super.viewDidLoad()
-        let nib = UINib.init(nibName: "GalleryCell", bundle: nil)
-        self.collectionView.register(nib, forCellWithReuseIdentifier: "GalleryCell")
+        super.viewDidLoad();
+        let nib = UINib.init(nibName: "GalleryCell", bundle: nil);
+        self.collectionView.register(nib, forCellWithReuseIdentifier: "GalleryCell");
         self.canvasController = UIStoryboard(name: "Canvas", bundle: nil).instantiateViewController(withIdentifier: "CanvasController") as! CanvasController;
         self.collectionView.refreshControl = self.refreshCollectionView;
         self.refreshCollectionView.addTarget(self, action: #selector(refreshData(_:)), for: .valueChanged);
