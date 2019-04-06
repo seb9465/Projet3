@@ -19,6 +19,7 @@ class FigureSelectionCell: UITableViewCell {
     @IBOutlet weak var PhaseButton: RoundedCorners!
     @IBOutlet weak var textButton: RoundedCorners!
     @IBOutlet weak var imageButton: RoundedCorners!
+    @IBOutlet weak var lineButton: RoundedCorners!
     
     // Connection figures
     @IBOutlet weak var heritageButton: RoundedCorners!
@@ -123,6 +124,10 @@ class FigureSelectionCell: UITableViewCell {
     @IBAction func compositionSelected(_ sender: Any) {
         self.delegate?.setSelectedFigureType(itemType: ItemTypeEnum.Composition, isConnection: true)
         self.setSelectedButton(button: self.compositionButton)
+    }
+    @IBAction func lineSelected(_ sender: Any) {
+        self.delegate?.setSelectedFigureType(itemType: ItemTypeEnum.Line, isConnection: true)
+        self.setSelectedButton(button: self.lineButton)
     }
 }
 

@@ -9,7 +9,7 @@
 import UIKit
 
 class UmlActorFigure: UmlFigure {
-    let BASE_WIDTH: CGFloat = 50
+    let BASE_WIDTH: CGFloat = 75
     let BASE_HEIGHT: CGFloat = 150
     
     init(firstPoint: CGPoint, lastPoint: CGPoint) {
@@ -47,12 +47,12 @@ class UmlActorFigure: UmlFigure {
         let height = self.frame.height - inset - nameLabelHeight
 
         //// Oval Drawing
-        let ovalPath = UIBezierPath(ovalIn: CGRect(x: inset, y: inset, width: width, height: 2*height/5 - inset))
+        let ovalPath = UIBezierPath(ovalIn: CGRect(x: width/4 + inset, y: inset, width: width/2, height: height/4))
 
         //// Body
         let bezierPath = UIBezierPath()
-        bezierPath.move(to: CGPoint(x: inset + width / 2, y: 2*height/5))
-        bezierPath.addLine(to: CGPoint(x: inset + width / 2, y: 4*height/5))
+        bezierPath.move(to: CGPoint(x: inset + width / 2, y: inset + height/4))
+        bezierPath.addLine(to: CGPoint(x: inset + width / 2, y: 3*height/4))
 
         //// Bras
         let bezier2Path = UIBezierPath()
@@ -62,12 +62,12 @@ class UmlActorFigure: UmlFigure {
 
         //// Bezier 4 Drawing
         let bezier4Path = UIBezierPath()
-        bezier4Path.move(to: CGPoint(x: inset + width/2, y: 4*height/5))
+        bezier4Path.move(to: CGPoint(x: inset + width/2, y: 3*height/4))
         bezier4Path.addLine(to: CGPoint(x: inset, y: height))
         
         //// Bezier 5 Drawing
         let bezier5Path = UIBezierPath()
-        bezier5Path.move(to: CGPoint(x: inset + width/2, y: 4*height/5))
+        bezier5Path.move(to: CGPoint(x: inset + width/2, y: 3*height/4))
         bezier5Path.addLine(to: CGPoint(x: inset + width, y: height))
 
         self.lineColor.setStroke()
@@ -79,6 +79,7 @@ class UmlActorFigure: UmlFigure {
         bezier5Path.lineWidth = self.lineWidth
 
         if(self.isBorderDashed) {
+            ovalPath.setLineDash([4,4], count: 1, phase: 0)
             bezierPath.setLineDash([4,4], count: 1, phase: 0)
             bezier2Path.setLineDash([4,4], count: 1, phase: 0)
             bezier4Path.setLineDash([4,4], count: 1, phase: 0)

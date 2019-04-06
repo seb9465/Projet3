@@ -30,6 +30,8 @@ class ConnectionFigure : Figure {
         super.init(frame: frame)
         self.backgroundColor = UIColor.init(white: 0.0, alpha: 0.0)
         self.itemType = itemType
+        self.firstPoint = origin
+        self.lastPoint = destination
         self.initializePoints(origin: origin, destination: destination)
         self.initializeAnchors()
     }

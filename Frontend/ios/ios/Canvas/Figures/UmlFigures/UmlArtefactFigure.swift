@@ -50,17 +50,17 @@ class UmlArtefactFigure: UmlFigure {
         let bezier2Path = UIBezierPath()
         bezier2Path.move(to: CGPoint(x: inset, y: height))
         bezier2Path.addLine(to: CGPoint(x: width, y: height))
-        bezier2Path.addLine(to: CGPoint(x: width, y: 25))
-        bezier2Path.addLine(to: CGPoint(x: width - 20, y: 25))
-        bezier2Path.addLine(to: CGPoint(x: width - 20, y: inset))
+        bezier2Path.addLine(to: CGPoint(x: width, y: height/6))
+        bezier2Path.addLine(to: CGPoint(x: width * 5/6, y: height/6))
+        bezier2Path.addLine(to: CGPoint(x: width * 5/6, y: inset))
         bezier2Path.addLine(to: CGPoint(x: inset, y: inset))
         bezier2Path.addLine(to: CGPoint(x: inset, y: height))
         bezier2Path.close()
         
         //// Bezier 3 Drawing
         let bezier3Path = UIBezierPath()
-        bezier3Path.move(to: CGPoint(x: width - 20, y: inset))
-        bezier3Path.addLine(to: CGPoint(x: width, y: 25))
+        bezier3Path.move(to: CGPoint(x: width * 5/6, y: inset))
+        bezier3Path.addLine(to: CGPoint(x: width, y: height/6))
 
         self.figureColor.setFill()
         self.lineColor.setStroke()

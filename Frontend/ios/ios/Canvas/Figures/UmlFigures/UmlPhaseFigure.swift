@@ -52,7 +52,7 @@ class UmlPhaseFigure: UmlFigure {
             commentRectPath.setLineDash([4,4], count: 1, phase: 0)
         }
         outerRectPath.lineWidth = self.lineWidth
-        outerRectPath.fill()
+//        outerRectPath.fill()
         outerRectPath.stroke()
         commentRectPath.lineWidth = self.lineWidth
         commentRectPath.fill()

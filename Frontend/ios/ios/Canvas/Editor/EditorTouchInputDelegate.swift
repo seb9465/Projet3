@@ -207,7 +207,7 @@ extension Editor : TouchInputDelegate {
 
             CollaborationHub.shared!.selectObjects(drawViewModels: self.getSelectedFiguresDrawviewModels())
             self.deselectLasso();
-            self.touchEventState = .AREA_SELECT
+            self.touchEventState = .SELECT
             return
         }
         
@@ -233,6 +233,8 @@ extension Editor : TouchInputDelegate {
         }
         
         if (self.touchEventState == .ELBOW) {
+            CollaborationHub.shared!.postNewFigure(figures: self.selectedFigures)
+            CollaborationHub.shared!.selectObjects(drawViewModels: self.getSelectedFiguresDrawviewModels())
             self.touchEventState = .SELECT
             return
         }
