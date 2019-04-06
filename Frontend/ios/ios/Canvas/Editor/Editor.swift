@@ -141,11 +141,11 @@ class Editor {
         }
     }
     
-    func copy() {
-        self.clipboard = self.selectedFigures
+    public func copy() -> Void {
+        self.clipboard = self.selectedFigures;
     }
     
-    func duplicate() -> Void {
+    public func duplicate() -> Void {
         if (self.selectedFigures.count > 0) {
             self.copy();
             self.deselect();
@@ -175,7 +175,7 @@ class Editor {
         CanvasService.saveOnNewFigure(figures: self.figures, editor: self);
     }
     
-    func cut() {
+    public func cut() -> Void {
         self.copy();
         self.deleteSelectedFigures();
     }
