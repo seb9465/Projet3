@@ -41,8 +41,13 @@ class DashboardController: UIViewController, UITextFieldDelegate {
         self.dismiss(animated: true, completion: nil)
     }
     @IBAction func createNewCanvas(_ sender: Any) {
+        let token = UserDefaults.standard.string(forKey: "token");
+        let jwt = try! decode(jwt: token!)
+        let username = jwt.claim(name: "unique_name").string
+        
         var newCanvas: Canvas = Canvas()
         newCanvas.canvasId = UUID().uuidString
+        newCanvas.canvasAutor = username!
         canvasId = newCanvas.canvasId
         let createAlert = UIAlertController(title: "Create Canvas", message: "Please enter the new canvas name and it's visibility.", preferredStyle: .alert)
         createAlert.addTextField(configurationHandler: { (textField) in

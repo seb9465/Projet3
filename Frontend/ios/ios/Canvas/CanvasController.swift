@@ -10,6 +10,8 @@ import ChromaColorPicker
 import UIKit
 import Reachability
 import Foundation
+import JWTDecode
+
 var canvasId: String = ""
 var currentCanvas: Canvas = Canvas()
 
@@ -23,7 +25,9 @@ class CanvasController: UIViewController {
     @IBOutlet var deleteButton: UIBarButtonItem!
     @IBOutlet weak var lassoButton: UIBarButtonItem!
     @IBOutlet weak var quitButton: UIBarButtonItem!
+    @IBOutlet weak var switchButton: UISwitch!
     
+    @IBOutlet weak var protectionLabel: UILabel!
     @IBOutlet weak var cutButton: UIBarButtonItem!
     @IBOutlet weak var pasteButton: UIBarButtonItem!
     @IBOutlet weak var exportButton: UIBarButtonItem!
@@ -39,7 +43,6 @@ class CanvasController: UIViewController {
         CollaborationHub.shared!.connectToHub()
         CollaborationHub.shared!.delegate = self.editor
         self.view.addSubview(self.editor.editorView)
-        
         setupNetwork()
         
     }
@@ -49,6 +52,19 @@ class CanvasController: UIViewController {
         self.editor.loadCanvas(drawViewModels: drawViewModels)
         self.editor.resize(width: CGFloat(currentCanvas.canvasWidth), heigth: CGFloat(currentCanvas.canvasHeight))
         print(String(currentCanvas.canvasWidth) + String(currentCanvas.canvasHeight))
+        let token = UserDefaults.standard.string(forKey: "token");
+        let jwt = try! decode(jwt: token!)
+        let username = jwt.claim(name: "unique_name").string
+        if(currentCanvas.canvasAutor == username){
+            self.protectionLabel.isHidden = false;
+            self.switchButton.isHidden = false
+            self.switchButton.isOn = currentCanvas.canvasProtection != ""
+        } else {
+            self.protectionLabel.isHidden = true;
+            self.switchButton.isHidden = true
+            self.switchButton.isOn = false
+        }
+        
     }
     func setupNetwork() {
         NotificationCenter.default.addObserver(
@@ -175,6 +191,29 @@ class CanvasController: UIViewController {
             let ac = UIAlertController(title: "Saved!", message: "Your canvas has been saved to your photos.", preferredStyle: .alert)
             ac.addAction(UIAlertAction(title: "OK", style: .default))
             present(ac, animated: true)
+        }
+    }
+    
+    @IBAction func switchButtonChanged (sender: UISwitch) {
+        if(sender.isOn) {
+            let passwordAlert = UIAlertController(title: "Password protection", message: "Please enter a password for this canvas", preferredStyle: .alert);
+            passwordAlert.addTextField(configurationHandler: { (textField) in
+                textField.placeholder = "password"
+                textField.isSecureTextEntry = true
+            })
+            passwordAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { alert in
+                sender.isOn = false
+            }))
+            passwordAlert.addAction(UIAlertAction(title: "Confirm", style: .default, handler: { alert in
+                let enteredPassword = passwordAlert.textFields![0].text!
+                // kick le monde
+                currentCanvas.canvasProtection = enteredPassword
+                CanvasService.SaveOnline(canvas: currentCanvas)
+            }))
+            self.present(passwordAlert, animated: true, completion: nil)
+        } else {
+            currentCanvas.canvasProtection = ""
+            CanvasService.SaveOnline(canvas: currentCanvas)
         }
     }
     
