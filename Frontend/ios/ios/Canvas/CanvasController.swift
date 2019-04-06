@@ -356,8 +356,11 @@ class CanvasController: UIViewController {
 extension CanvasController: EditorDelegate {
     func getKicked() {
         let updatedAlert = UIAlertController(title: "Kicked out", message: "You got kicked out because a password protection was added", preferredStyle: .alert)
-        updatedAlert.addAction(UIAlertAction(title: "OK", style: .default))
-        self.present(updatedAlert, animated: true, completion: nil);
-        self.dismiss(animated: true, completion: nil)
+        let okAction: UIAlertAction = UIAlertAction(title: "Ok", style: .default, handler: { _ in
+            self.dismiss(animated: true, completion: nil)
+        });
+        updatedAlert.addAction(okAction)
+        self.present(updatedAlert, animated: true, completion: {
+        });
     }
 }
