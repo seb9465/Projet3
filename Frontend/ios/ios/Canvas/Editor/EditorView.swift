@@ -29,13 +29,13 @@ class EditorView: UIView {
         self.layer.addSublayer(self.canvasAnchor!)
     }
     
-    func updateCanvasAnchor() -> Void {
+    func updateCanvasAnchor() {
         if (self.canvasAnchor != nil) {
-            self.canvasAnchor?.removeFromSuperlayer();
+            self.canvasAnchor?.removeFromSuperlayer()
         }
-        self.canvasAnchor = CanvasAnchor(position: CGPoint(x: self.frame.width, y: self.frame.height));
-        self.layer.addSublayer(self.canvasAnchor!);
-        setNeedsDisplay();
+        self.canvasAnchor = CanvasAnchor(position: CGPoint(x: self.frame.width, y: self.frame.height))
+        self.layer.addSublayer(self.canvasAnchor!)
+        setNeedsDisplay()
     }
     
     func isPointOnAnchor(point: CGPoint) -> Bool{
