@@ -51,7 +51,8 @@ class Editor {
     }
     
     func resize(width: CGFloat, heigth: CGFloat) {
-        print("resizing")
+        currentCanvas.canvasHeight = Float(heigth)
+        currentCanvas.canvasWidth = Float(width)
         let origin: CGPoint = CGPoint(x: 250, y: 70)
         let size = CGSize(width: width, height: heigth)
         let newFrame: CGRect = CGRect(origin: origin, size: size)
@@ -59,7 +60,6 @@ class Editor {
         self.editorView.updateCanvasAnchor()
         self.editorView.setNeedsDisplay()
     }
-    
     // Select made locally
     func select(figure: Figure) {
         let selectionOutline: SelectionOutline = SelectionOutline(frame: figure.getSelectionFrame(), associatedFigureID: figure.uuid, delegate: self)
@@ -403,6 +403,10 @@ extension Editor: SideToolbarDelegate {
 }
 
 extension Editor: CollaborationHubDelegate {
+    func resizeCanvas(size: PolyPaintStylusPoint) {
+        self.resize(width: CGFloat(size.X), heigth: CGFloat(size.Y))
+    }
+    
     func updateSelection(itemMessage: ItemMessage) {
         if (itemMessage.Items.isEmpty) {
             self.deselect(username: itemMessage.Username)

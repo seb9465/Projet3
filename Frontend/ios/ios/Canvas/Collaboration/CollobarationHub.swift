@@ -16,6 +16,7 @@ protocol CollaborationHubDelegate {
     func updateClear();
     func delete(username: String)
     func getKicked()
+    func resizeCanvas(size: PolyPaintStylusPoint)
 }
 
 class CollaborationHub {
@@ -49,6 +50,7 @@ class CollaborationHub {
         self.onSelect()
         self.onCut()
         self.onKicked()
+        self.onResizeCanvas()
         //        self.onFetchChannels()
     }
     
@@ -101,6 +103,31 @@ class CollaborationHub {
             self.delegate?.getKicked()
         })
     }
+    public func ResizeCanvas(width: Double, height: Double) {
+        print("[ Collab ] Invoke ResizeCanvas");
+        let sizeMessage: SizeMessage = SizeMessage(Size: PolyPaintStylusPoint(X: width, Y: height, PressureFactor: 1.0))
+        let jsonEncoder = JSONEncoder()
+        let jsonData = try! jsonEncoder.encode(sizeMessage)
+        let jsonString = String(data: jsonData, encoding: .utf8)
+        self.hubConnection!.invoke(method: "ResizeCanvas", arguments: [jsonString], invocationDidComplete: { (error) in
+            if (error != nil) {
+                print("ERROR while invoking ResizeCanvas.");
+                print(error!);
+                return
+            }
+        });
+    }
+    
+    public func onResizeCanvas() {
+        self.hubConnection!.on(method: "ResizeCanvas", callback: { args, typeConverter in
+            let json: String = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self)!;
+            if let jsonData = json.data(using: .utf8) {
+                let obj: SizeMessage = try! JSONDecoder().decode(SizeMessage.self, from: jsonData);
+                self.delegate?.resizeCanvas(size: obj.Size)
+                print("[ Collab ] Resizing Canvas")
+            }})
+    }
+    
     public func onConnectToChannel() -> Void {
         self.hubConnection!.on(method: "ConnectToChannel", callback: { args, typeConverter in
             print("[ Collab ] On ConnectToChannel");

@@ -6,7 +6,6 @@
 //  Copyright © 2019 LOG3000 equipe 12. All rights reserved.
 //
 
-import UIKit
 struct ProtectionMessage: Codable {
     var ChannelId: String
     var IsProtected: Bool

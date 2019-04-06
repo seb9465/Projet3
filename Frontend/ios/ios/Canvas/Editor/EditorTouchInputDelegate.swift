@@ -236,6 +236,8 @@ extension Editor : TouchInputDelegate {
         }
         if (self.touchEventState == .CANVAS_RESIZE) {
             self.resize(width: point.x, heigth: point.y)
+            CollaborationHub.shared?.ResizeCanvas(width: Double(point.x), height: Double(point.y))
+            CanvasService.saveOnNewFigure(figures: self.figures, editor: self)
             self.touchEventState = .SELECT
             return
         }
