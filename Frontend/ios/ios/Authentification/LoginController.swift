@@ -12,6 +12,7 @@ import PromiseKit
 import AwaitKit
 import WebKit
 import FacebookLogin
+import FacebookCore
 import JWTDecode
 class LoginController: UIViewController, UITextFieldDelegate, WKUIDelegate {
     
@@ -35,7 +36,6 @@ class LoginController: UIViewController, UITextFieldDelegate, WKUIDelegate {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil);
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil);
         
-        view.addSubview(loginButton)
         // TODO: DÉCOMMENTÉ LES PROCHAINES LIGNES POUR LA VERSION RELEASE.
         //        self.loginButton.isUserInteractionEnabled = false;
         //        self.loginButton.alpha = 0.5;
@@ -66,11 +66,10 @@ class LoginController: UIViewController, UITextFieldDelegate, WKUIDelegate {
                 
                 let mainController = self.storyboard?.instantiateViewController(withIdentifier: "MainController");
                 self.present(mainController!, animated: true, completion: nil);
-            }.catch { (Error) in
+            }.catch { (responseError) in
                 UIViewController.removeSpinner(spinner: spinner);
                 // TODO: Afficher le bon message d'erreur. En attente du serveur.
-                self.validationLabel.text = "Invalid Credentials";
-                print(Error);
+                self.validationLabel.text = responseError.localizedDescription;
         }
     }
     
@@ -139,31 +138,45 @@ class LoginController: UIViewController, UITextFieldDelegate, WKUIDelegate {
     }
     
     @IBAction func facebookButtonClicked(_ sender: Any) {
+        self.validationLabel.text = "";
         let loginManager = LoginManager()
-        loginManager.loginBehavior = .web
+ //       loginManager.loginBehavior = .web
         loginManager.logIn(readPermissions: [.email, .publicProfile], viewController: self, completion: { loginResult in
             switch loginResult {
             case .failed(let error):
-                print(error)
+               self.showErrorMessage()
             case .cancelled:
                 print("User cancelled login.")
             case .success(let grantedPermissions, let declinedPermissions, let accessToken):
-                print(accessToken)
                 print("Logged in!")
-                AuthentificationAPI.fbLogin(accessToken: accessToken.authenticationToken, username: "test", email: "test@test.com").done({ (token) in
-                    print("CALLBACK WORKS")
-                })
+                
+                let connection = GraphRequestConnection()
+                connection.add( GraphRequest(graphPath: "me", parameters: ["fields":"email,id,first_name,last_name"], accessToken: AccessToken.current, httpMethod: .GET, apiVersion: FacebookCore.GraphAPIVersion.defaultVersion)) { httpResponse, result in
+                    switch result {
+                    case .success(let response):
+                        let facebookResponse = response.dictionaryValue as! [String: String]
+                        print(facebookResponse)
+                        AuthentificationAPI.fbLogin(accessToken: accessToken.authenticationToken, username: facebookResponse["id"]!, email: facebookResponse["email"]!, firstName: facebookResponse["first_name"]!, lastName: facebookResponse["last_name"]!).done({ (token) in
+                            self.storeAuthentificationToken(token: token);
+                            
+                            let mainController = self.storyboard?.instantiateViewController(withIdentifier: "MainController");
+                            self.present(mainController!, animated: true, completion: nil);
+                        }).catch({(Error) in
+                            self.validationLabel.text = Error.localizedDescription;
+                        })
+                    case .failed(let error):
+                        print(error)
+                        self.showErrorMessage()
+                    }
+                }
+                connection.start()
             }
         })
     }
+    public func showErrorMessage() {
+        let alert: UIAlertController = UIAlertController(title: "Error!", message: "An error as occured. Please try again.", preferredStyle: .alert);
+        let okAction: UIAlertAction = UIAlertAction(title: "Ok", style: .default, handler: nil);
+        alert.addAction(okAction);
+        self.present(alert, animated: true, completion: nil)
+    }
 }
-/*var webView: WKWebView!
- 
- let webConfiguration = WKWebViewConfiguration()
- webView = WKWebView(frame: .zero, configuration: webConfiguration)
- webView.uiDelegate = self
- view = webView
- let myURL = URL(string:"https://www.polypaint.me/api/login")
- let myRequest = URLRequest(url: myURL!)
- webView.load(myRequest)
- */
