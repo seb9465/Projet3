@@ -204,11 +204,8 @@ extension Editor : TouchInputDelegate {
                     self.select(figure: figure);
                 }
             }
-            var drawViewModels: [DrawViewModel] = []
-            for figure in selectedFigures {
-                drawViewModels.append(figure.exportViewModel()!)
-            }
-            CollaborationHub.shared!.selectObjects(drawViewModels: drawViewModels)
+
+            CollaborationHub.shared!.selectObjects(drawViewModels: self.getSelectedFiguresDrawviewModels())
             self.deselectLasso();
             self.touchEventState = .AREA_SELECT
             return
@@ -229,13 +226,8 @@ extension Editor : TouchInputDelegate {
                 }
             }
 
-            CollaborationHub.shared!.postNewFigure(figures: figuresToUpdate)
-            
-            var drawViewModels: [DrawViewModel] = []
-            for figure in selectedFigures {
-                drawViewModels.append(figure.exportViewModel()!)
-            }
-            CollaborationHub.shared!.selectObjects(drawViewModels: drawViewModels)
+            CollaborationHub.shared!.postNewFigure(figures: self.selectedFigures)
+            CollaborationHub.shared!.selectObjects(drawViewModels: self.getSelectedFiguresDrawviewModels())
             self.touchEventState = .SELECT
             return
         }

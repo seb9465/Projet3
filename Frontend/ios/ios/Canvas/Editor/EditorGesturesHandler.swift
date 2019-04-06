@@ -61,5 +61,10 @@ extension Editor {
         self.selectedFigures[0].resize(by: CGPoint(x: xScale, y: yScale))
         let outlineIndex: Int = self.selectionOutlines.firstIndex(where: { $0.associatedFigureID == self.selectedFigures[0].uuid })!
         self.selectionOutlines[outlineIndex].updateOutline(newFrame: self.selectedFigures[0].getSelectionFrame())
+        if (sender.state == .cancelled || sender.state == .ended) {
+            print("Stopped")
+            CollaborationHub.shared!.postNewFigure(figures: self.selectedFigures)
+            CollaborationHub.shared!.selectObjects(drawViewModels: self.getSelectedFiguresDrawviewModels())
+        }
     }
 }
