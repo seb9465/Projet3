@@ -31,7 +31,6 @@ class CanvasController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad();
-        self.duplicateButton.isEnabled = false
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
         
@@ -90,13 +89,17 @@ class CanvasController: UIViewController {
     
     @IBAction func cutButtonPressed(_ sender: Any) {
         self.editor.cut()
-        if(self.editor.clipboard.count > 0) {
-            self.duplicateButton.isEnabled = true
-        }
     }
     
     @IBAction func duplicateButtonPressed(_ sender: Any) {
-        self.editor.duplicate()
+        if (self.editor.selectedFigures.count == 0 && self.editor.clipboard.count == 0) {
+            let alert: UIAlertController = UIAlertController(title: "Nothing to duplicate!", message: "Clipboard is empty and no figures are selected.", preferredStyle: .alert);
+            let okAction: UIAlertAction = UIAlertAction(title: "Alright!", style: .default, handler: nil);
+            alert.addAction(okAction);
+            self.present(alert, animated: true);
+        } else {
+            self.editor.duplicate();
+        }
     }
     
     @IBAction func clearButton(_ sender: Any) {

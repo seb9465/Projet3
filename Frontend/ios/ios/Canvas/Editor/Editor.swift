@@ -151,14 +151,14 @@ class Editor {
             self.deselect();
         }
         
-        if (self.clipboard.count == 0) {
-            let alert: UIAlertController = UIAlertController(title: "Nothing to duplicate!", message: "Clipboard is empty and no figures are selected.", preferredStyle: .alert);
-            let okAction: UIAlertAction = UIAlertAction(title: "Alright!", style: .default, handler: nil);
-            alert.addAction(okAction);
-            self.present(alert);
-            
-            return;
-        }
+//        if (self.clipboard.count == 0) {
+//            let alert: UIAlertController = UIAlertController(title: "Nothing to duplicate!", message: "Clipboard is empty and no figures are selected.", preferredStyle: .alert);
+//            let okAction: UIAlertAction = UIAlertAction(title: "Alright!", style: .default, handler: nil);
+//            alert.addAction(okAction);
+//            self.editorView.window?.rootViewController!.present(alert, animated: true);
+//            
+//            return;
+//        }
         
         for figure in self.clipboard {
             var viewModel = figure.exportViewModel()!;
