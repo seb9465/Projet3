@@ -29,12 +29,11 @@ class CanvasController: UIViewController {
     
     @IBOutlet weak var protectionLabel: UILabel!
     @IBOutlet weak var cutButton: UIBarButtonItem!
-    @IBOutlet weak var pasteButton: UIBarButtonItem!
+    @IBOutlet weak var duplicateButton: UIBarButtonItem!
     @IBOutlet weak var exportButton: UIBarButtonItem!
     @IBOutlet var navigationBar: UIToolbar!
     override func viewDidLoad() {
         super.viewDidLoad();
-        self.pasteButton.isEnabled = false
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
         
@@ -42,6 +41,7 @@ class CanvasController: UIViewController {
         CollaborationHub.shared = CollaborationHub(channelId: canvasId)
         CollaborationHub.shared!.connectToHub()
         CollaborationHub.shared!.delegate = self.editor
+        self.editor.delegate = self
         self.view.addSubview(self.editor.editorView)
         setupNetwork()
         
@@ -104,12 +104,17 @@ class CanvasController: UIViewController {
     
     @IBAction func cutButtonPressed(_ sender: Any) {
         self.editor.cut()
-        if(self.editor.clipboard.count > 0) {
-            self.pasteButton.isEnabled = true
-        }
     }
-    @IBAction func pasteButtonPressed(_ sender: Any) {
-        self.editor.paste()
+    
+    @IBAction func duplicateButtonPressed(_ sender: Any) {
+        if (self.editor.selectedFigures.count == 0 && self.editor.clipboard.count == 0) {
+            let alert: UIAlertController = UIAlertController(title: "Nothing to duplicate!", message: "Clipboard is empty and no figures are selected.", preferredStyle: .alert);
+            let okAction: UIAlertAction = UIAlertAction(title: "Alright!", style: .default, handler: nil);
+            alert.addAction(okAction);
+            self.present(alert, animated: true);
+        } else {
+            self.editor.duplicate();
+        }
     }
     @IBAction func clearButton(_ sender: Any) {
         self.editor.clear()
@@ -214,12 +219,14 @@ class CanvasController: UIViewController {
                 self.protectionLabel.text = "Password Protection is ON"
                 currentCanvas.canvasProtection = enteredPassword
                 CanvasService.SaveOnline(canvas: currentCanvas)
+                CollaborationHub.shared!.changeProtection(isProtected: true)
             }))
             self.present(passwordAlert, animated: true, completion: nil)
         } else {
             self.protectionLabel.text = "Password Protection is OFF"
             currentCanvas.canvasProtection = ""
             CanvasService.SaveOnline(canvas: currentCanvas)
+            CollaborationHub.shared!.changeProtection(isProtected: false)
         }
     }
     
@@ -295,5 +302,14 @@ class CanvasController: UIViewController {
         }
     }
     deinit {
+    }
+}
+
+extension CanvasController: EditorDelegate {
+    func getKicked() {
+        let updatedAlert = UIAlertController(title: "Kicked out", message: "You got kicked out because a password protection was added", preferredStyle: .alert)
+        updatedAlert.addAction(UIAlertAction(title: "OK", style: .default))
+        self.present(updatedAlert, animated: true, completion: nil);
+        self.dismiss(animated: true, completion: nil)
     }
 }

@@ -61,7 +61,7 @@
                                     <barButtonItem title="Duplicate" id="BjU-u4-eJ6" userLabel="Paste">
                                         <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
-                                            <action selector="pasteButtonPressed:" destination="Vts-He-P18" id="ZyN-In-isq"/>
+                                            <action selector="duplicateButtonPressed:" destination="Vts-He-P18" id="ZyN-In-isq"/>
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem title="Delete" id="5ld-32-8cy">
@@ -133,7 +133,7 @@
                         <outlet property="insertButton" destination="SLY-eP-ACv" id="oPa-Hm-WsF"/>
                         <outlet property="lassoButton" destination="Ttp-DJ-46z" id="SF8-4U-zfW"/>
                         <outlet property="navigationBar" destination="P0r-rK-G4e" id="Xne-YZ-5HS"/>
-                        <outlet property="pasteButton" destination="BjU-u4-eJ6" id="OB9-tG-azy"/>
+                        <outlet property="duplicateButton" destination="BjU-u4-eJ6" id="OB9-tG-azy"/>
                         <outlet property="protectionLabel" destination="CBO-ut-RYj" id="Gnd-Wf-th0"/>
                         <outlet property="quitButton" destination="4Er-Gx-QB8" id="gU4-l3-2x6"/>
                         <outlet property="selectButton" destination="Lts-nR-qFd" id="AOd-xa-kni"/>

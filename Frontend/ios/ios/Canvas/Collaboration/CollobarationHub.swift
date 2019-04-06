@@ -15,6 +15,7 @@ protocol CollaborationHubDelegate {
     func updateSelection(itemMessage: ItemMessage)
     func updateClear();
     func delete(username: String)
+    func getKicked()
 }
 
 class CollaborationHub {
@@ -47,6 +48,7 @@ class CollaborationHub {
         self.onReset()
         self.onSelect()
         self.onCut()
+        self.onKicked()
         //        self.onFetchChannels()
     }
     
@@ -56,9 +58,9 @@ class CollaborationHub {
     }
     public func disconnectFromHub() -> Void {
         if(self.hubConnection != nil){
-        self.hubConnection!.stop();
-        self.hubConnection = nil
-        print("[ Collab ] Disconnecting from hub")
+            self.hubConnection!.stop();
+            self.hubConnection = nil
+            print("[ Collab ] Disconnecting from hub")
         }
     }
     
@@ -78,7 +80,27 @@ class CollaborationHub {
             }
         });
     }
+    public func changeProtection(isProtected: Bool) -> Void {
+        print("[ Collab ] ChangeProtection");
+        let protectionMessage: ProtectionMessage = ProtectionMessage(ChannelId: self.channelId, IsProtected: isProtected)
+        let jsonEncoder = JSONEncoder()
+        let jsonData = try! jsonEncoder.encode(protectionMessage)
+        let jsonString = String(data: jsonData, encoding: .utf8)
+        self.hubConnection!.invoke(method: "ChangeProtection", arguments: [jsonString], invocationDidComplete: { (error) in
+            if (error != nil) {
+                print("ERROR while invoking ChangeProtection.");
+                print(error!);
+                return
+            }
+        });
+    }
     
+    public func onKicked() {
+        self.hubConnection!.on(method: "Kicked", callback: { args, typeConverter in
+            print("[ Collab ] On Kicked -> On criss tout le mode dehors");
+            self.delegate?.getKicked()
+        })
+    }
     public func onConnectToChannel() -> Void {
         self.hubConnection!.on(method: "ConnectToChannel", callback: { args, typeConverter in
             print("[ Collab ] On ConnectToChannel");
@@ -107,11 +129,11 @@ class CollaborationHub {
             Username: username!,
             Items: viewModels
         )
-
+        
         let jsonEncoder = JSONEncoder()
         let jsonData = try! jsonEncoder.encode(itemMessage)
         let jsonString = String(data: jsonData, encoding: .utf8)
-
+        
         self.hubConnection!.invoke(method: "Draw", arguments: [jsonString], invocationDidComplete: { (Error) in
             if (Error != nil) {
                 print("Error calling draw", Error!)
@@ -128,7 +150,7 @@ class CollaborationHub {
             CanvasId: self.channelId,
             Username: username!,
             Items: drawViewModels
-            )
+        )
         
         let jsonEncoder = JSONEncoder()
         let jsonData = try! jsonEncoder.encode(itemMessage)
@@ -179,7 +201,7 @@ class CollaborationHub {
     public func onDraw() -> Void {
         self.hubConnection!.on(method: "Draw", callback: { (args, typeConverter) in
             print("[ Collab ] Received new figure")
-
+            
             let jsonString: String = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self)!;
             let jsonData = jsonString.data(using: .utf8)
             let itemMessage: ItemMessage = try! JSONDecoder().decode(ItemMessage.self, from: jsonData!);
