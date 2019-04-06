@@ -6,6 +6,7 @@
      TextElement.FontSize="13"
      TextOptions.TextFormattingMode="Ideal"
      TextOptions.TextRenderingMode="Auto"
+     WindowState="Maximized"
      Background="{DynamicResource MaterialDesignPaper}"
      FontFamily="{DynamicResource MaterialDesignFont}"
      Loaded="Window_Loaded"
@@ -18,7 +19,7 @@
         xmlns:convertisseurs="clr-namespace:PolyPaint.Convertisseurs"        
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit" x:Class="PolyPaint.FenetreDessin"
         mc:Ignorable="d"
-        Title="Poly Paint" Height="685" Width="1335.556" MinWidth="627" MinHeight="200">
+        Title="Poly Paint" MinHeight="1066" MinWidth="1335.556">
     <Window.Resources>
         <convertisseurs:ConvertisseurBordure x:Key="convertisseurBordure" />
         <convertisseurs:ConvertisseurCouleurFond x:Key="convertisseurCouleurFond" />
@@ -209,7 +210,7 @@
                         <StackPanel>
                             <Image Source="/Resources/a.png" Height="25" Width="25"  />
                         </StackPanel>
-                    </Button>                    
+                    </Button>
                     <StackPanel Orientation="Horizontal">
                         <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Width="2"  />
                     </StackPanel>
@@ -282,12 +283,12 @@
                             </Button>
                         </StackPanel>
                     </StackPanel>
-                    
+
                 </StackPanel>
             </Border>
 
 
-            <StackPanel x:Name="PropertiesMenu" Width="70"  HorizontalAlignment="Right" Height="700" Background="#cccccc">
+            <StackPanel x:Name="PropertiesMenu" Width="70"  HorizontalAlignment="Right" Background="#cccccc" Margin="0,0,0,-518">
                 <xctk:ColorPicker x:Name="selecteurCouleurBordure"                             
                         VerticalContentAlignment="Stretch"
                         Background="#00000000"
@@ -374,7 +375,7 @@
                     </StackPanel>
                 </StackPanel>
             </StackPanel>
-                <Grid DockPanel.Dock="Left" Margin="0,1,0,0">
+            <Grid DockPanel.Dock="Left" Margin="0,1,0,0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Name="colonne" Width="550" />
                     <ColumnDefinition Width="6" />
@@ -396,14 +397,14 @@
                       DragStarted="GlisserCommence" DragCompleted="GlisserTermine"
                       />
                 <Border BorderThickness="5,5,0,0" Grid.ColumnSpan="2" Margin="0,0,-696,-236" Grid.RowSpan="2">
-                        <InkCanvas ClipToBounds="True" Grid.Column="0" Grid.Row="0" Name="surfaceDessin" Margin="10" Width="1000" Height="500"
+                    <InkCanvas ClipToBounds="True" Grid.Column="0" Grid.Row="0" Name="surfaceDessin" Margin="10" Width="1000" Height="500"
                            HorizontalAlignment="Left" VerticalAlignment="Top"
                            MouseMove="surfaceDessin_MouseMove"
                            PreviewMouseMove="InkCanvas_LeftMouseMove"
                            MouseUp="InkCanvas_LeftMouseUp"
                            MouseDown="InkCanvas_LeftMouseDown"
                            SelectionMoving="InkCanvas_SelectionMoving"
-                           SelectionResizing="InkCanvas_SelectionMoving"
+                           SelectionResizing="InkCanvas_SelectionResizing"
                            SelectionMoved="UpdateAdorner"
                            SelectionResized="UpdateAdorner"
                            Strokes="{Binding Path=Traits, Mode=OneTime}"
@@ -423,14 +424,14 @@
                                 </MenuItem>
                             </ContextMenu>
                         </InkCanvas.ContextMenu>
-                        </InkCanvas>
+                    </InkCanvas>
                     <Border.Effect>
                         <DropShadowEffect Opacity="0.3" BlurRadius="10"/>
                     </Border.Effect>
                 </Border>
-                
+
             </Grid>
-            <StackPanel x:Name="chatMenu" Background="#cccccc" Width="70"  HorizontalAlignment="Right" Height="700" >
+            <StackPanel x:Name="chatMenu" Background="#cccccc" Width="70"  HorizontalAlignment="Right" Margin="0,0,0,-495" >
 
                 <ToggleButton x:Name="hamburgerMenu" Style="{StaticResource MaterialDesignActionToggleButton}" Foreground="Black" Background="Transparent" Click="hamburgerMenu_Click" Margin="0,10,20,0" HorizontalAlignment="Right">
                     <ToggleButton.Content>

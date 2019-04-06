@@ -1,5 +1,7 @@
 ﻿using PolyPaint.Utilitaires;
 using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -67,22 +69,6 @@ namespace PolyPaint.Strokes
                 UnrotatedTopLeft.X + UnrotatedWidth / 2.0 - Title.Width / 2.0,
                 UnrotatedTopLeft.Y + UnrotatedHeight + 10
             ));
-        }
-
-        private void DrawAnchorPoints(DrawingContext drawingContext)
-        {
-            SolidColorBrush brush = new SolidColorBrush(Colors.Gray);
-
-            AnchorPoints[0] = new Point(UnrotatedTopLeft.X + UnrotatedWidth / 2, UnrotatedTopLeft.Y);
-            AnchorPoints[1] = new Point(UnrotatedTopLeft.X + UnrotatedWidth / 2, UnrotatedTopLeft.Y + UnrotatedHeight);
-            AnchorPoints[2] = new Point(UnrotatedTopLeft.X + UnrotatedWidth, UnrotatedTopLeft.Y + UnrotatedHeight / 2);
-            AnchorPoints[3] = new Point(UnrotatedTopLeft.X + 1.0 / 6.0 * UnrotatedWidth, UnrotatedTopLeft.Y + UnrotatedHeight / 2.0);
-            AnchorPoints = AnchorPoints.ToList().Select(x => Tools.RotatePoint(x, Center, Rotation)).ToArray();
-
-            drawingContext.DrawEllipse(brush, null, AnchorPoints[0], 3, 3);
-            drawingContext.DrawEllipse(brush, null, AnchorPoints[1], 3, 3);
-            drawingContext.DrawEllipse(brush, null, AnchorPoints[2], 3, 3);
-            drawingContext.DrawEllipse(brush, null, AnchorPoints[3], 3, 3);
         }
     }
 }

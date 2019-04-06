@@ -520,6 +520,7 @@ namespace PolyPaint
             (DataContext as VueModele).CollaborationClient.CollaborativeSelectAsync(new List<DrawViewModel>());
             (DataContext as VueModele).CollaborationClient.CollaborativeResetAsync();
             SendToCloud();
+            ReplaceAdorner();
         }
 
         private void ReceiveDraw(object sender, MessageArgs args)
@@ -564,6 +565,7 @@ namespace PolyPaint
         {
             Dispatcher.Invoke(() =>
             {
+                ReplaceAdorner();
                 (DataContext as VueModele).Reinitialiser.Execute(null);
             });
         }
@@ -604,7 +606,20 @@ namespace PolyPaint
             icEventManager.RedrawConnections(surfaceDessin, (DataContext as VueModele).OutilSelectionne, e.OldRectangle, e.NewRectangle, DataContext as VueModele);
         }
 
+        void InkCanvas_SelectionResizing(object sender, InkCanvasSelectionEditingEventArgs e)
+        {
+            var selectedStrokes = surfaceDessin.GetSelectedStrokes();
+            if (selectedStrokes.Count == 1 && selectedStrokes[0] is AbstractLineStroke)
+                e.Cancel = true;
+            icEventManager.RedrawConnections(surfaceDessin, (DataContext as VueModele).OutilSelectionne, e.OldRectangle, e.NewRectangle, DataContext as VueModele);
+        }
+
         void UpdateAdorner(object sender, EventArgs e)
+        {
+            ReplaceAdorner();
+        }
+
+        private void ReplaceAdorner()
         {
             if (adorner != null)
                 adornerLayer.Remove(adorner);
@@ -643,13 +658,7 @@ namespace PolyPaint
         {
             (DataContext as VueModele).ChangeSelection(sender as InkCanvas);
             // Add the rotating strokes adorner to the InkPresenter.
-            if (adorner != null)
-                adornerLayer.Remove(adorner);
-
-            adornerLayer = AdornerLayer.GetAdornerLayer(surfaceDessin);
-            adorner = new LineStrokeAdorner(surfaceDessin);
-
-            adornerLayer.Add(adorner);
+            ReplaceAdorner();
         }
 
         private async void Disconnect_Click(object sender, RoutedEventArgs e)

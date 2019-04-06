@@ -76,7 +76,7 @@ namespace PolyPaint.Strokes
             nextHeight += 10;
             for (int i = 0; i < Properties.Count; i++)
             {
-                var tempFt = new FormattedText($"• {Properties[i].Title}", System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 12, new SolidColorBrush(Colors.Black));
+                var tempFt = new FormattedText($"• {Properties[i].Title}", System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, Config.T_FACE, 17, new SolidColorBrush(Colors.Black));
                 drawingContext.DrawText(tempFt, new Point(UnrotatedTopLeft.X + 10, nextHeight));
                 nextHeight += 10 + tempFt.Height;
             }
@@ -84,26 +84,10 @@ namespace PolyPaint.Strokes
             nextHeight += 10;
             for (int i = 0; i < Methods.Count; i++)
             {
-                var tempFt = new FormattedText($"• {Methods[i].Title}", System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 12, new SolidColorBrush(Colors.Black));
+                var tempFt = new FormattedText($"• {Methods[i].Title}", System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, Config.T_FACE, 17, new SolidColorBrush(Colors.Black));
                 drawingContext.DrawText(tempFt, new Point(UnrotatedTopLeft.X + 10, nextHeight));
                 nextHeight += 10 + tempFt.Height;
             }
-        }
-
-        private void DrawAnchorPoints(DrawingContext drawingContext)
-        {
-            SolidColorBrush brush = new SolidColorBrush(Colors.Gray);
-
-            AnchorPoints[0] = new Point(UnrotatedTopLeft.X + UnrotatedWidth / 2, UnrotatedTopLeft.Y);
-            AnchorPoints[1] = new Point(UnrotatedTopLeft.X + UnrotatedWidth / 2, UnrotatedTopLeft.Y + UnrotatedHeight);
-            AnchorPoints[2] = new Point(UnrotatedTopLeft.X + UnrotatedWidth, UnrotatedTopLeft.Y + UnrotatedHeight / 2);
-            AnchorPoints[3] = new Point(UnrotatedTopLeft.X, UnrotatedTopLeft.Y + UnrotatedHeight / 2);
-            AnchorPoints = AnchorPoints.ToList().Select(x => Tools.RotatePoint(x, Center, Rotation)).ToArray();
-
-            drawingContext.DrawEllipse(brush, null, AnchorPoints[0], 3, 3);
-            drawingContext.DrawEllipse(brush, null, AnchorPoints[1], 3, 3);
-            drawingContext.DrawEllipse(brush, null, AnchorPoints[2], 3, 3);
-            drawingContext.DrawEllipse(brush, null, AnchorPoints[3], 3, 3);
         }
 
         private void addProperty(string bidon)

@@ -12,6 +12,10 @@ namespace PolyPaint
     {
         public App()
         {
+            FrameworkElement.StyleProperty.OverrideMetadata(typeof(Window), new FrameworkPropertyMetadata
+            {
+                DefaultValue = FindResource(typeof(Window))
+            });
             ShutdownMode = ShutdownMode.OnMainWindowClose;
             Exit += Logout;
         }
