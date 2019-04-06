@@ -36,9 +36,8 @@ class SelectionOutline: UIView {
         let frameSize = CGSize(width: abs(firstPoint.x - lastPoint.x), height: abs(firstPoint.y - lastPoint.y))
         let frame = CGRect(origin: firstPoint, size: frameSize)
         super.init(frame: frame)
-//        self.isUserInteractionEnabled = false
         self.isMultipleTouchEnabled = true
-        self.initializeLayers()
+        self.initializeBorder()
     }
     
     init(frame: CGRect, associatedFigureID: UUID, delegate: TouchInputDelegate) {
@@ -47,7 +46,7 @@ class SelectionOutline: UIView {
         self.associatedFigureID = associatedFigureID
         self.delegate = delegate
         super.init(frame: frame)
-        self.initializeLayers()
+        self.initializeBorder()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -70,7 +69,6 @@ class SelectionOutline: UIView {
         }
         
         self.initializeBorder()
-        self.layer.addSublayer(border);
     }
     
     private func initializeBorder() {
@@ -80,16 +78,17 @@ class SelectionOutline: UIView {
         border.frame = bounds;
         border.fillColor = nil;
         border.path = UIBezierPath(rect: self.bounds).cgPath;
+        self.layer.addSublayer(border);
     }
     
     func updateOutline(newFrame: CGRect) {
-        for anchor in self.cornerAnchors {
-            anchor.removeFromSuperlayer()
-        }
-        self.cornerAnchors.removeAll()
+//        for anchor in self.cornerAnchors {
+//            anchor.removeFromSuperlayer()
+//        }
+//        self.cornerAnchors.removeAll()
         self.border.removeFromSuperlayer()
         self.frame = newFrame
-        self.initializeLayers()
+        self.initializeBorder()
     }
     
     public func addUsernameSelecting(username: String) {

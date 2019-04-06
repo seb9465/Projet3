@@ -151,6 +151,12 @@ class ConnectionFigure : Figure {
         return false
     }
     
+    func removeFromConnectedFigures(umlFigures: [UmlFigure]) {
+        for umlFigure in umlFigures {
+            umlFigure.removeConnection(connection: self)
+        }
+    }
+    
     func isPointOnElbow(point: CGPoint) -> Bool{
         for layer in self.layer.sublayers!{
             if (layer is CAShapeLayer) {

@@ -100,7 +100,7 @@ class UmlFigure : Figure {
         self.updateConnections()
     }
     
-    func resize(by: CGPoint) {
+    override func resize(by: CGPoint) {
         let newSize : CGSize = CGSize(width: self.frame.width + by.x, height: self.frame.height + by.y)
         let newOrigin: CGPoint = CGPoint(x: self.frame.origin.x - by.x/2, y: self.frame.origin.y - by.y/2)
         let resizedFrame = CGRect(origin: newOrigin, size: newSize)
@@ -130,12 +130,30 @@ class UmlFigure : Figure {
 
 // Connections logic
 extension UmlFigure {
+    public func getAnchoredConnections() -> [ConnectionFigure] {
+        var anchoredConnections: [ConnectionFigure] = []
+        anchoredConnections.append(contentsOf: self.incomingConnections.keys.reversed())
+        anchoredConnections.append(contentsOf: self.outgoingConnections.keys.reversed())
+        
+        return anchoredConnections
+    }
+    
     public func addIncomingConnection(connection: ConnectionFigure, anchor: String) {
         self.incomingConnections.updateValue(anchor, forKey: connection)
     }
     
     public func addOutgoingConnection(connection: ConnectionFigure, anchor: String) {
         self.outgoingConnections.updateValue(anchor, forKey: connection)
+    }
+    
+    public func removeConnection(connection: ConnectionFigure) {
+        if (self.incomingConnections[connection] != nil) {
+            self.incomingConnections.removeValue(forKey: connection)
+        }
+        
+        if (self.outgoingConnections[connection] != nil) {
+            self.outgoingConnections.removeValue(forKey: connection)
+        }
     }
     
     public func updateConnections() {

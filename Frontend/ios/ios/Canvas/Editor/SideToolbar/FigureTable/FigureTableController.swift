@@ -24,6 +24,7 @@ class FigureTableController: UIViewController, UIPopoverPresentationControllerDe
     
     func setSelectedFigureType(itemType: ItemTypeEnum, isConnection: Bool) -> Void {
         self.editor.currentFigureType = itemType
+        self.editor.deselect()
         self.editor.touchEventState = (isConnection) ? .CONNECTION : .INSERT
     }
     

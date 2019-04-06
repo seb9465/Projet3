@@ -35,8 +35,8 @@ class FigureSelectionCell: UITableViewCell {
         super.awakeFromNib()
         self.selectionStyle = UITableViewCell.SelectionStyle.none
         self.lastButtonSelected = nil
-//        self.setSelectedButton(button: lastButtonSelected)
     }
+
     override func setSelected(_ selected: Bool, animated: Bool) {
         self.selectionStyle = UITableViewCell.SelectionStyle.none
         super.setSelected(selected, animated: animated)
@@ -60,9 +60,9 @@ class FigureSelectionCell: UITableViewCell {
     
     @IBAction func UMLClassSelected(_ sender: Any) {
         self.delegate?.setSelectedFigureType(itemType: ItemTypeEnum.UmlClass, isConnection: false)
-        
         self.setSelectedButton(button: self.UMLClassButton)
     }
+
     @IBAction func ActivitySelected(_ sender: Any) {
         self.delegate?.setSelectedFigureType(itemType: ItemTypeEnum.Activity, isConnection: false)
         self.setSelectedButton(button: self.ActivityButton)

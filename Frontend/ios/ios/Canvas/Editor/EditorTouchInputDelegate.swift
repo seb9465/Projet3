@@ -220,7 +220,9 @@ extension Editor : TouchInputDelegate {
                 return
             }
             CanvasService.saveOnNewFigure(figures: self.figures, editor: self)
-            CollaborationHub.shared!.postNewFigure(figures: self.selectedFigures)
+            var figuresToUpdate = self.selectedFigures
+            figuresToUpdate.append(contentsOf: (self.selectedFigures[0] as! UmlFigure).getAnchoredConnections())
+            CollaborationHub.shared!.postNewFigure(figures: figuresToUpdate)
             var drawViewModels: [DrawViewModel] = []
             for figure in selectedFigures {
                 drawViewModels.append(figure.exportViewModel()!)
