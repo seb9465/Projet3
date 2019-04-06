@@ -145,8 +145,8 @@ class Editor {
         self.clipboard = self.selectedFigures
     }
     
-    func paste() {
-        self.copy()
+    func duplicate() {
+        self.copy();
         for figure in self.clipboard {
             var viewModel = figure.exportViewModel()!
             viewModel.Guid = UUID().uuidString

@@ -87,9 +87,11 @@ class CanvasController: UIViewController {
             self.pasteButton.isEnabled = true
         }
     }
-    @IBAction func pasteButtonPressed(_ sender: Any) {
-        self.editor.paste()
+    
+    @IBAction func duplicateButtonPressed(_ sender: Any) {
+        self.editor.duplicate()
     }
+    
     @IBAction func clearButton(_ sender: Any) {
         self.editor.clear()
         CollaborationHub.shared!.reset();
