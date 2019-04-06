@@ -29,12 +29,12 @@ class CanvasController: UIViewController {
     
     @IBOutlet weak var protectionLabel: UILabel!
     @IBOutlet weak var cutButton: UIBarButtonItem!
-    @IBOutlet weak var pasteButton: UIBarButtonItem!
+    @IBOutlet weak var duplicateButton: UIBarButtonItem!
     @IBOutlet weak var exportButton: UIBarButtonItem!
     @IBOutlet var navigationBar: UIToolbar!
+    
     override func viewDidLoad() {
         super.viewDidLoad();
-        self.pasteButton.isEnabled = false
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
         
@@ -42,10 +42,12 @@ class CanvasController: UIViewController {
         CollaborationHub.shared = CollaborationHub(channelId: canvasId)
         CollaborationHub.shared!.connectToHub()
         CollaborationHub.shared!.delegate = self.editor
+        
         self.view.addSubview(self.editor.editorView)
         setupNetwork()
         
     }
+    
     public func loadCanvas() {
         var data: Data = currentCanvas.drawViewModels.data(using: String.Encoding.utf8)!
         let drawViewModels: [DrawViewModel] = try! JSONDecoder().decode(Array<DrawViewModel>.self, from: data)
@@ -66,6 +68,7 @@ class CanvasController: UIViewController {
         }
         
     }
+    
     func setupNetwork() {
         NotificationCenter.default.addObserver(
             self,
@@ -75,6 +78,7 @@ class CanvasController: UIViewController {
         )
         self.setupInternetConnectionState()
     }
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated);
         navigationController?.setNavigationBarHidden(true, animated: animated);
@@ -99,13 +103,19 @@ class CanvasController: UIViewController {
     
     @IBAction func cutButtonPressed(_ sender: Any) {
         self.editor.cut()
-        if(self.editor.clipboard.count > 0) {
-            self.pasteButton.isEnabled = true
+    }
+    
+    @IBAction func duplicateButtonPressed(_ sender: Any) {
+        if (self.editor.selectedFigures.count == 0 && self.editor.clipboard.count == 0) {
+            let alert: UIAlertController = UIAlertController(title: "Nothing to duplicate!", message: "Clipboard is empty and no figures are selected.", preferredStyle: .alert);
+            let okAction: UIAlertAction = UIAlertAction(title: "Alright!", style: .default, handler: nil);
+            alert.addAction(okAction);
+            self.present(alert, animated: true);
+        } else {
+            self.editor.duplicate();
         }
     }
-    @IBAction func pasteButtonPressed(_ sender: Any) {
-        self.editor.paste()
-    }
+    
     @IBAction func clearButton(_ sender: Any) {
         self.editor.clear()
         CollaborationHub.shared!.reset();
