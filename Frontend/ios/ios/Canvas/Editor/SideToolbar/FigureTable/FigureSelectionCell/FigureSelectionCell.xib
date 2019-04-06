@@ -189,6 +189,18 @@
                             <action selector="compositionSelected:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="kId-nQ-atk"/>
                         </connections>
                     </button>
+                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z22-XJ-S58" customClass="RoundedCorners" customModule="ios" customModuleProvider="target">
+                        <rect key="frame" x="15" y="849" width="220" height="40"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" red="1" green="0.41960784309999999" blue="0.41960784309999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
+                        <state key="normal" title="Line">
+                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </state>
+                        <connections>
+                            <action selector="lineSelected:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="iVn-rb-XYl"/>
+                        </connections>
+                    </button>
                 </subviews>
             </tableViewCellContentView>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -205,10 +217,11 @@
                 <outlet property="compositionButton" destination="akd-lO-4P1" id="nND-ys-WUB"/>
                 <outlet property="heritageButton" destination="Tho-R4-gEI" id="RTC-hs-zTd"/>
                 <outlet property="imageButton" destination="lZS-pM-eb8" id="XXa-y4-E7p"/>
+                <outlet property="lineButton" destination="z22-XJ-S58" id="Zdb-59-Q96"/>
                 <outlet property="textButton" destination="fHZ-5b-Dzs" id="voh-FV-0PE"/>
                 <outlet property="unidirectButton" destination="5HX-zO-x8G" id="6DC-Jv-S5u"/>
             </connections>
-            <point key="canvasLocation" x="160" y="39.130434782608695"/>
+            <point key="canvasLocation" x="160" y="38.680659670164921"/>
         </tableViewCell>
     </objects>
     <resources>

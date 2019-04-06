@@ -41,7 +41,7 @@ class FigureFactory {
             case .Inheritance:
                 return ConnectionHeritage(drawViewModel: drawViewModel)
             case .Line:
-                return ConnectionFigure(drawViewModel: drawViewModel)
+                return ConnectionLine(drawViewModel: drawViewModel)
         }
     }
     
@@ -75,7 +75,7 @@ class FigureFactory {
         case .Inheritance:
             return ConnectionHeritage(origin: source!, destination: destination!, itemType: type)
         case .Line:
-            return ConnectionFigure(origin: source!, destination: destination!, itemType: type)
+            return ConnectionLine(origin: source!, destination: destination!, itemType: type)
         }
     }
 }

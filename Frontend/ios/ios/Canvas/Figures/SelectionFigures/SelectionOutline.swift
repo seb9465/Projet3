@@ -132,11 +132,8 @@ class SelectionOutline: UIView {
 extension SelectionOutline {
     public override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         let touch = touches.first
-        guard let localPoint = touch?.location(in: self) else { return }
         guard let point = touch?.location(in: self.superview) else { return }
-        
-//        print(event?.touches(for: self)?.count)
-
+    
         self.delegate?.notifyTouchBegan(action: "selection", point: point, figure: nil)
     }
     

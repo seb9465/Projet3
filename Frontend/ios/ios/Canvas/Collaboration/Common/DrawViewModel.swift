@@ -44,8 +44,8 @@ enum ItemTypeEnum: Int, Codable {
     case Composition
     case Inheritance
     case UniderectionalAssoication
-    case Image
     case Line
+    case Image
     
     var description: String {
         switch self {

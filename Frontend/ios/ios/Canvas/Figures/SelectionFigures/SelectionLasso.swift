@@ -24,7 +24,7 @@ class SelectionLasso: UIView, SelectionLassoProtocol {
     var shapeIsClosed: Bool;
     
     // MARK: Constructors
-    
+
     init(size: CGSize, touchPoint: CGPoint) {
         self.firstPoint = touchPoint;
         self.points = [];
@@ -73,21 +73,28 @@ class SelectionLasso: UIView, SelectionLassoProtocol {
     }
     
     public func contains(figure: Figure) -> Bool {
-        let firstPoint: CGPoint = figure.firstPoint;
-        let lastPoint: CGPoint = figure.lastPoint;
+        var points : [CGPoint] = []
         
-        var points: [CGPoint] = [];
-        points.append(CGPoint(x: firstPoint.x, y: firstPoint.y));   // Upper left corner
-        points.append(CGPoint(x: firstPoint.x, y: lastPoint.y));    // Lower left corner
-        points.append(CGPoint(x: lastPoint.x, y: firstPoint.y));    // Upper right corner
-        points.append(CGPoint(x: lastPoint.x, y: lastPoint.y));     // Lower right corner
-        
+        if (figure is ConnectionFigure) {
+            points.append((figure as! ConnectionFigure).points[.ORIGIN]!)
+            points.append((figure as! ConnectionFigure).points[.ELBOW]!)
+            points.append((figure as! ConnectionFigure).points[.DESTINATION]!)
+        } else {
+            let firstPoint: CGPoint = figure.firstPoint;
+            let lastPoint: CGPoint = figure.lastPoint;
+            
+            points.append(CGPoint(x: firstPoint.x, y: firstPoint.y));   // Upper left corner
+            points.append(CGPoint(x: firstPoint.x, y: lastPoint.y));    // Lower left corner
+            points.append(CGPoint(x: lastPoint.x, y: firstPoint.y));    // Upper right corner
+            points.append(CGPoint(x: lastPoint.x, y: lastPoint.y));     // Lower right corner
+        }
+
         for point in points {
             if (!self.shape.path!.contains(point)) {
-                return false;
+                return false
             }
         }
-        
+
         return true;
     }
     
@@ -112,7 +119,6 @@ class SelectionLasso: UIView, SelectionLassoProtocol {
     private func setShapeProperties() -> Void {
         self.shapePath.move(to: CGPoint(x: self.firstPoint.x, y: self.firstPoint.y));
         self.shape.fillColor = nil;
-        self.shape.lineWidth = 4;
         self.shape.position = CGPoint(x: 0, y: 0);
         self.shape.strokeColor = UIColor.black.cgColor;
         self.shape.lineDashPattern = [4, 4];
@@ -122,7 +128,7 @@ class SelectionLasso: UIView, SelectionLassoProtocol {
         let circle = CAShapeLayer();
         circle.path = UIBezierPath(roundedRect: CGRect(x: -5, y: -5, width: 2.0 * self.radius, height: 2.0 * self.radius), cornerRadius: self.radius).cgPath;
         circle.position = CGPoint(x: touchPoint.x, y: touchPoint.y);
-        circle.fillColor = Constants.RED_COLOR.cgColor;
+        circle.fillColor = UIColor.blue.cgColor
         self.layer.addSublayer(circle);
     }
 }

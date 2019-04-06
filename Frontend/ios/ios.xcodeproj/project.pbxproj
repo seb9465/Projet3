@@ -21,6 +21,7 @@
 		3D22E1652257E97E007DF61B /* EditorGesturesHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D22E1642257E97E007DF61B /* EditorGesturesHandler.swift */; };
 		3D22E1682257FD38007DF61B /* SelectionAnchor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D22E1672257FD38007DF61B /* SelectionAnchor.swift */; };
 		3D23AC112259449400299259 /* EditorUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D23AC102259449400299259 /* EditorUtilities.swift */; };
+		3D23AC132259528B00299259 /* ConnectionLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D23AC122259528B00299259 /* ConnectionLine.swift */; };
 		3D4ED6C5224EF242005630CF /* ConnectionAnchor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D4ED6C4224EF242005630CF /* ConnectionAnchor.swift */; };
 		3D5537C02200E86E002C1B77 /* SlideDownSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D5537BF2200E86E002C1B77 /* SlideDownSegue.swift */; };
 		3D5537C22200ED5F002C1B77 /* SlideUpSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D5537C12200ED5F002C1B77 /* SlideUpSegue.swift */; };
@@ -149,6 +150,7 @@
 		3D22E1642257E97E007DF61B /* EditorGesturesHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorGesturesHandler.swift; sourceTree = "<group>"; };
 		3D22E1672257FD38007DF61B /* SelectionAnchor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionAnchor.swift; sourceTree = "<group>"; };
 		3D23AC102259449400299259 /* EditorUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorUtilities.swift; sourceTree = "<group>"; };
+		3D23AC122259528B00299259 /* ConnectionLine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionLine.swift; sourceTree = "<group>"; };
 		3D4ED6C4224EF242005630CF /* ConnectionAnchor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionAnchor.swift; sourceTree = "<group>"; };
 		3D5537BF2200E86E002C1B77 /* SlideDownSegue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlideDownSegue.swift; sourceTree = "<group>"; };
 		3D5537C12200ED5F002C1B77 /* SlideUpSegue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlideUpSegue.swift; sourceTree = "<group>"; };
@@ -290,6 +292,7 @@
 				3DA5CA56224444C100087298 /* ConnectionHeritage.swift */,
 				3DA5CA58224444D000087298 /* ConnectionComposition.swift */,
 				3DA5CA5A224444DD00087298 /* ConnectionAgregation.swift */,
+				3D23AC122259528B00299259 /* ConnectionLine.swift */,
 			);
 			path = ConnectionFigures;
 			sourceTree = "<group>";
@@ -962,6 +965,7 @@
 				3DC61EB92200B44B003FE445 /* RegisterController.swift in Sources */,
 				3DD55D722227208C009D893B /* CollobarationHub.swift in Sources */,
 				3DA5CA57224444C100087298 /* ConnectionHeritage.swift in Sources */,
+				3D23AC132259528B00299259 /* ConnectionLine.swift in Sources */,
 				3D23AC112259449400299259 /* EditorUtilities.swift in Sources */,
 				3D5537C22200ED5F002C1B77 /* SlideUpSegue.swift in Sources */,
 				3D73359D223739550021FA3C /* UmlClassFigure.swift in Sources */,
