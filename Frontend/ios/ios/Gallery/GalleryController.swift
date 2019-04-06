@@ -9,40 +9,65 @@
 import UIKit
 import Reachability
 import JWTDecode
+
 class GalleryController: UIViewController {
     
+    // MARK: Outlets
+    
     @IBOutlet weak var collectionView: UICollectionView!
+    
+    // MARK: Class Attributes
     
     private var canvas : [Canvas] = []
     private let itemsPerRow: CGFloat = 4
     private let sectionInsets = UIEdgeInsets(top: 10.0, left: 10.0, bottom: 10.0, right: 10.0)
     private var canvasController: CanvasController = CanvasController()
-    var reach: Reachability?
+    private var reach: Reachability?
+    private var spinner: UIView!;
+    private let refreshCollectionView: UIRefreshControl = UIRefreshControl();
+    
+    // MARK: Timing functions
+    
     override func viewDidLoad() {
-        super.viewDidLoad()
-        let nib = UINib.init(nibName: "GalleryCell", bundle: nil)
-        self.collectionView.register(nib, forCellWithReuseIdentifier: "GalleryCell")
-        self.canvasController = UIStoryboard(name: "Canvas", bundle: nil).instantiateViewController(withIdentifier: "CanvasController") as! CanvasController
+        super.viewDidLoad();
+        let nib = UINib.init(nibName: "GalleryCell", bundle: nil);
+        self.collectionView.register(nib, forCellWithReuseIdentifier: "GalleryCell");
+        self.canvasController = UIStoryboard(name: "Canvas", bundle: nil).instantiateViewController(withIdentifier: "CanvasController") as! CanvasController;
+        self.collectionView.refreshControl = self.refreshCollectionView;
+        self.refreshCollectionView.addTarget(self, action: #selector(refreshData(_:)), for: .valueChanged);
+        self.refreshCollectionView.tintColor = Constants.RED_COLOR;
     }
+    
     override func viewWillAppear(_ animated: Bool){
         self.loadCanvas()
     }
     
-    func loadCanvas() {
-        let spinner = UIViewController.displaySpinner(onView: self.view);
-        CanvasService.getAllCanvas(includePrivate: false)
-            .done { (retreivedCanvas) in
-                self.canvas = retreivedCanvas
-                self.collectionView.reloadData()
-                UIViewController.removeSpinner(spinner: spinner);
-            }.catch { (Error) in
-                print("Fetch for canvas failed", Error)
-                UIViewController.removeSpinner(spinner: spinner);
-        }
+    // MARK: Private functions
+    
+    @objc private func refreshData(_ sender: Any) {
+        // Fetch Weather Data
+        self.updateDataGallery();
+        self.refreshCollectionView.endRefreshing();
     }
-
+    
+    private func loadCanvas() {
+        self.spinner = UIViewController.displaySpinner(onView: self.view);
+        self.updateDataGallery();
+    }
     deinit {
         self.canvas = []
+    }
+    
+    private func updateDataGallery() -> Void {
+        CanvasService.getAllCanvas(includePrivate: false)
+            .done { (retreivedCanvas) in
+                self.canvas = retreivedCanvas;
+                self.collectionView.reloadData();
+                UIViewController.removeSpinner(spinner: self.spinner);
+            }.catch { (Error) in
+                print("Fetch for canvas failed", Error);
+                UIViewController.removeSpinner(spinner: self.spinner);
+            }
     }
 }
 
