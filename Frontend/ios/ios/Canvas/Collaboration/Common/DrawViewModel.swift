@@ -20,6 +20,8 @@ struct DrawViewModel: Codable {
     var Properties: [String]?
     var SourceTitle: String?
     var DestinationTitle: String?
+    var inConnections: [String : String]?
+    var outConnections: [String : String]?
     var ChannelId: String?
     var OutilSelectionne: String?
     var LastElbowPosition: PolyPaintStylusPoint?
