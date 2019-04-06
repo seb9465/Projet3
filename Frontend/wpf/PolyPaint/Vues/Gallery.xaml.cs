@@ -26,8 +26,6 @@ namespace PolyPaint.Vues
     {
         public List<SaveableCanvas> Canvas { get; set; }
         public SaveableCanvas SelectedCanvas { get; set; }
-        private ImageProtection imageProtection;
-        private StrokeBuilder strokeBuilder = new StrokeBuilder();
         private string username = Application.Current.Properties["username"].ToString();
 
         public String CanvasVisibility;

@@ -292,6 +292,14 @@ namespace PolyPaint.Strokes
                 var xmax = _strokes.Max(stroke => stroke.StylusPoints[0].X > stroke.StylusPoints[1].X ? stroke.StylusPoints[0].X : stroke.StylusPoints[1].X);
                 var ymax = _strokes.Max(stroke => stroke.StylusPoints[0].Y > stroke.StylusPoints[1].Y ? stroke.StylusPoints[0].Y : stroke.StylusPoints[1].Y);
 
+                if (_strokes.Where(x => x.IsConnection()).Count() > 0)
+                {
+                    xmin = _strokes.Where(x => x.IsConnection()).Min(x => xmin < x.LastElbowPosition.X ? xmin : x.LastElbowPosition.X);
+                    ymin = _strokes.Where(x => x.IsConnection()).Min(x => ymin < x.LastElbowPosition.Y ? ymin : x.LastElbowPosition.Y);
+                    xmax = _strokes.Where(x => x.IsConnection()).Max(x => xmax > x.LastElbowPosition.X ? xmax : x.LastElbowPosition.X);
+                    ymax = _strokes.Where(x => x.IsConnection()).Max(x => ymax > x.LastElbowPosition.Y ? ymax : x.LastElbowPosition.Y);
+                }
+
                 selectionRect = new Rect(new Point(xmin, ymin), new Point(xmax, ymax));
             }
 

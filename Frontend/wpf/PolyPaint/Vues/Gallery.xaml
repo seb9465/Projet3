@@ -7,7 +7,7 @@
          xmlns:convertisseurs="clr-namespace:PolyPaint.Convertisseurs"   
         xmlns:local="clr-namespace:PolyPaint.Vues"
         mc:Ignorable="d"
-        Title="Gallery" Height="720" Width="1170">
+        Title="Gallery" WindowState="Maximized">
 
 
     <Window.Resources>

@@ -45,7 +45,7 @@ namespace PolyPaint.Strokes
             AnchorPoints[AnchorPosition.Left] = new Point(UnrotatedTopLeft.X, UnrotatedTopLeft.Y + UnrotatedHeight / 2.0);
             AnchorPoints = new ConcurrentDictionary<AnchorPosition, Point>
             (
-                AnchorPoints.Select(x => new KeyValuePair<AnchorPosition, Point>(x.Key, Tools.RotatePoint(x.Value, Center, Rotation)))
+                AnchorPoints.ToDictionary(x => x.Key, x => Tools.RotatePoint(x.Value, Center, Rotation))
             );
 
             drawingContext.DrawEllipse(brush, null, AnchorPoints[AnchorPosition.Top], 3, 3);

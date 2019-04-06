@@ -63,10 +63,10 @@ public class LineStrokeAdorner : Adorner
     void DragCompleted(object sender, DragCompletedEventArgs e)
     {
         dragPos = Mouse.GetPosition(this);
-        AdornedStroke.ElbowPosRelative = Point.Subtract(dragPos, AdornedStroke.StylusPoints[0].ToPoint());
-        AdornedStroke.Redraw();
-        var rebuilder = new StrokeBuilder();
-        var drawViewModel = rebuilder.GetDrawViewModelsFromStrokes(new StrokeCollection() { AdornedStroke });
+        var spoints = AdornedStroke.StylusPoints;
+        AdornedStroke.LastElbowPosition = dragPos;
+        AdornedStroke.StylusPoints = new StylusPointCollection() { spoints[0], spoints[1], new StylusPoint(dragPos.X, dragPos.Y) };
+        var drawViewModel = StrokeBuilder.GetDrawViewModelsFromStrokes(new StrokeCollection() { AdornedStroke });
         (AdornedStroke.SurfaceDessin.DataContext as VueModele).CollaborationClient.CollaborativeDrawAsync(drawViewModel);
         InvalidateArrange();
     }

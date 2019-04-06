@@ -12,7 +12,6 @@ namespace PolyPaint.Vues
     /// </summary>
     public partial class EditTitleWindow : Window
     {
-        StrokeBuilder strokeBuilder = new StrokeBuilder();
         VueModele viewModel { get; set; }
         public InkCanvas SurfaceDessin { get; set; }
         public EditTitleWindow(AbstractShapeStroke stroke, InkCanvas surfaceDessin, VueModele vm)
@@ -26,7 +25,7 @@ namespace PolyPaint.Vues
 
         private void Ok_ClickAsync(object sender, RoutedEventArgs e)
         {
-            var drawViewModel = strokeBuilder.GetDrawViewModelsFromStrokes(new StrokeCollection() { (Stroke)DataContext });
+            var drawViewModel = StrokeBuilder.GetDrawViewModelsFromStrokes(new StrokeCollection() { (Stroke)DataContext });
             Close();
             (DataContext as ICanvasable).Redraw();
             viewModel.CollaborationClient.CollaborativeDrawAsync(drawViewModel);

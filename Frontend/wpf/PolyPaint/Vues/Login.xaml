@@ -7,13 +7,13 @@
       xmlns:local="clr-namespace:PolyPaint.Vues"
       mc:Ignorable="d"
       PreviewKeyDown="Window_PreviewKeyDown"
-      Title="Login" Height="500" Width="728">
-    <Grid HorizontalAlignment="Left" Height="490" Margin="0,0,-8,-21" VerticalAlignment="Top" Width="700">
+      Title="Login" Height="461" Width="728">
+    <Grid HorizontalAlignment="Left" Height="429" VerticalAlignment="Top" Width="700">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition Width="0*"/>
         </Grid.ColumnDefinitions>
-        <StackPanel Orientation="Vertical">
+        <StackPanel Orientation="Vertical" Grid.ColumnSpan="2" Margin="0,0,-20,41">
             <Label Content="PolyPaint PRO" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="390" Height="75" FontSize="50"/>
             <Button  Content="Register" Width="100px" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,-60,20,0" x:Name="registerBtn" Click="RegisterBtn_Click" Height="Auto" Style="{StaticResource MaterialDesignFlatButton}" BorderBrush="Red" BorderThickness="1"/>
             <StackPanel Orientation="Horizontal">
@@ -24,9 +24,9 @@
                 <Label Content="Password:" HorizontalAlignment="Left" Margin="190,50,0,0" VerticalAlignment="Top"/>
                 <PasswordBox Name="passwordBox" HorizontalAlignment="Left" Height="30" Margin="35,50,0,0" VerticalAlignment="Top" Width="205" PasswordChanged="FieldsUpdate"/>
             </StackPanel>
-                <Button Content="Login"  Width="160px" VerticalAlignment="Top" Margin="0,80,0,0" Name="loginBtn" Click="LoginBtn_Click" Height="Auto"/>
-            <TextBlock x:Name="loginError" TextWrapping="Wrap" TextAlignment="Center" Margin="0,30,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="#DDFF0000" Width="140"><InlineUIContainer>
-                        <Button Width="97" Background="#FF4444FF" BorderBrush="#FF4444FF" Click="Button_ClickAsync">
+            <TextBlock x:Name="loginError" TextWrapping="Wrap" TextAlignment="Center" Margin="0,20,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="#DDFF0000" Width="140" />
+            <Button Content="Login"  Width="160px" VerticalAlignment="Top" Margin="0,20,0,0" Name="loginBtn" Click="LoginBtn_Click" Height="Auto"/>
+            <Button Width="97" Margin="0,20,0,0" Background="#FF4444FF" BorderBrush="#FF4444FF" Click="Button_ClickAsync">
                             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Name="colonne" Width="15" />
@@ -34,10 +34,9 @@
                 </Grid.ColumnDefinitions>
 
                                 <materialDesign:PackIcon Kind="FacebookBox" />
-                                <TextBlock Grid.Column="1" Text="Login" FontSize="12"/>
+                                <TextBlock Grid.Column="1" Text="Login" FontSize="12" Margin="6,0,-6,0"/>
                             </Grid>
                         </Button>
-                    </InlineUIContainer></TextBlock>
         </StackPanel>
     </Grid>
 </Window>

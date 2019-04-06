@@ -37,10 +37,15 @@ namespace PolyPaint.Vues
         private async void LoginBtn_Click(object sender, RoutedEventArgs e)
         {
             // errors_label.Content = "";
+            //LoginViewModel loginViewModel = new LoginViewModel()
+            //{
+            //    Username = usernameBox.Text,
+            //    Password = passwordBox.Password,
+            //};
             LoginViewModel loginViewModel = new LoginViewModel()
             {
-                Username = usernameBox.Text,
-                Password = passwordBox.Password,
+                Username = "alexis",
+                Password = "!12345Aa",
             };
 
             string json = JsonConvert.SerializeObject(loginViewModel);
@@ -51,8 +56,8 @@ namespace PolyPaint.Vues
                 string token = "";
                 try
                 {
-                    client.BaseAddress = new System.Uri(Config.URL);
-                    client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+                    client.BaseAddress = new Uri(Config.URL);
+                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                     StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
                     result = await client.PostAsync("/api/login", content);
                     token = JsonConvert.DeserializeObject<string>(await result.Content.ReadAsStringAsync());
@@ -91,7 +96,7 @@ namespace PolyPaint.Vues
                 else
                 {
                     string error = await result.Content.ReadAsStringAsync();
-                    loginError.Text = error.ToString();
+                    loginError.Text = JsonConvert.DeserializeObject<string>(error);
                 }
             }
         }

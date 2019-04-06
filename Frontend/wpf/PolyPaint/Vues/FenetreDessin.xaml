@@ -84,10 +84,10 @@
                     </Button>
 
                     <Button Style="{StaticResource MaterialDesignRaisedButton}" ToolTip="Undo" 
-                        x:Name="empiler" Width="30" Height="30" Margin="5" Padding="0"  Command="{Binding Empiler}" FontSize="18">
+                        x:Name="empiler" Width="30" Height="30" Margin="5" Padding="0"  Click="Undo" IsEnabled="{Binding UndoEnabled, UpdateSourceTrigger=PropertyChanged}" FontSize="18">
                         <materialDesign:PackIcon Kind="UndoVariant" />
                     </Button>
-                    <Button x:Name="depiler" Width="30" Height="30" Margin="5" Padding="0" Command="{Binding Depiler}" FontSize="18">
+                    <Button x:Name="depiler" Width="30" Height="30" Margin="5" Padding="0" Click="Redo" IsEnabled="{Binding RedoEnabled, UpdateSourceTrigger=PropertyChanged}" FontSize="18">
                         <materialDesign:PackIcon Kind="RedoVariant" ToolTip="Redo" />
                     </Button>
 
