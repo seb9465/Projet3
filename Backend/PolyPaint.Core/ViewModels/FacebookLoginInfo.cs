@@ -7,6 +7,7 @@ namespace PolyPaint.Core.ViewModels
         public string FirstName { get; set; }
         public string Username { get; set; }
         public string Email { get; set; }
+        public string LastName { get; set; }
         public FacebookLoginInfo(string FbToken, string FirstName, string Username, string email)
         {
             this.Email = email;

@@ -33,6 +33,10 @@ namespace PolyPaint.DataAccess.Services
             {
                 user = await _userManager.FindByNameAsync(loginViewModel.Username);
             }
+            if (user == null)
+            {
+                throw new Exception("Invalid Credentials");
+            }
             if (user.IsLoggedIn)
             {
                 throw new Exception("User already logged in");
@@ -41,7 +45,7 @@ namespace PolyPaint.DataAccess.Services
             bool isLoginSuccesful = await _userManager.CheckPasswordAsync(user, loginViewModel.Password);
             string token = null;
 
-            if(!isLoginSuccesful)
+            if (!isLoginSuccesful)
             {
                 throw new Exception("Invalid Credentials");
             }
@@ -86,7 +90,13 @@ namespace PolyPaint.DataAccess.Services
                         throw new Exception(createResult.Errors.Select(e => e.Description).Aggregate((errors, error) => $"{errors}, {error}"));
                     }
                 }
-
+                else
+                {
+                    if (currentUser.IsLoggedIn)
+                    {
+                        throw new Exception("User already logged in");
+                    }
+                }
                 IdentityResult linkingFacebook = await _userManager.AddLoginAsync(currentUser, info);
                 await _signInManager.SignInAsync(currentUser, isPersistent: false);
                 token = _tokenService.GenerateTokenFacebook(currentUser);
@@ -95,7 +105,13 @@ namespace PolyPaint.DataAccess.Services
             else
             {
                 string email = info.Principal.FindFirstValue(ClaimTypes.Email);
-                token = _tokenService.GenerateTokenFacebook(await _userManager.FindByEmailAsync(email));
+                ApplicationUser currentUser = await _userManager.FindByEmailAsync(email);
+                if (currentUser.IsLoggedIn)
+                {
+                    throw new Exception("User already logged in");
+                }
+
+                token = _tokenService.GenerateTokenFacebook(currentUser);
                 return token;
             }
         }
@@ -115,6 +131,7 @@ namespace PolyPaint.DataAccess.Services
                         FirstName = facebookLogin.FirstName,
                         UserName = facebookLogin.Username,
                         Email = facebookLogin.Email,
+                        LastName = facebookLogin.LastName
                     };
                     IdentityResult createResult = await _userManager.CreateAsync(newUser);
                     if (createResult.Succeeded)
@@ -126,18 +143,30 @@ namespace PolyPaint.DataAccess.Services
                         throw new Exception(createResult.Errors.Select(e => e.Description).Aggregate((errors, error) => $"{errors}, {error}"));
                     }
                 }
+                else
+                {
+                    if (currentUser.IsLoggedIn)
+                    {
+                        throw new Exception("User already logged in");
+                    }
+                }
                 UserLoginInfo userLoginInfo = new UserLoginInfo("Facebook", facebookLogin.FbToken, facebookLogin.FirstName);
                 IdentityResult linkingFacebook = await _userManager.AddLoginAsync(currentUser, userLoginInfo);
                 await _signInManager.SignInAsync(currentUser, isPersistent: false);
                 currentUser.IsLoggedIn = true;
                 await _userManager.UpdateAsync(currentUser);
-                token = _tokenService.GenerateToken(currentUser);
+                token = _tokenService.GenerateTokenFacebook(currentUser);
                 return token;
             }
             else
             {
-                //string email = info.Principal.FindFirstValue(ClaimTypes.Email);
-                //token = _tokenService.GenerateToken(email);
+                ApplicationUser currentUser = await _userManager.FindByEmailAsync(facebookLogin.Email);
+                if (currentUser.IsLoggedIn)
+                {
+                    throw new Exception("User already logged in");
+                }
+
+                token = _tokenService.GenerateTokenFacebook(currentUser);
                 return token;
             }
         }

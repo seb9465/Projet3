@@ -113,6 +113,7 @@
 		C4C17D3C2258FC4000A27872 /* ProtectionMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C17D3B2258FC4000A27872 /* ProtectionMessage.swift */; };
 		C4C17D3E2258FECC00A27872 /* EditorDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C17D3D2258FECC00A27872 /* EditorDelegate.swift */; };
 		C4C17D402259068900A27872 /* SizeMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C17D3F2259068900A27872 /* SizeMessage.swift */; };
+		C4C17D42225943A600A27872 /* LoginError.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C17D41225943A600A27872 /* LoginError.swift */; };
 		C4D12706224418F3004B3641 /* UmlCommentFigure.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D12705224418F3004B3641 /* UmlCommentFigure.swift */; };
 		C4D1270E224424E1004B3641 /* UmlArtefactFigure.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D1270D224424E1004B3641 /* UmlArtefactFigure.swift */; };
 		C4D12710224424FC004B3641 /* UmlPhaseFigure.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D1270F224424FC004B3641 /* UmlPhaseFigure.swift */; };
@@ -246,6 +247,7 @@
 		C4C17D3B2258FC4000A27872 /* ProtectionMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtectionMessage.swift; sourceTree = "<group>"; };
 		C4C17D3D2258FECC00A27872 /* EditorDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorDelegate.swift; sourceTree = "<group>"; };
 		C4C17D3F2259068900A27872 /* SizeMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SizeMessage.swift; sourceTree = "<group>"; };
+		C4C17D41225943A600A27872 /* LoginError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginError.swift; sourceTree = "<group>"; };
 		C4D12705224418F3004B3641 /* UmlCommentFigure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UmlCommentFigure.swift; sourceTree = "<group>"; };
 		C4D1270D224424E1004B3641 /* UmlArtefactFigure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UmlArtefactFigure.swift; sourceTree = "<group>"; };
 		C4D1270F224424FC004B3641 /* UmlPhaseFigure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UmlPhaseFigure.swift; sourceTree = "<group>"; };
@@ -488,6 +490,7 @@
 			isa = PBXGroup;
 			children = (
 				3DE984D222261707004D036C /* AuthentificationAPI.swift */,
+				C4C17D41225943A600A27872 /* LoginError.swift */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -989,6 +992,7 @@
 				3DA5CA4722441A9200087298 /* GalleryCell.swift in Sources */,
 				C4C17D3C2258FC4000A27872 /* ProtectionMessage.swift in Sources */,
 				3DE8F114223C26890052580B /* SideToolbarDelegate.swift in Sources */,
+				C4C17D42225943A600A27872 /* LoginError.swift in Sources */,
 				C4D1270E224424E1004B3641 /* UmlArtefactFigure.swift in Sources */,
 				3DA5CA532244449900087298 /* ConnectionAssociationUni.swift in Sources */,
 				B78810572253083100D26BE7 /* HttpResponseMessage.swift in Sources */,

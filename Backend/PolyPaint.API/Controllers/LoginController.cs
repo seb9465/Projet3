@@ -27,7 +27,7 @@ namespace PolyPaint.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Login([FromBody]LoginViewModel loginViewModel)
         {
-            String token;
+            String token = "";
             try {
             token = await _loginService.Login(loginViewModel);
             } catch(Exception e) {
@@ -64,7 +64,15 @@ namespace PolyPaint.API.Controllers
         public async Task<IActionResult> ExternalLoginCallback()
         {
             ExternalLoginInfo info = await _signInManager.GetExternalLoginInfoAsync();
-            string token = await _loginService.HandleFacebookLogin(info);
+            string token = "";
+            try
+            {
+                token = await _loginService.HandleFacebookLogin(info);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
 
             if (token != null)
             {
@@ -79,7 +87,12 @@ namespace PolyPaint.API.Controllers
         [Route("ios-callback")]
         public async Task<IActionResult> IOSCallback([FromBody]FacebookLoginInfo facebook)
         {
-            string token = await _loginService.HandleIOSLogin(facebook);
+            string token = "";
+            try { 
+            token = await _loginService.HandleIOSLogin(facebook);
+            } catch(Exception e) {
+                return BadRequest(e.Message);
+            }
 
             if (token != null)
             {
