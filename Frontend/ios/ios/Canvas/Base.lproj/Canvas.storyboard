@@ -109,11 +109,11 @@
                         <outlet property="connectionLabel" destination="HVO-Oe-0TK" id="375-IB-DIx"/>
                         <outlet property="cutButton" destination="cBy-5K-qpS" id="I39-ed-WFl"/>
                         <outlet property="deleteButton" destination="5ld-32-8cy" id="y06-F1-JC8"/>
+                        <outlet property="duplicateButton" destination="BjU-u4-eJ6" id="OB9-tG-azy"/>
                         <outlet property="exportButton" destination="yqP-yF-mGn" id="ydc-eg-QxN"/>
                         <outlet property="insertButton" destination="SLY-eP-ACv" id="oPa-Hm-WsF"/>
                         <outlet property="lassoButton" destination="Ttp-DJ-46z" id="SF8-4U-zfW"/>
                         <outlet property="navigationBar" destination="P0r-rK-G4e" id="Xne-YZ-5HS"/>
-                        <outlet property="pasteButton" destination="BjU-u4-eJ6" id="OB9-tG-azy"/>
                         <outlet property="quitButton" destination="4Er-Gx-QB8" id="gU4-l3-2x6"/>
                         <outlet property="selectButton" destination="Lts-nR-qFd" id="AOd-xa-kni"/>
                     </connections>

@@ -146,7 +146,11 @@ class Editor {
     }
     
     func duplicate() {
-        self.copy();
+        if (self.selectedFigures.count > 0) {
+            self.copy();
+            self.deselect();
+        }
+        
         for figure in self.clipboard {
             var viewModel = figure.exportViewModel()!
             viewModel.Guid = UUID().uuidString
@@ -157,7 +161,7 @@ class Editor {
             self.select(figure: figure)
             self.insertFigure(drawViewModel: viewModel)
         }
-        self.deselect()
+        
         CollaborationHub.shared!.postNewFigure(figures: self.clipboard)
         CanvasService.saveOnNewFigure(figures: self.figures, editor: self)
     }

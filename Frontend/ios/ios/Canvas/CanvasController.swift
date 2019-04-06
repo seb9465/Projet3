@@ -25,12 +25,13 @@ class CanvasController: UIViewController {
     @IBOutlet weak var quitButton: UIBarButtonItem!
     
     @IBOutlet weak var cutButton: UIBarButtonItem!
-    @IBOutlet weak var pasteButton: UIBarButtonItem!
+    @IBOutlet weak var duplicateButton: UIBarButtonItem!
     @IBOutlet weak var exportButton: UIBarButtonItem!
     @IBOutlet var navigationBar: UIToolbar!
+    
     override func viewDidLoad() {
         super.viewDidLoad();
-        self.pasteButton.isEnabled = false
+        self.duplicateButton.isEnabled = false
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
         
@@ -38,7 +39,10 @@ class CanvasController: UIViewController {
         CollaborationHub.shared = CollaborationHub(channelId: canvasId)
         CollaborationHub.shared!.connectToHub()
         CollaborationHub.shared!.delegate = self.editor
+        
         self.view.addSubview(self.editor.editorView)
+        
+        
         
         setupNetwork()
         
@@ -84,7 +88,7 @@ class CanvasController: UIViewController {
     @IBAction func cutButtonPressed(_ sender: Any) {
         self.editor.cut()
         if(self.editor.clipboard.count > 0) {
-            self.pasteButton.isEnabled = true
+            self.duplicateButton.isEnabled = true
         }
     }
     
