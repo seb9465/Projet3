@@ -47,6 +47,7 @@ class CanvasController: UIViewController {
         setupNetwork()
         
     }
+    
     public func loadCanvas() {
         var data: Data = currentCanvas.drawViewModels.data(using: String.Encoding.utf8)!
         let drawViewModels: [DrawViewModel] = try! JSONDecoder().decode(Array<DrawViewModel>.self, from: data)
@@ -54,6 +55,7 @@ class CanvasController: UIViewController {
         self.editor.resize(width: CGFloat(currentCanvas.canvasWidth), heigth: CGFloat(currentCanvas.canvasHeight))
         print(String(currentCanvas.canvasWidth) + String(currentCanvas.canvasHeight))
     }
+    
     func setupNetwork() {
         NotificationCenter.default.addObserver(
             self,
@@ -63,6 +65,7 @@ class CanvasController: UIViewController {
         )
         self.setupInternetConnectionState()
     }
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated);
         navigationController?.setNavigationBarHidden(true, animated: animated);

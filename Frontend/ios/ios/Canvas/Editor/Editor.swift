@@ -145,30 +145,39 @@ class Editor {
         self.clipboard = self.selectedFigures
     }
     
-    func duplicate() {
+    func duplicate() -> Void {
         if (self.selectedFigures.count > 0) {
             self.copy();
             self.deselect();
         }
         
-        for figure in self.clipboard {
-            var viewModel = figure.exportViewModel()!
-            viewModel.Guid = UUID().uuidString
-            viewModel.StylusPoints![0].X = viewModel.StylusPoints![0].X + 10
-            viewModel.StylusPoints![0].Y = viewModel.StylusPoints![0].Y + 10
-            viewModel.StylusPoints![1].X = viewModel.StylusPoints![1].X + 10
-            viewModel.StylusPoints![1].Y = viewModel.StylusPoints![1].Y + 10
-            self.select(figure: figure)
-            self.insertFigure(drawViewModel: viewModel)
+        if (self.clipboard.count == 0) {
+            let alert: UIAlertController = UIAlertController(title: "Nothing to duplicate!", message: "Clipboard is empty and no figures are selected.", preferredStyle: .alert);
+            let okAction: UIAlertAction = UIAlertAction(title: "Alright!", style: .default, handler: nil);
+            alert.addAction(okAction);
+            self.present(alert);
+            
+            return;
         }
         
-        CollaborationHub.shared!.postNewFigure(figures: self.clipboard)
-        CanvasService.saveOnNewFigure(figures: self.figures, editor: self)
+        for figure in self.clipboard {
+            var viewModel = figure.exportViewModel()!;
+            viewModel.Guid = UUID().uuidString;
+            viewModel.StylusPoints![0].X = viewModel.StylusPoints![0].X + 20;
+            viewModel.StylusPoints![0].Y = viewModel.StylusPoints![0].Y + 20;
+            viewModel.StylusPoints![1].X = viewModel.StylusPoints![1].X + 20;
+            viewModel.StylusPoints![1].Y = viewModel.StylusPoints![1].Y + 20;
+            self.select(figure: figure);
+            self.insertFigure(drawViewModel: viewModel);
+        }
+        
+        CollaborationHub.shared!.postNewFigure(figures: self.clipboard);
+        CanvasService.saveOnNewFigure(figures: self.figures, editor: self);
     }
     
     func cut() {
-        self.copy()
-        self.deleteSelectedFigures()
+        self.copy();
+        self.deleteSelectedFigures();
     }
     
     public func insertFigure(drawViewModel: DrawViewModel) -> Figure {
