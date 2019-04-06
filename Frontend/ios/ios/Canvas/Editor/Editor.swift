@@ -204,6 +204,9 @@ class Editor {
         }
         var viewModelsToDelete: [DrawViewModel] = []
         for figure in self.selectedFigures {
+            if (figure is ConnectionFigure) {
+                (figure as! ConnectionFigure).removeFromConnectedFigures(umlFigures: self.figures.filter({$0 is UmlFigure}) as! [UmlFigure])
+            }
             figure.removeFromSuperview()
             viewModelsToDelete.append(figure.exportViewModel()!)
             self.figures.removeAll{$0 == figure}

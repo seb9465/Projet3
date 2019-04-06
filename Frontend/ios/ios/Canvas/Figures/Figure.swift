@@ -65,4 +65,6 @@ class Figure: UIView {
     public func exportViewModel() -> DrawViewModel? {return nil}
 
     public func rotate(orientation: RotateOrientation) -> Void {}
+    
+    public func resize(by: CGPoint) -> Void {} 
 }
