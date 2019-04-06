@@ -35,6 +35,7 @@ class GalleryController: UIViewController {
         self.canvasController = UIStoryboard(name: "Canvas", bundle: nil).instantiateViewController(withIdentifier: "CanvasController") as! CanvasController;
         self.collectionView.refreshControl = self.refreshCollectionView;
         self.refreshCollectionView.addTarget(self, action: #selector(refreshData(_:)), for: .valueChanged);
+        self.refreshCollectionView.tintColor = Constants.RED_COLOR;
     }
     
     override func viewWillAppear(_ animated: Bool){
@@ -60,12 +61,12 @@ class GalleryController: UIViewController {
     private func updateDataGallery() -> Void {
         CanvasService.getAllCanvas(includePrivate: false)
             .done { (retreivedCanvas) in
-                self.canvas = retreivedCanvas
-                self.collectionView.reloadData()
-                UIViewController.removeSpinner(spinner: spinner);
+                self.canvas = retreivedCanvas;
+                self.collectionView.reloadData();
+                UIViewController.removeSpinner(spinner: self.spinner);
             }.catch { (Error) in
-                print("Fetch for canvas failed", Error)
-                UIViewController.removeSpinner(spinner: spinner);
+                print("Fetch for canvas failed", Error);
+                UIViewController.removeSpinner(spinner: self.spinner);
             }
     }
 }
