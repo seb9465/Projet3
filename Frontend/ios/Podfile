@@ -19,7 +19,7 @@ target 'ios' do
   pod 'Reachability'
   pod 'Alamofire-SwiftyJSON'
   pod 'SwiftyJSON', '~> 4.0'
-
+  pod 'FacebookLogin'
   target 'iosTests' do
     inherit! :search_paths
     # Pods for testing

@@ -10,9 +10,12 @@ import UIKit
 import Alamofire
 import PromiseKit
 import AwaitKit
-
-class LoginController: UIViewController, UITextFieldDelegate {
+import WebKit
+import FacebookLogin
+import JWTDecode
+class LoginController: UIViewController, UITextFieldDelegate, WKUIDelegate {
     
+    @IBOutlet weak var facebookButton: RoundedCorners!
     // MARK: Outlets
     
     @IBOutlet weak var serverlabel: UILabel!;
@@ -32,17 +35,18 @@ class LoginController: UIViewController, UITextFieldDelegate {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil);
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil);
         
+        view.addSubview(loginButton)
         // TODO: DÉCOMMENTÉ LES PROCHAINES LIGNES POUR LA VERSION RELEASE.
-//        self.loginButton.isUserInteractionEnabled = false;
-//        self.loginButton.alpha = 0.5;
-//        self.setupAddTargetIsNotEmptyTextFields();
+        //        self.loginButton.isUserInteractionEnabled = false;
+        //        self.loginButton.alpha = 0.5;
+        //        self.setupAddTargetIsNotEmptyTextFields();
     }
     
     // MARK: Action functions
     
     /**
      Handling when the Login button is pressed.
-    */
+     */
     @IBAction func loginPressed(_ sender: Any) -> Void {
         let spinner = UIViewController.displaySpinner(onView: self.view);
         let token = UserDefaults.standard.string(forKey: "token");
@@ -52,9 +56,9 @@ class LoginController: UIViewController, UITextFieldDelegate {
             AuthentificationAPI.logout()
             UserDefaults.standard.removePersistentDomain(forName: "token");
         }
-//        AuthentificationAPI.login(username: emailField.text!, password: passwordField.text!)
+        //        AuthentificationAPI.login(username: emailField.text!, password: passwordField.text!)
         AuthentificationAPI.login(username: "sebastien.labine", password: "!12345Aa")
-//        AuthentificationAPI.login(username: "seb.cado2", password: "!12345Aa")
+            //        AuthentificationAPI.login(username: "seb.cado2", password: "!12345Aa")
             .done { (token) in
                 UIViewController.removeSpinner(spinner: spinner);
                 self.validationLabel.text = "";
@@ -73,7 +77,7 @@ class LoginController: UIViewController, UITextFieldDelegate {
     
     /**
      When clicking on the register button, it brings us to the Register view.
-    */
+     */
     @IBAction func registerPressed(_ sender: UIButton) -> Void {
         let registerConroller = storyboard?.instantiateViewController(withIdentifier: "RegisterController") as! RegisterController;
         self.present(registerConroller, animated: true, completion: nil);
@@ -83,7 +87,7 @@ class LoginController: UIViewController, UITextFieldDelegate {
     
     /**
      When keyboard opens, the view will go up.
-    */
+     */
     @objc func keyboardWillShow(notification: NSNotification) -> Void {
         if let keyboardSize: CGRect = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
             if (self.view.frame.origin.y == 0) {
@@ -94,7 +98,7 @@ class LoginController: UIViewController, UITextFieldDelegate {
     
     /**
      When keyboard closes, the view will go back to normal.
-    */
+     */
     @objc func keyboardWillHide(notification: NSNotification) -> Void {
         if (self.view.frame.origin.y != 0) {
             self.view.frame.origin.y = 0;
@@ -103,7 +107,7 @@ class LoginController: UIViewController, UITextFieldDelegate {
     
     /**
      Makes the Register button enabled while the fields are not filled.
-    */
+     */
     @objc func textFieldsWithoutErrors(sender: UITextField) -> Void {
         sender.text = sender.text?.trimmingCharacters(in: .whitespaces);
         
@@ -134,4 +138,33 @@ class LoginController: UIViewController, UITextFieldDelegate {
         self.passwordField.addTarget(self, action: #selector(textFieldsWithoutErrors),
                                      for: .editingChanged);
     }
+    
+    @IBAction func facebookButtonClicked(_ sender: Any) {
+        let loginManager = LoginManager()
+        loginManager.loginBehavior = .web
+        loginManager.logIn(readPermissions: [.email, .publicProfile], viewController: self, completion: { loginResult in
+            switch loginResult {
+            case .failed(let error):
+                print(error)
+            case .cancelled:
+                print("User cancelled login.")
+            case .success(let grantedPermissions, let declinedPermissions, let accessToken):
+                print(accessToken)
+                print("Logged in!")
+                AuthentificationAPI.fbLogin(accessToken: accessToken.authenticationToken, username: "test", email: "test@test.com").done({ (token) in
+                    print("CALLBACK WORKS")
+                })
+            }
+        })
+    }
 }
+/*var webView: WKWebView!
+ 
+ let webConfiguration = WKWebViewConfiguration()
+ webView = WKWebView(frame: .zero, configuration: webConfiguration)
+ webView.uiDelegate = self
+ view = webView
+ let myURL = URL(string:"https://www.polypaint.me/api/login")
+ let myRequest = URLRequest(url: myURL!)
+ webView.load(myRequest)
+ */
