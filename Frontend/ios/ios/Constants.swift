@@ -28,6 +28,7 @@ struct Constants {
 
     
     static let RED_COLOR: UIColor = UIColor(red: 1, green: 0.419608, blue: 0.419608, alpha: 1);
+    static let LIGHT_RED_COLOR: UIColor = UIColor(red: 1, green: 0.419608, blue: 0.419608, alpha: 0.3);
     static let GREY_COLOR: UIColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.3);
     static let DEFAULT_BLUE_COLOR = UIColor(red: 0, green: 122/255, blue: 1, alpha: 1);
     static let GREEN_COLOR: UIColor = UIColor (red: 0, green: 204/255, blue: 34/255, alpha: 1);
