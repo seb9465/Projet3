@@ -6,6 +6,8 @@
 //  Copyright © 2019 LOG3000 equipe 12. All rights reserved.
 //
 
+import UIKit
+
 extension Editor {
 
     func getSelectedFiguresDrawviewModels() -> [DrawViewModel] {
@@ -21,6 +23,10 @@ extension Editor {
         return self.figures.filter({$0 is UmlFigure}) as! [UmlFigure]
     }
     
+    func getFigureFromDrawViewModel(model: DrawViewModel) -> Figure {
+        return self.figures.first(where: {$0.uuid.uuidString.lowercased() == model.Guid})!
+    }
+    
     func isAllAnchoredFiguresInSelection(connection: ConnectionFigure) -> Bool{
         if (connection.getAnchoredUmlFigures(umlFigures: self.getUmlFigures()).isEmpty) {
             return true
@@ -28,11 +34,21 @@ extension Editor {
         
         for umlFigure in connection.getAnchoredUmlFigures(umlFigures: self.getUmlFigures()) {
             if (!self.selectedFigures.contains(umlFigure)) {
-                print("Shuld not move")
                 return false
             }
         }
         
         return true
+    }
+    
+    func getFigureContaining(point: CGPoint) -> UmlFigure? {
+        for subview in self.editorView.subviews {
+            if let figure = subview as? UmlFigure {
+                if (figure.frame.contains(point)) {
+                    return figure
+                }
+            }
+        }
+        return nil
     }
 }

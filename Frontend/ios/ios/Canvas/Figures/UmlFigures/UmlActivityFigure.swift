@@ -9,7 +9,7 @@
 import UIKit
 
 class UmlActivityFigure: UmlFigure {
-    let BASE_WIDTH: CGFloat = 115
+    let BASE_WIDTH: CGFloat = 100
     let BASE_HEIGHT: CGFloat = 100
     
     init(firstPoint: CGPoint, lastPoint: CGPoint) {
@@ -48,13 +48,13 @@ class UmlActivityFigure: UmlFigure {
         
         //// Bezier Drawing
         let bezierPath = UIBezierPath()
-        bezierPath.move(to: CGPoint(x: 20 + inset, y: height/2))
+        bezierPath.move(to: CGPoint(x: inset + width/6, y: height/2))
         bezierPath.addLine(to: CGPoint(x: inset, y: inset))
-        bezierPath.addLine(to: CGPoint(x: width - 20, y: inset))
+        bezierPath.addLine(to: CGPoint(x: width * 5/6, y: inset))
         bezierPath.addLine(to: CGPoint(x: width, y: height/2))
-        bezierPath.addLine(to: CGPoint(x: width - 20, y: height))
+        bezierPath.addLine(to: CGPoint(x: width * 5/6, y: height))
         bezierPath.addLine(to: CGPoint(x: inset, y: height))
-        bezierPath.addLine(to: CGPoint(x: 20 + inset, y: height/2))
+        bezierPath.addLine(to: CGPoint(x: inset + width/6, y: height/2))
         bezierPath.close()
 
         if(self.isBorderDashed) {
@@ -98,6 +98,8 @@ class UmlActivityFigure: UmlFigure {
         drawViewModel.LastElbowPosition = nil
         drawViewModel.ImageBytes = nil
         drawViewModel.Rotation = self.currentAngle
+        drawViewModel.inConnections = self.serializeIncomingConnections()
+        drawViewModel.outConnections = self.serializeOutgoingConnections()
         return drawViewModel
     }
 }

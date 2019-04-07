@@ -65,6 +65,8 @@ class UMLTextFigure: UmlFigure {
         drawViewModel.LastElbowPosition = nil
         drawViewModel.ImageBytes = nil
         drawViewModel.Rotation = self.currentAngle
+        drawViewModel.inConnections = self.serializeIncomingConnections()
+        drawViewModel.outConnections = self.serializeOutgoingConnections()
         return drawViewModel
     }
 }
