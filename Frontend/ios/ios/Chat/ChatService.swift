@@ -22,7 +22,13 @@ class ChatService {
     private var _currentChannel: Channel!;
     private var _userChannels: ChannelsMessage;
     private var _serverChannels: ChannelsMessage;
-    private var _messagesWhileAFK: [String: [Message]];
+    private var _messagesWhileAFK: [String: [Message]] {
+        didSet {
+            afkMessagesDidChangeClosure?();
+        }
+    };
+    
+    public var afkMessagesDidChangeClosure: (() -> ())?;
     
     
     // MARK: Constructor
