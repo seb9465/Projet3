@@ -59,6 +59,7 @@ class Editor {
         let size = CGSize(width: width, height: heigth)
         let newFrame: CGRect = CGRect(origin: origin, size: size)
         self.editorView.frame = newFrame
+//        self.editorView.updateShadow()
         self.editorView.updateCanvasAnchor()
         self.editorView.setNeedsDisplay()
     }
@@ -255,17 +256,19 @@ class Editor {
     }
     
     public func clear() -> Void {
-        print("clearing")
-        for view in self.editorView.subviews {
-            view.removeFromSuperview()
+        print("Clearing canvas")
+        self.currentChange.0 = self.getFiguresDrawviewModels(figures: self.figures)
+        for figure in self.figures {
+            figure.removeFromSuperview()
         }
-        self.selectedFigures.removeAll()
-        self.editorView.setNeedsDisplay()
-        self.selectionOutlines.removeAll()
-        self.figures.removeAll()
-//        self.undoArray.removeAll();
-//        self.redoArray.removeAll();
+        
         self.deselect();
+        self.selectedFigures.removeAll()
+        self.selectionOutlines.removeAll()
+        self.editorView.setNeedsDisplay()
+        self.figures.removeAll()
+        self.currentChange.1 = []
+        self.undoArray.append(self.currentChange)
         CanvasService.saveOnNewFigure(figures: self.figures, editor: self)
     }
     

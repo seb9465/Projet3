@@ -7,12 +7,17 @@
 //
 
 import UIKit
+import SwiftHUEColorPicker
 
 class FillCell: UITableViewCell {
     var delegate: SideToolbarDelegate?
 
+    @IBOutlet weak var fillColorPicker: SwiftHUEColorPicker!
+    @IBOutlet weak var applyButtom: UIButton!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
+        self.fillColorPicker.delegate = self
         // Initialization code
     }
 
@@ -20,22 +25,7 @@ class FillCell: UITableViewCell {
         self.selectionStyle = UITableViewCell.SelectionStyle.none
         super.setSelected(selected, animated: animated)
     }
-    
-    @IBAction func blueSelected(_ sender: UIButton) {
-        self.delegate?.setSelectedFigureFillColor(color: UIColor.blue)
-    }
-    
-    @IBAction func greenSelected(_ sender: UIButton) {
-        self.delegate?.setSelectedFigureFillColor(color: UIColor.green)
-    }
-    
-    @IBAction func yellowSelected(_ sender: UIButton) {
-        self.delegate?.setSelectedFigureFillColor(color: UIColor.yellow)
-    }
-    
-    @IBAction func redSelected(_ sender: UIButton) {
-        self.delegate?.setSelectedFigureFillColor(color: UIColor.red)
-    }
+
     
     @IBAction func blackSelected(_ sender: UIButton) {
         self.delegate?.setSelectedFigureFillColor(color: UIColor.black)
@@ -45,4 +35,14 @@ class FillCell: UITableViewCell {
         self.delegate?.setSelectedFigureFillColor(color: UIColor.white)
     }
     
+    @IBAction func applySelected(_ sender: UIButton) {
+    self.delegate?.setSelectedFigureFillColor(color: self.applyButtom.backgroundColor!)
+    }
+    
+}
+
+extension FillCell: SwiftHUEColorPickerDelegate {
+    func valuePicked(_ color: UIColor, type: SwiftHUEColorPicker.PickerType) {
+        self.applyButtom.backgroundColor = color
+    }
 }

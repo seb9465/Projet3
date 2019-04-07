@@ -7,6 +7,4 @@
 //
 import SwiftHUEColorPicker
 
-class ColorPicker: SwiftHUEColorPicker {
-
-}
+class ColorPicker: SwiftHUEColorPicker {}

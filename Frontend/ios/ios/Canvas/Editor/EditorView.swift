@@ -17,7 +17,20 @@ class EditorView: UIView {
         viewFrame = viewFrame.offsetBy(dx:0, dy: 70)
         super.init(frame: viewFrame)
         self.clipsToBounds = true
-       self.backgroundColor = UIColor(red: 255, green: 255, blue: 255, alpha: 1.0)
+        self.backgroundColor = UIColor(red: 255, green: 255, blue: 255, alpha: 1.0)
+//        self.updateShadow()
+    }
+    
+    func updateShadow() {
+//        layer.masksToBounds = false
+        layer.shadowColor = UIColor.black.cgColor
+        layer.shadowOpacity = 0.25
+        layer.shadowOffset = CGSize(width: 1, height: 1)
+        layer.shadowRadius = 1
+        
+        layer.shadowPath = UIBezierPath(rect: bounds).cgPath
+        layer.shouldRasterize = true
+        layer.rasterizationScale = 1
     }
     
     required init?(coder aDecoder: NSCoder) {
