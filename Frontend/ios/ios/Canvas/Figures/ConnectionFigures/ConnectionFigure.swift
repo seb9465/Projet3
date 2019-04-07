@@ -153,6 +153,19 @@ class ConnectionFigure : Figure {
         return false
     }
     
+    func getAnchoredUmlFigures(umlFigures: [UmlFigure]) -> [UmlFigure] {
+        var anchoredFigures: [UmlFigure] = []
+        for umlFigure in umlFigures {
+            if (umlFigure.incomingConnections[self] != nil) {
+                anchoredFigures.append(umlFigure)
+            }
+            if (umlFigure.outgoingConnections[self] != nil) {
+                anchoredFigures.append(umlFigure)
+            }
+        }
+        return anchoredFigures
+    }
+    
     func removeFromConnectedFigures(umlFigures: [UmlFigure]) {
         for umlFigure in umlFigures {
             umlFigure.removeConnection(connection: self)

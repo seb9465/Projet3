@@ -16,4 +16,23 @@ extension Editor {
 
         return drawViewModels
     }
+    
+    func getUmlFigures() -> [UmlFigure] {
+        return self.figures.filter({$0 is UmlFigure}) as! [UmlFigure]
+    }
+    
+    func isAllAnchoredFiguresInSelection(connection: ConnectionFigure) -> Bool{
+        if (connection.getAnchoredUmlFigures(umlFigures: self.getUmlFigures()).isEmpty) {
+            return true
+        }
+        
+        for umlFigure in connection.getAnchoredUmlFigures(umlFigures: self.getUmlFigures()) {
+            if (!self.selectedFigures.contains(umlFigure)) {
+                print("Shuld not move")
+                return false
+            }
+        }
+        
+        return true
+    }
 }

@@ -110,37 +110,45 @@ extension Editor : TouchInputDelegate {
     
     func notifyTouchMoved(point: CGPoint, figure: Figure?) {
         if (self.touchEventState == .TRANSLATE) {
-            self.touchEventState = .TRANSLATE;
+            self.touchEventState = .TRANSLATE
             // out of bounds
             var xOffset = CGFloat(point.x - self.previousTouchPoint.x)
             var yOffset = CGFloat(point.y - self.previousTouchPoint.y)
             
+            // Only translate when all connected Anchors are selected
+            for connection in self.selectedFigures.filter({$0 is ConnectionFigure}) {
+                if (!self.isAllAnchoredFiguresInSelection(connection: connection as! ConnectionFigure)) {
+                    return
+                }
+            }
+            
             for figure in self.selectedFigures {
                 let tmpOutlineIndex: Int = self.selectionOutlines.firstIndex(where: { $0.associatedFigureID == figure.uuid })!;
-                let boundTouched: BoundTouched? = self.isOutOfBounds(view: self.selectionOutlines[tmpOutlineIndex])
+//                let boundTouched: BoundTouched? = self.isOutOfBounds(view: self.selectionOutlines[tmpOutlineIndex])
+//
+//                switch(boundTouched) {
+//                case .Up?:
+//                    if(yOffset < 0) {
+//                        yOffset = 0
+//                    }
+//                    break
+//                case .Down?:
+//                    if(yOffset > 0) {
+//                        yOffset = 0
+//                    }
+//                case .Left?:
+//                    if(xOffset < 0) {
+//                        xOffset = 0
+//                    }
+//                    break
+//                case .Right?:
+//                    if(xOffset > 0) {
+//                        xOffset = 0
+//                    }
+//                case .none:
+//                    break
+//                }
                 
-                switch(boundTouched) {
-                case .Up?:
-                    if(yOffset < 0) {
-                        yOffset = 0
-                    }
-                    break
-                case .Down?:
-                    if(yOffset > 0) {
-                        yOffset = 0
-                    }
-                case .Left?:
-                    if(xOffset < 0) {
-                        xOffset = 0
-                    }
-                    break
-                case .Right?:
-                    if(xOffset > 0) {
-                        xOffset = 0
-                    }
-                case .none:
-                    break
-                }
                 let offset = CGPoint(x: xOffset, y: yOffset)
                 figure.translate(by: offset)
                 self.selectionOutlines[tmpOutlineIndex].translate(by: offset)
