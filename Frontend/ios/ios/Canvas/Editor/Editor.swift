@@ -302,14 +302,16 @@ extension Editor: CollaborationHubDelegate {
     }
     
     func updateCanvas(itemMessage: ItemMessage) {
+        print(itemMessage.Items)
         for drawViewModel in itemMessage.Items {
+            // Corriger le if
             if (self.figures.contains(where: {$0.uuid.uuidString.lowercased() == drawViewModel.Guid})) {
                 self.overriteFigure(figureId: drawViewModel.Guid!, newDrawViewModel: drawViewModel, username: itemMessage.Username)
                 self.deselect(username: itemMessage.Username)
                 self.select(drawViewModels: itemMessage.Items, username: itemMessage.Username)
-                return
+            } else {
+                self.insertFigure(drawViewModel: drawViewModel)
             }
-            self.insertFigure(drawViewModel: drawViewModel)
         }
     }
     
