@@ -36,6 +36,23 @@ class DashboardController: UIViewController, UITextFieldDelegate {
         self.setChatViewContainer();
         
         self.setChatNotifLabel();
+        
+        ChatService.shared.afkMessagesDidChangeClosure = {
+            let channels: [String: [Message]] = ChatService.shared.messagesWhileAFK;
+            print(channels);
+            var counter: Int = 0;
+            for channel in channels {
+                counter += (channels[channel.key]?.count)!;
+            }
+            
+            if (counter > 0) {
+                self.chatNotifLabel.isHidden = false;
+                self.chatNotifLabel.text = String(counter);
+            } else {
+                self.chatNotifLabel.isHidden = true;
+                self.chatNotifLabel.text = "";
+            }
+        }
     }
     
     // MARK: Private functions
