@@ -10,21 +10,25 @@ import Foundation
 import CoreGraphics
 import UIKit
 class UmlImageFigure: UmlFigure {
-    let BASE_WIDTH: CGFloat = 150
-    let BASE_HEIGHT: CGFloat = 200
     var image: UIImage?
     var imageBytes: String?
-
+    var imageView: UIImageView?
     override init(drawViewModel: DrawViewModel) {
         super.init(drawViewModel: drawViewModel);
         self.imageBytes = drawViewModel.ImageBytes!
-        self.image = UIImage(data: Data(base64Encoded: drawViewModel.ImageBytes!)!)!
+        self.autoresizingMask = UIView.AutoresizingMask(rawValue: UIView.AutoresizingMask.flexibleBottomMargin.rawValue | UIView.AutoresizingMask.flexibleHeight.rawValue | UIView.AutoresizingMask.flexibleRightMargin.rawValue | UIView.AutoresizingMask.flexibleLeftMargin.rawValue | UIView.AutoresizingMask.flexibleTopMargin.rawValue | UIView.AutoresizingMask.flexibleWidth.rawValue)
+        self.contentMode = UIView.ContentMode.scaleAspectFit
+        self.image = UIImage(data: Data(base64Encoded: self.imageBytes!)!)
+        print(self.frame.width)
+        print(self.frame.height)
+
+        self.imageView = UIImageView(image: self.image)
+        self.imageView!.frame = CGRect(x: 0, y: 0, width: self.frame.width, height: self.frame.height)
+        
+        self.addSubview(imageView!)
         self.initializeAnchorPoints()
     }
-    
-    override func draw(_ rect: CGRect) {
-        self.image?.draw(in: self.frame)
-    }
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
