@@ -12,11 +12,11 @@ using System.Linq;
 
 namespace PolyPaint.Strokes
 {
-    public class ImageStroke : AbstractStroke
+    public class ImageStroke : AbstractShapeStroke
     {
         public ImageBrush Brush { get; set; }
         public ImageStroke(StylusPointCollection pts, InkCanvas surfaceDessin, ImageBrush brush)
-            : base(pts, surfaceDessin, "#FFFFFFFF", "#FFFFFFFF", 0, DashStyles.Solid)
+            : base(pts, surfaceDessin, "Image", "#FFFFFFFF", "#FFFFFFFF", 0, DashStyles.Solid)
         {
             Brush = brush;
             SurfaceDessin = surfaceDessin;
@@ -54,6 +54,8 @@ namespace PolyPaint.Strokes
                 points[0],
                 points[1]
             ));
+
+            DrawAnchorPoints(drawingContext);
         }
     }
 }

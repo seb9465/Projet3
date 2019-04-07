@@ -10,6 +10,9 @@ namespace PolyPaint.API.Handlers
         public readonly static ConcurrentDictionary<string, List<string>> UserGroupMap
             = new ConcurrentDictionary<string, List<string>>();
 
+        public readonly static ConcurrentDictionary<string, List<string>> UserGroupCollabMap
+            = new ConcurrentDictionary<string, List<string>>();
+
         // key: ConnectionId, value: Group
         public readonly static ConcurrentDictionary<string, string> UserConnections
             = new ConcurrentDictionary<string, string>();
@@ -28,10 +31,34 @@ namespace PolyPaint.API.Handlers
             });
         }
 
+        public static void AddOrUpdateCollabMap(string group, string id)
+        {
+            UserGroupCollabMap.AddOrUpdate(group, new List<string>() { id }, (k, v) =>
+            {
+                v.Add(id);
+                return v;
+            });
+        }
+
         public static bool TryGetByValue(ApplicationUser user, out string channelId)
         {
             channelId = null;
             foreach (var pair in UserGroupMap)
+            {
+                if (pair.Value.Contains(user.Id))
+                {
+                    channelId = pair.Key;
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public static bool TryGetByValueCollab(ApplicationUser user, out string channelId)
+        {
+            channelId = null;
+            foreach (var pair in UserGroupCollabMap)
             {
                 if (pair.Value.Contains(user.Id))
                 {

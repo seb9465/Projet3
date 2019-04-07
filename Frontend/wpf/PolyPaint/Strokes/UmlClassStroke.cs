@@ -76,7 +76,7 @@ namespace PolyPaint.Strokes
             nextHeight += 10;
             for (int i = 0; i < Properties.Count; i++)
             {
-                var tempFt = new FormattedText($"• {Properties[i].Title}", System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 12, new SolidColorBrush(Colors.Black));
+                var tempFt = new FormattedText($"• {Properties[i].Title}", System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, Config.T_FACE, 17, new SolidColorBrush(Colors.Black));
                 drawingContext.DrawText(tempFt, new Point(UnrotatedTopLeft.X + 10, nextHeight));
                 nextHeight += 10 + tempFt.Height;
             }
@@ -84,50 +84,34 @@ namespace PolyPaint.Strokes
             nextHeight += 10;
             for (int i = 0; i < Methods.Count; i++)
             {
-                var tempFt = new FormattedText($"• {Methods[i].Title}", System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 12, new SolidColorBrush(Colors.Black));
+                var tempFt = new FormattedText($"• {Methods[i].Title}", System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, Config.T_FACE, 17, new SolidColorBrush(Colors.Black));
                 drawingContext.DrawText(tempFt, new Point(UnrotatedTopLeft.X + 10, nextHeight));
                 nextHeight += 10 + tempFt.Height;
             }
         }
 
-        private void DrawAnchorPoints(DrawingContext drawingContext)
-        {
-            SolidColorBrush brush = new SolidColorBrush(Colors.Gray);
-
-            AnchorPoints[0] = new Point(UnrotatedTopLeft.X + UnrotatedWidth / 2, UnrotatedTopLeft.Y);
-            AnchorPoints[1] = new Point(UnrotatedTopLeft.X + UnrotatedWidth / 2, UnrotatedTopLeft.Y + UnrotatedHeight);
-            AnchorPoints[2] = new Point(UnrotatedTopLeft.X + UnrotatedWidth, UnrotatedTopLeft.Y + UnrotatedHeight / 2);
-            AnchorPoints[3] = new Point(UnrotatedTopLeft.X, UnrotatedTopLeft.Y + UnrotatedHeight / 2);
-            AnchorPoints = AnchorPoints.ToList().Select(x => Tools.RotatePoint(x, Center, Rotation)).ToArray();
-
-            drawingContext.DrawEllipse(brush, null, AnchorPoints[0], 2, 2);
-            drawingContext.DrawEllipse(brush, null, AnchorPoints[1], 2, 2);
-            drawingContext.DrawEllipse(brush, null, AnchorPoints[2], 2, 2);
-            drawingContext.DrawEllipse(brush, null, AnchorPoints[3], 2, 2);
-        }
-
         private void addProperty(string bidon)
         {
-            Properties.Add(new Property("NewProperty"));
-            ProprieteModifiee("Properties");
+            (SurfaceDessin.Strokes.FirstOrDefault(x => (x as AbstractStroke).Guid == Guid) as UmlClassStroke).Properties.Add(new Property("NewProperty"));
+            (SurfaceDessin.Strokes.FirstOrDefault(x => (x as AbstractStroke).Guid == Guid) as UmlClassStroke).ProprieteModifiee("Properties");
         }
 
         private void addMethod(string bidon)
         {
-            Methods.Add(new Method("NewMethod"));
-            ProprieteModifiee("Methods");
+            (SurfaceDessin.Strokes.FirstOrDefault(x => (x as AbstractStroke).Guid == Guid) as UmlClassStroke).Methods.Add(new Method("NewMethod"));
+            (SurfaceDessin.Strokes.FirstOrDefault(x => (x as AbstractStroke).Guid == Guid) as UmlClassStroke).ProprieteModifiee("Methods");
         }
 
         private void removeFromProperties(string prop)
         {
-            Properties.Remove(Properties.FirstOrDefault(x => x.Title == prop));
-            ProprieteModifiee("Properties");
+            (SurfaceDessin.Strokes.FirstOrDefault(x => (x as AbstractStroke).Guid == Guid) as UmlClassStroke).Properties.Remove((SurfaceDessin.Strokes.FirstOrDefault(x => (x as AbstractStroke).Guid == Guid) as UmlClassStroke).Properties.FirstOrDefault(x => x.Title == prop));
+            (SurfaceDessin.Strokes.FirstOrDefault(x => (x as AbstractStroke).Guid == Guid) as UmlClassStroke).ProprieteModifiee("Properties");
         }
 
         private void removeFromMethods(string method)
         {
-            Methods.Remove(Methods.FirstOrDefault(x => x.Title == method));
-            ProprieteModifiee("Methods");
+            (SurfaceDessin.Strokes.FirstOrDefault(x => (x as AbstractStroke).Guid == Guid) as UmlClassStroke).Methods.Remove((SurfaceDessin.Strokes.FirstOrDefault(x => (x as AbstractStroke).Guid == Guid) as UmlClassStroke).Methods.FirstOrDefault(x => x.Title == method));
+            (SurfaceDessin.Strokes.FirstOrDefault(x => (x as AbstractStroke).Guid == Guid) as UmlClassStroke).ProprieteModifiee("Methods");
         }
     }
 

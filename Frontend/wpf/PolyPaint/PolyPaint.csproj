@@ -368,11 +368,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AnchorPosition.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="Convertisseurs\Convertisseurs.cs" />
     <Compile Include="Modeles\ChatClient.cs" />
     <Compile Include="Modeles\CollaborationClient.cs" />
     <Compile Include="Modeles\Editeur.cs" />
+    <Compile Include="Modeles\FBInfo.cs" />
     <Compile Include="Modeles\Room.cs" />
     <Compile Include="Modeles\SaveableElement.cs" />
     <Compile Include="Modeles\SaveableCanvas.cs" />
@@ -445,6 +447,9 @@
       <DependentUpon>UploadToCloud.xaml</DependentUpon>
     </Compile>
     <Compile Include="Vues\ViewStateEnum.cs" />
+    <Compile Include="Vues\WebBrowserWindow.xaml.cs">
+      <DependentUpon>WebBrowserWindow.xaml</DependentUpon>
+    </Compile>
     <Page Include="Vues\ActivateProtection.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -511,6 +516,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Vues\WebBrowserWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -536,6 +545,7 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <Resource Include="Resources\SF-Pro-Text-Regular.otf" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

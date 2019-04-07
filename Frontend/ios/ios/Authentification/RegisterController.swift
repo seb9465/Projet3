@@ -216,8 +216,6 @@ class RegisterController: UIViewController {
             self.hideErrorViews();
             var errors: [HttpResponseMessage] = [];
             
-            print(response.response?.statusCode as Any);
-            
             switch response.response?.statusCode {
             case 400:
                 for err in response.value! {

@@ -16,11 +16,16 @@ struct Constants {
     // Hubs
     static let CHAT_URL: String = Constants.SERVER_BASE_URL + "/signalr";
     static let COLLABORATION_URL: String = Constants.SERVER_BASE_URL + "/signalr/collaborative"
+    //    static let COLLABORATION_URL: String = Constants.SERVER_BASE_URL + "/signalr/collaborative?channelId=general"
 
     // Endpoints
     static let LOGIN_URL: String = Constants.SERVER_BASE_URL + "/api/login";
+    static let FB_LOGIN_URL: String = Constants.SERVER_BASE_URL + "/api/login/ios-callback";
+
     static let REGISTER_URL: String = Constants.SERVER_BASE_URL + "/api/register";
     static let LOGOUT_URL: String = Constants.SERVER_BASE_URL + "/api/user/logout";
+    static let SAVE_URL: String = Constants.SERVER_BASE_URL + "/api/user/canvas";
+
     
     static let RED_COLOR: UIColor = UIColor(red: 1, green: 0.419608, blue: 0.419608, alpha: 1);
     static let DEFAULT_BLUE_COLOR = UIColor(red: 0, green: 122/255, blue: 1, alpha: 1);
@@ -29,5 +34,14 @@ struct Constants {
         let formatter = DateFormatter();
         formatter.dateFormat = "HH:mm:ss";
         return formatter;
-    }()
+    }();
+    
+    // Constants for the Chat View Container.
+    struct ChatView {
+        static let cornerRadius: CGFloat = 5.0;
+        static let shadowColor: CGColor = UIColor.black.cgColor;
+        static let shadowOffset: CGSize = CGSize.zero;
+        static let shadowOpacity: Float = 0.5;
+        static let shadowRadius: CGFloat = 3.0;
+    }
 }

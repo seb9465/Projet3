@@ -10,43 +10,6 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Local-->
-        <scene sceneID="kZu-YQ-3ca">
-            <objects>
-                <viewController title="Local" id="U2L-m9-b64" customClass="LocalGalleryController" customModule="ios" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="pdM-y6-B6o">
-                        <rect key="frame" x="0.0" y="0.0" width="1024" height="620"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Gce-9P-YX9">
-                                <rect key="frame" x="0.0" y="0.0" width="1024" height="570"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="rh3-4e-DXJ">
-                                    <size key="itemSize" width="50" height="50"/>
-                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                </collectionViewFlowLayout>
-                                <cells/>
-                                <connections>
-                                    <outlet property="dataSource" destination="U2L-m9-b64" id="mNb-o3-EYD"/>
-                                    <outlet property="delegate" destination="U2L-m9-b64" id="baw-wT-5Ob"/>
-                                </connections>
-                            </collectionView>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <viewLayoutGuide key="safeArea" id="Rtb-eP-UFt"/>
-                    </view>
-                    <tabBarItem key="tabBarItem" title="Local" id="h5P-8a-FRm"/>
-                    <connections>
-                        <outlet property="collectionView" destination="Gce-9P-YX9" id="RO9-lM-7gg"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="rlA-y3-sf3" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1488" y="1938"/>
-        </scene>
         <!--Login Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
@@ -140,15 +103,15 @@
                                 <color key="textColor" red="0.016804177310000001" green="0.19835099580000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gq9-Om-dXf" customClass="RoundedCorners" customModule="ios" customModuleProvider="target">
-                                <rect key="frame" x="441" y="547" width="143" height="17"/>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kE2-GA-VrO" customClass="RoundedCorners" customModule="ios" customModuleProvider="target">
+                                <rect key="frame" x="393" y="576" width="239" height="38"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                <state key="normal" title="Continue Offline">
-                                    <color key="titleColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="backgroundColor" red="1" green="0.41960784309999999" blue="0.41960784309999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <state key="normal" image="FbLogin">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>
-                                    <segue destination="eTb-Zs-q24" kind="show" id="04t-QQ-4uf"/>
+                                    <action selector="facebookButtonClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="jqr-Pa-b2r"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -158,8 +121,8 @@
                     <navigationItem key="navigationItem" id="PUo-Fe-qVm"/>
                     <connections>
                         <outlet property="emailField" destination="q3t-iV-2tu" id="TtP-fc-GZh"/>
+                        <outlet property="facebookButton" destination="kE2-GA-VrO" id="cmL-XF-FM2"/>
                         <outlet property="loginButton" destination="Hrm-z5-RNa" id="dpS-kU-zbE"/>
-                        <outlet property="offlineButton" destination="Gq9-Om-dXf" id="G2b-H9-EdF"/>
                         <outlet property="passwordField" destination="Q8W-2o-jAM" id="fIx-n1-Fs4"/>
                         <outlet property="serverlabel" destination="Qs7-Nw-GU5" id="eNO-CJ-Gq7"/>
                         <outlet property="validationLabel" destination="xyw-KZ-w3f" id="g6P-Eu-5FF"/>
@@ -465,21 +428,9 @@
                                 <rect key="frame" x="0.0" y="147" width="1024" height="620"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                 <connections>
-                                    <segue destination="8ev-UO-N6X" kind="embed" id="3Zq-0L-Wq7"/>
+                                    <segue destination="Mrs-wb-JuW" kind="embed" id="b63-aG-Hmh"/>
                                 </connections>
                             </containerView>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kYd-KD-3cM" customClass="RoundedCorners" customModule="ios" customModuleProvider="target">
-                                <rect key="frame" x="734" y="76" width="131" height="44"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="1" green="0.41960784309999999" blue="0.41960784309999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
-                                <state key="normal" title="Chat">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                </state>
-                                <connections>
-                                    <segue destination="dDl-qJ-RPL" kind="show" id="uEy-ua-63S"/>
-                                </connections>
-                            </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="PolyPaint Pro" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GOc-NE-l60">
                                 <rect key="frame" x="20" y="46" width="221" height="43"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -494,27 +445,6 @@
                                 <color key="textColor" red="1" green="0.41960784309999999" blue="0.41960784309999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jeQ-1g-5Kf" customClass="RoundedCorners" customModule="ios" customModuleProvider="target">
-                                <rect key="frame" x="595" y="76" width="131" height="44"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="1" green="0.41960784309999999" blue="0.41960784309999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
-                                <state key="normal" title="Canvas">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                </state>
-                                <connections>
-                                    <segue destination="IOM-ce-rID" kind="show" id="JCy-PV-2lK"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Kti-Cb-B64" customClass="RoundedCorners" customModule="ios" customModuleProvider="target">
-                                <rect key="frame" x="456" y="76" width="131" height="44"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="1" green="0.41960784309999999" blue="0.41960784309999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
-                                <state key="normal" title="New Canvas">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                </state>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="p9k-FE-qKI" customClass="RoundedCorners" customModule="ios" customModuleProvider="target">
                                 <rect key="frame" x="873" y="76" width="131" height="44"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -527,45 +457,63 @@
                                     <action selector="logoutButton:" destination="eTb-Zs-q24" eventType="touchUpInside" id="aK9-ZQ-xlh"/>
                                 </connections>
                             </button>
+                            <containerView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wRI-Wo-NFL">
+                                <rect key="frame" x="606" y="128" width="400" height="620"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                <connections>
+                                    <segue destination="6Ue-BN-htd" kind="embed" id="B07-49-CB1"/>
+                                </connections>
+                            </containerView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Kti-Cb-B64" customClass="RoundedCorners" customModule="ios" customModuleProvider="target">
+                                <rect key="frame" x="722" y="76" width="131" height="44"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="1" green="0.41960784309999999" blue="0.41960784309999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
+                                <state key="normal" title="New Canvas">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="createNewCanvas:" destination="eTb-Zs-q24" eventType="touchUpInside" id="9CG-DB-fLh"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Co4-to-R3M" customClass="RoundedCorners" customModule="ios" customModuleProvider="target">
+                                <rect key="frame" x="583" y="76" width="131" height="44"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="1" green="0.41960784309999999" blue="0.41960784309999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
+                                <state key="normal" title="Window Chat">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="windowChatTrigger:" destination="eTb-Zs-q24" eventType="touchUpInside" id="R8m-j7-FX1"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="Mrk-5T-hni"/>
                     </view>
                     <connections>
+                        <outlet property="GalleryView" destination="1hT-WF-jwz" id="HlX-WB-87f"/>
+                        <outlet property="galleryView" destination="1hT-WF-jwz" id="qz5-z4-fUZ"/>
                         <outlet property="logoutButton" destination="p9k-FE-qKI" id="ulq-v1-ocK"/>
                         <outlet property="usernameLabel" destination="DPA-sG-7nO" id="GgY-UD-Jy6"/>
+                        <outlet property="viewContainerChat" destination="wRI-Wo-NFL" id="fXi-3T-KcQ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ktH-qe-LBO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1487.6953125" y="408.59375"/>
         </scene>
-        <!--Private-->
-        <scene sceneID="nkj-ah-UXJ">
-            <objects>
-                <viewController id="TCj-WZ-9Fu" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="fjx-58-OQJ">
-                        <rect key="frame" x="0.0" y="0.0" width="1024" height="620"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <viewLayoutGuide key="safeArea" id="dUa-h4-v01"/>
-                    </view>
-                    <tabBarItem key="tabBarItem" title="Private" id="Ugk-h8-m4B"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="ioa-a1-pRW" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2466" y="1155"/>
-        </scene>
         <!--Public-->
         <scene sceneID="20z-jM-bGf">
             <objects>
-                <viewController id="Mrs-wb-JuW" customClass="PublicGalleryController" customModule="ios" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="Mrs-wb-JuW" customClass="GalleryController" customModule="ios" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="39P-BK-p1F">
                         <rect key="frame" x="0.0" y="0.0" width="1024" height="620"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="7Ec-co-cC7">
-                                <rect key="frame" x="0.0" y="0.0" width="1024" height="590"/>
+                                <rect key="frame" x="0.0" y="0.0" width="1024" height="620"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="ejc-2p-nRh">
@@ -576,8 +524,8 @@
                                 </collectionViewFlowLayout>
                                 <cells/>
                                 <connections>
-                                    <outlet property="dataSource" destination="Mrs-wb-JuW" id="qwF-aS-zcB"/>
-                                    <outlet property="delegate" destination="Mrs-wb-JuW" id="AUB-LP-f2b"/>
+                                    <outlet property="dataSource" destination="Mrs-wb-JuW" id="4of-gg-78X"/>
+                                    <outlet property="delegate" destination="Mrs-wb-JuW" id="h7K-ug-Hmg"/>
                                 </connections>
                             </collectionView>
                         </subviews>
@@ -586,31 +534,23 @@
                     </view>
                     <tabBarItem key="tabBarItem" title="Public" id="WRm-1c-eC1"/>
                     <connections>
-                        <outlet property="collectionView" destination="7Ec-co-cC7" id="Xpm-IL-BMS"/>
+                        <outlet property="collectionView" destination="7Ec-co-cC7" id="gH5-Q2-f6O"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5dZ-Ri-KE5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2466" y="573"/>
+            <point key="canvasLocation" x="2236" y="834"/>
         </scene>
-        <!--Tab Bar Controller-->
-        <scene sceneID="y0g-De-ygA">
+        <!--Chat-->
+        <scene sceneID="eXv-UL-1mH">
             <objects>
-                <tabBarController id="8ev-UO-N6X" sceneMemberID="viewController">
-                    <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="UAd-oH-kjv">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="49"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    </tabBar>
-                    <connections>
-                        <segue destination="U2L-m9-b64" kind="relationship" relationship="viewControllers" id="Q36-AK-JA0"/>
-                        <segue destination="Mrs-wb-JuW" kind="relationship" relationship="viewControllers" id="h1t-Ku-paS"/>
-                        <segue destination="TCj-WZ-9Fu" kind="relationship" relationship="viewControllers" id="SKb-gU-fxW"/>
-                    </connections>
-                </tabBarController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Jgd-rp-4PY" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <viewControllerPlaceholder storyboardName="Chat" id="6Ue-BN-htd" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="rfT-A7-yGH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1488" y="1155"/>
+            <point key="canvasLocation" x="1960" y="223"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="FbLogin" width="988" height="160"/>
+    </resources>
 </document>

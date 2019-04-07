@@ -21,7 +21,6 @@ namespace PolyPaint.Vues
     public partial class ImageProtection : Window
     {
         public String PasswordEntered;
-        private Gallery gallery;
 
         public ImageProtection()
         {

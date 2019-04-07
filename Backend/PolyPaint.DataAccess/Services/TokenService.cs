@@ -33,6 +33,31 @@ namespace PolyPaint.DataAccess.Services
             string token = tokenHandler.WriteToken(stoken);
             return token;
         }
+        
+        public string GenerateTokenFacebook(ApplicationUser user, int expireMinutes = 999999999)
+        {
+            byte[] symmetricKey = Convert.FromBase64String(Secret);
+            JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
+
+            DateTime now = DateTime.UtcNow;
+            SecurityTokenDescriptor tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new[]{
+                        new Claim(ClaimTypes.Name, user.UserName),
+                        new Claim(ClaimTypes.NameIdentifier, user.Id),
+                        new Claim(ClaimTypes.Surname, user.FirstName)
+                    }),
+                Audience = "https://polypaint.me",
+                Issuer = "https://polypaint.me",
+                IssuedAt = DateTime.Now,
+                Expires = now.AddMinutes(Convert.ToInt32(expireMinutes)),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(symmetricKey), SecurityAlgorithms.HmacSha256Signature)
+            };
+
+            SecurityToken stoken = tokenHandler.CreateJwtSecurityToken(tokenDescriptor);
+            string token = tokenHandler.WriteToken(stoken);
+            return token;
+        }
     }
 
 

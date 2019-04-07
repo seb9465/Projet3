@@ -27,22 +27,14 @@ namespace PolyPaint.API.Hubs
             if (user != null && message.Items.Count > 0)
             {
                 var channelId = message.CanvasId;
-                if (UserHandler.UserGroupMap.TryGetValue(channelId, out var users) && users.Contains(user.Id))
+                if (UserHandler.UserGroupCollabMap.TryGetValue(channelId, out var users) && users.Contains(user.Id))
                 {
+                    message.Username = user.UserName;
                     await Clients.OthersInGroup(channelId).SendAsync("Draw", JsonConvert.SerializeObject(message));
                 }
             }
         }
 
-        /*    public async Task Duplicate()
-            {
-                var user = await GetUserFromToken(Context.User);
-                if (user != null)
-                {
-                    await Clients.Group(groupId).SendAsync("Duplicate");
-                }
-            }
-            */
         public async Task Cut(string itemsMessage)
         {
             var message = JsonConvert.DeserializeObject<ItemsMessage>(itemsMessage);
@@ -51,7 +43,7 @@ namespace PolyPaint.API.Hubs
             if (user != null && message.Items.Count > 0)
             {
                 var channelId = message.CanvasId;
-                if (UserHandler.UserGroupMap.TryGetValue(channelId, out var users) && users.Contains(user.Id))
+                if (UserHandler.UserGroupCollabMap.TryGetValue(channelId, out var users) && users.Contains(user.Id))
                 {
                     await Clients.OthersInGroup(channelId).SendAsync("Cut", JsonConvert.SerializeObject(message));
                 }
@@ -66,7 +58,7 @@ namespace PolyPaint.API.Hubs
             if (user != null)
             {
                 var channelId = message.CanvasId;
-                if (UserHandler.UserGroupMap.TryGetValue(channelId, out var users) && users.Contains(user.Id))
+                if (UserHandler.UserGroupCollabMap.TryGetValue(channelId, out var users) && users.Contains(user.Id))
                 {
                     message.Username = user.UserName;
                     await Clients.OthersInGroup(channelId).SendAsync("Select", JsonConvert.SerializeObject(message));
@@ -79,7 +71,7 @@ namespace PolyPaint.API.Hubs
             var user = await GetUserFromToken(Context.User);
             if (user != null)
             {
-                if (UserHandler.TryGetByValue(user, out var channelId))
+                if (UserHandler.TryGetByValueCollab(user, out var channelId))
                 {
                     await Clients.OthersInGroup(channelId).SendAsync("Reset");
                 }
@@ -99,7 +91,7 @@ namespace PolyPaint.API.Hubs
             var user = await GetUserFromToken(Context.User);
             if (user != null)
             {
-                if (UserHandler.TryGetByValue(user, out var channelId))
+                if (UserHandler.TryGetByValueCollab(user, out var channelId))
                 {
                     await Clients.OthersInGroup(channelId).SendAsync("ResizeCanvas", JsonConvert.SerializeObject(message));
                 }
@@ -113,7 +105,7 @@ namespace PolyPaint.API.Hubs
             if (user != null)
             {
                 await AddToGroup(Context.ConnectionId, connectionMessage.ChannelId);
-                UserHandler.AddOrUpdateMap(connectionMessage.ChannelId, user.Id);
+                UserHandler.AddOrUpdateCollabMap(connectionMessage.ChannelId, user.Id);
                 var returnMessage = new ConnectionMessage(user.UserName, channelId: connectionMessage.ChannelId);
                 await Clients.OthersInGroup(connectionMessage.ChannelId).SendAsync(
                     "ConnectToChannel",
@@ -131,7 +123,7 @@ namespace PolyPaint.API.Hubs
             if (user != null)
             {
                 var channelId = message.ChannelId;
-                if (UserHandler.UserGroupMap.TryGetValue(channelId, out var users) && users.Contains(user.Id))
+                if (UserHandler.UserGroupCollabMap.TryGetValue(channelId, out var users) && users.Contains(user.Id))
                 {
                     if (message.IsProtected)
                     {
@@ -146,6 +138,40 @@ namespace PolyPaint.API.Hubs
                     }
                     await Clients.OthersInGroup(channelId).SendAsync("ChangeProtection", message.ToString());
                 }
+            }
+        }
+
+
+        public override async Task DisconnectFromChannel(string message)
+        {
+            var connectionMessage = JsonConvert.DeserializeObject<ConnectionMessage>(message);
+            var user = await GetUserFromToken(Context.User);
+            if (user != null)
+            {
+                await RemoveFromGroup(Context.ConnectionId, connectionMessage.ChannelId);
+                if (UserHandler.UserGroupCollabMap.TryGetValue(connectionMessage.ChannelId, out var list))
+                {
+                    list.Remove(user.Id);
+                    var returnMessage = new ConnectionMessage(username: user.UserName, channelId: connectionMessage.ChannelId);
+                    await Clients.Group(connectionMessage.ChannelId).SendAsync(
+                        "DisconnectFromChannel",
+                        returnMessage.ToString()
+                    );
+                    await Clients.Caller.SendAsync("DisconnectFromChannelSender", returnMessage.ToString());
+                }
+            }
+        }
+
+        public override async Task OnDisconnectedAsync(Exception e)
+        {
+            var user = await GetUserFromToken(Context.User);
+            if (user != null)
+            {
+                foreach (var canvasId in _userService.GetAllCanvas().Select(x => x.CanvasId))
+                {
+                    await DisconnectFromChannel(new ConnectionMessage(user.UserName, channelId: canvasId).ToString());
+                }
+                await base.OnDisconnectedAsync(e);
             }
         }
     }

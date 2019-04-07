@@ -9,6 +9,7 @@ using System.Linq;
 using PolyPaint.Strokes;
 using PolyPaint.VueModeles;
 using PolyPaint.Utilitaires;
+using System;
 
 public class LineStrokeAdorner : Adorner
 {
@@ -18,6 +19,8 @@ public class LineStrokeAdorner : Adorner
     Point dragPos;
     RotateTransform rotation;
     Rect strokeBounds = Rect.Empty;
+
+    private readonly double ThumbRadius = 10;
 
     public LineStrokeAdorner(UIElement adornedElement)
         : base(adornedElement)
@@ -33,9 +36,9 @@ public class LineStrokeAdorner : Adorner
         handle = new Thumb
         {
             Cursor = Cursors.SizeAll,
-            Width = 15,
-            Height = 15,
-            Background = Brushes.Blue
+            Width = 2*ThumbRadius,
+            Height = 2 * ThumbRadius,
+            Style = (Style)FindResource("TestRoundThumb")
         };
 
         handle.DragDelta += new DragDeltaEventHandler(DragDelta);
@@ -43,14 +46,14 @@ public class LineStrokeAdorner : Adorner
 
         visualChildren.Add(handle);
 
-        handle.Arrange(new Rect(strokeBounds.X + strokeBounds.Width / 2 - 7.5,
-            strokeBounds.Y + strokeBounds.Height / 2 - 7.5,
-            15, 15));
+        handle.Arrange(new Rect(strokeBounds.X + strokeBounds.Width / 2 - ThumbRadius,
+            strokeBounds.Y + strokeBounds.Height / 2 - ThumbRadius,
+            2*ThumbRadius, 2*ThumbRadius));
     }
 
     protected override Size ArrangeOverride(Size finalSize)
     {
-        handle.Arrange(new Rect(dragPos.X - 7.5, dragPos.Y - 7.5, 15, 15));
+        handle.Arrange(new Rect(dragPos.X - ThumbRadius, dragPos.Y - ThumbRadius, 2 * ThumbRadius, 2 * ThumbRadius));
         return finalSize;
     }
 
@@ -63,11 +66,13 @@ public class LineStrokeAdorner : Adorner
     void DragCompleted(object sender, DragCompletedEventArgs e)
     {
         dragPos = Mouse.GetPosition(this);
+        ElbowChanging?.Invoke(this, new EventArgs());
+        var spoints = AdornedStroke.StylusPoints;
         AdornedStroke.LastElbowPosition = dragPos;
-        AdornedStroke.Redraw();
-        var rebuilder = new StrokeBuilder();
-        var drawViewModel = rebuilder.GetDrawViewModelsFromStrokes(new StrokeCollection() { AdornedStroke });
+        AdornedStroke.StylusPoints = new StylusPointCollection() { spoints[0], spoints[1], new StylusPoint(dragPos.X, dragPos.Y) };
+        var drawViewModel = StrokeBuilder.GetDrawViewModelsFromStrokes(new StrokeCollection() { AdornedStroke });
         (AdornedStroke.SurfaceDessin.DataContext as VueModele).CollaborationClient.CollaborativeDrawAsync(drawViewModel);
+        ElbowChanged?.Invoke(this, new EventArgs());
         InvalidateArrange();
     }
 
@@ -91,6 +96,9 @@ public class LineStrokeAdorner : Adorner
     {
         get { return visualChildren.Count; }
     }
+
+    public event EventHandler ElbowChanged;
+    public event EventHandler ElbowChanging;
 
     protected override Visual GetVisualChild(int index)
     {

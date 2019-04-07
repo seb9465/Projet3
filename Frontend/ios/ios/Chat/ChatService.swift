@@ -71,8 +71,8 @@ class ChatService {
     
     // MARK: Public functions
     
-    public func initOnReceivingMessage(currentMemberName: String? = "", insertMessage: @escaping (_ message: Message) -> Void) {
-        self.onSendMessage(currentMemberName: currentMemberName, insertMessage: insertMessage);
+    public func initOnReceivingMessage(currentMemberName: String? = "", insertMessage: @escaping (_ message: Message) -> Void, updateChatRooms: @escaping () -> Void) {
+        self.onSendMessage(currentMemberName: currentMemberName, insertMessage: insertMessage, updateChatRooms: updateChatRooms);
     }
     
     public func initOnAnotherUserConnection(insertMessage: @escaping (_ message: Message) -> Void) -> Void {
@@ -82,8 +82,8 @@ class ChatService {
     }
     
     public func invokeChannelsWhenConnected() -> Void {
-        print("[ CHAT ] Invoke Channels when Connected");
         self._hubConnection.on(method: "ClientIsConnected", callback: { args, typeConverter in
+            print("[ CHAT ] On ClientIsConnected");
             self.invokeFetchChannels();
         });
     }
@@ -112,8 +112,7 @@ class ChatService {
             print("[ CHAT ] Invoked FetchChannels");
             
             if let e = error {
-                print("ERROR while invoking FetchChannels");
-                print(e);
+                print("ERROR while invoking FetchChannels : ", e);
                 self.invokeChannelsWhenConnected();
             }
         });
@@ -153,7 +152,16 @@ class ChatService {
     }
     
     public func disconnectFromCurrentChatRoom() -> Void {
-        self.invokeDisconnectFromChannel();
+        let json = try? JSONEncoder().encode(ConnectionMessage(channelId: self._currentChannel.name));
+        let jsondata: String = String(data: json!, encoding: .utf8)!;
+        
+        self._hubConnection.invoke(method: "DisconnectFromChannel", arguments: [jsondata], invocationDidComplete: { error in
+            print("[ CHAT ] Invoked DisconnectFromChannel.");
+            if let e = error {
+                print("[ CHAT ] Error Invoking DisconnectFromChannel.");
+                print(e);
+            }
+        });
     }
     
     public func connectToUserChatRooms() -> Void {
@@ -185,8 +193,7 @@ class ChatService {
                 }
             }
         });
-        
-        self.invokeFetchChannels();
+        self.invokeChannelsWhenConnected();
     }
     
     // MARK: Private functions
@@ -278,7 +285,7 @@ class ChatService {
         });
     }
     
-    private func onSendMessage(currentMemberName: String?, insertMessage: @escaping (_ message: Message) -> Void) -> Void {
+    private func onSendMessage(currentMemberName: String?, insertMessage: @escaping (_ message: Message) -> Void, updateChatRooms: @escaping () -> Void) -> Void {
         self._hubConnection.on(method: "SendMessage", callback: { args, typeConverter in
             print("[ CHAT ] On SendMessage");
             let messageJson: String = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self)!;
@@ -290,6 +297,7 @@ class ChatService {
                     memberFromMessage = self._members.getMemberByName(memberName: message.username);
                 } else {
                     memberFromMessage = Member( name: message.username, color: .random );
+                    self._members.addMember(member: memberFromMessage);
                 }
                 
                 let newMessage = Message(
@@ -312,7 +320,8 @@ class ChatService {
                         } else {
                             self._messagesWhileAFK.merge(tmp, uniquingKeysWith: { (first, _) in first })
                         }
-                        print(self._messagesWhileAFK);
+                        
+                        updateChatRooms();
                     }
                 }
             }
@@ -342,19 +351,6 @@ class ChatService {
             
             if error != nil {
                 print("ERROR while invoking ConnectToChannel");
-            }
-        });
-    }
-    
-    private func invokeDisconnectFromChannel() -> Void {
-        let json = try? JSONEncoder().encode(ConnectionMessage(channelId: self._currentChannel.name));
-        let jsondata: String = String(data: json!, encoding: .utf8)!;
-        
-        self._hubConnection.invoke(method: "DisconnectFromChannel", arguments: [jsondata], invocationDidComplete: { error in
-            print("[ CHAT ] Invoked DisconnectFromChannel.");
-            if let e = error {
-                print("[ CHAT ] Error Invoking DisconnectFromChannel.");
-                print(e);
             }
         });
     }

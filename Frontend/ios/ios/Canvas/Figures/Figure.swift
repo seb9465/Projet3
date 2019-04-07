@@ -8,6 +8,7 @@
 import UIKit
 
 class Figure: UIView {
+    var delegate: TouchInputDelegate?
     
     var firstPoint: CGPoint!
     var lastPoint: CGPoint!
@@ -15,10 +16,12 @@ class Figure: UIView {
     var uuid: UUID!
     var name: String = "name"
     var isBorderDashed: Bool = false
-    var fillColor: UIColor! = UIColor.clear
+    var figureColor: UIColor! = UIColor.clear
     var lineColor: UIColor! = UIColor.black
     var lineWidth: CGFloat! = 2
-    
+    var sourceName: String! = ""
+    var destinationName: String! = ""
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.uuid = UUID()
@@ -28,9 +31,21 @@ class Figure: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func translate(by: CGPoint) {}
+    
     public func setFigureName(name: String) {
         self.name = name
         setNeedsDisplay()
+    }
+    
+    public func setBorderColor(borderColor: UIColor) -> Void {
+        self.lineColor = borderColor
+        setNeedsDisplay();
+    }
+    
+    public func setFillColor(fillColor: UIColor) -> Void {
+        self.figureColor = fillColor
+        setNeedsDisplay();
     }
     
     public func setIsBorderDashed(isDashed: Bool) {
@@ -43,12 +58,13 @@ class Figure: UIView {
         setNeedsDisplay()
     }
     
-//    public func setFillColor(color: UIColor) {
-//        self.fillColor = color
-//        setNeedsDisplay()
-//    }
+    public func getSelectionFrame() -> CGRect {
+        return self.frame
+    }
     
     public func exportViewModel() -> DrawViewModel? {return nil}
 
     public func rotate(orientation: RotateOrientation) -> Void {}
+    
+    public func resize(by: CGPoint) -> Void {} 
 }

@@ -9,14 +9,18 @@ using System.Windows.Ink;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Linq;
+using System.Collections.Concurrent;
 
 namespace PolyPaint.Strokes
 {
     public class ArtefactStroke : AbstractShapeStroke
     {
+        public double ImageHeight { get; set; }
         public ArtefactStroke(StylusPointCollection pts, InkCanvas surfaceDessin, string couleurBordure, string couleurRemplissage, double thicc, DashStyle dashStyle)
             : base(pts, surfaceDessin, "Artefact", couleurBordure, couleurRemplissage, thicc, dashStyle)
-        { }
+        {
+            ImageHeight = UnrotatedHeight - 30;
+        }
 
         protected override void DrawCore(DrawingContext drawingContext, DrawingAttributes drawingAttributes)
         {
@@ -33,14 +37,14 @@ namespace PolyPaint.Strokes
                 StylusPoints[0].Y <= StylusPoints[1].Y ? StylusPoints[0].Y : StylusPoints[1].Y);
             Width = Math.Abs(StylusPoints[1].X - StylusPoints[0].X);
             Height = Math.Abs(StylusPoints[1].Y - StylusPoints[0].Y);
-
+            ImageHeight = UnrotatedHeight - 30;
 
             PointCollection points = new PointCollection();
             points.Add(UnrotatedTopLeft);
             points.Add(new Point(UnrotatedTopLeft.X + 5.0 / 6.0 * UnrotatedWidth, UnrotatedTopLeft.Y));
-            points.Add(new Point(UnrotatedTopLeft.X + UnrotatedWidth, UnrotatedTopLeft.Y + 1.0 / 6.0 * UnrotatedHeight));
-            points.Add(new Point(UnrotatedTopLeft.X + UnrotatedWidth, UnrotatedTopLeft.Y + UnrotatedHeight));
-            points.Add(new Point(UnrotatedTopLeft.X, UnrotatedTopLeft.Y + UnrotatedHeight));
+            points.Add(new Point(UnrotatedTopLeft.X + UnrotatedWidth, UnrotatedTopLeft.Y + 1.0 / 6.0 * ImageHeight));
+            points.Add(new Point(UnrotatedTopLeft.X + UnrotatedWidth, UnrotatedTopLeft.Y + ImageHeight));
+            points.Add(new Point(UnrotatedTopLeft.X, UnrotatedTopLeft.Y + ImageHeight));
             points = new PointCollection(points.ToList().Select(x => Tools.RotatePoint(x, Center, Rotation)));
 
             StreamGeometry streamGeometry = new StreamGeometry();
@@ -51,7 +55,7 @@ namespace PolyPaint.Strokes
             }
 
             Point intersection = Tools.RotatePoint(
-                new Point(UnrotatedTopLeft.X + 5.0 / 6.0 * UnrotatedWidth, UnrotatedTopLeft.Y + 1.0 / 6.0 * UnrotatedHeight),
+                new Point(UnrotatedTopLeft.X + 5.0 / 6.0 * UnrotatedWidth, UnrotatedTopLeft.Y + 1.0 / 6.0 * ImageHeight),
                 Center,
                 Rotation
             );
@@ -81,24 +85,27 @@ namespace PolyPaint.Strokes
             drawingContext.DrawText(Title, new Point
             (
                 UnrotatedTopLeft.X + UnrotatedWidth / 2.0 - Title.Width / 2.0,
-                UnrotatedTopLeft.Y + UnrotatedHeight + 10
+                UnrotatedTopLeft.Y + ImageHeight + 10
             ));
         }
 
-        private void DrawAnchorPoints(DrawingContext drawingContext)
+        protected override void DrawAnchorPoints(DrawingContext drawingContext)
         {
             SolidColorBrush brush = new SolidColorBrush(Colors.Gray);
 
-            AnchorPoints[0] = new Point(UnrotatedTopLeft.X + UnrotatedWidth / 2, UnrotatedTopLeft.Y);
-            AnchorPoints[1] = new Point(UnrotatedTopLeft.X + UnrotatedWidth / 2, UnrotatedTopLeft.Y + UnrotatedHeight);
-            AnchorPoints[2] = new Point(UnrotatedTopLeft.X + UnrotatedWidth, UnrotatedTopLeft.Y + UnrotatedHeight / 2);
-            AnchorPoints[3] = new Point(UnrotatedTopLeft.X, UnrotatedTopLeft.Y + UnrotatedHeight / 2.0);
-            AnchorPoints = AnchorPoints.ToList().Select(x => Tools.RotatePoint(x, Center, Rotation)).ToArray();
+            AnchorPoints[AnchorPosition.Top] = new Point(UnrotatedTopLeft.X + UnrotatedWidth / 2, UnrotatedTopLeft.Y);
+            AnchorPoints[AnchorPosition.Bottom] = new Point(UnrotatedTopLeft.X + UnrotatedWidth / 2, UnrotatedTopLeft.Y + ImageHeight);
+            AnchorPoints[AnchorPosition.Right] = new Point(UnrotatedTopLeft.X + UnrotatedWidth, UnrotatedTopLeft.Y + ImageHeight / 2);
+            AnchorPoints[AnchorPosition.Left] = new Point(UnrotatedTopLeft.X, UnrotatedTopLeft.Y + ImageHeight / 2.0);
+            AnchorPoints = new ConcurrentDictionary<AnchorPosition, Point>
+            (
+                AnchorPoints.ToDictionary(x => x.Key, x => Tools.RotatePoint(x.Value, Center, Rotation))
+            );
 
-            drawingContext.DrawEllipse(brush, null, AnchorPoints[0], 2, 2);
-            drawingContext.DrawEllipse(brush, null, AnchorPoints[1], 2, 2);
-            drawingContext.DrawEllipse(brush, null, AnchorPoints[2], 2, 2);
-            drawingContext.DrawEllipse(brush, null, AnchorPoints[3], 2, 2);
+            drawingContext.DrawEllipse(brush, null, AnchorPoints[AnchorPosition.Top], 2, 2);
+            drawingContext.DrawEllipse(brush, null, AnchorPoints[AnchorPosition.Bottom], 2, 2);
+            drawingContext.DrawEllipse(brush, null, AnchorPoints[AnchorPosition.Right], 2, 2);
+            drawingContext.DrawEllipse(brush, null, AnchorPoints[AnchorPosition.Left], 2, 2);
         }
     }
 }

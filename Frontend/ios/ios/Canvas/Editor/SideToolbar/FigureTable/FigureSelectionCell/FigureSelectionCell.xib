@@ -13,21 +13,88 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="FigureSelectionCell" rowHeight="529" id="KGk-i7-Jjw" customClass="FigureSelectionCell" customModule="ios" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="250" height="515"/>
+            <rect key="frame" x="0.0" y="0.0" width="250" height="900"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="250" height="514.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="250" height="899.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Figures" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="O9x-lS-xou">
-                        <rect key="frame" x="16" y="31" width="60" height="21"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Insert Elements" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="O9x-lS-xou">
+                        <rect key="frame" x="16" y="16" width="170" height="29"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="24"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Tho-R4-gEI" customClass="RoundedCorners" customModule="ios" customModuleProvider="target">
+                        <rect key="frame" x="16" y="532" width="100" height="100"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" red="1" green="0.41960784309999999" blue="0.41960784309999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
+                        <state key="normal" title="Heritage">
+                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </state>
+                        <connections>
+                            <action selector="heritageSelected:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="BRL-N4-b86"/>
+                        </connections>
+                    </button>
+                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5HX-zO-x8G" customClass="RoundedCorners" customModule="ios" customModuleProvider="target">
+                        <rect key="frame" x="135" y="532" width="100" height="100"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" red="1" green="0.41960784309999999" blue="0.41960784309999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
+                        <state key="normal" title="unidirect">
+                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </state>
+                        <connections>
+                            <action selector="unidirectSelected:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="0Nv-YX-Vpw"/>
+                        </connections>
+                    </button>
+                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fOV-oV-AZr" customClass="RoundedCorners" customModule="ios" customModuleProvider="target">
+                        <rect key="frame" x="16" y="648" width="100" height="100"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" red="1" green="0.41960784309999999" blue="0.41960784309999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
+                        <state key="normal" title="bidirect">
+                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </state>
+                        <connections>
+                            <action selector="bidirectSelected:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="Rmr-bd-KaJ"/>
+                        </connections>
+                    </button>
+                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="r5h-aA-JZk" customClass="RoundedCorners" customModule="ios" customModuleProvider="target">
+                        <rect key="frame" x="134" y="648" width="100" height="100"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" red="1" green="0.41960784309999999" blue="0.41960784309999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
+                        <state key="normal" title="Aggregation">
+                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </state>
+                        <connections>
+                            <action selector="agregationSelected:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="3CB-xj-TYN"/>
+                        </connections>
+                    </button>
+                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="akd-lO-4P1" customClass="RoundedCorners" customModule="ios" customModuleProvider="target">
+                        <rect key="frame" x="16" y="761" width="100" height="100"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" red="1" green="0.41960784309999999" blue="0.41960784309999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
+                        <state key="normal" title="composition">
+                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </state>
+                        <connections>
+                            <action selector="compositionSelected:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="kId-nQ-atk"/>
+                        </connections>
+                    </button>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Figures UML" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PWq-LD-5VV">
+                        <rect key="frame" x="17" y="53" width="84" height="17"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="14"/>
+                        <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="d6U-ym-IfC" customClass="RoundedCorners" customModule="ios" customModuleProvider="target">
-                        <rect key="frame" x="16" y="60" width="100" height="100"/>
+                        <rect key="frame" x="17" y="78" width="100" height="100"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" red="1" green="0.41960784309999999" blue="0.41960784309999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
@@ -39,7 +106,7 @@
                         </connections>
                     </button>
                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zbb-AP-8pZ" customClass="RoundedCorners" customModule="ios" customModuleProvider="target">
-                        <rect key="frame" x="134" y="294" width="100" height="100"/>
+                        <rect key="frame" x="135" y="312" width="100" height="100"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" red="1" green="0.41960784309999999" blue="0.41960784309999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
@@ -51,7 +118,7 @@
                         </connections>
                     </button>
                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YOZ-fM-k7Y" customClass="RoundedCorners" customModule="ios" customModuleProvider="target">
-                        <rect key="frame" x="16" y="178" width="100" height="100"/>
+                        <rect key="frame" x="17" y="196" width="100" height="100"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" red="1" green="0.41960784309999999" blue="0.41960784309999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
@@ -63,7 +130,7 @@
                         </connections>
                     </button>
                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h3j-eq-Kdt" customClass="RoundedCorners" customModule="ios" customModuleProvider="target">
-                        <rect key="frame" x="134" y="178" width="100" height="100"/>
+                        <rect key="frame" x="135" y="196" width="100" height="100"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" red="1" green="0.41960784309999999" blue="0.41960784309999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
@@ -75,7 +142,7 @@
                         </connections>
                     </button>
                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ma6-j4-cf9" customClass="RoundedCorners" customModule="ios" customModuleProvider="target">
-                        <rect key="frame" x="16" y="294" width="100" height="100"/>
+                        <rect key="frame" x="17" y="312" width="100" height="100"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" red="1" green="0.41960784309999999" blue="0.41960784309999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
@@ -87,7 +154,7 @@
                         </connections>
                     </button>
                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yUv-hm-jV2" customClass="RoundedCorners" customModule="ios" customModuleProvider="target">
-                        <rect key="frame" x="134" y="60" width="100" height="100"/>
+                        <rect key="frame" x="135" y="78" width="100" height="100"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" red="1" green="0.41960784309999999" blue="0.41960784309999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
@@ -98,8 +165,22 @@
                             <action selector="ActivitySelected:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="WVr-2d-ZbX"/>
                         </connections>
                     </button>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Texte Flottant" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pqJ-95-1n5">
+                        <rect key="frame" x="17" y="431" width="91" height="17"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="14"/>
+                        <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Figures de Connexion" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fF9-aO-RN3">
+                        <rect key="frame" x="16" y="507" width="143" height="17"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="14"/>
+                        <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fHZ-5b-Dzs" customClass="RoundedCorners" customModule="ios" customModuleProvider="target">
-                        <rect key="frame" x="16" y="411" width="100" height="100"/>
+                        <rect key="frame" x="16" y="452" width="218" height="38"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" red="1" green="0.41960784309999999" blue="0.41960784309999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
@@ -110,21 +191,21 @@
                             <action selector="textSelected:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="BcX-E6-iXC"/>
                         </connections>
                     </button>
-                    <button opaque="NO" tag="1" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lZS-pM-eb8" customClass="RoundedCorners" customModule="ios" customModuleProvider="target">
-                        <rect key="frame" x="134" y="412" width="100" height="100"/>
+                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z22-XJ-S58" customClass="RoundedCorners" customModule="ios" customModuleProvider="target">
+                        <rect key="frame" x="135" y="761" width="100" height="100"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" red="1" green="0.41960784309999999" blue="0.41960784309999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
-                        <state key="normal" title="Image">
+                        <state key="normal" title="Line">
                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </state>
                         <connections>
-                            <action selector="imageSelected:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="eVB-in-BmS"/>
+                            <action selector="lineSelected:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="iVn-rb-XYl"/>
                         </connections>
                     </button>
                 </subviews>
             </tableViewCellContentView>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
                 <outlet property="ActivityButton" destination="yUv-hm-jV2" id="l5j-nH-K5x"/>
@@ -133,10 +214,15 @@
                 <outlet property="PhaseButton" destination="YOZ-fM-k7Y" id="j29-uc-Vl9"/>
                 <outlet property="UMLClassButton" destination="d6U-ym-IfC" id="zfv-Ep-6Sc"/>
                 <outlet property="UMLCommentButton" destination="ma6-j4-cf9" id="LBG-P5-Duu"/>
-                <outlet property="imageButton" destination="lZS-pM-eb8" id="XXa-y4-E7p"/>
+                <outlet property="agregationButton" destination="r5h-aA-JZk" id="tdl-Zo-FcH"/>
+                <outlet property="bidirectButton" destination="fOV-oV-AZr" id="Pmm-ra-J1W"/>
+                <outlet property="compositionButton" destination="akd-lO-4P1" id="nND-ys-WUB"/>
+                <outlet property="heritageButton" destination="Tho-R4-gEI" id="RTC-hs-zTd"/>
+                <outlet property="lineButton" destination="z22-XJ-S58" id="Zdb-59-Q96"/>
                 <outlet property="textButton" destination="fHZ-5b-Dzs" id="voh-FV-0PE"/>
+                <outlet property="unidirectButton" destination="5HX-zO-x8G" id="6DC-Jv-S5u"/>
             </connections>
-            <point key="canvasLocation" x="160" y="39.130434782608695"/>
+            <point key="canvasLocation" x="160" y="38.680659670164921"/>
         </tableViewCell>
     </objects>
     <resources>

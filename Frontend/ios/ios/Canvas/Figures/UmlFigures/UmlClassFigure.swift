@@ -21,17 +21,20 @@ class UmlClassFigure: UmlFigure {
     init(origin: CGPoint) {
         super.init(touchedPoint: origin, width: BASE_WIDTH, height: BASE_HEIGHT)
         self.itemType = ItemTypeEnum.UmlClass
+        self.initializeAnchorPoints()
     }
     
     init(firstPoint: CGPoint, lastPoint: CGPoint) {
         super.init(firstPoint: firstPoint, lastPoint: lastPoint, width: BASE_WIDTH, height: BASE_WIDTH)
         self.itemType = ItemTypeEnum.UmlClass
+        self.initializeAnchorPoints()
     }
     
     override init(drawViewModel: DrawViewModel) {
         super.init(drawViewModel: drawViewModel);
         self.methods = drawViewModel.Methods!
         self.attributes = drawViewModel.Properties!
+        self.initializeAnchorPoints()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -63,50 +66,56 @@ class UmlClassFigure: UmlFigure {
         setNeedsDisplay();
     }
     
-    override func draw(_ rect: CGRect) {
-        let outerRect = CGRect(x: 0, y: 0, width: BASE_WIDTH, height: BASE_HEIGHT).insetBy(dx: 5, dy: 5);
-        let nameRect = CGRect(x: 0, y: 0, width: BASE_WIDTH, height: 50).insetBy(dx: 5, dy: 5);
-        let splitterRect = CGRect(x: 0, y: 0, width: BASE_WIDTH, height: 125).insetBy(dx: 5, dy: 5);
+    override func draw(_ rect: CGRect) {        
+        let outerRect = CGRect(x: 0, y: 0, width: self.frame.width, height: self.frame.height).insetBy(dx: 5, dy: 5);
+        let nameRect = CGRect(x: 0, y: 0, width: self.frame.width, height: 50).insetBy(dx: 5, dy: 5);
+        let separatorY: CGFloat = CGFloat(60 + 16 * (self.attributes.count))
+
+        let nameSeparation = UIBezierPath()
+        nameSeparation.move(to: CGPoint(x: 5, y: 40))
+        nameSeparation.addLine(to: CGPoint(x: self.frame.width - 5, y: 40))
+        
+        let attributeSeparation = UIBezierPath()
+        attributeSeparation.move(to: CGPoint(x: 5, y: separatorY))
+        attributeSeparation.addLine(to: CGPoint(x: self.frame.width - 5, y: separatorY))
         
         let outerRectPath = UIBezierPath(rect: outerRect)
         let nameRectPath = UIBezierPath(rect: nameRect)
-        let splitterRectPath = UIBezierPath(rect: splitterRect)
         
         self.figureColor.setFill()
         self.lineColor.setStroke()
         if (self.isBorderDashed) {
             outerRectPath.setLineDash([4,4], count: 1, phase: 0)
             nameRectPath.setLineDash([4,4], count: 1, phase: 0)
-            splitterRectPath.setLineDash([4,4], count: 1, phase: 0)
+            nameSeparation.setLineDash([4,4], count: 1, phase: 0)
+            attributeSeparation.setLineDash([4,4], count: 1, phase: 0)
         }
         
+        attributeSeparation.lineWidth = self.lineWidth
+        nameSeparation.lineWidth = self.lineWidth
         outerRectPath.lineWidth = self.lineWidth
         outerRectPath.fill()
         outerRectPath.stroke()
-        splitterRectPath.lineWidth = self.lineWidth
-        splitterRectPath.fill()
-        splitterRectPath.stroke()
-        nameRectPath.lineWidth = self.lineWidth
-        nameRectPath.fill()
-        nameRectPath.stroke()
-        
+        nameSeparation.stroke()
+        attributeSeparation.stroke()
+
         let nameLabel = UILabel(frame: nameRect)
         nameLabel.text = self.name
         nameLabel.textAlignment = .center
         nameLabel.drawText(in: nameRect)
         
-        for n in 0..<self.methods.count {
+        for n in 0..<self.attributes.count {
             let methodRect = CGRect(x: 0, y: CGFloat(50 + (16 * n)), width: self.frame.width, height: 16).insetBy(dx: 5, dy: 5);
             let methodLabel = UILabel(frame: methodRect)
-            methodLabel.text = "  • " + self.methods[n]
+            methodLabel.text = "  • " + self.attributes[n]
             methodLabel.textAlignment = .left
             methodLabel.drawText(in: methodRect)
         }
         
-        for n in 0..<self.attributes.count {
-            let attributesRect = CGRect(x: 0, y: CGFloat(125 + (16 * n)), width: self.frame.width, height: 16).insetBy(dx: 5, dy: 5);
+        for n in 0..<self.methods.count {
+            let attributesRect = CGRect(x: 0, y: CGFloat(Int(separatorY + 10) + (16 * n)), width: self.frame.width, height: 16).insetBy(dx: 5, dy: 5);
             let attributeLabel = UILabel(frame: attributesRect)
-            attributeLabel.text = "  • " + self.attributes[n]
+            attributeLabel.text = "  • " + self.methods[n]
             attributeLabel.textAlignment = .left
             attributeLabel.drawText(in: attributesRect)
         }
@@ -121,20 +130,22 @@ class UmlClassFigure: UmlFigure {
         drawViewModel.Owner = UserDefaults.standard.string(forKey: "username")
         drawViewModel.ItemType = ItemTypeEnum.UmlClass
         drawViewModel.StylusPoints = [point1, point2]
-        drawViewModel.FillColor = PolyPaintColor(color: self.fillColor)
+        drawViewModel.FillColor = PolyPaintColor(color: self.figureColor)
         drawViewModel.BorderColor = PolyPaintColor(color: self.lineColor)
         drawViewModel.BorderThickness = Double(self.lineWidth)
-        drawViewModel.BorderStyle = (self.isBorderDashed) ? "dashed" : "solid"
+        drawViewModel.BorderStyle = (self.isBorderDashed) ? "dash" : "solid"
         drawViewModel.ShapeTitle = self.name
         drawViewModel.Methods = self.methods
         drawViewModel.Properties = self.attributes
         drawViewModel.SourceTitle = nil
         drawViewModel.DestinationTitle = nil
-        drawViewModel.ChannelId = "general"
+        drawViewModel.ChannelId = canvasId
         drawViewModel.OutilSelectionne = nil
         drawViewModel.LastElbowPosition = nil
         drawViewModel.ImageBytes = nil
         drawViewModel.Rotation = self.currentAngle
+        drawViewModel.InConnections = self.serializeIncomingConnections()
+        drawViewModel.OutConnections = self.serializeOutgoingConnections()
         return drawViewModel
     }
 }

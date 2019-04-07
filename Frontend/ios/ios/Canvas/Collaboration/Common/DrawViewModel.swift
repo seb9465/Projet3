@@ -7,6 +7,7 @@
 //
 import UIKit
 struct DrawViewModel: Codable {
+    
     var Guid: String?
     var Owner: String?
     var ItemType: ItemTypeEnum?
@@ -20,10 +21,12 @@ struct DrawViewModel: Codable {
     var Properties: [String]?
     var SourceTitle: String?
     var DestinationTitle: String?
+    var InConnections: [[String]]?
+    var OutConnections: [[String]]?
     var ChannelId: String?
     var OutilSelectionne: String?
     var LastElbowPosition: PolyPaintStylusPoint?
-    var ImageBytes: [UInt8]?
+    var ImageBytes: String?
     var Rotation: Double?
 
     init() {}
@@ -42,6 +45,7 @@ enum ItemTypeEnum: Int, Codable {
     case Composition
     case Inheritance
     case UniderectionalAssoication
+    case Line
     case Image
     
     var description: String {
@@ -72,6 +76,8 @@ enum ItemTypeEnum: Int, Codable {
             return "Connection"
         case .Image:
             return "Image"
+        case .Line:
+            return "Connection"
         }
     }
 }
@@ -85,6 +91,12 @@ struct PolyPaintStylusPoint: Codable {
         self.X = X
         self.Y = Y
         self.PressureFactor = PressureFactor
+    }
+    
+    init(point: CGPoint) {
+        self.X = Double(point.x)
+        self.Y = Double(point.y)
+        self.PressureFactor = 1
     }
     
     func getCGPoint() -> CGPoint {
@@ -111,13 +123,19 @@ struct PolyPaintColor: Codable {
         var blue: CGFloat = 0
         var alpha: CGFloat = 0
         color.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
-        self.A = Int(alpha)
-        self.R = Int(red)
-        self.G = Int(green)
-        self.B = Int(blue)
+        
+        self.A = alpha <= 1 ? Int(alpha * 255): Int(alpha)
+        self.R = red <= 1 ? Int(red * 255): Int(red)
+        self.G = green <= 1 ? Int(green * 255): Int(green)
+        self.B = blue <= 1 ? Int(blue * 255): Int(blue)
     }
     
     func getUIColor() -> UIColor {
-        return UIColor(red: CGFloat(self.R), green: CGFloat(self.G), blue: CGFloat(self.B), alpha: CGFloat(self.A))
+        return UIColor(
+            red: CGFloat(Double(self.R)/255.0),
+            green: CGFloat(Double(self.G)/255.0),
+            blue: CGFloat(Double(self.B)/255.0),
+            alpha: CGFloat(self.A)
+        )
     }
 }

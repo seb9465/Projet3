@@ -24,6 +24,7 @@ class StyleTableController: UIViewController {
         self.styleTable.register(nib, forCellReuseIdentifier: "BorderCell")
         self.styleTable.register(fillNib, forCellReuseIdentifier: "FillCell")
         self.styleTable.register(rotateNib, forCellReuseIdentifier: "RotateCell")
+        self.styleTable.backgroundColor = #colorLiteral(red: 0.9681890607, green: 0.9681890607, blue: 0.9681890607, alpha: 1)
     }
 }
 
@@ -37,11 +38,11 @@ extension StyleTableController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if (indexPath.row == 0) {
-            return 125
+            return 175
         }
         
         if (indexPath.row == 1) {
-            return 400
+            return 325
         }
 
         return 100
@@ -56,6 +57,7 @@ extension StyleTableController: UITableViewDelegate, UITableViewDataSource {
         case 1:
             let cell = tableView.dequeueReusableCell(withIdentifier: "BorderCell", for: indexPath) as! BorderCell
             cell.delegate = self.editor
+            cell.thicknessSlider.value = Float(editor.selectedFigures[0].lineWidth / 10)
             return cell
         case 2:
             let cell = tableView.dequeueReusableCell(withIdentifier: "RotateCell", for: indexPath) as! RotateCell

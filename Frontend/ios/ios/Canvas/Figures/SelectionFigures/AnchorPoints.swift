@@ -18,8 +18,8 @@ protocol AnchorPointsProtocol{
 
 class AnchorPoints {
     
-    var anchorDiameter: CGFloat = 14
-    var anchorRadius: CGFloat = 7
+    var anchorDiameter: CGFloat = 4
+    var anchorRadius: CGFloat = 2
     
     var anchorPointsTop: CAShapeLayer!;
     var anchorPointsLeft: CAShapeLayer!;
@@ -71,10 +71,10 @@ class AnchorPoints {
         self.anchorPointsSnapEdges.updateValue(CGPoint(x: 0, y: height/2), forKey: "left")
         self.anchorPointsSnapEdges.updateValue(CGPoint(x: width/2, y: height), forKey: "bottom")
         
-        anchorPointsTop.fillColor = UIColor.black.cgColor
-        anchorPointsRight.fillColor = UIColor.black.cgColor
-        anchorPointsLeft.fillColor = UIColor.black.cgColor
-        anchorPointsBottom.fillColor = UIColor.black.cgColor
+        anchorPointsTop.fillColor = UIColor.gray.cgColor
+        anchorPointsRight.fillColor = UIColor.gray.cgColor
+        anchorPointsLeft.fillColor = UIColor.gray.cgColor
+        anchorPointsBottom.fillColor = UIColor.gray.cgColor
     }
     
     required init?(coder aDecoder: NSCoder) {

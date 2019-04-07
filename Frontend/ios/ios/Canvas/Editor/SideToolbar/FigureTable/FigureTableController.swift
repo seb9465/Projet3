@@ -11,23 +11,22 @@ import UIKit
 class FigureTableController: UIViewController, UIPopoverPresentationControllerDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, FigureCellProtocol {
     @IBOutlet weak var figureTable: UITableView!
     private var editor: Editor!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         let nib = UINib.init(nibName: "FigureSelectionCell", bundle: nil)
         self.figureTable.register(nib, forCellReuseIdentifier: "FigureSelectionCell")
         let connectionsNib = UINib.init(nibName: "ConnectionSelectionCell", bundle: nil)
         self.figureTable.register(connectionsNib, forCellReuseIdentifier: "ConnectionSelectionCell")
         self.editor = (self.parent?.parent as! CanvasController).editor
+        self.figureTable.backgroundColor = #colorLiteral(red: 0.9681890607, green: 0.9681890607, blue: 0.9681890607, alpha: 1)
         // Do any additional setup after loading the view.
     }
     
-    func setSelectedFigureType(itemType: ItemTypeEnum) -> Void {
+    func setSelectedFigureType(itemType: ItemTypeEnum, isConnection: Bool) -> Void {
         self.editor.currentFigureType = itemType
-    }
-    
-    func setSelectedLineType(itemType: ItemTypeEnum) -> Void {
-        //self.editor.currentLineType = itemType
+        self.editor.deselect()
+        self.editor.touchEventState = (isConnection) ? .CONNECTION : .INSERT
     }
     
     func presentImagePicker() {
@@ -70,21 +69,18 @@ class FigureTableController: UIViewController, UIPopoverPresentationControllerDe
 
 extension FigureTableController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 2
+        return 1
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if (indexPath.row == 0) {
-            return 515
-        }
-        
-        return 360
+            return 900
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if (indexPath.row == 0) {
             let cell = tableView.dequeueReusableCell(withIdentifier: "FigureSelectionCell", for: indexPath) as! FigureSelectionCell
             cell.delegate = self
+            self.editor.sideToolbatControllers.append(cell)
             return cell
         }
         let cell = tableView.dequeueReusableCell(withIdentifier: "ConnectionSelectionCell", for: indexPath)

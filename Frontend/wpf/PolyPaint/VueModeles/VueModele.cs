@@ -18,7 +18,6 @@ using PolyPaint.Modeles;
 using PolyPaint.Strokes;
 using PolyPaint.Structures;
 using PolyPaint.Utilitaires;
-using PolyPaint.Vues;
 
 namespace PolyPaint.VueModeles
 {
@@ -31,20 +30,18 @@ namespace PolyPaint.VueModeles
     public class VueModele : INotifyPropertyChanged, IChatDataContext
     {
         public event PropertyChangedEventHandler PropertyChanged;
-        private StrokeBuilder rebuilder = new StrokeBuilder();
+        public event EventHandler OnRotation;
         private Editeur editeur = new Editeur();
         private string _currentRoom;
         private string _selectedBorder;
         private MediaPlayer mediaPlayer = new MediaPlayer();
         private ConcurrentDictionary<string, List<DrawViewModel>> _onlineSelection { get; set; }
-
+        public InkCanvas SurfaceDessin { get; private set; }
         public ChatClient ChatClient { get; set; }
         public CollaborationClient CollaborationClient { get; set; }
 
-        // Ensemble d'attributs qui définissent l'apparence d'un trait.
-        public DrawingAttributes AttributsDessin { get; set; } = new DrawingAttributes();
-
         public HubConnection Connection { get; private set; }
+
 
         public ObservableCollection<string> MessagesListBox
         {
@@ -80,12 +77,30 @@ namespace PolyPaint.VueModeles
             get { return _canvasProtection; }
             set { _canvasProtection = value; ProprieteModifiee(); }
         }
+        private bool _redoEnabled;
+        public bool RedoEnabled
+        {
+            get { return _redoEnabled; }
+            set { _redoEnabled = value; ProprieteModifiee(); }
+        }
+        private bool _undoEnabled;
+        public bool UndoEnabled
+        {
+            get { return _undoEnabled; }
+            set { _undoEnabled = value; ProprieteModifiee(); }
+        }
 
         private bool _isCreatedByUser;
         public bool IsCreatedByUser
         {
             get { return _isCreatedByUser; }
             set { _isCreatedByUser = value; ProprieteModifiee(); }
+        }
+        private bool _isConnected = true;
+        public bool IsConnected
+        {
+            get { return _isConnected; }
+            set { _isConnected = value; ProprieteModifiee(); }
         }
 
         public SaveableCanvas Canvas { get; set; }
@@ -162,8 +177,6 @@ namespace PolyPaint.VueModeles
         }
 
         // Commandes sur lesquels la vue pourra se connecter.
-        public RelayCommand<object> Empiler { get; set; }
-        public RelayCommand<object> Depiler { get; set; }
         public RelayCommand<string> ChoisirPointe { get; set; }
         public RelayCommand<string> ChoisirOutil { get; set; }
         public RelayCommand<string> ChoisirRoom { get; set; }
@@ -172,24 +185,24 @@ namespace PolyPaint.VueModeles
         public RelayCommand<Room> RoomConnect { get; set; }
         public RelayCommand<object> Reinitialiser { get; set; }
 
-        public StrokeCollection SelectItem(InkCanvas surfaceDessin, Point mouseLeftDownPoint)
+        public StrokeCollection SelectItem(Point mouseLeftDownPoint)
         {
             editeur.OutilSelectionne = "select";
-            return editeur.SelectItem(surfaceDessin, mouseLeftDownPoint, this);
+            return editeur.SelectItem(SurfaceDessin, mouseLeftDownPoint, this);
         }
-        public StrokeCollection SelectItemLasso(InkCanvas surfaceDessin, Rect bounds)
+        public StrokeCollection SelectItemLasso(Rect bounds)
         {
             editeur.OutilSelectionne = "select";
-            return editeur.SelectItemLasso(surfaceDessin, bounds, this);
+            return editeur.SelectItemLasso(SurfaceDessin, bounds, this);
         }
-        public StrokeCollection SelectItems(InkCanvas surfaceDessin, StrokeCollection strokes)
+        public StrokeCollection SelectItems(StrokeCollection strokes)
         {
             editeur.OutilSelectionne = "select";
-            return editeur.SelectItems(surfaceDessin, strokes, this);
+            return editeur.SelectItems(SurfaceDessin, strokes, this);
         }
-        public void SelectNothing(InkCanvas surfaceDessin)
+        public void SelectNothing()
         {
-            editeur.SelectItemLasso(surfaceDessin, Rect.Empty, this);
+            editeur.SelectItemLasso(SurfaceDessin, Rect.Empty, this);
         }
 
         /// <summary>
@@ -197,8 +210,9 @@ namespace PolyPaint.VueModeles
         /// On récupère certaines données initiales du modèle et on construit les commandes
         /// sur lesquelles la vue se connectera.
         /// </summary>
-        public VueModele(ChatClient chatClient, SaveableCanvas canvas)
+        public VueModele(ChatClient chatClient, SaveableCanvas canvas, InkCanvas surfaceDessin)
         {
+            SurfaceDessin = surfaceDessin;
             ChatClient = chatClient;
             CollaborationClient = new CollaborationClient(canvas.CanvasId);
             _canvasProtection = canvas.CanvasProtection.Length > 0;
@@ -208,16 +222,8 @@ namespace PolyPaint.VueModeles
             // On écoute pour des changements sur le modèle. Lorsqu'il y en a, EditeurProprieteModifiee est appelée.
             editeur.PropertyChanged += new PropertyChangedEventHandler(EditeurProprieteModifiee);
 
-            // On initialise les attributs de dessin avec les valeurs de départ du modèle.
-            AttributsDessin = new DrawingAttributes();
-            AttributsDessin.Color = (Color)ColorConverter.ConvertFromString(editeur.CouleurSelectionneeBordure);
-            AjusterPointe();
-
             Traits = editeur.traits;
-
-            // Pour chaque commande, on effectue la liaison avec des méthodes du modèle.            
-            Empiler = new RelayCommand<object>(editeur.Empiler, editeur.PeutEmpiler);
-            Depiler = new RelayCommand<object>(editeur.Depiler, editeur.PeutDepiler);
+            
             // Pour les commandes suivantes, il est toujours possible des les activer.
             // Donc, aucune vérification de type Peut"Action" à faire.
             ChoisirPointe = new RelayCommand<string>(editeur.ChoisirPointe);
@@ -239,6 +245,7 @@ namespace PolyPaint.VueModeles
             _selectedBorder = "";
             _onlineSelection = new ConcurrentDictionary<string, List<DrawViewModel>>();
         }
+
 
         /// <summary>
         /// Appelee lorsqu'une propriété de VueModele est modifiée.
@@ -277,27 +284,9 @@ namespace PolyPaint.VueModeles
             {
                 OutilSelectionne = editeur.OutilSelectionne;
             }
-            else if (e.PropertyName == "PointeSelectionnee")
-            {
-                PointeSelectionnee = editeur.PointeSelectionnee;
-                AjusterPointe();
-            }
             else // e.PropertyName == "TailleTrait"
             {
-                AjusterPointe();
             }
-        }
-
-        /// <summary>
-        /// C'est ici qu'est défini la forme de la pointe, mais aussi sa taille (TailleTrait).
-        /// Pourquoi deux caractéristiques se retrouvent définies dans une même méthode? Parce que pour créer une pointe 
-        /// horizontale ou verticale, on utilise une pointe carrée et on joue avec les tailles pour avoir l'effet désiré.
-        /// </summary>
-        private void AjusterPointe()
-        {
-            AttributsDessin.StylusTip = (editeur.PointeSelectionnee == "ronde") ? StylusTip.Ellipse : StylusTip.Rectangle;
-            AttributsDessin.Width = (editeur.PointeSelectionnee == "verticale") ? 1 : editeur.TailleTrait;
-            AttributsDessin.Height = (editeur.PointeSelectionnee == "horizontale") ? 1 : editeur.TailleTrait;
         }
 
         private void choisirRoom(string room)
@@ -321,14 +310,17 @@ namespace PolyPaint.VueModeles
             var increment = side == "right" ? 90 : -90;
             foreach (AbstractStroke stroke in editeur.SelectedStrokes.Where(x => x is AbstractStroke))
             {
-                stroke.Rotation = (stroke.Rotation + increment) % 360;
+                stroke.Rotation = (stroke.Rotation + increment) % 360.0;
                 var stylusPoint0 = Tools.RotatePoint(stroke.StylusPoints[0].ToPoint(), stroke.Center, increment);
                 var stylusPoint1 = Tools.RotatePoint(stroke.StylusPoints[1].ToPoint(), stroke.Center, increment);
                 stroke.StylusPoints[0] = new StylusPoint(stylusPoint0.X, stylusPoint0.Y);
                 stroke.StylusPoints[1] = new StylusPoint(stylusPoint1.X, stylusPoint1.Y);
             }
-            SendSelectedStrokes();
-            CollaborationClient.CollaborativeSelectAsync(rebuilder.GetDrawViewModelsFromStrokes(editeur.SelectedStrokes));
+            var affectedStrokes = SurfaceDessin.GetSelectedStrokes();
+            affectedStrokes.Add(InkCanvasEventManager.UpdateAnchorPointsPosition(SurfaceDessin));
+            CollaborationClient.CollaborativeDrawAsync(StrokeBuilder.GetDrawViewModelsFromStrokes(affectedStrokes));
+            CollaborationClient.CollaborativeSelectAsync(StrokeBuilder.GetDrawViewModelsFromStrokes(editeur.SelectedStrokes));
+            OnRotation?.Invoke(this, new EventArgs());
         }
 
         public void ChangeSelection(InkCanvas surfaceDessin)
@@ -340,6 +332,14 @@ namespace PolyPaint.VueModeles
             HandleBorderColorChange(strokes);
             HandleFillColorChange(strokes);
             HandleBorderStyleChange(strokes);
+            HandleThiccnessChange(strokes);
+        }
+
+        private void HandleThiccnessChange(StrokeCollection strokes)
+        {
+            if (strokes.Count() != 0)
+                TailleTrait = (int)((AbstractStroke)strokes.First()).Border.Thickness;
+            ProprieteModifiee("TailleTrait");
         }
 
         public void ChangeOnlineSelection(ItemsMessage message)
@@ -406,7 +406,7 @@ namespace PolyPaint.VueModeles
 
         internal void SendSelectedStrokes()
         {
-            CollaborationClient.CollaborativeDrawAsync(rebuilder.GetDrawViewModelsFromStrokes(editeur.SelectedStrokes));
+            CollaborationClient.CollaborativeDrawAsync(StrokeBuilder.GetDrawViewModelsFromStrokes(editeur.SelectedStrokes));
         }
 
         private void AddMessage(object sender, MessageArgs args)

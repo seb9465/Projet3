@@ -9,9 +9,6 @@
 import UIKit
 
 class ClassCell: UITableViewCell {
-
-    @IBOutlet weak var classNameField: UITextField!
-
     var delegate: SideToolbarDelegate?
     var methods: [String] = []
     var attributes: [String] = []
@@ -38,6 +35,8 @@ class ClassCell: UITableViewCell {
         self.attributesTableView.register(attrnib, forCellReuseIdentifier: "ClassAttributeCell")
         let addAttrnib = UINib.init(nibName: "AddAttributeCell", bundle: nil)
         self.attributesTableView.register(addAttrnib, forCellReuseIdentifier: "AddAttributeCell")
+        self.methodsTableView.backgroundColor = #colorLiteral(red: 0.9681890607, green: 0.9681890607, blue: 0.9681890607, alpha: 1)
+        self.attributesTableView.backgroundColor = #colorLiteral(red: 0.9681890607, green: 0.9681890607, blue: 0.9681890607, alpha: 1)
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -45,9 +44,6 @@ class ClassCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
-    }
-    @IBAction func nameAttributeChanged(_ sender: UITextField) {
-        delegate?.setSelectedFigureName(name: sender.text!)
     }
 }
 
