@@ -43,7 +43,7 @@ namespace PolyPaint.Utilitaires
             double ynew = p1.X * sin + p1.Y * cos;
 
             // Translate point back
-            Point newPoint = new Point((int)xnew + p2.X, (int)ynew + p2.Y);
+            Point newPoint = new Point(xnew + p2.X, ynew + p2.Y);
             return newPoint;
         }
 

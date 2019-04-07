@@ -32,7 +32,7 @@ class GalleryController: UIViewController {
     override func viewWillAppear(_ animated: Bool){
         self.loadCanvas()
     }
-
+    
     deinit {
         self.canvas = []
     }
@@ -87,33 +87,38 @@ extension GalleryController: UICollectionViewDelegate, UICollectionViewDataSourc
         if let index = indexPath {
             let cell = (self.collectionView.cellForItem(at: index) as! GalleryCell)
             canvasId = cell.canvasId
-            currentCanvas = Canvas(canvasId: cell.canvasId, name: cell.nameLabel.text!, drawViewModels: cell.drawViewModels, image: cell.image, canvasVisibility: cell.visibility, canvasAutor: cell.author, canvasProtection: cell.password, canvasWidth: cell.width, canvasHeight: cell.height)
-            var enteredPassword = ""
-            if(cell.password != "") {
-              
-                let passwordAlert = UIAlertController(title: "Password Required", message: "This canvas is password protected. Please enter the password to gain access.", preferredStyle: .alert)
-                passwordAlert.addTextField(configurationHandler: { (textField) in
-                    textField.placeholder = "password"
-                    textField.isSecureTextEntry = true
-                })
-                passwordAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-                passwordAlert.addAction(UIAlertAction(title: "Confirm", style: .default, handler: { alert in
-                    enteredPassword = passwordAlert.textFields![0].text!
-                    if(cell.password == enteredPassword) {
-                        print("good password")
-                        self.canvasController = UIStoryboard(name: "Canvas", bundle: nil).instantiateViewController(withIdentifier: "CanvasController") as! CanvasController
-                        self.present(self.canvasController, animated: true, completion: nil);
-                    } else {
-                         let wrongPasswordAlert = UIAlertController(title: "Wrong password", message: "You have entered a wrong password.", preferredStyle: .alert)
-                        wrongPasswordAlert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
-                        self.present(wrongPasswordAlert, animated: true, completion: nil)
-                    }
-                }))
-            self.present(passwordAlert, animated: true, completion: nil)
-            } else {
-                self.canvasController = UIStoryboard(name: "Canvas", bundle: nil).instantiateViewController(withIdentifier: "CanvasController") as! CanvasController
-                self.present(self.canvasController, animated: true, completion: nil);      }
+            CanvasService.getCanvasById(id: canvasId).done( {(fetchedCanvas) in
+                currentCanvas = fetchedCanvas
+                var enteredPassword = ""
+                if(cell.password != "") {
+                    
+                    let passwordAlert = UIAlertController(title: "Password Required", message: "This canvas is password protected. Please enter the password to gain access.", preferredStyle: .alert)
+                    passwordAlert.addTextField(configurationHandler: { (textField) in
+                        textField.placeholder = "password"
+                        textField.isSecureTextEntry = true
+                    })
+                    passwordAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+                    passwordAlert.addAction(UIAlertAction(title: "Confirm", style: .default, handler: { alert in
+                        enteredPassword = passwordAlert.textFields![0].text!
+                        if(cell.password == enteredPassword) {
+                            print("good password")
+                            self.canvasController = UIStoryboard(name: "Canvas", bundle: nil).instantiateViewController(withIdentifier: "CanvasController") as! CanvasController
+                            self.present(self.canvasController, animated: true, completion: nil);
+                        } else {
+                            let wrongPasswordAlert = UIAlertController(title: "Wrong password", message: "You have entered a wrong password.", preferredStyle: .alert)
+                            wrongPasswordAlert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
+                            self.present(wrongPasswordAlert, animated: true, completion: nil)
+                        }
+                    }))
+                    self.present(passwordAlert, animated: true, completion: nil)
+                } else {
+                    self.canvasController = UIStoryboard(name: "Canvas", bundle: nil).instantiateViewController(withIdentifier: "CanvasController") as! CanvasController
+                    self.present(self.canvasController, animated: true, completion: nil);
+                    
+                }
+            })
         }
+        
     }
 }
 

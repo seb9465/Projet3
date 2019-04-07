@@ -35,7 +35,7 @@ namespace PolyPaint.Strokes
             Title = new FormattedText(title, System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, Config.T_FACE, 17, Brushes.Black);
         }
 
-        protected void DrawAnchorPoints(DrawingContext drawingContext)
+        protected virtual void DrawAnchorPoints(DrawingContext drawingContext)
         {
             SolidColorBrush brush = new SolidColorBrush(Colors.Gray);
 
@@ -45,13 +45,13 @@ namespace PolyPaint.Strokes
             AnchorPoints[AnchorPosition.Left] = new Point(UnrotatedTopLeft.X, UnrotatedTopLeft.Y + UnrotatedHeight / 2.0);
             AnchorPoints = new ConcurrentDictionary<AnchorPosition, Point>
             (
-                AnchorPoints.Select(x => new KeyValuePair<AnchorPosition, Point>(x.Key, Tools.RotatePoint(x.Value, Center, Rotation)))
+                AnchorPoints.ToDictionary(x => x.Key, x => Tools.RotatePoint(x.Value, Center, Rotation))
             );
 
-            drawingContext.DrawEllipse(brush, null, AnchorPoints[AnchorPosition.Top], 3, 3);
-            drawingContext.DrawEllipse(brush, null, AnchorPoints[AnchorPosition.Bottom], 3, 3);
-            drawingContext.DrawEllipse(brush, null, AnchorPoints[AnchorPosition.Right], 3, 3);
-            drawingContext.DrawEllipse(brush, null, AnchorPoints[AnchorPosition.Left], 3, 3);
+            drawingContext.DrawEllipse(brush, null, AnchorPoints[AnchorPosition.Top], 2, 2);
+            drawingContext.DrawEllipse(brush, null, AnchorPoints[AnchorPosition.Bottom], 2, 2);
+            drawingContext.DrawEllipse(brush, null, AnchorPoints[AnchorPosition.Right], 2, 2);
+            drawingContext.DrawEllipse(brush, null, AnchorPoints[AnchorPosition.Left], 2, 2);
         }
     }
 }

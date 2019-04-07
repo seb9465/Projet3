@@ -13,7 +13,6 @@ namespace PolyPaint.Vues
     /// </summary>
     public partial class EditUmlWindow : Window
     {
-        StrokeBuilder strokeBuilder = new StrokeBuilder();
         VueModele viewModel { get; set; }
         public InkCanvas SurfaceDessin { get; set; }
         public EditUmlWindow(UmlClassStroke stroke, InkCanvas surfaceDessin, VueModele vm)
@@ -27,7 +26,7 @@ namespace PolyPaint.Vues
 
         private void Ok_Click(object sender, RoutedEventArgs e)
         {
-            var drawViewModel = strokeBuilder.GetDrawViewModelsFromStrokes(new StrokeCollection() { (Stroke)DataContext });
+            var drawViewModel = StrokeBuilder.GetDrawViewModelsFromStrokes(new StrokeCollection() { (Stroke)DataContext });
             Close();
             (DataContext as ICanvasable).Redraw();
             viewModel.CollaborationClient.CollaborativeDrawAsync(drawViewModel);

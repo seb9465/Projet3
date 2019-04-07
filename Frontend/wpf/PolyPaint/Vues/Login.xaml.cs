@@ -5,6 +5,7 @@ using PolyPaint.Modeles;
 using PolyPaint.VueModeles;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Net.Http;
@@ -42,6 +43,11 @@ namespace PolyPaint.Vues
                 Username = usernameBox.Text,
                 Password = passwordBox.Password,
             };
+            //LoginViewModel loginViewModel = new LoginViewModel()
+            //{
+            //    Username = "alexis",
+            //    Password = "!12345Aa",
+            //};
 
             string json = JsonConvert.SerializeObject(loginViewModel);
 
@@ -51,8 +57,8 @@ namespace PolyPaint.Vues
                 string token = "";
                 try
                 {
-                    client.BaseAddress = new System.Uri(Config.URL);
-                    client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+                    client.BaseAddress = new Uri(Config.URL);
+                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                     StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
                     result = await client.PostAsync("/api/login", content);
                     token = JsonConvert.DeserializeObject<string>(await result.Content.ReadAsStringAsync());
@@ -67,14 +73,14 @@ namespace PolyPaint.Vues
 
                     DecodeToken(token);
 
-                    List<SaveableCanvas> strokes;
+                    ObservableCollection<SaveableCanvas> strokes;
                     using (client)
                     {
                         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", (string)Application.Current.Properties["token"]);
                         System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
                         HttpResponseMessage response = await client.GetAsync($"{Config.URL}/api/user/AllCanvas");
                         string responseString = await response.Content.ReadAsStringAsync();
-                        strokes = JsonConvert.DeserializeObject<List<SaveableCanvas>>(responseString);
+                        strokes = JsonConvert.DeserializeObject<ObservableCollection<SaveableCanvas>>(responseString);
                     }
 
                     ChatClient chatClient = new ChatClient();
@@ -91,7 +97,7 @@ namespace PolyPaint.Vues
                 else
                 {
                     string error = await result.Content.ReadAsStringAsync();
-                    loginError.Text = error.ToString();
+                    loginError.Text = JsonConvert.DeserializeObject<string>(error);
                 }
             }
         }
@@ -144,19 +150,19 @@ namespace PolyPaint.Vues
                 web.ShowDialog();
                 token = web.Token;
 
-                if (token != null)
+                if (token != null && web.Result.StatusCode == System.Net.HttpStatusCode.OK)
                 {
 
                     DecodeToken(token);
 
-                    List<SaveableCanvas> strokes;
+                    ObservableCollection<SaveableCanvas> strokes;
                     using (client)
                     {
                         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", (string)Application.Current.Properties["token"]);
                         System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
                         HttpResponseMessage response = await client.GetAsync($"{Config.URL}/api/user/AllCanvas");
                         string responseString = await response.Content.ReadAsStringAsync();
-                        strokes = JsonConvert.DeserializeObject<List<SaveableCanvas>>(responseString);
+                        strokes = JsonConvert.DeserializeObject<ObservableCollection<SaveableCanvas>>(responseString);
                     }
 
                     ChatClient chatClient = new ChatClient();
@@ -169,6 +175,11 @@ namespace PolyPaint.Vues
 
                     Close();
                     gallery.Show();
+                }
+                else
+                {
+                    string error = await web.Result.Content.ReadAsStringAsync();
+                    loginError.Text = JsonConvert.DeserializeObject<string>(error);
                 }
             }
         }

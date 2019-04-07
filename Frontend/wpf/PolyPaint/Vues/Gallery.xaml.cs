@@ -7,6 +7,7 @@ using PolyPaint.Utilitaires;
 using PolyPaint.VueModeles;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Net.Http;
@@ -24,10 +25,8 @@ namespace PolyPaint.Vues
     /// 
     public partial class Gallery : Window
     {
-        public List<SaveableCanvas> Canvas { get; set; }
+        public ObservableCollection<SaveableCanvas> Canvas { get; set; }
         public SaveableCanvas SelectedCanvas { get; set; }
-        private ImageProtection imageProtection;
-        private StrokeBuilder strokeBuilder = new StrokeBuilder();
         private string username = Application.Current.Properties["username"].ToString();
 
         public String CanvasVisibility;
@@ -41,7 +40,7 @@ namespace PolyPaint.Vues
         private MediaPlayer mediaPlayer = new MediaPlayer();
         private InkCanvas SurfaceDessin { get; set; }
 
-        public Gallery(List<SaveableCanvas> strokes, ChatClient chatClient)
+        public Gallery(ObservableCollection<SaveableCanvas> strokes, ChatClient chatClient)
         {
             InitializeComponent();
             Canvas = GetAvailableCanvas(strokes);
@@ -113,6 +112,19 @@ namespace PolyPaint.Vues
             messageTextBox.Focus();
         }
 
+        private async void RefreshGallery_Click(object sender, RoutedEventArgs e)
+        {
+            ObservableCollection<SaveableCanvas> strokes;
+            using (HttpClient client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", (string)Application.Current.Properties["token"]);
+                System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
+                HttpResponseMessage response = await client.GetAsync($"{Config.URL}/api/user/AllCanvas");
+                string responseString = await response.Content.ReadAsStringAsync();
+                strokes = JsonConvert.DeserializeObject<ObservableCollection<SaveableCanvas>>(responseString);
+            }
+            (DataContext as UserDataContext).Canvas = GetAvailableCanvas(strokes);
+        }
         private void hamburgerMenu_Click(object sender, RoutedEventArgs e)
         {
             if (isMenuOpen)
@@ -144,9 +156,9 @@ namespace PolyPaint.Vues
             }
         }
 
-        private List<SaveableCanvas> GetAvailableCanvas(List<SaveableCanvas> savedCanvas)
+        private ObservableCollection<SaveableCanvas> GetAvailableCanvas(ObservableCollection<SaveableCanvas> savedCanvas)
         {
-            List<SaveableCanvas> canvas = new List<SaveableCanvas>();
+            ObservableCollection<SaveableCanvas> canvas = new ObservableCollection<SaveableCanvas>();
             if (savedCanvas != null)
             {
                 for (int item = 0; item < savedCanvas.Count; item++)
@@ -172,14 +184,14 @@ namespace PolyPaint.Vues
         private async void OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             SelectedCanvas = (SaveableCanvas)ImagePreviews.SelectedItem;
-            var canvases = new List<SaveableCanvas>();
+            var canvases = new ObservableCollection<SaveableCanvas>();
             using (HttpClient client = new HttpClient())
             {
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", (string)Application.Current.Properties["token"]);
                 System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
                 HttpResponseMessage response = await client.GetAsync($"{Config.URL}/api/user/AllCanvas");
                 string responseString = await response.Content.ReadAsStringAsync();
-                canvases = JsonConvert.DeserializeObject<List<SaveableCanvas>>(responseString);
+                canvases = JsonConvert.DeserializeObject<ObservableCollection<SaveableCanvas>>(responseString);
             }
             SelectedCanvas = canvases.FirstOrDefault(x => x.CanvasId == (ImagePreviews.SelectedItem as SaveableCanvas).CanvasId);
             List<DrawViewModel> drawViewModels = JsonConvert.DeserializeObject<List<DrawViewModel>>(SelectedCanvas.DrawViewModels);

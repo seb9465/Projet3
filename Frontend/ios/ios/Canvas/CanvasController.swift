@@ -253,6 +253,7 @@ class CanvasController: UIViewController {
     @IBAction func quitButtonPressed(_ sender: Any) {
         let alert = UIAlertController(title: "Alert", message: "Would you like to quit ?", preferredStyle: .alert);
         let yesAction: UIAlertAction = UIAlertAction(title: "Yes", style: .default) { _ in
+            self.editor.deselect()
             CollaborationHub.shared!.disconnectFromHub()
             currentCanvas = Canvas()
             NotificationCenter.default.removeObserver(self)
