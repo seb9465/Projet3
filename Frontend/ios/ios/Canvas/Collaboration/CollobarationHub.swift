@@ -150,7 +150,7 @@ class CollaborationHub {
         for figure in figures {
             viewModels.append(figure.exportViewModel()!)
         }
-        
+        print(viewModels)
         let itemMessage = ItemMessage(
             CanvasId: self.channelId,
             Username: username!,

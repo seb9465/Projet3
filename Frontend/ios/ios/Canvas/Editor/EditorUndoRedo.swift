@@ -16,7 +16,7 @@ extension Editor {
         for drawViewModel in drawViewModels  {
             figure = self.insertFigure(drawViewModel: drawViewModel)
         }
-        self.bindConnectionsToFigures(drawViewModels: drawViewModels)
+        self.bindLocalConnectionsToFigures(drawViewModels: drawViewModels)
         
         if (figure! is UmlFigure) {
             (figure! as! UmlFigure).updateConnections()

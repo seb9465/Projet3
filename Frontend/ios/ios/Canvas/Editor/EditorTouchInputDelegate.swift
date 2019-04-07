@@ -327,6 +327,7 @@ extension Editor : TouchInputDelegate {
             }
             let connection = self.insertConnectionFigure(firstPoint: self.initialTouchPoint, lastPoint: point, itemType: currentFigureType)
             CollaborationHub.shared!.postNewFigure(figures: [connection])
+            CanvasService.saveOnNewFigure(figures: self.figures, editor: self)
             self.touchEventState = .SELECT
             return
         }
@@ -338,10 +339,10 @@ extension Editor : TouchInputDelegate {
                 return
             }
             let connection = self.insertConnectionFigure(firstPoint: self.initialTouchPoint, lastPoint: point, itemType: currentFigureType)
-            CollaborationHub.shared!.postNewFigure(figures: [connection])
-            
             let sourceAnchor: String = self.sourceFigure.getClosestAnchorPointName(point: self.initialTouchPoint)
             self.sourceFigure.addOutgoingConnection(connection: connection as! ConnectionFigure, anchor: sourceAnchor)
+            CollaborationHub.shared!.postNewFigure(figures: [self.sourceFigure, connection])
+            CanvasService.saveOnNewFigure(figures: self.figures, editor: self)
             self.touchEventState = .SELECT
             return
         }
@@ -362,7 +363,7 @@ extension Editor : TouchInputDelegate {
             let destinationAnchor: String = destinationFigure.getClosestAnchorPointName(point: point)
             destinationFigure.addIncomingConnection(connection: connection as! ConnectionFigure, anchor: destinationAnchor)
             self.touchEventState = .SELECT
-            CollaborationHub.shared!.postNewFigure(figures: self.selectedFigures)
+            CollaborationHub.shared!.postNewFigure(figures: [destinationFigure, connection])
             CanvasService.saveOnNewFigure(figures: self.figures, editor: self)
             return
         }
@@ -380,11 +381,13 @@ extension Editor : TouchInputDelegate {
             lastPoint: destinationFigure.getClosestAnchorPoint(point: point),
             itemType: currentFigureType
         )
-        CollaborationHub.shared!.postNewFigure(figures: [connection])
+        
         let sourceAnchor: String = self.sourceFigure.getClosestAnchorPointName(point: self.initialTouchPoint)
         let destinationAnchor: String = destinationFigure.getClosestAnchorPointName(point: point)
         self.sourceFigure.addOutgoingConnection(connection: connection as! ConnectionFigure, anchor: sourceAnchor)
         destinationFigure.addIncomingConnection(connection: connection as! ConnectionFigure, anchor: destinationAnchor)
+        CollaborationHub.shared!.postNewFigure(figures: [self.sourceFigure, destinationFigure, connection])
+        CanvasService.saveOnNewFigure(figures: self.figures, editor: self)
         self.touchEventState = .SELECT
         return
     }
