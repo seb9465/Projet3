@@ -26,7 +26,7 @@ namespace PolyPaint
             {
                 using (HttpClient client = new HttpClient())
                 {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", (string)Application.Current.Properties["token"]);
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", (string)Current.Properties["token"]);
                     System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
                     client.GetAsync($"{Config.URL}/api/user/logout").Wait();
                 }

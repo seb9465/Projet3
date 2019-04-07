@@ -9,9 +9,14 @@ namespace PolyPaint.Vues
         public double CanvasHeight;
         public double CanvasWidth;
 
+        private double InitWidth { get; set; }
+        private double InitHeight { get; set; }
+
         public ResizeCanvas(double width, double height)
         {
             InitializeComponent();
+            InitWidth = width;
+            InitHeight = height;
             heightTextBox.Text = height.ToString();
             widthTextBox.Text = width.ToString();
             ShowDialog();
@@ -19,8 +24,8 @@ namespace PolyPaint.Vues
 
         private void Ok_Click(object sender, RoutedEventArgs e)
         {
-            CanvasHeight = Convert.ToDouble(heightTextBox.Text);
-            CanvasWidth = Convert.ToDouble(widthTextBox.Text);
+            CanvasHeight = heightTextBox.Text == "" ? InitHeight : Convert.ToDouble(heightTextBox.Text);
+            CanvasWidth = widthTextBox.Text == "" ? InitWidth : Convert.ToDouble(widthTextBox.Text);
             Close();
         }
 

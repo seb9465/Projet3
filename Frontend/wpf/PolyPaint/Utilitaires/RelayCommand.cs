@@ -63,6 +63,8 @@ namespace PolyPaint.Utilitaires
             remove { CommandManager.RequerySuggested -= value; }
         }
 
+        public event EventHandler Executed;
+
         ///<summary>
         ///Defines the method to be called when the command is invoked.
         ///</summary>
@@ -70,6 +72,7 @@ namespace PolyPaint.Utilitaires
         public void Execute(object parameter)
         {
             _execute((T)parameter);
+            Executed?.Invoke(this, new EventArgs());
         }
 
         #endregion

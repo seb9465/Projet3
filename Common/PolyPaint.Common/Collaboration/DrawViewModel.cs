@@ -27,6 +27,23 @@ namespace PolyPaint.Common.Collaboration
         public PolyPaintStylusPoint LastElbowPosition { get; set; }
         public byte[] ImageBytes { get; set; }
         public double Rotation { get; set; }
+        // Guid, Side
+        public List<List<string>> InConnections;
+        public List<List<string>> OutConnections;
+
+        public bool IsConnection()
+        {
+            var connections = new List<ItemTypeEnum>()
+            {
+                ItemTypeEnum.Agregation,
+                ItemTypeEnum.Composition,
+                ItemTypeEnum.Line,
+                ItemTypeEnum.UnidirectionalAssociation,
+                ItemTypeEnum.Inheritance,
+                ItemTypeEnum.BidirectionalAssociation,
+            };
+            return connections.Contains(ItemType);
+        }
 
         [JsonIgnore]
         private readonly JsonSerializerSettings SerializerSettings = new JsonSerializerSettings

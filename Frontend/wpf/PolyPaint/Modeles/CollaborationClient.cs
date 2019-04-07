@@ -104,7 +104,8 @@ namespace PolyPaint.Modeles{    public class CollaborationClient    {       
         {
             try
             {
-                await Connection.InvokeAsync("Draw", JsonConvert.SerializeObject(new ItemsMessage(ChannelId, "", drawViewModels)));
+                var mess = JsonConvert.SerializeObject(new ItemsMessage(ChannelId, "", drawViewModels));
+                await Connection.InvokeAsync("Draw", mess);
             }
             catch (Exception) { }
         }
