@@ -25,6 +25,7 @@ class PropertiesTableController: UIViewController {
         
         let connectionNib = UINib.init(nibName: "ConnectionCell", bundle: nil)
         self.propertiesTable.register(connectionNib, forCellReuseIdentifier: "ConnectionCell")
+        self.propertiesTable.backgroundColor = #colorLiteral(red: 0.9681890607, green: 0.9681890607, blue: 0.9681890607, alpha: 1)
     }
 }
 
