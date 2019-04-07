@@ -12,6 +12,8 @@ import Alamofire
 
 class DashboardController: UIViewController, UITextFieldDelegate {
     
+    // MARK: Outlets
+    
     @IBOutlet weak var galleryView: UIView!
     @IBOutlet weak var usernameLabel: UILabel!
     @IBOutlet var logoutButton: RoundedCorners!
@@ -39,9 +41,6 @@ class DashboardController: UIViewController, UITextFieldDelegate {
         self.viewContainerChat.layer.masksToBounds = false;
     }
     
-    @IBAction func updateGallery(_ sender: Any) {
-        
-    }
     @IBAction func logoutButton(_ sender: Any) {
         AuthentificationAPI.logout()
         UserDefaults.standard.removePersistentDomain(forName: "token");
@@ -54,6 +53,7 @@ class DashboardController: UIViewController, UITextFieldDelegate {
         
         self.dismiss(animated: true, completion: nil)
     }
+    
     @IBAction func createNewCanvas(_ sender: Any) {
         let token = UserDefaults.standard.string(forKey: "token");
         let jwt = try! decode(jwt: token!)
