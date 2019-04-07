@@ -164,8 +164,8 @@ namespace PolyPaint.Strokes
                     rectWireFrame);
 
                 var typeface = new Typeface(new FontFamily("Arial"), FontStyles.Italic, FontWeights.Normal, FontStretches.Normal);
-                var text = new FormattedText(_username, System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, typeface, 10, new SolidColorBrush(Color.FromRgb(150, 150, 150)));
-                drawingContext.DrawText(text, new Point(rectWireFrame.TopLeft.X, rectWireFrame.TopLeft.Y - text.Height - 2));
+                var text = new FormattedText(_username, System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, typeface, 10, new SolidColorBrush(Colors.Magenta));
+                drawingContext.DrawText(text, new Point(rectWireFrame.TopLeft.X + text.Height, rectWireFrame.TopLeft.Y - text.Height - 2));
             }
         }
 

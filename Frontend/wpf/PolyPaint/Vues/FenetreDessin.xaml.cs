@@ -125,6 +125,7 @@ namespace PolyPaint
                 });
             }
             ReplaceAdorner();
+            SendToCloud();
         }
 
         private void Redo(object sender, EventArgs e)
@@ -155,6 +156,7 @@ namespace PolyPaint
                 });
             }
             ReplaceAdorner();
+            SendToCloud();
         }
 
         private void HandleProtectionChanged(object sender, MessageArgs e)
@@ -513,6 +515,7 @@ namespace PolyPaint
                 case "select":
                     var selectedStrokes = surfaceDessin.GetSelectedStrokes();
                     var affectedStrokes = InkCanvasEventManager.UpdateAnchorPointsPosition(surfaceDessin);
+                    affectedStrokes.Add(selectedStrokes);
                     selectedItems = StrokeBuilder.GetDrawViewModelsFromStrokes(selectedStrokes);
                     var affectedItems = StrokeBuilder.GetDrawViewModelsFromStrokes(affectedStrokes);
 
@@ -634,6 +637,7 @@ namespace PolyPaint
                 var message = JsonConvert.DeserializeObject<ItemsMessage>(args.Message);
 
                 StrokeBuilder.BuildStrokesFromDrawViewModels(message.Items, surfaceDessin);
+                InkCanvasEventManager.UpdateAnchorPointsPosition(surfaceDessin);
             });
         }
 
