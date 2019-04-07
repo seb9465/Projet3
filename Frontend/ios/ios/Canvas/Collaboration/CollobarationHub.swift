@@ -17,6 +17,7 @@ protocol CollaborationHubDelegate {
     func delete(username: String)
     func getKicked()
     func resizeCanvas(size: PolyPaintStylusPoint)
+    func sendExistingSelection()
 }
 
 class CollaborationHub {
@@ -135,6 +136,7 @@ class CollaborationHub {
             let json: String = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self)!;
             if let jsonData = json.data(using: .utf8) {
                 let obj: ConnectionMessage = try! JSONDecoder().decode(ConnectionMessage.self, from: jsonData);
+                self.delegate?.sendExistingSelection()
                 print("[ Collab ] Connected to channel", obj.channelId)
             }
         });

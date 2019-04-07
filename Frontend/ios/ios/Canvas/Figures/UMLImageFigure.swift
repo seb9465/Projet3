@@ -13,17 +13,16 @@ class UmlImageFigure: UmlFigure {
     let BASE_WIDTH: CGFloat = 150
     let BASE_HEIGHT: CGFloat = 200
     var image: UIImage?
-    
+
     override init(drawViewModel: DrawViewModel) {
         super.init(drawViewModel: drawViewModel);
-        self.image = UIImage(data: Data(bytes: drawViewModel.ImageBytes!))!
+        self.image = UIImage(data: Data(base64Encoded: drawViewModel.ImageBytes!)!)!
         self.initializeAnchorPoints()
     }
     
     override func draw(_ rect: CGRect) {
-        let imageLayer = CALayer()
-        imageLayer.frame = CGRect(x: 0, y: 0, width: self.frame.width, height: self.frame.height)
-        imageLayer.contents = self.image
+        print(image)
+        self.image?.draw(in: self.frame)
     }
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

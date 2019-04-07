@@ -26,7 +26,7 @@ struct DrawViewModel: Codable {
     var ChannelId: String?
     var OutilSelectionne: String?
     var LastElbowPosition: PolyPaintStylusPoint?
-    var ImageBytes: [UInt8]?
+    var ImageBytes: String?
     var Rotation: Double?
 
     init() {}

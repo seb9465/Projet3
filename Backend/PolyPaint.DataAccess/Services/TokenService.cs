@@ -43,7 +43,7 @@ namespace PolyPaint.DataAccess.Services
             SecurityTokenDescriptor tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new[]{
-                        new Claim(ClaimTypes.Name, user.FullName()),
+                        new Claim(ClaimTypes.Name, user.UserName),
                         new Claim(ClaimTypes.NameIdentifier, user.Id),
                         new Claim(ClaimTypes.Surname, user.FirstName)
                     }),

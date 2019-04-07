@@ -285,6 +285,14 @@ extension Editor {
 }
 
 extension Editor: CollaborationHubDelegate {
+    func sendExistingSelection() {
+        var drawViewModels: [DrawViewModel] = []
+        for figure in self.selectedFigures {
+            drawViewModels.append(figure.exportViewModel()!)
+        }
+        CollaborationHub.shared!.selectObjects(drawViewModels:drawViewModels)
+    }
+    
     func resizeCanvas(size: PolyPaintStylusPoint) {
         self.resize(width: CGFloat(size.X), heigth: CGFloat(size.Y))
     }
