@@ -12,8 +12,7 @@ import Alamofire
 
 class DashboardController: UIViewController, UITextFieldDelegate {
     
-    // MARK: Outlets
-    
+    @IBOutlet weak var galleryView: UIView!
     @IBOutlet weak var usernameLabel: UILabel!
     @IBOutlet var logoutButton: RoundedCorners!
     @IBOutlet var viewContainerChat: UIView!
@@ -40,22 +39,84 @@ class DashboardController: UIViewController, UITextFieldDelegate {
         self.viewContainerChat.layer.masksToBounds = false;
     }
     
-    // MARK: Actions
-    
+    @IBAction func updateGallery(_ sender: Any) {
+        
+    }
     @IBAction func logoutButton(_ sender: Any) {
         AuthentificationAPI.logout()
         UserDefaults.standard.removePersistentDomain(forName: "token");
-        
-        let mainView: UIStoryboard = UIStoryboard(name: "Main", bundle: nil);
-        let viewController : UIViewController = mainView.instantiateViewController(withIdentifier: "LoginStoryboard") as UIViewController;
-        
+        UserDefaults.standard.removePersistentDomain(forName: "id");
         let transition = CATransition();
         transition.duration = 0.3;
         transition.type = CATransitionType.reveal;
         transition.subtype = CATransitionSubtype.fromBottom;
         self.view.window!.layer.add(transition, forKey: kCATransition);
         
-        self.present(viewController, animated: false, completion: nil);
+        self.dismiss(animated: true, completion: nil)
+    }
+    @IBAction func createNewCanvas(_ sender: Any) {
+        let token = UserDefaults.standard.string(forKey: "token");
+        let jwt = try! decode(jwt: token!)
+        let username = jwt.claim(name: "unique_name").string
+        
+        var newCanvas: Canvas = Canvas()
+        newCanvas.canvasId = UUID().uuidString
+        newCanvas.canvasAutor = username!
+        canvasId = newCanvas.canvasId
+        let createAlert = UIAlertController(title: "Create Canvas", message: "Please enter the new canvas name and it's visibility.", preferredStyle: .alert)
+        createAlert.addTextField(configurationHandler: { (textField) in
+            textField.placeholder = "Name"
+        })
+        let protectionAlert = UIAlertController(title: "Password Protection", message: "You can add a password to secure your canvas!", preferredStyle: .alert)
+        protectionAlert.addAction(UIAlertAction(title: "No Thanks", style: .cancel, handler: { action in
+            self.saveNewCanvas(canvas: newCanvas)
+        }))
+        protectionAlert.addAction(UIAlertAction(title: "Secure", style: .default, handler: { action in
+            newCanvas.canvasProtection = protectionAlert.textFields![0].text!
+            self.saveNewCanvas(canvas: newCanvas)
+        }))
+        protectionAlert.addTextField(configurationHandler: { (textField) in
+            protectionAlert.actions[1].isEnabled = false
+            textField.placeholder = "Password"
+            textField.isSecureTextEntry = true
+        })
+        
+        
+        createAlert.addAction(UIAlertAction(title: "Private", style: .default, handler: { action in
+            newCanvas.name = createAlert.textFields![0].text!
+            newCanvas.canvasVisibility = "Private"
+            
+            self.present(protectionAlert, animated: true, completion: nil)
+        }))
+        createAlert.addAction(UIAlertAction(title: "Public", style: .default, handler:{ action in
+            newCanvas.name = createAlert.textFields![0].text!
+            newCanvas.canvasVisibility = "Public"
+            self.present(protectionAlert, animated: true, completion: nil)
+        }))
+        createAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        createAlert.actions[0].isEnabled = false
+        createAlert.actions[1].isEnabled = false
+        
+        NotificationCenter.default.addObserver(forName: UITextField.textDidChangeNotification, object:createAlert.textFields?[0],
+                                               queue: OperationQueue.main) { (notification) -> Void in
+                                                let textField = createAlert.textFields?[0] as! UITextField
+                                                createAlert.actions[0].isEnabled = !textField.text!.isEmpty
+                                                createAlert.actions[1].isEnabled = !textField.text!.isEmpty
+        }
+        NotificationCenter.default.addObserver(forName: UITextField.textDidChangeNotification, object:protectionAlert.textFields?[0],
+                                               queue: OperationQueue.main) { (notification) -> Void in
+                                                let textField = protectionAlert.textFields?[0] as! UITextField
+                                                protectionAlert.actions[1].isEnabled = !textField.text!.isEmpty
+        }
+        self.present(createAlert, animated: true, completion: nil)
+    }
+    
+    public func saveNewCanvas(canvas: Canvas) {
+        currentCanvas = canvas
+        CanvasService.SaveOnline(canvas: canvas).done { (success) in
+            let canvasController = UIStoryboard(name: "Canvas", bundle: nil).instantiateViewController(withIdentifier: "CanvasController") as! CanvasController
+            self.present(canvasController, animated: true, completion: nil);
+        }
     }
     
     @IBAction func windowChatTrigger(_ sender: Any) {

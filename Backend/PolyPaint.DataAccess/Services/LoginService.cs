@@ -33,15 +33,30 @@ namespace PolyPaint.DataAccess.Services
             {
                 user = await _userManager.FindByNameAsync(loginViewModel.Username);
             }
+            if (user == null)
+            {
+                throw new Exception("Invalid Credentials");
+            }
+            if (user.IsLoggedIn)
+            {
+                throw new Exception("User already logged in");
 
+            }
             bool isLoginSuccesful = await _userManager.CheckPasswordAsync(user, loginViewModel.Password);
             string token = null;
+
+            if (!isLoginSuccesful)
+            {
+                throw new Exception("Invalid Credentials");
+            }
+
             if (isLoginSuccesful && !user.IsLoggedIn)
             {
                 user.IsLoggedIn = true;
                 await _userManager.UpdateAsync(user);
                 token = _tokenService.GenerateToken(user);
             }
+
 
             return token;
         }
@@ -75,7 +90,13 @@ namespace PolyPaint.DataAccess.Services
                         throw new Exception(createResult.Errors.Select(e => e.Description).Aggregate((errors, error) => $"{errors}, {error}"));
                     }
                 }
-
+                else
+                {
+                    if (currentUser.IsLoggedIn)
+                    {
+                        throw new Exception("User already logged in");
+                    }
+                }
                 IdentityResult linkingFacebook = await _userManager.AddLoginAsync(currentUser, info);
                 await _signInManager.SignInAsync(currentUser, isPersistent: false);
                 token = _tokenService.GenerateTokenFacebook(currentUser);
@@ -84,7 +105,68 @@ namespace PolyPaint.DataAccess.Services
             else
             {
                 string email = info.Principal.FindFirstValue(ClaimTypes.Email);
-                token = _tokenService.GenerateTokenFacebook(await _userManager.FindByEmailAsync(email));
+                ApplicationUser currentUser = await _userManager.FindByEmailAsync(email);
+                if (currentUser.IsLoggedIn)
+                {
+                    throw new Exception("User already logged in");
+                }
+
+                token = _tokenService.GenerateTokenFacebook(currentUser);
+                return token;
+            }
+        }
+        public async Task<string> HandleIOSLogin(FacebookLoginInfo facebookLogin)
+        {
+            SignInResult existingFacebookLogin = await _signInManager
+                .ExternalLoginSignInAsync("Facebook", facebookLogin.FbToken, isPersistent: true);
+            string token = null;
+            if (!existingFacebookLogin.Succeeded)
+            {
+                ApplicationUser currentUser = await _userManager.FindByEmailAsync(facebookLogin.Email);
+
+                if (currentUser == null)
+                {
+                    ApplicationUser newUser = new ApplicationUser
+                    {
+                        FirstName = facebookLogin.FirstName,
+                        UserName = facebookLogin.Username,
+                        Email = facebookLogin.Email,
+                        LastName = facebookLogin.LastName
+                    };
+                    IdentityResult createResult = await _userManager.CreateAsync(newUser);
+                    if (createResult.Succeeded)
+                    {
+                        currentUser = newUser;
+                    }
+                    else
+                    {
+                        throw new Exception(createResult.Errors.Select(e => e.Description).Aggregate((errors, error) => $"{errors}, {error}"));
+                    }
+                }
+                else
+                {
+                    if (currentUser.IsLoggedIn)
+                    {
+                        throw new Exception("User already logged in");
+                    }
+                }
+                UserLoginInfo userLoginInfo = new UserLoginInfo("Facebook", facebookLogin.FbToken, facebookLogin.FirstName);
+                IdentityResult linkingFacebook = await _userManager.AddLoginAsync(currentUser, userLoginInfo);
+                await _signInManager.SignInAsync(currentUser, isPersistent: false);
+                currentUser.IsLoggedIn = true;
+                await _userManager.UpdateAsync(currentUser);
+                token = _tokenService.GenerateTokenFacebook(currentUser);
+                return token;
+            }
+            else
+            {
+                ApplicationUser currentUser = await _userManager.FindByEmailAsync(facebookLogin.Email);
+                if (currentUser.IsLoggedIn)
+                {
+                    throw new Exception("User already logged in");
+                }
+
+                token = _tokenService.GenerateTokenFacebook(currentUser);
                 return token;
             }
         }

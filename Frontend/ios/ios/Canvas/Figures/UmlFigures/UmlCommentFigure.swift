@@ -15,18 +15,20 @@ class UmlCommentFigure: UmlFigure {
     init(firstPoint: CGPoint, lastPoint: CGPoint) {
         super.init(firstPoint: firstPoint, lastPoint: lastPoint, width: BASE_WIDTH, height: BASE_WIDTH)
         self.itemType = ItemTypeEnum.Comment
-
+        self.initializeAnchorPoints()
     }
     
     override init(drawViewModel: DrawViewModel) {
         super.init(drawViewModel: drawViewModel);
         self.name = drawViewModel.ShapeTitle!
+        self.initializeAnchorPoints()
     }
     
     
     init(origin: CGPoint) {
         super.init(touchedPoint: origin, width: BASE_WIDTH, height: BASE_HEIGHT)
         self.itemType = ItemTypeEnum.Comment
+        self.initializeAnchorPoints()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -34,21 +36,23 @@ class UmlCommentFigure: UmlFigure {
     }
     
     override func draw(_ rect: CGRect) {
-        let commentRect = CGRect(x: 0, y: 0, width: BASE_WIDTH, height: BASE_HEIGHT).insetBy(dx: 5, dy: 5);
+        let commentRect = CGRect(x: 0, y: 0, width: self.frame.width, height: self.frame.height).insetBy(dx: 5, dy: 5);
         
         let commentLabel = UILabel(frame: commentRect)
         commentLabel.text = self.name
         commentLabel.textAlignment = .center
-        commentLabel.drawText(in: commentRect)
-        
         let commentRectPath = UIBezierPath(rect: commentRect)
-        
+        commentRectPath.lineWidth = self.lineWidth
         self.figureColor.setFill()
         self.lineColor.setStroke()
-
+        if(self.isBorderDashed) {
+            commentRectPath.setLineDash([4,4], count: 1, phase: 0)
+        }
         commentRectPath.lineWidth = self.lineWidth
         commentRectPath.fill()
         commentRectPath.stroke()
+        commentLabel.drawText(in: commentRect)
+        
     }
     
     override func exportViewModel() -> DrawViewModel {
@@ -60,16 +64,16 @@ class UmlCommentFigure: UmlFigure {
         drawViewModel.Owner = UserDefaults.standard.string(forKey: "username")
         drawViewModel.ItemType = ItemTypeEnum.Comment
         drawViewModel.StylusPoints = [point1, point2]
-        drawViewModel.FillColor = PolyPaintColor(A: 255, R: 255, G: 1, B: 1)
-        drawViewModel.BorderColor = PolyPaintColor(A: 255, R: 255, G: 1, B: 1)
-        drawViewModel.BorderThickness = 2.0
-        drawViewModel.BorderStyle = "solid"
+        drawViewModel.FillColor = PolyPaintColor(color: self.figureColor)
+        drawViewModel.BorderColor = PolyPaintColor(color: self.lineColor)
+        drawViewModel.BorderThickness = Double(self.lineWidth)
+        drawViewModel.BorderStyle = (self.isBorderDashed) ? "dash" : "solid"
         drawViewModel.ShapeTitle = self.name
         drawViewModel.Methods = nil
         drawViewModel.Properties = nil
         drawViewModel.SourceTitle = nil
         drawViewModel.DestinationTitle = nil
-        drawViewModel.ChannelId = "general"
+        drawViewModel.ChannelId = canvasId
         drawViewModel.OutilSelectionne = nil
         drawViewModel.LastElbowPosition = nil
         drawViewModel.ImageBytes = nil

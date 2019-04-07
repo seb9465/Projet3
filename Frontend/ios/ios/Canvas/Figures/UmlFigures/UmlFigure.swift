@@ -8,31 +8,22 @@
 
 import UIKit
 import GLKit
+
 protocol TouchInputDelegate {
     func notifyTouchBegan(action: String, point: CGPoint, figure: Figure?)
-    func notifyTouchMoved(point: CGPoint, figure: Figure)
+    func notifyTouchMoved(point: CGPoint, figure: Figure?)
     func notifyTouchEnded(point: CGPoint, figure: Figure?)
 }
 
 class UmlFigure : Figure {
-    var delegate: TouchInputDelegate?
-    
-    // DrawViewModel common attributes
-//    var name: String!
-    var figureColor: UIColor!
-//    var lineColor: UIColor!
-//    var lineWidth: CGFloat!
-//    var oldTouchedPoint: CGPoint!
-    
+
+    var currentAngle: Double = 0
+    var anchorPoints: AnchorPoints?
     var incomingConnections : [ConnectionFigure: String] = [:]
     var outgoingConnections : [ConnectionFigure: String] = [:]
-    
-    var currentAngle: Double = 0
-
-    var anchorPoints: AnchorPoints?;
+    var nameLabelHeight: CGFloat = 30
     
     init(firstPoint: CGPoint, lastPoint: CGPoint, width: CGFloat, height: CGFloat) {
-        
         let frameSize = CGSize(width: abs(firstPoint.x - lastPoint.x), height: abs(firstPoint.y - lastPoint.y))
         let frame = CGRect(origin: firstPoint, size: frameSize)
         
@@ -51,7 +42,7 @@ class UmlFigure : Figure {
         self.firstPoint = CGPoint(x: touchedPoint.x - width/2, y: touchedPoint.y - height/2)
         self.lastPoint = CGPoint(x: touchedPoint.x + width/2, y: touchedPoint.y + height/2)
         self.initializeBaseStyle()
-        self.initializeAnchorPoints()
+//        self.initializeAnchorPoints()
     }
     
     init(drawViewModel: DrawViewModel) {
@@ -62,6 +53,8 @@ class UmlFigure : Figure {
         super.init(frame: frame)
         self.firstPoint = firstPoint
         self.lastPoint = lastPoint
+        self.name = drawViewModel.ShapeTitle!
+        self.isBorderDashed = (drawViewModel.BorderStyle! == "dash") ? true : false
         self.uuid = UUID(uuidString: drawViewModel.Guid!)
         self.itemType = drawViewModel.ItemType!
         self.figureColor = drawViewModel.FillColor?.getUIColor()
@@ -69,7 +62,7 @@ class UmlFigure : Figure {
         self.currentAngle = drawViewModel.Rotation!
         self.lineWidth = CGFloat(drawViewModel.BorderThickness!)
         self.backgroundColor = UIColor.clear
-        self.initializeAnchorPoints()
+//        self.initializeAnchorPoints()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -83,7 +76,7 @@ class UmlFigure : Figure {
         self.backgroundColor = UIColor.clear;
     }
     
-    private func initializeAnchorPoints() {
+    func initializeAnchorPoints() {
         self.anchorPoints = AnchorPoints(width: self.frame.width, height: self.frame.height)
         self.layer.addSublayer((self.anchorPoints?.anchorPointsBottom)!)
         self.layer.addSublayer((self.anchorPoints?.anchorPointsTop)!)
@@ -91,22 +84,32 @@ class UmlFigure : Figure {
         self.layer.addSublayer((self.anchorPoints?.anchorPointsRight)!)
     }
     
-    public func setFillColor(fillColor: UIColor) -> Void {
-        self.figureColor = fillColor
-        setNeedsDisplay();
-    }
-    
-    public func setBorderColor(borderColor: UIColor) -> Void {
-        self.lineColor = borderColor
-        setNeedsDisplay();
+    private func updateAnchorPoints() {
+        self.anchorPoints?.anchorPointsBottom.removeFromSuperlayer()
+        self.anchorPoints?.anchorPointsTop.removeFromSuperlayer()
+        self.anchorPoints?.anchorPointsLeft.removeFromSuperlayer()
+        self.anchorPoints?.anchorPointsRight.removeFromSuperlayer()
+        self.initializeAnchorPoints()
     }
 
-    public func translate(by: CGPoint) {
+    override func translate(by: CGPoint) {
         let translatedFrame = self.frame.offsetBy(dx: by.x, dy: by.y)
         self.frame = translatedFrame
         self.firstPoint = self.frame.origin
         self.lastPoint = CGPoint(x: self.frame.maxX, y: self.frame.maxY)
         self.updateConnections()
+    }
+    
+    override func resize(by: CGPoint) {
+        let newSize : CGSize = CGSize(width: self.frame.width + by.x, height: self.frame.height + by.y)
+        let newOrigin: CGPoint = CGPoint(x: self.frame.origin.x - by.x/2, y: self.frame.origin.y - by.y/2)
+        let resizedFrame = CGRect(origin: newOrigin, size: newSize)
+        self.frame = resizedFrame
+        self.firstPoint = newOrigin
+        self.lastPoint = CGPoint(x: self.frame.maxX, y: self.frame.maxY)
+        self.updateAnchorPoints()
+        self.updateConnections()
+        setNeedsDisplay()
     }
     
     override public func rotate(orientation: RotateOrientation) -> Void {
@@ -128,6 +131,14 @@ class UmlFigure : Figure {
 
 // Connections logic
 extension UmlFigure {
+    public func getAnchoredConnections() -> [ConnectionFigure] {
+        var anchoredConnections: [ConnectionFigure] = []
+        anchoredConnections.append(contentsOf: self.incomingConnections.keys.reversed())
+        anchoredConnections.append(contentsOf: self.outgoingConnections.keys.reversed())
+        
+        return anchoredConnections
+    }
+    
     public func addIncomingConnection(connection: ConnectionFigure, anchor: String) {
         self.incomingConnections.updateValue(anchor, forKey: connection)
     }
@@ -136,7 +147,17 @@ extension UmlFigure {
         self.outgoingConnections.updateValue(anchor, forKey: connection)
     }
     
-    private func updateConnections() {
+    public func removeConnection(connection: ConnectionFigure) {
+        if (self.incomingConnections[connection] != nil) {
+            self.incomingConnections.removeValue(forKey: connection)
+        }
+        
+        if (self.outgoingConnections[connection] != nil) {
+            self.outgoingConnections.removeValue(forKey: connection)
+        }
+    }
+    
+    public func updateConnections() {
         for pair in incomingConnections {
             pair.key.updateDestination(point: convert(((self.anchorPoints?.anchorPointsSnapEdges[pair.value]!)!), to: self.superview))
         }

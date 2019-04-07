@@ -8,29 +8,36 @@
 import Foundation
 
 struct Canvas: Codable  {
-    let canvasId: String
-    let name: String
-    let base64Strokes: String
-    let base64Image: String
-    
-    init(canvasId: String, name: String, base64Strokes: String, base64Image: String) {
+    var canvasId: String
+    var name: String
+    var drawViewModels: String
+    var image: String
+    var canvasVisibility: String
+    var canvasAutor: String
+    var canvasProtection: String
+    var canvasWidth: Float
+    var canvasHeight: Float
+    init() {
+        self.canvasId = "";
+        self.name = "";
+        self.drawViewModels = "[]";
+        self.image = Base64Const.defaultPic;
+        self.canvasVisibility = "";
+        self.canvasAutor = "";
+        self.canvasProtection = "";
+        self.canvasWidth = 100
+        self.canvasHeight = 100
+    }
+
+    init(canvasId: String, name: String, drawViewModels: String, image: String, canvasVisibility: String, canvasAutor: String, canvasProtection: String, canvasWidth: Float, canvasHeight: Float) {
         self.canvasId = canvasId;
         self.name = name;
-        self.base64Strokes = base64Strokes;
-        self.base64Image = base64Image;
-    }
-    
-    init (coder aDecoder: NSCoder!) {
-        self.canvasId = aDecoder.decodeObject(forKey: "canvasId") as! String
-        self.name = aDecoder.decodeObject(forKey: "name") as! String
-        self.base64Strokes = aDecoder.decodeObject(forKey: "base64Strokes") as! String
-        self.base64Image = aDecoder.decodeObject(forKey: "base64Image") as! String
-        
-    }
-    func encodeWithCoder(aCoder: NSCoder!) {
-        aCoder.encode(canvasId, forKey:"canvasId")
-        aCoder.encode(name, forKey:"name")
-        aCoder.encode(base64Strokes, forKey:"base64Strokes")
-        aCoder.encode(base64Image, forKey:"base64Image")
+        self.drawViewModels = drawViewModels;
+        self.image = image;
+        self.canvasVisibility = canvasVisibility;
+        self.canvasAutor = canvasAutor;
+        self.canvasProtection = canvasProtection;
+        self.canvasHeight = canvasHeight
+        self.canvasWidth = canvasWidth
     }
 }

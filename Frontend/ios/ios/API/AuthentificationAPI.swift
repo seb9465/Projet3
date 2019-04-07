@@ -39,8 +39,31 @@ class AuthentificationAPI {
                             let userToken = response.value!
                             seal.fulfill(userToken);
                         
-                        case .failure(let Error):
-                            seal.reject(Error);
+                    case .failure(let Error):
+                        let responseDataString = String(data: response.data!, encoding:String.Encoding.utf8)
+                        let error: Error = LoginError.customError(error: responseDataString!)
+                        seal.reject(error)
+                    }
+            };
+        }
+    }
+    
+    static func fbLogin(accessToken: String, username: String, email: String, firstName: String, lastName: String) -> Promise<String> {
+        let credentials = ["Fbtoken": accessToken, "Username": username, "Email": email, "FirstName": firstName, "LastName": lastName]
+        let url = Constants.FB_LOGIN_URL as URLConvertible
+        
+        return Promise { (seal) in
+            Manager.request(url, method: .post, parameters: credentials, encoding: JSONEncoding.default).validate()
+                .responseString { (response) in
+                    switch response.result {
+                    case .success:
+                        let userToken = response.value!
+                        seal.fulfill(userToken);
+                    case .failure(let Error):
+                        let responseDataString = String(data: response.data!, encoding:String.Encoding.utf8)
+                        print(responseDataString)
+                        let error: Error = LoginError.customError(error: responseDataString!)
+                        seal.reject(error)
                     }
             };
         }

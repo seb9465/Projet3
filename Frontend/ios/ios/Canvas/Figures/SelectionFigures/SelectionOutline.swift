@@ -17,6 +17,8 @@ protocol SelectionOutlineProtocol {
 }
 
 class SelectionOutline: UIView {
+    var delegate: TouchInputDelegate?
+    
     private let radius: CGFloat = 5.0;
     public var firstPoint: CGPoint!
     public var lastPoint: CGPoint!
@@ -25,48 +27,68 @@ class SelectionOutline: UIView {
     var border: CAShapeLayer!;
     var cornerAnchors: [CAShapeLayer] = []
     
-    init(firstPoint: CGPoint, lastPoint: CGPoint, associatedFigureID: UUID) {
+    init(firstPoint: CGPoint, lastPoint: CGPoint, associatedFigureID: UUID, delegate: TouchInputDelegate) {
         self.firstPoint = firstPoint
         self.lastPoint = lastPoint
         self.associatedFigureID = associatedFigureID;
+        self.delegate = delegate
         
         let frameSize = CGSize(width: abs(firstPoint.x - lastPoint.x), height: abs(firstPoint.y - lastPoint.y))
         let frame = CGRect(origin: firstPoint, size: frameSize)
         super.init(frame: frame)
-        self.isUserInteractionEnabled = false
-        self.setInitialSelectedDashedBorder(bounds: self.bounds);
-        self.setInitialSelectedCornerCirles(firstPoint: firstPoint, lastPoint: lastPoint)
+        self.isMultipleTouchEnabled = true
+        self.initializeBorder()
+    }
+    
+    init(frame: CGRect, associatedFigureID: UUID, delegate: TouchInputDelegate) {
+        self.firstPoint = frame.origin
+        self.lastPoint = CGPoint(x: frame.maxX, y: frame.maxY)
+        self.associatedFigureID = associatedFigureID
+        self.delegate = delegate
+        super.init(frame: frame)
+        self.initializeBorder()
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public func setInitialSelectedCornerCirles(firstPoint: CGPoint, lastPoint: CGPoint) -> Void {
-        let selectedCornerCircle1 = CAShapeLayer();
-        selectedCornerCircle1.path = UIBezierPath(roundedRect: CGRect(x: -5, y: -5, width: 2.0 * self.radius, height: 2.0 * self.radius), cornerRadius: self.radius).cgPath;
-        selectedCornerCircle1.position = CGPoint(x: 0, y: 0);
-        selectedCornerCircle1.fillColor = UIColor.blue.cgColor;
+    public func initializeLayers() {
+        let anchor1 = SelectionAnchor(position: CGPoint(x: 0, y: 0))
+        let anchor2 = SelectionAnchor(position: CGPoint(x: self.frame.width, y: 0))
+        let anchor3 = SelectionAnchor(position: CGPoint(x: self.frame.width, y: self.frame.height))
+        let anchor4 = SelectionAnchor(position: CGPoint(x: 0, y: self.frame.height))
         
-        let selectedCornerCircle2 = CAShapeLayer();
-        selectedCornerCircle2.path = UIBezierPath(roundedRect: CGRect(x: -5, y: -5, width: 2.0 * self.radius, height: 2.0 * self.radius), cornerRadius: self.radius).cgPath;
-        selectedCornerCircle2.position = CGPoint(x: lastPoint.x - firstPoint.x + 2, y: 0);
-        selectedCornerCircle2.fillColor = UIColor.blue.cgColor;
+        self.cornerAnchors.append(anchor1)
+        self.cornerAnchors.append(anchor2)
+        self.cornerAnchors.append(anchor3)
+        self.cornerAnchors.append(anchor4)
         
-        let selectedCornerCircle3 = CAShapeLayer();
-        selectedCornerCircle3.path = UIBezierPath(roundedRect: CGRect(x: -5, y: -5, width: 2.0 * self.radius, height: 2.0 * self.radius), cornerRadius: self.radius).cgPath;
-        selectedCornerCircle3.position = CGPoint(x: lastPoint.x - firstPoint.x + 2, y: lastPoint.y - firstPoint.y + 2);
-        selectedCornerCircle3.fillColor = UIColor.blue.cgColor;
+        for anchor in self.cornerAnchors {
+            self.layer.addSublayer(anchor)
+        }
         
-        let selectedCornerCircle4 = CAShapeLayer();
-        selectedCornerCircle4.path = UIBezierPath(roundedRect: CGRect(x: -5, y: -5, width: 2.0 * self.radius, height: 2.0 * self.radius), cornerRadius: self.radius).cgPath;
-        selectedCornerCircle4.position = CGPoint(x: 0, y: lastPoint.y - firstPoint.y + 2);
-        selectedCornerCircle4.fillColor = UIColor.blue.cgColor;
-        
-        self.cornerAnchors.append(selectedCornerCircle1)
-        self.cornerAnchors.append(selectedCornerCircle2)
-        self.cornerAnchors.append(selectedCornerCircle3)
-        self.cornerAnchors.append(selectedCornerCircle4)
+        self.initializeBorder()
+    }
+    
+    private func initializeBorder() {
+        border = CAShapeLayer();
+        border.strokeColor = UIColor.black.cgColor;
+        border.lineDashPattern = [4, 4];
+        border.frame = bounds;
+        border.fillColor = nil;
+        border.path = UIBezierPath(rect: self.bounds).cgPath;
+        self.layer.addSublayer(border);
+    }
+    
+    func updateOutline(newFrame: CGRect) {
+//        for anchor in self.cornerAnchors {
+//            anchor.removeFromSuperlayer()
+//        }
+//        self.cornerAnchors.removeAll()
+        self.border.removeFromSuperlayer()
+        self.frame = newFrame
+        self.initializeBorder()
     }
     
     public func addUsernameSelecting(username: String) {
@@ -80,49 +102,57 @@ class SelectionOutline: UIView {
         }
     }
     
-    public func setInitialSelectedDashedBorder(bounds: CGRect) -> Void {
-        border = CAShapeLayer();
-        border.strokeColor = UIColor.black.cgColor;
-        border.lineDashPattern = [4, 4];
-        border.frame = bounds;
-        border.fillColor = nil;
-        border.path = UIBezierPath(rect: bounds).cgPath;
-    }
-    public func addSelectedFigureLayers() -> Void {
-        self.layer.addSublayer(border);
-        for cornerAnchor in self.cornerAnchors {
-            self.layer.addSublayer(cornerAnchor)
-        }
-    }
-    
-    public func removeSelectedFigureLayers() -> Void {
-        self.border.removeFromSuperlayer();
-        for cornerAnchor in self.cornerAnchors {
-            cornerAnchor.removeFromSuperlayer()
-        }
-    }
-    
-    public func adjustSelectedFigureLayers(firstPoint: CGPoint, lastPoint: CGPoint, bounds: CGRect, layer: CALayer) -> Void {
-        border.path = UIBezierPath(rect: bounds).cgPath;
-        for cornerAnchor in self.cornerAnchors {
-            cornerAnchor.position.x = lastPoint.x - firstPoint.x + 2
-        }
+    // Create a detection area around connection figure extremities
+    func isPointOnAnchor(point: CGPoint) -> Bool{
+        let detectionDiameter: CGFloat = 50
+        let areaRect: CGRect = CGRect(
+            x: point.x - detectionDiameter/2,
+            y: point.y - detectionDiameter/2,
+            width: detectionDiameter,
+            height: detectionDiameter
+        )
         
-//        selectedCornerCircle2.position.x = lastPoint.x - firstPoint.x + 2;
-//        selectedCornerCircle3.position.x = lastPoint.x - firstPoint.x + 2;
-//        selectedCornerCircle3.position.y = lastPoint.y - firstPoint.y + 2;
-//        selectedCornerCircle4.position.y = lastPoint.y - firstPoint.y + 2;
-
-        self.addSelectedFigureLayers();
-//        setNeedsDisplay();
+        guard let sublayers = self.layer.sublayers as? [CAShapeLayer] else { return false }
+        for layer in sublayers{
+//            print("Point", point)
+//            print(layer.position)
+            if (areaRect.contains(layer.position)) {
+                return true
+            }
+        }
+        return false
     }
     
     public func translate(by: CGPoint) {
         let translatedFrame = self.frame.offsetBy(dx: by.x, dy: by.y)
         self.frame = translatedFrame
     }
+}
+
+extension SelectionOutline {
+    public override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        let touch = touches.first
+        guard let point = touch?.location(in: self.superview) else { return }
     
-    override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
-        return !(self.border.path?.contains(point))!
+        self.delegate?.notifyTouchBegan(action: "selection", point: point, figure: nil)
+    }
+    
+    public override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        let touch = touches.first
+        guard let point = touch?.location(in: self.superview) else { return }
+        
+        self.delegate?.notifyTouchMoved(point: point, figure: nil)
+    }
+    
+    public override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        let touch = touches.first
+        guard let point = touch?.location(in: self.superview) else { return }
+        self.delegate?.notifyTouchEnded(point: point, figure: nil)
+    }
+    
+    public override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
+        let touch = touches.first
+        guard let point = touch?.location(in: self.superview) else { return }
+        self.delegate?.notifyTouchEnded(point: point, figure: nil)
     }
 }

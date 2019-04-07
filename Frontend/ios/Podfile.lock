@@ -5,7 +5,25 @@ PODS:
     - SwiftyJSON (~> 4.0.0)
   - AwaitKit (5.1.0):
     - PromiseKit (~> 6)
+  - Bolts (1.9.0):
+    - Bolts/AppLinks (= 1.9.0)
+    - Bolts/Tasks (= 1.9.0)
+  - Bolts/AppLinks (1.9.0):
+    - Bolts/Tasks
+  - Bolts/Tasks (1.9.0)
   - ChromaColorPicker (1.7.2)
+  - FacebookCore (0.5.0):
+    - Bolts (~> 1.9)
+    - FBSDKCoreKit (~> 4.37)
+  - FacebookLogin (0.5.0):
+    - Bolts (~> 1.9)
+    - FacebookCore (~> 0.5)
+    - FBSDKCoreKit (~> 4.37)
+    - FBSDKLoginKit (~> 4.37)
+  - FBSDKCoreKit (4.40.0):
+    - Bolts (~> 1.9)
+  - FBSDKLoginKit (4.40.0):
+    - FBSDKCoreKit
   - JWTDecode (2.2.0)
   - MessageInputBar (0.4.1):
     - MessageInputBar/Core (= 0.4.1)
@@ -24,6 +42,7 @@ PODS:
     - PromiseKit/CorePromise
   - PromiseKit/UIKit (6.7.1):
     - PromiseKit/CorePromise
+  - Reachability (3.2)
   - SwiftHUEColorPicker (0.4.1)
   - SwiftSignalRClient (0.4.1)
   - SwiftyJSON (4.0.0)
@@ -33,11 +52,13 @@ DEPENDENCIES:
   - Alamofire-SwiftyJSON
   - AwaitKit
   - ChromaColorPicker
+  - FacebookLogin
   - JWTDecode
   - MessageInputBar
   - MessageKit
   - PromiseKit
   - PromiseKit/Alamofire
+  - Reachability
   - SwiftHUEColorPicker
   - SwiftSignalRClient
   - SwiftyJSON (~> 4.0)
@@ -47,11 +68,17 @@ SPEC REPOS:
     - Alamofire
     - Alamofire-SwiftyJSON
     - AwaitKit
+    - Bolts
     - ChromaColorPicker
+    - FacebookCore
+    - FacebookLogin
+    - FBSDKCoreKit
+    - FBSDKLoginKit
     - JWTDecode
     - MessageInputBar
     - MessageKit
     - PromiseKit
+    - Reachability
     - SwiftHUEColorPicker
     - SwiftSignalRClient
     - SwiftyJSON
@@ -60,15 +87,21 @@ SPEC CHECKSUMS:
   Alamofire: 16ce2c353fb72865124ddae8a57c5942388f4f11
   Alamofire-SwiftyJSON: 2b3649d57dc7bb2880fb8b86f8bb969397666916
   AwaitKit: a8a3d8982097ee09ac75f5c5d3952fbcc2f26f1c
+  Bolts: ac6567323eac61e203f6a9763667d0f711be34c8
   ChromaColorPicker: 78194fbae9f342d3781ac178c4d92c7652197d18
+  FacebookCore: 74288d0add931d361b1596beae787ab72c438249
+  FacebookLogin: ebcf34714a1cb9f0759d9f071cfb01ed500996cf
+  FBSDKCoreKit: ae214474b25033399c131dc81d258e412582a2ba
+  FBSDKLoginKit: 7a1e411d46acc8834588eca437daf34de42e1d52
   JWTDecode: 85a405ab16d5473e99bd89ded1d535090ebd6a0e
   MessageInputBar: e81c7535347f1f7b923de7080409a535a004b6e4
   MessageKit: 29c1c87e5a396d2ca7a3f712e5171dc9aba42a1e
   PromiseKit: ef376fb8b4e92edfeb66bd403b983eaa07fbde0c
+  Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   SwiftHUEColorPicker: f3184dad471b5f05703a565a63e228426cb8fdbf
   SwiftSignalRClient: edd4e6e16c87370ca624c6868279483a2ffe4f1d
   SwiftyJSON: 070dabdcb1beb81b247c65ffa3a79dbbfb3b48aa
 
-PODFILE CHECKSUM: dd28dbfd57bbd5bf9078dc4dae2661bb2772f7b2
+PODFILE CHECKSUM: 01c43b69c4bd17d932ac1d5b810d53fb0533796c
 
 COCOAPODS: 1.5.3

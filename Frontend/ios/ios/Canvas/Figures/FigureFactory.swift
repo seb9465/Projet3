@@ -12,7 +12,7 @@ class FigureFactory {
     
     static let shared = FigureFactory()
     
-    public func fromDrawViewModel(drawViewModel: DrawViewModel) -> UmlFigure? {
+    public func fromDrawViewModel(drawViewModel: DrawViewModel) -> Figure? {
         switch (drawViewModel.ItemType!) {
             case .UmlClass :
                 return UmlClassFigure(drawViewModel: drawViewModel)
@@ -31,84 +31,51 @@ class FigureFactory {
             case .Activity:
                 return UmlActivityFigure(drawViewModel: drawViewModel)
             case .Agregation:
-                return nil
+                return ConnectionAgregation(drawViewModel: drawViewModel)
             case .BidirectionalAssociation:
-                return nil
+                return ConnectionAssociationBi(drawViewModel: drawViewModel)
             case .UniderectionalAssoication:
-                return nil
+                return ConnectionAssociationUni(drawViewModel: drawViewModel)
             case .Composition:
-                return nil
+                return ConnectionComposition(drawViewModel: drawViewModel)
             case .Inheritance:
-                return nil
+                return ConnectionHeritage(drawViewModel: drawViewModel)
+            case .Line:
+                return ConnectionLine(drawViewModel: drawViewModel)
         }
     }
     
     // Alternate init to create UmlFigures on user tap
-    public func getFigure(type: ItemTypeEnum, touchedPoint: CGPoint) -> UmlFigure? {
+    public func getFigure(type: ItemTypeEnum, touchedPoint: CGPoint? = nil, source: CGPoint? = nil, destination: CGPoint? = nil) -> Figure? {
         switch (type) {
         case .UmlClass :
-            return UmlClassFigure(origin: touchedPoint)
+            return UmlClassFigure(origin: touchedPoint!)
         case .Role:
-            return UmlActorFigure(origin: touchedPoint)
-//            return UmlImageFigure(origin: touchedPoint, figureType: UMLImageFigureType.actor)
+            return UmlActorFigure(origin: touchedPoint!)
         case .Artefact:
-            return UmlArtefactFigure(origin: touchedPoint)
+            return UmlArtefactFigure(origin: touchedPoint!)
         case .Activity:
-            return UmlActivityFigure(origin: touchedPoint)
+            return UmlActivityFigure(origin: touchedPoint!)
         case .Comment:
-            return UmlCommentFigure(origin: touchedPoint)
+            return UmlCommentFigure(origin: touchedPoint!)
         case .Phase:
-            return UmlPhaseFigure(origin: touchedPoint)
+            return UmlPhaseFigure(origin: touchedPoint!)
          case .Text:
-            return UMLTextFigure(origin: touchedPoint)
+            return UMLTextFigure(origin: touchedPoint!)
         case .Image:
-            return UMLTextFigure(origin: touchedPoint)
-
+            return UMLTextFigure(origin: touchedPoint!)
         case .Agregation:
-            return nil
+            return ConnectionAgregation(origin: source!, destination: destination!, itemType: type)
         case .BidirectionalAssociation:
-            return nil
+            return ConnectionAssociationBi(origin: source!, destination: destination!, itemType: type)
         case .UniderectionalAssoication:
-            return nil
+            return ConnectionAssociationUni(origin: source!, destination: destination!, itemType: type)
         case .Composition:
-            return nil
+            return ConnectionComposition(origin: source!, destination: destination!, itemType: type)
         case .Inheritance:
-            return nil
+            return ConnectionHeritage(origin: source!, destination: destination!, itemType: type)
+        case .Line:
+            return ConnectionLine(origin: source!, destination: destination!, itemType: type)
         }
     }
-    
-//    public func getFigure(itemType: ItemTypeEnum, firstPoint: CGPoint, lastPoint: CGPoint) -> UmlFigure? {
-//        switch (itemType) {
-//        case .UmlClass :
-//            return UmlClassFigure(firstPoint: firstPoint, lastPoint: lastPoint)
-//        case .Role:
-//            return UmlActorFigure(firstPoint: firstPoint, lastPoint: lastPoint)
-//            //            return UmlImageFigure(firstPoint: firstPoint, lastPoint: lastPoint, figureType: UMLImageFigureType.actor)
-//
-//        case .Comment:
-//            return UmlCommentFigure(firstPoint: firstPoint, lastPoint: lastPoint)
-//        case .Phase:
-//            return UmlPhaseFigure(firstPoint: firstPoint, lastPoint: lastPoint)
-//        case .Text:
-//            return UMLTextFigure(firstPoint: firstPoint, lastPoint: lastPoint)
-//        case .Image:
-//            return UMLTextFigure(firstPoint: firstPoint, lastPoint: lastPoint)
-//        //            return ConnectionFigure(origin: firstPoint, destination: lastPoint)
-//        case .Artefact:
-//            return UmlArtefactFigure(firstPoint: firstPoint, lastPoint: lastPoint)
-//        case .Activity:
-//            return UmlActivityFigure(firstPoint: firstPoint, lastPoint: lastPoint)
-//        case .Agregation:
-//            return nil
-//        case .BidirectionalAssociation:
-//            return nil
-//        case .UniderectionalAssoication:
-//            return nil
-//        case .Composition:
-//            return nil
-//        case .Inheritance:
-//            return nil
-//        }
-//    }
-    
 }

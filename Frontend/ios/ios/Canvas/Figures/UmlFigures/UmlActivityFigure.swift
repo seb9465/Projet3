@@ -9,41 +9,70 @@
 import UIKit
 
 class UmlActivityFigure: UmlFigure {
-    let BASE_WIDTH: CGFloat = 125
-    let BASE_HEIGHT: CGFloat = 80
+    let BASE_WIDTH: CGFloat = 115
+    let BASE_HEIGHT: CGFloat = 100
     
     init(firstPoint: CGPoint, lastPoint: CGPoint) {
         super.init(firstPoint: firstPoint, lastPoint: lastPoint, width: BASE_WIDTH, height: BASE_WIDTH)
         self.itemType = ItemTypeEnum.Activity
+        self.initializeAnchorPoints()
     }
     
     init(origin: CGPoint) {
         super.init(touchedPoint: origin, width: BASE_WIDTH, height: BASE_HEIGHT)
         self.itemType = ItemTypeEnum.Activity
+        self.initializeAnchorPoints()
     }
     
     override init(drawViewModel: DrawViewModel) {
         super.init(drawViewModel: drawViewModel);
+        self.initializeAnchorPoints()
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func initializeAnchorPoints() {
+        self.anchorPoints = AnchorPoints(width: self.frame.width, height: self.frame.height - nameLabelHeight)
+        self.layer.addSublayer((self.anchorPoints?.anchorPointsBottom)!)
+        self.layer.addSublayer((self.anchorPoints?.anchorPointsTop)!)
+        self.layer.addSublayer((self.anchorPoints?.anchorPointsLeft)!)
+        self.layer.addSublayer((self.anchorPoints?.anchorPointsRight)!)
+    }
+    
     override func draw(_ rect: CGRect) {
+        let inset: CGFloat = (self.lineWidth > 5) ? self.lineWidth : 5
+        let width = self.frame.width - inset
+        let height = self.frame.height - inset - nameLabelHeight
+        
         //// Bezier Drawing
         let bezierPath = UIBezierPath()
-        bezierPath.move(to: CGPoint(x: 7.5, y: 41.11))
-        bezierPath.addLine(to: CGPoint(x: 22.53, y: 10.5))
-        bezierPath.addLine(to: CGPoint(x: 104.5, y: 10.5))
-        bezierPath.addLine(to: CGPoint(x: 89.47, y: 41.11))
-        bezierPath.addLine(to: CGPoint(x: 104.5, y: 68.5))
-        bezierPath.addLine(to: CGPoint(x: 22.53, y: 68.5))
-        bezierPath.addLine(to: CGPoint(x: 7.5, y: 41.11))
+        bezierPath.move(to: CGPoint(x: 20 + inset, y: height/2))
+        bezierPath.addLine(to: CGPoint(x: inset, y: inset))
+        bezierPath.addLine(to: CGPoint(x: width - 20, y: inset))
+        bezierPath.addLine(to: CGPoint(x: width, y: height/2))
+        bezierPath.addLine(to: CGPoint(x: width - 20, y: height))
+        bezierPath.addLine(to: CGPoint(x: inset, y: height))
+        bezierPath.addLine(to: CGPoint(x: 20 + inset, y: height/2))
         bezierPath.close()
-        UIColor.black.setStroke()
-        bezierPath.lineWidth = 1
+
+        if(self.isBorderDashed) {
+            bezierPath.setLineDash([4,4], count: 1, phase: 0)
+        }
+        
+        self.lineColor.setStroke()
+        self.figureColor.setFill()
+        bezierPath.lineWidth = self.lineWidth
         bezierPath.stroke()
+        bezierPath.fill()
+        
+        let textRect = CGRect(x: 0, y: self.frame.height - nameLabelHeight - 5, width: self.frame.width, height: nameLabelHeight)
+        let nameLabel = UILabel(frame: textRect)
+        nameLabel.text = self.name
+        nameLabel.contentMode = .top
+        nameLabel.textAlignment = .center
+        nameLabel.drawText(in: textRect)
     }
     
     override func exportViewModel() -> DrawViewModel {
@@ -55,16 +84,16 @@ class UmlActivityFigure: UmlFigure {
         drawViewModel.Owner = UserDefaults.standard.string(forKey: "username")
         drawViewModel.ItemType = ItemTypeEnum.Activity
         drawViewModel.StylusPoints = [point1, point2]
-        drawViewModel.FillColor = PolyPaintColor(A: 255, R: 255, G: 1, B: 1)
-        drawViewModel.BorderColor = PolyPaintColor(A: 255, R: 255, G: 1, B: 1)
-        drawViewModel.BorderThickness = 2.0
-        drawViewModel.BorderStyle = "solid"
-        drawViewModel.ShapeTitle = "A_IMPLEMENTER"
+        drawViewModel.FillColor = PolyPaintColor(color: self.figureColor)
+        drawViewModel.BorderColor = PolyPaintColor(color: self.lineColor)
+        drawViewModel.BorderThickness = Double(self.lineWidth)
+        drawViewModel.BorderStyle = (self.isBorderDashed) ? "dash" : "solid"
+        drawViewModel.ShapeTitle = self.name
         drawViewModel.Methods = nil
         drawViewModel.Properties = nil
         drawViewModel.SourceTitle = nil
         drawViewModel.DestinationTitle = nil
-        drawViewModel.ChannelId = "general"
+        drawViewModel.ChannelId = canvasId
         drawViewModel.OutilSelectionne = nil
         drawViewModel.LastElbowPosition = nil
         drawViewModel.ImageBytes = nil

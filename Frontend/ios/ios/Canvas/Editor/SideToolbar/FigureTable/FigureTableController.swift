@@ -22,12 +22,10 @@ class FigureTableController: UIViewController, UIPopoverPresentationControllerDe
         // Do any additional setup after loading the view.
     }
     
-    func setSelectedFigureType(itemType: ItemTypeEnum) -> Void {
+    func setSelectedFigureType(itemType: ItemTypeEnum, isConnection: Bool) -> Void {
         self.editor.currentFigureType = itemType
-    }
-    
-    func setSelectedLineType(itemType: ItemTypeEnum) -> Void {
-        //self.editor.currentLineType = itemType
+        self.editor.deselect()
+        self.editor.touchEventState = (isConnection) ? .CONNECTION : .INSERT
     }
     
     func presentImagePicker() {
@@ -70,21 +68,18 @@ class FigureTableController: UIViewController, UIPopoverPresentationControllerDe
 
 extension FigureTableController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 2
+        return 1
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if (indexPath.row == 0) {
-            return 515
-        }
-        
-        return 360
+            return 900
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if (indexPath.row == 0) {
             let cell = tableView.dequeueReusableCell(withIdentifier: "FigureSelectionCell", for: indexPath) as! FigureSelectionCell
             cell.delegate = self
+            self.editor.sideToolbatControllers.append(cell)
             return cell
         }
         let cell = tableView.dequeueReusableCell(withIdentifier: "ConnectionSelectionCell", for: indexPath)

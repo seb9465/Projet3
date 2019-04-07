@@ -19,9 +19,13 @@
                 <rect key="frame" x="0.0" y="0.0" width="243.5" height="245.5"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UR5-Rt-Q4r">
+                    <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UR5-Rt-Q4r">
                         <rect key="frame" x="0.0" y="201" width="243.5" height="45"/>
                         <subviews>
+                            <imageView opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VQP-UF-j1y" userLabel="ImageView">
+                                <rect key="frame" x="-5" y="-201" width="254" height="205"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Canvas Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="M4N-Ou-jY3">
                                 <rect key="frame" x="67" y="12" width="110" height="21"/>
                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
@@ -37,18 +41,26 @@
                             <constraint firstItem="M4N-Ou-jY3" firstAttribute="centerX" secondItem="UR5-Rt-Q4r" secondAttribute="centerX" id="sSG-oW-aJQ"/>
                         </constraints>
                     </view>
+                    <imageView opaque="NO" userInteractionEnabled="NO" alpha="0.65000000000000002" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="lock.png" translatesAutoresizingMaskIntoConstraints="NO" id="qVJ-yM-c1O" userLabel="LockView">
+                        <rect key="frame" x="0.0" y="0.0" width="244" height="205"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    </imageView>
                 </subviews>
             </view>
-            <color key="backgroundColor" white="0.94552340079999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
                 <constraint firstItem="UR5-Rt-Q4r" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="201" id="eY0-ft-9OL"/>
                 <constraint firstItem="UR5-Rt-Q4r" firstAttribute="centerX" secondItem="gTV-IL-0wX" secondAttribute="centerX" id="fZ0-F3-TV4"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
             <connections>
+                <outlet property="imageView" destination="VQP-UF-j1y" id="v84-bt-LWr"/>
+                <outlet property="lockImage" destination="qVJ-yM-c1O" id="XrE-vY-3fO"/>
                 <outlet property="nameLabel" destination="M4N-Ou-jY3" id="qgf-fH-ybU"/>
             </connections>
             <point key="canvasLocation" x="52.799999999999997" y="48.575712143928037"/>
         </collectionViewCell>
     </objects>
+    <resources>
+        <image name="lock.png" width="764" height="980"/>
+    </resources>
 </document>

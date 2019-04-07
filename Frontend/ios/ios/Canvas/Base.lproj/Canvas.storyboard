@@ -10,10 +10,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Canvas Controller-->
+        <!--CanvasController-->
         <scene sceneID="Isk-t8-nkS">
             <objects>
-                <viewController restorationIdentifier="CanvasView" storyboardIdentifier="CanvasView" id="Vts-He-P18" customClass="CanvasController" customModule="ios" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="CanvasController" title="CanvasController" id="Vts-He-P18" customClass="CanvasController" customModule="ios" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="hqe-fa-MVE">
                         <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -25,19 +25,7 @@
                                     <barButtonItem title="Quit" id="4Er-Gx-QB8">
                                         <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
-                                            <action selector="quitButton:" destination="Vts-He-P18" id="KcM-sA-VDA"/>
-                                        </connections>
-                                    </barButtonItem>
-                                    <barButtonItem title="New" id="ic3-cN-C5G">
-                                        <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <connections>
-                                            <action selector="clearButton:" destination="Vts-He-P18" id="JlR-Gh-chb"/>
-                                        </connections>
-                                    </barButtonItem>
-                                    <barButtonItem title="Save" id="Cwu-WP-ULr">
-                                        <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <connections>
-                                            <action selector="saveButton:" destination="Vts-He-P18" id="hnc-dA-amp"/>
+                                            <action selector="quitButtonPressed:" destination="Vts-He-P18" id="xGi-Np-bzb"/>
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem title="Export" id="yqP-yF-mGn" userLabel="Export">
@@ -45,9 +33,6 @@
                                         <connections>
                                             <action selector="exportButtonPressed:" destination="Vts-He-P18" id="c5G-3f-Ps3"/>
                                         </connections>
-                                    </barButtonItem>
-                                    <barButtonItem title="Load" id="8N0-s0-ZU2">
-                                        <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </barButtonItem>
                                     <barButtonItem title="Clear" id="cJl-7R-Nql">
                                         <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -65,6 +50,24 @@
                                         <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
                                             <action selector="redoButton:" destination="Vts-He-P18" id="2RI-2W-Sfy"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem title="Cut" id="cBy-5K-qpS">
+                                        <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <connections>
+                                            <action selector="cutButtonPressed:" destination="Vts-He-P18" id="DGb-Kz-z4c"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem title="Duplicate" id="BjU-u4-eJ6" userLabel="Paste">
+                                        <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <connections>
+                                            <action selector="duplicateButtonPressed:" destination="Vts-He-P18" id="ZyN-In-isq"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem title="Delete" id="5ld-32-8cy">
+                                        <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <connections>
+                                            <action selector="deleteButton:" destination="Vts-He-P18" id="O21-i5-hoW"/>
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem title="Insert" id="SLY-eP-ACv" userLabel="Insert Button">
@@ -85,11 +88,14 @@
                                             <action selector="lassoButton:" destination="Vts-He-P18" id="rPD-vK-NGN"/>
                                         </connections>
                                     </barButtonItem>
-                                    <barButtonItem title="Delete" id="5ld-32-8cy">
-                                        <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <connections>
-                                            <action selector="deleteButton:" destination="Vts-He-P18" id="O21-i5-hoW"/>
-                                        </connections>
+                                    <barButtonItem style="plain" id="MeA-86-Ay2">
+                                        <switch key="customView" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" id="RsE-TN-IVY">
+                                            <rect key="frame" x="712" y="9.5" width="51" height="31"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <connections>
+                                                <action selector="switchButtonChangedWithSender:" destination="Vts-He-P18" eventType="valueChanged" id="5As-3f-grU"/>
+                                            </connections>
+                                        </switch>
                                     </barButtonItem>
                                     <barButtonItem title="Chat" id="Kg9-sk-xNL">
                                         <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -106,6 +112,20 @@
                                     <segue destination="VIB-9K-WwK" kind="embed" id="HEM-aM-WDJ"/>
                                 </connections>
                             </containerView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Connected" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HVO-Oe-0TK">
+                                <rect key="frame" x="867" y="35" width="137" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="1" blue="0.32939402817876973" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Password protection is ON" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CBO-ut-RYj">
+                                <rect key="frame" x="741" y="35" width="263" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <containerView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="g7X-4N-AQk">
                                 <rect key="frame" x="604" y="82" width="400" height="666"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
@@ -119,6 +139,8 @@
                         <viewLayoutGuide key="safeArea" id="h7K-cJ-n3H"/>
                     </view>
                     <connections>
+                        <outlet property="connectionLabel" destination="HVO-Oe-0TK" id="375-IB-DIx"/>
+                        <outlet property="cutButton" destination="cBy-5K-qpS" id="I39-ed-WFl"/>
                         <outlet property="chatViewButton" destination="Kg9-sk-xNL" id="XKh-Jj-mDT"/>
                         <outlet property="chatViewContainer" destination="g7X-4N-AQk" id="TEK-yV-U0H"/>
                         <outlet property="deleteButton" destination="5ld-32-8cy" id="y06-F1-JC8"/>
@@ -126,7 +148,11 @@
                         <outlet property="insertButton" destination="SLY-eP-ACv" id="oPa-Hm-WsF"/>
                         <outlet property="lassoButton" destination="Ttp-DJ-46z" id="SF8-4U-zfW"/>
                         <outlet property="navigationBar" destination="P0r-rK-G4e" id="Xne-YZ-5HS"/>
+                        <outlet property="duplicateButton" destination="BjU-u4-eJ6" id="OB9-tG-azy"/>
+                        <outlet property="protectionLabel" destination="CBO-ut-RYj" id="Gnd-Wf-th0"/>
+                        <outlet property="quitButton" destination="4Er-Gx-QB8" id="gU4-l3-2x6"/>
                         <outlet property="selectButton" destination="Lts-nR-qFd" id="AOd-xa-kni"/>
+                        <outlet property="switchButton" destination="RsE-TN-IVY" id="mRe-f5-d36"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YaL-1F-IzF" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -245,8 +271,8 @@
                     </tabBar>
                     <connections>
                         <segue destination="gSQ-Y1-PMd" kind="relationship" relationship="viewControllers" id="wJJ-Qh-dOc"/>
-                        <segue destination="8p7-kJ-4RA" kind="relationship" relationship="viewControllers" id="Mvq-cd-ALj"/>
                         <segue destination="uS8-74-UVn" kind="relationship" relationship="viewControllers" id="11V-1m-EsE"/>
+                        <segue destination="8p7-kJ-4RA" kind="relationship" relationship="viewControllers" id="Mvq-cd-ALj"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aRv-n9-QI4" userLabel="First Responder" sceneMemberID="firstResponder"/>

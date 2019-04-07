@@ -13,10 +13,10 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="FigureSelectionCell" rowHeight="529" id="KGk-i7-Jjw" customClass="FigureSelectionCell" customModule="ios" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="250" height="515"/>
+            <rect key="frame" x="0.0" y="0.0" width="250" height="900"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="250" height="514.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="250" height="899.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Figures" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="O9x-lS-xou">
@@ -122,6 +122,85 @@
                             <action selector="imageSelected:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="eVB-in-BmS"/>
                         </connections>
                     </button>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Connections" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HEK-Rx-xJp">
+                        <rect key="frame" x="16" y="535" width="101" height="21"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Tho-R4-gEI" customClass="RoundedCorners" customModule="ios" customModuleProvider="target">
+                        <rect key="frame" x="16" y="564" width="220" height="50"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" red="1" green="0.41960784309999999" blue="0.41960784309999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
+                        <state key="normal" title="Heritage">
+                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </state>
+                        <connections>
+                            <action selector="heritageSelected:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="BRL-N4-b86"/>
+                        </connections>
+                    </button>
+                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5HX-zO-x8G" customClass="RoundedCorners" customModule="ios" customModuleProvider="target">
+                        <rect key="frame" x="16" y="622" width="220" height="50"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" red="1" green="0.41960784309999999" blue="0.41960784309999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
+                        <state key="normal" title="unidirect">
+                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </state>
+                        <connections>
+                            <action selector="unidirectSelected:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="0Nv-YX-Vpw"/>
+                        </connections>
+                    </button>
+                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fOV-oV-AZr" customClass="RoundedCorners" customModule="ios" customModuleProvider="target">
+                        <rect key="frame" x="16" y="680" width="220" height="50"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" red="1" green="0.41960784309999999" blue="0.41960784309999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
+                        <state key="normal" title="bidirect">
+                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </state>
+                        <connections>
+                            <action selector="bidirectSelected:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="Rmr-bd-KaJ"/>
+                        </connections>
+                    </button>
+                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="r5h-aA-JZk" customClass="RoundedCorners" customModule="ios" customModuleProvider="target">
+                        <rect key="frame" x="16" y="738" width="220" height="50"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" red="1" green="0.41960784309999999" blue="0.41960784309999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
+                        <state key="normal" title="Aggregation">
+                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </state>
+                        <connections>
+                            <action selector="agregationSelected:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="3CB-xj-TYN"/>
+                        </connections>
+                    </button>
+                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="akd-lO-4P1" customClass="RoundedCorners" customModule="ios" customModuleProvider="target">
+                        <rect key="frame" x="16" y="796" width="220" height="50"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" red="1" green="0.41960784309999999" blue="0.41960784309999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
+                        <state key="normal" title="composition">
+                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </state>
+                        <connections>
+                            <action selector="compositionSelected:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="kId-nQ-atk"/>
+                        </connections>
+                    </button>
+                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z22-XJ-S58" customClass="RoundedCorners" customModule="ios" customModuleProvider="target">
+                        <rect key="frame" x="15" y="849" width="220" height="40"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" red="1" green="0.41960784309999999" blue="0.41960784309999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
+                        <state key="normal" title="Line">
+                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </state>
+                        <connections>
+                            <action selector="lineSelected:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="iVn-rb-XYl"/>
+                        </connections>
+                    </button>
                 </subviews>
             </tableViewCellContentView>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -133,10 +212,16 @@
                 <outlet property="PhaseButton" destination="YOZ-fM-k7Y" id="j29-uc-Vl9"/>
                 <outlet property="UMLClassButton" destination="d6U-ym-IfC" id="zfv-Ep-6Sc"/>
                 <outlet property="UMLCommentButton" destination="ma6-j4-cf9" id="LBG-P5-Duu"/>
+                <outlet property="agregationButton" destination="r5h-aA-JZk" id="tdl-Zo-FcH"/>
+                <outlet property="bidirectButton" destination="fOV-oV-AZr" id="Pmm-ra-J1W"/>
+                <outlet property="compositionButton" destination="akd-lO-4P1" id="nND-ys-WUB"/>
+                <outlet property="heritageButton" destination="Tho-R4-gEI" id="RTC-hs-zTd"/>
                 <outlet property="imageButton" destination="lZS-pM-eb8" id="XXa-y4-E7p"/>
+                <outlet property="lineButton" destination="z22-XJ-S58" id="Zdb-59-Q96"/>
                 <outlet property="textButton" destination="fHZ-5b-Dzs" id="voh-FV-0PE"/>
+                <outlet property="unidirectButton" destination="5HX-zO-x8G" id="6DC-Jv-S5u"/>
             </connections>
-            <point key="canvasLocation" x="160" y="39.130434782608695"/>
+            <point key="canvasLocation" x="160" y="38.680659670164921"/>
         </tableViewCell>
     </objects>
     <resources>

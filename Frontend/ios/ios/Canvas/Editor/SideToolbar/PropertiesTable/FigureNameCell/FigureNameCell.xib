@@ -27,16 +27,24 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Figure Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="yPf-yY-IUo">
-                        <rect key="frame" x="16" y="40" width="218" height="30"/>
+                        <rect key="frame" x="16" y="40" width="170" height="30"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <nil key="textColor"/>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <textInputTraits key="textInputTraits"/>
-                        <connections>
-                            <action selector="nameInputChanged:" destination="KGk-i7-Jjw" eventType="editingChanged" id="Ir0-Sh-8RU"/>
-                            <action selector="nameInputDidEnd:" destination="KGk-i7-Jjw" eventType="editingDidEnd" id="riD-gm-G8E"/>
-                        </connections>
                     </textField>
+                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BVo-hg-08m" customClass="RoundedCorners" customModule="ios" customModuleProvider="target">
+                        <rect key="frame" x="209" y="43" width="25" height="25"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" name="systemGreenColor" catalog="System" colorSpace="catalog"/>
+                        <fontDescription key="fontDescription" type="boldSystem" pointSize="13"/>
+                        <state key="normal" title="set">
+                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </state>
+                        <connections>
+                            <action selector="changeName:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="bQr-Yz-Nnl"/>
+                        </connections>
+                    </button>
                 </subviews>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
@@ -44,7 +52,7 @@
                 <outlet property="figureNameLabel" destination="R1s-l4-lJX" id="SKO-Fp-LQa"/>
                 <outlet property="nameInputField" destination="yPf-yY-IUo" id="Sd9-g0-CYv"/>
             </connections>
-            <point key="canvasLocation" x="52.799999999999997" y="48.125937031484263"/>
+            <point key="canvasLocation" x="52.799999999999997" y="47.676161919040482"/>
         </tableViewCell>
     </objects>
 </document>
