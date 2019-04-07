@@ -47,7 +47,7 @@ extension PropertiesTableController: UITableViewDelegate, UITableViewDataSource 
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if (indexPath.row == 0) {
-            return 80
+            return 125
         }
         
         if (self.editor.selectedFigures[0] is ConnectionFigure) {
