@@ -149,15 +149,40 @@ namespace PolyPaint.Utilitaires
             }
         }
 
+        public static StrokeCollection UpdateAnchorPointsPositionFor(StrokeCollection strokes, InkCanvas surfaceDessin)
+        {
+            var selectedStrokes = strokes;
+            var shapes = selectedStrokes.Where(x => x is AbstractShapeStroke);
+            var affectedStrokes = new StrokeCollection();
+
+            foreach (AbstractShapeStroke shape in shapes)
+            {
+                foreach (var conn in shape.InConnections)
+                {
+                    var newAnchorPoint = shape.AnchorPoints[conn.Value];
+                    surfaceDessin.Strokes.FirstOrDefault(x => (x as AbstractStroke).Guid == conn.Key.Guid).StylusPoints[1] = new StylusPoint(newAnchorPoint.X, newAnchorPoint.Y);
+                    affectedStrokes.Add(conn.Key);
+                }
+                foreach (var conn in shape.OutConnections)
+                {
+                    var newAnchorPoint = shape.AnchorPoints[conn.Value];
+                    conn.Key.StylusPoints[0] = new StylusPoint(newAnchorPoint.X, newAnchorPoint.Y);
+                    affectedStrokes.Add(conn.Key);
+                }
+            }
+
+            return affectedStrokes;
+        }
+
         public static StrokeCollection UpdateAnchorPointsPosition(InkCanvas surfaceDessin)
         {
             var selectedStrokes = surfaceDessin.GetSelectedStrokes();
             var shapes = selectedStrokes.Where(x => x is AbstractShapeStroke);
-            var affectedStrokes = new StrokeCollection(selectedStrokes);
+            var affectedStrokes = new StrokeCollection();
 
-            foreach(AbstractShapeStroke shape in shapes)
+            foreach (AbstractShapeStroke shape in shapes)
             {
-                foreach(var conn in shape.InConnections)
+                foreach (var conn in shape.InConnections)
                 {
                     var newAnchorPoint = shape.AnchorPoints[conn.Value];
                     surfaceDessin.Strokes.FirstOrDefault(x => (x as AbstractStroke).Guid == conn.Key.Guid).StylusPoints[1] = new StylusPoint(newAnchorPoint.X, newAnchorPoint.Y);

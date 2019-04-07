@@ -302,7 +302,8 @@
                         ShowAvailableColors="True"
                         ShowStandardColors="True"
                         ShowTabHeaders="False"
-                        MouseLeftButtonUp="SendSelectedStrokes"/>
+                        PreviewMouseLeftButtonDown="selecteurCouleurBordure_PreviewMouseLeftButtonDown"
+                        MouseLeftButtonUp="selecteurCouleurBordure_MouseLeftButtonUp"/>
                 <xctk:ColorPicker x:Name="selecteurCouleurRemplissage"                             
                         VerticalContentAlignment="Stretch"
                         Background="#00000000"
@@ -315,15 +316,16 @@
                         ShowAvailableColors="True"
                         ShowStandardColors="True"
                         ShowTabHeaders="False"
-                        MouseLeftButtonUp="SendSelectedStrokes"/>
-                <Slider Width="26" Height="100" Minimum="1" Maximum="10" Orientation="Vertical"
+                        PreviewMouseLeftButtonDown="selecteurCouleurRemplissage_PreviewMouseLeftButtonDown"
+                        MouseLeftButtonUp="selecteurCouleurRemplissage_MouseLeftButtonUp"/>
+                <Slider Name="slider" Width="26" Height="100" Minimum="1" Maximum="10" Orientation="Vertical"
                         Value="{Binding Path=TailleTrait, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                         Margin="0,15,0,15"
                         Foreground="OrangeRed"
                         IsEnabled="{Binding Path=IsStrokeSelected}"
                         TickFrequency="1" TickPlacement="BottomRight" IsSnapToTickEnabled="False"
-                        PreviewMouseUp="SendSelectedStrokes">
-                </Slider>
+                        PreviewMouseLeftButtonDown="Slider_PreviewMouseLeftButtonDown"
+                        PreviewMouseLeftButtonUp="Slider_MouseLeftButtonUp"/>
                 <StackPanel Orientation="Horizontal" Margin="5,15,5,0" VerticalAlignment="Center">
                     <StackPanel Orientation="Horizontal">
                         <Button Name="Solid" Width="30" Height="30" Padding="0"
@@ -331,7 +333,8 @@
                             Background="{Binding Path=SelectedBorder, Converter={StaticResource convertisseurCouleurFond}, ConverterParameter=solid, UpdateSourceTrigger=PropertyChanged}"                                 
                             HorizontalContentAlignment="Center"
                             Command="{Binding Path=ChooseBorder}"
-                            CommandParameter="solid">
+                            CommandParameter="solid"
+                            PreviewMouseLeftButtonDown="button_WhatsBefore">
                             <Rectangle Width="10" Height="2" Fill="Black" Stroke="Black" StrokeThickness="2" HorizontalAlignment="Center"/>
                         </Button>
                     </StackPanel>
@@ -341,7 +344,8 @@
                             BorderBrush="{Binding Path=SelectedBorder, Converter={StaticResource convertisseurBordure}, ConverterParameter=dash, UpdateSourceTrigger=PropertyChanged}" 
                             Background="{Binding Path=SelectedBorder, Converter={StaticResource convertisseurCouleurFond}, ConverterParameter=dash, UpdateSourceTrigger=PropertyChanged}"
                             Command="{Binding Path=ChooseBorder}"
-                            CommandParameter="dash">
+                            CommandParameter="dash"
+                            PreviewMouseLeftButtonDown="button_WhatsBefore">
                             <Grid>
                                 <Rectangle Width="4" Height="2" Fill="Black" Stroke="Black" StrokeThickness="2" HorizontalAlignment="Center" Margin="-4,0,4,0"/>
                                 <Rectangle Width="4" Height="2" Fill="Black" Stroke="Black" StrokeThickness="2" HorizontalAlignment="Right" Margin="0,0,-4,0"/>
@@ -359,6 +363,7 @@
                             IsEnabled="{Binding Path=IsStrokeSelected}"
                             Command="{Binding Path=Rotate}"
                             CommandParameter="right"
+                            PreviewMouseLeftButtonDown="button_WhatsBefore"
                             Style="{StaticResource MaterialDesignFlatButton}">
                             <materialDesign:PackIcon Kind="RotateRight" Foreground="Black" />
                         </Button>
@@ -369,6 +374,7 @@
                             IsEnabled="{Binding Path=IsStrokeSelected}"
                             Command="{Binding Path=Rotate}"
                             CommandParameter="left"
+                            PreviewMouseLeftButtonDown="button_WhatsBefore"
                             Style="{StaticResource MaterialDesignFlatButton}">
                             <materialDesign:PackIcon Kind="RotateLeft" Foreground="Black" />
                         </Button>

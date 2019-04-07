@@ -342,7 +342,8 @@ namespace PolyPaint.VueModeles
                 stroke.StylusPoints[0] = new StylusPoint(stylusPoint0.X, stylusPoint0.Y);
                 stroke.StylusPoints[1] = new StylusPoint(stylusPoint1.X, stylusPoint1.Y);
             }
-            var affectedStrokes = InkCanvasEventManager.UpdateAnchorPointsPosition(SurfaceDessin);
+            var affectedStrokes = SurfaceDessin.GetSelectedStrokes();
+            affectedStrokes.Add(InkCanvasEventManager.UpdateAnchorPointsPosition(SurfaceDessin));
             CollaborationClient.CollaborativeDrawAsync(StrokeBuilder.GetDrawViewModelsFromStrokes(affectedStrokes));
             CollaborationClient.CollaborativeSelectAsync(StrokeBuilder.GetDrawViewModelsFromStrokes(editeur.SelectedStrokes));
             OnRotation?.Invoke(this, new EventArgs());

@@ -374,7 +374,7 @@ namespace PolyPaint.Utilitaires
                     R = (stroke.Border.Brush as SolidColorBrush).Color.R,
                 };
                 drawingStroke.BorderThickness = stroke.Border.Thickness;
-                drawingStroke.BorderStyle = Tools.DashAssociations.First(x => x.Value == stroke.BorderStyle).Key;
+                drawingStroke.BorderStyle = Tools.DashAssociations.First(x => x.Value.Dashes.Count == stroke.BorderStyle.Dashes.Count).Key;
                 drawingStroke.ShapeTitle = (stroke as AbstractStroke).TitleString;
 
                 if ((stroke as AbstractShapeStroke != null))
