@@ -12,6 +12,7 @@ using PolyPaint.Vues;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
@@ -351,14 +352,14 @@ namespace PolyPaint
         private async void ImportFromCloud(object sender, RoutedEventArgs e)
         {
             progressBar.Visibility = Visibility.Visible;
-            List<SaveableCanvas> strokes;
+            ObservableCollection<SaveableCanvas> strokes;
             using (HttpClient client = new HttpClient())
             {
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", (string)Application.Current.Properties["token"]);
                 System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
                 HttpResponseMessage response = await client.GetAsync($"{Config.URL}/api/user/AllCanvas");
                 string responseString = await response.Content.ReadAsStringAsync();
-                strokes = JsonConvert.DeserializeObject<List<SaveableCanvas>>(responseString);
+                strokes = JsonConvert.DeserializeObject<ObservableCollection<SaveableCanvas>>(responseString);
             }
 
             await UnsubscribeToServer();

@@ -18,7 +18,7 @@ namespace PolyPaint.VueModeles
     {
         public event PropertyChangedEventHandler PropertyChanged;
         public ChatClient ChatClient { get; set; }
-        public List<SaveableCanvas> Canvas { get; set; }
+        private ObservableCollection<SaveableCanvas> _canvas { get; set; }
         private string _currentRoom;
         public ObservableCollection<string> MessagesListBox
         {
@@ -40,6 +40,11 @@ namespace PolyPaint.VueModeles
         {
             get { return ChatClient.Rooms; }
             set { ChatClient.Rooms = value; ProprieteModifiee(); }
+        }
+        public ObservableCollection<SaveableCanvas> Canvas
+        {
+            get { return _canvas; }
+            set { _canvas = value; ProprieteModifiee(); }
         }
 
         public string CurrentRoom
