@@ -41,7 +41,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         AuthentificationAPI.logout()
         UserDefaults.standard.removePersistentDomain(forName: "token");
-        UserDefaults.standard.removePersistentDomain(forName: "id");
 
         let mainView: UIStoryboard = UIStoryboard(name: "Main", bundle: nil);
         let viewcontroller : UIViewController = mainView.instantiateViewController(withIdentifier: "LoginStoryboard") as UIViewController;
@@ -60,7 +59,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
         AuthentificationAPI.logout()
         UserDefaults.standard.removePersistentDomain(forName: "token");
-        UserDefaults.standard.removePersistentDomain(forName: "id");
 
         sleep(10);
         print("terminated");
