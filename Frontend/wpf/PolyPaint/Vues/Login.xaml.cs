@@ -37,16 +37,16 @@ namespace PolyPaint.Vues
         private async void LoginBtn_Click(object sender, RoutedEventArgs e)
         {
             // errors_label.Content = "";
-            //LoginViewModel loginViewModel = new LoginViewModel()
-            //{
-            //    Username = usernameBox.Text,
-            //    Password = passwordBox.Password,
-            //};
             LoginViewModel loginViewModel = new LoginViewModel()
             {
-                Username = "alexis",
-                Password = "!12345Aa",
+                Username = usernameBox.Text,
+                Password = passwordBox.Password,
             };
+            //LoginViewModel loginViewModel = new LoginViewModel()
+            //{
+            //    Username = "alexis",
+            //    Password = "!12345Aa",
+            //};
 
             string json = JsonConvert.SerializeObject(loginViewModel);
 
