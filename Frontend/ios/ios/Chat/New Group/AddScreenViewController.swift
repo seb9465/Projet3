@@ -95,7 +95,7 @@ class AddScreenViewController: UIViewController, UITableViewDelegate, UITableVie
         self.tableView.addSubview(self.refreshControl);
     }
     
-    // MARK: Table View
+    // MARK: - Table View Functions
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1;
@@ -118,6 +118,8 @@ class AddScreenViewController: UIViewController, UITableViewDelegate, UITableVie
         
         cell?.chatRoomName.text = ChatService.shared.serverChannels.channels[indexPath.row].name.uppercased();
         cell?.notificationLabel.text = "";
+        
+        cell?.selectionStyle = .none;
         
         return cell!
     }
