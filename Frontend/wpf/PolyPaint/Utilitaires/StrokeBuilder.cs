@@ -263,7 +263,7 @@ namespace PolyPaint.Utilitaires
                 }
             }
 
-            //AddInOutConnections(customStrokes, surfaceDessin);
+            AddInOutConnections(customStrokes, surfaceDessin);
         }
 
         private static void AddInOutConnections(List<DrawViewModel> customStrokes, InkCanvas surfaceDessin)
@@ -271,17 +271,33 @@ namespace PolyPaint.Utilitaires
             foreach (AbstractShapeStroke shape in surfaceDessin.Strokes.Where(x => x is AbstractShapeStroke))
             {
                 var dvm = customStrokes.FirstOrDefault(x => x.Guid == shape.Guid.ToString());
-                foreach (var connection in dvm.InConections)
+                if (dvm.InConections != null)
                 {
-                    AnchorPosition pos = (AnchorPosition)Enum.Parse(typeof(AnchorPosition), connection.Value, true);
-                    var stroke = (AbstractLineStroke)surfaceDessin.Strokes.Where(x => x is AbstractLineStroke).FirstOrDefault(x => (x as AbstractLineStroke).Guid.ToString() == connection.Key);
-                    shape.InConnections.TryAdd(stroke, pos);
+                    foreach (var connection in dvm.InConections)
+                    {
+                        AnchorPosition pos = (AnchorPosition)Enum.Parse(typeof(AnchorPosition), connection[1], true);
+                        var stroke = (AbstractLineStroke)surfaceDessin.Strokes.Where(x => x is AbstractLineStroke).FirstOrDefault(x => (x as AbstractLineStroke).Guid.ToString() == connection[0]);
+                        shape.InConnections.TryAdd(stroke, pos);
+                        var connStroke = surfaceDessin.Strokes.FirstOrDefault(x => (x as AbstractStroke).Guid.ToString() == connection[0]);
+                        if (connStroke != null)
+                        {
+                            (connStroke as AbstractLineStroke).TrySnap();
+                        }
+                    }
                 }
-                foreach (var connection in dvm.OutConections)
+                if (dvm.OutConections != null)
                 {
-                    AnchorPosition pos = (AnchorPosition)Enum.Parse(typeof(AnchorPosition), connection.Value, true);
-                    var stroke = (AbstractLineStroke)surfaceDessin.Strokes.Where(x => x is AbstractLineStroke).FirstOrDefault(x => (x as AbstractLineStroke).Guid.ToString() == connection.Key);
-                    shape.OutConnections.TryAdd(stroke, pos);
+                    foreach (var connection in dvm.OutConections)
+                    {
+                        AnchorPosition pos = (AnchorPosition)Enum.Parse(typeof(AnchorPosition), connection[1], true);
+                        var stroke = (AbstractLineStroke)surfaceDessin.Strokes.Where(x => x is AbstractLineStroke).FirstOrDefault(x => (x as AbstractLineStroke).Guid.ToString() == connection[0]);
+                        shape.OutConnections.TryAdd(stroke, pos);
+                        var connStroke = surfaceDessin.Strokes.FirstOrDefault(x => (x as AbstractStroke).Guid.ToString() == connection[0]);
+                        if (connStroke != null)
+                        {
+                            (connStroke as AbstractLineStroke).TrySnap();
+                        }
+                    }
                 }
             }
         }
@@ -377,9 +393,9 @@ namespace PolyPaint.Utilitaires
                 drawingStroke.BorderStyle = Tools.DashAssociations.First(x => x.Value.Dashes.Count == stroke.BorderStyle.Dashes.Count).Key;
                 drawingStroke.ShapeTitle = (stroke as AbstractStroke).TitleString;
 
-                if ((stroke as AbstractShapeStroke != null))
+                if (stroke is AbstractShapeStroke)
                 {
-                    if (stroke as UmlClassStroke != null)
+                    if (stroke is UmlClassStroke)
                     {
                         drawingStroke.Methods = new List<string>();
                         foreach (var method in (stroke as UmlClassStroke).Methods)
@@ -389,11 +405,11 @@ namespace PolyPaint.Utilitaires
                         foreach (var property in (stroke as UmlClassStroke).Properties)
                             drawingStroke.Properties.Add(property.Title);
                     }
-                    drawingStroke.InConections = (stroke as AbstractShapeStroke).InConnections.ToDictionary(x => x.Key.Guid.ToString(), x => x.Value.ToString().ToLower());
-                    drawingStroke.OutConections = (stroke as AbstractShapeStroke).OutConnections.ToDictionary(x => x.Key.Guid.ToString(), x => x.Value.ToString().ToLower());
+                    drawingStroke.InConections = new List<List<string>>((stroke as AbstractShapeStroke).InConnections.Select(x => new List<string>() { x.Key.Guid.ToString(), x.Value.ToString().ToLower() }));
+                    drawingStroke.OutConections = new List<List<string>>((stroke as AbstractShapeStroke).OutConnections.Select(x => new List<string>() { x.Key.Guid.ToString(), x.Value.ToString().ToLower() }));
                 }
 
-                if ((stroke as AbstractLineStroke != null))
+                if (stroke is AbstractLineStroke)
                 {
                     drawingStroke.SourceTitle = (stroke as AbstractLineStroke).SourceString;
                     drawingStroke.DestinationTitle = (stroke as AbstractLineStroke).DestinationString;
@@ -404,7 +420,7 @@ namespace PolyPaint.Utilitaires
                     };
                 }
 
-                if ((stroke as ImageStroke) != null)
+                if (stroke is ImageStroke)
                 {
                     byte[] bytes = null;
                     ImageSource image = (stroke as ImageStroke).Brush.ImageSource;

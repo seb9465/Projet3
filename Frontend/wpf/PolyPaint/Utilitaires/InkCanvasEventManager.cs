@@ -16,9 +16,10 @@ namespace PolyPaint.Utilitaires
     {
         public Stroke DrawingStroke = null;
 
-        public void ChangeText(InkCanvas surfaceDessin, Point mouseLeftDownPoint, VueModele vm)
+        public Window ChangeText(InkCanvas surfaceDessin, Point mouseLeftDownPoint, VueModele vm)
         {
             StrokeCollection strokes = surfaceDessin.Strokes;
+            Window window = new Window();
 
             // We travel the StrokeCollection inversely to select the first plan item first
             // if some items overlap.
@@ -32,22 +33,23 @@ namespace PolyPaint.Utilitaires
                 {
                     if (strokes[i] is UmlClassStroke)
                     {
-                        var editWindow = new EditUmlWindow(strokes[i] as UmlClassStroke, surfaceDessin, vm);
-                        editWindow.Show();
+                        window = new EditUmlWindow(strokes[i] as UmlClassStroke, surfaceDessin, vm);
+                        window.Show();
                     }
                     else if (strokes[i] is AbstractShapeStroke)
                     {
-                        var editWindow = new EditTitleWindow(strokes[i] as AbstractShapeStroke, surfaceDessin, vm);
-                        editWindow.Show();
+                        window = new EditTitleWindow(strokes[i] as AbstractShapeStroke, surfaceDessin, vm);
+                        window.Show();
                     }
                     else if (strokes[i] is AbstractLineStroke)
                     {
-                        var editWindow = new EditLineTitleWindow(strokes[i] as AbstractLineStroke, surfaceDessin, vm);
-                        editWindow.Show();
+                        window = new EditLineTitleWindow(strokes[i] as AbstractLineStroke, surfaceDessin, vm);
+                        window.Show();
                     }
                     break;
                 }
             }
+            return window;
         }
 
         public void DrawShape(InkCanvas surfaceDessin, VueModele vm, Point currentPoint, Point mouseLeftDownPoint)
@@ -191,7 +193,7 @@ namespace PolyPaint.Utilitaires
                 foreach (var conn in shape.OutConnections)
                 {
                     var newAnchorPoint = shape.AnchorPoints[conn.Value];
-                    conn.Key.StylusPoints[0] = new StylusPoint(newAnchorPoint.X, newAnchorPoint.Y);
+                    surfaceDessin.Strokes.FirstOrDefault(x => (x as AbstractStroke).Guid == conn.Key.Guid).StylusPoints[0] = new StylusPoint(newAnchorPoint.X, newAnchorPoint.Y);
                     affectedStrokes.Add(conn.Key);
                 }
             }

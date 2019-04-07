@@ -336,7 +336,7 @@ namespace PolyPaint.VueModeles
             var increment = side == "right" ? 90 : -90;
             foreach (AbstractStroke stroke in editeur.SelectedStrokes.Where(x => x is AbstractStroke))
             {
-                stroke.Rotation = (stroke.Rotation + increment) % 360;
+                stroke.Rotation = (stroke.Rotation + increment) % 360.0;
                 var stylusPoint0 = Tools.RotatePoint(stroke.StylusPoints[0].ToPoint(), stroke.Center, increment);
                 var stylusPoint1 = Tools.RotatePoint(stroke.StylusPoints[1].ToPoint(), stroke.Center, increment);
                 stroke.StylusPoints[0] = new StylusPoint(stylusPoint0.X, stylusPoint0.Y);

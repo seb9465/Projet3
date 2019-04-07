@@ -28,8 +28,8 @@ namespace PolyPaint.Common.Collaboration
         public byte[] ImageBytes { get; set; }
         public double Rotation { get; set; }
         // Guid, Side
-        public Dictionary<string, string> InConections;
-        public Dictionary<string, string> OutConections;
+        public List<List<string>> InConections;
+        public List<List<string>> OutConections;
 
         public bool IsConnection()
         {

@@ -124,6 +124,7 @@ namespace PolyPaint
                     (DataContext as VueModele).SelectItems(sCollection);
                 });
             }
+            ReplaceAdorner();
         }
 
         private void Redo(object sender, EventArgs e)
@@ -153,6 +154,7 @@ namespace PolyPaint
                     (DataContext as VueModele).SelectItems(sCollection);
                 });
             }
+            ReplaceAdorner();
         }
 
         private void HandleProtectionChanged(object sender, MessageArgs e)
@@ -497,12 +499,16 @@ namespace PolyPaint
             switch ((DataContext as VueModele).OutilSelectionne)
             {
                 case "change_text":
-                    icEventManager.ChangeText(surfaceDessin, mouseLeftDownPoint, (VueModele)DataContext);
+                    var window = icEventManager.ChangeText(surfaceDessin, mouseLeftDownPoint, (VueModele)DataContext);
                     (DataContext as VueModele).SelectItem(e.GetPosition((IInputElement)sender));
                     selectedItems = StrokeBuilder.GetDrawViewModelsFromStrokes(surfaceDessin.GetSelectedStrokes());
                     (DataContext as VueModele).CollaborationClient.CollaborativeSelectAsync(selectedItems);
-                    CurrentChange.Item2 = new StrokeCollection(surfaceDessin.GetSelectedStrokes()).Clone();
-                    AddToUndoStack();
+                    CurrentChange.Item1 = surfaceDessin.GetSelectedStrokes().Clone();
+                    window.Closing += (object zender, CancelEventArgs eee) =>
+                    {
+                        CurrentChange.Item2 = surfaceDessin.GetSelectedStrokes().Clone();
+                        AddToUndoStack();
+                    };
                     break;
                 case "select":
                     var selectedStrokes = surfaceDessin.GetSelectedStrokes();
@@ -541,7 +547,7 @@ namespace PolyPaint
 
             IsDrawing = false;
         }
-
+       
         private void AddToUndoStack()
         {
             UndoStack.Push(CurrentChange);
@@ -740,8 +746,20 @@ namespace PolyPaint
 
             adornerLayer = AdornerLayer.GetAdornerLayer(surfaceDessin);
             adorner = new LineStrokeAdorner(surfaceDessin);
-
+            adorner.ElbowChanging += BeginMoveElbow;
+            adorner.ElbowChanged += FinishMoveElbow;
             adornerLayer.Add(adorner);
+        }
+
+        private void BeginMoveElbow(object sender, EventArgs e)
+        {
+            CurrentChange.Item1 = surfaceDessin.GetSelectedStrokes().Clone();
+        }
+
+        private void FinishMoveElbow(object sender, EventArgs e)
+        {
+            CurrentChange.Item2 = surfaceDessin.GetSelectedStrokes().Clone();
+            AddToUndoStack();
         }
 
         private void ContextualMenu_Click(object sender, EventArgs e)
