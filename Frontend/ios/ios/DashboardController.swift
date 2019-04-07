@@ -31,6 +31,7 @@ class DashboardController: UIViewController, UITextFieldDelegate {
         ChatService.shared.initOnReceivingMessage(insertMessage:{_ in }, updateChatRooms: { });
         ChatService.shared.connectToHub();
         
+        
         self.viewContainerChat.sizeToFit(); // Adjusting frame size
         self.viewContainerChat.isHidden = true;
         self.viewContainerChat.layer.cornerRadius = Constants.ChatView.cornerRadius;
@@ -41,8 +42,11 @@ class DashboardController: UIViewController, UITextFieldDelegate {
         self.viewContainerChat.layer.masksToBounds = false;
     }
     
+    // MARK: Action functions
+    
     @IBAction func logoutButton(_ sender: Any) {
         AuthentificationAPI.logout()
+        
         UserDefaults.standard.removePersistentDomain(forName: "token");
         UserDefaults.standard.removePersistentDomain(forName: "id");
         
