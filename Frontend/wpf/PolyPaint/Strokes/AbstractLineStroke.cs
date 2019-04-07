@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Ink;
 using System.Windows.Input;
 using System.Windows.Media;
 
@@ -104,10 +105,12 @@ namespace PolyPaint.Strokes
             }
         }
 
-        public void TrySnap()
+        public StrokeCollection TrySnap()
         {
             Point firstPoint = new Point(StylusPoints[0].X, StylusPoints[0].Y);
             Point secondPoint = new Point(StylusPoints[1].X, StylusPoints[1].Y);
+
+            StrokeCollection affected = new StrokeCollection();
 
             var firstDistance = 0d;
             var secondDistance = 0d;
@@ -123,6 +126,7 @@ namespace PolyPaint.Strokes
                     {
                         StylusPoints[0] = new StylusPoint(firstCloseAnchor.Value.X, firstCloseAnchor.Value.Y);
                         stroke.OutConnections.AddOrUpdate(this, firstCloseAnchor.Key, (k, v) => firstCloseAnchor.Key);
+                        affected.Add(stroke);
                     }
 
                     var secondCloseAnchor = anchors.OrderBy(x => Point.Subtract(x.Value, secondPoint).Length).First();
@@ -131,6 +135,7 @@ namespace PolyPaint.Strokes
                     {
                         StylusPoints[1] = new StylusPoint( secondCloseAnchor.Value.X , secondCloseAnchor.Value.Y);
                         stroke.InConnections.AddOrUpdate(this, secondCloseAnchor.Key, (k, v) => secondCloseAnchor.Key);
+                        affected.Add(stroke);
                     }
                 }
             }
@@ -138,6 +143,7 @@ namespace PolyPaint.Strokes
             if (firstDistance < Config.MIN_DISTANCE_ANCHORS || secondDistance < Config.MIN_DISTANCE_ANCHORS) Snapped = true;
 
             BothAttached = firstDistance < Config.MIN_DISTANCE_ANCHORS && secondDistance < Config.MIN_DISTANCE_ANCHORS;
+            return affected;
         }
 
         protected void DrawText(DrawingContext dc)

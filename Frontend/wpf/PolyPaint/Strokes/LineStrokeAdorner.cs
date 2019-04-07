@@ -20,6 +20,8 @@ public class LineStrokeAdorner : Adorner
     RotateTransform rotation;
     Rect strokeBounds = Rect.Empty;
 
+    private readonly double ThumbRadius = 10;
+
     public LineStrokeAdorner(UIElement adornedElement)
         : base(adornedElement)
     {
@@ -34,9 +36,9 @@ public class LineStrokeAdorner : Adorner
         handle = new Thumb
         {
             Cursor = Cursors.SizeAll,
-            Width = 15,
-            Height = 15,
-            Background = Brushes.Blue,
+            Width = 2*ThumbRadius,
+            Height = 2 * ThumbRadius,
+            Style = (Style)FindResource("TestRoundThumb")
         };
 
         handle.DragDelta += new DragDeltaEventHandler(DragDelta);
@@ -44,14 +46,14 @@ public class LineStrokeAdorner : Adorner
 
         visualChildren.Add(handle);
 
-        handle.Arrange(new Rect(strokeBounds.X + strokeBounds.Width / 2 - 7.5,
-            strokeBounds.Y + strokeBounds.Height / 2 - 7.5,
-            15, 15));
+        handle.Arrange(new Rect(strokeBounds.X + strokeBounds.Width / 2 - ThumbRadius,
+            strokeBounds.Y + strokeBounds.Height / 2 - ThumbRadius,
+            2*ThumbRadius, 2*ThumbRadius));
     }
 
     protected override Size ArrangeOverride(Size finalSize)
     {
-        handle.Arrange(new Rect(dragPos.X - 7.5, dragPos.Y - 7.5, 15, 15));
+        handle.Arrange(new Rect(dragPos.X - ThumbRadius, dragPos.Y - ThumbRadius, 2 * ThumbRadius, 2 * ThumbRadius));
         return finalSize;
     }
 

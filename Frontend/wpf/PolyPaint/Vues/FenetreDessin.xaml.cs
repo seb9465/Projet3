@@ -94,8 +94,14 @@ namespace PolyPaint
 
             UndoStack = new Stack<(StrokeCollection, StrokeCollection)>();
             RedoStack = new Stack<(StrokeCollection, StrokeCollection)>();
+
+            Closing += Unselect;
         }
 
+        private void Unselect(object sender, CancelEventArgs e)
+        {
+            (DataContext as VueModele).CollaborationClient.CollaborativeSelectAsync(new List<DrawViewModel>());
+        }
 
         private void Undo(object sender, EventArgs e)
         {
@@ -550,7 +556,7 @@ namespace PolyPaint
 
             IsDrawing = false;
         }
-       
+
         private void AddToUndoStack()
         {
             UndoStack.Push(CurrentChange);
@@ -572,30 +578,37 @@ namespace PolyPaint
         }
         private void AddImageToCanvas(object sender, RoutedEventArgs e)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
+            OpenFileDialog openFileDialog = new OpenFileDialog()
+            {
+                DefaultExt = ".png",
+                Filter = "Image (.png)|*.png"
+            };
             bool? result = openFileDialog.ShowDialog();
 
-            ImageBrush ib = new ImageBrush
+            if (result ?? false && openFileDialog.FileName != null)
             {
-                ImageSource = new BitmapImage(new Uri(openFileDialog.FileName, UriKind.Relative))
-            };
-            double ratio = ib.ImageSource.Width / ib.ImageSource.Height;
-            double imageWidth = Math.Min(ib.ImageSource.Width, surfaceDessin.ActualWidth);
-            double imageHeight = Math.Min(ib.ImageSource.Height, surfaceDessin.ActualHeight);
+                ImageBrush ib = new ImageBrush
+                {
+                    ImageSource = new BitmapImage(new Uri(openFileDialog.FileName, UriKind.Relative))
+                };
+                double ratio = ib.ImageSource.Width / ib.ImageSource.Height;
+                double imageWidth = Math.Min(ib.ImageSource.Width, surfaceDessin.ActualWidth);
+                double imageHeight = Math.Min(ib.ImageSource.Height, surfaceDessin.ActualHeight);
 
-            double finalWidth = Math.Min(imageWidth, imageHeight * ratio);
-            double finalHeight = Math.Min(imageHeight, imageWidth / ratio);
+                double finalWidth = Math.Min(imageWidth, imageHeight * ratio);
+                double finalHeight = Math.Min(imageHeight, imageWidth / ratio);
 
-            StylusPointCollection collection = new StylusPointCollection
-            {
-                new StylusPoint(0, 0),
-                new StylusPoint(finalWidth, finalHeight)
-            };
+                StylusPointCollection collection = new StylusPointCollection
+                {
+                    new StylusPoint(0, 0),
+                    new StylusPoint(finalWidth, finalHeight)
+                };
 
-            ImageStroke image = new ImageStroke(collection, surfaceDessin, ib);
-            (image as ICanvasable).AddToCanvas();
-            (DataContext as VueModele).CollaborationClient.CollaborativeDrawAsync(StrokeBuilder.GetDrawViewModelsFromStrokes(new StrokeCollection(new List<Stroke>() { image })));
-            SendToCloud();
+                ImageStroke image = new ImageStroke(collection, surfaceDessin, ib);
+                (image as ICanvasable).AddToCanvas();
+                (DataContext as VueModele).CollaborationClient.CollaborativeDrawAsync(StrokeBuilder.GetDrawViewModelsFromStrokes(new StrokeCollection(new List<Stroke>() { image })));
+                SendToCloud();
+            }
         }
         private void DownloadCanvasAsJPG(object sender, RoutedEventArgs e)
         {

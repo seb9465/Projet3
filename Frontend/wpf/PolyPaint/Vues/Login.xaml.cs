@@ -149,7 +149,7 @@ namespace PolyPaint.Vues
                 web.ShowDialog();
                 token = web.Token;
 
-                if (token != null)
+                if (token != null && web.Result.StatusCode == System.Net.HttpStatusCode.OK)
                 {
 
                     DecodeToken(token);
@@ -174,6 +174,11 @@ namespace PolyPaint.Vues
 
                     Close();
                     gallery.Show();
+                }
+                else
+                {
+                    string error = await web.Result.Content.ReadAsStringAsync();
+                    loginError.Text = JsonConvert.DeserializeObject<string>(error);
                 }
             }
         }

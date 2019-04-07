@@ -374,6 +374,7 @@
     <Compile Include="Modeles\ChatClient.cs" />
     <Compile Include="Modeles\CollaborationClient.cs" />
     <Compile Include="Modeles\Editeur.cs" />
+    <Compile Include="Modeles\FBInfo.cs" />
     <Compile Include="Modeles\Room.cs" />
     <Compile Include="Modeles\SaveableElement.cs" />
     <Compile Include="Modeles\SaveableCanvas.cs" />

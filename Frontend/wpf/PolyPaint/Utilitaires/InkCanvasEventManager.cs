@@ -133,16 +133,17 @@ namespace PolyPaint.Utilitaires
                 }
                 else
                 {
+                    var hihi = new StrokeCollection() { DrawingStroke };
                     (DrawingStroke as ICanvasable).AddToCanvas();
                     if (DrawingStroke is AbstractLineStroke)
                     {
-                        (DrawingStroke as AbstractLineStroke).TrySnap();
+                        hihi.Add((DrawingStroke as AbstractLineStroke).TrySnap());
                         var elbow = (DrawingStroke as AbstractLineStroke).LastElbowPosition;
                         var sPoints = (DrawingStroke as AbstractLineStroke).StylusPoints;
                         (DrawingStroke as AbstractLineStroke).StylusPoints = new StylusPointCollection(3) { sPoints[0], sPoints[1], new StylusPoint(elbow.X, elbow.Y) };
                     }
 
-                    List<DrawViewModel> allo = StrokeBuilder.GetDrawViewModelsFromStrokes(new StrokeCollection { DrawingStroke });
+                    List<DrawViewModel> allo = StrokeBuilder.GetDrawViewModelsFromStrokes(hihi);
                     vm.SelectItem(((AbstractStroke)DrawingStroke).Center);
                     vm.CollaborationClient.CollaborativeDrawAsync(allo);
                     vm.CollaborationClient.CollaborativeSelectAsync(allo);
@@ -188,13 +189,13 @@ namespace PolyPaint.Utilitaires
                 {
                     var newAnchorPoint = shape.AnchorPoints[conn.Value];
                     surfaceDessin.Strokes.FirstOrDefault(x => (x as AbstractStroke).Guid == conn.Key.Guid).StylusPoints[1] = new StylusPoint(newAnchorPoint.X, newAnchorPoint.Y);
-                    affectedStrokes.Add(conn.Key);
+                    if (!affectedStrokes.Contains(conn.Key)) affectedStrokes.Add(conn.Key);
                 }
                 foreach (var conn in shape.OutConnections)
                 {
                     var newAnchorPoint = shape.AnchorPoints[conn.Value];
                     surfaceDessin.Strokes.FirstOrDefault(x => (x as AbstractStroke).Guid == conn.Key.Guid).StylusPoints[0] = new StylusPoint(newAnchorPoint.X, newAnchorPoint.Y);
-                    affectedStrokes.Add(conn.Key);
+                    if (!affectedStrokes.Contains(conn.Key)) affectedStrokes.Add(conn.Key);
                 }
             }
 

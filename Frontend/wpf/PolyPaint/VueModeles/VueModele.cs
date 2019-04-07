@@ -40,9 +40,6 @@ namespace PolyPaint.VueModeles
         public ChatClient ChatClient { get; set; }
         public CollaborationClient CollaborationClient { get; set; }
 
-        // Ensemble d'attributs qui définissent l'apparence d'un trait.
-        public DrawingAttributes AttributsDessin { get; set; } = new DrawingAttributes();
-
         public HubConnection Connection { get; private set; }
 
 
@@ -225,11 +222,6 @@ namespace PolyPaint.VueModeles
             // On écoute pour des changements sur le modèle. Lorsqu'il y en a, EditeurProprieteModifiee est appelée.
             editeur.PropertyChanged += new PropertyChangedEventHandler(EditeurProprieteModifiee);
 
-            // On initialise les attributs de dessin avec les valeurs de départ du modèle.
-            AttributsDessin = new DrawingAttributes();
-            AttributsDessin.Color = (Color)ColorConverter.ConvertFromString(editeur.CouleurSelectionneeBordure);
-            AjusterPointe();
-
             Traits = editeur.traits;
             
             // Pour les commandes suivantes, il est toujours possible des les activer.
@@ -292,27 +284,9 @@ namespace PolyPaint.VueModeles
             {
                 OutilSelectionne = editeur.OutilSelectionne;
             }
-            else if (e.PropertyName == "PointeSelectionnee")
-            {
-                PointeSelectionnee = editeur.PointeSelectionnee;
-                AjusterPointe();
-            }
             else // e.PropertyName == "TailleTrait"
             {
-                AjusterPointe();
             }
-        }
-
-        /// <summary>
-        /// C'est ici qu'est défini la forme de la pointe, mais aussi sa taille (TailleTrait).
-        /// Pourquoi deux caractéristiques se retrouvent définies dans une même méthode? Parce que pour créer une pointe 
-        /// horizontale ou verticale, on utilise une pointe carrée et on joue avec les tailles pour avoir l'effet désiré.
-        /// </summary>
-        private void AjusterPointe()
-        {
-            AttributsDessin.StylusTip = (editeur.PointeSelectionnee == "ronde") ? StylusTip.Ellipse : StylusTip.Rectangle;
-            AttributsDessin.Width = (editeur.PointeSelectionnee == "verticale") ? 1 : editeur.TailleTrait;
-            AttributsDessin.Height = (editeur.PointeSelectionnee == "horizontale") ? 1 : editeur.TailleTrait;
         }
 
         private void choisirRoom(string room)
