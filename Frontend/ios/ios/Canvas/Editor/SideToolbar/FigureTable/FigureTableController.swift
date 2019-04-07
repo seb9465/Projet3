@@ -11,14 +11,15 @@ import UIKit
 class FigureTableController: UIViewController, UIPopoverPresentationControllerDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, FigureCellProtocol {
     @IBOutlet weak var figureTable: UITableView!
     private var editor: Editor!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         let nib = UINib.init(nibName: "FigureSelectionCell", bundle: nil)
         self.figureTable.register(nib, forCellReuseIdentifier: "FigureSelectionCell")
         let connectionsNib = UINib.init(nibName: "ConnectionSelectionCell", bundle: nil)
         self.figureTable.register(connectionsNib, forCellReuseIdentifier: "ConnectionSelectionCell")
         self.editor = (self.parent?.parent as! CanvasController).editor
+        self.figureTable.backgroundColor = #colorLiteral(red: 0.9681890607, green: 0.9681890607, blue: 0.9681890607, alpha: 1)
         // Do any additional setup after loading the view.
     }
     

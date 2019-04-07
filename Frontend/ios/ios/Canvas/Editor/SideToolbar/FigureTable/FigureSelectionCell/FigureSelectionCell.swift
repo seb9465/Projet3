@@ -18,7 +18,6 @@ class FigureSelectionCell: UITableViewCell {
     @IBOutlet weak var ArtefactButton: RoundedCorners!
     @IBOutlet weak var PhaseButton: RoundedCorners!
     @IBOutlet weak var textButton: RoundedCorners!
-    @IBOutlet weak var imageButton: RoundedCorners!
     @IBOutlet weak var lineButton: RoundedCorners!
     
     // Connection figures
@@ -93,12 +92,6 @@ class FigureSelectionCell: UITableViewCell {
     @IBAction func textSelected(_ sender: Any) {
         self.delegate?.setSelectedFigureType(itemType: ItemTypeEnum.Text, isConnection: false)
         self.setSelectedButton(button: self.textButton)
-    }
-    
-    @IBAction func imageSelected(_ sender: Any) {
-        self.delegate?.presentImagePicker()
-        self.delegate?.setSelectedFigureType(itemType: ItemTypeEnum.Image, isConnection: false)
-        self.setSelectedButton(button: self.imageButton)
     }
     
     @IBAction func heritageSelected(_ sender: Any) {

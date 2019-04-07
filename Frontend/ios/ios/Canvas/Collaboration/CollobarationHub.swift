@@ -171,6 +171,30 @@ class CollaborationHub {
         });
     }
     
+    // Send a new figure to the collaborative Hub ** With drawviewmodels **
+    public func postNewFigure(drawViewModels: [DrawViewModel]) -> Void {
+        let token = UserDefaults.standard.string(forKey: "token");
+        let jwt = try! decode(jwt: token!)
+        let username = jwt.claim(name: "unique_name").string
+        
+        let itemMessage = ItemMessage(
+            CanvasId: self.channelId,
+            Username: username!,
+            Items: drawViewModels
+        )
+        
+        let jsonEncoder = JSONEncoder()
+        let jsonData = try! jsonEncoder.encode(itemMessage)
+        let jsonString = String(data: jsonData, encoding: .utf8)
+        
+        self.hubConnection!.invoke(method: "Draw", arguments: [jsonString], invocationDidComplete: { (Error) in
+            if (Error != nil) {
+                print("Error calling draw", Error!)
+                return
+            }
+        });
+    }
+    
     public func selectObjects(drawViewModels: [DrawViewModel]) -> Void {
         let token = UserDefaults.standard.string(forKey: "token");
         let jwt = try! decode(jwt: token!)

@@ -191,6 +191,7 @@ class CanvasController: UIViewController {
         CollaborationHub.shared!.connectToHub()
         CollaborationHub.shared!.delegate = self.editor
     }
+    
     @IBAction func chatViewButton(_ sender: Any) {
         if (self.chatViewContainer.isHidden) {
             self.chatViewButton.tintColor = Constants.RED_COLOR;

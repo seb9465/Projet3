@@ -31,22 +31,6 @@ class BorderCell: UITableViewCell {
         self.delegate?.setSelectedFigureBorderColor(color: self.applyButton.backgroundColor!)
     }
     
-    @IBAction func blueSelected(_ sender: UIButton) {
-        self.delegate?.setSelectedFigureBorderColor(color: UIColor.blue)
-    }
-    
-    @IBAction func greenSelected(_ sender: UIButton) {
-        self.delegate?.setSelectedFigureBorderColor(color: UIColor.green)
-    }
-    
-    @IBAction func yellowSelected(_ sender: UIButton) {
-        self.delegate?.setSelectedFigureBorderColor(color: UIColor.yellow)
-    }
-    
-    @IBAction func redSelected(_ sender: UIButton) {
-        self.delegate?.setSelectedFigureBorderColor(color: UIColor.red)
-    }
-    
     @IBAction func blackSelected(_ sender: UIButton) {
         self.delegate?.setSelectedFigureBorderColor(color: UIColor.black)
     }

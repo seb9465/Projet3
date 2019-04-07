@@ -48,16 +48,21 @@ extension Editor {
         
         if (beforeAfter.0.isEmpty) {
             self.deleteFigures(drawViewModels: beforeAfter.1)
+            CollaborationHub.shared?.CutObjects(drawViewModels: beforeAfter.1)
+            self.redoArray.append(beforeAfter)
             return
         }
         
         if (beforeAfter.1.isEmpty) {
             self.insertFigures(drawViewModels: beforeAfter.0)
+            CollaborationHub.shared?.postNewFigure(drawViewModels: beforeAfter.0)
+            self.redoArray.append(beforeAfter)
             return
         }
         
         self.deleteFigures(drawViewModels: beforeAfter.1)
         self.insertFigures(drawViewModels: beforeAfter.0)
+        CollaborationHub.shared?.postNewFigure(drawViewModels: beforeAfter.0)
         self.redoArray.append(beforeAfter)
     }
     
@@ -69,18 +74,23 @@ extension Editor {
         
         let beforeAfter = redoArray.popLast()!
         
-        if (beforeAfter.1.isEmpty) {
-            self.deleteFigures(drawViewModels: beforeAfter.0)
+        if (beforeAfter.0.isEmpty) {
+            self.insertFigures(drawViewModels: beforeAfter.1)
+            CollaborationHub.shared?.postNewFigure(drawViewModels: beforeAfter.1)
+            self.undoArray.append(beforeAfter)
             return
         }
         
-        if (beforeAfter.0.isEmpty) {
-            self.insertFigures(drawViewModels: beforeAfter.1)
+        if (beforeAfter.1.isEmpty) {
+            self.deleteFigures(drawViewModels: beforeAfter.0)
+            CollaborationHub.shared?.CutObjects(drawViewModels: beforeAfter.0)
+            self.undoArray.append(beforeAfter)
             return
         }
         
         self.deleteFigures(drawViewModels: beforeAfter.0)
         self.insertFigures(drawViewModels: beforeAfter.1)
+        CollaborationHub.shared?.postNewFigure(drawViewModels: beforeAfter.1)
         self.undoArray.append(beforeAfter)
     }
 }
