@@ -34,10 +34,6 @@ class MsgChatController: MessagesViewController, MsgChatProtocol {
         ChatService.shared.initOnReceivingMessage(currentMemberName: self.member.name, insertMessage: self.insertMessage, updateChatRooms: { })
         ChatService.shared.initOnAnotherUserConnection(insertMessage: self.insertMessage);
         
-//        self.navigationItem.hidesBackButton = true;
-//        let newBackButton = UIBarButtonItem(title: "Back to chatrooms", style: .plain, target: self, action: #selector(self.back(sender:)));
-//        self.navigationItem.leftBarButtonItem = newBackButton;
-        
         self.navigationItem.title = ChatService.shared.currentChannel.name;
         
         super.viewDidLoad();
@@ -50,30 +46,16 @@ class MsgChatController: MessagesViewController, MsgChatProtocol {
             }
         }
         
-        // TODO: Make a function in the ChatService for this and the get.
         ChatService.shared.messagesWhileAFK.removeValue(forKey: channelName);
         self.messagesCollectionView.reloadData();
     }
     
-//    @objc func back(sender: UIBarButtonItem) {
-//        ChatService.shared.currentChannel = nil;
-//
-//        let transition = CATransition();
-//        transition.duration = 0.3;
-//        transition.type = CATransitionType.reveal;
-//        transition.subtype = CATransitionSubtype.fromBottom;
-//        self.view.window!.layer.add(transition, forKey: kCATransition);
-//
-//        self.navigationController?.popViewController(animated: false)
-        
-//        self.dismiss(animated: true, completion: nil);
-//    }
-    
     override func viewWillDisappear(_ animated: Bool) -> Void {
+        print("VIEW DISAPPEARS");
          super.viewWillDisappear(animated);
     }
     
-    func messageInputBar(_ inputBar: MessageInputBar, textViewTextDidChangeTo text: String) -> Void {
+    public func messageInputBar(_ inputBar: MessageInputBar, textViewTextDidChangeTo text: String) -> Void {
         if(messageInputBar.inputTextView.text.contains("\n")) {
             messageInputBar.inputTextView.text.popLast();
             if(messageInputBar.sendButton.isEnabled) {
