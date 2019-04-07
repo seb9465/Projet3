@@ -32,9 +32,8 @@ class DashboardController: UIViewController, UITextFieldDelegate {
         ChatService.shared.initOnReceivingMessage(insertMessage:{_ in }, updateChatRooms: { });
         ChatService.shared.connectToHub();
         ChatService.shared.afkMessagesDidChangeClosure = {
-            UIView.animate(withDuration: 1.0, delay: 1.0, options: UIView.AnimationOptions.curveEaseOut, animations: {
-                
-                self.windowChatButton.alpha = 0.0;
+            UIView.animate(withDuration: 1.0, delay: 0, options: [.curveLinear, .repeat, .autoreverse], animations: {
+                self.windowChatButton.backgroundColor = Constants.GREY_COLOR;
                 
             }, completion: nil)
         }
@@ -125,9 +124,20 @@ class DashboardController: UIViewController, UITextFieldDelegate {
         }
     }
     
+    /**
+     Removes the color animation on the Window Chat button, and opens or closes the ChatRoom view.
+     */
     @IBAction func windowChatTrigger(_ sender: Any) {
+        ChatService.shared.afkMessagesDidChangeClosure = {
+            UIView.animate(withDuration: 1.0, delay: 0, options: [.curveLinear, .repeat, .autoreverse], animations: {
+                self.windowChatButton.backgroundColor = Constants.GREY_COLOR;
+                
+            }, completion: nil)
+        }
+        
         if (self.viewContainerChat.isHidden) {
             self.viewContainerChat.isHidden = false;
+            
         } else {
             self.viewContainerChat.isHidden = true;
         }
