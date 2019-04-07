@@ -9,9 +9,6 @@
 import UIKit
 
 class ClassCell: UITableViewCell {
-
-    @IBOutlet weak var classNameField: UITextField!
-
     var delegate: SideToolbarDelegate?
     var methods: [String] = []
     var attributes: [String] = []
@@ -45,9 +42,6 @@ class ClassCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
-    }
-    @IBAction func nameAttributeChanged(_ sender: UITextField) {
-        delegate?.setSelectedFigureName(name: sender.text!)
     }
 }
 

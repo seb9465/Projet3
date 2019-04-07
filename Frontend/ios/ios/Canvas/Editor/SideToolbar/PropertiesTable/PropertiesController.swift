@@ -42,7 +42,7 @@ extension PropertiesTableController: UITableViewDelegate, UITableViewDataSource 
         if (indexPath.row == 0) {
             return 80
         }
-        return 525
+        return 470
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -62,7 +62,6 @@ extension PropertiesTableController: UITableViewDelegate, UITableViewDataSource 
         let cell = tableView.dequeueReusableCell(withIdentifier: "ClassCell", for: indexPath) as! ClassCell
         cell.setUpTable()
         cell.delegate = self.editor
-        cell.classNameField.text = (self.editor.selectedFigures[0] as! UmlClassFigure).name
         cell.methods = (self.editor.selectedFigures[0] as! UmlClassFigure).methods
         cell.methodsTableView.reloadData()
         cell.attributes = (self.editor.selectedFigures[0] as! UmlClassFigure).attributes
