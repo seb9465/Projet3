@@ -49,6 +49,7 @@ extension Editor {
         if (beforeAfter.0.isEmpty) {
             self.deleteFigures(drawViewModels: beforeAfter.1)
             CollaborationHub.shared?.CutObjects(drawViewModels: beforeAfter.1)
+            CanvasService.saveOnNewFigure(figures: self.figures, editor: self)
             self.redoArray.append(beforeAfter)
             return
         }
@@ -56,6 +57,7 @@ extension Editor {
         if (beforeAfter.1.isEmpty) {
             self.insertFigures(drawViewModels: beforeAfter.0)
             CollaborationHub.shared?.postNewFigure(drawViewModels: beforeAfter.0)
+            CanvasService.saveOnNewFigure(figures: self.figures, editor: self)
             self.redoArray.append(beforeAfter)
             return
         }
@@ -63,6 +65,7 @@ extension Editor {
         self.deleteFigures(drawViewModels: beforeAfter.1)
         self.insertFigures(drawViewModels: beforeAfter.0)
         CollaborationHub.shared?.postNewFigure(drawViewModels: beforeAfter.0)
+        CanvasService.saveOnNewFigure(figures: self.figures, editor: self)
         self.redoArray.append(beforeAfter)
     }
     
@@ -77,6 +80,7 @@ extension Editor {
         if (beforeAfter.0.isEmpty) {
             self.insertFigures(drawViewModels: beforeAfter.1)
             CollaborationHub.shared?.postNewFigure(drawViewModels: beforeAfter.1)
+            CanvasService.saveOnNewFigure(figures: self.figures, editor: self)
             self.undoArray.append(beforeAfter)
             return
         }
@@ -84,6 +88,7 @@ extension Editor {
         if (beforeAfter.1.isEmpty) {
             self.deleteFigures(drawViewModels: beforeAfter.0)
             CollaborationHub.shared?.CutObjects(drawViewModels: beforeAfter.0)
+            CanvasService.saveOnNewFigure(figures: self.figures, editor: self)
             self.undoArray.append(beforeAfter)
             return
         }
@@ -91,6 +96,7 @@ extension Editor {
         self.deleteFigures(drawViewModels: beforeAfter.0)
         self.insertFigures(drawViewModels: beforeAfter.1)
         CollaborationHub.shared?.postNewFigure(drawViewModels: beforeAfter.1)
+        CanvasService.saveOnNewFigure(figures: self.figures, editor: self)
         self.undoArray.append(beforeAfter)
     }
 }
