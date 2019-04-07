@@ -73,7 +73,6 @@
 		B711B5F121F659A50096BF7F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B711B5F021F659A50096BF7F /* Assets.xcassets */; };
 		B711B5F421F659A50096BF7F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B711B5F221F659A50096BF7F /* LaunchScreen.storyboard */; };
 		B711B5FF21F659A50096BF7F /* iosTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B711B5FE21F659A50096BF7F /* iosTests.swift */; };
-		B7210F81225AB1EB0059EBB3 /* DashboardController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7210F80225AB1EB0059EBB3 /* DashboardController.swift */; };
 		B74BE372221F40950001D62A /* CanvasService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74BE371221F40950001D62A /* CanvasService.swift */; };
 		B7567946220F33CD00F80B12 /* ChatService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7567945220F33CD00F80B12 /* ChatService.swift */; };
 		B7567948220F355F00F80B12 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7567947220F355F00F80B12 /* Constants.swift */; };
@@ -210,7 +209,6 @@
 		B711B5FA21F659A50096BF7F /* iosTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iosTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B711B5FE21F659A50096BF7F /* iosTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iosTests.swift; sourceTree = "<group>"; };
 		B711B60021F659A50096BF7F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		B7210F80225AB1EB0059EBB3 /* DashboardController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardController.swift; sourceTree = "<group>"; };
 		B74BE371221F40950001D62A /* CanvasService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasService.swift; sourceTree = "<group>"; };
 		B7567945220F33CD00F80B12 /* ChatService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatService.swift; sourceTree = "<group>"; };
 		B7567947220F355F00F80B12 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -622,7 +620,6 @@
 				B711B5F221F659A50096BF7F /* LaunchScreen.storyboard */,
 				B711B5F521F659A50096BF7F /* Info.plist */,
 				3DC967EC220A09C400FA76CB /* DashboardController.swift */,
-				B7210F80225AB1EB0059EBB3 /* DashboardController.swift */,
 				B7567947220F355F00F80B12 /* Constants.swift */,
 				B775FE3E22135D6300B2EFE0 /* Spinner.swift */,
 				C4AA4ADA22553F4C005607E8 /* Base64Const.swift */,
@@ -978,7 +975,6 @@
 				C47715CB2241C729008F27E6 /* FigureCellProtocol.swift in Sources */,
 				3D5537C02200E86E002C1B77 /* SlideDownSegue.swift in Sources */,
 				3D6E4C37223AD53300E391D4 /* TouchEventState.swift in Sources */,
-				B7210F81225AB1EB0059EBB3 /* DashboardController.swift in Sources */,
 				3DABD3F52241975C00707D86 /* FigureTableController.swift in Sources */,
 				3DC967ED220A09C400FA76CB /* DashboardController.swift in Sources */,
 				3D099FB82256B72D00650721 /* EditorTouchInputDelegate.swift in Sources */,

@@ -31,12 +31,6 @@ class DashboardController: UIViewController, UITextFieldDelegate {
         ChatService.shared.connectToUserChatRooms();
         ChatService.shared.initOnReceivingMessage(insertMessage:{_ in }, updateChatRooms: { });
         ChatService.shared.connectToHub();
-        ChatService.shared.afkMessagesDidChangeClosure = {
-            UIView.animate(withDuration: 1.0, delay: 0, options: [.curveLinear, .repeat, .autoreverse], animations: {
-                self.windowChatButton.backgroundColor = Constants.LIGHT_RED_COLOR;
-                
-            }, completion: nil);
-        }
         
         self.viewContainerChat.sizeToFit(); // Adjusting frame size
         self.viewContainerChat.isHidden = true;
@@ -128,22 +122,10 @@ class DashboardController: UIViewController, UITextFieldDelegate {
      Removes the color animation on the Window Chat button, and opens or closes the ChatRoom view.
      */
     @IBAction func windowChatTrigger(_ sender: Any) {
-        print("CHAT BUTTON CLICKED");
-        
         if (self.viewContainerChat.isHidden) {
             self.viewContainerChat.isHidden = false;
-            
-            ChatService.shared.afkMessagesDidChangeClosure = {
-                UIView.animate(withDuration: 1.0, delay: 0, options: [.curveLinear, .repeat, .autoreverse], animations: { }, completion: nil);
-            }
         } else {
             self.viewContainerChat.isHidden = true;
-            
-            ChatService.shared.afkMessagesDidChangeClosure = {
-                UIView.animate(withDuration: 1.0, delay: 0, options: [.curveLinear, .repeat, .autoreverse], animations: {
-                    self.windowChatButton.backgroundColor = Constants.LIGHT_RED_COLOR;
-                }, completion: nil);
-            }
         }
     }
 }
