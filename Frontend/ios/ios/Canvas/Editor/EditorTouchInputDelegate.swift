@@ -279,6 +279,7 @@ extension Editor : TouchInputDelegate {
             self.touchEventState = .SELECT
             return
         }
+
         if (self.touchEventState == .CANVAS_RESIZE) {
             self.resize(width: point.x, heigth: point.y)
             CollaborationHub.shared?.ResizeCanvas(width: Double(point.x), height: Double(point.y))

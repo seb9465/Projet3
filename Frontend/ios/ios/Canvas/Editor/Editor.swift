@@ -63,6 +63,10 @@ class Editor {
     // Select made locally
     func select(figure: Figure) {
         let selectionOutline: SelectionOutline = SelectionOutline(frame: figure.getSelectionFrame(), associatedFigureID: figure.uuid, delegate: self)
+        if (figure is ConnectionFigure) {
+            print("Showing ELBOW")
+            (figure as! ConnectionFigure).showElbowAnchor()
+        }
         self.editorView.addSubview(selectionOutline)
         self.selectedFigures.append(figure)
         self.selectionOutlines.append(selectionOutline)
@@ -106,6 +110,12 @@ class Editor {
             }
             
             self.selectionOutlines.removeAll();
+        }
+        
+        for figure in self.selectedFigures {
+            if (figure is ConnectionFigure) {
+                (figure as! ConnectionFigure).hideElbowAnchor()
+            }
         }
         CollaborationHub.shared!.selectObjects(drawViewModels: [])
         self.deselectLasso();
@@ -331,6 +341,20 @@ extension Editor: SideToolbarDelegate {
     func setSelectedFigureName(name: String) {
         for figure in self.selectedFigures {
             figure.setFigureName(name: name)
+        }
+        CollaborationHub.shared!.postNewFigure(figures: self.selectedFigures)
+    }
+    
+    func setSelectedFigureSourceLabel(name: String) {
+        for figure in self.selectedFigures {
+            (figure as! ConnectionFigure).setSourceName(name: name)
+        }
+        CollaborationHub.shared!.postNewFigure(figures: self.selectedFigures)
+    }
+    
+    func setSelectedFigureDestinationLabel(name: String) {
+        for figure in self.selectedFigures {
+            (figure as! ConnectionFigure).setDestinationName(name: name)
         }
         CollaborationHub.shared!.postNewFigure(figures: self.selectedFigures)
     }

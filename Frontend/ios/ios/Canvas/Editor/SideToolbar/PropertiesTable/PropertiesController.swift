@@ -22,6 +22,9 @@ class PropertiesTableController: UIViewController {
         
         let commentAttributesnib = UINib.init(nibName: "FigureNameCell", bundle: nil)
         self.propertiesTable.register(commentAttributesnib, forCellReuseIdentifier: "FigureNameCell")
+        
+        let connectionNib = UINib.init(nibName: "ConnectionCell", bundle: nil)
+        self.propertiesTable.register(connectionNib, forCellReuseIdentifier: "ConnectionCell")
     }
 }
 
@@ -35,6 +38,10 @@ extension PropertiesTableController: UITableViewDelegate, UITableViewDataSource 
             return 2
         }
         
+        if (self.editor.selectedFigures[0] is ConnectionFigure) {
+            return 2
+        }
+        
         return 1
     }
     
@@ -42,6 +49,11 @@ extension PropertiesTableController: UITableViewDelegate, UITableViewDataSource 
         if (indexPath.row == 0) {
             return 80
         }
+        
+        if (self.editor.selectedFigures[0] is ConnectionFigure) {
+            return 160
+        }
+    
         return 470
     }
     
@@ -54,6 +66,14 @@ extension PropertiesTableController: UITableViewDelegate, UITableViewDataSource 
             let cell = tableView.dequeueReusableCell(withIdentifier: "FigureNameCell", for: indexPath) as! FigureNameCell
             cell.setFigureTypeLabel(figureType: self.editor.selectedFigures[0].itemType.description + " Name")
             cell.nameInputField.text = self.editor.selectedFigures[0].name
+            cell.delegate = self.editor
+            return cell
+        }
+        
+        if (self.editor.selectedFigures[0] is ConnectionFigure) {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "ConnectionCell", for: indexPath) as! ConnectionCell
+            cell.sourceNameInputField.text = self.editor.selectedFigures[0].sourceName
+            cell.destinationNameInputField.text = self.editor.selectedFigures[0].destinationName
             cell.delegate = self.editor
             return cell
         }
