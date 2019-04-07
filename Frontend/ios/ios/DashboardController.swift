@@ -18,6 +18,7 @@ class DashboardController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var usernameLabel: UILabel!
     @IBOutlet var logoutButton: RoundedCorners!
     @IBOutlet var viewContainerChat: UIView!
+    @IBOutlet var windowChatButton: RoundedCorners!
     
     // MARK: Timing functions
     
@@ -30,7 +31,13 @@ class DashboardController: UIViewController, UITextFieldDelegate {
         ChatService.shared.connectToUserChatRooms();
         ChatService.shared.initOnReceivingMessage(insertMessage:{_ in }, updateChatRooms: { });
         ChatService.shared.connectToHub();
-        
+        ChatService.shared.afkMessagesDidChangeClosure = {
+            UIView.animate(withDuration: 1.0, delay: 1.0, options: UIView.AnimationOptions.curveEaseOut, animations: {
+                
+                self.windowChatButton.alpha = 0.0;
+                
+            }, completion: nil)
+        }
         
         self.viewContainerChat.sizeToFit(); // Adjusting frame size
         self.viewContainerChat.isHidden = true;

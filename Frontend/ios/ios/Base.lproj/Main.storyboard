@@ -498,6 +498,7 @@
                         <outlet property="logoutButton" destination="p9k-FE-qKI" id="ulq-v1-ocK"/>
                         <outlet property="usernameLabel" destination="DPA-sG-7nO" id="GgY-UD-Jy6"/>
                         <outlet property="viewContainerChat" destination="wRI-Wo-NFL" id="fXi-3T-KcQ"/>
+                        <outlet property="windowChatButton" destination="Co4-to-R3M" id="XMl-km-HBV"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ktH-qe-LBO" userLabel="First Responder" sceneMemberID="firstResponder"/>
