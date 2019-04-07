@@ -310,7 +310,6 @@ class ChatService {
                 if (message.username != currentMemberName) {
                     if (self._currentChannel != nil && self._currentChannel.name == message.channelId) {
                         insertMessage(newMessage);
-                        SoundNotification.play(sound: Sound.SendMessage);
                     } else {
                         let tmp: [String: [Message]] = [message.channelId: [newMessage]];
                         if (self._messagesWhileAFK.keys.contains(message.channelId)) {
@@ -323,6 +322,8 @@ class ChatService {
                         
                         updateChatRooms();
                     }
+                    
+                    SoundNotification.play(sound: Sound.SendMessage);
                 }
             }
         });
