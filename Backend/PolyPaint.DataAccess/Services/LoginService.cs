@@ -2,8 +2,10 @@
 using PolyPaint.Core;
 using PolyPaint.Core.ViewModels;
 using System;
+using System.Globalization;
 using System.Linq;
 using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 namespace PolyPaint.DataAccess.Services
 {
@@ -129,7 +131,7 @@ namespace PolyPaint.DataAccess.Services
                     ApplicationUser newUser = new ApplicationUser
                     {
                         FirstName = facebookLogin.FirstName,
-                        UserName = facebookLogin.Username,
+                        UserName = RemoveDiacritics(facebookLogin.FirstName + "." + facebookLogin.LastName),
                         Email = facebookLogin.Email,
                         LastName = facebookLogin.LastName
                     };
@@ -170,5 +172,12 @@ namespace PolyPaint.DataAccess.Services
                 return token;
             }
         }
+        static string RemoveDiacritics(string text)
+        {
+            byte[] tempBytes;
+            tempBytes = System.Text.Encoding.GetEncoding("ISO-8859-8").GetBytes(text);
+            return System.Text.Encoding.UTF8.GetString(tempBytes);
+        }
     }
+
 }

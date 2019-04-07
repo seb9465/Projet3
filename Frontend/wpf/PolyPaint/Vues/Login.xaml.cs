@@ -5,6 +5,7 @@ using PolyPaint.Modeles;
 using PolyPaint.VueModeles;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Net.Http;
@@ -72,14 +73,14 @@ namespace PolyPaint.Vues
 
                     DecodeToken(token);
 
-                    List<SaveableCanvas> strokes;
+                    ObservableCollection<SaveableCanvas> strokes;
                     using (client)
                     {
                         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", (string)Application.Current.Properties["token"]);
                         System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
                         HttpResponseMessage response = await client.GetAsync($"{Config.URL}/api/user/AllCanvas");
                         string responseString = await response.Content.ReadAsStringAsync();
-                        strokes = JsonConvert.DeserializeObject<List<SaveableCanvas>>(responseString);
+                        strokes = JsonConvert.DeserializeObject<ObservableCollection<SaveableCanvas>>(responseString);
                     }
 
                     ChatClient chatClient = new ChatClient();
@@ -154,14 +155,14 @@ namespace PolyPaint.Vues
 
                     DecodeToken(token);
 
-                    List<SaveableCanvas> strokes;
+                    ObservableCollection<SaveableCanvas> strokes;
                     using (client)
                     {
                         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", (string)Application.Current.Properties["token"]);
                         System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
                         HttpResponseMessage response = await client.GetAsync($"{Config.URL}/api/user/AllCanvas");
                         string responseString = await response.Content.ReadAsStringAsync();
-                        strokes = JsonConvert.DeserializeObject<List<SaveableCanvas>>(responseString);
+                        strokes = JsonConvert.DeserializeObject<ObservableCollection<SaveableCanvas>>(responseString);
                     }
 
                     ChatClient chatClient = new ChatClient();
