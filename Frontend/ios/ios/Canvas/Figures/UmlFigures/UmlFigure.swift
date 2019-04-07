@@ -197,18 +197,20 @@ extension UmlFigure {
         return indexToAnchor[minIndex!]!
     }
     
-    func serializeIncomingConnections() -> [String : String] {
-        var incoming : [String: String] = [:]
+    func serializeIncomingConnections() -> [[String]] {
+        var incoming : [[String]] = []
         for pair in self.incomingConnections {
-            incoming.updateValue(pair.value, forKey: pair.key.uuid.uuidString.lowercased())
+            let connectionToAnchor: [String] = [pair.key.uuid.uuidString.lowercased(), pair.value]
+            incoming.append(connectionToAnchor)
         }
         return incoming
     }
     
-    func serializeOutgoingConnections() -> [String : String] {
-        var outgoing : [String: String] = [:]
+    func serializeOutgoingConnections() -> [[String]] {
+        var outgoing : [[String]] = []
         for pair in self.outgoingConnections {
-            outgoing.updateValue(pair.value, forKey: pair.key.uuid.uuidString.lowercased())
+            let connectionToAnchor: [String] = [pair.key.uuid.uuidString.lowercased(), pair.value]
+            outgoing.append(connectionToAnchor)
         }
         return outgoing
     }

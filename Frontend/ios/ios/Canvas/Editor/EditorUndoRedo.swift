@@ -58,5 +58,29 @@ extension Editor {
         
         self.deleteFigures(drawViewModels: beforeAfter.1)
         self.insertFigures(drawViewModels: beforeAfter.0)
+        self.redoArray.append(beforeAfter)
+    }
+    
+    
+    public func redo(view: UIView) -> Void {
+        if (self.redoArray.isEmpty) {
+            return
+        }
+        
+        let beforeAfter = redoArray.popLast()!
+        
+        if (beforeAfter.1.isEmpty) {
+            self.deleteFigures(drawViewModels: beforeAfter.0)
+            return
+        }
+        
+        if (beforeAfter.0.isEmpty) {
+            self.insertFigures(drawViewModels: beforeAfter.1)
+            return
+        }
+        
+        self.deleteFigures(drawViewModels: beforeAfter.0)
+        self.insertFigures(drawViewModels: beforeAfter.1)
+        self.undoArray.append(beforeAfter)
     }
 }

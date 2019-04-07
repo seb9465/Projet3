@@ -19,6 +19,7 @@ class Editor {
     // UNDO / REDO Properties
     var currentChange: ([DrawViewModel], [DrawViewModel]) = ([], [])
     var undoArray: [([DrawViewModel], [DrawViewModel])] = []
+    var redoArray: [([DrawViewModel], [DrawViewModel])] = []
 //    var redoArray: [Figure] = [];
     
     var figures: [Figure] = [];
@@ -253,17 +254,6 @@ class Editor {
         self.deselect(username: username)
     }
     
-    
-    
-    public func redo(view: UIView) -> Void {
-//        if (redoArray.count > 0) {
-//            let figure: Figure = self.redoArray.last!;
-//            self.editorView.addSubview(figure);
-//            self.undoArray.append(figure);
-//            self.redoArray.removeLast();
-//        }
-    }
-    
     public func clear() -> Void {
         print("clearing")
         for view in self.editorView.subviews {
@@ -382,16 +372,16 @@ extension Editor {
     func bindConnectionsToFigures(drawViewModels: [DrawViewModel]) {
         for umlFigureModel in drawViewModels.filter({$0.ItemType?.description != "Connection"}) {
             let figure = self.figures.first(where: {$0.uuid.uuidString.lowercased() == umlFigureModel.Guid}) as! UmlFigure
-            let incomingConnections: [String: String] = umlFigureModel.inConnections!
+            let incomingConnections: [[String]] = umlFigureModel.InConnections!
             for uuidToin in incomingConnections {
-                let connection: ConnectionFigure = self.figures.first(where: {$0.uuid.uuidString.lowercased() == uuidToin.key}) as! ConnectionFigure
-                figure.addIncomingConnection(connection: connection, anchor: uuidToin.value)
+                let connection: ConnectionFigure = self.figures.first(where: {$0.uuid.uuidString.lowercased() == uuidToin[0]}) as! ConnectionFigure
+                figure.addIncomingConnection(connection: connection, anchor: uuidToin[1])
             }
             
-            let outgoingConnections: [String: String] = umlFigureModel.outConnections!
+            let outgoingConnections: [[String]] = umlFigureModel.OutConnections!
             for uuidToout in outgoingConnections {
-                let connection: ConnectionFigure = self.figures.first(where: {$0.uuid.uuidString.lowercased() == uuidToout.key}) as! ConnectionFigure
-                figure.addOutgoingConnection(connection: connection, anchor: uuidToout.value)
+                let connection: ConnectionFigure = self.figures.first(where: {$0.uuid.uuidString.lowercased() == uuidToout[0]}) as! ConnectionFigure
+                figure.addOutgoingConnection(connection: connection, anchor: uuidToout[1])
             }
         }
     }

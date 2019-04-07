@@ -10,6 +10,18 @@ import UIKit
 extension Editor : TouchInputDelegate {
     func notifyTouchBegan(action: String, point: CGPoint, figure: Figure?) {
         print(self.touchEventState)
+//        if (self.touchEventState == .SELECT) {
+//            self.handleSelectTouchBegin(action: action, point: point)
+//            return
+//        }
+//        
+//        if (self.touchEventState == .INSERT) {
+//            self.insertFigure(position: point)
+//            self.touchEventState = .SELECT
+//            self.updateSideToolBar()
+//            return
+//        }
+        
         switch (self.touchEventState) {
         case .SELECT:
             self.handleSelectTouchBegin(action: action, point: point)

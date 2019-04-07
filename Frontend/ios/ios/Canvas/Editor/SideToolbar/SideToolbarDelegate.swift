@@ -14,7 +14,6 @@ protocol SideToolbarDelegate {
     func setSelectedFigureBorderStyle(isDashed: Bool)
     func setSelectedFigureLineWidth(width: CGFloat)
     func setSelectedFigureName(name: String)
-    func setSelectedFigureNameDidEnd()
     func setSelectedFigureSourceLabel(name: String)
     func setSelectedFigureDestinationLabel(name: String)
     func addClassMethod(name: String)
