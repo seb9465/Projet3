@@ -19,6 +19,7 @@ class DashboardController: UIViewController, UITextFieldDelegate {
     @IBOutlet var logoutButton: RoundedCorners!
     @IBOutlet var viewContainerChat: UIView!
     @IBOutlet var windowChatButton: RoundedCorners!
+    @IBOutlet var chatNotifLabel: UILabel!
     
     // MARK: Timing functions
     
@@ -32,7 +33,15 @@ class DashboardController: UIViewController, UITextFieldDelegate {
         ChatService.shared.initOnReceivingMessage(insertMessage:{_ in }, updateChatRooms: { });
         ChatService.shared.connectToHub();
         
-        self.viewContainerChat.sizeToFit(); // Adjusting frame size
+        self.setChatViewContainer();
+        
+        self.setChatNotifLabel();
+    }
+    
+    // MARK: Private functions
+    
+    private func setChatViewContainer() -> Void {
+        self.viewContainerChat.sizeToFit();
         self.viewContainerChat.isHidden = true;
         self.viewContainerChat.layer.cornerRadius = Constants.ChatView.cornerRadius;
         self.viewContainerChat.layer.shadowColor = Constants.ChatView.shadowColor;
@@ -40,6 +49,15 @@ class DashboardController: UIViewController, UITextFieldDelegate {
         self.viewContainerChat.layer.shadowOpacity = Constants.ChatView.shadowOpacity;
         self.viewContainerChat.layer.shadowRadius = Constants.ChatView.shadowRadius;
         self.viewContainerChat.layer.masksToBounds = false;
+    }
+    
+    private func setChatNotifLabel() -> Void {
+        self.chatNotifLabel.layer.cornerRadius = self.chatNotifLabel.frame.width / 2;
+        self.chatNotifLabel.layer.backgroundColor = Constants.DEFAULT_BLUE_COLOR.cgColor;
+        self.chatNotifLabel.textColor = UIColor.white;
+        self.chatNotifLabel.text = "";
+        self.chatNotifLabel.textAlignment = .center;
+        self.chatNotifLabel.isHidden = true;
     }
     
     // MARK: Action functions
