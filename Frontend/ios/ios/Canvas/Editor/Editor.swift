@@ -16,6 +16,8 @@ class Editor {
     var selectedFiguresDictionnary: [String : [DrawViewModel]] = [:]
     var selectedOutlinesDictionnary: [String : [SelectionOutline]] = [:]
     
+    // UNDO / REDO Properties
+    var currentChange: ([DrawViewModel], [DrawViewModel]) = ([], [])
     var undoArray: [([DrawViewModel], [DrawViewModel])] = []
 //    var redoArray: [Figure] = [];
     
@@ -196,11 +198,13 @@ class Editor {
             type: itemType,
             source: firstPoint,
             destination: lastPoint
-        )
-        figure!.delegate = self
-        self.editorView.addSubview(figure!);
-        self.figures.append(figure!)
-        return figure!
+        )!
+        
+        figure.delegate = self
+        self.undoArray.append(([], [figure.exportViewModel()!]))
+        self.editorView.addSubview(figure);
+        self.figures.append(figure)
+        return figure
     }
     
     public func insertFigure(drawViewModel: DrawViewModel) -> Figure {
@@ -211,6 +215,7 @@ class Editor {
         return figure
     }
     
+    // Deletes figures in local selections
     public func deleteSelectedFigures() {
         if (self.selectedFigures.isEmpty) {
             return
@@ -248,36 +253,7 @@ class Editor {
         self.deselect(username: username)
     }
     
-    func deleteFigures(drawViewModels: [DrawViewModel]) {
-        for drawViewModel in drawViewModels {
-            let figure = self.getFigureFromDrawViewModel(model: drawViewModel)
-            
-            if (figure is ConnectionFigure) {
-                (figure as! ConnectionFigure).removeFromConnectedFigures(umlFigures: self.figures.filter({$0 is UmlFigure}) as! [UmlFigure])
-            }
-            
-            figure.removeFromSuperview()
-            self.figures.removeAll{$0 == figure}
-        }
-        
-        self.deselect()
-    }
     
-    public func undo(view: UIView) -> Void {
-        if (self.undoArray.isEmpty) {
-            return
-        }
-        
-        let beforeAfter = undoArray.popLast()!
-        if (beforeAfter.0.isEmpty) {
-            self.deleteFigures(drawViewModels: beforeAfter.1)
-        }
-//        if (undoArray.count > 0) {
-//            let figure: Figure = undoArray.popLast()!;
-//            self.redoArray.append(figure);
-//            figure.removeFromSuperview();
-//        }
-    }
     
     public func redo(view: UIView) -> Void {
 //        if (redoArray.count > 0) {

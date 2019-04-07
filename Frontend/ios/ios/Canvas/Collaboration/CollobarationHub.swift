@@ -232,7 +232,6 @@ class CollaborationHub {
             let jsonString: String = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self)!;
             let jsonData = jsonString.data(using: .utf8)
             let itemMessage: ItemMessage = try! JSONDecoder().decode(ItemMessage.self, from: jsonData!);
-            
             self.delegate!.updateCanvas(itemMessage: itemMessage)
         })
     }

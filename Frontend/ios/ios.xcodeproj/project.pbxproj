@@ -56,6 +56,7 @@
 		3DBC3A6522598AE8000FBB0F /* ConnectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3DBC3A6322598AE8000FBB0F /* ConnectionCell.xib */; };
 		3DBC3A672259998F000FBB0F /* ClearConnectionAnchor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DBC3A662259998F000FBB0F /* ClearConnectionAnchor.swift */; };
 		3DBC3A692259B535000FBB0F /* EditorSideToolbarDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DBC3A682259B535000FBB0F /* EditorSideToolbarDelegate.swift */; };
+		3DBC3A6B2259C4AE000FBB0F /* EditorUndoRedo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DBC3A6A2259C4AE000FBB0F /* EditorUndoRedo.swift */; };
 		3DC07CC722205B7C0045E7DE /* ContextMenuCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DC07CC622205B7C0045E7DE /* ContextMenuCell.swift */; };
 		3DC61EB92200B44B003FE445 /* RegisterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DC61EB82200B44B003FE445 /* RegisterController.swift */; };
 		3DC967EB220A067900FA76CB /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DC967EA220A067900FA76CB /* LoginController.swift */; };
@@ -190,6 +191,7 @@
 		3DBC3A6322598AE8000FBB0F /* ConnectionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ConnectionCell.xib; sourceTree = "<group>"; };
 		3DBC3A662259998F000FBB0F /* ClearConnectionAnchor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClearConnectionAnchor.swift; sourceTree = "<group>"; };
 		3DBC3A682259B535000FBB0F /* EditorSideToolbarDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorSideToolbarDelegate.swift; sourceTree = "<group>"; };
+		3DBC3A6A2259C4AE000FBB0F /* EditorUndoRedo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorUndoRedo.swift; sourceTree = "<group>"; };
 		3DC07CC622205B7C0045E7DE /* ContextMenuCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContextMenuCell.swift; sourceTree = "<group>"; };
 		3DC61EB82200B44B003FE445 /* RegisterController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterController.swift; sourceTree = "<group>"; };
 		3DC967EA220A067900FA76CB /* LoginController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
@@ -328,6 +330,7 @@
 				3D22E1642257E97E007DF61B /* EditorGesturesHandler.swift */,
 				C4C17D3D2258FECC00A27872 /* EditorDelegate.swift */,
 				3DBC3A682259B535000FBB0F /* EditorSideToolbarDelegate.swift */,
+				3DBC3A6A2259C4AE000FBB0F /* EditorUndoRedo.swift */,
 			);
 			path = Editor;
 			sourceTree = "<group>";
@@ -987,6 +990,7 @@
 				B7B1B43C2231C00400BEE17D /* MessageInpuBarExtension.swift in Sources */,
 				B7AADC6E22356FBE00F7C0EC /* CustomHeaderCell.swift in Sources */,
 				3DF62984221C9FB30052209A /* Canvas.swift in Sources */,
+				3DBC3A6B2259C4AE000FBB0F /* EditorUndoRedo.swift in Sources */,
 				3DC61EB92200B44B003FE445 /* RegisterController.swift in Sources */,
 				3DD55D722227208C009D893B /* CollobarationHub.swift in Sources */,
 				3DA5CA57224444C100087298 /* ConnectionHeritage.swift in Sources */,

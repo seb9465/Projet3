@@ -73,24 +73,34 @@ extension Editor : TouchInputDelegate {
                 return
             }
             
-            if (!(self.selectedFigures[0] is ConnectionFigure)) {
+            if (!(self.selectedFigures.contains(where: {$0 is ConnectionFigure}))) {
+                self.currentChange.0 = self.getSelectedFiguresDrawviewModels()
                 self.touchEventState = .TRANSLATE
                 return
             }
             
             // Check if user is selecting the elbow
-            if ((self.selectedFigures[0] as! ConnectionFigure).isPointOnElbow(point: point)) {
-                self.touchEventState = .ELBOW
-                return
+            if (self.selectedFigures.count == 1) {
+                if ((self.selectedFigures[0] as! ConnectionFigure).isPointOnElbow(point: point)) {
+                    
+                    var models: [DrawViewModel] = self.getSelectedFiguresDrawviewModels()
+                    let connection: ConnectionFigure = (self.selectedFigures[0] as! ConnectionFigure)
+                    models.append(contentsOf: self.getFiguresDrawviewModels(figures: connection.getAnchoredUmlFigures(umlFigures: self.getUmlFigures())))
+
+                    self.currentChange.0 = models
+                    self.touchEventState = .ELBOW
+                    return
+                }
             }
             
-            if ((self.selectedFigures[0] as! ConnectionFigure).isOriginAnchored(umlFigures: self.figures.filter({$0 is UmlFigure}) as! [UmlFigure])) {
-                return
-            }
-            if ((self.selectedFigures[0] as! ConnectionFigure).isDestinationAnchored(umlFigures: self.figures.filter({$0 is UmlFigure}) as! [UmlFigure])) {
-                return
+            // Only translate when all connected Anchors are selected
+            for connection in self.selectedFigures.filter({$0 is ConnectionFigure}) {
+                if (!self.isAllAnchoredFiguresInSelection(connection: connection as! ConnectionFigure)) {
+                    return
+                }
             }
             
+            self.currentChange.0 = self.getSelectedFiguresDrawviewModels()
             self.touchEventState = .TRANSLATE
             return
         }
@@ -115,16 +125,9 @@ extension Editor : TouchInputDelegate {
             var xOffset = CGFloat(point.x - self.previousTouchPoint.x)
             var yOffset = CGFloat(point.y - self.previousTouchPoint.y)
             
-            // Only translate when all connected Anchors are selected
-            for connection in self.selectedFigures.filter({$0 is ConnectionFigure}) {
-                if (!self.isAllAnchoredFiguresInSelection(connection: connection as! ConnectionFigure)) {
-                    return
-                }
-            }
-            
             for figure in self.selectedFigures {
                 let tmpOutlineIndex: Int = self.selectionOutlines.firstIndex(where: { $0.associatedFigureID == figure.uuid })!;
-               let boundTouched: BoundTouched? = self.isOutOfBounds(view: self.selectionOutlines[tmpOutlineIndex])
+                let boundTouched: BoundTouched? = self.isOutOfBounds(view: self.selectionOutlines[tmpOutlineIndex])
 
                 
                 switch(boundTouched) {
@@ -180,7 +183,6 @@ extension Editor : TouchInputDelegate {
                 case .none:
                     break
                 }
-                print(boundTouched)
 
                 let offset = CGPoint(x: xOffset, y: yOffset)
                 figure.translate(by: offset)
@@ -266,14 +268,23 @@ extension Editor : TouchInputDelegate {
                     figuresToUpdate.append(contentsOf: (figure as! UmlFigure).getAnchoredConnections())
                 }
             }
-
-            CollaborationHub.shared!.postNewFigure(figures: self.selectedFigures)
+            
+            self.currentChange.1 = self.getSelectedFiguresDrawviewModels()
+            self.undoArray.append((self.currentChange))
+            
+            CollaborationHub.shared!.postNewFigure(figures: figuresToUpdate)
             CollaborationHub.shared!.selectObjects(drawViewModels: self.getSelectedFiguresDrawviewModels())
             self.touchEventState = .SELECT
             return
         }
         
         if (self.touchEventState == .ELBOW) {
+            var models: [DrawViewModel] = self.getSelectedFiguresDrawviewModels()
+            let connection: ConnectionFigure = (self.selectedFigures[0] as! ConnectionFigure)
+            models.append(contentsOf: self.getFiguresDrawviewModels(figures: connection.getAnchoredUmlFigures(umlFigures: self.getUmlFigures())))
+            self.currentChange.1 = models
+            self.undoArray.append((self.currentChange))
+            
             CollaborationHub.shared!.postNewFigure(figures: self.selectedFigures)
             CollaborationHub.shared!.selectObjects(drawViewModels: self.getSelectedFiguresDrawviewModels())
             self.touchEventState = .SELECT

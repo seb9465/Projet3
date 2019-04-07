@@ -19,6 +19,19 @@ extension Editor {
         return drawViewModels
     }
     
+    func getFiguresDrawviewModels(figures: [Figure]) -> [DrawViewModel] {
+        var drawViewModels: [DrawViewModel] = []
+        for figure in figures {
+            drawViewModels.append(figure.exportViewModel()!)
+        }
+        
+        return drawViewModels
+    }
+    
+//    func getConnectionAndAnchoredFiguresModels(connection: ConnectionFigure) {
+//        
+//    }
+    
     func getUmlFigures() -> [UmlFigure] {
         return self.figures.filter({$0 is UmlFigure}) as! [UmlFigure]
     }
