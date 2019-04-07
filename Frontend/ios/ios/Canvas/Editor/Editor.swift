@@ -551,4 +551,8 @@ enum BoundTouched {
     case Down
     case Left
     case Right
+    case UpLeft
+    case UpRight
+    case DownLeft
+    case DownRight
 }

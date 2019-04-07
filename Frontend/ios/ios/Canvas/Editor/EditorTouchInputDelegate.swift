@@ -124,31 +124,64 @@ extension Editor : TouchInputDelegate {
             
             for figure in self.selectedFigures {
                 let tmpOutlineIndex: Int = self.selectionOutlines.firstIndex(where: { $0.associatedFigureID == figure.uuid })!;
-//                let boundTouched: BoundTouched? = self.isOutOfBounds(view: self.selectionOutlines[tmpOutlineIndex])
-//
-//                switch(boundTouched) {
-//                case .Up?:
-//                    if(yOffset < 0) {
-//                        yOffset = 0
-//                    }
-//                    break
-//                case .Down?:
-//                    if(yOffset > 0) {
-//                        yOffset = 0
-//                    }
-//                case .Left?:
-//                    if(xOffset < 0) {
-//                        xOffset = 0
-//                    }
-//                    break
-//                case .Right?:
-//                    if(xOffset > 0) {
-//                        xOffset = 0
-//                    }
-//                case .none:
-//                    break
-//                }
+               let boundTouched: BoundTouched? = self.isOutOfBounds(view: self.selectionOutlines[tmpOutlineIndex])
+
                 
+                switch(boundTouched) {
+                case .Up?:
+                    if(yOffset < 0) {
+                        yOffset = 0
+                    }
+                    break
+                case .Down?:
+                    if(yOffset > 0) {
+                        yOffset = 0
+                    }
+                    break
+                case .Left?:
+                    if(xOffset < 0) {
+                        xOffset = 0
+                    }
+                    break
+                case .Right?:
+                    if(xOffset > 0) {
+                        xOffset = 0
+                    }
+                    break
+                    
+                case .UpLeft?:
+                    if(yOffset < 0) {
+                        yOffset = 0
+                    }
+                    if(xOffset < 0) {
+                        xOffset = 0
+                    }
+                case .UpRight?:
+                    if(yOffset < 0) {
+                        yOffset = 0
+                    }
+                    if(xOffset > 0) {
+                        xOffset = 0
+                    }
+                case .DownLeft?:
+                    if(yOffset > 0) {
+                        yOffset = 0
+                    }
+                    if(xOffset < 0) {
+                        xOffset = 0
+                    }
+                case .DownRight?:
+                    if(yOffset > 0) {
+                        yOffset = 0
+                    }
+                    if(xOffset > 0) {
+                        xOffset = 0
+                    }
+                case .none:
+                    break
+                }
+                print(boundTouched)
+
                 let offset = CGPoint(x: xOffset, y: yOffset)
                 figure.translate(by: offset)
                 self.selectionOutlines[tmpOutlineIndex].translate(by: offset)
@@ -335,6 +368,23 @@ extension Editor : TouchInputDelegate {
     public func isOutOfBounds(view: UIView) -> BoundTouched? {
         let intersectedFrame = self.editorView.bounds.intersection(view.frame)
         let safetySpace: CGFloat = 1
+        
+        if(abs(intersectedFrame.minX - (view.frame.minX - safetySpace)) >  1 && abs(intersectedFrame.minY - (view.frame.minY - safetySpace)) > 1) {
+            
+            return .UpLeft
+        }
+        
+        if(abs(intersectedFrame.maxX - (view.frame.maxX + safetySpace)) > 1 && abs(intersectedFrame.minY - (view.frame.minY - safetySpace)) > 1) {
+            return .UpRight
+        }
+        
+        if(abs(intersectedFrame.maxY - (view.frame.maxY + safetySpace)) > 1 && abs(intersectedFrame.minX - (view.frame.minX - safetySpace)) >  1) {
+            return .DownLeft
+        }
+        
+        if(abs(intersectedFrame.maxY - (view.frame.maxY + safetySpace)) > 1 && abs(intersectedFrame.maxX - (view.frame.maxX + safetySpace)) > 1) {
+            return .DownRight
+        }
         if(abs(intersectedFrame.minX - (view.frame.minX - safetySpace)) >  1) {
             return .Left
         }
@@ -347,6 +397,7 @@ extension Editor : TouchInputDelegate {
         if(abs(intersectedFrame.maxY - (view.frame.maxY + safetySpace)) > 1) {
             return .Down
         }
+
         return nil
     }
 }
