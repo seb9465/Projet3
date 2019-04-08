@@ -48,8 +48,9 @@ class Editor {
         self.editorView.delegate = self
         let pinch = UIPinchGestureRecognizer(target: self, action: #selector(self.resizeFigure(_:)))
         self.editorView.addGestureRecognizer(pinch)
+        let longPress = UILongPressGestureRecognizer(target: self, action: #selector(self.longPress(_:)))
+        self.editorView.addGestureRecognizer(longPress)
     }
-    
     func resize(width: CGFloat, heigth: CGFloat) {
         currentCanvas.canvasHeight = Float(heigth)
         currentCanvas.canvasWidth = Float(width)
@@ -74,6 +75,7 @@ class Editor {
         self.delegate?.setDuplicateButtonState(isEnabled: true)
         self.selectedFigures.append(figure)
         self.selectionOutlines.append(selectionOutline)
+        self.delegate?.setCurrentTab(index: 1)
     }
     
     // Selection recieved by hub
@@ -125,6 +127,7 @@ class Editor {
         CollaborationHub.shared!.selectObjects(drawViewModels: [])
         self.deselectLasso();
         self.selectedFigures.removeAll();
+        self.delegate?.setCurrentTab(index: 0)
         self.delegate?.setCutButtonState(isEnabled: false)
     }
     

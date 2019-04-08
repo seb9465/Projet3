@@ -70,4 +70,14 @@ extension Editor {
             CollaborationHub.shared!.selectObjects(drawViewModels: self.getSelectedFiguresDrawviewModels())
         }
     }
+    
+    @objc func longPress(_ sender: UILongPressGestureRecognizer) {
+        if (self.selectedFigures.count != 1) {
+            return
+        }        
+        self.delegate?.setCurrentTab(index: 2)
+        self.updateSideToolBar()
+
+    }
 }
+

@@ -17,6 +17,7 @@ var currentCanvas: Canvas = Canvas()
 
 class CanvasController: UIViewController {
     // MARK: - Attributes
+    var tabBar: UITabBarController?
     private var activeButton: UIBarButtonItem!;
     @IBOutlet weak var connectionLabel: UILabel!
     public var editor: Editor = Editor()
@@ -47,7 +48,9 @@ class CanvasController: UIViewController {
         self.initChatViewContainer();
         self.cutButton.isEnabled = false
         self.duplicateButton.isEnabled = false
+        self.tabBar = children.flatMap({ $0 as? UITabBarController }).first
         self.view.addSubview(self.editor.editorView)
+
         setupNetwork()
         
     }
@@ -341,6 +344,14 @@ class CanvasController: UIViewController {
 }
 
 extension CanvasController: EditorDelegate {
+    func setCurrentTab(index: Int) {
+
+        print("longpress with tab index:" + String(index))
+        self.tabBar?.selectedIndex = index
+        self.tabBar?.selectedViewController =  self.tabBar?.viewControllers![index]
+        self.view.setNeedsDisplay()
+    }
+    
     func setCutButtonState(isEnabled: Bool) {
         self.cutButton.isEnabled = isEnabled
     }
