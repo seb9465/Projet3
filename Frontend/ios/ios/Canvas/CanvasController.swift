@@ -24,7 +24,6 @@ class CanvasController: UIViewController {
     public var editor: Editor = Editor()
     @IBOutlet var navigationBar: UIToolbar!
     @IBOutlet var chatViewButton: UIBarButtonItem!
-    @IBOutlet var selectButton: UIBarButtonItem!
     @IBOutlet weak var lassoButton: UIBarButtonItem!
     @IBOutlet weak var quitButton: UIBarButtonItem!
     @IBOutlet weak var cutButton: UIBarButtonItem!
@@ -171,7 +170,6 @@ class CanvasController: UIViewController {
     }
     
     private func resetButtonColor() -> Void {
-        self.selectButton.tintColor = UIColor.black;
         self.lassoButton.tintColor = UIColor.black;
     }
     
@@ -228,7 +226,6 @@ class CanvasController: UIViewController {
         if (self.editor.touchEventState == .SELECT) {
             self.editor.changeTouchHandleState(to: .NONE);
         } else {
-            self.selectButton.tintColor = Constants.Colors.RED_COLOR;
             self.editor.changeTouchHandleState(to: .SELECT)
         }
         

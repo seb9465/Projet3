@@ -47,7 +47,7 @@ class FigureSelectionCell: UITableViewCell {
             self.lastButtonSelected.layer.borderWidth = 0.0
         }
         self.lastButtonSelected = button
-        self.lastButtonSelected.layer.borderColor = Constants.RED_COLOR.cgColor
+        self.lastButtonSelected.layer.borderColor = Constants.Colors.RED_COLOR.cgColor
         self.lastButtonSelected.layer.borderWidth = 2.0
     }
     
