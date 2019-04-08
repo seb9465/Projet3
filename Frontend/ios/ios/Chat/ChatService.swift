@@ -12,17 +12,24 @@ import PromiseKit
 
 class ChatService {
     
+    // MARK: - Singleton instance
+    
     static let shared = ChatService();
     
     // MARK: Attributes
     
     private var _hubConnection: HubConnection;
     private var _members: Members;
-    private var _connected: Bool;
     private var _currentChannel: Channel!;
     private var _userChannels: ChannelsMessage;
     private var _serverChannels: ChannelsMessage;
-    private var _messagesWhileAFK: [String: [Message]];
+    private var _messagesWhileAFK: [String: [Message]] {
+        didSet {
+            afkMessagesDidChangeClosure!();
+        }
+    }
+    
+    public var afkMessagesDidChangeClosure: (() -> ())?;
     
     
     // MARK: Constructor
@@ -40,7 +47,6 @@ class ChatService {
         self._currentChannel = nil;
         self._userChannels = ChannelsMessage();
         self._serverChannels = ChannelsMessage();
-        self._connected = false;
     }
     
     // MARK: Getter - Setter
@@ -66,7 +72,6 @@ class ChatService {
     public func connectToHub() -> Void {
         print("[ CHAT ] Connect to hub");
         self._hubConnection.start();
-        self._connected = true;
     }
     
     // MARK: Public functions
@@ -147,7 +152,6 @@ class ChatService {
     
     public func disconnectFromHub() -> Void {
         self._hubConnection.stop();
-        self._connected = false;
         print("[ CHAT ] Connection stopped");
     }
     
@@ -289,7 +293,7 @@ class ChatService {
         self._hubConnection.on(method: "SendMessage", callback: { args, typeConverter in
             print("[ CHAT ] On SendMessage");
             let messageJson: String = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self)!;
-            if let messageJsonData = messageJson.data(using: .utf8) {
+            if let messageJsonData: Data = messageJson.data(using: .utf8) {
                 let message: ChatMessage = try! JSONDecoder().decode(ChatMessage.self, from: messageJsonData);
                 
                 var memberFromMessage: Member;
@@ -300,7 +304,7 @@ class ChatService {
                     self._members.addMember(member: memberFromMessage);
                 }
                 
-                let newMessage = Message(
+                let newMessage: Message = Message(
                     member: memberFromMessage,
                     text: message.message,
                     timestamp: message.timestamp,
@@ -310,7 +314,6 @@ class ChatService {
                 if (message.username != currentMemberName) {
                     if (self._currentChannel != nil && self._currentChannel.name == message.channelId) {
                         insertMessage(newMessage);
-                        SoundNotification.play(sound: Sound.SendMessage);
                     } else {
                         let tmp: [String: [Message]] = [message.channelId: [newMessage]];
                         if (self._messagesWhileAFK.keys.contains(message.channelId)) {
@@ -323,6 +326,8 @@ class ChatService {
                         
                         updateChatRooms();
                     }
+                    
+                    SoundNotification.play(sound: Sound.Tweet);
                 }
             }
         });

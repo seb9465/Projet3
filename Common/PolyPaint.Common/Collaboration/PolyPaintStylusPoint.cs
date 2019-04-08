@@ -9,5 +9,11 @@ namespace PolyPaint.Common.Collaboration
         public double X { get; set; }
         public double Y { get; set; }
         public float PressureFactor { get; set; }
+
+        public PolyPaintStylusPoint(double x, double y)
+        {
+            X = x;
+            Y = y;
+        }
     }
 }

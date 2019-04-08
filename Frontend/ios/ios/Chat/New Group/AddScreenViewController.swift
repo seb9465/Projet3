@@ -32,8 +32,8 @@ class AddScreenViewController: UIViewController, UITableViewDelegate, UITableVie
         self.initRefreshControl();
         self.initChatServiceCommunication();
         
-        self.cancelButton.tintColor = Constants.RED_COLOR;
-        self.saveButton.tintColor = Constants.RED_COLOR;
+        self.cancelButton.tintColor = Constants.Colors.RED_COLOR;
+        self.saveButton.tintColor = Constants.Colors.RED_COLOR;
         self.saveButton.isEnabled = false;
         self.channelName.addTarget(self, action: #selector(editingChanged), for: .editingChanged);
     }
@@ -95,7 +95,7 @@ class AddScreenViewController: UIViewController, UITableViewDelegate, UITableVie
         self.tableView.addSubview(self.refreshControl);
     }
     
-    // MARK: Table View
+    // MARK: - Table View Functions
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1;
@@ -118,6 +118,8 @@ class AddScreenViewController: UIViewController, UITableViewDelegate, UITableVie
         
         cell?.chatRoomName.text = ChatService.shared.serverChannels.channels[indexPath.row].name.uppercased();
         cell?.notificationLabel.text = "";
+        
+        cell?.selectionStyle = .none;
         
         return cell!
     }

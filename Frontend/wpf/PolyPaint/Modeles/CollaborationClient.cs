@@ -152,7 +152,7 @@ namespace PolyPaint.Modeles{    public class CollaborationClient    {       
         {
             try
             {
-                await Connection.InvokeAsync("ResizeCanvas", JsonConvert.SerializeObject(new SizeMessage(new PolyPaintStylusPoint() { X = size.X, Y = size.Y })));
+                await Connection.InvokeAsync("ResizeCanvas", JsonConvert.SerializeObject(new SizeMessage(new PolyPaintStylusPoint(size.X, size.Y))));
             }
             catch (Exception) { }
         }

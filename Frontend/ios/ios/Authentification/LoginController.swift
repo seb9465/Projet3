@@ -55,16 +55,26 @@ class LoginController: UIViewController, UITextFieldDelegate, WKUIDelegate {
             AuthentificationAPI.logout()
             UserDefaults.standard.removePersistentDomain(forName: "token");
         }
-        //        AuthentificationAPI.login(username: emailField.text!, password: passwordField.text!)
-        AuthentificationAPI.login(username: "william.sevigny", password: "!12345Aa")
-            //        AuthentificationAPI.login(username: "seb.cado2", password: "!12345Aa")
+//        AuthentificationAPI.login(username: emailField.text!, password: passwordField.text!)
+//        AuthentificationAPI.login(username: "william.sevigny", password: "!12345Aa")
+        AuthentificationAPI.login(username: "sebastien.labine", password: "!12345Aa")
             .done { (token) in
                 UIViewController.removeSpinner(spinner: spinner);
                 self.validationLabel.text = "";
                 self.storeAuthentificationToken(token: token, id: "");
                 
-                let mainController = self.storyboard?.instantiateViewController(withIdentifier: "MainController");
-                self.present(mainController!, animated: true, completion: nil);
+                AuthentificationAPI.getIsTutorialShown()
+                    .done { (response) in
+                        if (response) {
+                            let mainController = self.storyboard?.instantiateViewController(withIdentifier: "MainController");
+                            self.present(mainController!, animated: true, completion: nil);
+                        } else {
+                            let sb: UIStoryboard = UIStoryboard(name: "Tutorial", bundle: nil);
+                            let tutoController = sb.instantiateViewController(withIdentifier: "TutorialView");
+                            self.present(tutoController, animated: true, completion: nil);
+                            AuthentificationAPI.setIsTutorialShown();
+                        }
+                }
             }.catch { (responseError) in
                 UIViewController.removeSpinner(spinner: spinner);
                 // TODO: Afficher le bon message d'erreur. En attente du serveur.
@@ -140,7 +150,7 @@ class LoginController: UIViewController, UITextFieldDelegate, WKUIDelegate {
     @IBAction func facebookButtonClicked(_ sender: Any) {
         self.validationLabel.text = "";
         let loginManager = LoginManager()
- //       loginManager.loginBehavior = .web
+        loginManager.loginBehavior = .web
         loginManager.logIn(readPermissions: [.email, .publicProfile], viewController: self, completion: { loginResult in
             switch loginResult {
             case .failed(let error):
@@ -155,7 +165,6 @@ class LoginController: UIViewController, UITextFieldDelegate, WKUIDelegate {
                     switch result {
                     case .success(let response):
                         let facebookResponse = response.dictionaryValue as! [String: String]
-                        print(facebookResponse)
                         AuthentificationAPI.fbLogin(accessToken: accessToken.authenticationToken, username: facebookResponse["id"]!, email: facebookResponse["email"]!, firstName: facebookResponse["first_name"]!, lastName: facebookResponse["last_name"]!).done({ (token) in
                             self.storeAuthentificationToken(token: token,id: facebookResponse["id"]!);
                             

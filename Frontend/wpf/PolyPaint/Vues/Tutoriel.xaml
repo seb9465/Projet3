@@ -1,0 +1,34 @@
+﻿<Window x:Class="PolyPaint.Vues.Tutoriel"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PolyPaint.Vues"
+        mc:Ignorable="d"
+        Title="Tutoriel" Height="550" Width="800">
+    <StackPanel Margin="10">
+        <Label HorizontalAlignment="Center" FontSize="25" >
+            Welcome to the editor mode tutorial
+        </Label>
+        <Border BorderBrush="#595959" BorderThickness="2" HorizontalAlignment="Center" Margin="0,20,0,20" Background="Gainsboro">
+            <Image Name="tutorialImage" Source="/Resources/tutorial/1.png" Width="550" Height="300" Margin="3" />
+        </Border>
+
+        
+        <TextBlock Name="tutorialText" HorizontalAlignment="Center" MaxWidth="600" Height="60" TextWrapping="Wrap" FontSize="15" TextAlignment="Center">
+            Here is your personal profile that contains a gallery of public and private 
+        </TextBlock>
+        <DockPanel >
+            <Button  Style="{StaticResource MaterialDesignRaisedButton}"  Click="previousPage_Click" HorizontalAlignment="Left" 
+                    Name="previousPageButton" Width="30" Height="30" Margin="5" Padding="0" FontSize="18" Visibility="Collapsed" >
+                <materialDesign:PackIcon Kind="NavigateBefore" />
+            </Button>
+            <Button  Style="{StaticResource MaterialDesignRaisedButton}"  Click="nextPage_Click" HorizontalAlignment="Right" 
+                    Name="nextPageButton" Width="30" Height="30" Margin="5" Padding="0" FontSize="18">
+                <materialDesign:PackIcon Kind="NavigateNext" />
+            </Button>
+        </DockPanel>
+        
+    </StackPanel>
+</Window>

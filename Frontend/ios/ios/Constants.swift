@@ -10,33 +10,40 @@ import Foundation
 import UIKit
 
 struct Constants {
-    // Server Address
+    // MARK: - Server Address
     static let SERVER_BASE_URL: String = "https://polypaint.me";
 
-    // Hubs
+    // MARK: - Hubs
     static let CHAT_URL: String = Constants.SERVER_BASE_URL + "/signalr";
     static let COLLABORATION_URL: String = Constants.SERVER_BASE_URL + "/signalr/collaborative"
-    //    static let COLLABORATION_URL: String = Constants.SERVER_BASE_URL + "/signalr/collaborative?channelId=general"
 
-    // Endpoints
+    // MARK: - Endpoints
     static let LOGIN_URL: String = Constants.SERVER_BASE_URL + "/api/login";
     static let FB_LOGIN_URL: String = Constants.SERVER_BASE_URL + "/api/login/ios-callback";
 
     static let REGISTER_URL: String = Constants.SERVER_BASE_URL + "/api/register";
     static let LOGOUT_URL: String = Constants.SERVER_BASE_URL + "/api/user/logout";
     static let SAVE_URL: String = Constants.SERVER_BASE_URL + "/api/user/canvas";
+    static let TUTORIAL_URL: String = Constants.SERVER_BASE_URL + "/api/user/tutorial";
+    static let TUTORIAL_SHOWN_URL: String = Constants.SERVER_BASE_URL + "/api/user/tutorial/true";
 
+    // MARK: - Colors
+    struct Colors {
+        static let RED_COLOR: UIColor = UIColor(red: 1, green: 0.419608, blue: 0.419608, alpha: 1);
+        static let LIGHT_RED_COLOR: UIColor = UIColor(red: 1, green: 0.419608, blue: 0.419608, alpha: 0.5);
+        static let GREY_COLOR: UIColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.3);
+        static let DEFAULT_BLUE_COLOR = UIColor(red: 0, green: 122/255, blue: 1, alpha: 1);
+        static let GREEN_COLOR: UIColor = UIColor (red: 0, green: 204/255, blue: 34/255, alpha: 1);
+    }
     
-    static let RED_COLOR: UIColor = UIColor(red: 1, green: 0.419608, blue: 0.419608, alpha: 1);
-    static let DEFAULT_BLUE_COLOR = UIColor(red: 0, green: 122/255, blue: 1, alpha: 1);
-    
+    // MARK: - Date formatter
     static let formatter: DateFormatter = {
         let formatter = DateFormatter();
         formatter.dateFormat = "HH:mm:ss";
         return formatter;
     }();
     
-    // Constants for the Chat View Container.
+    // MARK: - Chat View Container constants
     struct ChatView {
         static let cornerRadius: CGFloat = 5.0;
         static let shadowColor: CGColor = UIColor.black.cgColor;

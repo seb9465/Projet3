@@ -14,31 +14,38 @@ import JWTDecode
 
 let USER_TOKEN = UserDefaults.standard.string(forKey: "token");
 
-protocol MsgChatProtocol {
-    var messages: [Message] { get set }
-    var member: Member! { get set }
-}
-
-class MsgChatController: MessagesViewController, MsgChatProtocol {
-    var messages: [Message] = [];
-    var member: Member!;
+class MsgChatController: MessagesViewController {
+    
+    // MARK: Attributes
+    
+    private var _messages: [Message] = [];
+    private var _member: Member!;
+    
+    // MARK: Getter - Setter
+    
+    public var messages: [Message] {
+        get { return self._messages }
+    }
+    
+    public var member: Member {
+        get { return self._member }
+    }
+    
+    // MARK: - Timing functions
     
     override func viewDidLoad() {
         self.setCurrentMemberAttributes();
-        
+//        self.messageInputBar.frame = CGRect(x: 0, y: 0, width: 100, height:50)
         messagesCollectionView = MessagesCollectionView(frame: .zero, collectionViewLayout: MyCustomMessagesFlowLayout())
         messagesCollectionView.register(MyCustomCell.self)
-        
         self.initDelegate();
         
-        ChatService.shared.initOnReceivingMessage(currentMemberName: self.member.name, insertMessage: self.insertMessage, updateChatRooms: { })
+        ChatService.shared.initOnReceivingMessage(currentMemberName: self._member.name, insertMessage: self.insertMessage, updateChatRooms: { })
         ChatService.shared.initOnAnotherUserConnection(insertMessage: self.insertMessage);
         
-//        self.navigationItem.hidesBackButton = true;
-//        let newBackButton = UIBarButtonItem(title: "Back to chatrooms", style: .plain, target: self, action: #selector(self.back(sender:)));
-//        self.navigationItem.leftBarButtonItem = newBackButton;
-        
         self.navigationItem.title = ChatService.shared.currentChannel.name;
+        
+        self.messageInputBar.becomeFirstResponder();
         
         super.viewDidLoad();
         
@@ -46,41 +53,44 @@ class MsgChatController: MessagesViewController, MsgChatProtocol {
         let channelName: String = ChatService.shared.currentChannel.name;
         if (afkMsgs.keys.contains(channelName)) {
             for message in afkMsgs[channelName]! {
-                self.messages.append(message);
+                self._messages.append(message);
             }
         }
         
-        // TODO: Make a function in the ChatService for this and the get.
         ChatService.shared.messagesWhileAFK.removeValue(forKey: channelName);
         self.messagesCollectionView.reloadData();
     }
     
-//    @objc func back(sender: UIBarButtonItem) {
-//        ChatService.shared.currentChannel = nil;
-//
-//        let transition = CATransition();
-//        transition.duration = 0.3;
-//        transition.type = CATransitionType.reveal;
-//        transition.subtype = CATransitionSubtype.fromBottom;
-//        self.view.window!.layer.add(transition, forKey: kCATransition);
-//
-//        self.navigationController?.popViewController(animated: false)
-        
-//        self.dismiss(animated: true, completion: nil);
-//    }
-    
     override func viewWillDisappear(_ animated: Bool) -> Void {
-         super.viewWillDisappear(animated);
+        self.navigationController?.popViewController(animated: true);
+        
+        super.viewWillDisappear(animated);
     }
     
-    func messageInputBar(_ inputBar: MessageInputBar, textViewTextDidChangeTo text: String) -> Void {
-        if(messageInputBar.inputTextView.text.contains("\n")) {
+    // MARK: - Public functions
+    
+    public func messageInputBar(_ inputBar: MessageInputBar, textViewTextDidChangeTo text: String) -> Void {
+        if (messageInputBar.inputTextView.text.contains("\n")) {
             messageInputBar.inputTextView.text.popLast();
-            if(messageInputBar.sendButton.isEnabled) {
+            if (messageInputBar.sendButton.isEnabled) {
                 messageInputBar.didSelectSendButton();
             }
         }
     }
+    
+    public func insertMessage(_ message: Message) -> Void {
+        self._messages.append(message);
+        
+        messagesCollectionView.performBatchUpdates({
+            messagesCollectionView.insertSections([_messages.count - 1]);
+        }, completion: { [weak self] _ in
+            if self?.isLastSectionVisible() == true {
+                self?.messagesCollectionView.scrollToBottom(animated: true);
+            }
+        });
+    }
+    
+    // MARK: - Private functions
     
     private func initDelegate() -> Void {
         messagesCollectionView.messagesDataSource = self;
@@ -89,34 +99,24 @@ class MsgChatController: MessagesViewController, MsgChatProtocol {
         messagesCollectionView.messagesDisplayDelegate = self;
     }
     
-    func setCurrentMemberAttributes() -> Void {
+    private func setCurrentMemberAttributes() -> Void {
         let jwt = try! decode(jwt: USER_TOKEN!);
         let name = jwt.claim(name: "unique_name").string;
         
-        self.member = Member(name: name!, color: .random);
+        self._member = Member(name: name!, color: .random);
     }
     
-    func insertMessage(_ message: Message) -> Void {
-        self.messages.append(message);
-        
-        messagesCollectionView.performBatchUpdates({
-            messagesCollectionView.insertSections([messages.count - 1]);
-        }, completion: { [weak self] _ in
-            if self?.isLastSectionVisible() == true {
-                self?.messagesCollectionView.scrollToBottom(animated: true);
-            }
-        });
-    }
-    
-    func isLastSectionVisible() -> Bool {
-        guard !messages.isEmpty else {
+    private func isLastSectionVisible() -> Bool {
+        guard !_messages.isEmpty else {
             return false;
         }
         
-        let lastIndexPath = IndexPath(item: 0, section: messages.count - 1);
+        let lastIndexPath = IndexPath(item: 0, section: _messages.count - 1);
         
         return messagesCollectionView.indexPathsForVisibleItems.contains(lastIndexPath);
     }
+    
+    // MARK: - Collection view functions
     
     override open func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let messagesDataSource = messagesCollectionView.messagesDataSource else {

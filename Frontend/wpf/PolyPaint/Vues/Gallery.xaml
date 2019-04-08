@@ -6,9 +6,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
          xmlns:convertisseurs="clr-namespace:PolyPaint.Convertisseurs"   
         xmlns:local="clr-namespace:PolyPaint.Vues"
+        PreviewKeyDown="EnterKeyDown"
         mc:Ignorable="d"
-        Title="Gallery" WindowState="Maximized">
-
+        Title="Gallery" MinWidth="1250" MinHeight="750" WindowState="Maximized" SizeChanged="Gallery_SizeChanged" d:DesignWidth="1255">
 
     <Window.Resources>
         <convertisseurs:ConvertisseurBordure x:Key="convertisseurBordure" />
@@ -17,11 +17,10 @@
         <convertisseurs:ConvertisseurRoomCouleurFond x:Key="convertisseurRoomCouleurFond" />
         <convertisseurs:ConvertisseurRoomContent x:Key="convertisseurRoomContent" />
     </Window.Resources>
-
-    <DockPanel DataContext="{Binding}">
-        <StackPanel Name="canvasStackPanel" Width="950" Margin="70,0,0,0">
+    <StackPanel>
+        <DockPanel>
             <Button Style="{StaticResource MaterialDesignRaisedLightButton}" Click="RefreshGallery_Click"
-             Height="40"  Background="Gainsboro"  HorizontalAlignment="Left" BorderBrush="Gray" Margin="0,0,10,0" >
+             Height="40"  Background="Gainsboro"  HorizontalAlignment="Left" BorderBrush="Gray" Margin="5,0,10,0" >
                 <StackPanel Orientation="Horizontal">
                     <materialDesign:PackIcon Kind="Refresh" Height="24" Width="24"/>
                     <Label FontWeight="Bold">Refresh gallery</Label>
@@ -30,154 +29,179 @@
                     </Grid>
                 </StackPanel>
             </Button>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,0">
-                <Label Content="Welcome" FontSize="30" FontWeight="Bold" VerticalAlignment="Center"></Label>
-                <Label Name="usernameLabel" Foreground="OrangeRed" FontSize="30" VerticalAlignment="Center" FontWeight="Bold"></Label>
-            </StackPanel>
+            <Button Style="{StaticResource MaterialDesignRaisedLightButton}" Click="showTutorial"
+             Width="140" Height="40" HorizontalAlignment="Right" Background="Gainsboro" BorderBrush="Gray" Margin="0,0,150,0" >
+                <StackPanel Orientation="Horizontal">
+                    <Label FontWeight="Bold">Tutorial</Label>
+                    <materialDesign:PackIcon Kind="HelpOutline" Height="24" Width="24"/>
+                </StackPanel>
+            </Button>
+            <Button Style="{StaticResource MaterialDesignRaisedLightButton}" Click="Disconnect_Click"
+             Width="140" Height="40" HorizontalAlignment="Right" Background="Gainsboro" BorderBrush="Gray" Margin="0,0,0,0" >
+                <StackPanel Orientation="Horizontal">
+                    <Label FontWeight="Bold" Content="Disconnect"/>
+                    <materialDesign:PackIcon Kind="LanDisconnect" Height="24" Width="24"/>
+                </StackPanel>
+            </Button>
+        </DockPanel>
+        <Separator Height="2" Width="Auto" HorizontalAlignment="Stretch" Background="Gray" Margin="0,0,0,0"/>
+        <DockPanel DataContext="{Binding}">
 
-            <GroupBox Header="Canvas" Margin="16" FontSize="20">
-                <StackPanel>
-                    <Button Click="NewCanva_Click" Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}" Width="65" Height="65" VerticalAlignment="Top" HorizontalAlignment="Right" Grid.Row="0" Margin="0,-45,25,0" Grid.Column="1" >
-                        <materialDesign:PackIcon Kind="Plus" Height="35" Width="35" />
-                    </Button>
-                    <ListBox Name="ImagePreviews" SelectionChanged="OnSelectionChanged" ItemsSource="{Binding Canvas}" FontSize="14" MaxHeight="500">
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <StackPanel>
-                                    <Label x:Name="name" Background="#f8aaa0" Content="{Binding Name}" HorizontalContentAlignment="Center"/>
-                                    <Border BorderThickness="1" BorderBrush="#f8aaa0">
-                                        <Image Source="{Binding Image}" Height="200" Width="250" Margin="5" />
-                                    </Border>
-                                    <Grid Background="#f8aaa0">
-                                        <Label x:Name="visibilityLabel" Content="{Binding CanvasVisibility}" />
-                                        <Label x:Name="protectionLabel" Visibility="{Binding IsProtected}" HorizontalAlignment="Right" >
-                                            <materialDesign:PackIcon Kind="LockOutline" />
-                                        </Label>
-                                    </Grid>
-                                </StackPanel>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                        <ListBox.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <WrapPanel />
-                            </ItemsPanelTemplate>
-                        </ListBox.ItemsPanel>
-                    </ListBox>
-
+            <StackPanel Name="canvasStackPanel" MinWidth="750" Height="Auto" Margin="0,0,0,0">
+                
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,10,0,0">
+                    <Label Content="PolyPaint Pro" FontSize="30" FontWeight="Bold" VerticalAlignment="Center"></Label>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,-10,0,0">
+                    <Label Name="usernameLabel" Foreground="#ff6b6b" FontSize="30" VerticalAlignment="Center" FontWeight="Bold"></Label>
                 </StackPanel>
 
-            </GroupBox>
+                <GroupBox Header="Canvas" Margin="16" FontSize="20">
+                    <StackPanel>
+                        <Button Click="NewCanva_Click" Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}" Width="65" Height="65" VerticalAlignment="Top" HorizontalAlignment="Right" Grid.Row="0" Margin="0,-45,25,0" Grid.Column="1" BorderBrush="#ff6b6b" Background="#ff6b6b" >
+                            <materialDesign:PackIcon Kind="Plus" Height="35" Width="35" />
+                        </Button>
+                        <ListBox Name="ImagePreviews" SelectionChanged="OnSelectionChanged" ItemsSource="{Binding Canvas}" FontSize="14" MaxHeight="750">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel>
 
-        </StackPanel>
-
-
-
-        <StackPanel x:Name="chatMenu" Background="#cccccc" Width="70"  HorizontalAlignment="Right" >
-
-            <ToggleButton x:Name="hamburgerMenu" Style="{StaticResource MaterialDesignActionToggleButton}" Foreground="Black" Background="Transparent" Click="hamburgerMenu_Click" Margin="0,10,20,0" HorizontalAlignment="Right">
-                <ToggleButton.Content>
-                    <materialDesign:PackIcon Kind="HamburgerMenu" Width="30" Height="30" />
-                </ToggleButton.Content>
-                <materialDesign:ToggleButtonAssist.OnContent>
-                    <materialDesign:PackIcon Kind="KeyboardArrowRight"  Width="30" Height="30"  />
-                </materialDesign:ToggleButtonAssist.OnContent>
-            </ToggleButton>
-
-            <StackPanel Orientation="Vertical" Margin="20" x:Name="chatTab" Visibility="Collapsed" Background="WhiteSmoke">
-                <Border BorderThickness="1" BorderBrush="Gray" ClipToBounds="True" HorizontalAlignment="Stretch" Height="450">
-                    <StackPanel Orientation="Vertical" Margin="10" x:Name="chatWrapper">
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                            <Button  x:Name="chatButton" HorizontalAlignment="Left" Margin="0,0,10,0"  Width="50" Click="chatButton_Click">
-                                <materialDesign:PackIcon Kind="WindowRestore" />
-                            </Button>
-
-                        </StackPanel>
-                        <StackPanel Orientation="Vertical">
-
-                            <materialDesign:DialogHost DialogClosing="AddRoom" Style="{StaticResource MaterialDesignEmbeddedDialogHost}" Margin="-55,-30,0,20" Width="320"  HorizontalAlignment="Center" Height="150">
-                                <materialDesign:DialogHost.DialogContent>
-                                    <StackPanel Margin="15">
-                                        <TextBlock>
-                                                Create a new chatroom
-                                        </TextBlock>
-                                        <TextBox MaxLength="12" Margin="0 8 0 0" HorizontalAlignment="Stretch" x:Name="roomTextBox" />
-                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                                            <Button Style="{StaticResource MaterialDesignFlatButton}" IsDefault="True" Margin="0 8 8 0" Command="materialDesign:DialogHost.CloseDialogCommand">
-                                                <Button.CommandParameter>
-                                                    <system:Boolean xmlns:system="clr-namespace:System;assembly=mscorlib">
-                                                        True
-                                                    </system:Boolean>
-                                                </Button.CommandParameter>
-                                                ADD
-                                            </Button>
-                                            <Button Style="{StaticResource MaterialDesignFlatButton}" IsCancel="True"  Margin="0 8 8 0" Command="materialDesign:DialogHost.CloseDialogCommand" Click="clearRoomName">
-                                                <Button.CommandParameter>
-                                                    <system:Boolean xmlns:system="clr-namespace:System;assembly=mscorlib">
-                                                        False
-                                                    </system:Boolean>
-                                                </Button.CommandParameter>
-                                                CANCEL
-                                            </Button>
-                                        </StackPanel>
+                                        <Border BorderThickness="1" BorderBrush="LightGray">
+                                            <Image Source="{Binding Image}" Height="200" Width="250" Margin="5" />
+                                        </Border>
+                                        <Grid Background="#ff6b6b">
+                                            <StackPanel Orientation="Vertical">
+                                                <Label x:Name="name" FontSize="14" Foreground="White" FontWeight="Bold" Content="{Binding Name}" />
+                                                <Label x:Name="visibilityLabel" Foreground="White" FontSize="10" Content="{Binding CanvasVisibility}" Margin="0,-5,0,0" />
+                                            </StackPanel>
+                                            <Label x:Name="protectionLabel" Visibility="{Binding IsProtected}" HorizontalAlignment="Right" >
+                                                <materialDesign:PackIcon Kind="LockOutline" Foreground="White" />
+                                            </Label>
+                                        </Grid>
                                     </StackPanel>
-                                </materialDesign:DialogHost.DialogContent>
-                                <Border BorderThickness="1" BorderBrush="{DynamicResource PrimaryHueMidBrush}" ClipToBounds="True" HorizontalAlignment="Stretch">
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="95*"/>
-                                            <ColumnDefinition Width="202*"/>
-                                        </Grid.ColumnDefinitions>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                            <ListBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel />
+                                </ItemsPanelTemplate>
+                            </ListBox.ItemsPanel>
+                        </ListBox>
 
-                                        <ListBox ItemsSource="{Binding Rooms}" Name="roomList" Margin="0,50,0,5" MaxHeight="190" Grid.ColumnSpan="2">
-                                            <ListBox.ItemTemplate  >
-                                                <DataTemplate>
-                                                    <Grid Margin="0,2" >
-                                                        <RadioButton GroupName="ChatRooms" Command="{Binding Path=DataContext.ChoisirRoom, ElementName=roomList}" CommandParameter="{Binding Title}" />
-                                                        <TextBlock Text="{Binding Title}" Margin="20,0,50,0"/>
-                                                        <Button Background="{Binding Connected, Converter={StaticResource convertisseurRoomCouleurFond}, UpdateSourceTrigger=PropertyChanged}"
+                    </StackPanel>
+
+                </GroupBox>
+
+            </StackPanel>
+
+
+
+            <StackPanel x:Name="chatMenu" Background="#cccccc" Width="70" HorizontalAlignment="Right" Margin="0,0,0,-495" >
+
+                <ToggleButton x:Name="hamburgerMenu" Style="{StaticResource MaterialDesignActionToggleButton}" Foreground="Black" Background="Transparent" Click="hamburgerMenu_Click" Margin="0,10,20,0" HorizontalAlignment="Right">
+                    <ToggleButton.Content>
+                        <materialDesign:PackIcon Kind="HamburgerMenu" Width="30" Height="30" />
+                    </ToggleButton.Content>
+                    <materialDesign:ToggleButtonAssist.OnContent>
+                        <materialDesign:PackIcon Kind="KeyboardArrowRight"  Width="30" Height="30"  />
+                    </materialDesign:ToggleButtonAssist.OnContent>
+                </ToggleButton>
+
+                <StackPanel Orientation="Vertical" Margin="20" x:Name="chatTab" Visibility="Collapsed" Background="WhiteSmoke">
+                    <Border BorderThickness="1" BorderBrush="Gray" ClipToBounds="True" HorizontalAlignment="Stretch" Height="450">
+                        <StackPanel Orientation="Vertical" Margin="10" x:Name="chatWrapper">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                <Button  x:Name="chatButton" HorizontalAlignment="Left" Margin="0,0,10,0"  Width="50" Click="chatButton_Click">
+                                    <materialDesign:PackIcon Kind="WindowRestore" />
+                                </Button>
+
+                            </StackPanel>
+                            <StackPanel Orientation="Vertical">
+
+                                <materialDesign:DialogHost DialogClosing="AddRoom" Style="{StaticResource MaterialDesignEmbeddedDialogHost}" Margin="-55,-30,0,20" Width="320"  HorizontalAlignment="Center" Height="150">
+                                    <materialDesign:DialogHost.DialogContent>
+                                        <StackPanel Margin="15">
+                                            <TextBlock>
+                                                Create a new chatroom
+                                            </TextBlock>
+                                            <TextBox MaxLength="12" Margin="0 8 0 0" HorizontalAlignment="Stretch" x:Name="roomTextBox" />
+                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                                <Button Style="{StaticResource MaterialDesignFlatButton}" IsDefault="True" Margin="0 8 8 0" Command="materialDesign:DialogHost.CloseDialogCommand">
+                                                    <Button.CommandParameter>
+                                                        <system:Boolean xmlns:system="clr-namespace:System;assembly=mscorlib">
+                                                            True
+                                                        </system:Boolean>
+                                                    </Button.CommandParameter>
+                                                    ADD
+                                                </Button>
+                                                <Button Style="{StaticResource MaterialDesignFlatButton}" IsCancel="True"  Margin="0 8 8 0" Command="materialDesign:DialogHost.CloseDialogCommand" Click="clearRoomName">
+                                                    <Button.CommandParameter>
+                                                        <system:Boolean xmlns:system="clr-namespace:System;assembly=mscorlib">
+                                                            False
+                                                        </system:Boolean>
+                                                    </Button.CommandParameter>
+                                                    CANCEL
+                                                </Button>
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </materialDesign:DialogHost.DialogContent>
+                                    <Border BorderThickness="1" BorderBrush="{DynamicResource PrimaryHueMidBrush}" ClipToBounds="True" HorizontalAlignment="Stretch">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="95*"/>
+                                                <ColumnDefinition Width="202*"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <ListBox ItemsSource="{Binding Rooms}" Name="roomList" Margin="0,50,0,5" MaxHeight="190" Grid.ColumnSpan="2">
+                                                <ListBox.ItemTemplate  >
+                                                    <DataTemplate>
+                                                        <Grid Margin="0,2" >
+                                                            <RadioButton GroupName="ChatRooms" Command="{Binding Path=DataContext.ChoisirRoom, ElementName=roomList}" CommandParameter="{Binding Title}" />
+                                                            <TextBlock Text="{Binding Title}" Margin="20,0,50,0"/>
+                                                            <Button Background="{Binding Connected, Converter={StaticResource convertisseurRoomCouleurFond}, UpdateSourceTrigger=PropertyChanged}"
                                                         Content="{Binding Connected, Converter={StaticResource convertisseurRoomContent}, UpdateSourceTrigger=PropertyChanged}"
                                                         Width="100" Height="20" FontSize="10" BorderBrush="Transparent" Foreground="Black" Margin="120,0,0,0"
                                                         Command="{Binding Path=DataContext.RoomConnect, ElementName=roomList}" CommandParameter="{Binding Path=.}" 
                                                      />
 
-                                                    </Grid>
-                                                </DataTemplate>
-                                            </ListBox.ItemTemplate>
+                                                        </Grid>
+                                                    </DataTemplate>
+                                                </ListBox.ItemTemplate>
 
-                                        </ListBox>
-                                        <materialDesign:ColorZone Mode="PrimaryMid" Grid.ColumnSpan="2" Margin="0,0,-0.223,0">
-                                            <TextBlock  Margin="16">
+                                            </ListBox>
+                                            <materialDesign:ColorZone Mode="PrimaryMid" Grid.ColumnSpan="2" Margin="0,0,-0.223,0">
+                                                <TextBlock  Margin="16">
                                   Chatrooms
-                                            </TextBlock>
-                                        </materialDesign:ColorZone>
-                                        <Button Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}" Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}" VerticalAlignment="Top" HorizontalAlignment="Right" Grid.Row="0" Margin="0,15,15,0" Grid.Column="1">
-                                            <materialDesign:PackIcon Kind="Plus" Height="22" Width="22" />
-                                        </Button>
-                                    </Grid>
-                                </Border>
-                            </materialDesign:DialogHost>
-                            <Grid x:Name="chat" Height="257" x:FieldModifier="public">
-                                <TextBlock Text="{Binding CurrentRoom, StringFormat='Room: {0}'}" Margin="35,-10,0,0" />
-                                <ListBox ItemsSource="{Binding MessagesListBox, UpdateSourceTrigger=PropertyChanged}" x:Name="messagesList" HorizontalAlignment="Left" Height="190" Margin="30,10,0,0" VerticalAlignment="Top" Width="400"  BorderThickness="1" BorderBrush="Gray">
-                                    <ListBox.ItemTemplate>
-                                        <DataTemplate>
-                                            <TextBlock Text="{Binding Path=.}" TextWrapping="Wrap"></TextBlock>
-                                        </DataTemplate>
-                                    </ListBox.ItemTemplate>
-                                </ListBox>
-                                <Button x:Name="sendButton" Content="Send" HorizontalAlignment="left" Margin="350,0,0,10" VerticalAlignment="Bottom" Width="80" Click="sendButton_Click" Height="35" IsEnabled="True"/>
-                                <TextBox x:Name="messageTextBox" HorizontalAlignment="Left" Height="41" Margin="100,0,0,10" TextWrapping="Wrap" VerticalAlignment="Bottom" Width="230"/>
-                                <Label Content="Message :" HorizontalAlignment="Left" Height="26" Margin="30,0,0,8" VerticalAlignment="Bottom" Width="100"/>
+                                                </TextBlock>
+                                            </materialDesign:ColorZone>
+                                            <Button Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}" Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}" VerticalAlignment="Top" HorizontalAlignment="Right" Grid.Row="0" Margin="0,15,15,0" Grid.Column="1">
+                                                <materialDesign:PackIcon Kind="Plus" Height="22" Width="22" />
+                                            </Button>
+                                        </Grid>
+                                    </Border>
+                                </materialDesign:DialogHost>
+                                <Grid x:Name="chat" Height="257" x:FieldModifier="public">
+                                    <TextBlock Text="{Binding CurrentRoom, StringFormat='Room: {0}'}" Margin="35,-10,0,0" />
+                                    <ListBox ItemsSource="{Binding MessagesListBox, UpdateSourceTrigger=PropertyChanged}" x:Name="messagesList" HorizontalAlignment="Left" Height="190" Margin="30,10,0,0" VerticalAlignment="Top" Width="400"  BorderThickness="1" BorderBrush="Gray">
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Path=.}" TextWrapping="Wrap"></TextBlock>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
+                                    <Button x:Name="sendButton" Content="Send" HorizontalAlignment="left" Margin="350,0,0,10" VerticalAlignment="Bottom" Width="80" Click="sendButton_Click" Height="35" IsEnabled="True"/>
+                                    <TextBox x:Name="messageTextBox" HorizontalAlignment="Left" Height="41" Margin="100,0,0,10" TextWrapping="Wrap" VerticalAlignment="Bottom" Width="230"/>
+                                    <Label Content="Message :" HorizontalAlignment="Left" Height="26" Margin="30,0,0,8" VerticalAlignment="Bottom" Width="100"/>
 
-                            </Grid>
+                                </Grid>
+                            </StackPanel>
                         </StackPanel>
-                    </StackPanel>
-                </Border>
+                    </Border>
+                </StackPanel>
+
             </StackPanel>
-
-        </StackPanel>
-    </DockPanel>
-
+        </DockPanel>
+    </StackPanel>
 
 
 </Window>

@@ -35,7 +35,7 @@ class Editor {
     var currentFigureType: ItemTypeEnum = ItemTypeEnum.UmlClass;
     
     // TouchInputDelegate properties
-    var touchEventState: TouchEventState = .NONE
+    var touchEventState: TouchEventState = .SELECT
     var initialTouchPoint: CGPoint!
     var previousTouchPoint: CGPoint!
     
@@ -46,12 +46,11 @@ class Editor {
     
     init() {
         self.editorView.delegate = self
-        let rotation = UIRotationGestureRecognizer(target: self, action: #selector(self.rotatedView(_:)))
         let pinch = UIPinchGestureRecognizer(target: self, action: #selector(self.resizeFigure(_:)))
-        self.editorView.addGestureRecognizer(rotation)
         self.editorView.addGestureRecognizer(pinch)
+        let longPress = UILongPressGestureRecognizer(target: self, action: #selector(self.longPress(_:)))
+        self.editorView.addGestureRecognizer(longPress)
     }
-    
     func resize(width: CGFloat, heigth: CGFloat) {
         currentCanvas.canvasHeight = Float(heigth)
         currentCanvas.canvasWidth = Float(width)
@@ -72,8 +71,11 @@ class Editor {
             (figure as! ConnectionFigure).showElbowAnchor()
         }
         self.editorView.addSubview(selectionOutline)
+        self.delegate?.setCutButtonState(isEnabled: true)
+        self.delegate?.setDuplicateButtonState(isEnabled: true)
         self.selectedFigures.append(figure)
         self.selectionOutlines.append(selectionOutline)
+        self.delegate?.setCurrentTab(index: 1)
     }
     
     // Selection recieved by hub
@@ -125,6 +127,11 @@ class Editor {
         CollaborationHub.shared!.selectObjects(drawViewModels: [])
         self.deselectLasso();
         self.selectedFigures.removeAll();
+        self.delegate?.setCurrentTab(index: 0)
+        self.delegate?.setCutButtonState(isEnabled: false)
+        if(self.clipboard.count == 0) {
+            self.delegate?.setDuplicateButtonState(isEnabled: false)
+        }
     }
     
     // Deselect received from hub
@@ -159,6 +166,7 @@ class Editor {
     
     public func copy() -> Void {
         self.clipboard = self.selectedFigures;
+        self.delegate?.setDuplicateButtonState(isEnabled: true)
     }
     
     public func duplicate() -> Void {
@@ -166,17 +174,23 @@ class Editor {
             self.copy();
             self.deselect();
         }
+        
+        var drawViewModelToSelect:[DrawViewModel] = []
+        var figureToAdd: [Figure] = []
          for figure in self.clipboard {
             var viewModel = figure.exportViewModel()!;
             viewModel.Guid = UUID().uuidString;
-            viewModel.StylusPoints![0].X = viewModel.StylusPoints![0].X + 20;
-            viewModel.StylusPoints![0].Y = viewModel.StylusPoints![0].Y + 20;
-            viewModel.StylusPoints![1].X = viewModel.StylusPoints![1].X + 20;
-            viewModel.StylusPoints![1].Y = viewModel.StylusPoints![1].Y + 20;
-            self.select(figure: figure);
-            self.insertFigure(drawViewModel: viewModel);
+            viewModel.StylusPoints![0].X = viewModel.StylusPoints![0].X + 10;
+            viewModel.StylusPoints![0].Y = viewModel.StylusPoints![0].Y + 10;
+            viewModel.StylusPoints![1].X = viewModel.StylusPoints![1].X + 10;
+            viewModel.StylusPoints![1].Y = viewModel.StylusPoints![1].Y + 10;
+            let newFigure: Figure = self.insertFigure(drawViewModel: viewModel)
+            self.select(figure: newFigure);
+            figureToAdd.append(figure)
+            drawViewModelToSelect.append(figure.exportViewModel()!)
         }
-        CollaborationHub.shared!.postNewFigure(figures: self.clipboard);
+        CollaborationHub.shared!.postNewFigure(figures: figureToAdd);
+        CollaborationHub.shared?.selectObjects(drawViewModels: drawViewModelToSelect)
         CanvasService.saveOnNewFigure(figures: self.figures, editor: self);
     }
     
@@ -191,6 +205,8 @@ class Editor {
         self.figures.append(figure)
         self.undoArray.append(([], [figure.exportViewModel()!]))
         self.editorView.addSubview(figure)
+        self.select(figure: figure)
+        CollaborationHub.shared?.selectObjects(drawViewModels: [figure.exportViewModel()!])
         CollaborationHub.shared!.postNewFigure(figures: [figure])
         CanvasService.saveOnNewFigure(figures: self.figures, editor: self)
     }
@@ -206,6 +222,9 @@ class Editor {
         self.undoArray.append(([], [figure.exportViewModel()!]))
         self.editorView.addSubview(figure);
         self.figures.append(figure)
+        self.select(figure: figure)
+        CollaborationHub.shared?.selectObjects(drawViewModels: [figure.exportViewModel()!])
+        self.updateSideToolBar()
         return figure
     }
     
@@ -237,22 +256,17 @@ class Editor {
         CanvasService.saveOnNewFigure(figures: self.figures, editor: self)
     }
     
-    public func deleteSelectedFigures(username: String) {
-        let figuresToDelete = self.selectedFiguresDictionnary[username]
-        self.selectedFiguresDictionnary[username] = []
-        /*
-        var figureToDelete: [Figure] = []
-        for figure in self.figures {
-            if((figuresToDelete?.contains(where: {$0.Guid == figure.uuid.uuidString}))!) {
-                figure.removeFromSuperview()
-                figureToDelete.append(figure)
+    public func deleteSelectedFigures(drawViewModels: [DrawViewModel]) {
+        for figureToDelete in drawViewModels {
+            for (index,figure) in self.figures.enumerated() {
+                if(figureToDelete.Guid == figure.uuid.uuidString.lowercased()) {
+                    print("remove this one from view" + String(index))
+                    figure.removeFromSuperview()
+                    self.editorView.setNeedsDisplay()
+                    self.figures.remove(at: index)
+                }
             }
         }
-        for figure in figureToDelete {
-            self.figures.removeAll{$0 == figure}
-        }
-         */
-        self.deselect(username: username)
     }
     
     public func clear() -> Void {
@@ -263,12 +277,14 @@ class Editor {
         }
         
         self.deselect();
+        CollaborationHub.shared?.selectObjects(drawViewModels: [])
         self.selectedFigures.removeAll()
         self.selectionOutlines.removeAll()
         self.editorView.setNeedsDisplay()
         self.figures.removeAll()
         self.currentChange.1 = []
         self.undoArray.append(self.currentChange)
+        self.delegate?.setDuplicateButtonState(isEnabled: false)
         CanvasService.saveOnNewFigure(figures: self.figures, editor: self)
     }
     
@@ -310,21 +326,23 @@ extension Editor: CollaborationHubDelegate {
     }
     
     func updateCanvas(itemMessage: ItemMessage) {
-        print(itemMessage.Items)
+//        dump(itemMessage.Items)
         for drawViewModel in itemMessage.Items {
-            // Corriger le if
             if (self.figures.contains(where: {$0.uuid.uuidString.lowercased() == drawViewModel.Guid})) {
                 self.overriteFigure(figureId: drawViewModel.Guid!, newDrawViewModel: drawViewModel, username: itemMessage.Username)
+
                 self.deselect(username: itemMessage.Username)
                 self.select(drawViewModels: itemMessage.Items, username: itemMessage.Username)
             } else {
                 self.insertFigure(drawViewModel: drawViewModel)
             }
         }
+        
+        self.bindLocalConnectionsToFigures(drawViewModels: itemMessage.Items)
     }
     
-    func delete(username: String) {
-        self.deleteSelectedFigures(username: username)
+    func delete(drawViewModels: [DrawViewModel]) {
+        self.deleteSelectedFigures(drawViewModels: drawViewModels)
     }
     
     func getKicked() {
@@ -337,7 +355,7 @@ extension Editor: CollaborationHubDelegate {
         for drawViewModel in drawViewModels  {
             self.insertFigure(drawViewModel: drawViewModel)
         }
-        self.bindConnectionsToFigures(drawViewModels: drawViewModels)
+        self.bindLocalConnectionsToFigures(drawViewModels: drawViewModels)
     }
     
     func updateClear() {
@@ -347,7 +365,6 @@ extension Editor: CollaborationHubDelegate {
 
 // Logige de Select, Update de collaboration
 extension Editor {
-    
     func isFigureSelected(figure: Figure) -> Bool {
         for pair in self.selectedFiguresDictionnary {
             for selectedModel in pair.value {
@@ -362,7 +379,6 @@ extension Editor {
     
     func overriteFigure(figureId: String, newDrawViewModel: DrawViewModel, username: String) {
         let oldFigure = self.figures.first(where: {$0.uuid.uuidString.lowercased() == figureId})
-        
         self.figures.removeAll{$0 == oldFigure}
         oldFigure?.removeFromSuperview()
         let newFigure = FigureFactory.shared.fromDrawViewModel(drawViewModel: newDrawViewModel)!
@@ -374,17 +390,23 @@ extension Editor {
             self.updateConnectionBindings(oldConnection: oldFigure as! ConnectionFigure, newConnection: newFigure as! ConnectionFigure)
         }
         
-        if (oldFigure is UmlFigure && newFigure is UmlFigure) {
-            print("Updating received Figure connections")
-            (newFigure as! UmlFigure).outgoingConnections = (oldFigure as! UmlFigure).outgoingConnections
-            (newFigure as! UmlFigure).incomingConnections = (oldFigure as! UmlFigure).incomingConnections
-            (newFigure as! UmlFigure).updateConnections()
-        }
+//        if (oldFigure is UmlFigure && newFigure is UmlFigure) {
+//            print("Updating received Figure connections")
+//            (newFigure as! UmlFigure).outgoingConnections = (oldFigure as! UmlFigure).outgoingConnections
+//            (newFigure as! UmlFigure).incomingConnections = (oldFigure as! UmlFigure).incomingConnections
+//            (newFigure as! UmlFigure).updateConnections()
+//        }
     }
     
-    func bindConnectionsToFigures(drawViewModels: [DrawViewModel]) {
+    // Call first to update new model in anchored figures
+    func updateConnectionReferences() {
+        
+    }
+    
+    func bindLocalConnectionsToFigures(drawViewModels: [DrawViewModel]) {
         for umlFigureModel in drawViewModels.filter({$0.ItemType?.description != "Connection"}) {
             let figure = self.figures.first(where: {$0.uuid.uuidString.lowercased() == umlFigureModel.Guid}) as! UmlFigure
+            figure.clearConnections()
             let incomingConnections: [[String]] = umlFigureModel.InConnections!
             for uuidToin in incomingConnections {
                 let connection: ConnectionFigure = self.figures.first(where: {$0.uuid.uuidString.lowercased() == uuidToin[0]}) as! ConnectionFigure

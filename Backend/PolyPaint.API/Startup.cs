@@ -54,8 +54,9 @@ namespace PolyPaint.API
 
             AuthInitializer.AddJwtBearerAuthentication(services, Configuration, SIGNALR_URL);
             AuthInitializer.AddFacebookAuthentication(services, Configuration);
-
-            services.AddSignalR();
+            services.AddSignalR(hubOptions => {
+                hubOptions.EnableDetailedErrors = true;
+            });
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -71,10 +72,17 @@ namespace PolyPaint.API
 
             app.UseHttpsRedirection();
             app.UseAuthentication();
+
             app.UseSignalR(routes =>
             {
-                routes.MapHub<CollaborativeHub>(SIGNALR_COLLABORATIVE_URL);
-                routes.MapHub<ChatHub>(SIGNALR_URL);
+                routes.MapHub<CollaborativeHub>(SIGNALR_COLLABORATIVE_URL, options => {
+                    options.ApplicationMaxBufferSize = 0;
+                    options.TransportMaxBufferSize = 0;
+                });
+                routes.MapHub<ChatHub>(SIGNALR_URL, options => {
+                    options.ApplicationMaxBufferSize = 0;
+                    options.TransportMaxBufferSize = 0;
+                });
             });
             app.UseMvc();
             app.Run(async context => { await context.Response.WriteAsync("Route not found in PolyPaint API"); });

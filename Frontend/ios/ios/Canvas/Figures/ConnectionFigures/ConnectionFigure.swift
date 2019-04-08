@@ -19,6 +19,7 @@ class ConnectionFigure : Figure {
     
     var points: [Vertice: CGPoint] = [:]
     var anchors: [Vertice: CAShapeLayer] = [:]
+    var selectionAnchor: [CAShapeLayer] = []
     var nameLabel: UILabel!
     var sourceLabel: UILabel!
     var destinationLabel: UILabel!
@@ -71,10 +72,16 @@ class ConnectionFigure : Figure {
     }
     
     private func initializeAnchors() {
-        self.anchors.updateValue(ClearConnectionAnchor(position: self.points[.ELBOW]!), forKey: .ELBOW)
+        self.anchors.updateValue(ClearConnectionAnchor(position: self.points[.ELBOW]!, frame: self.getSelectionFrame()), forKey: .ELBOW)
         for pair in self.anchors {
             self.layer.addSublayer(pair.value)
         }
+    }
+    
+    private func distance(a: CGPoint, b: CGPoint) -> CGFloat {
+        let xDist = a.x - b.x
+        let yDist = a.y - b.y
+        return CGFloat(sqrt(xDist * xDist + yDist * yDist))
     }
     
     override func translate(by: CGPoint) {
@@ -126,7 +133,7 @@ class ConnectionFigure : Figure {
     
     func hideElbowAnchor() {
         self.anchors[.ELBOW]!.removeFromSuperlayer()
-        self.anchors[.ELBOW]! = ClearConnectionAnchor(position: self.points[.ELBOW]!)
+        self.anchors[.ELBOW]! = ClearConnectionAnchor(position: self.points[.ELBOW]!, frame: self.getSelectionFrame())
         self.layer.addSublayer(self.anchors[.ELBOW]!)
         setNeedsDisplay()
     }

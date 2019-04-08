@@ -125,7 +125,7 @@ namespace PolyPaint.Strokes
                     if (firstDistance < Config.MIN_DISTANCE_ANCHORS)
                     {
                         StylusPoints[0] = new StylusPoint(firstCloseAnchor.Value.X, firstCloseAnchor.Value.Y);
-                        stroke.OutConnections.AddOrUpdate(this, firstCloseAnchor.Key, (k, v) => firstCloseAnchor.Key);
+                        stroke.OutConnections.AddOrUpdate(Guid, firstCloseAnchor.Key, (k, v) => firstCloseAnchor.Key);
                         affected.Add(stroke);
                     }
 
@@ -134,7 +134,7 @@ namespace PolyPaint.Strokes
                     if (secondDistance < Config.MIN_DISTANCE_ANCHORS)
                     {
                         StylusPoints[1] = new StylusPoint( secondCloseAnchor.Value.X , secondCloseAnchor.Value.Y);
-                        stroke.InConnections.AddOrUpdate(this, secondCloseAnchor.Key, (k, v) => secondCloseAnchor.Key);
+                        stroke.InConnections.AddOrUpdate(Guid, secondCloseAnchor.Key, (k, v) => secondCloseAnchor.Key);
                         affected.Add(stroke);
                     }
                 }

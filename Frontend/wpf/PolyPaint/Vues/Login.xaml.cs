@@ -2,6 +2,7 @@
 using PolyPaint.Common;
 using PolyPaint.Common.Collaboration;
 using PolyPaint.Modeles;
+using PolyPaint.Utilitaires;
 using PolyPaint.VueModeles;
 using System;
 using System.Collections.Generic;
@@ -147,10 +148,11 @@ namespace PolyPaint.Vues
                 string token = "";
                 client.BaseAddress = new Uri(Config.URL);
                 var web = new WebBrowserWindow();
+                WinInetHelper.SupressCookiePersist();
                 web.ShowDialog();
                 token = web.Token;
 
-                if (token != null && web.Result.StatusCode == System.Net.HttpStatusCode.OK)
+                if (token != null && web.Result != null && web.Result.StatusCode == System.Net.HttpStatusCode.OK)
                 {
 
                     DecodeToken(token);
@@ -178,7 +180,7 @@ namespace PolyPaint.Vues
                 }
                 else
                 {
-                    string error = await web.Result.Content.ReadAsStringAsync();
+                    string error = web.Result == null ? "" : await web.Result.Content.ReadAsStringAsync();
                     loginError.Text = JsonConvert.DeserializeObject<string>(error);
                 }
             }

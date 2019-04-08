@@ -27,7 +27,7 @@ class GalleryController: UIViewController {
         self.canvasController = UIStoryboard(name: "Canvas", bundle: nil).instantiateViewController(withIdentifier: "CanvasController") as! CanvasController;
         self.collectionView.refreshControl = self.refreshCollectionView;
         self.refreshCollectionView.addTarget(self, action: #selector(refreshData(_:)), for: .valueChanged);
-        self.refreshCollectionView.tintColor = Constants.RED_COLOR;
+        self.refreshCollectionView.tintColor = Constants.Colors.RED_COLOR;
     }
     override func viewWillAppear(_ animated: Bool){
         self.loadCanvas()
@@ -71,6 +71,7 @@ extension GalleryController: UICollectionViewDelegate, UICollectionViewDataSourc
         cell.password = canvas[indexPath.row].canvasProtection
         cell.canvasId = canvas[indexPath.row].canvasId
         cell.nameLabel.text = canvas[indexPath.row].name
+        cell.privacyLabel.text = canvas[indexPath.row].canvasVisibility
         cell.drawViewModels = canvas[indexPath.row].drawViewModels
         cell.author = canvas[indexPath.row].canvasAutor
         cell.image = canvas[indexPath.row].image

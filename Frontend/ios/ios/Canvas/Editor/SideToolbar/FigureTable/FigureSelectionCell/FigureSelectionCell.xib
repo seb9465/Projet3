@@ -29,9 +29,8 @@
                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Tho-R4-gEI" customClass="RoundedCorners" customModule="ios" customModuleProvider="target">
                         <rect key="frame" x="16" y="532" width="100" height="100"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" red="1" green="0.41960784309999999" blue="0.41960784309999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
-                        <state key="normal" title="Heritage">
+                        <state key="normal" backgroundImage="heritage_icon">
                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </state>
                         <connections>
@@ -41,9 +40,8 @@
                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5HX-zO-x8G" customClass="RoundedCorners" customModule="ios" customModuleProvider="target">
                         <rect key="frame" x="135" y="532" width="100" height="100"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" red="1" green="0.41960784309999999" blue="0.41960784309999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
-                        <state key="normal" title="unidirect">
+                        <state key="normal" backgroundImage="uni_icon">
                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </state>
                         <connections>
@@ -53,9 +51,8 @@
                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fOV-oV-AZr" customClass="RoundedCorners" customModule="ios" customModuleProvider="target">
                         <rect key="frame" x="16" y="648" width="100" height="100"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" red="1" green="0.41960784309999999" blue="0.41960784309999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
-                        <state key="normal" title="bidirect">
+                        <state key="normal" backgroundImage="bi_icon">
                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </state>
                         <connections>
@@ -65,9 +62,8 @@
                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="r5h-aA-JZk" customClass="RoundedCorners" customModule="ios" customModuleProvider="target">
                         <rect key="frame" x="134" y="648" width="100" height="100"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" red="1" green="0.41960784309999999" blue="0.41960784309999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
-                        <state key="normal" title="Aggregation">
+                        <state key="normal" backgroundImage="agregation_icon">
                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </state>
                         <connections>
@@ -77,9 +73,8 @@
                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="akd-lO-4P1" customClass="RoundedCorners" customModule="ios" customModuleProvider="target">
                         <rect key="frame" x="16" y="761" width="100" height="100"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" red="1" green="0.41960784309999999" blue="0.41960784309999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
-                        <state key="normal" title="composition">
+                        <state key="normal" backgroundImage="composition_icon">
                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </state>
                         <connections>
@@ -96,9 +91,8 @@
                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="d6U-ym-IfC" customClass="RoundedCorners" customModule="ios" customModuleProvider="target">
                         <rect key="frame" x="17" y="78" width="100" height="100"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" red="1" green="0.41960784309999999" blue="0.41960784309999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
-                        <state key="normal" backgroundImage="class_icon">
+                        <state key="normal" backgroundImage="umlclass_icon">
                             <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                         </state>
                         <connections>
@@ -108,9 +102,8 @@
                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zbb-AP-8pZ" customClass="RoundedCorners" customModule="ios" customModuleProvider="target">
                         <rect key="frame" x="135" y="312" width="100" height="100"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" red="1" green="0.41960784309999999" blue="0.41960784309999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
-                        <state key="normal" title="Role">
+                        <state key="normal" backgroundImage="role_icon">
                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </state>
                         <connections>
@@ -120,21 +113,19 @@
                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YOZ-fM-k7Y" customClass="RoundedCorners" customModule="ios" customModuleProvider="target">
                         <rect key="frame" x="17" y="196" width="100" height="100"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" red="1" green="0.41960784309999999" blue="0.41960784309999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
-                        <state key="normal" title="Phase">
-                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <state key="normal" backgroundImage="phase_icon">
+                            <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </state>
                         <connections>
                             <action selector="PhaseSelected:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="erv-r5-TXr"/>
                         </connections>
                     </button>
                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h3j-eq-Kdt" customClass="RoundedCorners" customModule="ios" customModuleProvider="target">
-                        <rect key="frame" x="135" y="196" width="100" height="100"/>
+                        <rect key="frame" x="134" y="78" width="100" height="100"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" red="1" green="0.41960784309999999" blue="0.41960784309999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
-                        <state key="normal" title="Artefact">
+                        <state key="normal" backgroundImage="artefact_icon">
                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </state>
                         <connections>
@@ -144,25 +135,12 @@
                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ma6-j4-cf9" customClass="RoundedCorners" customModule="ios" customModuleProvider="target">
                         <rect key="frame" x="17" y="312" width="100" height="100"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" red="1" green="0.41960784309999999" blue="0.41960784309999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
-                        <state key="normal" title="Comment">
-                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                        <state key="normal" title="Comment" backgroundImage="comment_icon">
+                            <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </state>
                         <connections>
                             <action selector="UMLCommentSelected:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="Xmy-Bk-9rH"/>
-                        </connections>
-                    </button>
-                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yUv-hm-jV2" customClass="RoundedCorners" customModule="ios" customModuleProvider="target">
-                        <rect key="frame" x="135" y="78" width="100" height="100"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" red="1" green="0.41960784309999999" blue="0.41960784309999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
-                        <state key="normal" backgroundImage="class_icon">
-                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        </state>
-                        <connections>
-                            <action selector="ActivitySelected:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="WVr-2d-ZbX"/>
                         </connections>
                     </button>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Texte Flottant" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pqJ-95-1n5">
@@ -180,12 +158,13 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fHZ-5b-Dzs" customClass="RoundedCorners" customModule="ios" customModuleProvider="target">
-                        <rect key="frame" x="16" y="452" width="218" height="38"/>
+                        <rect key="frame" x="17" y="452" width="218" height="38"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" red="1" green="0.41960784309999999" blue="0.41960784309999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" white="0.90000000000000002" alpha="1" colorSpace="calibratedWhite"/>
                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
                         <state key="normal" title="Text">
-                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <color key="titleShadowColor" white="0.97999999999999998" alpha="1" colorSpace="calibratedWhite"/>
                         </state>
                         <connections>
                             <action selector="textSelected:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="BcX-E6-iXC"/>
@@ -194,13 +173,23 @@
                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z22-XJ-S58" customClass="RoundedCorners" customModule="ios" customModuleProvider="target">
                         <rect key="frame" x="135" y="761" width="100" height="100"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" red="1" green="0.41960784309999999" blue="0.41960784309999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
-                        <state key="normal" title="Line">
+                        <state key="normal" backgroundImage="line_icon">
                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </state>
                         <connections>
                             <action selector="lineSelected:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="iVn-rb-XYl"/>
+                        </connections>
+                    </button>
+                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yUv-hm-jV2" customClass="RoundedCorners" customModule="ios" customModuleProvider="target">
+                        <rect key="frame" x="134" y="196" width="100" height="100"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
+                        <state key="normal" backgroundImage="activity_icon">
+                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </state>
+                        <connections>
+                            <action selector="ActivitySelected:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="WVr-2d-ZbX"/>
                         </connections>
                     </button>
                 </subviews>
@@ -226,6 +215,17 @@
         </tableViewCell>
     </objects>
     <resources>
-        <image name="class_icon" width="200" height="200"/>
+        <image name="activity_icon" width="108.75" height="108.75"/>
+        <image name="agregation_icon" width="150" height="150"/>
+        <image name="artefact_icon" width="101.25" height="101.25"/>
+        <image name="bi_icon" width="150" height="150"/>
+        <image name="comment_icon" width="227" height="227"/>
+        <image name="composition_icon" width="150" height="150"/>
+        <image name="heritage_icon" width="150" height="150"/>
+        <image name="line_icon" width="150" height="150"/>
+        <image name="phase_icon" width="231" height="231"/>
+        <image name="role_icon" width="131.25" height="131.25"/>
+        <image name="umlclass_icon" width="231" height="231"/>
+        <image name="uni_icon" width="150" height="150"/>
     </resources>
 </document>

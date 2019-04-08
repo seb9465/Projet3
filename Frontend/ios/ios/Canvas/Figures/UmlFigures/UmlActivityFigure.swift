@@ -34,7 +34,11 @@ class UmlActivityFigure: UmlFigure {
     }
     
     override func initializeAnchorPoints() {
-        self.anchorPoints = AnchorPoints(width: self.frame.width, height: self.frame.height - nameLabelHeight)
+        if (Int(self.currentAngle / 90) % 2 == 0) {
+            self.anchorPoints = AnchorPoints(width: self.frame.width, height: self.frame.height - nameLabelHeight)
+        } else {
+            self.anchorPoints = AnchorPoints(width: self.frame.height, height: self.frame.width - nameLabelHeight)
+        }
         self.layer.addSublayer((self.anchorPoints?.anchorPointsBottom)!)
         self.layer.addSublayer((self.anchorPoints?.anchorPointsTop)!)
         self.layer.addSublayer((self.anchorPoints?.anchorPointsLeft)!)
@@ -42,9 +46,18 @@ class UmlActivityFigure: UmlFigure {
     }
     
     override func draw(_ rect: CGRect) {
+        var width = abs(self.frame.origin.x - self.frame.maxX)
+        var height = abs(self.frame.origin.y - self.frame.maxY)
+        
+        if (Int(self.currentAngle / 90) % 2 != 0) {
+            let temp = width
+            width = height
+            height = temp
+        }
+        
         let inset: CGFloat = (self.lineWidth > 5) ? self.lineWidth : 5
-        let width = self.frame.width - inset
-        let height = self.frame.height - inset - nameLabelHeight
+        width = width - inset
+        height = height - inset - nameLabelHeight
         
         //// Bezier Drawing
         let bezierPath = UIBezierPath()
@@ -67,7 +80,16 @@ class UmlActivityFigure: UmlFigure {
         bezierPath.stroke()
         bezierPath.fill()
         
-        let textRect = CGRect(x: 0, y: self.frame.height - nameLabelHeight - 5, width: self.frame.width, height: nameLabelHeight)
+        width = abs(self.frame.origin.x - self.frame.maxX)
+        height = abs(self.frame.origin.y - self.frame.maxY)
+        
+        if (Int(self.currentAngle / 90) % 2 != 0) {
+            let temp = width
+            width = height
+            height = temp
+        }
+        
+        let textRect = CGRect(x: 0, y: height - nameLabelHeight - 5, width: width, height: nameLabelHeight)
         let nameLabel = UILabel(frame: textRect)
         nameLabel.text = self.name
         nameLabel.contentMode = .top

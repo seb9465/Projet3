@@ -48,6 +48,32 @@ class AuthentificationAPI {
         }
     }
     
+    static func getIsTutorialShown() -> Promise<Bool> {
+        let headers = ["Authorization": "Bearer " + UserDefaults.standard.string(forKey: "token")!];
+        let url: URLConvertible = Constants.TUTORIAL_URL as URLConvertible;
+        
+        return Promise { (seal) in
+            Manager.request(url, method: .get, encoding: JSONEncoding.default, headers: headers).validate()
+                .responseString { (response) in
+                    switch response.result {
+                    case .success:
+                        seal.fulfill(Bool(response.value!)!);
+                        break;
+                    case .failure(let error):
+                        seal.reject(error);
+                        break;
+                    }
+            }
+        }
+    }
+    
+    static func setIsTutorialShown() -> Void {
+        let headers = ["Authorization": "Bearer " + UserDefaults.standard.string(forKey: "token")!];
+        let url: URLConvertible = Constants.TUTORIAL_SHOWN_URL as URLConvertible;
+        
+        Manager.request(url, method: .get, encoding: JSONEncoding.default, headers: headers);
+    }
+    
     static func fbLogin(accessToken: String, username: String, email: String, firstName: String, lastName: String) -> Promise<String> {
         let credentials = ["Fbtoken": accessToken, "Username": username, "Email": email, "FirstName": firstName, "LastName": lastName]
         let url = Constants.FB_LOGIN_URL as URLConvertible
@@ -61,7 +87,6 @@ class AuthentificationAPI {
                         seal.fulfill(userToken);
                     case .failure(let Error):
                         let responseDataString = String(data: response.data!, encoding:String.Encoding.utf8)
-                        print(responseDataString)
                         let error: Error = LoginError.customError(error: responseDataString!)
                         seal.reject(error)
                     }

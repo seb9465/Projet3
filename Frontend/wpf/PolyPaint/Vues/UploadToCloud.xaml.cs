@@ -1,7 +1,12 @@
-﻿using PolyPaint.Modeles;
+﻿using Newtonsoft.Json;
+using PolyPaint.Modeles;
+using PolyPaint.VueModeles;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
@@ -33,6 +38,7 @@ namespace PolyPaint.Vues
             InitializeComponent();
             ChatClient = chatClient;
             _isProtected = protectionComboBox.Text == "Protected";
+            this.ShowDialog();
         }
 
         protected virtual void ProprieteModifiee([CallerMemberName] string propertyName = null)
@@ -42,14 +48,13 @@ namespace PolyPaint.Vues
 
         private void Ok_Click(object sender, RoutedEventArgs e)
         {
-            var canvas = new SaveableCanvas(Guid.NewGuid().ToString(), nameTextBox.Text, "[]", new byte[0], visibilityComboBox.Text, passwordTextBox.Password, Application.Current.Properties["username"].ToString(), 1000, 500);
+            var canvas = new SaveableCanvas(Guid.NewGuid().ToString(), nameTextBox.Text, "[]", new byte[0], visibilityComboBox.Text, passwordTextBox.Password, Application.Current.Properties["username"].ToString(), Config.MAX_CANVAS_WIDTH, Config.MAX_CANVAS_HEIGHT);
 
             FenetreDessin fenetreDessin = new FenetreDessin(new List<Common.Collaboration.DrawViewModel>(), canvas, ChatClient);
 
             Application.Current.MainWindow = fenetreDessin;
             Close();
             fenetreDessin.Show();
-            Close();
         }
 
         private void protectionComboBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
