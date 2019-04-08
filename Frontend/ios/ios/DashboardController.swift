@@ -77,6 +77,14 @@ class DashboardController: UIViewController, UITextFieldDelegate {
         self.chatNotifLabel.isHidden = true;
     }
     
+    private func saveNewCanvas(canvas: Canvas) {
+        currentCanvas = canvas
+        CanvasService.SaveOnline(canvas: canvas).done { (success) in
+            let canvasController = UIStoryboard(name: "Canvas", bundle: nil).instantiateViewController(withIdentifier: "CanvasController") as! CanvasController
+            self.present(canvasController, animated: true, completion: nil);
+        }
+    }
+    
     // MARK: Action functions
     
     @IBAction func logoutButton(_ sender: Any) {
@@ -145,13 +153,7 @@ class DashboardController: UIViewController, UITextFieldDelegate {
         self.present(createAlert, animated: true, completion: nil)
     }
     
-    public func saveNewCanvas(canvas: Canvas) {
-        currentCanvas = canvas
-        CanvasService.SaveOnline(canvas: canvas).done { (success) in
-            let canvasController = UIStoryboard(name: "Canvas", bundle: nil).instantiateViewController(withIdentifier: "CanvasController") as! CanvasController
-            self.present(canvasController, animated: true, completion: nil);
-        }
-    }
+    
     
     /**
      Removes the color animation on the Window Chat button, and opens or closes the ChatRoom view.
