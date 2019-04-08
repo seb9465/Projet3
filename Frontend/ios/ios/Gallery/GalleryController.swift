@@ -27,7 +27,7 @@ class GalleryController: UIViewController {
         self.canvasController = UIStoryboard(name: "Canvas", bundle: nil).instantiateViewController(withIdentifier: "CanvasController") as! CanvasController;
         self.collectionView.refreshControl = self.refreshCollectionView;
         self.refreshCollectionView.addTarget(self, action: #selector(refreshData(_:)), for: .valueChanged);
-        self.refreshCollectionView.tintColor = Constants.RED_COLOR;
+        self.refreshCollectionView.tintColor = Constants.Colors.RED_COLOR;
     }
     override func viewWillAppear(_ animated: Bool){
         self.loadCanvas()
