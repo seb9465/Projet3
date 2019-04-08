@@ -58,7 +58,7 @@
 
                 <GroupBox Header="Canvas" Margin="16" FontSize="20">
                     <StackPanel>
-                        <Button Click="NewCanva_Click" Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}" Width="65" Height="65" VerticalAlignment="Top" HorizontalAlignment="Right" Grid.Row="0" Margin="0,-45,25,0" Grid.Column="1" BorderBrush="#F44236" Background="#F44236" >
+                        <Button Click="NewCanva_Click" Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}" Width="65" Height="65" VerticalAlignment="Top" HorizontalAlignment="Right" Grid.Row="0" Margin="0,-45,25,0" Grid.Column="1">
                             <materialDesign:PackIcon Kind="Plus" Height="35" Width="35" />
                         </Button>
                         <ListBox Name="ImagePreviews" SelectionChanged="OnSelectionChanged" ItemsSource="{Binding Canvas}" FontSize="14" MaxHeight="750">
