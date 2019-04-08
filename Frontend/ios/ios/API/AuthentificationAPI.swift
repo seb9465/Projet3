@@ -48,6 +48,17 @@ class AuthentificationAPI {
         }
     }
     
+    static func getIsTutorialShown() -> Promise<Bool> {
+        let url: URLConvertible = Constants.TUTORIAL_URL as URLConvertible;
+        
+        return Promise { (seal) in
+            Manager.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default).validate()
+                .responseString { (response) in
+                    print(response);
+            }
+        }
+    }
+    
     static func fbLogin(accessToken: String, username: String, email: String, firstName: String, lastName: String) -> Promise<String> {
         let credentials = ["Fbtoken": accessToken, "Username": username, "Email": email, "FirstName": firstName, "LastName": lastName]
         let url = Constants.FB_LOGIN_URL as URLConvertible

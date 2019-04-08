@@ -84,6 +84,7 @@ class TutorialController: UIViewController, UIScrollViewDelegate {
     private func initPageControl() -> Void {
         self.pageControl.numberOfPages = _slides.count;
         self.pageControl.currentPage = 0;
+        self.pageControl.currentPageIndicatorTintColor = Constants.RED_COLOR;
         self.pageControl.tintColor = UIColor.black;
     }
     
