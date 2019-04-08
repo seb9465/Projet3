@@ -224,6 +224,8 @@ namespace PolyPaint
                 drawviewmodels.ForEach(x => x.Guid = Guid.NewGuid().ToString());
                 drawviewmodels.ForEach(x => x.StylusPoints.ForEach(y => y.X += 10));
                 drawviewmodels.ForEach(x => x.StylusPoints.ForEach(y => y.Y += 10));
+                drawviewmodels.Where(x => !x.IsConnection()).ToList().ForEach(x => x.InConnections.Clear());
+                drawviewmodels.Where(x => !x.IsConnection()).ToList().ForEach(x => x.OutConnections.Clear());
                 StrokeBuilder.BuildStrokesFromDrawViewModels(drawviewmodels, surfaceDessin);
 
                 StrokeCollection sCollection = new StrokeCollection(surfaceDessin.Strokes.Where(x => drawviewmodels.Select(y => y.Guid).Contains((x as AbstractStroke).Guid.ToString())).ToList());
@@ -349,7 +351,7 @@ namespace PolyPaint
                         (DataContext as VueModele).IsCreatedByUser = Canvas.CanvasAutor == Application.Current.Properties["username"].ToString();
                     }
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
                     (DataContext as VueModele).IsCreatedByUser = false;
                     (DataContext as VueModele).IsConnected = false;
@@ -526,7 +528,6 @@ namespace PolyPaint
                 case "select":
                     var selectedStrokes = surfaceDessin.GetSelectedStrokes();
                     selectedItems = StrokeBuilder.GetDrawViewModelsFromStrokes(selectedStrokes);
-                    (DataContext as VueModele).CollaborationClient.CollaborativeSelectAsync(selectedItems);
                     if (IsMoving || IsResizing)
                     {
                         var affectedStrokes = InkCanvasEventManager.UpdateAnchorPointsPosition(surfaceDessin);
@@ -543,6 +544,7 @@ namespace PolyPaint
                             AddToUndoStack();
                         }
                     }
+                    (DataContext as VueModele).CollaborationClient.CollaborativeSelectAsync(selectedItems);
                     IsResizing = false;
                     IsMoving = false;
                     break;

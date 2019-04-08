@@ -32,11 +32,13 @@ namespace PolyPaint.Common.Collaboration
         public List<List<string>> InConnections;
         public List<List<string>> OutConnections;
 
+        [JsonIgnore]
         public List<PolyPaintStylusPoint> RotatedStylusPoints
         {
             get { return StylusPoints.ToList().Select(x => RotatePoint(new PolyPaintStylusPoint(x.X, x.Y), Center, -Rotation)).ToList(); }
         }
 
+        [JsonIgnore]
         public PolyPaintStylusPoint Center
         {
             get { return new PolyPaintStylusPoint((StylusPoints[1].X + StylusPoints[0].X) / 2, (StylusPoints[1].Y + StylusPoints[0].Y) / 2); }
@@ -64,7 +66,6 @@ namespace PolyPaint.Common.Collaboration
         };
 
         public override string ToString() => JsonConvert.SerializeObject(this, SerializerSettings);
-
 
         public static PolyPaintStylusPoint RotatePoint(PolyPaintStylusPoint p1, PolyPaintStylusPoint p2, double angle)
         {

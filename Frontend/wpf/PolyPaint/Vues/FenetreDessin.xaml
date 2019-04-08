@@ -108,9 +108,7 @@
                             Background="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurCouleurFond}, ConverterParameter=lasso, UpdateSourceTrigger=PropertyChanged}" 
                             Command="{Binding Path=ChoisirOutil}"
                             CommandParameter="lasso">
-                        <StackPanel>
-                            <Image Source="/Resources/lasso.png" Width="25" Height="25"/>
-                        </StackPanel>
+                        <materialDesign:PackIcon Kind="SelectionDrag" Width="17" Height="17" />
                     </Button>
                     <Button Name="select"
                         Style="{StaticResource MaterialDesignRaisedLightButton}" HorizontalAlignment="Left" ToolTip="Select" 
