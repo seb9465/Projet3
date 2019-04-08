@@ -98,7 +98,7 @@ class CanvasController: UIViewController {
                 }
             }
             .catch { (error) in
-                print(erro);
+                print(error);
         }
     }
     
