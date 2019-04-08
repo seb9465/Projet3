@@ -311,12 +311,6 @@ class CanvasController: UIViewController {
         self.present(alert, animated: true, completion: nil);
     }
     
-    @IBAction func openTutorial(_ sender: Any) {
-        let sb: UIStoryboard = UIStoryboard(name: "Tutorial", bundle: nil);
-        let tutoController: UIViewController = sb.instantiateViewController(withIdentifier: "TutorialView");
-        self.present(tutoController, animated: true, completion: nil);
-    }
-    
     // Mark: - Object functions
     
     @objc func reachabilityChanged(notification: NSNotification) -> Void {

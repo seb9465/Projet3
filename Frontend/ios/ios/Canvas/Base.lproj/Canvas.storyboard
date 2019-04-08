@@ -73,7 +73,7 @@
                                     </barButtonItem>
                                     <barButtonItem style="plain" id="MeA-86-Ay2">
                                         <switch key="customView" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" id="RsE-TN-IVY">
-                                            <rect key="frame" x="371" y="9.5" width="51" height="31"/>
+                                            <rect key="frame" x="383" y="9.5" width="51" height="31"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <connections>
                                                 <action selector="switchButtonChangedWithSender:" destination="Vts-He-P18" eventType="valueChanged" id="5As-3f-grU"/>
@@ -84,11 +84,6 @@
                                         <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
                                             <action selector="chatViewButton:" destination="Vts-He-P18" id="U0G-ah-An7"/>
-                                        </connections>
-                                    </barButtonItem>
-                                    <barButtonItem title="Tutoriel" id="7Oc-5H-Zh5">
-                                        <connections>
-                                            <action selector="openTutorial:" destination="Vts-He-P18" id="rhY-IH-N0q"/>
                                         </connections>
                                     </barButtonItem>
                                 </items>
@@ -285,7 +280,7 @@
         <image name="paint" width="24" height="24"/>
         <image name="pngexport" width="36" height="36"/>
         <image name="redo" width="36" height="36"/>
-        <image name="selection" width="24" height="24"/>
+        <image name="selection" width="36" height="36"/>
         <image name="shape" width="24" height="24"/>
         <image name="undo" width="36" height="36"/>
     </resources>
