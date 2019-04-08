@@ -170,6 +170,7 @@ class Editor {
     }
     
     public func duplicate() -> Void {
+        self.currentChange.0 = []
         if (self.selectedFigures.count > 0) {
             self.copy();
             self.deselect();
@@ -186,17 +187,22 @@ class Editor {
             viewModel.StylusPoints![1].Y = viewModel.StylusPoints![1].Y + 10;
             let newFigure: Figure = self.insertFigure(drawViewModel: viewModel)
             self.select(figure: newFigure);
-            figureToAdd.append(figure)
-            drawViewModelToSelect.append(figure.exportViewModel()!)
+            figureToAdd.append(newFigure)
+            drawViewModelToSelect.append(newFigure.exportViewModel()!)
         }
+        self.currentChange.1 = self.getSelectedFiguresDrawviewModels()
+        self.undoArray.append(self.currentChange)
         CollaborationHub.shared!.postNewFigure(figures: figureToAdd);
         CollaborationHub.shared?.selectObjects(drawViewModels: drawViewModelToSelect)
         CanvasService.saveOnNewFigure(figures: self.figures, editor: self);
     }
     
     public func cut() -> Void {
+        self.currentChange.0 = self.getSelectedFiguresDrawviewModels()
         self.copy();
         self.deleteSelectedFigures();
+        self.currentChange.1 = []
+        self.undoArray.append(self.currentChange)
     }
     
     public func insertFigure(position: CGPoint) -> Void {
