@@ -12,12 +12,12 @@
             Welcome to the editor mode tutorial
         </Label>
         <Border BorderBrush="#595959" BorderThickness="2" HorizontalAlignment="Center" Margin="0,20,0,20" Background="Gainsboro">
-            <Image Name="tutorialImage" Source="/Resources/capture.png" Width="350" Height="190" Margin="3" />
+            <Image Name="tutorialImage" Source="/Resources/tutorial/1.png" Width="350" Height="190" Margin="3" />
         </Border>
 
         
         <TextBlock Name="tutorialText" HorizontalAlignment="Center" MaxWidth="500" Height="50" TextWrapping="Wrap">
-            Tutorial text goes here lalalalaa Tutorial text goes here lalalalaa Tutorial text goes here lalalalaa Tutorial text goes here lalalalaa Tutorial text goes here lalalalaaTutorial text goes here lalalalaa
+            Here is your personal profile that contains a gallery of public and private images
         </TextBlock>
         <DockPanel >
             <Button  Style="{StaticResource MaterialDesignRaisedButton}"  Click="previousPage_Click" HorizontalAlignment="Left" 
