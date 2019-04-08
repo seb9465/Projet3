@@ -25,9 +25,12 @@ class TutorialController: UIViewController, UIScrollViewDelegate {
         self._slides = self.createSlides();
         self.initSlidesView();
         setupSlideScrollView(slides: self._slides);
+        self._slides.last?.getStartedButon.isHidden = false;
         
         self.pageControl.numberOfPages = _slides.count;
         self.pageControl.currentPage = 0;
+        self.pageControl.tintColor = UIColor.black;
+        
         self.view.bringSubviewToFront(self.pageControl);
         
         self.scrollView.delegate = self;
@@ -64,10 +67,9 @@ class TutorialController: UIViewController, UIScrollViewDelegate {
         slide2.labelDesc.text = "DESCRIPTION 2";
         
         let slide3:Slide = Bundle.main.loadNibNamed("Slide", owner: self, options: nil)?.first as! Slide;
-        slide3.imageView.image = UIImage(named: "lock");
+        slide3.imageView.image = nil;
         slide3.labelTitle.text = "FIN";
         slide3.labelDesc.text = "FIN";
-        slide3.getStartedButon.isHidden = false;
         
         return [slide1, slide2, slide3];
     }
@@ -113,13 +115,14 @@ class TutorialController: UIViewController, UIScrollViewDelegate {
             _slides[0].imageView.transform = CGAffineTransform(scaleX: (0.25-percentOffset.x)/0.25, y: (0.25-percentOffset.x)/0.25)
             _slides[1].imageView.transform = CGAffineTransform(scaleX: percentOffset.x/0.25, y: percentOffset.x/0.25)
         }
-//        else if(percentOffset.x > 0.25 && percentOffset.x <= 0.50) {
-//            _slides[1].imageView.transform = CGAffineTransform(scaleX: (0.50-percentOffset.x)/0.25, y: (0.50-percentOffset.x)/0.25)
-//            _slides[2].imageView.transform = CGAffineTransform(scaleX: percentOffset.x/0.50, y: percentOffset.x/0.50)
-//        } else if(percentOffset.x > 0.50 && percentOffset.x <= 0.75) {
-//            _slides[2].imageView.transform = CGAffineTransform(scaleX: (0.75-percentOffset.x)/0.25, y: (0.75-percentOffset.x)/0.25)
-//            _slides[3].imageView.transform = CGAffineTransform(scaleX: percentOffset.x/0.75, y: percentOffset.x/0.75)
-//        } else if(percentOffset.x > 0.75 && percentOffset.x <= 1) {
+        else if(percentOffset.x > 0.25 && percentOffset.x <= 0.50) {
+            _slides[1].imageView.transform = CGAffineTransform(scaleX: (0.50-percentOffset.x)/0.25, y: (0.50-percentOffset.x)/0.25)
+            _slides[2].imageView.transform = CGAffineTransform(scaleX: percentOffset.x/0.50, y: percentOffset.x/0.50)
+        } else if(percentOffset.x > 0.50 && percentOffset.x <= 0.75) {
+            _slides[2].imageView.transform = CGAffineTransform(scaleX: (0.75-percentOffset.x)/0.25, y: (0.75-percentOffset.x)/0.25)
+            _slides[3].imageView.transform = CGAffineTransform(scaleX: percentOffset.x/0.75, y: percentOffset.x/0.75)
+        }
+        //else if(percentOffset.x > 0.75 && percentOffset.x <= 1) {
 //            _slides[3].imageView.transform = CGAffineTransform(scaleX: (1-percentOffset.x)/0.25, y: (1-percentOffset.x)/0.25)
 //            _slides[4].imageView.transform = CGAffineTransform(scaleX: percentOffset.x, y: percentOffset.x)
 //        }
