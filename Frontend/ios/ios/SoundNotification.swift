@@ -17,6 +17,7 @@ class SoundNotification{
 enum Sound: SystemSoundID {
     case ReceiveMessage = 1003;
     case SendMessage = 1004;
+    case Tweet = 1016;
     case BeginVideo = 1117;
     case EndVideo = 1118;
 }

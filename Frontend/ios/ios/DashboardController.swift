@@ -12,12 +12,18 @@ import Alamofire
 
 class DashboardController: UIViewController, UITextFieldDelegate {
     
+    // MARK: - Attributes
+    
+    // MARK: - Outlets
+    
     @IBOutlet weak var galleryView: UIView!
     @IBOutlet weak var usernameLabel: UILabel!
     @IBOutlet var logoutButton: RoundedCorners!
     @IBOutlet var viewContainerChat: UIView!
+    @IBOutlet var windowChatButton: RoundedCorners!
+    @IBOutlet var chatNotifLabel: UILabel!
     
-    // MARK: Timing functions
+    // MARK: - Timing functions
     
     override func viewDidLoad() { self.navigationItem.setHidesBackButton(true, animated:true);
         super.viewDidLoad();
@@ -29,7 +35,32 @@ class DashboardController: UIViewController, UITextFieldDelegate {
         ChatService.shared.initOnReceivingMessage(insertMessage:{_ in }, updateChatRooms: { });
         ChatService.shared.connectToHub();
         
-        self.viewContainerChat.sizeToFit(); // Adjusting frame size
+        self.setChatViewContainer();
+        
+        self.setChatNotifLabel();
+        
+        ChatService.shared.afkMessagesDidChangeClosure = {
+            let channels: [String: [Message]] = ChatService.shared.messagesWhileAFK;
+            print(channels);
+            var counter: Int = 0;
+            for channel in channels {
+                counter += (channels[channel.key]?.count)!;
+            }
+            
+            if (counter > 0) {
+                self.chatNotifLabel.isHidden = false;
+                self.chatNotifLabel.text = String(counter);
+            } else {
+                self.chatNotifLabel.isHidden = true;
+                self.chatNotifLabel.text = "";
+            }
+        }
+    }
+    
+    // MARK: - Private functions
+    
+    private func setChatViewContainer() -> Void {
+        self.viewContainerChat.sizeToFit();
         self.viewContainerChat.isHidden = true;
         self.viewContainerChat.layer.cornerRadius = Constants.ChatView.cornerRadius;
         self.viewContainerChat.layer.shadowColor = Constants.ChatView.shadowColor;
@@ -39,20 +70,34 @@ class DashboardController: UIViewController, UITextFieldDelegate {
         self.viewContainerChat.layer.masksToBounds = false;
     }
     
-    @IBAction func updateGallery(_ sender: Any) {
-        
+    private func setChatNotifLabel() -> Void {
+        self.chatNotifLabel.layer.cornerRadius = self.chatNotifLabel.frame.width / 2;
+        self.chatNotifLabel.layer.backgroundColor = Constants.DEFAULT_BLUE_COLOR.cgColor;
+        self.chatNotifLabel.textColor = UIColor.white;
+        self.chatNotifLabel.text = "";
+        self.chatNotifLabel.textAlignment = .center;
+        self.chatNotifLabel.isHidden = true;
     }
+    
+    private func saveNewCanvas(canvas: Canvas) {
+        currentCanvas = canvas
+        CanvasService.SaveOnline(canvas: canvas).done { (success) in
+            let canvasController = UIStoryboard(name: "Canvas", bundle: nil).instantiateViewController(withIdentifier: "CanvasController") as! CanvasController
+            self.present(canvasController, animated: true, completion: nil);
+        }
+    }
+    
+    // MARK: - Action functions
+    
     @IBAction func logoutButton(_ sender: Any) {
         AuthentificationAPI.logout()
+        
         UserDefaults.standard.removePersistentDomain(forName: "token");
-        let transition = CATransition();
-        transition.duration = 0.3;
-        transition.type = CATransitionType.reveal;
-        transition.subtype = CATransitionSubtype.fromBottom;
-        self.view.window!.layer.add(transition, forKey: kCATransition);
+        UserDefaults.standard.removePersistentDomain(forName: "id");
         
         self.dismiss(animated: true, completion: nil)
     }
+    
     @IBAction func createNewCanvas(_ sender: Any) {
         let token = UserDefaults.standard.string(forKey: "token");
         let jwt = try! decode(jwt: token!)
@@ -110,19 +155,20 @@ class DashboardController: UIViewController, UITextFieldDelegate {
         self.present(createAlert, animated: true, completion: nil)
     }
     
-    public func saveNewCanvas(canvas: Canvas) {
-        currentCanvas = canvas
-        CanvasService.SaveOnline(canvas: canvas).done { (success) in
-            let canvasController = UIStoryboard(name: "Canvas", bundle: nil).instantiateViewController(withIdentifier: "CanvasController") as! CanvasController
-            self.present(canvasController, animated: true, completion: nil);
-        }
-    }
     
+    
+    /**
+     Removes the color animation on the Window Chat button, and opens or closes the ChatRoom view.
+     */
     @IBAction func windowChatTrigger(_ sender: Any) {
         if (self.viewContainerChat.isHidden) {
             self.viewContainerChat.isHidden = false;
+            self.view.addSubview(self.viewContainerChat);
+            let view: UIView = self.view.subviews.last!;
+            view.layoutIfNeeded();
         } else {
             self.viewContainerChat.isHidden = true;
+            self.viewContainerChat.removeFromSuperview()
         }
     }
 }
