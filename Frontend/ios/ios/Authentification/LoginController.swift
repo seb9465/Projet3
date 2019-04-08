@@ -66,12 +66,15 @@ class LoginController: UIViewController, UITextFieldDelegate, WKUIDelegate {
                 AuthentificationAPI.getIsTutorialShown()
                     .done { (response) in
                         if (response) {
-                            print("HELLO");
+                            let mainController = self.storyboard?.instantiateViewController(withIdentifier: "MainController");
+                            self.present(mainController!, animated: true, completion: nil);
+                        } else {
+                            let sb: UIStoryboard = UIStoryboard(name: "Tutorial", bundle: nil);
+                            let tutoController = sb.instantiateViewController(withIdentifier: "TutorialView");
+                            self.present(tutoController, animated: true, completion: nil);
+                            AuthentificationAPI.setIsTutorialShown();
                         }
                 }
-                
-                let mainController = self.storyboard?.instantiateViewController(withIdentifier: "MainController");
-                self.present(mainController!, animated: true, completion: nil);
             }.catch { (responseError) in
                 UIViewController.removeSpinner(spinner: spinner);
                 // TODO: Afficher le bon message d'erreur. En attente du serveur.
