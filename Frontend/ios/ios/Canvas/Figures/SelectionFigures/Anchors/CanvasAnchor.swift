@@ -9,7 +9,7 @@
 import UIKit
 
 class CanvasAnchor: CAShapeLayer {
-    private let width: CGFloat = 30;
+    private let width: CGFloat = 10;
     
     var cornerAnchors: [CAShapeLayer] = []
     
