@@ -174,7 +174,7 @@ namespace PolyPaint.Vues
                 isMenuOpen = false;
                 canvasStackPanel.Width = _currentWidth - 200;
                 canvasStackPanel.Margin = new Thickness(70, 0, 0, 0);
-                ImagePreviews.MaxHeight = _currentHeight - 250;
+                ImagePreviews.MaxHeight = _currentHeight - 280;
             }
             else
             {
@@ -183,7 +183,7 @@ namespace PolyPaint.Vues
                 isMenuOpen = true;
                 canvasStackPanel.Width = _currentWidth - 200 - 430;
                 canvasStackPanel.Margin = new Thickness(0, 0, 0, 0);
-                ImagePreviews.MaxHeight = _currentHeight - 250;
+                ImagePreviews.MaxHeight = _currentHeight - 280;
             }
 
         }
