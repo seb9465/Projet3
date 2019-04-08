@@ -71,7 +71,7 @@ extension Editor {
         }
     }
     
-    @objc func longPress(_ sender: UILongPressGestureRecognizer) {
+    @objc func tap(_ sender: UILongPressGestureRecognizer) {
         if (self.selectedFigures.count != 1) {
             return
         }        

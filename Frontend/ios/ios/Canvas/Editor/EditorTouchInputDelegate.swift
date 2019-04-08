@@ -50,6 +50,7 @@ extension Editor : TouchInputDelegate {
             if (action == "empty") {
                 self.connectionPreview = FigureFactory.shared.getFigure(type: self.currentFigureType, source: self.initialTouchPoint, destination: self.initialTouchPoint)
                 self.editorView.addSubview(connectionPreview)
+                self.editorView.setNeedsDisplay()
                 self.touchEventState = .CONNECTION
                 return
             }

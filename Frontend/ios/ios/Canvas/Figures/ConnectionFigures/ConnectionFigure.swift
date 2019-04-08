@@ -337,9 +337,17 @@ class ConnectionFigure : Figure {
 
 // Touch Interaction Logic
 extension ConnectionFigure {
-    public override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {}
+    public override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        let touch = touches.first
+        guard let point = touch?.location(in: self.superview) else { return }
+        self.delegate?.notifyTouchBegan(action: "empty", point: point, figure: nil)
+    }
     
-    public override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {}
+    public override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        let touch = touches.first
+        guard let point = touch?.location(in: self.superview) else { return }
+        self.delegate?.notifyTouchMoved(point: point, figure: nil)
+    }
     
     public override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         let touch = touches.first
