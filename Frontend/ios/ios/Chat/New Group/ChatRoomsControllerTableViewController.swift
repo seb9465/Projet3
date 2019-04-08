@@ -39,10 +39,10 @@ class ChatRoomsControllerTableViewController: UITableViewController {
         self.refreshTable.addTarget(self, action: #selector(refreshData(_:)), for: .valueChanged)
         self.tableView.addSubview(self.refreshTable);
         
-        self.editButtonItem.tintColor = Constants.RED_COLOR;
+        self.editButtonItem.tintColor = Constants.Colors.RED_COLOR;
         self.navigationItem.rightBarButtonItems?.append(self.editButtonItem);
         
-        self.addButton.tintColor = Constants.RED_COLOR;
+        self.addButton.tintColor = Constants.Colors.RED_COLOR;
         
         super.viewDidLoad();
     }

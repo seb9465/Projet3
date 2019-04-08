@@ -45,6 +45,8 @@ class MsgChatController: MessagesViewController {
         
         self.navigationItem.title = ChatService.shared.currentChannel.name;
         
+        self.messageInputBar.becomeFirstResponder();
+        
         super.viewDidLoad();
         
         let afkMsgs: [String: [Message]] = ChatService.shared.messagesWhileAFK;

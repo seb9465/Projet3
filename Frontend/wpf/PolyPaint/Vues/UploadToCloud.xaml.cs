@@ -48,7 +48,7 @@ namespace PolyPaint.Vues
 
         private void Ok_Click(object sender, RoutedEventArgs e)
         {
-            var canvas = new SaveableCanvas(Guid.NewGuid().ToString(), nameTextBox.Text, "[]", new byte[0], visibilityComboBox.Text, passwordTextBox.Password, Application.Current.Properties["username"].ToString(), 1000, 500);
+            var canvas = new SaveableCanvas(Guid.NewGuid().ToString(), nameTextBox.Text, "[]", new byte[0], visibilityComboBox.Text, passwordTextBox.Password, Application.Current.Properties["username"].ToString(), Config.MAX_CANVAS_WIDTH, Config.MAX_CANVAS_HEIGHT);
 
             FenetreDessin fenetreDessin = new FenetreDessin(new List<Common.Collaboration.DrawViewModel>(), canvas, ChatClient);
 

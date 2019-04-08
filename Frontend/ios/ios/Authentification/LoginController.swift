@@ -165,7 +165,6 @@ class LoginController: UIViewController, UITextFieldDelegate, WKUIDelegate {
                     switch result {
                     case .success(let response):
                         let facebookResponse = response.dictionaryValue as! [String: String]
-                        print(facebookResponse)
                         AuthentificationAPI.fbLogin(accessToken: accessToken.authenticationToken, username: facebookResponse["id"]!, email: facebookResponse["email"]!, firstName: facebookResponse["first_name"]!, lastName: facebookResponse["last_name"]!).done({ (token) in
                             self.storeAuthentificationToken(token: token,id: facebookResponse["id"]!);
                             

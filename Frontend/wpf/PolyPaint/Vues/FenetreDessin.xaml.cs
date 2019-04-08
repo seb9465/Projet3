@@ -523,7 +523,7 @@ namespace PolyPaint
                     var selectedStrokes = surfaceDessin.GetSelectedStrokes();
                     selectedItems = StrokeBuilder.GetDrawViewModelsFromStrokes(selectedStrokes);
                     (DataContext as VueModele).CollaborationClient.CollaborativeSelectAsync(selectedItems);
-                    if (IsMoving)
+                    if (IsMoving || IsResizing)
                     {
                         var affectedStrokes = InkCanvasEventManager.UpdateAnchorPointsPosition(surfaceDessin);
                         if (!affectedStrokes.Any(x => selectedStrokes.Select(y => (y as AbstractStroke).Guid).Contains((x as AbstractStroke).Guid))) affectedStrokes.Add(selectedStrokes);

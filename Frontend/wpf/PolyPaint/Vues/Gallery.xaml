@@ -49,28 +49,33 @@
 
             <StackPanel Name="canvasStackPanel" MinWidth="750" Height="Auto" Margin="0,0,0,0">
                 
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,0">
-                    <Label Content="Welcome" FontSize="30" FontWeight="Bold" VerticalAlignment="Center"></Label>
-                    <Label Name="usernameLabel" Foreground="OrangeRed" FontSize="30" VerticalAlignment="Center" FontWeight="Bold"></Label>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,10,0,0">
+                    <Label Content="PolyPaint Pro" FontSize="30" FontWeight="Bold" VerticalAlignment="Center"></Label>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,-10,0,0">
+                    <Label Name="usernameLabel" Foreground="#ff6b6b" FontSize="30" VerticalAlignment="Center" FontWeight="Bold"></Label>
                 </StackPanel>
 
                 <GroupBox Header="Canvas" Margin="16" FontSize="20">
                     <StackPanel>
-                        <Button Click="NewCanva_Click" Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}" Width="65" Height="65" VerticalAlignment="Top" HorizontalAlignment="Right" Grid.Row="0" Margin="0,-45,25,0" Grid.Column="1" >
+                        <Button Click="NewCanva_Click" Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}" Width="65" Height="65" VerticalAlignment="Top" HorizontalAlignment="Right" Grid.Row="0" Margin="0,-45,25,0" Grid.Column="1" BorderBrush="#ff6b6b" Background="#ff6b6b" >
                             <materialDesign:PackIcon Kind="Plus" Height="35" Width="35" />
                         </Button>
                         <ListBox Name="ImagePreviews" SelectionChanged="OnSelectionChanged" ItemsSource="{Binding Canvas}" FontSize="14" MaxHeight="750">
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel>
-                                        <Label x:Name="name" Background="#f8aaa0" Content="{Binding Name}" HorizontalContentAlignment="Center"/>
-                                        <Border BorderThickness="1" BorderBrush="#f8aaa0">
+
+                                        <Border BorderThickness="1" BorderBrush="LightGray">
                                             <Image Source="{Binding Image}" Height="200" Width="250" Margin="5" />
                                         </Border>
-                                        <Grid Background="#f8aaa0">
-                                            <Label x:Name="visibilityLabel" Content="{Binding CanvasVisibility}" />
+                                        <Grid Background="#ff6b6b">
+                                            <StackPanel Orientation="Vertical">
+                                                <Label x:Name="name" FontSize="14" Foreground="White" FontWeight="Bold" Content="{Binding Name}" />
+                                                <Label x:Name="visibilityLabel" Foreground="White" FontSize="10" Content="{Binding CanvasVisibility}" Margin="0,-5,0,0" />
+                                            </StackPanel>
                                             <Label x:Name="protectionLabel" Visibility="{Binding IsProtected}" HorizontalAlignment="Right" >
-                                                <materialDesign:PackIcon Kind="LockOutline" />
+                                                <materialDesign:PackIcon Kind="LockOutline" Foreground="White" />
                                             </Label>
                                         </Grid>
                                     </StackPanel>

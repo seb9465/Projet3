@@ -59,7 +59,7 @@ namespace PolyPaint.Vues
 
         private void FacebookLogin(object sender, RoutedEventArgs e)
         {
-            webBrowser.Navigate($"https://www.facebook.com/v3.2/dialog/oauth?client_id=230967437849830&redirect_uri=https://polypaint.me/signin-facebook&response_type=token&display=popup");
+            webBrowser.Navigate($"https://www.facebook.com/v3.2/dialog/oauth?client_id=230967437849830&scope=email&redirect_uri=https://polypaint.me/signin-facebook&response_type=token&display=popup");
         }
 
         private void webBrowser_LoadCompleted(object sender, NavigationEventArgs e)

@@ -89,7 +89,7 @@ class RegisterController: UIViewController {
         sender.layer.cornerRadius = 5;
         
         if(sender.text!.isEmpty){
-            sender.layer.borderColor = Constants.RED_COLOR.cgColor;
+            sender.layer.borderColor = Constants.Colors.RED_COLOR.cgColor;
             self.firstNameErrorText.text = "First Name field must not be empty";
             self.firstNameErrorText.isHidden = false;
             self.firstNameErrorIcon.isHidden = false;
@@ -105,7 +105,7 @@ class RegisterController: UIViewController {
         sender.layer.cornerRadius = 5;
         
         if (sender.text!.isEmpty){
-            sender.layer.borderColor = Constants.RED_COLOR.cgColor;
+            sender.layer.borderColor = Constants.Colors.RED_COLOR.cgColor;
             self.lastNameErrorText.text = "Last Name field must not be empty";
             self.lastNameErrorText.isHidden = false;
             self.lastNameErrorIcon.isHidden = false;
@@ -120,7 +120,7 @@ class RegisterController: UIViewController {
         sender.layer.borderWidth = 1.0;
         sender.layer.cornerRadius = 5;
         
-        sender.layer.borderColor = Constants.RED_COLOR.cgColor;
+        sender.layer.borderColor = Constants.Colors.RED_COLOR.cgColor;
         self.usernameErrorText.isHidden = false;
         self.usernameErrorIcon.isHidden = false;
         
@@ -146,7 +146,7 @@ class RegisterController: UIViewController {
             self.emailErrorText.isHidden = true;
             self.emailErrorIcon.isHidden = true;
         } else {
-            sender.layer.borderColor = Constants.RED_COLOR.cgColor;
+            sender.layer.borderColor = Constants.Colors.RED_COLOR.cgColor;
             self.emailErrorText.text = "Invalid email format";
             self.emailErrorText.isHidden = false;
             self.emailErrorIcon.isHidden = false;
@@ -162,7 +162,7 @@ class RegisterController: UIViewController {
             self.pwdErrorText.isHidden = true;
             self.pwdErrorIcon.isHidden = true;
         } else {
-            sender.layer.borderColor = Constants.RED_COLOR.cgColor;
+            sender.layer.borderColor = Constants.Colors.RED_COLOR.cgColor;
             
             self.pwdErrorText.text = self.getPasswordErrors(password: sender.text!);
             self.pwdErrorText.isHidden = false;
