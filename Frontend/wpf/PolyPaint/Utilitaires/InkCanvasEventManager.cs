@@ -134,13 +134,11 @@ namespace PolyPaint.Utilitaires
                 else
                 {
                     var hihi = new StrokeCollection() { DrawingStroke };
-                    var selectedDvm = new List<DrawViewModel>();
                     if (DrawingStroke is AbstractLineStroke)
                     {
                         var elbow = (DrawingStroke as AbstractLineStroke).LastElbowPosition;
                         var sPoints = (DrawingStroke as AbstractLineStroke).StylusPoints;
                         (DrawingStroke as AbstractLineStroke).StylusPoints = new StylusPointCollection(3) { sPoints[0], sPoints[1], new StylusPoint(elbow.X, elbow.Y) };
-                        selectedDvm = StrokeBuilder.GetDrawViewModelsFromStrokes(hihi);
                         hihi.Add((DrawingStroke as AbstractLineStroke).TrySnap());
                     }
                     (DrawingStroke as ICanvasable).AddToCanvas();
@@ -148,7 +146,7 @@ namespace PolyPaint.Utilitaires
                     List<DrawViewModel> allo = StrokeBuilder.GetDrawViewModelsFromStrokes(hihi);
                     vm.SelectItem(((AbstractStroke)DrawingStroke).Center);
                     vm.CollaborationClient.CollaborativeDrawAsync(allo);
-                    vm.CollaborationClient.CollaborativeSelectAsync(selectedDvm);
+                    vm.CollaborationClient.CollaborativeSelectAsync(StrokeBuilder.GetDrawViewModelsFromStrokes(new StrokeCollection() { DrawingStroke }));
                 }
                 DrawingStroke = null;
             }

@@ -7,7 +7,7 @@
          xmlns:convertisseurs="clr-namespace:PolyPaint.Convertisseurs"   
         xmlns:local="clr-namespace:PolyPaint.Vues"
         mc:Ignorable="d"
-        Title="Gallery" MinWidth="1250" MinHeight="750" SizeChanged="Gallery_SizeChanged">
+        Title="Gallery" MinWidth="1250" MinHeight="750" WindowState="Maximized" SizeChanged="Gallery_SizeChanged">
 
     <Window.Resources>
         <convertisseurs:ConvertisseurBordure x:Key="convertisseurBordure" />

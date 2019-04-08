@@ -415,13 +415,13 @@
                            SelectionChanged="surfaceDessin_ChangeSelection">
                         <InkCanvas.ContextMenu>
                             <ContextMenu>
-                                <MenuItem Header="Tout sélectionner" Click="ContextualMenu_Click" Name="SelectAll"/>
-                                <MenuItem Header="Inverser la sélection" Click="ContextualMenu_Click" Name="InvertSelection"/>
-                                <MenuItem Header="Inverser les couleurs de la sélection" Click="ContextualMenu_Click" Name="InvertColors"/>
-                                <MenuItem Header="Transformer toutes les...">
-                                    <MenuItem Header="Formes UML" Click="ContextualMenu_Click" Name="TransformAllShapes"/>
-                                    <MenuItem Header="Connexions UML" Click="ContextualMenu_Click" Name="TransformAllConnections"/>
-                                    <MenuItem Header="Formes et connexions UML" Click="ContextualMenu_Click" Name="TransformAllShapesAndConnections"/>
+                                <MenuItem Header="Select All" Click="ContextualMenu_Click" Name="SelectAll"/>
+                                <MenuItem Header="Invert Selection" Click="ContextualMenu_Click" Name="InvertSelection"/>
+                                <MenuItem Header="Invert Selection Colors" Click="ContextualMenu_Click" Name="InvertColors"/>
+                                <MenuItem Header="Transform all...">
+                                    <MenuItem Header="UML Shapes" Click="ContextualMenu_Click" Name="TransformAllShapes"/>
+                                    <MenuItem Header="UML Connections" Click="ContextualMenu_Click" Name="TransformAllConnections"/>
+                                    <MenuItem Header="UML Shapes and Connections" Click="ContextualMenu_Click" Name="TransformAllShapesAndConnections"/>
                                 </MenuItem>
                             </ContextMenu>
                         </InkCanvas.ContextMenu>

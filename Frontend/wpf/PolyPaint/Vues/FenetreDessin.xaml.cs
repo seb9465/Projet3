@@ -81,7 +81,7 @@ namespace PolyPaint
             (DataContext as VueModele).OnRotation += UpdateAdorner;
 
             (DataContext as VueModele).ChooseBorder.Executed += Undoable_Executed;
-            (DataContext as VueModele).Rotate.Executed += Undoable_Executed;
+            (DataContext as VueModele).Rotate.Executed += Rotate_Executed;
 
             _onlineSelectedAdorners = new ConcurrentDictionary<string, OnlineSelectedAdorner>();
             externalChatWindow = new ChatWindow(DataContext);
@@ -760,7 +760,9 @@ namespace PolyPaint
         {
             if (!IsResizing)
             {
-                CurrentChange.Item1 = new StrokeCollection(surfaceDessin.GetSelectedStrokes()).Clone();
+                var sstrokes = surfaceDessin.GetSelectedStrokes().Clone();
+                CurrentChange.Item1 = new StrokeCollection(sstrokes).Clone();
+                (DataContext as VueModele).CollaborationClient.CollaborativeDrawAsync(StrokeBuilder.GetDrawViewModelsFromStrokes(sstrokes));
             }
             IsResizing = true;
             var selectedStrokes = surfaceDessin.GetSelectedStrokes();
@@ -983,7 +985,15 @@ namespace PolyPaint
                 }
                 CurrentChange.Item2 = new StrokeCollection(sColl.Clone()).Clone();
                 AddToUndoStack();
+                SendToCloud();
             }
+        }
+
+        private void Rotate_Executed(object sender, EventArgs e)
+        {
+            if (surfaceDessin.GetSelectedStrokes().Any(x => x is AbstractLineStroke))
+                return;
+            Undoable_Executed(sender, e);
         }
 
         void Window_Loaded(object sender, RoutedEventArgs e)
