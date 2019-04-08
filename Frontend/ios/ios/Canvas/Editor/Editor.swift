@@ -169,6 +169,7 @@ class Editor {
         if (self.selectedFigures.count > 0) {
             self.copy();
             self.deselect();
+            CollaborationHub.shared?.selectObjects(drawViewModels: [])
         }
         var drawViewModelToSelect:[DrawViewModel] = []
          for figure in self.clipboard {
