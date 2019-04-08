@@ -79,7 +79,7 @@ namespace PolyPaint.Strokes
                 if ((nextHeight - UnrotatedTopLeft.Y) > UnrotatedHeight)
                     break;
 
-                var tempFt = new FormattedText($"•{Properties[i].Title}", System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, Config.T_FACE, 17, new SolidColorBrush(Colors.Black));
+                var tempFt = new FormattedText($"•{Properties[i].Title}", System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, Config.T_FACE, 12, new SolidColorBrush(Colors.Black));
                 tempFt.MaxTextWidth = UnrotatedWidth - 20 > 0 ? UnrotatedWidth - 20 : 0;
                 drawingContext.DrawText(tempFt, new Point(UnrotatedTopLeft.X + 10, nextHeight));
                 nextHeight += 10 + tempFt.Height;
@@ -91,7 +91,7 @@ namespace PolyPaint.Strokes
                 if ((nextHeight - UnrotatedTopLeft.Y) > UnrotatedHeight)
                     break;
 
-                var tempFt = new FormattedText($"•{Methods[i].Title}", System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, Config.T_FACE, 17, new SolidColorBrush(Colors.Black));
+                var tempFt = new FormattedText($"•{Methods[i].Title}", System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, Config.T_FACE, 12, new SolidColorBrush(Colors.Black));
                 tempFt.MaxTextWidth = UnrotatedWidth - 20 > 0 ? UnrotatedWidth - 20 : 0;
                 drawingContext.DrawText(tempFt, new Point(UnrotatedTopLeft.X + 10, nextHeight));
                 nextHeight += 10 + tempFt.Height;

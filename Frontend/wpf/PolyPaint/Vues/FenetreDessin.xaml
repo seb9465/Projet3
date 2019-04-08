@@ -132,7 +132,7 @@
                         <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Width="2" />
                     </StackPanel>
                     <Button Name="rectangle" Width="35" Height="35" Padding="0"
-                        Style="{StaticResource MaterialDesignRaisedLightButton}" HorizontalAlignment="Left" ToolTip="Rectangle" 
+                        Style="{StaticResource MaterialDesignRaisedLightButton}" HorizontalAlignment="Left" ToolTip="Comment" 
                         BorderBrush="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurBordure}, ConverterParameter=rectangle, UpdateSourceTrigger=PropertyChanged}" 
                         Background="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurCouleurFond}, ConverterParameter=rectangle, UpdateSourceTrigger=PropertyChanged}" 
                         Command="{Binding Path=ChoisirOutil}"
