@@ -52,6 +52,11 @@
 		3DABD3F92241988500707D86 /* FigureSelectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DABD3F72241988500707D86 /* FigureSelectionCell.swift */; };
 		3DABD3FA2241988500707D86 /* FigureSelectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3DABD3F82241988500707D86 /* FigureSelectionCell.xib */; };
 		3DB1363E2235B3130096FA04 /* FigureProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DB1363D2235B3130096FA04 /* FigureProtocol.swift */; };
+		3DBC3A6422598AE8000FBB0F /* ConnectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DBC3A6222598AE8000FBB0F /* ConnectionCell.swift */; };
+		3DBC3A6522598AE8000FBB0F /* ConnectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3DBC3A6322598AE8000FBB0F /* ConnectionCell.xib */; };
+		3DBC3A672259998F000FBB0F /* ClearConnectionAnchor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DBC3A662259998F000FBB0F /* ClearConnectionAnchor.swift */; };
+		3DBC3A692259B535000FBB0F /* EditorSideToolbarDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DBC3A682259B535000FBB0F /* EditorSideToolbarDelegate.swift */; };
+		3DBC3A6B2259C4AE000FBB0F /* EditorUndoRedo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DBC3A6A2259C4AE000FBB0F /* EditorUndoRedo.swift */; };
 		3DC07CC722205B7C0045E7DE /* ContextMenuCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DC07CC622205B7C0045E7DE /* ContextMenuCell.swift */; };
 		3DC61EB92200B44B003FE445 /* RegisterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DC61EB82200B44B003FE445 /* RegisterController.swift */; };
 		3DC967EB220A067900FA76CB /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DC967EA220A067900FA76CB /* LoginController.swift */; };
@@ -182,6 +187,11 @@
 		3DABD3F72241988500707D86 /* FigureSelectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FigureSelectionCell.swift; sourceTree = "<group>"; };
 		3DABD3F82241988500707D86 /* FigureSelectionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FigureSelectionCell.xib; sourceTree = "<group>"; };
 		3DB1363D2235B3130096FA04 /* FigureProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FigureProtocol.swift; sourceTree = "<group>"; };
+		3DBC3A6222598AE8000FBB0F /* ConnectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionCell.swift; sourceTree = "<group>"; };
+		3DBC3A6322598AE8000FBB0F /* ConnectionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ConnectionCell.xib; sourceTree = "<group>"; };
+		3DBC3A662259998F000FBB0F /* ClearConnectionAnchor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClearConnectionAnchor.swift; sourceTree = "<group>"; };
+		3DBC3A682259B535000FBB0F /* EditorSideToolbarDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorSideToolbarDelegate.swift; sourceTree = "<group>"; };
+		3DBC3A6A2259C4AE000FBB0F /* EditorUndoRedo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorUndoRedo.swift; sourceTree = "<group>"; };
 		3DC07CC622205B7C0045E7DE /* ContextMenuCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContextMenuCell.swift; sourceTree = "<group>"; };
 		3DC61EB82200B44B003FE445 /* RegisterController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterController.swift; sourceTree = "<group>"; };
 		3DC967EA220A067900FA76CB /* LoginController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
@@ -319,6 +329,8 @@
 				3D099FB72256B72D00650721 /* EditorTouchInputDelegate.swift */,
 				3D22E1642257E97E007DF61B /* EditorGesturesHandler.swift */,
 				C4C17D3D2258FECC00A27872 /* EditorDelegate.swift */,
+				3DBC3A682259B535000FBB0F /* EditorSideToolbarDelegate.swift */,
+				3DBC3A6A2259C4AE000FBB0F /* EditorUndoRedo.swift */,
 			);
 			path = Editor;
 			sourceTree = "<group>";
@@ -329,6 +341,7 @@
 				C4F5ECF42257967B0046F258 /* CanvasAnchor.swift */,
 				3D4ED6C4224EF242005630CF /* ConnectionAnchor.swift */,
 				3D22E1672257FD38007DF61B /* SelectionAnchor.swift */,
+				3DBC3A662259998F000FBB0F /* ClearConnectionAnchor.swift */,
 			);
 			path = Anchors;
 			sourceTree = "<group>";
@@ -490,6 +503,15 @@
 				3D1622B12239AB4F00B98263 /* Figure.swift */,
 			);
 			path = Figures;
+			sourceTree = "<group>";
+		};
+		3DBC3A5D22598A82000FBB0F /* ConnectionCell */ = {
+			isa = PBXGroup;
+			children = (
+				3DBC3A6222598AE8000FBB0F /* ConnectionCell.swift */,
+				3DBC3A6322598AE8000FBB0F /* ConnectionCell.xib */,
+			);
+			path = ConnectionCell;
 			sourceTree = "<group>";
 		};
 		3DD55D6E22271E90009D893B /* API */ = {
@@ -712,6 +734,7 @@
 		C47715C72241959D008F27E6 /* PropertiesTable */ = {
 			isa = PBXGroup;
 			children = (
+				3DBC3A5D22598A82000FBB0F /* ConnectionCell */,
 				3D8384F22253922D00AAD14E /* FigureNameCell */,
 				3DE8F115223C32330052580B /* ClassCell */,
 				C47715C82241969F008F27E6 /* PropertiesController.swift */,
@@ -832,6 +855,7 @@
 				B756794A220F5DC800F80B12 /* Chat.storyboard in Resources */,
 				B7B1B4482234725E00BEE17D /* ChatRoomsControllerTableViewController.xib in Resources */,
 				3D8384F62253924F00AAD14E /* FigureNameCell.xib in Resources */,
+				3DBC3A6522598AE8000FBB0F /* ConnectionCell.xib in Resources */,
 				3DE8F11A223C43BD0052580B /* ClassCell.xib in Resources */,
 				3D2052AE224A97F300C488F1 /* FillCell.xib in Resources */,
 				3DA5CA4822441A9200087298 /* GalleryCell.xib in Resources */,
@@ -962,9 +986,11 @@
 				3DE8F125223C4AF00052580B /* AddMethodCell.swift in Sources */,
 				3DC967EB220A067900FA76CB /* LoginController.swift in Sources */,
 				3DE984D322261707004D036C /* AuthentificationAPI.swift in Sources */,
+				3DBC3A6422598AE8000FBB0F /* ConnectionCell.swift in Sources */,
 				B7B1B43C2231C00400BEE17D /* MessageInpuBarExtension.swift in Sources */,
 				B7AADC6E22356FBE00F7C0EC /* CustomHeaderCell.swift in Sources */,
 				3DF62984221C9FB30052209A /* Canvas.swift in Sources */,
+				3DBC3A6B2259C4AE000FBB0F /* EditorUndoRedo.swift in Sources */,
 				3DC61EB92200B44B003FE445 /* RegisterController.swift in Sources */,
 				3DD55D722227208C009D893B /* CollobarationHub.swift in Sources */,
 				3DA5CA57224444C100087298 /* ConnectionHeritage.swift in Sources */,
@@ -976,6 +1002,7 @@
 				3D5537C02200E86E002C1B77 /* SlideDownSegue.swift in Sources */,
 				3D6E4C37223AD53300E391D4 /* TouchEventState.swift in Sources */,
 				3DABD3F52241975C00707D86 /* FigureTableController.swift in Sources */,
+				3DBC3A692259B535000FBB0F /* EditorSideToolbarDelegate.swift in Sources */,
 				3DC967ED220A09C400FA76CB /* DashboardController.swift in Sources */,
 				3D099FB82256B72D00650721 /* EditorTouchInputDelegate.swift in Sources */,
 				3DABD3E02241433C00707D86 /* ClassAttributeCell.swift in Sources */,
@@ -1029,6 +1056,7 @@
 				C43102E122132226008F1D80 /* SoundNotification.swift in Sources */,
 				B775FE3F22135D6300B2EFE0 /* Spinner.swift in Sources */,
 				C4AA4ADB22553F4C005607E8 /* Base64Const.swift in Sources */,
+				3DBC3A672259998F000FBB0F /* ClearConnectionAnchor.swift in Sources */,
 				B756794C220F608B00F80B12 /* Members.swift in Sources */,
 				C4D6BB2722384F5B00121695 /* AnchorPoints.swift in Sources */,
 				3D8384F52253924F00AAD14E /* FigureNameCell.swift in Sources */,

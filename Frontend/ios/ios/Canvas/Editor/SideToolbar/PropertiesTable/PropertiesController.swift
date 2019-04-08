@@ -22,6 +22,10 @@ class PropertiesTableController: UIViewController {
         
         let commentAttributesnib = UINib.init(nibName: "FigureNameCell", bundle: nil)
         self.propertiesTable.register(commentAttributesnib, forCellReuseIdentifier: "FigureNameCell")
+        
+        let connectionNib = UINib.init(nibName: "ConnectionCell", bundle: nil)
+        self.propertiesTable.register(connectionNib, forCellReuseIdentifier: "ConnectionCell")
+        self.propertiesTable.backgroundColor = #colorLiteral(red: 0.9681890607, green: 0.9681890607, blue: 0.9681890607, alpha: 1)
     }
 }
 
@@ -35,14 +39,23 @@ extension PropertiesTableController: UITableViewDelegate, UITableViewDataSource 
             return 2
         }
         
+        if (self.editor.selectedFigures[0] is ConnectionFigure) {
+            return 2
+        }
+        
         return 1
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if (indexPath.row == 0) {
-            return 80
+            return 125
         }
-        return 525
+        
+        if (self.editor.selectedFigures[0] is ConnectionFigure) {
+            return 160
+        }
+    
+        return 470
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -58,11 +71,18 @@ extension PropertiesTableController: UITableViewDelegate, UITableViewDataSource 
             return cell
         }
         
+        if (self.editor.selectedFigures[0] is ConnectionFigure) {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "ConnectionCell", for: indexPath) as! ConnectionCell
+            cell.sourceNameInputField.text = self.editor.selectedFigures[0].sourceName
+            cell.destinationNameInputField.text = self.editor.selectedFigures[0].destinationName
+            cell.delegate = self.editor
+            return cell
+        }
+        
         // Quand on selectionne une classe
         let cell = tableView.dequeueReusableCell(withIdentifier: "ClassCell", for: indexPath) as! ClassCell
         cell.setUpTable()
         cell.delegate = self.editor
-        cell.classNameField.text = (self.editor.selectedFigures[0] as! UmlClassFigure).name
         cell.methods = (self.editor.selectedFigures[0] as! UmlClassFigure).methods
         cell.methodsTableView.reloadData()
         cell.attributes = (self.editor.selectedFigures[0] as! UmlClassFigure).attributes

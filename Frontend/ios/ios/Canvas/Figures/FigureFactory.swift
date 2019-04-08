@@ -25,7 +25,7 @@ class FigureFactory {
             case .Text:
                 return UMLTextFigure(drawViewModel: drawViewModel)
             case .Image:
-                return UMLTextFigure(drawViewModel: drawViewModel)
+                return UmlImageFigure(drawViewModel: drawViewModel)
             case .Artefact:
                 return UmlArtefactFigure(drawViewModel: drawViewModel)
             case .Activity:

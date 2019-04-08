@@ -48,6 +48,13 @@
                 IsChecked="{Binding CanvasProtection}"
                 IsEnabled="{Binding Path=IsCreatedByUser}"/>
             <TextBlock VerticalAlignment="Center" Margin="10,0,0,0" Text="{Binding CanvasProtection, Converter={StaticResource convertisseurCanvasProtectionText}, UpdateSourceTrigger=PropertyChanged}" />
+            <Button Style="{StaticResource MaterialDesignRaisedLightButton}" Click="showTutorial"
+             Width="140" Height="40" HorizontalAlignment="Right" Background="Gainsboro" BorderBrush="Gray" Margin="300,0,0,0" >
+                <StackPanel Orientation="Horizontal">
+                    <Label FontWeight="Bold">Tutorial</Label>
+                    <materialDesign:PackIcon Kind="HelpOutline" Height="24" Width="24"/>
+                </StackPanel>
+            </Button>
             <Button Style="{StaticResource MaterialDesignRaisedLightButton}" Click="Disconnect_Click"
              Width="140" Height="40" HorizontalAlignment="Right" Background="Gainsboro" BorderBrush="Gray" Margin="0,0,0,0" >
                 <StackPanel Orientation="Horizontal">

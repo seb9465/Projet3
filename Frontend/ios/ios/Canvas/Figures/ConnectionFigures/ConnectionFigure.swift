@@ -18,7 +18,7 @@ class ConnectionFigure : Figure {
     private let fontSize: CGFloat = 12
     
     var points: [Vertice: CGPoint] = [:]
-    var anchors: [Vertice: ConnectionAnchor] = [:]
+    var anchors: [Vertice: CAShapeLayer] = [:]
     var nameLabel: UILabel!
     var sourceLabel: UILabel!
     var destinationLabel: UILabel!
@@ -71,8 +71,7 @@ class ConnectionFigure : Figure {
     }
     
     private func initializeAnchors() {
-        self.anchors.updateValue(ConnectionAnchor(position: self.points[.ELBOW]!), forKey: .ELBOW)
-    
+        self.anchors.updateValue(ClearConnectionAnchor(position: self.points[.ELBOW]!), forKey: .ELBOW)
         for pair in self.anchors {
             self.layer.addSublayer(pair.value)
         }
@@ -105,6 +104,30 @@ class ConnectionFigure : Figure {
         self.anchors[.ELBOW]! = ConnectionAnchor(position: point)
         self.layer.addSublayer(self.anchors[.ELBOW]!)
         self.points[.ELBOW]! = point
+        setNeedsDisplay()
+    }
+    
+    func setSourceName(name: String) {
+        self.sourceName = name
+        setNeedsDisplay()
+    }
+    
+    func setDestinationName(name: String) {
+        self.destinationName = name
+        setNeedsDisplay()
+    }
+    
+    func showElbowAnchor() {
+        self.anchors[.ELBOW]!.removeFromSuperlayer()
+        self.anchors[.ELBOW]! = ConnectionAnchor(position: self.points[.ELBOW]!)
+        self.layer.addSublayer(self.anchors[.ELBOW]!)
+        setNeedsDisplay()
+    }
+    
+    func hideElbowAnchor() {
+        self.anchors[.ELBOW]!.removeFromSuperlayer()
+        self.anchors[.ELBOW]! = ClearConnectionAnchor(position: self.points[.ELBOW]!)
+        self.layer.addSublayer(self.anchors[.ELBOW]!)
         setNeedsDisplay()
     }
     
@@ -153,6 +176,19 @@ class ConnectionFigure : Figure {
         return false
     }
     
+    func getAnchoredUmlFigures(umlFigures: [UmlFigure]) -> [UmlFigure] {
+        var anchoredFigures: [UmlFigure] = []
+        for umlFigure in umlFigures {
+            if (umlFigure.incomingConnections[self] != nil) {
+                anchoredFigures.append(umlFigure)
+            }
+            if (umlFigure.outgoingConnections[self] != nil) {
+                anchoredFigures.append(umlFigure)
+            }
+        }
+        return anchoredFigures
+    }
+    
     func removeFromConnectedFigures(umlFigures: [UmlFigure]) {
         for umlFigure in umlFigures {
             umlFigure.removeConnection(connection: self)
@@ -180,7 +216,7 @@ class ConnectionFigure : Figure {
         
         self.nameLabel = UILabel(frame: labelFrame)
         self.nameLabel.isUserInteractionEnabled = false
-        self.nameLabel.text = self.name
+        self.nameLabel.text = "\t" + self.name
         self.nameLabel.font = self.nameLabel.font.withSize(fontSize)
         self.nameLabel.textAlignment = .left
         self.nameLabel.backgroundColor = UIColor.clear
@@ -204,9 +240,9 @@ class ConnectionFigure : Figure {
         
         self.sourceLabel = UILabel(frame: labelFrame)
         self.sourceLabel.isUserInteractionEnabled = false
-        self.sourceLabel.text = "self.name"
+        self.sourceLabel.text = "\t" + self.sourceName
         self.sourceLabel.font = self.nameLabel.font.withSize(fontSize)
-        self.sourceLabel.textAlignment = .right
+        self.sourceLabel.textAlignment = .left
         self.sourceLabel.backgroundColor = UIColor.clear
         
         let dx = points[.ELBOW]!.x - points[.ORIGIN]!.x
@@ -228,9 +264,9 @@ class ConnectionFigure : Figure {
         
         self.destinationLabel = UILabel(frame: labelFrame)
         self.destinationLabel.isUserInteractionEnabled = false
-        self.destinationLabel.text = "self.name"
+        self.destinationLabel.text = self.destinationName + "\t"
         self.destinationLabel.font = self.nameLabel.font.withSize(fontSize)
-        self.destinationLabel.textAlignment = .left
+        self.destinationLabel.textAlignment = .right
         self.destinationLabel.backgroundColor = UIColor.clear
         
         let dx = points[.DESTINATION]!.x - points[.ELBOW]!.x
@@ -296,13 +332,7 @@ class ConnectionFigure : Figure {
 extension ConnectionFigure {
     public override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {}
     
-    public override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        let touch = touches.first
-//        guard let point = touch?.location(in: self.superview) else { return }
-//        self.points[.ELBOW]! = point
-//        self.updateElbowAnchor(point: point)
-//        setNeedsDisplay()
-    }
+    public override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {}
     
     public override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         let touch = touches.first

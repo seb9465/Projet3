@@ -49,8 +49,7 @@ namespace PolyPaint.Vues
 
             externalChatWindow = new ChatWindow(DataContext as UserDataContext);
             (DataContext as UserDataContext).Canvas = Canvas;
-            //  DataContext = Canvas; // Il faudrait reussir a utiliser plusieurs datacontext. Ici on a besoin du datacontext pour recuperer les donnee du chat ET des canvas. Cest pous ca que le chat marche pas dans la gallerie
-
+            
             usernameLabel.Content = username;
             Closing += UnsubscribeDataContext;
         }
@@ -63,10 +62,7 @@ namespace PolyPaint.Vues
         private void NewCanva_Click(object sender, RoutedEventArgs e)
         {
             UploadToCloud uploadToCloud = new UploadToCloud((DataContext as UserDataContext).ChatClient);
-            Application.Current.MainWindow = uploadToCloud;
-            this.Close();
-            DataContext = null;
-            uploadToCloud.Show();
+           
         }
 
         private void AddRoom(object sender, DialogClosingEventArgs eventArgs)

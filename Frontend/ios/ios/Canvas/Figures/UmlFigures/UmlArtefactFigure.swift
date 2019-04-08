@@ -9,8 +9,8 @@
 import UIKit
 
 class UmlArtefactFigure: UmlFigure {
-    let BASE_WIDTH: CGFloat = 100
-    let BASE_HEIGHT: CGFloat = 150
+    let BASE_WIDTH: CGFloat = 70
+    let BASE_HEIGHT: CGFloat = 120
     
     init(firstPoint: CGPoint, lastPoint: CGPoint) {
         super.init(firstPoint: firstPoint, lastPoint: lastPoint, width: BASE_WIDTH, height: BASE_WIDTH)
@@ -108,6 +108,8 @@ class UmlArtefactFigure: UmlFigure {
         drawViewModel.LastElbowPosition = nil
         drawViewModel.ImageBytes = nil
         drawViewModel.Rotation = self.currentAngle
+        drawViewModel.InConnections = self.serializeIncomingConnections()
+        drawViewModel.OutConnections = self.serializeOutgoingConnections()
         return drawViewModel
     }
 }

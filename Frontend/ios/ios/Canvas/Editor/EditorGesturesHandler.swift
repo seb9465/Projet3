@@ -50,6 +50,7 @@ extension Editor {
         let yD = abs( A.y - B.y )
         
         if (sender.state == .began) {
+            self.currentChange.0 = self.getSelectedFiguresDrawviewModels()
             self.initialPinchDistance = CGPoint(x: xD, y: yD)
         }
         
@@ -61,8 +62,10 @@ extension Editor {
         self.selectedFigures[0].resize(by: CGPoint(x: xScale, y: yScale))
         let outlineIndex: Int = self.selectionOutlines.firstIndex(where: { $0.associatedFigureID == self.selectedFigures[0].uuid })!
         self.selectionOutlines[outlineIndex].updateOutline(newFrame: self.selectedFigures[0].getSelectionFrame())
+        
         if (sender.state == .cancelled || sender.state == .ended) {
-            print("Stopped")
+            self.currentChange.1 = self.getSelectedFiguresDrawviewModels()
+            self.undoArray.append(self.currentChange)
             CollaborationHub.shared!.postNewFigure(figures: self.selectedFigures)
             CollaborationHub.shared!.selectObjects(drawViewModels: self.getSelectedFiguresDrawviewModels())
         }

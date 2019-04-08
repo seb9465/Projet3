@@ -45,7 +45,6 @@ class DashboardController: UIViewController, UITextFieldDelegate {
     @IBAction func logoutButton(_ sender: Any) {
         AuthentificationAPI.logout()
         UserDefaults.standard.removePersistentDomain(forName: "token");
-        UserDefaults.standard.removePersistentDomain(forName: "id");
         let transition = CATransition();
         transition.duration = 0.3;
         transition.type = CATransitionType.reveal;

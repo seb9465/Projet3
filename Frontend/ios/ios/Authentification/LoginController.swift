@@ -54,8 +54,6 @@ class LoginController: UIViewController, UITextFieldDelegate, WKUIDelegate {
         if(token != nil) {
             AuthentificationAPI.logout()
             UserDefaults.standard.removePersistentDomain(forName: "token");
-            UserDefaults.standard.removePersistentDomain(forName: "id");
-
         }
         //        AuthentificationAPI.login(username: emailField.text!, password: passwordField.text!)
         AuthentificationAPI.login(username: "william.sevigny", password: "!12345Aa")

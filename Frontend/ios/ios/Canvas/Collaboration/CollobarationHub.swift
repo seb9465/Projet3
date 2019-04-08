@@ -17,6 +17,7 @@ protocol CollaborationHubDelegate {
     func delete(username: String)
     func getKicked()
     func resizeCanvas(size: PolyPaintStylusPoint)
+    func sendExistingSelection()
 }
 
 class CollaborationHub {
@@ -135,6 +136,7 @@ class CollaborationHub {
             let json: String = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self)!;
             if let jsonData = json.data(using: .utf8) {
                 let obj: ConnectionMessage = try! JSONDecoder().decode(ConnectionMessage.self, from: jsonData);
+                self.delegate?.sendExistingSelection()
                 print("[ Collab ] Connected to channel", obj.channelId)
             }
         });
@@ -155,6 +157,30 @@ class CollaborationHub {
             CanvasId: self.channelId,
             Username: username!,
             Items: viewModels
+        )
+        
+        let jsonEncoder = JSONEncoder()
+        let jsonData = try! jsonEncoder.encode(itemMessage)
+        let jsonString = String(data: jsonData, encoding: .utf8)
+        
+        self.hubConnection!.invoke(method: "Draw", arguments: [jsonString], invocationDidComplete: { (Error) in
+            if (Error != nil) {
+                print("Error calling draw", Error!)
+                return
+            }
+        });
+    }
+    
+    // Send a new figure to the collaborative Hub ** With drawviewmodels **
+    public func postNewFigure(drawViewModels: [DrawViewModel]) -> Void {
+        let token = UserDefaults.standard.string(forKey: "token");
+        let jwt = try! decode(jwt: token!)
+        let username = jwt.claim(name: "unique_name").string
+        
+        let itemMessage = ItemMessage(
+            CanvasId: self.channelId,
+            Username: username!,
+            Items: drawViewModels
         )
         
         let jsonEncoder = JSONEncoder()
@@ -232,7 +258,6 @@ class CollaborationHub {
             let jsonString: String = try! typeConverter.convertFromWireType(obj: args[0], targetType: String.self)!;
             let jsonData = jsonString.data(using: .utf8)
             let itemMessage: ItemMessage = try! JSONDecoder().decode(ItemMessage.self, from: jsonData!);
-            
             self.delegate!.updateCanvas(itemMessage: itemMessage)
         })
     }

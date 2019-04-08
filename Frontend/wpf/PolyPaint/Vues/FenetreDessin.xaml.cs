@@ -797,15 +797,18 @@ namespace PolyPaint
                 chatMenu.Width = 70;
                 chatTab.Visibility = Visibility.Collapsed;
                 isMenuOpen = false;
-                surfaceDessin.Width = 1200;
             }
             else
             {
                 chatMenu.Width = 500;
                 chatTab.Visibility = Visibility.Visible;
                 isMenuOpen = true;
-                surfaceDessin.Width = 800;
             }
+        }
+
+        private void showTutorial(object sender, RoutedEventArgs e)
+        {
+            Tutoriel tutoriel = new Tutoriel();
         }
 
         private void surfaceDessin_ChangeSelection(object sender, EventArgs e)

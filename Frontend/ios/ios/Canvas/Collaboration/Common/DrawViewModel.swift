@@ -7,6 +7,7 @@
 //
 import UIKit
 struct DrawViewModel: Codable {
+    
     var Guid: String?
     var Owner: String?
     var ItemType: ItemTypeEnum?
@@ -20,12 +21,12 @@ struct DrawViewModel: Codable {
     var Properties: [String]?
     var SourceTitle: String?
     var DestinationTitle: String?
-    var inConnections: [String : String]?
-    var outConnections: [String : String]?
+    var InConnections: [[String]]?
+    var OutConnections: [[String]]?
     var ChannelId: String?
     var OutilSelectionne: String?
     var LastElbowPosition: PolyPaintStylusPoint?
-    var ImageBytes: [UInt8]?
+    var ImageBytes: String?
     var Rotation: Double?
 
     init() {}
@@ -130,7 +131,6 @@ struct PolyPaintColor: Codable {
     }
     
     func getUIColor() -> UIColor {
-        print(A, R, G, B)
         return UIColor(
             red: CGFloat(Double(self.R)/255.0),
             green: CGFloat(Double(self.G)/255.0),

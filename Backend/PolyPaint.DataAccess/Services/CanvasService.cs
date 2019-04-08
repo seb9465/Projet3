@@ -21,5 +21,10 @@ namespace PolyPaint.DataAccess.Services
         {
             return _context.Set<Canvas>().ToList();
         }
+
+        public Canvas GetCanvasById(string canvasId)
+        {
+            return _context.Set<Canvas>().Where(x => x.CanvasId == canvasId).FirstOrDefault();
+        }
     }
 }

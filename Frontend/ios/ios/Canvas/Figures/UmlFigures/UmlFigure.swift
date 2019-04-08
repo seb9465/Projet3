@@ -196,6 +196,24 @@ extension UmlFigure {
         let minIndex = distances.firstIndex(of: distances.min()!)
         return indexToAnchor[minIndex!]!
     }
+    
+    func serializeIncomingConnections() -> [[String]] {
+        var incoming : [[String]] = []
+        for pair in self.incomingConnections {
+            let connectionToAnchor: [String] = [pair.key.uuid.uuidString.lowercased(), pair.value]
+            incoming.append(connectionToAnchor)
+        }
+        return incoming
+    }
+    
+    func serializeOutgoingConnections() -> [[String]] {
+        var outgoing : [[String]] = []
+        for pair in self.outgoingConnections {
+            let connectionToAnchor: [String] = [pair.key.uuid.uuidString.lowercased(), pair.value]
+            outgoing.append(connectionToAnchor)
+        }
+        return outgoing
+    }
 }
 
 // Touch Interaction Logic

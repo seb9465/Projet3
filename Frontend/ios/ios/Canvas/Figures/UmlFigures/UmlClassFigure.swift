@@ -144,6 +144,8 @@ class UmlClassFigure: UmlFigure {
         drawViewModel.LastElbowPosition = nil
         drawViewModel.ImageBytes = nil
         drawViewModel.Rotation = self.currentAngle
+        drawViewModel.InConnections = self.serializeIncomingConnections()
+        drawViewModel.OutConnections = self.serializeOutgoingConnections()
         return drawViewModel
     }
 }

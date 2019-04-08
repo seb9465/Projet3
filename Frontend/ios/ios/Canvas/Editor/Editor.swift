@@ -9,22 +9,26 @@
 import UIKit
 
 class Editor {
+    var delegate: EditorDelegate?
+
     var editorView: EditorView = EditorView()
     var sideToolbatControllers: [SideToolbarController] = []
     var selectedFiguresDictionnary: [String : [DrawViewModel]] = [:]
     var selectedOutlinesDictionnary: [String : [SelectionOutline]] = [:]
-    var undoArray: [Figure] = []
-    var redoArray: [Figure] = [];
+    
+    // UNDO / REDO Properties
+    var currentChange: ([DrawViewModel], [DrawViewModel]) = ([], [])
+    var undoArray: [([DrawViewModel], [DrawViewModel])] = []
+    var redoArray: [([DrawViewModel], [DrawViewModel])] = []
+//    var redoArray: [Figure] = [];
+    
     var figures: [Figure] = [];
-    var oldRotationAngle: Int = 0
-    var delegate: EditorDelegate?
     var selectedFigures: [Figure] = [];
     var selectionLasso: SelectionLasso! = nil;
-    
-    // Selections locales
-//    var localSelections: [Figure : SelectionOutline] = [:]
     var selectionOutlines: [SelectionOutline] = [];
     
+    var oldRotationAngle: Int = 0
+
     // Connection Creation properties
     var connectionPreview: Figure!
     var sourceFigure: UmlFigure!
@@ -46,8 +50,6 @@ class Editor {
         let pinch = UIPinchGestureRecognizer(target: self, action: #selector(self.resizeFigure(_:)))
         self.editorView.addGestureRecognizer(rotation)
         self.editorView.addGestureRecognizer(pinch)
-   //     self.editorView.backgroundColor = UIColor.red
-   //     self.editorView.clipsToBounds = true
     }
     
     func resize(width: CGFloat, heigth: CGFloat) {
@@ -57,12 +59,18 @@ class Editor {
         let size = CGSize(width: width, height: heigth)
         let newFrame: CGRect = CGRect(origin: origin, size: size)
         self.editorView.frame = newFrame
+//        self.editorView.updateShadow()
         self.editorView.updateCanvasAnchor()
         self.editorView.setNeedsDisplay()
     }
+
     // Select made locally
     func select(figure: Figure) {
         let selectionOutline: SelectionOutline = SelectionOutline(frame: figure.getSelectionFrame(), associatedFigureID: figure.uuid, delegate: self)
+        if (figure is ConnectionFigure) {
+            print("Showing ELBOW")
+            (figure as! ConnectionFigure).showElbowAnchor()
+        }
         self.editorView.addSubview(selectionOutline)
         self.selectedFigures.append(figure)
         self.selectionOutlines.append(selectionOutline)
@@ -99,6 +107,7 @@ class Editor {
         self.editorView.addSubview(self.selectionLasso);
     }
     
+    // Deselect Locally
     func deselect() {
         if (self.selectionOutlines.count > 0) {
             for outline in self.selectionOutlines {
@@ -107,11 +116,18 @@ class Editor {
             
             self.selectionOutlines.removeAll();
         }
+        
+        for figure in self.selectedFigures {
+            if (figure is ConnectionFigure) {
+                (figure as! ConnectionFigure).hideElbowAnchor()
+            }
+        }
         CollaborationHub.shared!.selectObjects(drawViewModels: [])
         self.deselectLasso();
         self.selectedFigures.removeAll();
     }
     
+    // Deselect received from hub
     func deselect(username: String) {
         self.selectedFiguresDictionnary.updateValue([], forKey: username)
         if (selectedOutlinesDictionnary[username] != nil) {
@@ -122,6 +138,7 @@ class Editor {
         self.selectedOutlinesDictionnary.updateValue([], forKey: username)
     }
     
+    // Wtf does this do?
     func deselectFigure(figure: Figure) {
         if (self.selectionOutlines.count > 0) {
             let tmpOutlineIndex: Int = self.selectionOutlines.firstIndex(where: { $0.associatedFigureID == figure.uuid })!;
@@ -168,18 +185,11 @@ class Editor {
         self.deleteSelectedFigures();
     }
     
-    public func insertFigure(drawViewModel: DrawViewModel) -> Figure {
-        let figure = FigureFactory.shared.fromDrawViewModel(drawViewModel: drawViewModel)!
-        figure.delegate = self
-        self.figures.append(figure)
-        self.editorView.addSubview(figure)
-        return figure
-    }
-    
     public func insertFigure(position: CGPoint) -> Void {
         let figure = FigureFactory.shared.getFigure(type: self.currentFigureType, touchedPoint: position)!
         figure.delegate = self
         self.figures.append(figure)
+        self.undoArray.append(([], [figure.exportViewModel()!]))
         self.editorView.addSubview(figure)
         CollaborationHub.shared!.postNewFigure(figures: [figure])
         CanvasService.saveOnNewFigure(figures: self.figures, editor: self)
@@ -190,14 +200,24 @@ class Editor {
             type: itemType,
             source: firstPoint,
             destination: lastPoint
-        )
-        figure!.delegate = self
-        self.editorView.addSubview(figure!);
-        self.figures.append(figure!)
-        self.undoArray.append(figure!);
-        return figure!
+        )!
+        
+        figure.delegate = self
+        self.undoArray.append(([], [figure.exportViewModel()!]))
+        self.editorView.addSubview(figure);
+        self.figures.append(figure)
+        return figure
     }
     
+    public func insertFigure(drawViewModel: DrawViewModel) -> Figure {
+        let figure = FigureFactory.shared.fromDrawViewModel(drawViewModel: drawViewModel)!
+        figure.delegate = self
+        self.figures.append(figure)
+        self.editorView.addSubview(figure)
+        return figure
+    }
+    
+    // Deletes figures in local selections
     public func deleteSelectedFigures() {
         if (self.selectedFigures.isEmpty) {
             return
@@ -235,155 +255,21 @@ class Editor {
         self.deselect(username: username)
     }
     
-    public func undo(view: UIView) -> Void {
-        if (undoArray.count > 0) {
-            let figure: Figure = undoArray.popLast()!;
-            self.redoArray.append(figure);
-            figure.removeFromSuperview();
-        }
-    }
-    
-    public func redo(view: UIView) -> Void {
-        if (redoArray.count > 0) {
-            let figure: Figure = self.redoArray.last!;
-            self.editorView.addSubview(figure);
-            self.undoArray.append(figure);
-            self.redoArray.removeLast();
-        }
-    }
-    
     public func clear() -> Void {
-        print("clearing")
-        for view in self.editorView.subviews {
-            view.removeFromSuperview()
+        print("Clearing canvas")
+        self.currentChange.0 = self.getFiguresDrawviewModels(figures: self.figures)
+        for figure in self.figures {
+            figure.removeFromSuperview()
         }
-        self.selectedFigures.removeAll()
-        self.editorView.setNeedsDisplay()
-        self.selectionOutlines.removeAll()
-        self.figures.removeAll()
-        self.undoArray.removeAll();
-        self.redoArray.removeAll();
+        
         self.deselect();
+        self.selectedFigures.removeAll()
+        self.selectionOutlines.removeAll()
+        self.editorView.setNeedsDisplay()
+        self.figures.removeAll()
+        self.currentChange.1 = []
+        self.undoArray.append(self.currentChange)
         CanvasService.saveOnNewFigure(figures: self.figures, editor: self)
-    }
-    
-    public func subviewIsInUndoArray(subview: UIView) -> Bool {
-        for a in self.undoArray {
-            if (a == subview) {
-                return true;
-            }
-        }
-        
-        return false;
-    }
-    
-    func getFigureContaining(point: CGPoint) -> UmlFigure? {
-        for subview in self.editorView.subviews {
-            if let figure = subview as? UmlFigure {
-                if (figure.frame.contains(point)) {
-                    return figure
-                }
-            }
-        }
-        return nil
-    }
-}
-
-extension Editor {
-    public func changeTouchHandleState(to: TouchEventState) {
-        self.touchEventState = to
-    }
-}
-
-extension Editor: SideToolbarDelegate {
-    func setSelectedFigureBorderColor(color: UIColor) {
-        for figure in self.selectedFigures {
-            figure.setBorderColor(borderColor: color);
-        }
-        CollaborationHub.shared!.postNewFigure(figures: self.selectedFigures)
-        CanvasService.saveOnNewFigure(figures: self.figures, editor: self)
-    }
-    
-    func setSelectedFigureFillColor(color: UIColor) {
-        for figure in self.selectedFigures {
-            figure.setFillColor(fillColor: color)
-        }
-        CollaborationHub.shared!.postNewFigure(figures: self.selectedFigures)
-        CanvasService.saveOnNewFigure(figures: self.figures, editor: self)
-    }
-    
-    func setSelectedFigureBorderStyle(isDashed: Bool) {
-        for figure in self.selectedFigures {
-            figure.setIsBorderDashed(isDashed: isDashed)
-        }
-        CollaborationHub.shared!.postNewFigure(figures: self.selectedFigures)
-        CanvasService.saveOnNewFigure(figures: self.figures, editor: self)
-    }
-    
-    func setSelectedFigureLineWidth(width: CGFloat) {
-        for figure in self.selectedFigures {
-            figure.setLineWidth(width: width)
-        }
-        CollaborationHub.shared!.postNewFigure(figures: self.selectedFigures)
-        CanvasService.saveOnNewFigure(figures: self.figures, editor: self)
-    }
-    
-    func setSelectedFigureName(name: String) {
-        for figure in self.selectedFigures {
-            figure.setFigureName(name: name)
-        }
-        CollaborationHub.shared!.postNewFigure(figures: self.selectedFigures)
-    }
-
-    func setSelectedFigureNameDidEnd() {
-        CollaborationHub.shared!.postNewFigure(figures: self.selectedFigures)
-        CanvasService.saveOnNewFigure(figures: self.figures, editor: self)
-    }
-    
-    func addClassMethod(name: String) {
-        for figure in self.selectedFigures {
-            (figure as! UmlClassFigure).addMethod(name: name)
-        }
-        
-        self.updateSideToolBar()
-        CollaborationHub.shared!.postNewFigure(figures: self.selectedFigures)
-        CanvasService.saveOnNewFigure(figures: self.figures, editor: self)
-    }
-    
-    func removeClassMethod(name: String, index: Int) {
-        for figure in self.selectedFigures {
-            (figure as! UmlClassFigure).removeMethod(name: name, index: index)
-        }
-        
-        self.updateSideToolBar()
-        CollaborationHub.shared!.postNewFigure(figures: self.selectedFigures)
-        CanvasService.saveOnNewFigure(figures: self.figures, editor: self)
-    }
-    
-    func addClassAttribute(name: String) {
-        for figure in self.selectedFigures {
-            (figure as! UmlClassFigure).addAttribute(name: name);
-        }
-        
-        self.updateSideToolBar()
-        CollaborationHub.shared!.postNewFigure(figures: self.selectedFigures)
-        CanvasService.saveOnNewFigure(figures: self.figures, editor: self)
-    }
-    
-    func removeClassAttribute(name: String, index: Int) {
-        for figure in self.selectedFigures {
-            (figure as! UmlClassFigure).removeAttribute(name: name, index: index);
-        }
-        
-        self.updateSideToolBar()
-        CollaborationHub.shared!.postNewFigure(figures: self.selectedFigures)
-        CanvasService.saveOnNewFigure(figures: self.figures, editor: self)
-    }
-    
-    func updateSideToolBar() {
-        for controller in self.sideToolbatControllers {
-            controller.update();
-        }
     }
     
     func export() -> UIImage{
@@ -393,19 +279,23 @@ extension Editor: SideToolbarDelegate {
         UIGraphicsEndImageContext();
         return image!
     }
-    
-    func rotate(orientation: RotateOrientation) {
-        for figure in self.selectedFigures {
-            let tempFigure: Figure = figure;
-            figure.rotate(orientation: orientation);
-            self.deselectFigure(figure: tempFigure);
-            self.select(figure: figure);
-        }
-        CollaborationHub.shared!.postNewFigure(figures: self.selectedFigures)
+}
+
+extension Editor {
+    public func changeTouchHandleState(to: TouchEventState) {
+        self.touchEventState = to
     }
 }
 
 extension Editor: CollaborationHubDelegate {
+    func sendExistingSelection() {
+        var drawViewModels: [DrawViewModel] = []
+        for figure in self.selectedFigures {
+            drawViewModels.append(figure.exportViewModel()!)
+        }
+        CollaborationHub.shared!.selectObjects(drawViewModels:drawViewModels)
+    }
+    
     func resizeCanvas(size: PolyPaintStylusPoint) {
         self.resize(width: CGFloat(size.X), heigth: CGFloat(size.Y))
     }
@@ -420,15 +310,16 @@ extension Editor: CollaborationHubDelegate {
     }
     
     func updateCanvas(itemMessage: ItemMessage) {
-//        print(itemMessage.Items)
+        print(itemMessage.Items)
         for drawViewModel in itemMessage.Items {
+            // Corriger le if
             if (self.figures.contains(where: {$0.uuid.uuidString.lowercased() == drawViewModel.Guid})) {
                 self.overriteFigure(figureId: drawViewModel.Guid!, newDrawViewModel: drawViewModel, username: itemMessage.Username)
                 self.deselect(username: itemMessage.Username)
                 self.select(drawViewModels: itemMessage.Items, username: itemMessage.Username)
-                return
+            } else {
+                self.insertFigure(drawViewModel: drawViewModel)
             }
-                self.insertNewDrawViewModel(drawViewModel: drawViewModel)
         }
     }
     
@@ -441,20 +332,12 @@ extension Editor: CollaborationHubDelegate {
         CollaborationHub.shared!.disconnectFromHub()
         self.delegate?.getKicked()
     }
-
-    public func insertNewDrawViewModel(drawViewModel: DrawViewModel) {
-        let figure = self.insertFigure(drawViewModel: drawViewModel)
-        if (drawViewModel.ItemType?.description == "Connection") {
-            print("Connecting to other figures")
-            self.connectConnectionToFigures(drawViewModel: drawViewModel, connection: (figure as! ConnectionFigure))
-        }
-    }
     
     public func loadCanvas(drawViewModels: [DrawViewModel]) {
-        let drawViewModelsSorted = drawViewModels.sorted(by: { $0.ItemType!.rawValue < $1.ItemType!.rawValue })
-        for drawViewModel in drawViewModelsSorted  {
-            insertNewDrawViewModel(drawViewModel: drawViewModel)
+        for drawViewModel in drawViewModels  {
+            self.insertFigure(drawViewModel: drawViewModel)
         }
+        self.bindConnectionsToFigures(drawViewModels: drawViewModels)
     }
     
     func updateClear() {
@@ -496,32 +379,22 @@ extension Editor {
             (newFigure as! UmlFigure).outgoingConnections = (oldFigure as! UmlFigure).outgoingConnections
             (newFigure as! UmlFigure).incomingConnections = (oldFigure as! UmlFigure).incomingConnections
             (newFigure as! UmlFigure).updateConnections()
-        }    }
+        }
+    }
     
-    func connectConnectionToFigures(drawViewModel: DrawViewModel, connection: ConnectionFigure) {
-        for figure in self.figures {
-            if (figure is UmlFigure) {
-                for pair in (figure as! UmlFigure).anchorPoints!.anchorPointsSnapEdges {
-                    // Create a detection area around connection figure extremities
-                    let detectionDiameter: CGFloat = 24
-                    let globalPoint: CGPoint = figure.convert(pair.value, to: self.editorView)
-                    let areaRect: CGRect = CGRect(
-                        x: globalPoint.x - detectionDiameter/2,
-                        y: globalPoint.y - detectionDiameter/2,
-                        width: detectionDiameter,
-                        height: detectionDiameter
-                    )
-                    
-                    if (areaRect.contains(drawViewModel.StylusPoints![0].getCGPoint())) {
-                        (figure as! UmlFigure).addOutgoingConnection(connection: connection, anchor: pair.key)
-                        (figure as! UmlFigure).updateConnections()
-                    }
- 
-                    if (areaRect.contains(drawViewModel.StylusPoints![1].getCGPoint())) {
-                        (figure as! UmlFigure).addIncomingConnection(connection: connection, anchor: pair.key)
-                        (figure as! UmlFigure).updateConnections()
-                    }
-                }
+    func bindConnectionsToFigures(drawViewModels: [DrawViewModel]) {
+        for umlFigureModel in drawViewModels.filter({$0.ItemType?.description != "Connection"}) {
+            let figure = self.figures.first(where: {$0.uuid.uuidString.lowercased() == umlFigureModel.Guid}) as! UmlFigure
+            let incomingConnections: [[String]] = umlFigureModel.InConnections!
+            for uuidToin in incomingConnections {
+                let connection: ConnectionFigure = self.figures.first(where: {$0.uuid.uuidString.lowercased() == uuidToin[0]}) as! ConnectionFigure
+                figure.addIncomingConnection(connection: connection, anchor: uuidToin[1])
+            }
+            
+            let outgoingConnections: [[String]] = umlFigureModel.OutConnections!
+            for uuidToout in outgoingConnections {
+                let connection: ConnectionFigure = self.figures.first(where: {$0.uuid.uuidString.lowercased() == uuidToout[0]}) as! ConnectionFigure
+                figure.addOutgoingConnection(connection: connection, anchor: uuidToout[1])
             }
         }
     }

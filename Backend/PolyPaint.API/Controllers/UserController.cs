@@ -43,6 +43,15 @@ namespace PolyPaint.API.Controllers
             return Ok(canvas);
         }
 
+        [HttpGet]
+        [Route("Canvas/{id}")]
+        public async Task<IActionResult> GetCanvasById(string id)
+        {
+            Canvas canvas = _canvasService.GetCanvasById(id);
+            return Ok(canvas);
+        }
+
+
         [Authorize]
         [HttpGet]
         [Route("AllCanvas")]
