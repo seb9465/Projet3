@@ -50,7 +50,8 @@ class TutorialController: UIViewController, UIScrollViewDelegate {
         for slide in self._slides {
             slide.initSlide();
             slide.getStartedBtnAction = {
-                self.navigationController?.popViewController(animated: true);
+                self.dismiss(animated: true, completion: nil);
+                print("ACTION");
             }
         }
     }
@@ -89,15 +90,15 @@ class TutorialController: UIViewController, UIScrollViewDelegate {
         let pageIndex = round(scrollView.contentOffset.x/view.frame.width)
         pageControl.currentPage = Int(pageIndex)
         
-        let maximumHorizontalOffset: CGFloat = scrollView.contentSize.width - scrollView.frame.width
-        let currentHorizontalOffset: CGFloat = scrollView.contentOffset.x
+//        let maximumHorizontalOffset: CGFloat = scrollView.contentSize.width - scrollView.frame.width
+//        let currentHorizontalOffset: CGFloat = scrollView.contentOffset.x
         
         // vertical
-        let maximumVerticalOffset: CGFloat = scrollView.contentSize.height - scrollView.frame.height
-        let currentVerticalOffset: CGFloat = scrollView.contentOffset.y
-        
-        let percentageHorizontalOffset: CGFloat = currentHorizontalOffset / maximumHorizontalOffset
-        let percentageVerticalOffset: CGFloat = currentVerticalOffset / maximumVerticalOffset
+//        let maximumVerticalOffset: CGFloat = scrollView.contentSize.height - scrollView.frame.height
+//        let currentVerticalOffset: CGFloat = scrollView.contentOffset.y
+//
+//        let percentageHorizontalOffset: CGFloat = currentHorizontalOffset / maximumHorizontalOffset
+//        let percentageVerticalOffset: CGFloat = currentVerticalOffset / maximumVerticalOffset
         
         
         /*
@@ -109,16 +110,16 @@ class TutorialController: UIViewController, UIScrollViewDelegate {
         /*
          * below code scales the imageview on paging the scrollview
          */
-        let percentOffset: CGPoint = CGPoint(x: percentageHorizontalOffset, y: percentageVerticalOffset);
-        
-        if(percentOffset.x > 0 && percentOffset.x <= 0.25) {
-            _slides[0].imageView.transform = CGAffineTransform(scaleX: (0.25-percentOffset.x)/0.25, y: (0.25-percentOffset.x)/0.25)
-            _slides[1].imageView.transform = CGAffineTransform(scaleX: percentOffset.x/0.25, y: percentOffset.x/0.25)
-        }
-        else if(percentOffset.x > 0.25 && percentOffset.x <= 0.50) {
-            _slides[1].imageView.transform = CGAffineTransform(scaleX: (0.50-percentOffset.x)/0.25, y: (0.50-percentOffset.x)/0.25)
-            _slides[2].imageView.transform = CGAffineTransform(scaleX: percentOffset.x/0.50, y: percentOffset.x/0.50)
-        }
+//        let percentOffset: CGPoint = CGPoint(x: percentageHorizontalOffset, y: percentageVerticalOffset);
+//
+//        if(percentOffset.x > 0 && percentOffset.x <= 0.25) {
+//            _slides[0].imageView.transform = CGAffineTransform(scaleX: (0.25-percentOffset.x)/0.25, y: (0.25-percentOffset.x)/0.25)
+//            _slides[1].imageView.transform = CGAffineTransform(scaleX: percentOffset.x/0.25, y: percentOffset.x/0.25)
+//        }
+//        else if(percentOffset.x > 0.25 && percentOffset.x <= 0.50) {
+//            _slides[1].imageView.transform = CGAffineTransform(scaleX: (0.50-percentOffset.x)/0.25, y: (0.50-percentOffset.x)/0.25)
+//            _slides[2].imageView.transform = CGAffineTransform(scaleX: percentOffset.x/0.50, y: percentOffset.x/0.50)
+//        }
 //        else if(percentOffset.x > 0.50 && percentOffset.x <= 0.75) {
 //            _slides[2].imageView.transform = CGAffineTransform(scaleX: (0.75-percentOffset.x)/0.25, y: (0.75-percentOffset.x)/0.25)
 //            _slides[3].imageView.transform = CGAffineTransform(scaleX: percentOffset.x/0.75, y: percentOffset.x/0.75)
