@@ -51,7 +51,6 @@ class TutorialController: UIViewController, UIScrollViewDelegate {
             slide.initSlide();
             slide.getStartedBtnAction = {
                 self.dismiss(animated: true, completion: nil);
-                print("ACTION");
             }
         }
     }
