@@ -9,16 +9,11 @@
 import UIKit
 
 class ClearConnectionAnchor: CAShapeLayer {
-    private var radius: CGFloat = 10;
+    private var radius: CGFloat = 30;
     
-    init(position: CGPoint) {
+    init(position: CGPoint, frame: CGRect) {
         super.init()
-        self.path = UIBezierPath(ovalIn: CGRect(
-            x: position.x - radius,
-            y: position.y - radius,
-            width: self.radius * 2,
-            height: self.radius * 2
-        )).cgPath
+        self.path = UIBezierPath(rect: frame).cgPath
         self.fillColor = UIColor.clear.cgColor
     }
     
