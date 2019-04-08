@@ -13,6 +13,8 @@ class GalleryCell: UICollectionViewCell {
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var lockImage: UIImageView!
     @IBOutlet weak var nameLabel: UILabel!
+    @IBOutlet weak var privacyLabel: UILabel!
+    
     public var image: String = ""
     public var visibility: String = ""
     public var password: String = ""
@@ -25,6 +27,8 @@ class GalleryCell: UICollectionViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.layer.cornerRadius = 5;
+        self.layer.borderWidth = 1
+        self.layer.borderColor = #colorLiteral(red: 0.8024757504, green: 0.8024757504, blue: 0.8024757504, alpha: 1)
         // Initialization code
     }
     

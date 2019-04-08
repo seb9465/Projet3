@@ -27,13 +27,17 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Canvas Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="M4N-Ou-jY3">
-                                <rect key="frame" x="67" y="12" width="110" height="21"/>
-                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <rect key="frame" x="69" y="12" width="105.5" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" white="0.95999999999999996" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <imageView opaque="NO" userInteractionEnabled="NO" alpha="0.65000000000000002" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="lock.png" translatesAutoresizingMaskIntoConstraints="NO" id="qVJ-yM-c1O" userLabel="LockView">
+                                <rect key="frame" x="209" y="5" width="34" height="34"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
                         </subviews>
-                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" white="0.80247574204246563" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="M4N-Ou-jY3" firstAttribute="centerY" secondItem="UR5-Rt-Q4r" secondAttribute="centerY" id="Gu2-R7-vS6"/>
                             <constraint firstAttribute="width" constant="243.5" id="OeK-u6-q1g"/>
@@ -41,10 +45,28 @@
                             <constraint firstItem="M4N-Ou-jY3" firstAttribute="centerX" secondItem="UR5-Rt-Q4r" secondAttribute="centerX" id="sSG-oW-aJQ"/>
                         </constraints>
                     </view>
-                    <imageView opaque="NO" userInteractionEnabled="NO" alpha="0.65000000000000002" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="lock.png" translatesAutoresizingMaskIntoConstraints="NO" id="qVJ-yM-c1O" userLabel="LockView">
-                        <rect key="frame" x="0.0" y="0.0" width="244" height="205"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    </imageView>
+                    <view opaque="NO" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="b5H-Mq-4v7">
+                        <rect key="frame" x="0.0" y="0.0" width="243.5" height="45"/>
+                        <subviews>
+                            <imageView opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Mwf-Ct-MaF" userLabel="ImageView">
+                                <rect key="frame" x="-5" y="-201" width="254" height="205"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Canvas Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I8e-G8-Cep">
+                                <rect key="frame" x="67" y="12" width="110" height="21"/>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="0.80247574204246563" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="I8e-G8-Cep" firstAttribute="centerY" secondItem="b5H-Mq-4v7" secondAttribute="centerY" id="4fx-fJ-MgV"/>
+                            <constraint firstAttribute="width" constant="243.5" id="816-jl-vJ7"/>
+                            <constraint firstItem="I8e-G8-Cep" firstAttribute="centerX" secondItem="b5H-Mq-4v7" secondAttribute="centerX" id="MAY-wz-q5Y"/>
+                            <constraint firstAttribute="height" constant="45" id="aKu-FC-OW4"/>
+                        </constraints>
+                    </view>
                 </subviews>
             </view>
             <constraints>
@@ -55,7 +77,8 @@
             <connections>
                 <outlet property="imageView" destination="VQP-UF-j1y" id="v84-bt-LWr"/>
                 <outlet property="lockImage" destination="qVJ-yM-c1O" id="XrE-vY-3fO"/>
-                <outlet property="nameLabel" destination="M4N-Ou-jY3" id="qgf-fH-ybU"/>
+                <outlet property="nameLabel" destination="I8e-G8-Cep" id="iEx-ag-Z98"/>
+                <outlet property="privacyLabel" destination="M4N-Ou-jY3" id="8G4-SR-Yrd"/>
             </connections>
             <point key="canvasLocation" x="52.799999999999997" y="48.575712143928037"/>
         </collectionViewCell>
