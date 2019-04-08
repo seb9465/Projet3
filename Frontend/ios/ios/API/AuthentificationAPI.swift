@@ -49,12 +49,20 @@ class AuthentificationAPI {
     }
     
     static func getIsTutorialShown() -> Promise<Bool> {
+        let headers = ["Authorization": "Bearer " + UserDefaults.standard.string(forKey: "token")!];
         let url: URLConvertible = Constants.TUTORIAL_URL as URLConvertible;
         
         return Promise { (seal) in
-            Manager.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default).validate()
+            Manager.request(url, method: .get, encoding: JSONEncoding.default, headers: headers).validate()
                 .responseString { (response) in
-                    print(response);
+                    switch response.result {
+                    case .success:
+                        seal.fulfill(Bool(response.value!)!);
+                        break;
+                    case .failure(let error):
+                        seal.reject(error);
+                        break;
+                    }
             }
         }
     }

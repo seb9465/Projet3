@@ -63,6 +63,13 @@ class LoginController: UIViewController, UITextFieldDelegate, WKUIDelegate {
                 self.validationLabel.text = "";
                 self.storeAuthentificationToken(token: token, id: "");
                 
+                AuthentificationAPI.getIsTutorialShown()
+                    .done { (response) in
+                        if (response) {
+                            print("HELLO");
+                        }
+                }
+                
                 let mainController = self.storyboard?.instantiateViewController(withIdentifier: "MainController");
                 self.present(mainController!, animated: true, completion: nil);
             }.catch { (responseError) in
