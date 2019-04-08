@@ -6,7 +6,7 @@
          xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:local="clr-namespace:PolyPaint.Vues"
         mc:Ignorable="d"
-        Title="UploadToCloud" Height="285.105" Width="401.08">
+        Title="PolyPaint PRO" Height="285.105" Width="401.08">
     <Grid>
         <Label Content="Name:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" />
         <TextBox Name="nameTextBox" HorizontalAlignment="Left" Height="25" Margin="85,11,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="280"/>

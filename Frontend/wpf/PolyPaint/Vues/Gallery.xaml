@@ -8,7 +8,7 @@
         xmlns:local="clr-namespace:PolyPaint.Vues"
         PreviewKeyDown="EnterKeyDown"
         mc:Ignorable="d"
-        Title="Gallery" MinWidth="1250" MinHeight="750" WindowState="Maximized" SizeChanged="Gallery_SizeChanged" d:DesignWidth="1255" d:DesignHeight="700">
+        Title="PolyPaint PRO" MinWidth="1250" MinHeight="750" WindowState="Maximized" SizeChanged="Gallery_SizeChanged" d:DesignWidth="1255" d:DesignHeight="700">
 
     <Window.Resources>
         <convertisseurs:ConvertisseurBordure x:Key="convertisseurBordure" />

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PolyPaint.Vues"
         mc:Ignorable="d"
-        Title="Activate Protection" Height="183.611" Width="272.71">
+        Title="PolyPaint PRO" Height="183.611" Width="272.71">
     <Grid>
         <TextBlock HorizontalAlignment="Left" Margin="24,17,0,0" TextWrapping="Wrap" Text="Warning! This action will disconnect all active users in the current canvas!" VerticalAlignment="Top" Width="214"/>
         <PasswordBox Name="passwordTextBox"  HorizontalAlignment="Left" Height="23" VerticalAlignment="Top" Width="115" Margin="123,54,0,0"/>
