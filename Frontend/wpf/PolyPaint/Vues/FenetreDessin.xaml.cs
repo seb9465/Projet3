@@ -606,6 +606,10 @@ namespace PolyPaint
                 };
 
                 ImageStroke image = new ImageStroke(collection, surfaceDessin, ib);
+                image.StylusPoints[0] = new StylusPoint();
+                image.StylusPoints[1] = new StylusPoint(imageWidth, imageHeight);
+                image.Width = imageWidth;
+                image.Height = imageHeight;
                 (image as ICanvasable).AddToCanvas();
                 (DataContext as VueModele).CollaborationClient.CollaborativeDrawAsync(StrokeBuilder.GetDrawViewModelsFromStrokes(new StrokeCollection(new List<Stroke>() { image })));
                 SendToCloud();

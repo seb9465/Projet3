@@ -137,10 +137,10 @@ namespace PolyPaint.Utilitaires
                     (DrawingStroke as ICanvasable).AddToCanvas();
                     if (DrawingStroke is AbstractLineStroke)
                     {
-                        hihi.Add((DrawingStroke as AbstractLineStroke).TrySnap());
                         var elbow = (DrawingStroke as AbstractLineStroke).LastElbowPosition;
                         var sPoints = (DrawingStroke as AbstractLineStroke).StylusPoints;
                         (DrawingStroke as AbstractLineStroke).StylusPoints = new StylusPointCollection(3) { sPoints[0], sPoints[1], new StylusPoint(elbow.X, elbow.Y) };
+                        hihi.Add((DrawingStroke as AbstractLineStroke).TrySnap());
                     }
 
                     List<DrawViewModel> allo = StrokeBuilder.GetDrawViewModelsFromStrokes(hihi);

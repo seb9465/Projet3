@@ -7,7 +7,7 @@
          xmlns:convertisseurs="clr-namespace:PolyPaint.Convertisseurs"   
         xmlns:local="clr-namespace:PolyPaint.Vues"
         mc:Ignorable="d"
-        Title="Gallery" WindowState="Maximized">
+        Title="Gallery" WindowState="Maximized" Width="1149">
 
 
     <Window.Resources>
@@ -28,6 +28,13 @@
                     <Grid Name="progressBar"  Visibility="Collapsed" Margin="10,0,0,0">
                         <ProgressBar  Style="{StaticResource MaterialDesignCircularProgressBar}" Value="0" IsIndeterminate="True" Width="20" Height="20" />
                     </Grid>
+                </StackPanel>
+            </Button>
+            <Button Style="{StaticResource MaterialDesignRaisedLightButton}"
+             Width="140" Height="40" HorizontalAlignment="Right" Background="Gainsboro" BorderBrush="Gray" Margin="0,-40,0,0" >
+                <StackPanel Orientation="Horizontal">
+                    <Label FontWeight="Bold" Content="Disconnect"/>
+                    <materialDesign:PackIcon Kind="LanDisconnect" Height="24" Width="24"/>
                 </StackPanel>
             </Button>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,0">
