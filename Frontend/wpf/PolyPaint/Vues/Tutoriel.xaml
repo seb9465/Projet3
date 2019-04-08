@@ -16,10 +16,10 @@
         </Border>
 
 
-        <TextBlock Name="tutorialText" HorizontalAlignment="Center" MaxWidth="500" TextWrapping="Wrap">
+        <TextBlock Name="tutorialText" HorizontalAlignment="Center" MaxWidth="500" Height="40" TextWrapping="Wrap">
             Tutorial text goes here lalalalaa Tutorial text goes here lalalalaa Tutorial text goes here lalalalaa Tutorial text goes here lalalalaa Tutorial text goes here lalalalaaTutorial text goes here lalalalaa
         </TextBlock>
-        <Button Style="{StaticResource MaterialDesignRaisedLightButton}" Click="nextPage_Click" HorizontalAlignment="Right" Background="Transparent" BorderBrush="Transparent" Margin="0,0,-10,-50" >
+        <Button Name="nextPageButton" Style="{StaticResource MaterialDesignRaisedLightButton}" Click="nextPage_Click" HorizontalAlignment="Right" Background="Transparent" BorderBrush="Transparent" Margin="0,0,-10,-20" >
             <Image Source="/Resources/curl.png"  />
         </Button>
     </StackPanel>

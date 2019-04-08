@@ -1,7 +1,12 @@
-﻿using PolyPaint.Modeles;
+﻿using Newtonsoft.Json;
+using PolyPaint.Modeles;
+using PolyPaint.VueModeles;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;

@@ -39,6 +39,7 @@ namespace PolyPaint.Vues
                 case 2:
                     tutorialImage.Source = new BitmapImage(new Uri(@"/Resources/cloud.png", UriKind.Relative));
                     tutorialText.Text = "test test test test";
+                    nextPageButton.Visibility = Visibility.Collapsed;
                     break;
                 default:
                     break;
