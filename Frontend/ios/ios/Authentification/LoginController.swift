@@ -38,9 +38,9 @@ class LoginController: UIViewController, UITextFieldDelegate, WKUIDelegate {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil);
         
         // TODO: DÉCOMMENTÉ LES PROCHAINES LIGNES POUR LA VERSION RELEASE.
-        //        self.loginButton.isUserInteractionEnabled = false;
-        //        self.loginButton.alpha = 0.5;
-        //        self.setupAddTargetIsNotEmptyTextFields();
+            self.loginButton.isUserInteractionEnabled = false;
+            self.loginButton.alpha = 0.5;
+            self.setupAddTargetIsNotEmptyTextFields();
     }
     
     // MARK: Action functions
@@ -51,9 +51,9 @@ class LoginController: UIViewController, UITextFieldDelegate, WKUIDelegate {
     @IBAction func loginPressed(_ sender: Any) -> Void {
         let spinner = UIViewController.displaySpinner(onView: self.view);
         
-//        AuthentificationAPI.login(username: emailField.text!, password: passwordField.text!)
+        AuthentificationAPI.login(username: emailField.text!, password: passwordField.text!)
 //        AuthentificationAPI.login(username: "william.sevigny", password: "!12345Aa")
-        AuthentificationAPI.login(username: "seb.cado222", password: "!12345Aa")
+//        AuthentificationAPI.login(username: "seb.cado222", password: "!12345Aa")
             .done { (token) in
                 UIViewController.removeSpinner(spinner: spinner);
                 self.validationLabel.text = "";
