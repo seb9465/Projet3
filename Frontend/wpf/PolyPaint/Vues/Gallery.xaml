@@ -6,6 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
          xmlns:convertisseurs="clr-namespace:PolyPaint.Convertisseurs"   
         xmlns:local="clr-namespace:PolyPaint.Vues"
+        PreviewKeyDown="EnterKeyDown"
         mc:Ignorable="d"
         Title="Gallery" MinWidth="1250" MinHeight="750" WindowState="Maximized" SizeChanged="Gallery_SizeChanged">
 

@@ -6,7 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PolyPaint.Vues"
         mc:Ignorable="d"
-        Title="Tutoriel" Height="400" Width="700">
+        Title="Tutoriel" Height="430" Width="700">
     <StackPanel Margin="10">
         <Label HorizontalAlignment="Center" FontSize="20" >
             Welcome to the editor mode tutorial
@@ -15,12 +15,20 @@
             <Image Name="tutorialImage" Source="/Resources/capture.png" Width="350" Height="190" Margin="3" />
         </Border>
 
-
-        <TextBlock Name="tutorialText" HorizontalAlignment="Center" MaxWidth="500" Height="40" TextWrapping="Wrap">
+        
+        <TextBlock Name="tutorialText" HorizontalAlignment="Center" MaxWidth="500" Height="50" TextWrapping="Wrap">
             Tutorial text goes here lalalalaa Tutorial text goes here lalalalaa Tutorial text goes here lalalalaa Tutorial text goes here lalalalaa Tutorial text goes here lalalalaaTutorial text goes here lalalalaa
         </TextBlock>
-        <Button Name="nextPageButton" Style="{StaticResource MaterialDesignRaisedLightButton}" Click="nextPage_Click" HorizontalAlignment="Right" Background="Transparent" BorderBrush="Transparent" Margin="0,0,-10,-20" >
-            <Image Source="/Resources/curl.png"  />
-        </Button>
+        <DockPanel >
+            <Button  Style="{StaticResource MaterialDesignRaisedButton}"  Click="previousPage_Click" HorizontalAlignment="Left" 
+                    Name="previousPageButton" Width="30" Height="30" Margin="5" Padding="0" FontSize="18" Visibility="Collapsed" >
+                <materialDesign:PackIcon Kind="NavigateBefore" />
+            </Button>
+            <Button  Style="{StaticResource MaterialDesignRaisedButton}"  Click="nextPage_Click" HorizontalAlignment="Right" 
+                    Name="nextPageButton" Width="30" Height="30" Margin="5" Padding="0" FontSize="18">
+                <materialDesign:PackIcon Kind="NavigateNext" />
+            </Button>
+        </DockPanel>
+        
     </StackPanel>
 </Window>

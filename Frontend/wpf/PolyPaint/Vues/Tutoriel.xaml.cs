@@ -32,13 +32,50 @@ namespace PolyPaint.Vues
             page++;
             switch (page)
             {
-                case 1:
+                case 0:
                     tutorialImage.Source = new BitmapImage(new Uri(@"/Resources/capture.png", UriKind.Relative));
+                    tutorialText.Text = " Tutorial text goes here lalalalaa Tutorial text goes here lalalalaa Tutorial text goes here lalalalaa Tutorial text goes here lalalalaa Tutorial text goes here lalalalaaTutorial text goes here lalalalaa";
+                    previousPageButton.Visibility = Visibility.Collapsed;
+                    nextPageButton.Visibility = Visibility.Visible;
+                    break;
+                case 1:
+                    tutorialImage.Source = new BitmapImage(new Uri(@"/Resources/composition.png", UriKind.Relative));
                     tutorialText.Text = "test test test test test test test test test test test test ";
+                    previousPageButton.Visibility = Visibility.Visible;
+                    nextPageButton.Visibility = Visibility.Visible;
                     break;
                 case 2:
                     tutorialImage.Source = new BitmapImage(new Uri(@"/Resources/cloud.png", UriKind.Relative));
                     tutorialText.Text = "test test test test";
+                    previousPageButton.Visibility = Visibility.Visible;
+                    nextPageButton.Visibility = Visibility.Collapsed;
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private void previousPage_Click(object sender, RoutedEventArgs e)
+        {
+            page--;
+            switch (page)
+            {
+                case 0:
+                    tutorialImage.Source = new BitmapImage(new Uri(@"/Resources/capture.png", UriKind.Relative));
+                    tutorialText.Text = " Tutorial text goes here lalalalaa Tutorial text goes here lalalalaa Tutorial text goes here lalalalaa Tutorial text goes here lalalalaa Tutorial text goes here lalalalaaTutorial text goes here lalalalaa";
+                    previousPageButton.Visibility = Visibility.Collapsed;
+                    nextPageButton.Visibility = Visibility.Visible;
+                    break;
+                case 1:
+                    tutorialImage.Source = new BitmapImage(new Uri(@"/Resources/composition.png", UriKind.Relative));
+                    tutorialText.Text = "test test test test test test test test test test test test ";
+                    previousPageButton.Visibility = Visibility.Visible;
+                    nextPageButton.Visibility = Visibility.Visible;
+                    break;
+                case 2:
+                    tutorialImage.Source = new BitmapImage(new Uri(@"/Resources/cloud.png", UriKind.Relative));
+                    tutorialText.Text = "test test test test";
+                    previousPageButton.Visibility = Visibility.Visible;
                     nextPageButton.Visibility = Visibility.Collapsed;
                     break;
                 default:
