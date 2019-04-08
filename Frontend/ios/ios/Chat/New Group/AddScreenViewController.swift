@@ -32,8 +32,8 @@ class AddScreenViewController: UIViewController, UITableViewDelegate, UITableVie
         self.initRefreshControl();
         self.initChatServiceCommunication();
         
-        self.cancelButton.tintColor = Constants.RED_COLOR;
-        self.saveButton.tintColor = Constants.RED_COLOR;
+        self.cancelButton.tintColor = Constants.Colors.RED_COLOR;
+        self.saveButton.tintColor = Constants.Colors.RED_COLOR;
         self.saveButton.isEnabled = false;
         self.channelName.addTarget(self, action: #selector(editingChanged), for: .editingChanged);
     }

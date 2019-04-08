@@ -72,7 +72,7 @@ class DashboardController: UIViewController, UITextFieldDelegate {
     
     private func setChatNotifLabel() -> Void {
         self.chatNotifLabel.layer.cornerRadius = self.chatNotifLabel.frame.width / 2;
-        self.chatNotifLabel.layer.backgroundColor = Constants.DEFAULT_BLUE_COLOR.cgColor;
+        self.chatNotifLabel.layer.backgroundColor = Constants.Colors.DEFAULT_BLUE_COLOR.cgColor;
         self.chatNotifLabel.textColor = UIColor.white;
         self.chatNotifLabel.text = "";
         self.chatNotifLabel.textAlignment = .center;
