@@ -72,6 +72,8 @@ class Editor {
             (figure as! ConnectionFigure).showElbowAnchor()
         }
         self.editorView.addSubview(selectionOutline)
+        self.delegate?.setCutButtonState(isEnabled: true)
+        self.delegate?.setDuplicateButtonState(isEnabled: true)
         self.selectedFigures.append(figure)
         self.selectionOutlines.append(selectionOutline)
     }
@@ -125,6 +127,7 @@ class Editor {
         CollaborationHub.shared!.selectObjects(drawViewModels: [])
         self.deselectLasso();
         self.selectedFigures.removeAll();
+        self.delegate?.setCutButtonState(isEnabled: false)
     }
     
     // Deselect received from hub
@@ -159,6 +162,7 @@ class Editor {
     
     public func copy() -> Void {
         self.clipboard = self.selectedFigures;
+        self.delegate?.setDuplicateButtonState(isEnabled: true)
     }
     
     public func duplicate() -> Void {
@@ -166,17 +170,20 @@ class Editor {
             self.copy();
             self.deselect();
         }
+        var drawViewModelToSelect:[DrawViewModel] = []
          for figure in self.clipboard {
             var viewModel = figure.exportViewModel()!;
             viewModel.Guid = UUID().uuidString;
-            viewModel.StylusPoints![0].X = viewModel.StylusPoints![0].X + 20;
-            viewModel.StylusPoints![0].Y = viewModel.StylusPoints![0].Y + 20;
-            viewModel.StylusPoints![1].X = viewModel.StylusPoints![1].X + 20;
-            viewModel.StylusPoints![1].Y = viewModel.StylusPoints![1].Y + 20;
-            self.select(figure: figure);
-            self.insertFigure(drawViewModel: viewModel);
+            viewModel.StylusPoints![0].X = viewModel.StylusPoints![0].X + 10;
+            viewModel.StylusPoints![0].Y = viewModel.StylusPoints![0].Y + 10;
+            viewModel.StylusPoints![1].X = viewModel.StylusPoints![1].X + 10;
+            viewModel.StylusPoints![1].Y = viewModel.StylusPoints![1].Y + 10;
+            self.select(figure: self.insertFigure(drawViewModel: viewModel));
+            drawViewModelToSelect.append(viewModel)
         }
-        CollaborationHub.shared!.postNewFigure(figures: self.clipboard);
+        CollaborationHub.shared?.selectObjects(drawViewModels: drawViewModelToSelect)
+
+        CollaborationHub.shared!.postNewFigure(figures: self.figures);
         CanvasService.saveOnNewFigure(figures: self.figures, editor: self);
     }
     
@@ -237,27 +244,17 @@ class Editor {
         CanvasService.saveOnNewFigure(figures: self.figures, editor: self)
     }
     
-    public func deleteSelectedFigures(username: String) {
-        print(username)
-        let figuresToDelete: [DrawViewModel] = self.selectedFiguresDictionnary[username]!
-        self.selectedFiguresDictionnary[username] = []
-        var indexOffset = 0
-        var indexToRemove:[Int] = []
-            for figureToDelete in figuresToDelete {
-                for (index,figure) in self.figures.enumerated() {
-                    if(figureToDelete.Guid == figure.uuid.uuidString) {
-                        figure.removeFromSuperview()
-                        indexOffset += 1
-                        indexToRemove.append( index - indexOffset)
-                    }
+    public func deleteSelectedFigures(drawViewModels: [DrawViewModel]) {
+        for figureToDelete in drawViewModels {
+            for (index,figure) in self.figures.enumerated() {
+                if(figureToDelete.Guid == figure.uuid.uuidString.lowercased()) {
+                    print("remove this one from view" + String(index))
+                    figure.removeFromSuperview()
+                    self.editorView.setNeedsDisplay()
+                    self.figures.remove(at: index)
+                }
             }
         }
-        for index in indexToRemove {
-            self.figures.remove(at: index)
-        }
-
-        self.deselect(username: username)
-    
     }
     
     public func clear() -> Void {
@@ -274,6 +271,7 @@ class Editor {
         self.figures.removeAll()
         self.currentChange.1 = []
         self.undoArray.append(self.currentChange)
+        self.delegate?.setDuplicateButtonState(isEnabled: false)
         CanvasService.saveOnNewFigure(figures: self.figures, editor: self)
     }
     
@@ -293,6 +291,8 @@ extension Editor {
 }
 
 extension Editor: CollaborationHubDelegate {
+
+    
     func sendExistingSelection() {
         var drawViewModels: [DrawViewModel] = []
         for figure in self.selectedFigures {
@@ -330,8 +330,8 @@ extension Editor: CollaborationHubDelegate {
         self.bindLocalConnectionsToFigures(drawViewModels: itemMessage.Items)
     }
     
-    func delete(username: String) {
-        self.deleteSelectedFigures(username: username)
+    func delete(drawViewModels: [DrawViewModel]) {
+        self.deleteSelectedFigures(drawViewModels: drawViewModels)
     }
     
     func getKicked() {
