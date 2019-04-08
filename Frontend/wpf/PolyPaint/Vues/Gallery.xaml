@@ -30,7 +30,7 @@
                     </Grid>
                 </StackPanel>
             </Button>
-            <Button Style="{StaticResource MaterialDesignRaisedLightButton}"
+            <Button Style="{StaticResource MaterialDesignRaisedLightButton}" Click="Disconnect_Click"
              Width="140" Height="40" HorizontalAlignment="Right" Background="Gainsboro" BorderBrush="Gray" Margin="0,-40,0,0" >
                 <StackPanel Orientation="Horizontal">
                     <Label FontWeight="Bold" Content="Disconnect"/>

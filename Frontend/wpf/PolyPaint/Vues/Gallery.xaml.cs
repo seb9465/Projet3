@@ -176,7 +176,25 @@ namespace PolyPaint.Vues
             }
             return canvas;
         }
+        private void Disconnect_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                using (HttpClient client = new HttpClient())
+                {
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", (string)Application.Current.Properties["token"]);
+                    System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
+                    client.GetAsync($"{Config.URL}/api/user/logout").Wait();
+                }
+            }
+            catch { }
 
+            Application.Current.Properties.Clear();
+            Login login = new Login();
+            Application.Current.MainWindow = login;
+            Close();
+            login.Show();
+        }
         private async void OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             SelectedCanvas = (SaveableCanvas)ImagePreviews.SelectedItem;
