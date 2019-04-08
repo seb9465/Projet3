@@ -9,7 +9,7 @@
      WindowState="Maximized"
      Background="{DynamicResource MaterialDesignPaper}"
      FontFamily="{DynamicResource MaterialDesignFont}"
-     Loaded="Window_Loaded"
+     
      PreviewKeyDown="EnterKeyDown"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -73,7 +73,7 @@
 
                     <Button  Style="{StaticResource MaterialDesignFloatingActionButton}" ToolTip="Download canvas as PNG" 
                     x:Name="DownloadJPG" Width="40" Height="40" Margin="5" Padding="0" Click="DownloadCanvasAsJPG" FontSize="18">
-                        <materialDesign:PackIcon Kind="FileDownload"  Width="25" Height="25"/>
+                        <Image Source="/Resources/download.png"  Width="25" Height="25"/>
                     </Button>
 
                     <Button  Style="{StaticResource MaterialDesignRaisedButton}" ToolTip="Reinitialize canvas" 

@@ -43,9 +43,7 @@ class MsgChatController: MessagesViewController {
         ChatService.shared.initOnReceivingMessage(currentMemberName: self._member.name, insertMessage: self.insertMessage, updateChatRooms: { })
         ChatService.shared.initOnAnotherUserConnection(insertMessage: self.insertMessage);
         
-        self.navigationItem.title = ChatService.shared.currentChannel.name;
-        
-        self.messageInputBar.becomeFirstResponder();
+        self.navigationItem.title = ChatService.shared.currentChannel.name.uppercased();
         
         super.viewDidLoad();
         
