@@ -19,25 +19,14 @@ class Slide: UIView {
     @IBOutlet var labelDesc: UILabel!;
     @IBOutlet var getStartedButon: UIButton!
     
-    // MARK: - Constructors
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame);
-        
-        self.initGetStartedButton();
-        self.initLabels();
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder);
-        
-        initGetStartedButton();
-        initLabels();
-    }
-    
     // MARK: - Timing functions
     
     // MARK: - Public functions
+    
+    public func initSlide() -> Void {
+        self.initLabels();
+        self.initGetStartedButton();
+    }
     
     // MARK: - Private functions
     

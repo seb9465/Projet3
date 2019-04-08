@@ -30,6 +30,10 @@ class TutorialController: UIViewController, UIScrollViewDelegate {
         self.view.bringSubviewToFront(self.pageControl);
         
         self.scrollView.delegate = self;
+        
+        self.initSlidesView();
+        
+        super.viewDidLoad();
     }
     
     // MARK: - Public functions
@@ -39,6 +43,12 @@ class TutorialController: UIViewController, UIScrollViewDelegate {
     }
     
     // MARK: - Private functions
+    
+    private func initSlidesView() -> Void {
+        for slide in self._slides {
+            slide.initSlide();
+        }
+    }
     
     private func createSlides() -> [Slide] {
         let slide1:Slide = Bundle.main.loadNibNamed("Slide", owner: self, options: nil)?.first as! Slide;
