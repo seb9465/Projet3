@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="Edit Uml Element" Height="465.665" Width="392.651">
+        Title="PolyPaint PRO" Height="465.665" Width="392.651">
     <Grid>
         <Label Content="Title :" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.75,0.538"/>
         <TextBox Name="titleTextBox" HorizontalAlignment="Left" Height="25" Margin="85,11,0,0" TextWrapping="Wrap" Text="{Binding TitleString}" VerticalAlignment="Top" Width="279"/>

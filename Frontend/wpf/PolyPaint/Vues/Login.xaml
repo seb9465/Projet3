@@ -7,7 +7,7 @@
       xmlns:local="clr-namespace:PolyPaint.Vues"
       mc:Ignorable="d"
       PreviewKeyDown="Window_PreviewKeyDown"
-      Title="Login" Height="461" Width="728">
+      Title="PolyPaint PRO" Height="461" Width="728">
     <Grid HorizontalAlignment="Left" Height="429" VerticalAlignment="Top" Width="700">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>

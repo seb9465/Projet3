@@ -23,7 +23,7 @@
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                 <color key="backgroundColor" red="0.83741801979999997" green="0.83743780850000005" blue="0.83742713930000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <items>
-                                    <barButtonItem title="Quit" id="4Er-Gx-QB8">
+                                    <barButtonItem title="Quit" image="exit-run" id="4Er-Gx-QB8">
                                         <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
                                             <action selector="quitButtonPressed:" destination="Vts-He-P18" id="xGi-Np-bzb"/>
@@ -65,7 +65,7 @@
                                             <action selector="duplicateButtonPressed:" destination="Vts-He-P18" id="ZyN-In-isq"/>
                                         </connections>
                                     </barButtonItem>
-                                    <barButtonItem title="Lasso" image="selection-ellipse" id="Ttp-DJ-46z">
+                                    <barButtonItem title="Lasso" image="selection" id="Ttp-DJ-46z">
                                         <color key="tintColor" red="0.99901801349999997" green="0.12282834010770702" blue="0.13532364372799999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <connections>
                                             <action selector="lassoButton:" destination="Vts-He-P18" id="rPD-vK-NGN"/>
@@ -73,7 +73,7 @@
                                     </barButtonItem>
                                     <barButtonItem style="plain" id="MeA-86-Ay2">
                                         <switch key="customView" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" id="RsE-TN-IVY">
-                                            <rect key="frame" x="397" y="9.5" width="51" height="31"/>
+                                            <rect key="frame" x="371" y="9.5" width="51" height="31"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <connections>
                                                 <action selector="switchButtonChangedWithSender:" destination="Vts-He-P18" eventType="valueChanged" id="5As-3f-grU"/>
@@ -280,12 +280,13 @@
         <image name="cut_button" width="36" height="36"/>
         <image name="delete" width="36" height="36"/>
         <image name="duplicate" width="36" height="36"/>
-        <image name="edit" width="36" height="36"/>
-        <image name="paint" width="36" height="36"/>
-        <image name="pngexport" width="48" height="48"/>
+        <image name="edit" width="24" height="24"/>
+        <image name="exit-run" width="36" height="36"/>
+        <image name="paint" width="24" height="24"/>
+        <image name="pngexport" width="36" height="36"/>
         <image name="redo" width="36" height="36"/>
-        <image name="selection-ellipse" width="36" height="36"/>
-        <image name="shape" width="36" height="36"/>
+        <image name="selection" width="24" height="24"/>
+        <image name="shape" width="24" height="24"/>
         <image name="undo" width="36" height="36"/>
     </resources>
     <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

@@ -8,7 +8,7 @@
         xmlns:local="clr-namespace:PolyPaint.Vues"
         PreviewKeyDown="EnterKeyDown"
         mc:Ignorable="d"
-        Title="Gallery" MinWidth="1250" MinHeight="750" WindowState="Maximized" SizeChanged="Gallery_SizeChanged" d:DesignWidth="1255" d:DesignHeight="700">
+        Title="PolyPaint PRO" MinWidth="1250" MinHeight="750" WindowState="Maximized" SizeChanged="Gallery_SizeChanged" d:DesignWidth="1255" d:DesignHeight="700">
 
     <Window.Resources>
         <convertisseurs:ConvertisseurBordure x:Key="convertisseurBordure" />
@@ -50,7 +50,7 @@
             <StackPanel Name="canvasStackPanel" MinWidth="750" Height="Auto" Margin="0,0,0,0">
                 
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,10,0,0">
-                    <Label Content="PolyPaint Pro" FontSize="30" FontWeight="Bold" VerticalAlignment="Center"></Label>
+                    <Label Content="PolyPaint PRO" FontSize="30" FontWeight="Bold" VerticalAlignment="Center"></Label>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,-10,0,0">
                     <Label Name="usernameLabel" Foreground="#F44236" FontSize="30" VerticalAlignment="Center" FontWeight="Bold"></Label>
