@@ -96,7 +96,6 @@ class DashboardController: UIViewController, UITextFieldDelegate {
         UserDefaults.standard.removePersistentDomain(forName: "id");
         
         let loginController: UIViewController = (self.storyboard?.instantiateViewController(withIdentifier: "LoginStoryboard"))!;
-//        self.navigationController?.popToViewController(loginController, animated: true);
         self.present(loginController, animated: true, completion: nil);
     }
     
@@ -156,8 +155,6 @@ class DashboardController: UIViewController, UITextFieldDelegate {
         }
         self.present(createAlert, animated: true, completion: nil)
     }
-    
-    
     
     /**
      Removes the color animation on the Window Chat button, and opens or closes the ChatRoom view.

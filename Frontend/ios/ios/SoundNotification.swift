@@ -14,6 +14,7 @@ class SoundNotification{
         AudioServicesPlaySystemSound (sound.rawValue)
     }
 }
+
 enum Sound: SystemSoundID {
     case ReceiveMessage = 1003;
     case SendMessage = 1004;
