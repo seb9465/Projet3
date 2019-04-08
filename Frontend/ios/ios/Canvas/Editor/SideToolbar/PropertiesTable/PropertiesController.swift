@@ -31,6 +31,10 @@ class PropertiesTableController: UIViewController {
 
 extension PropertiesTableController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+        if(self.editor.selectedFigures.count > 1) {
+            return 0;
+        }
         if (self.editor.selectedFigures.isEmpty) {
             return 0
         }
