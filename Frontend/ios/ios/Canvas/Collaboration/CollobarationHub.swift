@@ -55,19 +55,11 @@ class CollaborationHub {
         
         self._members = Members();
         self.initializeOnMethods();
+        
         print("[ Collab ] Hub instanciated successfully")
     }
     
-    private func initializeOnMethods() -> Void {
-        self.onClientIsConnected()
-        self.onConnectToChannel()
-        self.onDraw()
-        self.onReset()
-        self.onSelect()
-        self.onCut()
-        self.onKicked()
-        self.onResizeCanvas()
-    }
+    // MARK: - Public Functions
     
     public func connectToHub() -> Void {
         print("[ Collab ] Connecting to hub")
@@ -318,5 +310,18 @@ class CollaborationHub {
                 return;
             }
         });
+    }
+    
+    // MARK: - Private functions
+    
+    private func initializeOnMethods() -> Void {
+        self.onClientIsConnected()
+        self.onConnectToChannel()
+        self.onDraw()
+        self.onReset()
+        self.onSelect()
+        self.onCut()
+        self.onKicked()
+        self.onResizeCanvas()
     }
 }
