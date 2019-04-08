@@ -56,8 +56,8 @@ class LoginController: UIViewController, UITextFieldDelegate, WKUIDelegate {
             UserDefaults.standard.removePersistentDomain(forName: "token");
         }
 //        AuthentificationAPI.login(username: emailField.text!, password: passwordField.text!)
-        AuthentificationAPI.login(username: "william.sevigny", password: "!12345Aa")
-//        AuthentificationAPI.login(username: "sebastien.labine", password: "!12345Aa")
+//        AuthentificationAPI.login(username: "william.sevigny", password: "!12345Aa")
+        AuthentificationAPI.login(username: "seb.cado2", password: "!12345Aa")
             .done { (token) in
                 UIViewController.removeSpinner(spinner: spinner);
                 self.validationLabel.text = "";
@@ -65,7 +65,6 @@ class LoginController: UIViewController, UITextFieldDelegate, WKUIDelegate {
                 self.present((self.storyboard?.instantiateViewController(withIdentifier: "MainController"))!, animated: true, completion: nil);
             }.catch { (responseError) in
                 UIViewController.removeSpinner(spinner: spinner);
-                // TODO: Afficher le bon message d'erreur. En attente du serveur.
                 self.validationLabel.text = responseError.localizedDescription;
         }
     }
