@@ -46,9 +46,7 @@ class Editor {
     
     init() {
         self.editorView.delegate = self
-        let rotation = UIRotationGestureRecognizer(target: self, action: #selector(self.rotatedView(_:)))
         let pinch = UIPinchGestureRecognizer(target: self, action: #selector(self.resizeFigure(_:)))
-        self.editorView.addGestureRecognizer(rotation)
         self.editorView.addGestureRecognizer(pinch)
     }
     
