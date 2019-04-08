@@ -16,14 +16,14 @@
         <TextBox x:Name="LastNameBox" HorizontalAlignment="Left" Height="23" Margin="315,164,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="205"/>
         <Label Content="Email Address:" HorizontalAlignment="Left" Margin="185,211,0,0" VerticalAlignment="Top"/>
         <TextBox x:Name="EmailAddress"  TextChanged="IsEmailValid" HorizontalAlignment="Left" Height="23" Margin="315,212,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="205"/>
-        <TextBlock Text="Invalid email address" x:Name="InvalidEmail"  HorizontalAlignment="Right" Margin="0,215,10,0" Width="160" VerticalAlignment="Top" Foreground="OrangeRed" Opacity="0"/>
+        <TextBlock Text="Invalid email address" x:Name="InvalidEmail"  HorizontalAlignment="Right" Margin="0,215,10,0" Width="160" VerticalAlignment="Top" Foreground="#F44236" Opacity="0"/>
         <Label Content="Username:" HorizontalAlignment="Left" Margin="185,257,0,0" VerticalAlignment="Top"/>
         <TextBox Name="usernameBox" HorizontalAlignment="Left" Height="23" Margin="315,258,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="205"/>
         <Label Content="Password:" HorizontalAlignment="Left" Margin="185,300,0,0" VerticalAlignment="Top"/>
         <PasswordBox HorizontalAlignment="Left"  PasswordChanged="IsPasswordValid" Margin="315,301,0,0" VerticalAlignment="Top" Width="205" Name="passwordBox"/>
         <TextBlock 
             Text="Your password must have between 8 and 15 characters and contains at least: &#10; - 1 upercase letter &#10; - 1 lowercase letter &#10; - 1 number &#10; - 1 special caracter" 
-            TextWrapping="Wrap" x:Name="InvalidPassword" HorizontalAlignment="Right" Margin="0,308,10,0" Width="160" VerticalAlignment="Top" Foreground="OrangeRed" Opacity="0"/>
+            TextWrapping="Wrap" x:Name="InvalidPassword" HorizontalAlignment="Right" Margin="0,308,10,0" Width="160" VerticalAlignment="Top" Foreground="#F44236" Opacity="0"/>
         <Button Content="Register" Margin="264,365,255,93" Name="RegisterBtn" Click="Register_Click" Height="Auto" />
         <Button Content="Back" Margin="16,416,575,42" x:Name="backBtn" Click="BackBtn_Click" Height="Auto"/>
         <TextBlock x:Name="registrationSuccessful" Margin="0,0,0,60" HorizontalAlignment="Center" TextAlignment="Center" VerticalAlignment="Bottom" Foreground="#DD43B307" Width="140"/>
