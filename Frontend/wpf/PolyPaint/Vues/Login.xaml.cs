@@ -2,6 +2,7 @@
 using PolyPaint.Common;
 using PolyPaint.Common.Collaboration;
 using PolyPaint.Modeles;
+using PolyPaint.Utilitaires;
 using PolyPaint.VueModeles;
 using System;
 using System.Collections.Generic;
@@ -147,6 +148,7 @@ namespace PolyPaint.Vues
                 string token = "";
                 client.BaseAddress = new Uri(Config.URL);
                 var web = new WebBrowserWindow();
+                WinInetHelper.SupressCookiePersist();
                 web.ShowDialog();
                 token = web.Token;
 
