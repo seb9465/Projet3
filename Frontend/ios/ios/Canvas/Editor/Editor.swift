@@ -238,21 +238,26 @@ class Editor {
     }
     
     public func deleteSelectedFigures(username: String) {
-        let figuresToDelete = self.selectedFiguresDictionnary[username]
+        print(username)
+        let figuresToDelete: [DrawViewModel] = self.selectedFiguresDictionnary[username]!
         self.selectedFiguresDictionnary[username] = []
-        /*
-        var figureToDelete: [Figure] = []
-        for figure in self.figures {
-            if((figuresToDelete?.contains(where: {$0.Guid == figure.uuid.uuidString}))!) {
-                figure.removeFromSuperview()
-                figureToDelete.append(figure)
+        var indexOffset = 0
+        var indexToRemove:[Int] = []
+            for figureToDelete in figuresToDelete {
+                for (index,figure) in self.figures.enumerated() {
+                    if(figureToDelete.Guid == figure.uuid.uuidString) {
+                        figure.removeFromSuperview()
+                        indexOffset += 1
+                        indexToRemove.append( index - indexOffset)
+                    }
             }
         }
-        for figure in figureToDelete {
-            self.figures.removeAll{$0 == figure}
+        for index in indexToRemove {
+            self.figures.remove(at: index)
         }
-         */
+
         self.deselect(username: username)
+    
     }
     
     public func clear() -> Void {
