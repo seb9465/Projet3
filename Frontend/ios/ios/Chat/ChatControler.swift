@@ -35,16 +35,17 @@ class MsgChatController: MessagesViewController {
     
     override func viewDidLoad() {
         self.setCurrentMemberAttributes();
-        
+//        self.messageInputBar.frame = CGRect(x: 0, y: 0, width: 100, height:50)
         messagesCollectionView = MessagesCollectionView(frame: .zero, collectionViewLayout: MyCustomMessagesFlowLayout())
         messagesCollectionView.register(MyCustomCell.self)
-        
         self.initDelegate();
         
         ChatService.shared.initOnReceivingMessage(currentMemberName: self._member.name, insertMessage: self.insertMessage, updateChatRooms: { })
         ChatService.shared.initOnAnotherUserConnection(insertMessage: self.insertMessage);
         
         self.navigationItem.title = ChatService.shared.currentChannel.name;
+        
+        self.messageInputBar.becomeFirstResponder();
         
         super.viewDidLoad();
         

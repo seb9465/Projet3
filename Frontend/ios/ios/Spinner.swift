@@ -1,5 +1,5 @@
 //
-//  Extensions.swift
+//  Spinner.swift
 //  ios
 //
 //  Created by Sebastien Cadorette on 2019-02-12.

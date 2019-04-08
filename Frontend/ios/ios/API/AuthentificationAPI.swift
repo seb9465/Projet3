@@ -87,7 +87,6 @@ class AuthentificationAPI {
                         seal.fulfill(userToken);
                     case .failure(let Error):
                         let responseDataString = String(data: response.data!, encoding:String.Encoding.utf8)
-                        print(responseDataString)
                         let error: Error = LoginError.customError(error: responseDataString!)
                         seal.reject(error)
                     }

@@ -404,6 +404,7 @@
     <Compile Include="Utilitaires\RelayCommand.cs" />
     <Compile Include="Utilitaires\StrokeBuilder.cs" />
     <Compile Include="Utilitaires\Tools.cs" />
+    <Compile Include="Utilitaires\WinInetHelper.cs" />
     <Compile Include="VueModeles\CanvasViewModel.cs" />
     <Compile Include="VueModeles\IChatDataContext.cs" />
     <Compile Include="VueModeles\RegistrationViewModel.cs" />

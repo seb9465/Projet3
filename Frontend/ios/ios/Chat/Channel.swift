@@ -8,7 +8,7 @@
 
 import Foundation
 
-// MARK: Channel class
+// MARK: - Channel class
 
 class Channel: Codable {
     public var name: String;
@@ -20,7 +20,7 @@ class Channel: Codable {
     }
 }
 
-// MARK: ChannelMessage class
+// MARK: - ChannelMessage class
 
 class ChannelMessage: Codable {
     public var channel: Channel;
@@ -30,7 +30,7 @@ class ChannelMessage: Codable {
     }
 }
 
-// MARK: ChannelsMessage class
+// MARK: - ChannelsMessage class
 
 class ChannelsMessage: Codable {
     public var channels: [Channel];

@@ -35,8 +35,17 @@ class UmlPhaseFigure: UmlFigure {
     }
 
     override func draw(_ rect: CGRect) {
-         let outerRect = CGRect(x: 0, y: 0, width: self.frame.width, height: self.frame.height).insetBy(dx: 5, dy: 5);
-        let phaneNameRect = CGRect(x: 0, y: 0, width: self.frame.width, height: 50).insetBy(dx: 5, dy: 5);
+        var width = abs(self.frame.origin.x - self.frame.maxX)
+        var height = abs(self.frame.origin.y - self.frame.maxY)
+        
+        if (Int(self.currentAngle / 90) % 2 != 0) {
+            let temp = width
+            width = height
+            height = temp
+        }
+        
+        let outerRect = CGRect(x: 0, y: 0, width: width, height: height).insetBy(dx: 5, dy: 5);
+        let phaneNameRect = CGRect(x: 0, y: 0, width: width, height: 50).insetBy(dx: 5, dy: 5);
         
         let phaseNameLabel = UILabel(frame: phaneNameRect)
         phaseNameLabel.text = self.name
