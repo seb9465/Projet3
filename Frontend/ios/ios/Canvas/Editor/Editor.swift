@@ -169,8 +169,8 @@ class Editor {
         if (self.selectedFigures.count > 0) {
             self.copy();
             self.deselect();
-            CollaborationHub.shared?.selectObjects(drawViewModels: [])
         }
+        
         var drawViewModelToSelect:[DrawViewModel] = []
          for figure in self.clipboard {
             var viewModel = figure.exportViewModel()!;
@@ -182,6 +182,7 @@ class Editor {
             self.select(figure: self.insertFigure(drawViewModel: viewModel));
             drawViewModelToSelect.append(viewModel)
         }
+        CollaborationHub.shared?.selectObjects(drawViewModels: [])
         CollaborationHub.shared?.selectObjects(drawViewModels: drawViewModelToSelect)
 
         CollaborationHub.shared!.postNewFigure(figures: self.figures);
@@ -292,8 +293,6 @@ extension Editor {
 }
 
 extension Editor: CollaborationHubDelegate {
-
-    
     func sendExistingSelection() {
         var drawViewModels: [DrawViewModel] = []
         for figure in self.selectedFigures {
@@ -316,7 +315,7 @@ extension Editor: CollaborationHubDelegate {
     }
     
     func updateCanvas(itemMessage: ItemMessage) {
-        dump(itemMessage.Items)
+//        dump(itemMessage.Items)
         for drawViewModel in itemMessage.Items {
             if (self.figures.contains(where: {$0.uuid.uuidString.lowercased() == drawViewModel.Guid})) {
                 self.overriteFigure(figureId: drawViewModel.Guid!, newDrawViewModel: drawViewModel, username: itemMessage.Username)

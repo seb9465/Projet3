@@ -46,11 +46,25 @@ class UmlFigure : Figure {
     }
     
     init(drawViewModel: DrawViewModel) {
+        self.currentAngle = drawViewModel.Rotation!
+        print(self.currentAngle)
         let firstPoint: CGPoint = drawViewModel.StylusPoints![0].getCGPoint()
         let lastPoint: CGPoint = drawViewModel.StylusPoints![1].getCGPoint()
         let frameSize = CGSize(width: abs(firstPoint.x - lastPoint.x), height: abs(firstPoint.y - lastPoint.y))
-        let frame = CGRect(origin: firstPoint, size: frameSize)
+        let frameOrigin: CGPoint = firstPoint
+        let frame = CGRect(origin: frameOrigin, size: frameSize)
         super.init(frame: frame)
+        
+        print(Int(abs(self.currentAngle) / 90))
+        for _ in 0..<Int(abs(self.currentAngle) / 90) {
+            if(self.currentAngle < 0) {
+                print("LEFT")
+                 self.rotate(orientation: .left)
+            } else {
+                print("RIGHT")
+                self.rotate(orientation: .right)
+            }
+        }
         self.firstPoint = firstPoint
         self.lastPoint = lastPoint
         self.name = drawViewModel.ShapeTitle!
@@ -59,7 +73,6 @@ class UmlFigure : Figure {
         self.itemType = drawViewModel.ItemType!
         self.figureColor = drawViewModel.FillColor?.getUIColor()
         self.lineColor = drawViewModel.BorderColor?.getUIColor()
-        self.currentAngle = drawViewModel.Rotation!
         self.lineWidth = CGFloat(drawViewModel.BorderThickness!)
         self.backgroundColor = UIColor.clear
 //        self.initializeAnchorPoints()
@@ -77,7 +90,11 @@ class UmlFigure : Figure {
     }
     
     func initializeAnchorPoints() {
-        self.anchorPoints = AnchorPoints(width: self.frame.width, height: self.frame.height)
+        if (Int(self.currentAngle / 90) % 2 == 0) {
+            self.anchorPoints = AnchorPoints(width: self.frame.width, height: self.frame.height)
+        } else {
+            self.anchorPoints = AnchorPoints(width: self.frame.height, height: self.frame.width)
+        }
         self.layer.addSublayer((self.anchorPoints?.anchorPointsBottom)!)
         self.layer.addSublayer((self.anchorPoints?.anchorPointsTop)!)
         self.layer.addSublayer((self.anchorPoints?.anchorPointsLeft)!)
@@ -113,16 +130,19 @@ class UmlFigure : Figure {
     }
     
     override public func rotate(orientation: RotateOrientation) -> Void {
-        if (orientation == RotateOrientation.right) {
-            currentAngle += 90
-        } else {
-            currentAngle -= 90
-        }
+//        print("La func est called")
+//        if (orientation == RotateOrientation.right) {
+//            currentAngle += 90
+//        } else {
+//            currentAngle -= 90
+//        }
+//
+//        if (abs(currentAngle) == 360) {
+//            currentAngle = 0
+//        }
         
-        if (abs(currentAngle) == 360) {
-            currentAngle = 0
-        }
-
+//        let rotatedFrame = CGRect(x: self.frame.origin.x, y: self.frame.origin.x, width: self.frame.height, height: self.frame.width)
+//        self.frame = rotatedFrame
         self.transform = CGAffineTransform.init(rotationAngle: CGFloat(currentAngle * Double.pi/180))
         self.updateConnections()
         setNeedsDisplay()
