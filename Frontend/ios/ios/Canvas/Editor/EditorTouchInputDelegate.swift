@@ -199,7 +199,9 @@ extension Editor : TouchInputDelegate {
             }
             for figure in self.figures {
                 if (self.selectionLasso.contains(figure: figure)) {
-                    self.select(figure: figure);
+                    if (!self.isFigureSelected(figure: figure)) {
+                        self.select(figure: figure);
+                    }
                 }
             }
 
