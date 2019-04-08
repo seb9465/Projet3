@@ -599,13 +599,18 @@
     <Resource Include="Resources\uni_asso.png" />
     <Resource Include="Resources\a.png" />
     <Resource Include="Resources\Capture.PNG" />
+    <Resource Include="Resources\tutorial\1-0.png" />
     <Resource Include="Resources\tutorial\1.PNG" />
+    <Resource Include="Resources\tutorial\2-0.png" />
+    <Resource Include="Resources\tutorial\2-1.png" />
+    <Resource Include="Resources\tutorial\2-2.PNG" />
     <Resource Include="Resources\tutorial\2.PNG" />
     <Resource Include="Resources\tutorial\3.PNG" />
     <Resource Include="Resources\tutorial\4.PNG" />
     <Resource Include="Resources\tutorial\5.PNG" />
     <Resource Include="Resources\tutorial\6.PNG" />
-    <Resource Include="Resources\tutorial\1-0.png" />
+    <Resource Include="Resources\tutorial\7.PNG" />
+    <Resource Include="Resources\tutorial\8.png" />
     <Content Include="SoundEffects\receive.mp3">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
