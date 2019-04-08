@@ -35,9 +35,9 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="c00-DW-7Q6">
-                    <rect key="frame" x="366" y="401" width="293" height="54"/>
+                    <rect key="frame" x="317" y="652" width="390" height="62"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="35"/>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="35"/>
                     <state key="normal" title="Let me get to work !"/>
                     <connections>
                         <action selector="getStartedButton:" destination="iN0-l3-epB" eventType="touchUpInside" id="FET-bX-F7h"/>
