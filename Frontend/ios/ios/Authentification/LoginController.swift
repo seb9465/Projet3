@@ -62,6 +62,7 @@ class LoginController: UIViewController, UITextFieldDelegate, WKUIDelegate {
                 UIViewController.removeSpinner(spinner: spinner);
                 self.validationLabel.text = "";
                 self.storeAuthentificationToken(token: token, id: "");
+                self.present((self.storyboard?.instantiateViewController(withIdentifier: "MainController"))!, animated: true, completion: nil);
             }.catch { (responseError) in
                 UIViewController.removeSpinner(spinner: spinner);
                 // TODO: Afficher le bon message d'erreur. En attente du serveur.
