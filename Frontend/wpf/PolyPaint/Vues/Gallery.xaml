@@ -8,7 +8,7 @@
         xmlns:local="clr-namespace:PolyPaint.Vues"
         PreviewKeyDown="EnterKeyDown"
         mc:Ignorable="d"
-        Title="Gallery" MinWidth="1250" MinHeight="750" WindowState="Maximized" SizeChanged="Gallery_SizeChanged">
+        Title="Gallery" MinWidth="1250" MinHeight="750" WindowState="Maximized" SizeChanged="Gallery_SizeChanged" d:DesignWidth="1255">
 
     <Window.Resources>
         <convertisseurs:ConvertisseurBordure x:Key="convertisseurBordure" />
@@ -59,7 +59,7 @@
                         <Button Click="NewCanva_Click" Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}" Width="65" Height="65" VerticalAlignment="Top" HorizontalAlignment="Right" Grid.Row="0" Margin="0,-45,25,0" Grid.Column="1" >
                             <materialDesign:PackIcon Kind="Plus" Height="35" Width="35" />
                         </Button>
-                        <ListBox Name="ImagePreviews" SelectionChanged="OnSelectionChanged" ItemsSource="{Binding Canvas}" FontSize="14" MaxHeight="500">
+                        <ListBox Name="ImagePreviews" SelectionChanged="OnSelectionChanged" ItemsSource="{Binding Canvas}" FontSize="14" MaxHeight="750">
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel>
