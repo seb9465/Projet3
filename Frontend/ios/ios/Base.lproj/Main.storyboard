@@ -427,6 +427,7 @@
                             <containerView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1hT-WF-jwz">
                                 <rect key="frame" x="0.0" y="147" width="1024" height="620"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                <color key="backgroundColor" white="0.95999999999999996" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
                                     <segue destination="Mrs-wb-JuW" kind="embed" id="b63-aG-Hmh"/>
                                 </connections>

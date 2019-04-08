@@ -36,7 +36,16 @@ class UmlCommentFigure: UmlFigure {
     }
     
     override func draw(_ rect: CGRect) {
-        let commentRect = CGRect(x: 0, y: 0, width: self.frame.width, height: self.frame.height).insetBy(dx: 5, dy: 5);
+        var width = abs(self.frame.origin.x - self.frame.maxX)
+        var height = abs(self.frame.origin.y - self.frame.maxY)
+        
+        if (Int(self.currentAngle / 90) % 2 != 0) {
+            let temp = width
+            width = height
+            height = temp
+        }
+        
+        let commentRect = CGRect(x: 0, y: 0, width: width, height: height).insetBy(dx: 5, dy: 5);
         
         let commentLabel = UILabel(frame: commentRect)
         commentLabel.text = self.name
@@ -52,7 +61,6 @@ class UmlCommentFigure: UmlFigure {
         commentRectPath.fill()
         commentRectPath.stroke()
         commentLabel.drawText(in: commentRect)
-        
     }
     
     override func exportViewModel() -> DrawViewModel {

@@ -130,19 +130,6 @@ class UmlFigure : Figure {
     }
     
     override public func rotate(orientation: RotateOrientation) -> Void {
-//        print("La func est called")
-//        if (orientation == RotateOrientation.right) {
-//            currentAngle += 90
-//        } else {
-//            currentAngle -= 90
-//        }
-//
-//        if (abs(currentAngle) == 360) {
-//            currentAngle = 0
-//        }
-        
-//        let rotatedFrame = CGRect(x: self.frame.origin.x, y: self.frame.origin.x, width: self.frame.height, height: self.frame.width)
-//        self.frame = rotatedFrame
         self.transform = CGAffineTransform.init(rotationAngle: CGFloat(currentAngle * Double.pi/180))
         self.updateConnections()
         setNeedsDisplay()
