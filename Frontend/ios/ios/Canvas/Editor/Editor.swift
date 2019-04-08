@@ -169,9 +169,9 @@ class Editor {
         if (self.selectedFigures.count > 0) {
             self.copy();
             self.deselect();
-            CollaborationHub.shared?.selectObjects(drawViewModels: [])
         }
         var drawViewModelToSelect:[DrawViewModel] = []
+        var figureToAdd: [Figure] = []
          for figure in self.clipboard {
             var viewModel = figure.exportViewModel()!;
             viewModel.Guid = UUID().uuidString;
@@ -179,12 +179,13 @@ class Editor {
             viewModel.StylusPoints![0].Y = viewModel.StylusPoints![0].Y + 10;
             viewModel.StylusPoints![1].X = viewModel.StylusPoints![1].X + 10;
             viewModel.StylusPoints![1].Y = viewModel.StylusPoints![1].Y + 10;
-            self.select(figure: self.insertFigure(drawViewModel: viewModel));
-            drawViewModelToSelect.append(viewModel)
+            let newFigure: Figure = self.insertFigure(drawViewModel: viewModel)
+            self.select(figure: newFigure);
+            figureToAdd.append(figure)
+            drawViewModelToSelect.append(figure.exportViewModel()!)
         }
+        CollaborationHub.shared!.postNewFigure(figures: figureToAdd);
         CollaborationHub.shared?.selectObjects(drawViewModels: drawViewModelToSelect)
-
-        CollaborationHub.shared!.postNewFigure(figures: self.figures);
         CanvasService.saveOnNewFigure(figures: self.figures, editor: self);
     }
     
@@ -266,6 +267,7 @@ class Editor {
         }
         
         self.deselect();
+        CollaborationHub.shared?.selectObjects(drawViewModels: [])
         self.selectedFigures.removeAll()
         self.selectionOutlines.removeAll()
         self.editorView.setNeedsDisplay()
