@@ -342,7 +342,7 @@ extension Editor: CollaborationHubDelegate {
         for drawViewModel in drawViewModels  {
             self.insertFigure(drawViewModel: drawViewModel)
         }
-        self.bindConnectionsToFigures(drawViewModels: drawViewModels)
+        self.bindLocalConnectionsToFigures(drawViewModels: drawViewModels)
     }
     
     func updateClear() {
@@ -375,19 +375,20 @@ extension Editor {
         self.figures.append(newFigure)
         self.editorView.addSubview(newFigure)
         
-        if (oldFigure is ConnectionFigure && newFigure is ConnectionFigure) {
-            self.updateConnectionBindings(oldConnection: oldFigure as! ConnectionFigure, newConnection: newFigure as! ConnectionFigure)
-        }
+//        self.bindLocalConnectionsToFigures(drawViewModels: [newDrawViewModel])
+//        if (oldFigure is ConnectionFigure && newFigure is ConnectionFigure) {
+//            self.updateConnectionBindings(oldConnection: oldFigure as! ConnectionFigure, newConnection: newFigure as! ConnectionFigure)
+//        }
         
-        if (oldFigure is UmlFigure && newFigure is UmlFigure) {
-            print("Updating received Figure connections")
-            (newFigure as! UmlFigure).outgoingConnections = (oldFigure as! UmlFigure).outgoingConnections
-            (newFigure as! UmlFigure).incomingConnections = (oldFigure as! UmlFigure).incomingConnections
-            (newFigure as! UmlFigure).updateConnections()
-        }
+//        if (oldFigure is UmlFigure && newFigure is UmlFigure) {
+//            print("Updating received Figure connections")
+//            (newFigure as! UmlFigure).outgoingConnections = (oldFigure as! UmlFigure).outgoingConnections
+//            (newFigure as! UmlFigure).incomingConnections = (oldFigure as! UmlFigure).incomingConnections
+//            (newFigure as! UmlFigure).updateConnections()
+//        }
     }
     
-    func bindConnectionsToFigures(drawViewModels: [DrawViewModel]) {
+    func bindLocalConnectionsToFigures(drawViewModels: [DrawViewModel]) {
         for umlFigureModel in drawViewModels.filter({$0.ItemType?.description != "Connection"}) {
             let figure = self.figures.first(where: {$0.uuid.uuidString.lowercased() == umlFigureModel.Guid}) as! UmlFigure
             let incomingConnections: [[String]] = umlFigureModel.InConnections!
