@@ -1,9 +1,11 @@
 ﻿using Newtonsoft.Json;
 using PolyPaint.Modeles;
+using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Navigation;
 
 namespace PolyPaint.Vues
@@ -14,7 +16,7 @@ namespace PolyPaint.Vues
     public partial class WebBrowserWindow : Window
     {
         public string Token { get; set; }
-        public HttpResponseMessage Result{ get; set; }
+        public HttpResponseMessage Result { get; set; }
 
         public WebBrowserWindow()
         {
@@ -57,7 +59,14 @@ namespace PolyPaint.Vues
 
         private void FacebookLogin(object sender, RoutedEventArgs e)
         {
-            webBrowser.Navigate($"https://www.facebook.com/v3.2/dialog/oauth?client_id=230967437849830&redirect_uri=https://polypaint.me/signin-facebook&response_type=token");
+            webBrowser.Navigate($"https://www.facebook.com/v3.2/dialog/oauth?client_id=230967437849830&redirect_uri=https://polypaint.me/signin-facebook&response_type=token&display=popup");
+        }
+
+        private void webBrowser_LoadCompleted(object sender, NavigationEventArgs e)
+        {
+            string script = "document.body.style.overflow ='hidden'";
+            WebBrowser wb = (WebBrowser)sender;
+            wb.InvokeScript("execScript", new Object[] { script, "JavaScript" });
         }
     }
 }

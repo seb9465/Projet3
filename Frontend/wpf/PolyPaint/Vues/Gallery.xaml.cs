@@ -12,6 +12,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -39,6 +40,8 @@ namespace PolyPaint.Vues
         private ViewStateEnum _viewState { get; set; }
         private MediaPlayer mediaPlayer = new MediaPlayer();
         private InkCanvas SurfaceDessin { get; set; }
+        private double _currentWidth;
+        private double _currentHeight;
 
         public Gallery(ObservableCollection<SaveableCanvas> strokes, ChatClient chatClient)
         {
@@ -49,9 +52,27 @@ namespace PolyPaint.Vues
 
             externalChatWindow = new ChatWindow(DataContext as UserDataContext);
             (DataContext as UserDataContext).Canvas = Canvas;
-            //  DataContext = Canvas; // Il faudrait reussir a utiliser plusieurs datacontext. Ici on a besoin du datacontext pour recuperer les donnee du chat ET des canvas. Cest pous ca que le chat marche pas dans la gallerie
-
+            
             usernameLabel.Content = username;
+
+            Loaded += async (sender, e) =>
+            {
+
+                using (HttpClient client = new HttpClient())
+                {
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", (string)Application.Current.Properties["token"]);
+                    System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
+                    HttpResponseMessage response = await client.GetAsync($"{Config.URL}/api/user/tutorial");
+                    string responseString = await response.Content.ReadAsStringAsync();
+
+                    if (responseString == "false")
+                    {
+                        HttpResponseMessage message = await client.GetAsync($"{Config.URL}/api/user/tutorial/true");
+                        showTutorial(sender, e);
+                    }
+                }
+            };
+
             Closing += UnsubscribeDataContext;
         }
 
@@ -63,10 +84,7 @@ namespace PolyPaint.Vues
         private void NewCanva_Click(object sender, RoutedEventArgs e)
         {
             UploadToCloud uploadToCloud = new UploadToCloud((DataContext as UserDataContext).ChatClient);
-            Application.Current.MainWindow = uploadToCloud;
-            this.Close();
-            DataContext = null;
-            uploadToCloud.Show();
+           
         }
 
         private void AddRoom(object sender, DialogClosingEventArgs eventArgs)
@@ -132,7 +150,7 @@ namespace PolyPaint.Vues
                 chatMenu.Width = 70;
                 chatTab.Visibility = Visibility.Collapsed;
                 isMenuOpen = false;
-                canvasStackPanel.Width = 950;
+                canvasStackPanel.Width = _currentWidth - 200;
                 canvasStackPanel.Margin = new Thickness(70, 0, 0, 0);
             }
             else
@@ -140,9 +158,34 @@ namespace PolyPaint.Vues
                 chatMenu.Width = 500;
                 chatTab.Visibility = Visibility.Visible;
                 isMenuOpen = true;
-                canvasStackPanel.Width = 640;
-                canvasStackPanel.Margin = new Thickness(0,0,0,0);
+                canvasStackPanel.Width = _currentWidth - 200 - 430;
+                canvasStackPanel.Margin = new Thickness(0, 0, 0, 0);
             }
+        }
+        private void Gallery_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            _currentHeight = e.NewSize.Height;
+            _currentWidth = e.NewSize.Width;
+
+            if (!isMenuOpen)
+            {
+                chatMenu.Width = 70;
+                chatTab.Visibility = Visibility.Collapsed;
+                isMenuOpen = false;
+                canvasStackPanel.Width = _currentWidth - 200;
+                canvasStackPanel.Margin = new Thickness(70, 0, 0, 0);
+                ImagePreviews.MaxHeight = _currentHeight - 250;
+            }
+            else
+            {
+                chatMenu.Width = 500;
+                chatTab.Visibility = Visibility.Visible;
+                isMenuOpen = true;
+                canvasStackPanel.Width = _currentWidth - 200 - 430;
+                canvasStackPanel.Margin = new Thickness(0, 0, 0, 0);
+                ImagePreviews.MaxHeight = _currentHeight - 250;
+            }
+
         }
 
         private void EnterKeyDown(object sender, KeyEventArgs e)
@@ -180,7 +223,25 @@ namespace PolyPaint.Vues
             }
             return canvas;
         }
+        private void Disconnect_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                using (HttpClient client = new HttpClient())
+                {
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", (string)Application.Current.Properties["token"]);
+                    System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
+                    client.GetAsync($"{Config.URL}/api/user/logout").Wait();
+                }
+            }
+            catch { }
 
+            Application.Current.Properties.Clear();
+            Login login = new Login();
+            Application.Current.MainWindow = login;
+            Close();
+            login.Show();
+        }
         private async void OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             SelectedCanvas = (SaveableCanvas)ImagePreviews.SelectedItem;
@@ -215,6 +276,10 @@ namespace PolyPaint.Vues
                 Close();
                 fenetreDessin.Show();
             }
+        }
+        private void showTutorial(object sender, RoutedEventArgs e)
+        {
+            Tutoriel tutoriel = new Tutoriel();
         }
 
     }

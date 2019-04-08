@@ -69,14 +69,18 @@ namespace PolyPaint.Strokes
         private void DrawText(DrawingContext drawingContext)
         {
             var nextHeight = UnrotatedTopLeft.Y + 10;
-
+            Title.MaxTextWidth = Width - 20 > 0 ? Width -20 : 0;
             drawingContext.DrawText(Title, new Point(UnrotatedTopLeft.X + UnrotatedWidth / 2.0 - Title.Width / 2.0, nextHeight));
             nextHeight += 10 + Title.Height;
             drawingContext.DrawLine(Border, new Point(UnrotatedTopLeft.X, nextHeight), new Point(UnrotatedTopLeft.X + UnrotatedWidth, nextHeight));
             nextHeight += 10;
             for (int i = 0; i < Properties.Count; i++)
             {
-                var tempFt = new FormattedText($"• {Properties[i].Title}", System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, Config.T_FACE, 17, new SolidColorBrush(Colors.Black));
+                if ((nextHeight - TopLeft.Y) > UnrotatedHeight)
+                    break;
+
+                var tempFt = new FormattedText($"•{Properties[i].Title}", System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, Config.T_FACE, 17, new SolidColorBrush(Colors.Black));
+                tempFt.MaxTextWidth = Width - 20 > 0 ? Width - 20 : 0;
                 drawingContext.DrawText(tempFt, new Point(UnrotatedTopLeft.X + 10, nextHeight));
                 nextHeight += 10 + tempFt.Height;
             }
@@ -84,7 +88,11 @@ namespace PolyPaint.Strokes
             nextHeight += 10;
             for (int i = 0; i < Methods.Count; i++)
             {
-                var tempFt = new FormattedText($"• {Methods[i].Title}", System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, Config.T_FACE, 17, new SolidColorBrush(Colors.Black));
+                if ((nextHeight - TopLeft.Y) > UnrotatedHeight)
+                    break;
+
+                var tempFt = new FormattedText($"•{Methods[i].Title}", System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, Config.T_FACE, 17, new SolidColorBrush(Colors.Black));
+                tempFt.MaxTextWidth = Width - 20 > 0 ? Width - 20 : 0;
                 drawingContext.DrawText(tempFt, new Point(UnrotatedTopLeft.X + 10, nextHeight));
                 nextHeight += 10 + tempFt.Height;
             }

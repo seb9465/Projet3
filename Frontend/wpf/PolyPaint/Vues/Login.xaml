@@ -13,7 +13,7 @@
             <ColumnDefinition/>
             <ColumnDefinition Width="0*"/>
         </Grid.ColumnDefinitions>
-        <StackPanel Orientation="Vertical" Grid.ColumnSpan="2" Margin="0,0,-20,41">
+        <StackPanel Orientation="Vertical" Grid.ColumnSpan="2" Margin="0,0,-20,0">
             <Label Content="PolyPaint PRO" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="390" Height="75" FontSize="50"/>
             <Button  Content="Register" Width="100px" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,-60,20,0" x:Name="registerBtn" Click="RegisterBtn_Click" Height="Auto" Style="{StaticResource MaterialDesignFlatButton}" BorderBrush="Red" BorderThickness="1"/>
             <StackPanel Orientation="Horizontal">

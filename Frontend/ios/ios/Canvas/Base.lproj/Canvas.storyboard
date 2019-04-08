@@ -123,12 +123,20 @@
                                     <segue destination="coJ-Ch-zUI" kind="embed" id="4mB-LM-KMP"/>
                                 </connections>
                             </containerView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="U6c-GP-EbT">
+                                <rect key="frame" x="794" y="20" width="20" height="20"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="0.90000000000000002" alpha="1" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
                         <viewLayoutGuide key="safeArea" id="h7K-cJ-n3H"/>
                     </view>
                     <connections>
+                        <outlet property="chatNotifLabel" destination="U6c-GP-EbT" id="L6O-yq-Zma"/>
                         <outlet property="chatViewButton" destination="Kg9-sk-xNL" id="XKh-Jj-mDT"/>
                         <outlet property="chatViewContainer" destination="g7X-4N-AQk" id="TEK-yV-U0H"/>
                         <outlet property="connectionLabel" destination="HVO-Oe-0TK" id="375-IB-DIx"/>
