@@ -76,9 +76,9 @@ namespace PolyPaint.Vues
                     break;
                 case 5:
                     tutorialImage.Source = new BitmapImage(new Uri(@"/Resources/tutorial/2-2.png", UriKind.Relative));
-                    tutorialText.Text = "When creating a new canvas, you will be asked to chose a visibility." +
-                        " A public canvas can be seen by every user in the gallery. A private canvas can only be seen by yourself "
-                        + "You will also need to select a protection. A protected canvas will require a password for other user to access it";
+                    tutorialText.Text = "When creating a new canvas, you will be asked to select a visibility and a protection" +
+                        " A public canvas can be seen by every user in the gallery. A private canvas can only be seen by yourself. "
+                        + "A protected canvas will require a password for other user to access it";
                     previousPageButton.Visibility = Visibility.Visible;
                     nextPageButton.Visibility = Visibility.Visible;
                     break;

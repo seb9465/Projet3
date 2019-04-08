@@ -29,7 +29,7 @@ namespace PolyPaint.Strokes
             get { return Title.Text; }
             set
             {
-                Title = new FormattedText(value, System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, Config.T_FACE, 17, Brushes.Black);
+                Title = new FormattedText(value, System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, Config.T_FACE, 12, Brushes.Black);
                 ProprieteModifiee("Title");
                 ProprieteModifiee();
             }
