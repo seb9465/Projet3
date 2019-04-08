@@ -12,6 +12,15 @@ class Slide: UIView {
 
     // MARK: - Attributes
     
+    private var _getStartedBtnAction: (() -> ())!;
+    
+    // MARK: - Getter - Setter
+    
+    public var getStartedBtnAction: (() -> ()) {
+        get { return self._getStartedBtnAction }
+        set { self._getStartedBtnAction = newValue }
+    }
+    
     // MARK: - Outlets
     
     @IBOutlet var imageView: UIImageView!;
@@ -44,12 +53,9 @@ class Slide: UIView {
         self.getStartedButon.isHidden = true;
     }
     
-    /*
-    // Only override draw() if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func draw(_ rect: CGRect) {
-        // Drawing code
+    // MARK: - Action functions
+    
+    @IBAction func getStartedButton(_ sender: Any) {
+        
     }
-    */
-
 }
