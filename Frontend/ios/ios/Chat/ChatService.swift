@@ -329,7 +329,7 @@ class ChatService {
                         updateChatRooms();
                     }
                     
-                    SoundNotification.play(sound: Sound.ReceiveMessage);
+                    SoundNotification.play(sound: Sound.Tweet);
                 }
             }
         });
