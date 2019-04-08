@@ -14,6 +14,10 @@ class Slide: UIView {
     
     // MARK: - Outlets
     
+    @IBOutlet var imageView: UIImageView!;
+    @IBOutlet var labelTitle: UILabel!;
+    @IBOutlet var labelDesc: UILabel!;
+    
     // MARK: - Timing functions
     
     // MARK: - Public functions

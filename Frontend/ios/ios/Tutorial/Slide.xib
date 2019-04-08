@@ -37,6 +37,11 @@
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <connections>
+                <outlet property="imageView" destination="omF-Wh-ufY" id="xQa-Im-wg0"/>
+                <outlet property="labelDesc" destination="B4g-oM-KE2" id="Jxd-Rf-PBL"/>
+                <outlet property="labelTitle" destination="eMb-32-Ase" id="1pH-1K-FfT"/>
+            </connections>
             <point key="canvasLocation" x="55.664062499999993" y="85.9375"/>
         </view>
     </objects>
