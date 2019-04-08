@@ -118,11 +118,12 @@ class TutorialController: UIViewController, UIScrollViewDelegate {
         else if(percentOffset.x > 0.25 && percentOffset.x <= 0.50) {
             _slides[1].imageView.transform = CGAffineTransform(scaleX: (0.50-percentOffset.x)/0.25, y: (0.50-percentOffset.x)/0.25)
             _slides[2].imageView.transform = CGAffineTransform(scaleX: percentOffset.x/0.50, y: percentOffset.x/0.50)
-        } else if(percentOffset.x > 0.50 && percentOffset.x <= 0.75) {
-            _slides[2].imageView.transform = CGAffineTransform(scaleX: (0.75-percentOffset.x)/0.25, y: (0.75-percentOffset.x)/0.25)
-            _slides[3].imageView.transform = CGAffineTransform(scaleX: percentOffset.x/0.75, y: percentOffset.x/0.75)
         }
-        //else if(percentOffset.x > 0.75 && percentOffset.x <= 1) {
+//        else if(percentOffset.x > 0.50 && percentOffset.x <= 0.75) {
+//            _slides[2].imageView.transform = CGAffineTransform(scaleX: (0.75-percentOffset.x)/0.25, y: (0.75-percentOffset.x)/0.25)
+//            _slides[3].imageView.transform = CGAffineTransform(scaleX: percentOffset.x/0.75, y: percentOffset.x/0.75)
+//        }
+//        else if(percentOffset.x > 0.75 && percentOffset.x <= 1) {
 //            _slides[3].imageView.transform = CGAffineTransform(scaleX: (1-percentOffset.x)/0.25, y: (1-percentOffset.x)/0.25)
 //            _slides[4].imageView.transform = CGAffineTransform(scaleX: percentOffset.x, y: percentOffset.x)
 //        }
