@@ -15,5 +15,6 @@ class TutorialController: UIViewController {
     // MARK: - Outlets
     
     @IBOutlet var scrollView: UIScrollView!
+    @IBOutlet var pageControle: UIPageControl!
     
 }
