@@ -315,10 +315,11 @@ extension Editor: CollaborationHubDelegate {
     }
     
     func updateCanvas(itemMessage: ItemMessage) {
-        print(itemMessage.Items.count)
+        dump(itemMessage.Items)
         for drawViewModel in itemMessage.Items {
             if (self.figures.contains(where: {$0.uuid.uuidString.lowercased() == drawViewModel.Guid})) {
                 self.overriteFigure(figureId: drawViewModel.Guid!, newDrawViewModel: drawViewModel, username: itemMessage.Username)
+
                 self.deselect(username: itemMessage.Username)
                 self.select(drawViewModels: itemMessage.Items, username: itemMessage.Username)
             } else {
@@ -367,7 +368,6 @@ extension Editor {
     
     func overriteFigure(figureId: String, newDrawViewModel: DrawViewModel, username: String) {
         let oldFigure = self.figures.first(where: {$0.uuid.uuidString.lowercased() == figureId})
-        
         self.figures.removeAll{$0 == oldFigure}
         oldFigure?.removeFromSuperview()
         let newFigure = FigureFactory.shared.fromDrawViewModel(drawViewModel: newDrawViewModel)!
@@ -375,10 +375,9 @@ extension Editor {
         self.figures.append(newFigure)
         self.editorView.addSubview(newFigure)
         
-//        self.bindLocalConnectionsToFigures(drawViewModels: [newDrawViewModel])
-//        if (oldFigure is ConnectionFigure && newFigure is ConnectionFigure) {
-//            self.updateConnectionBindings(oldConnection: oldFigure as! ConnectionFigure, newConnection: newFigure as! ConnectionFigure)
-//        }
+        if (oldFigure is ConnectionFigure && newFigure is ConnectionFigure) {
+            self.updateConnectionBindings(oldConnection: oldFigure as! ConnectionFigure, newConnection: newFigure as! ConnectionFigure)
+        }
         
 //        if (oldFigure is UmlFigure && newFigure is UmlFigure) {
 //            print("Updating received Figure connections")
@@ -386,6 +385,11 @@ extension Editor {
 //            (newFigure as! UmlFigure).incomingConnections = (oldFigure as! UmlFigure).incomingConnections
 //            (newFigure as! UmlFigure).updateConnections()
 //        }
+    }
+    
+    // Call first to update new model in anchored figures
+    func updateConnectionReferences() {
+        
     }
     
     func bindLocalConnectionsToFigures(drawViewModels: [DrawViewModel]) {
@@ -405,16 +409,6 @@ extension Editor {
             }
         }
     }
-    
-    // loop dans les draw view models
-    // prendre les uml
-    // checher
-//    func bindRecievedUmlFigureConnection(umlFigure: UmlFigure, recievedDrawViewModel: DrawViewModel) {
-//        let incomingConnections: [[String]] = umlFigureModel.InConnections!
-//        for uuidToIn in incomingConnections {
-//
-//        }
-//    }
     
     func updateConnectionBindings(oldConnection: ConnectionFigure, newConnection: ConnectionFigure) {
         for figure in self.figures {
