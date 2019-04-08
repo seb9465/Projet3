@@ -51,6 +51,8 @@ namespace PolyPaint
         private Point currentPoint, mouseLeftDownPoint;
         bool isMenuOpen = false;
         private ViewStateEnum _viewState { get; set; }
+        private double _currentWidth;
+        private double _currentHeight;
 
         private (StrokeCollection, StrokeCollection) CurrentChange = (new StrokeCollection(), new StrokeCollection());
         private Stack<(StrokeCollection, StrokeCollection)> UndoStack { get; set; }
@@ -77,6 +79,8 @@ namespace PolyPaint
             (DataContext as VueModele).CollaborationClient.ProtectionChanged += HandleProtectionChanged;
             (DataContext as VueModele).CollaborationClient.ClientConnected += SendSelectedStrokesToOthers;
             (DataContext as VueModele).PropertyChanged += VueModelePropertyChanged;
+
+            (DataContext as VueModele).ChatClient.MessageReceived += ScrollDown;
 
             (DataContext as VueModele).OnRotation += UpdateAdorner;
 
@@ -989,6 +993,15 @@ namespace PolyPaint
             if (surfaceDessin.GetSelectedStrokes().Any(x => x is AbstractLineStroke))
                 return;
             Undoable_Executed(sender, e);
+        }
+
+        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            _currentHeight = e.NewSize.Height;
+            _currentWidth = e.NewSize.Width;
+            chatBorder.Height = _currentHeight-210;
+            chat.Height = _currentHeight - 450;
+            messagesList.Height = _currentHeight - 530;
         }
 
         void Window_Loaded(object sender, RoutedEventArgs e)

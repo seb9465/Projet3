@@ -19,7 +19,8 @@
         xmlns:convertisseurs="clr-namespace:PolyPaint.Convertisseurs"        
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit" x:Class="PolyPaint.FenetreDessin"
         mc:Ignorable="d"
-        Title="Poly Paint" MinWidth="1250" MinHeight="750" d:DesignWidth="1287.5">
+        Title="Poly Paint" SizeChanged="Window_SizeChanged"
+    MinWidth="1250" MinHeight="750" d:DesignWidth="1287.5">
     <Window.Resources>
         <convertisseurs:ConvertisseurBordure x:Key="convertisseurBordure" />
         <convertisseurs:ConvertisseurCouleurFond x:Key="convertisseurCouleurFond" />
@@ -434,7 +435,7 @@
                 </ToggleButton>
 
                 <StackPanel Orientation="Vertical" Margin="20" x:Name="chatTab" Visibility="Collapsed" Background="WhiteSmoke">
-                    <Border BorderThickness="1" BorderBrush="Gray" ClipToBounds="True" HorizontalAlignment="Stretch" Height="560">
+                    <Border Name="chatBorder" BorderThickness="1" BorderBrush="Gray" ClipToBounds="True" HorizontalAlignment="Stretch" Height="660">
                         <StackPanel Orientation="Vertical" Margin="10" x:Name="chatWrapper">
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                                 <Button  x:Name="chatButton" HorizontalAlignment="Left" Margin="0,0,10,0"  Width="50" Click="chatButton_Click">
@@ -506,7 +507,7 @@
                                         </Grid>
                                     </Border>
                                 </materialDesign:DialogHost>
-                                <Grid x:Name="chat" Height="320" x:FieldModifier="public">
+                                <Grid x:Name="chat" Height="370" x:FieldModifier="public">
                                     <TextBlock Text="{Binding CurrentRoom, StringFormat='Room: {0}'}" Margin="35,-10,0,0" />
                                     <ListBox ItemsSource="{Binding MessagesListBox, UpdateSourceTrigger=PropertyChanged}" x:Name="messagesList" HorizontalAlignment="Left" Height="240" Margin="30,10,0,0" VerticalAlignment="Top" Width="400"  BorderThickness="1" BorderBrush="Gray">
                                         <ListBox.ItemTemplate>
