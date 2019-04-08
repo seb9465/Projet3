@@ -167,6 +167,11 @@ extension UmlFigure {
         }
     }
     
+    public func clearConnections() {
+        self.incomingConnections.removeAll()
+        self.outgoingConnections.removeAll()
+    }
+    
     private func distance(a: CGPoint, b: CGPoint) -> CGFloat {
         let xDist = a.x - b.x
         let yDist = a.y - b.y

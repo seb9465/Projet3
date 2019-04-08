@@ -310,9 +310,8 @@ extension Editor: CollaborationHubDelegate {
     }
     
     func updateCanvas(itemMessage: ItemMessage) {
-        print(itemMessage.Items)
+        print(itemMessage.Items.count)
         for drawViewModel in itemMessage.Items {
-            // Corriger le if
             if (self.figures.contains(where: {$0.uuid.uuidString.lowercased() == drawViewModel.Guid})) {
                 self.overriteFigure(figureId: drawViewModel.Guid!, newDrawViewModel: drawViewModel, username: itemMessage.Username)
                 self.deselect(username: itemMessage.Username)
@@ -321,6 +320,8 @@ extension Editor: CollaborationHubDelegate {
                 self.insertFigure(drawViewModel: drawViewModel)
             }
         }
+        
+        self.bindLocalConnectionsToFigures(drawViewModels: itemMessage.Items)
     }
     
     func delete(username: String) {
@@ -347,7 +348,6 @@ extension Editor: CollaborationHubDelegate {
 
 // Logige de Select, Update de collaboration
 extension Editor {
-    
     func isFigureSelected(figure: Figure) -> Bool {
         for pair in self.selectedFiguresDictionnary {
             for selectedModel in pair.value {
@@ -386,6 +386,7 @@ extension Editor {
     func bindLocalConnectionsToFigures(drawViewModels: [DrawViewModel]) {
         for umlFigureModel in drawViewModels.filter({$0.ItemType?.description != "Connection"}) {
             let figure = self.figures.first(where: {$0.uuid.uuidString.lowercased() == umlFigureModel.Guid}) as! UmlFigure
+            figure.clearConnections()
             let incomingConnections: [[String]] = umlFigureModel.InConnections!
             for uuidToin in incomingConnections {
                 let connection: ConnectionFigure = self.figures.first(where: {$0.uuid.uuidString.lowercased() == uuidToin[0]}) as! ConnectionFigure
@@ -399,6 +400,16 @@ extension Editor {
             }
         }
     }
+    
+    // loop dans les draw view models
+    // prendre les uml
+    // checher
+//    func bindRecievedUmlFigureConnection(umlFigure: UmlFigure, recievedDrawViewModel: DrawViewModel) {
+//        let incomingConnections: [[String]] = umlFigureModel.InConnections!
+//        for uuidToIn in incomingConnections {
+//
+//        }
+//    }
     
     func updateConnectionBindings(oldConnection: ConnectionFigure, newConnection: ConnectionFigure) {
         for figure in self.figures {

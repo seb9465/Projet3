@@ -297,7 +297,7 @@ extension Editor : TouchInputDelegate {
             self.currentChange.1 = models
             self.undoArray.append((self.currentChange))
             
-            CollaborationHub.shared!.postNewFigure(figures: self.selectedFigures)
+            CollaborationHub.shared!.postNewFigure(drawViewModels: models)
             CollaborationHub.shared!.selectObjects(drawViewModels: self.getSelectedFiguresDrawviewModels())
             self.touchEventState = .SELECT
             return

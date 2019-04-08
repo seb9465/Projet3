@@ -140,7 +140,7 @@ class LoginController: UIViewController, UITextFieldDelegate, WKUIDelegate {
     @IBAction func facebookButtonClicked(_ sender: Any) {
         self.validationLabel.text = "";
         let loginManager = LoginManager()
- //       loginManager.loginBehavior = .web
+        loginManager.loginBehavior = .web
         loginManager.logIn(readPermissions: [.email, .publicProfile], viewController: self, completion: { loginResult in
             switch loginResult {
             case .failed(let error):
