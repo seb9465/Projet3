@@ -39,6 +39,8 @@ namespace PolyPaint.Vues
         private ViewStateEnum _viewState { get; set; }
         private MediaPlayer mediaPlayer = new MediaPlayer();
         private InkCanvas SurfaceDessin { get; set; }
+        private double _currentWidth;
+        private double _currentHeight;
 
         public Gallery(ObservableCollection<SaveableCanvas> strokes, ChatClient chatClient)
         {
@@ -128,7 +130,7 @@ namespace PolyPaint.Vues
                 chatMenu.Width = 70;
                 chatTab.Visibility = Visibility.Collapsed;
                 isMenuOpen = false;
-                canvasStackPanel.Width = 950;
+                canvasStackPanel.Width = _currentWidth - 200;
                 canvasStackPanel.Margin = new Thickness(70, 0, 0, 0);
             }
             else
@@ -136,9 +138,32 @@ namespace PolyPaint.Vues
                 chatMenu.Width = 500;
                 chatTab.Visibility = Visibility.Visible;
                 isMenuOpen = true;
-                canvasStackPanel.Width = 640;
-                canvasStackPanel.Margin = new Thickness(0,0,0,0);
+                canvasStackPanel.Width = _currentWidth - 200 - 430;
+                canvasStackPanel.Margin = new Thickness(0, 0, 0, 0);
             }
+        }
+        private void Gallery_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            _currentHeight = e.NewSize.Height;
+            _currentWidth = e.NewSize.Width;
+
+            if (!isMenuOpen)
+            {
+                chatMenu.Width = 70;
+                chatTab.Visibility = Visibility.Collapsed;
+                isMenuOpen = false;
+                canvasStackPanel.Width = _currentWidth - 200;
+                canvasStackPanel.Margin = new Thickness(70, 0, 0, 0);
+            }
+            else
+            {
+                chatMenu.Width = 500;
+                chatTab.Visibility = Visibility.Visible;
+                isMenuOpen = true;
+                canvasStackPanel.Width = _currentWidth - 200 - 430;
+                canvasStackPanel.Margin = new Thickness(0, 0, 0, 0);
+            }
+
         }
 
         private void EnterKeyDown(object sender, KeyEventArgs e)
@@ -176,7 +201,25 @@ namespace PolyPaint.Vues
             }
             return canvas;
         }
+        private void Disconnect_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                using (HttpClient client = new HttpClient())
+                {
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", (string)Application.Current.Properties["token"]);
+                    System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
+                    client.GetAsync($"{Config.URL}/api/user/logout").Wait();
+                }
+            }
+            catch { }
 
+            Application.Current.Properties.Clear();
+            Login login = new Login();
+            Application.Current.MainWindow = login;
+            Close();
+            login.Show();
+        }
         private async void OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             SelectedCanvas = (SaveableCanvas)ImagePreviews.SelectedItem;
