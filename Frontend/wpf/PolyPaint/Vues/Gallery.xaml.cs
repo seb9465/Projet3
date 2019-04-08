@@ -50,6 +50,8 @@ namespace PolyPaint.Vues
 
             DataContext = new UserDataContext(chatClient);
 
+            (DataContext as UserDataContext).ChatClient.MessageReceived += ScrollDown;
+
             externalChatWindow = new ChatWindow(DataContext as UserDataContext);
             (DataContext as UserDataContext).Canvas = Canvas;
             
