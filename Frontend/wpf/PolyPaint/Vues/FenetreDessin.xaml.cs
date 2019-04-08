@@ -880,10 +880,7 @@ namespace PolyPaint
 
         private void surfaceDessin_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Delete)
-            {
-                e.Handled = true;
-            }
+            e.Handled = true;
         }
 
         private void selecteurCouleurBordure_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
