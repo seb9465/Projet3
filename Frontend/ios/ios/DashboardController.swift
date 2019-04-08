@@ -31,6 +31,7 @@ class DashboardController: UIViewController, UITextFieldDelegate {
         let jwt = try! decode(jwt: token!)
         usernameLabel.text = jwt.claim(name: "unique_name").string
         
+        ChatService.shared.initHubConnection();
         ChatService.shared.connectToUserChatRooms();
         ChatService.shared.initOnReceivingMessage(insertMessage:{_ in }, updateChatRooms: { });
         ChatService.shared.connectToHub();

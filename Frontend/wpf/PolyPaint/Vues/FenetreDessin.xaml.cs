@@ -79,7 +79,6 @@ namespace PolyPaint
             (DataContext as VueModele).CollaborationClient.ProtectionChanged += HandleProtectionChanged;
             (DataContext as VueModele).CollaborationClient.ClientConnected += SendSelectedStrokesToOthers;
             (DataContext as VueModele).PropertyChanged += VueModelePropertyChanged;
-
             (DataContext as VueModele).ChatClient.MessageReceived += ScrollDown;
 
             (DataContext as VueModele).OnRotation += UpdateAdorner;
@@ -461,6 +460,7 @@ namespace PolyPaint
             mediaPlayer.Play();
             messageTextBox.Text = String.Empty;
             messageTextBox.Focus();
+            ScrollDown(null, null);
         }
 
 
@@ -1005,9 +1005,6 @@ namespace PolyPaint
             chat.Height = _currentHeight - 450;
             messagesList.Height = _currentHeight - 530;
         }
-
-        void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-        }
+        
     }
 }
