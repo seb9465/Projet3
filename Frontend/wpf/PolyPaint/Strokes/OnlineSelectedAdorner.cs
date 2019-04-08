@@ -1,10 +1,12 @@
 ﻿using PolyPaint.Common.Collaboration;
+using PolyPaint.Utilitaires;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
+using System.Windows.Input;
 using System.Windows.Media;
 
 namespace PolyPaint.Strokes
@@ -286,11 +288,11 @@ namespace PolyPaint.Strokes
             Rect selectionRect = Rect.Empty;
             if (_strokes.Count > 0)
             {
-                var xmin = _strokes.Min(stroke => stroke.StylusPoints[0].X < stroke.StylusPoints[1].X ? stroke.StylusPoints[0].X : stroke.StylusPoints[1].X);
-                var ymin = _strokes.Min(stroke => stroke.StylusPoints[0].Y < stroke.StylusPoints[1].Y ? stroke.StylusPoints[0].Y : stroke.StylusPoints[1].Y);
+                var xmin = _strokes.Min(stroke => stroke.RotatedStylusPoints[0].X < stroke.RotatedStylusPoints[1].X ? stroke.RotatedStylusPoints[0].X : stroke.RotatedStylusPoints[1].X);
+                var ymin = _strokes.Min(stroke => stroke.RotatedStylusPoints[0].Y < stroke.RotatedStylusPoints[1].Y ? stroke.RotatedStylusPoints[0].Y : stroke.RotatedStylusPoints[1].Y);
 
-                var xmax = _strokes.Max(stroke => stroke.StylusPoints[0].X > stroke.StylusPoints[1].X ? stroke.StylusPoints[0].X : stroke.StylusPoints[1].X);
-                var ymax = _strokes.Max(stroke => stroke.StylusPoints[0].Y > stroke.StylusPoints[1].Y ? stroke.StylusPoints[0].Y : stroke.StylusPoints[1].Y);
+                var xmax = _strokes.Max(stroke => stroke.RotatedStylusPoints[0].X > stroke.RotatedStylusPoints[1].X ? stroke.RotatedStylusPoints[0].X : stroke.RotatedStylusPoints[1].X);
+                var ymax = _strokes.Max(stroke => stroke.RotatedStylusPoints[0].Y > stroke.RotatedStylusPoints[1].Y ? stroke.RotatedStylusPoints[0].Y : stroke.RotatedStylusPoints[1].Y);
 
                 if (_strokes.Where(x => x.IsConnection()).Count() > 0)
                 {
