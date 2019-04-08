@@ -32,7 +32,6 @@ extension Editor : TouchInputDelegate {
             break
         case .INSERT:
             self.insertFigure(position: point)
-            self.touchEventState = .SELECT
             self.updateSideToolBar()
             break
         case .CONNECTION:
@@ -190,6 +189,8 @@ extension Editor : TouchInputDelegate {
             if (self.isFigureSelected(figure: figure!)) {
                 return
             }
+            
+            print(figure?.uuid)
             self.select(figure: figure!)
             self.updateSideToolBar()
             CollaborationHub.shared!.selectObjects(drawViewModels: [(figure!.exportViewModel())!])
@@ -214,6 +215,10 @@ extension Editor : TouchInputDelegate {
             
             self.touchEventState = .SELECT
             return
+        }
+        
+        if (self.touchEventState == .INSERT) {
+            self.touchEventState = .SELECT
         }
         
         if (self.touchEventState == .TRANSLATE) {

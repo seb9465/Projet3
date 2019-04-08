@@ -48,9 +48,9 @@ class Editor {
         self.editorView.delegate = self
         let pinch = UIPinchGestureRecognizer(target: self, action: #selector(self.resizeFigure(_:)))
         self.editorView.addGestureRecognizer(pinch)
-        let tap = UITapGestureRecognizer(target: self, action: #selector(self.tap(_:)))
-        tap.numberOfTapsRequired = 2
-        self.editorView.addGestureRecognizer(tap)
+//        let tap = UITapGestureRecognizer(target: self, action: #selector(self.tap(_:)))
+//        tap.numberOfTapsRequired = 2
+//        self.editorView.addGestureRecognizer(tap)
     }
     func resize(width: CGFloat, heigth: CGFloat) {
         currentCanvas.canvasHeight = Float(heigth)
@@ -215,6 +215,7 @@ class Editor {
         self.undoArray.append(([], [figure.exportViewModel()!]))
         self.editorView.addSubview(figure)
         self.select(figure: figure)
+        print("insert", figure.uuid)
         CollaborationHub.shared?.selectObjects(drawViewModels: [figure.exportViewModel()!])
         CollaborationHub.shared!.postNewFigure(figures: [figure])
         CanvasService.saveOnNewFigure(figures: self.figures, editor: self)
