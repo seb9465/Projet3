@@ -215,7 +215,7 @@ class CanvasController: UIViewController {
         if (self.editor.touchEventState == .AREA_SELECT) {
             self.editor.changeTouchHandleState(to: .NONE);
         } else {
-            self.lassoButton.tintColor = Constants.RED_COLOR;
+            self.lassoButton.tintColor = Constants.Colors.RED_COLOR;
             self.editor.changeTouchHandleState(to: .AREA_SELECT)
         }
         
@@ -228,7 +228,7 @@ class CanvasController: UIViewController {
         if (self.editor.touchEventState == .SELECT) {
             self.editor.changeTouchHandleState(to: .NONE);
         } else {
-            self.selectButton.tintColor = Constants.RED_COLOR;
+            self.selectButton.tintColor = Constants.Colors.RED_COLOR;
             self.editor.changeTouchHandleState(to: .SELECT)
         }
         
