@@ -104,6 +104,11 @@
                                             <action selector="chatViewButton:" destination="Vts-He-P18" id="U0G-ah-An7"/>
                                         </connections>
                                     </barButtonItem>
+                                    <barButtonItem title="Tutoriel" id="7Oc-5H-Zh5">
+                                        <connections>
+                                            <action selector="openTutorial:" destination="Vts-He-P18" id="rhY-IH-N0q"/>
+                                        </connections>
+                                    </barButtonItem>
                                 </items>
                             </toolbar>
                             <containerView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oVb-fS-ct1">
