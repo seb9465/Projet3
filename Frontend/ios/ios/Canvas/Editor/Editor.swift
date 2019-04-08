@@ -35,7 +35,7 @@ class Editor {
     var currentFigureType: ItemTypeEnum = ItemTypeEnum.UmlClass;
     
     // TouchInputDelegate properties
-    var touchEventState: TouchEventState = .NONE
+    var touchEventState: TouchEventState = .SELECT
     var initialTouchPoint: CGPoint!
     var previousTouchPoint: CGPoint!
     
@@ -129,6 +129,9 @@ class Editor {
         self.selectedFigures.removeAll();
         self.delegate?.setCurrentTab(index: 0)
         self.delegate?.setCutButtonState(isEnabled: false)
+        if(self.clipboard.count == 0) {
+            self.delegate?.setDuplicateButtonState(isEnabled: false)
+        }
     }
     
     // Deselect received from hub
@@ -202,6 +205,8 @@ class Editor {
         self.figures.append(figure)
         self.undoArray.append(([], [figure.exportViewModel()!]))
         self.editorView.addSubview(figure)
+        self.select(figure: figure)
+        CollaborationHub.shared?.selectObjects(drawViewModels: [figure.exportViewModel()!])
         CollaborationHub.shared!.postNewFigure(figures: [figure])
         CanvasService.saveOnNewFigure(figures: self.figures, editor: self)
     }
@@ -217,6 +222,9 @@ class Editor {
         self.undoArray.append(([], [figure.exportViewModel()!]))
         self.editorView.addSubview(figure);
         self.figures.append(figure)
+        self.select(figure: figure)
+        CollaborationHub.shared?.selectObjects(drawViewModels: [figure.exportViewModel()!])
+        self.updateSideToolBar()
         return figure
     }
     
