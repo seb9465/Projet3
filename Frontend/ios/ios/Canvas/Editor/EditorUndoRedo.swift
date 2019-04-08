@@ -16,11 +16,11 @@ extension Editor {
         for drawViewModel in drawViewModels  {
             figure = self.insertFigure(drawViewModel: drawViewModel)
         }
-        self.bindLocalConnectionsToFigures(drawViewModels: drawViewModels)
+//        self.bindLocalConnectionsToFigures(drawViewModels: drawViewModels)
         if(figure != nil){
-        if (figure! is UmlFigure) {
-            (figure! as! UmlFigure).updateConnections()
-        }
+            if (figure! is UmlFigure) {
+                (figure! as! UmlFigure).updateConnections(figures: self.figures)
+            }
         }
     }
     
@@ -29,9 +29,9 @@ extension Editor {
         for drawViewModel in drawViewModels {
             let figure = self.getFigureFromDrawViewModel(model: drawViewModel)
             
-            if (figure is ConnectionFigure) {
-                (figure as! ConnectionFigure).removeFromConnectedFigures(umlFigures: self.figures.filter({$0 is UmlFigure}) as! [UmlFigure])
-            }
+//            if (figure is ConnectionFigure) {
+//                (figure as! ConnectionFigure).removeFromConnectedFigures(umlFigures: self.figures.filter({$0 is UmlFigure}) as! [UmlFigure])
+//            }
             
             figure.removeFromSuperview()
             self.figures.removeAll{$0 == figure}

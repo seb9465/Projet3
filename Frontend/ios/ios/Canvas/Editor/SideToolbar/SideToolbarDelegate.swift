@@ -20,5 +20,5 @@ protocol SideToolbarDelegate {
     func removeClassMethod(name: String, index: Int)
     func addClassAttribute(name: String)
     func removeClassAttribute(name: String, index: Int)
-    func rotate(orientation: RotateOrientation)
+//    func rotate(orientation: RotateOrientation)
 }

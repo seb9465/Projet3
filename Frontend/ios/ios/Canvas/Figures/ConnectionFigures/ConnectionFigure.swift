@@ -84,7 +84,7 @@ class ConnectionFigure : Figure {
         return CGFloat(sqrt(xDist * xDist + yDist * yDist))
     }
     
-    override func translate(by: CGPoint) {
+    override func translate(by: CGPoint, figures: [Figure]) {
         let newOrigin: CGPoint = CGPoint(x: self.points[.ORIGIN]!.x + by.x, y: self.points[.ORIGIN]!.y + by.y)
         let newElbow: CGPoint = CGPoint(x: self.points[.ELBOW]!.x + by.x, y: self.points[.ELBOW]!.y + by.y)
         let newDestination: CGPoint = CGPoint(x: self.points[.DESTINATION]!.x + by.x, y: self.points[.DESTINATION]!.y + by.y)
@@ -167,7 +167,7 @@ class ConnectionFigure : Figure {
     
     func isOriginAnchored(umlFigures: [UmlFigure]) -> Bool {
         for umlFigure in umlFigures {
-            if (umlFigure.outgoingConnections[self] != nil) {
+            if (umlFigure.outgoingConnections[self.uuid] != nil) {
                 return true
             }
         }
@@ -176,7 +176,7 @@ class ConnectionFigure : Figure {
     
     func isDestinationAnchored(umlFigures: [UmlFigure]) -> Bool {
         for umlFigure in umlFigures {
-            if (umlFigure.incomingConnections[self] != nil) {
+            if (umlFigure.incomingConnections[self.uuid] != nil) {
                 return true
             }
         }
@@ -186,21 +186,21 @@ class ConnectionFigure : Figure {
     func getAnchoredUmlFigures(umlFigures: [UmlFigure]) -> [UmlFigure] {
         var anchoredFigures: [UmlFigure] = []
         for umlFigure in umlFigures {
-            if (umlFigure.incomingConnections[self] != nil) {
+            if (umlFigure.incomingConnections[self.uuid] != nil) {
                 anchoredFigures.append(umlFigure)
             }
-            if (umlFigure.outgoingConnections[self] != nil) {
+            if (umlFigure.outgoingConnections[self.uuid] != nil) {
                 anchoredFigures.append(umlFigure)
             }
         }
         return anchoredFigures
     }
     
-    func removeFromConnectedFigures(umlFigures: [UmlFigure]) {
-        for umlFigure in umlFigures {
-            umlFigure.removeConnection(connection: self)
-        }
-    }
+//    func removeFromConnectedFigures(umlFigures: [UmlFigure]) {
+//        for umlFigure in umlFigures {
+//            umlFigure.removeConnection(connection: self.uuid)
+//        }
+//    }
     
     func isPointOnElbow(point: CGPoint) -> Bool{
         for layer in self.layer.sublayers!{

@@ -31,7 +31,7 @@ class Figure: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func translate(by: CGPoint) {}
+    func translate(by: CGPoint, figures: [Figure]) {}
     
     public func setFigureName(name: String) {
         self.name = name
@@ -64,7 +64,7 @@ class Figure: UIView {
     
     public func exportViewModel() -> DrawViewModel? {return nil}
 
-    public func rotate(orientation: RotateOrientation) -> Void {}
+    public func rotate(orientation: RotateOrientation, figures: [Figure]) -> Void {}
     
-    public func resize(by: CGPoint) -> Void {} 
+    public func resize(by: CGPoint, figures: [Figure]) -> Void {}
 }

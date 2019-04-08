@@ -29,8 +29,8 @@ class UmlImageFigure: UmlFigure {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func resize(by: CGPoint) {
-        super.resize(by: by)
+    override func resize(by: CGPoint, figures: [Figure]) {
+        super.resize(by: by, figures: figures)
         self.imageView!.frame = CGRect(x: 0, y: 0, width: self.frame.width, height: self.frame.height)
         setNeedsDisplay()
     }
