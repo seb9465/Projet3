@@ -161,6 +161,7 @@ class DashboardController: UIViewController, UITextFieldDelegate {
             self.viewContainerChat.isHidden = false;
         } else {
             self.viewContainerChat.isHidden = true;
+            self.view.endEditing(true);
         }
     }
 }
