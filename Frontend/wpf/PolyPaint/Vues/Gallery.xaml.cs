@@ -67,7 +67,8 @@ namespace PolyPaint.Vues
 
                     if (responseString == "false")
                     {
-                        Tutoriel tuto = new Tutoriel();
+                        HttpResponseMessage message = await client.GetAsync($"{Config.URL}/api/user/tutorial/true");
+                        showTutorial(sender, e);
                     }
                 }
             };
