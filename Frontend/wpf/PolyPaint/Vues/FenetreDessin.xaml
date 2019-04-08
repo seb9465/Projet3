@@ -91,20 +91,16 @@
                     <StackPanel Orientation="Horizontal">
                         <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Width="2" />
                     </StackPanel>
-                    <StackPanel Orientation="Vertical"  VerticalAlignment="Bottom" Margin="0,-2">
-
-                        <Button Name="Copier" Click="DupliquerSelection"
+                    <Button Name="Copier" Click="DupliquerSelection"
                         Style="{StaticResource MaterialDesignRaisedLightButton}" HorizontalAlignment="Left" ToolTip="Duplicate" 
                         Background="Transparent" BorderBrush="Transparent">
-                            <materialDesign:PackIcon Kind="ContentCopy" Height="17" Width="17" />
-                        </Button>
-                        <Button Name="Couper" Click="SupprimerSelection"
+                        <materialDesign:PackIcon Kind="ContentCopy" Height="17" Width="17" />
+                    </Button>
+                    <Button Name="Couper" Click="SupprimerSelection"
                     Style="{StaticResource MaterialDesignRaisedLightButton}" HorizontalAlignment="Left" ToolTip="Cut"
                         Background="Transparent" BorderBrush="Transparent">
-                            <materialDesign:PackIcon Kind="ContentCut" Height="17" Width="17" />
-                        </Button>
-
-                    </StackPanel>
+                        <materialDesign:PackIcon Kind="ContentCut" Height="17" Width="17" />
+                    </Button>
                     <Button Name="lasso"
                         Style="{StaticResource MaterialDesignRaisedLightButton}" HorizontalAlignment="Left" ToolTip="Lasso" 
                         BorderBrush="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurBordure}, ConverterParameter=lasso, UpdateSourceTrigger=PropertyChanged}" 
