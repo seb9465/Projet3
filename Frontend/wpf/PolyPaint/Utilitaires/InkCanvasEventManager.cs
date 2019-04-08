@@ -24,6 +24,7 @@ namespace PolyPaint.Utilitaires
             // We travel the StrokeCollection inversely to select the first plan item first
             // if some items overlap.
             StrokeCollection strokeToSelect = new StrokeCollection();
+            PhaseStroke potentialPhase = null;
             for (int i = strokes.Count - 1; i >= 0; i--)
             {
                 Rect box = strokes[i].GetBounds();
@@ -31,23 +32,37 @@ namespace PolyPaint.Utilitaires
                     mouseLeftDownPoint.Y <= box.Bottom && mouseLeftDownPoint.Y >= box.Top &&
                     !vm.GetOnlineSelection().Values.Any(x => x.Any(y => y.Guid == ((AbstractStroke)strokes[i]).Guid.ToString())))
                 {
+                    if (strokes[i] is PhaseStroke)
+                    {
+                        potentialPhase = (PhaseStroke)strokes[i];
+                        continue;
+                    }
                     if (strokes[i] is UmlClassStroke)
                     {
+                        strokeToSelect.Add(strokes[i]);
                         window = new EditUmlWindow(strokes[i] as UmlClassStroke, surfaceDessin, vm);
                         window.Show();
                     }
                     else if (strokes[i] is AbstractShapeStroke)
                     {
+                        strokeToSelect.Add(strokes[i]);
                         window = new EditTitleWindow(strokes[i] as AbstractShapeStroke, surfaceDessin, vm);
                         window.Show();
                     }
                     else if (strokes[i] is AbstractLineStroke)
                     {
+                        strokeToSelect.Add(strokes[i]);
                         window = new EditLineTitleWindow(strokes[i] as AbstractLineStroke, surfaceDessin, vm);
                         window.Show();
                     }
                     break;
                 }
+            }
+            if (strokeToSelect.Count == 0 && potentialPhase != null)
+            {
+                strokeToSelect.Add(potentialPhase);
+                window = new EditTitleWindow(potentialPhase, surfaceDessin, vm);
+                window.Show();
             }
             return window;
         }

@@ -58,6 +58,26 @@ class DashboardController: UIViewController, UITextFieldDelegate {
         }
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated);
+        
+        AuthentificationAPI.getIsTutorialShown()
+            .done { (response) in
+                if (!response) {
+                    print("[TUTORIAL] First Time, Opening Tutorial")
+                    AuthentificationAPI.setIsTutorialShown();
+                    let sb: UIStoryboard = UIStoryboard(name: "Tutorial", bundle: nil);
+                    let tutoController = sb.instantiateViewController(withIdentifier: "TutorialView");
+                    self.present(tutoController, animated: true, completion: nil);
+                } else {
+                    print("[TUTORIAL] Not First Time, Not Showing Tutorial");
+                }
+            }
+            .catch { (error) in
+                print(error);
+        }
+    }
+    
     // MARK: - Private functions
     
     private func setChatViewContainer() -> Void {
