@@ -108,7 +108,7 @@
                 </ToggleButton>
 
                 <StackPanel Orientation="Vertical" Margin="20" x:Name="chatTab" Visibility="Collapsed" Background="WhiteSmoke" >
-                    <Border BorderThickness="1" BorderBrush="Gray" ClipToBounds="True" HorizontalAlignment="Stretch" Height="600">
+                    <Border Name="chatBorder" BorderThickness="1" BorderBrush="Gray" ClipToBounds="True" HorizontalAlignment="Stretch" Height="600">
                         <StackPanel Orientation="Vertical" Margin="10" x:Name="chatWrapper">
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                                 <Button  x:Name="chatButton" HorizontalAlignment="Left" Margin="0,0,10,0"  Width="50" Click="chatButton_Click">

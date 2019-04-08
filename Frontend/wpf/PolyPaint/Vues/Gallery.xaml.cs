@@ -187,6 +187,10 @@ namespace PolyPaint.Vues
                 canvasStackPanel.Margin = new Thickness(0, 0, 0, 0);
                 ImagePreviews.MaxHeight = _currentHeight - 280;
             }
+            
+            chatBorder.Height = _currentHeight - 210;
+            chat.Height = _currentHeight - 450;
+            messagesList.Height = _currentHeight - 530;
 
         }
 
@@ -283,6 +287,7 @@ namespace PolyPaint.Vues
         {
             Tutoriel tutoriel = new Tutoriel();
         }
+        
 
     }
 }
