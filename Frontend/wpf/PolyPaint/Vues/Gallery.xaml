@@ -18,11 +18,11 @@
         <convertisseurs:ConvertisseurRoomContent x:Key="convertisseurRoomContent" />
     </Window.Resources>
     <StackPanel>
-        <DockPanel>
+        <DockPanel Height="67">
             <Button Style="{StaticResource MaterialDesignRaisedLightButton}" Click="RefreshGallery_Click"
-             Height="40"  Background="Gainsboro"  HorizontalAlignment="Left" BorderBrush="Gray" Margin="5,0,10,0" >
+             Height="40"  Background="Gainsboro"  HorizontalAlignment="Left" BorderBrush="Gray" Margin="15,0,10,0" >
                 <StackPanel Orientation="Horizontal">
-                    <materialDesign:PackIcon Kind="Refresh" Height="24" Width="24"/>
+                    <materialDesign:PackIcon Kind="Refresh" VerticalAlignment="Center" Height="24" Width="24"/>
                     <Label FontWeight="Bold">Refresh gallery</Label>
                     <Grid Name="progressBar"  Visibility="Collapsed" Margin="10,0,0,0">
                         <ProgressBar  Style="{StaticResource MaterialDesignCircularProgressBar}" Value="0" IsIndeterminate="True" Width="20" Height="20" />
@@ -33,14 +33,14 @@
              Width="140" Height="40" HorizontalAlignment="Right" Background="Gainsboro" BorderBrush="Gray" Margin="0,0,150,0" >
                 <StackPanel Orientation="Horizontal">
                     <Label FontWeight="Bold">Tutorial</Label>
-                    <materialDesign:PackIcon Kind="HelpOutline" Height="24" Width="24"/>
+                    <materialDesign:PackIcon VerticalAlignment="Center" Kind="HelpOutline" Height="24" Width="24"/>
                 </StackPanel>
             </Button>
             <Button Style="{StaticResource MaterialDesignRaisedLightButton}" Click="Disconnect_Click"
-             Width="140" Height="40" HorizontalAlignment="Right" Background="Gainsboro" BorderBrush="Gray" Margin="0,0,0,0" >
+             Width="140" Height="40" HorizontalAlignment="Right" Background="Gainsboro" BorderBrush="Gray" Margin="0,0,10,0" >
                 <StackPanel Orientation="Horizontal">
                     <Label FontWeight="Bold" Content="Disconnect"/>
-                    <materialDesign:PackIcon Kind="LanDisconnect" Height="24" Width="24"/>
+                    <materialDesign:PackIcon VerticalAlignment="Center" Kind="LanDisconnect" Height="24" Width="24"/>
                 </StackPanel>
             </Button>
         </DockPanel>
