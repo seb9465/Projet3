@@ -41,7 +41,7 @@ namespace PolyPaint.API.Hubs
             if (user != null)
             {
                 UserHandler.AddOrUpdateMap(channelMessage.Channel.Name, user.Id);
-                await Clients.Caller.SendAsync("CreateChannel", channelMessage.ToString());
+                await Clients.All.SendAsync("CreateChannel", channelMessage.ToString());
             }
         }
 

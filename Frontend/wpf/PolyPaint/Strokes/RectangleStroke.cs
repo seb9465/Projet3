@@ -57,7 +57,7 @@ namespace PolyPaint.Strokes
                 UnrotatedTopLeft.X + UnrotatedWidth / 2.0 - Title.Width / 2.0,
                 UnrotatedTopLeft.Y + UnrotatedHeight / 2.0 - Title.Height / 2.0
             );
-            Title.MaxTextWidth = Width - 20 > 0 ? Width - 20 : 0;
+            Title.MaxTextWidth = UnrotatedWidth - 20 > 0 ? UnrotatedWidth - 20 : 0;
             drawingContext.DrawText(Title, point);
         }
     }
