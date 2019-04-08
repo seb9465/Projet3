@@ -19,8 +19,8 @@ class UmlFigure : Figure {
 
     var currentAngle: Double = 0
     var anchorPoints: AnchorPoints?
-    var incomingConnections : [ConnectionFigure: String] = [:]
-    var outgoingConnections : [ConnectionFigure: String] = [:]
+    var incomingConnections : [UUID: String] = [:]
+    var outgoingConnections : [UUID: String] = [:]
     var nameLabelHeight: CGFloat = 30
     
     init(firstPoint: CGPoint, lastPoint: CGPoint, width: CGFloat, height: CGFloat) {
@@ -47,7 +47,6 @@ class UmlFigure : Figure {
     
     init(drawViewModel: DrawViewModel) {
         self.currentAngle = drawViewModel.Rotation!
-        print(self.currentAngle)
         let firstPoint: CGPoint = drawViewModel.StylusPoints![0].getCGPoint()
         let lastPoint: CGPoint = drawViewModel.StylusPoints![1].getCGPoint()
         let frameSize = CGSize(width: abs(firstPoint.x - lastPoint.x), height: abs(firstPoint.y - lastPoint.y))
@@ -55,7 +54,6 @@ class UmlFigure : Figure {
         let frame = CGRect(origin: frameOrigin, size: frameSize)
         super.init(frame: frame)
         
-        print(Int(abs(self.currentAngle) / 90))
         for _ in 0..<Int(abs(self.currentAngle) / 90) {
             if(self.currentAngle < 0) {
                 print("LEFT")
@@ -74,6 +72,12 @@ class UmlFigure : Figure {
         self.figureColor = drawViewModel.FillColor?.getUIColor()
         self.lineColor = drawViewModel.BorderColor?.getUIColor()
         self.lineWidth = CGFloat(drawViewModel.BorderThickness!)
+        for incoming in drawViewModel.InConnections! {
+            self.incomingConnections.updateValue(incoming[1], forKey: UUID(uuidString: incoming[0])!)
+        }
+        for outgoing in drawViewModel.OutConnections! {
+            self.outgoingConnections.updateValue(outgoing[1], forKey: UUID(uuidString: outgoing[0])!)
+        }
         self.backgroundColor = UIColor.clear
 //        self.initializeAnchorPoints()
     }
@@ -109,15 +113,15 @@ class UmlFigure : Figure {
         self.initializeAnchorPoints()
     }
 
-    override func translate(by: CGPoint) {
+    override func translate(by: CGPoint, figures: [Figure]) {
         let translatedFrame = self.frame.offsetBy(dx: by.x, dy: by.y)
         self.frame = translatedFrame
         self.firstPoint = self.frame.origin
         self.lastPoint = CGPoint(x: self.frame.maxX, y: self.frame.maxY)
-        self.updateConnections()
+        self.updateConnections(figures: figures)
     }
     
-    override func resize(by: CGPoint) {
+    override func resize(by: CGPoint, figures: [Figure]) {
         let newSize : CGSize = CGSize(width: self.frame.width + by.x, height: self.frame.height + by.y)
         let newOrigin: CGPoint = CGPoint(x: self.frame.origin.x - by.x/2, y: self.frame.origin.y - by.y/2)
         let resizedFrame = CGRect(origin: newOrigin, size: newSize)
@@ -125,52 +129,60 @@ class UmlFigure : Figure {
         self.firstPoint = newOrigin
         self.lastPoint = CGPoint(x: self.frame.maxX, y: self.frame.maxY)
         self.updateAnchorPoints()
-        self.updateConnections()
+        self.updateConnections(figures: figures)
         setNeedsDisplay()
     }
     
-    override public func rotate(orientation: RotateOrientation) -> Void {
+    public func rotate(orientation: RotateOrientation) -> Void {
         self.transform = CGAffineTransform.init(rotationAngle: CGFloat(currentAngle * Double.pi/180))
-        self.updateConnections()
+//        self.updateConnections(figures: figures)
         setNeedsDisplay()
     }
 }
 
 // Connections logic
 extension UmlFigure {
-    public func getAnchoredConnections() -> [ConnectionFigure] {
+    public func getAnchoredConnections(figures: [Figure]) -> [ConnectionFigure] {
         var anchoredConnections: [ConnectionFigure] = []
-        anchoredConnections.append(contentsOf: self.incomingConnections.keys.reversed())
-        anchoredConnections.append(contentsOf: self.outgoingConnections.keys.reversed())
+        var connectionsUuids: [UUID] = []
+        connectionsUuids.append(contentsOf: self.incomingConnections.keys.reversed())
+        connectionsUuids.append(contentsOf: self.outgoingConnections.keys.reversed())
         
+        for id in connectionsUuids {
+            anchoredConnections.append(figures.first(where: {$0.uuid == id})! as! ConnectionFigure)
+        }
         return anchoredConnections
     }
     
     public func addIncomingConnection(connection: ConnectionFigure, anchor: String) {
-        self.incomingConnections.updateValue(anchor, forKey: connection)
+        self.incomingConnections.updateValue(anchor, forKey: connection.uuid)
     }
     
     public func addOutgoingConnection(connection: ConnectionFigure, anchor: String) {
-        self.outgoingConnections.updateValue(anchor, forKey: connection)
+        self.outgoingConnections.updateValue(anchor, forKey: connection.uuid)
     }
     
-    public func removeConnection(connection: ConnectionFigure) {
-        if (self.incomingConnections[connection] != nil) {
-            self.incomingConnections.removeValue(forKey: connection)
-        }
-        
-        if (self.outgoingConnections[connection] != nil) {
-            self.outgoingConnections.removeValue(forKey: connection)
-        }
-    }
+//    public func removeConnection(connection: ConnectionFigure) {
+//        if (self.incomingConnections[connection] != nil) {
+//            self.incomingConnections.removeValue(forKey: connection)
+//        }
+//
+//        if (self.outgoingConnections[connection] != nil) {
+//            self.outgoingConnections.removeValue(forKey: connection)
+//        }
+//    }
     
-    public func updateConnections() {
+    public func updateConnections(figures: [Figure]) {
         for pair in incomingConnections {
-            pair.key.updateDestination(point: convert(((self.anchorPoints?.anchorPointsSnapEdges[pair.value]!)!), to: self.superview))
+            if let connection = figures.first(where: {$0.uuid == pair.key}) {
+                (connection as! ConnectionFigure).updateDestination(point: convert(((self.anchorPoints?.anchorPointsSnapEdges[pair.value]!)!), to: self.superview))
+            }
         }
         
         for pair in outgoingConnections {
-            pair.key.updateOrigin(point: convert(((self.anchorPoints?.anchorPointsSnapEdges[pair.value]!)!), to: self.superview))
+            if let connection = figures.first(where: {$0.uuid == pair.key}) {
+                (connection as! ConnectionFigure).updateOrigin(point: convert(((self.anchorPoints?.anchorPointsSnapEdges[pair.value]!)!), to: self.superview))
+            }
         }
     }
     
@@ -212,7 +224,7 @@ extension UmlFigure {
     func serializeIncomingConnections() -> [[String]] {
         var incoming : [[String]] = []
         for pair in self.incomingConnections {
-            let connectionToAnchor: [String] = [pair.key.uuid.uuidString.lowercased(), pair.value]
+            let connectionToAnchor: [String] = [pair.key.uuidString.lowercased(), pair.value]
             incoming.append(connectionToAnchor)
         }
         return incoming
@@ -221,7 +233,7 @@ extension UmlFigure {
     func serializeOutgoingConnections() -> [[String]] {
         var outgoing : [[String]] = []
         for pair in self.outgoingConnections {
-            let connectionToAnchor: [String] = [pair.key.uuid.uuidString.lowercased(), pair.value]
+            let connectionToAnchor: [String] = [pair.key.uuidString.lowercased(), pair.value]
             outgoing.append(connectionToAnchor)
         }
         return outgoing

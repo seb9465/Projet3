@@ -140,7 +140,7 @@ extension Editor : TouchInputDelegate {
             for figure in self.selectedFigures {
                 let tmpOutlineIndex: Int = self.selectionOutlines.firstIndex(where: { $0.associatedFigureID == figure.uuid })!;
                 let offset = CGPoint(x: xOffset, y: yOffset)
-                figure.translate(by: offset)
+                figure.translate(by: offset, figures: self.figures)
                 self.selectionOutlines[tmpOutlineIndex].translate(by: offset)
             }
             
@@ -226,7 +226,7 @@ extension Editor : TouchInputDelegate {
             var figuresToUpdate = self.selectedFigures
             for figure in selectedFigures {
                 if (figure is UmlFigure) {
-                    figuresToUpdate.append(contentsOf: (figure as! UmlFigure).getAnchoredConnections())
+                    figuresToUpdate.append(contentsOf: (figure as! UmlFigure).getAnchoredConnections(figures: self.figures))
                 }
             }
             
