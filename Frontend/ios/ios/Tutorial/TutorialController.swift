@@ -65,7 +65,7 @@ class TutorialController: UIViewController, UIScrollViewDelegate {
         slide3.imageView.image = UIImage(named: "lock");
         slide3.labelTitle.text = "FIN";
         slide3.labelDesc.text = "FIN";
-        // Ajouter bouton pour retourner au début.
+        slide3.getStartedButon.isHidden = false;
         
         return [slide1, slide2, slide3];
     }

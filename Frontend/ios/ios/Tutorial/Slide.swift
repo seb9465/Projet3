@@ -41,6 +41,7 @@ class Slide: UIView {
         self.getStartedButon.layer.cornerRadius = 5.0;
         self.getStartedButon.layer.borderWidth = 0.0;
         self.getStartedButon.layer.borderColor = UIColor.clear.cgColor;
+        self.getStartedButon.isHidden = true;
     }
     
     /*
