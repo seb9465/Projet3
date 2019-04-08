@@ -14,7 +14,7 @@ protocol CollaborationHubDelegate {
     func updateCanvas(itemMessage: ItemMessage)
     func updateSelection(itemMessage: ItemMessage)
     func updateClear();
-    func delete(username: String)
+    func delete(drawViewModels: [DrawViewModel])
     func getKicked()
     func resizeCanvas(size: PolyPaintStylusPoint)
     func sendExistingSelection()
@@ -246,7 +246,7 @@ class CollaborationHub {
             let jsonData = jsonString.data(using: .utf8)
             let itemMessage: ItemMessage = try! JSONDecoder().decode(ItemMessage.self, from: jsonData!);
             
-            self.delegate!.delete(username: itemMessage.Username)
+            self.delegate!.delete(drawViewModels: itemMessage.Items)
         })
     }
     

@@ -237,27 +237,17 @@ class Editor {
         CanvasService.saveOnNewFigure(figures: self.figures, editor: self)
     }
     
-    public func deleteSelectedFigures(username: String) {
-        print(username)
-        let figuresToDelete: [DrawViewModel] = self.selectedFiguresDictionnary[username]!
-        self.selectedFiguresDictionnary[username] = []
-        var indexOffset = 0
-        var indexToRemove:[Int] = []
-            for figureToDelete in figuresToDelete {
-                for (index,figure) in self.figures.enumerated() {
-                    if(figureToDelete.Guid == figure.uuid.uuidString) {
-                        figure.removeFromSuperview()
-                        indexOffset += 1
-                        indexToRemove.append( index - indexOffset)
-                    }
+    public func deleteSelectedFigures(drawViewModels: [DrawViewModel]) {
+        for figureToDelete in drawViewModels {
+            for (index,figure) in self.figures.enumerated() {
+                if(figureToDelete.Guid == figure.uuid.uuidString.lowercased()) {
+                    print("remove this one from view" + String(index))
+                    figure.removeFromSuperview()
+                    self.editorView.setNeedsDisplay()
+                    self.figures.remove(at: index)
+                }
             }
         }
-        for index in indexToRemove {
-            self.figures.remove(at: index)
-        }
-
-        self.deselect(username: username)
-    
     }
     
     public func clear() -> Void {
@@ -293,6 +283,8 @@ extension Editor {
 }
 
 extension Editor: CollaborationHubDelegate {
+
+    
     func sendExistingSelection() {
         var drawViewModels: [DrawViewModel] = []
         for figure in self.selectedFigures {
@@ -329,8 +321,8 @@ extension Editor: CollaborationHubDelegate {
         self.bindLocalConnectionsToFigures(drawViewModels: itemMessage.Items)
     }
     
-    func delete(username: String) {
-        self.deleteSelectedFigures(username: username)
+    func delete(drawViewModels: [DrawViewModel]) {
+        self.deleteSelectedFigures(drawViewModels: drawViewModels)
     }
     
     func getKicked() {
