@@ -30,6 +30,7 @@ class ConnectionFigure : Figure {
         let frame = CGRect(origin: frameOrigin, size: frameSize)
         super.init(frame: frame)
         self.backgroundColor = UIColor.init(white: 0.0, alpha: 0.0)
+        self.name = ""
         self.itemType = itemType
         self.firstPoint = origin
         self.lastPoint = destination
