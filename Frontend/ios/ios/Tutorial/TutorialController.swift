@@ -56,12 +56,6 @@ class TutorialController: UIViewController, UIScrollViewDelegate {
     private func initSlidesView() -> Void {
         for slide in self._slides {
             slide.initSlide();
-//            slide.getStartedBtnAction = {
-//                let sb: UIStoryboard = UIStoryboard(name: "Main", bundle: nil);
-//                let vc: UIViewController = sb.instantiateViewController(withIdentifier: "MainController")
-//                self.present(vc, animated: true, completion: nil);
-//                self.dismiss(animated: true, completion: nil);
-//            }
         }
         
         self._slides.last?.getStartedBtnAction = {

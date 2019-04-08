@@ -51,7 +51,7 @@ class LoginController: UIViewController, UITextFieldDelegate, WKUIDelegate {
         let spinner = UIViewController.displaySpinner(onView: self.view);
         let token = UserDefaults.standard.string(forKey: "token");
         
-        if(token != nil) {
+        if (token != nil) {
             AuthentificationAPI.logout()
             UserDefaults.standard.removePersistentDomain(forName: "token");
         }
@@ -62,24 +62,6 @@ class LoginController: UIViewController, UITextFieldDelegate, WKUIDelegate {
                 UIViewController.removeSpinner(spinner: spinner);
                 self.validationLabel.text = "";
                 self.storeAuthentificationToken(token: token, id: "");
-                
-                AuthentificationAPI.getIsTutorialShown()
-                    .done { (response) in
-                        if (response) {
-                            let mainController = self.storyboard?.instantiateViewController(withIdentifier: "MainController");
-                            self.present(mainController!, animated: true, completion: nil);
-                        } else {
-                            let sb: UIStoryboard = UIStoryboard(name: "Tutorial", bundle: nil);
-                            let tutoController = sb.instantiateViewController(withIdentifier: "TutorialView");
-                            self.present(tutoController, animated: true, completion: nil);
-                            AuthentificationAPI.setIsTutorialShown();
-                        }
-                        
-                        UIViewController.removeSpinner(spinner: spinner);
-                    }
-                    .catch { (error) in
-                        UIViewController.removeSpinner(spinner: spinner);
-                    }
             }.catch { (responseError) in
                 UIViewController.removeSpinner(spinner: spinner);
                 // TODO: Afficher le bon message d'erreur. En attente du serveur.
