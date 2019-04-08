@@ -23,6 +23,7 @@ class TutorialController: UIViewController, UIScrollViewDelegate {
     
     override func viewDidLoad() {
         self._slides = self.createSlides();
+        self.initSlidesView();
         setupSlideScrollView(slides: self._slides);
         
         self.pageControl.numberOfPages = _slides.count;
@@ -30,8 +31,6 @@ class TutorialController: UIViewController, UIScrollViewDelegate {
         self.view.bringSubviewToFront(self.pageControl);
         
         self.scrollView.delegate = self;
-        
-        self.initSlidesView();
         
         super.viewDidLoad();
     }
@@ -47,6 +46,9 @@ class TutorialController: UIViewController, UIScrollViewDelegate {
     private func initSlidesView() -> Void {
         for slide in self._slides {
             slide.initSlide();
+            slide.getStartedBtnAction = {
+                self.navigationController?.popViewController(animated: true);
+            }
         }
     }
     

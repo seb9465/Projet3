@@ -56,6 +56,6 @@ class Slide: UIView {
     // MARK: - Action functions
     
     @IBAction func getStartedButton(_ sender: Any) {
-        
+        self._getStartedBtnAction();
     }
 }
