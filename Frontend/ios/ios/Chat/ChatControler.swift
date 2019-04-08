@@ -46,8 +46,6 @@ class MsgChatController: MessagesViewController {
         
         self.navigationItem.title = ChatService.shared.currentChannel.name;
         
-        self.becomeFirstResponder();
-        
         super.viewDidLoad();
         
         let afkMsgs: [String: [Message]] = ChatService.shared.messagesWhileAFK;
@@ -60,12 +58,6 @@ class MsgChatController: MessagesViewController {
         
         ChatService.shared.messagesWhileAFK.removeValue(forKey: channelName);
         self.messagesCollectionView.reloadData();
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        print("VIEW WILL APPEAR");
-        
-        super.viewWillAppear(animated);
     }
     
     override func viewWillDisappear(_ animated: Bool) -> Void {
