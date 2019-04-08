@@ -100,7 +100,7 @@ class CanvasController: UIViewController {
     
     private func setChatNotifLabel() -> Void {
         self.chatNotifLabel.layer.cornerRadius = self.chatNotifLabel.frame.width / 2;
-        self.chatNotifLabel.layer.backgroundColor = Constants.DEFAULT_BLUE_COLOR.cgColor;
+        self.chatNotifLabel.layer.backgroundColor = Constants.Colors.DEFAULT_BLUE_COLOR.cgColor;
         self.chatNotifLabel.textColor = UIColor.white;
         self.chatNotifLabel.text = "";
         self.chatNotifLabel.textAlignment = .center;
@@ -232,7 +232,7 @@ class CanvasController: UIViewController {
         if (self._editor.touchEventState == .AREA_SELECT) {
             self._editor.changeTouchHandleState(to: .NONE);
         } else {
-            self.lassoButton.tintColor = Constants.RED_COLOR;
+            self.lassoButton.tintColor = Constants.Colors.RED_COLOR;
             self._editor.changeTouchHandleState(to: .AREA_SELECT)
         }
         
@@ -245,7 +245,7 @@ class CanvasController: UIViewController {
         if (self._editor.touchEventState == .SELECT) {
             self._editor.changeTouchHandleState(to: .NONE);
         } else {
-            self.selectButton.tintColor = Constants.RED_COLOR;
+            self.selectButton.tintColor = Constants.Colors.RED_COLOR;
             self._editor.changeTouchHandleState(to: .SELECT)
         }
         
@@ -258,7 +258,7 @@ class CanvasController: UIViewController {
         if (self._editor.touchEventState == .INSERT) {
             self._editor.changeTouchHandleState(to: .NONE);
         } else {
-            self.insertButton.tintColor = Constants.RED_COLOR;
+            self.insertButton.tintColor = Constants.Colors.RED_COLOR;
             self._editor.changeTouchHandleState(to: .INSERT)
         }
         
@@ -272,7 +272,7 @@ class CanvasController: UIViewController {
     
     @IBAction func chatViewButton(_ sender: Any) {
         if (self.chatViewContainer.isHidden) {
-            self.chatViewButton.tintColor = Constants.RED_COLOR;
+            self.chatViewButton.tintColor = Constants.Colors.RED_COLOR;
             
             UIView.animate(withDuration: 0.35,
                            delay: 0.0,
