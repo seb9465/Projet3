@@ -51,30 +51,18 @@ class LoginController: UIViewController, UITextFieldDelegate, WKUIDelegate {
         let spinner = UIViewController.displaySpinner(onView: self.view);
         let token = UserDefaults.standard.string(forKey: "token");
         
-        if(token != nil) {
+        if (token != nil) {
             AuthentificationAPI.logout()
             UserDefaults.standard.removePersistentDomain(forName: "token");
         }
 //        AuthentificationAPI.login(username: emailField.text!, password: passwordField.text!)
-//        AuthentificationAPI.login(username: "william.sevigny", password: "!12345Aa")
-        AuthentificationAPI.login(username: "sebastien.labine", password: "!12345Aa")
+        AuthentificationAPI.login(username: "william.sevigny", password: "!12345Aa")
+//        AuthentificationAPI.login(username: "sebastien.labine", password: "!12345Aa")
             .done { (token) in
                 UIViewController.removeSpinner(spinner: spinner);
                 self.validationLabel.text = "";
                 self.storeAuthentificationToken(token: token, id: "");
-                
-                AuthentificationAPI.getIsTutorialShown()
-                    .done { (response) in
-                        if (response) {
-                            let mainController = self.storyboard?.instantiateViewController(withIdentifier: "MainController");
-                            self.present(mainController!, animated: true, completion: nil);
-                        } else {
-                            let sb: UIStoryboard = UIStoryboard(name: "Tutorial", bundle: nil);
-                            let tutoController = sb.instantiateViewController(withIdentifier: "TutorialView");
-                            self.present(tutoController, animated: true, completion: nil);
-                            AuthentificationAPI.setIsTutorialShown();
-                        }
-                }
+                self.present((self.storyboard?.instantiateViewController(withIdentifier: "MainController"))!, animated: true, completion: nil);
             }.catch { (responseError) in
                 UIViewController.removeSpinner(spinner: spinner);
                 // TODO: Afficher le bon message d'erreur. En attente du serveur.

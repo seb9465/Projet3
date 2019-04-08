@@ -53,7 +53,7 @@
                                             <action selector="redoButton:" destination="Vts-He-P18" id="2RI-2W-Sfy"/>
                                         </connections>
                                     </barButtonItem>
-                                    <barButtonItem title="Cut" id="cBy-5K-qpS">
+                                    <barButtonItem title="Cut" image="cut_button" id="cBy-5K-qpS">
                                         <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
                                             <action selector="cutButtonPressed:" destination="Vts-He-P18" id="DGb-Kz-z4c"/>
@@ -73,7 +73,7 @@
                                     </barButtonItem>
                                     <barButtonItem style="plain" id="MeA-86-Ay2">
                                         <switch key="customView" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" id="RsE-TN-IVY">
-                                            <rect key="frame" x="513" y="9.5" width="51" height="31"/>
+                                            <rect key="frame" x="524.5" y="9.5" width="51" height="31"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <connections>
                                                 <action selector="switchButtonChangedWithSender:" destination="Vts-He-P18" eventType="valueChanged" id="5As-3f-grU"/>
@@ -84,6 +84,11 @@
                                         <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
                                             <action selector="chatViewButton:" destination="Vts-He-P18" id="U0G-ah-An7"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem title="Tutoriel" id="7Oc-5H-Zh5">
+                                        <connections>
+                                            <action selector="openTutorial:" destination="Vts-He-P18" id="rhY-IH-N0q"/>
                                         </connections>
                                     </barButtonItem>
                                 </items>
@@ -271,5 +276,8 @@
             <point key="canvasLocation" x="795" y="-107"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="cut_button" width="48" height="48"/>
+    </resources>
     <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
 </document>
