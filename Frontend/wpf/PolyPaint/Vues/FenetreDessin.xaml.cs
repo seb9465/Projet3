@@ -80,6 +80,8 @@ namespace PolyPaint
             (DataContext as VueModele).CollaborationClient.ClientConnected += SendSelectedStrokesToOthers;
             (DataContext as VueModele).PropertyChanged += VueModelePropertyChanged;
 
+            (DataContext as VueModele).ChatClient.MessageReceived += ScrollDown;
+
             (DataContext as VueModele).OnRotation += UpdateAdorner;
 
             (DataContext as VueModele).ChooseBorder.Executed += Undoable_Executed;
