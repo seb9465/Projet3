@@ -8,10 +8,11 @@
 
 import UIKit
 
-class TutorialController: UIViewController {
+class TutorialController: UIViewController, UIScrollViewDelegate {
     
     // MARK: - Attributes
     
+    private var _slides: [Slide]!;
     
     // MARK: - Outlets
 
@@ -21,12 +22,14 @@ class TutorialController: UIViewController {
     // MARK: - Timing functions
     
     override func viewDidLoad() {
-        let slides: [Slide] = self.createSlides();
-        setupSlideScrollView(slides: slides);
+        self._slides = self.createSlides();
+        setupSlideScrollView(slides: self._slides);
         
-        self.pageControl.numberOfPages = slides.count;
+        self.pageControl.numberOfPages = _slides.count;
         self.pageControl.currentPage = 0;
         self.view.bringSubviewToFront(self.pageControl);
+        
+        self.scrollView.delegate = self;
     }
     
     // MARK: - Public functions
@@ -36,11 +39,16 @@ class TutorialController: UIViewController {
     
     private func createSlides() -> [Slide] {
         let slide1:Slide = Bundle.main.loadNibNamed("Slide", owner: self, options: nil)?.first as! Slide;
-        slide1.imageView.image = UIImage(named: "ic_onboarding_1");
-        slide1.labelTitle.text = "A real-life bear";
-        slide1.labelDesc.text = "Did you know that Winnie the chubby little cubby was based on a real, young bear in London";
+        slide1.imageView.image = UIImage(named: "lock");
+        slide1.labelTitle.text = "TITLE 1";
+        slide1.labelDesc.text = "DESCRIPTION 1";
         
-        return [slide1];
+        let slide2:Slide = Bundle.main.loadNibNamed("Slide", owner: self, options: nil)?.first as! Slide;
+        slide2.imageView.image = UIImage(named: "lock");
+        slide2.labelTitle.text = "TITLE 2";
+        slide2.labelDesc.text = "DESCRIPTION 2";
+        
+        return [slide1, slide2];
     }
     
     private func setupSlideScrollView(slides: [Slide]) -> Void {
@@ -52,5 +60,47 @@ class TutorialController: UIViewController {
             slides[i].frame = CGRect(x: self.view.frame.width * CGFloat(i), y: 0, width: self.view.frame.width, height: self.view.frame.height);
             self.scrollView.addSubview(slides[i]);
         }
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let pageIndex = round(scrollView.contentOffset.x/view.frame.width)
+        pageControl.currentPage = Int(pageIndex)
+        
+        let maximumHorizontalOffset: CGFloat = scrollView.contentSize.width - scrollView.frame.width
+        let currentHorizontalOffset: CGFloat = scrollView.contentOffset.x
+        
+        // vertical
+        let maximumVerticalOffset: CGFloat = scrollView.contentSize.height - scrollView.frame.height
+        let currentVerticalOffset: CGFloat = scrollView.contentOffset.y
+        
+        let percentageHorizontalOffset: CGFloat = currentHorizontalOffset / maximumHorizontalOffset
+        let percentageVerticalOffset: CGFloat = currentVerticalOffset / maximumVerticalOffset
+        
+        
+        /*
+         * below code changes the background color of view on paging the scrollview
+         */
+        //        self.scrollView(scrollView, didScrollToPercentageOffset: percentageHorizontalOffset)
+        
+        
+        /*
+         * below code scales the imageview on paging the scrollview
+         */
+        let percentOffset: CGPoint = CGPoint(x: percentageHorizontalOffset, y: percentageVerticalOffset);
+        
+        if(percentOffset.x > 0 && percentOffset.x <= 0.25) {
+            _slides[0].imageView.transform = CGAffineTransform(scaleX: (0.25-percentOffset.x)/0.25, y: (0.25-percentOffset.x)/0.25)
+            _slides[1].imageView.transform = CGAffineTransform(scaleX: percentOffset.x/0.25, y: percentOffset.x/0.25)
+        }
+//        else if(percentOffset.x > 0.25 && percentOffset.x <= 0.50) {
+//            _slides[1].imageView.transform = CGAffineTransform(scaleX: (0.50-percentOffset.x)/0.25, y: (0.50-percentOffset.x)/0.25)
+//            _slides[2].imageView.transform = CGAffineTransform(scaleX: percentOffset.x/0.50, y: percentOffset.x/0.50)
+//        } else if(percentOffset.x > 0.50 && percentOffset.x <= 0.75) {
+//            _slides[2].imageView.transform = CGAffineTransform(scaleX: (0.75-percentOffset.x)/0.25, y: (0.75-percentOffset.x)/0.25)
+//            _slides[3].imageView.transform = CGAffineTransform(scaleX: percentOffset.x/0.75, y: percentOffset.x/0.75)
+//        } else if(percentOffset.x > 0.75 && percentOffset.x <= 1) {
+//            _slides[3].imageView.transform = CGAffineTransform(scaleX: (1-percentOffset.x)/0.25, y: (1-percentOffset.x)/0.25)
+//            _slides[4].imageView.transform = CGAffineTransform(scaleX: percentOffset.x, y: percentOffset.x)
+//        }
     }
 }
