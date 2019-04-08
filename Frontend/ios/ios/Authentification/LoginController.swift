@@ -19,7 +19,6 @@ class LoginController: UIViewController, UITextFieldDelegate, WKUIDelegate {
     
     // MARK: Outlets
     
-    @IBOutlet weak var serverlabel: UILabel!;
     @IBOutlet var emailField: UITextField!;
     @IBOutlet var passwordField: UITextField!;
     @IBOutlet var validationLabel: UILabel!;
@@ -31,8 +30,6 @@ class LoginController: UIViewController, UITextFieldDelegate, WKUIDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad();
-        
-        self.serverlabel.text = "Server: " + Constants.SERVER_BASE_URL;
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil);
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil);
