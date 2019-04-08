@@ -38,8 +38,8 @@ namespace PolyPaint.Strokes
 
             var head = new Point(UnrotatedTopLeft.X + UnrotatedWidth / 2.0, UnrotatedTopLeft.Y + 1.0 / 8.0 * ImageHeight);
             head = Tools.RotatePoint(head, Center, Rotation);
-            var rotatedWidth = Rotation / 90.0 % 2 == 0 ? 1.0 / 4.0 * Width : 1.0 / 8.0 * Width;
-            var rotatedHeight = Rotation / 90.0 % 2 == 0 ? 1.0 / 8.0 * ImageHeight : 1.0 / 4.0 * ImageHeight;
+            var rotatedWidth = Rotation / 90.0 % 2 == 0 ? 1.0 / 4.0 * Width : 1.0 / 8.0 * (Width - 30);
+            var rotatedHeight = Rotation / 90.0 % 2 == 0 ? 1.0 / 8.0 * (Height - 30) : 1.0 / 4.0 * Height;
 
             PointCollection points = new PointCollection();
             points.Add(new Point(UnrotatedTopLeft.X + UnrotatedWidth / 2.0, UnrotatedTopLeft.Y + 1.0 / 4.0 * ImageHeight));
@@ -69,7 +69,7 @@ namespace PolyPaint.Strokes
 
         private void DrawText(DrawingContext drawingContext)
         {
-            drawingContext.DrawText(Title, new Point(UnrotatedTopLeft.X + UnrotatedWidth / 2.0 - Title.Width / 2.0, TopLeft.Y + ImageHeight +10));
+            drawingContext.DrawText(Title, new Point(UnrotatedTopLeft.X + UnrotatedWidth / 2.0 - Title.Width / 2.0, UnrotatedTopLeft.Y + ImageHeight + 10));
         }
 
         protected override void DrawAnchorPoints(DrawingContext drawingContext)

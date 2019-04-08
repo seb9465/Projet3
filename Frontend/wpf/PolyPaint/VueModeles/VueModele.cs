@@ -307,6 +307,9 @@ namespace PolyPaint.VueModeles
 
         private void rotate(string side)
         {
+            if (SurfaceDessin.GetSelectedStrokes().Any(x => x is AbstractLineStroke))
+                return;
+
             var increment = side == "right" ? 90 : -90;
             foreach (AbstractStroke stroke in editeur.SelectedStrokes.Where(x => x is AbstractStroke))
             {

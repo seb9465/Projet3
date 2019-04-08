@@ -60,6 +60,7 @@ namespace PolyPaint.Strokes
 
         private void DrawText(DrawingContext drawingContext)
         {
+            Title.MaxTextWidth = Width - 20 > 0 ? Width - 20 : 0;
             drawingContext.DrawText(Title, new Point(UnrotatedTopLeft.X + UnrotatedWidth / 2.0 - Title.Width / 2.0, UnrotatedTopLeft.Y + 10));
         }
     }

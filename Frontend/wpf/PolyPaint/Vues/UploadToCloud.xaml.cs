@@ -1,7 +1,12 @@
-﻿using PolyPaint.Modeles;
+﻿using Newtonsoft.Json;
+using PolyPaint.Modeles;
+using PolyPaint.VueModeles;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
@@ -33,6 +38,7 @@ namespace PolyPaint.Vues
             InitializeComponent();
             ChatClient = chatClient;
             _isProtected = protectionComboBox.Text == "Protected";
+            this.ShowDialog();
         }
 
         protected virtual void ProprieteModifiee([CallerMemberName] string propertyName = null)
@@ -49,7 +55,6 @@ namespace PolyPaint.Vues
             Application.Current.MainWindow = fenetreDessin;
             Close();
             fenetreDessin.Show();
-            Close();
         }
 
         private void protectionComboBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)

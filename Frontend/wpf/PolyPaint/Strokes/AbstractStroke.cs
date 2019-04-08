@@ -67,9 +67,10 @@ namespace PolyPaint.Strokes
         public AbstractStroke(StylusPointCollection pts, InkCanvas surfaceDessin, string couleurBordure, string couleurRemplissage, double thicc, DashStyle borderStyle)
             : base(pts)
         {
-            TopLeft = new Point();
-            Width = 0;
-            Height = 0;
+            TopLeft = new Point(StylusPoints[0].X <= StylusPoints[1].X ? StylusPoints[0].X : StylusPoints[1].X,
+                StylusPoints[0].Y <= StylusPoints[1].Y ? StylusPoints[0].Y : StylusPoints[1].Y);
+            Width = Math.Abs(StylusPoints[1].X - StylusPoints[0].X);
+            Height = Math.Abs(StylusPoints[1].Y - StylusPoints[0].Y);
 
             couleurBordure = couleurBordure == "" ? "#FF000000" : couleurBordure;
             couleurRemplissage = couleurRemplissage == "" ? "#FFFFFFFF" : couleurRemplissage;

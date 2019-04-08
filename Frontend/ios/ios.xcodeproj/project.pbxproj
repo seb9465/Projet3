@@ -79,6 +79,10 @@
 		B711B5F121F659A50096BF7F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B711B5F021F659A50096BF7F /* Assets.xcassets */; };
 		B711B5F421F659A50096BF7F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B711B5F221F659A50096BF7F /* LaunchScreen.storyboard */; };
 		B711B5FF21F659A50096BF7F /* iosTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B711B5FE21F659A50096BF7F /* iosTests.swift */; };
+		B713BCEE225AFADB006077FD /* TutorialController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B713BCED225AFADB006077FD /* TutorialController.swift */; };
+		B713BCF0225AFB43006077FD /* Tutorial.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B713BCEF225AFB43006077FD /* Tutorial.storyboard */; };
+		B713BCF2225AFD4E006077FD /* Slide.swift in Sources */ = {isa = PBXBuildFile; fileRef = B713BCF1225AFD4E006077FD /* Slide.swift */; };
+		B713BCF4225AFD5E006077FD /* Slide.xib in Resources */ = {isa = PBXBuildFile; fileRef = B713BCF3225AFD5E006077FD /* Slide.xib */; };
 		B74BE372221F40950001D62A /* CanvasService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74BE371221F40950001D62A /* CanvasService.swift */; };
 		B7567946220F33CD00F80B12 /* ChatService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7567945220F33CD00F80B12 /* ChatService.swift */; };
 		B7567948220F355F00F80B12 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7567947220F355F00F80B12 /* Constants.swift */; };
@@ -221,6 +225,10 @@
 		B711B5FA21F659A50096BF7F /* iosTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iosTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B711B5FE21F659A50096BF7F /* iosTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iosTests.swift; sourceTree = "<group>"; };
 		B711B60021F659A50096BF7F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B713BCED225AFADB006077FD /* TutorialController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialController.swift; sourceTree = "<group>"; };
+		B713BCEF225AFB43006077FD /* Tutorial.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Tutorial.storyboard; sourceTree = "<group>"; };
+		B713BCF1225AFD4E006077FD /* Slide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Slide.swift; sourceTree = "<group>"; };
+		B713BCF3225AFD5E006077FD /* Slide.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = Slide.xib; sourceTree = "<group>"; };
 		B74BE371221F40950001D62A /* CanvasService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasService.swift; sourceTree = "<group>"; };
 		B7567945220F33CD00F80B12 /* ChatService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatService.swift; sourceTree = "<group>"; };
 		B7567947220F355F00F80B12 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -632,12 +640,13 @@
 			children = (
 				C495FEC12238248E006E49F9 /* Ressources */,
 				3DD55D6E22271E90009D893B /* API */,
+				3D24628321FFF29E00C89165 /* Authentification */,
+				3DDE25172202B28E0082E735 /* Buttons */,
 				B781B95722132671001C1BD8 /* Canvas */,
 				B7567944220F330700F80B12 /* Chat */,
 				3DF62985221C9FBC0052209A /* Gallery */,
-				3DDE25172202B28E0082E735 /* Buttons */,
 				3DDE25162202A3650082E735 /* Segues */,
-				3D24628321FFF29E00C89165 /* Authentification */,
+				B713BCEC225AFA92006077FD /* Tutorial */,
 				B711B5E921F659A30096BF7F /* AppDelegate.swift */,
 				C43102E022132226008F1D80 /* SoundNotification.swift */,
 				B711B5ED21F659A30096BF7F /* Main.storyboard */,
@@ -659,6 +668,17 @@
 				B711B60021F659A50096BF7F /* Info.plist */,
 			);
 			path = iosTests;
+			sourceTree = "<group>";
+		};
+		B713BCEC225AFA92006077FD /* Tutorial */ = {
+			isa = PBXGroup;
+			children = (
+				B713BCED225AFADB006077FD /* TutorialController.swift */,
+				B713BCEF225AFB43006077FD /* Tutorial.storyboard */,
+				B713BCF1225AFD4E006077FD /* Slide.swift */,
+				B713BCF3225AFD5E006077FD /* Slide.xib */,
+			);
+			path = Tutorial;
 			sourceTree = "<group>";
 		};
 		B7567944220F330700F80B12 /* Chat */ = {
@@ -863,7 +883,9 @@
 				3D2052AE224A97F300C488F1 /* FillCell.xib in Resources */,
 				3DA5CA4822441A9200087298 /* GalleryCell.xib in Resources */,
 				C489A46D224A7CBB00492CCB /* AddAttributeCell.xib in Resources */,
+				B713BCF4225AFD5E006077FD /* Slide.xib in Resources */,
 				C489A46A224A7CB500492CCB /* ClassAttributeCell.xib in Resources */,
+				B713BCF0225AFB43006077FD /* Tutorial.storyboard in Resources */,
 				C495FEC22238248E006E49F9 /* Ressources in Resources */,
 				B711B5EF21F659A30096BF7F /* Main.storyboard in Resources */,
 			);
@@ -1036,6 +1058,7 @@
 				3DA5CA532244449900087298 /* ConnectionAssociationUni.swift in Sources */,
 				B78810572253083100D26BE7 /* HttpResponseMessage.swift in Sources */,
 				3DABD3F222418FC300707D86 /* StyleTableController.swift in Sources */,
+				B713BCF2225AFD4E006077FD /* Slide.swift in Sources */,
 				3DABD3F92241988500707D86 /* FigureSelectionCell.swift in Sources */,
 				3D1622B22239AB4F00B98263 /* Figure.swift in Sources */,
 				3D4ED6C5224EF242005630CF /* ConnectionAnchor.swift in Sources */,
@@ -1080,6 +1103,7 @@
 				B7567946220F33CD00F80B12 /* ChatService.swift in Sources */,
 				3D6E4C3D223ADE7000E391D4 /* BorderCell.swift in Sources */,
 				B7567948220F355F00F80B12 /* Constants.swift in Sources */,
+				B713BCEE225AFADB006077FD /* TutorialController.swift in Sources */,
 				C4D12706224418F3004B3641 /* UmlCommentFigure.swift in Sources */,
 				C4D1A8732252A3B00011F1BF /* ItemMessage.swift in Sources */,
 			);
@@ -1301,14 +1325,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 227V6QKFLX;
+				DEVELOPMENT_TEAM = PKMXAQ88Q4;
 				INFOPLIST_FILE = ios/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3.3;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = ca.polymtl.produ;
+				PRODUCT_BUNDLE_IDENTIFIER = ca.polymtl.prod;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = 2;
@@ -1321,14 +1345,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 227V6QKFLX;
+				DEVELOPMENT_TEAM = PKMXAQ88Q4;
 				INFOPLIST_FILE = ios/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3.3;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = ca.polymtl.produ;
+				PRODUCT_BUNDLE_IDENTIFIER = ca.polymtl.prod;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = 2;

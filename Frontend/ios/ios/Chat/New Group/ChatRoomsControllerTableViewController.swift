@@ -10,14 +10,15 @@ import UIKit
 
 class ChatRoomsControllerTableViewController: UITableViewController {
     
-    @IBOutlet var addButton: UIBarButtonItem!
+    // MARK: Outlets
     
     private let refreshTable = UIRefreshControl();
     
-    @objc private func refreshData(_ sender: Any) {
-        ChatService.shared.invokeFetchChannels();
-        self.refreshTable.endRefreshing();
-    }
+    // MARK: Attributes
+    
+    @IBOutlet var addButton: UIBarButtonItem!
+    
+    // MARK: Action functions
     
     @IBAction func addButtonTrigger(_ sender: Any) {
         guard let childVC = self.storyboard?.instantiateViewController(withIdentifier: "AddScreenViewController") as? AddScreenViewController else {
@@ -28,6 +29,8 @@ class ChatRoomsControllerTableViewController: UITableViewController {
         childVC.view.frame = self.view.bounds
         self.present(childVC, animated: true, completion: nil);
     }
+    
+    // MARK: Timing functions
     
     override func viewDidLoad() {
         self.tableView.separatorStyle = .none;
@@ -44,13 +47,6 @@ class ChatRoomsControllerTableViewController: UITableViewController {
         super.viewDidLoad();
     }
     
-    private func registerTableViewCells() {
-        let textFieldCell = UINib(nibName: "CustomTableViewCell", bundle: nil)
-        let headerCell = UINib(nibName: "CustomHeaderCell", bundle: nil)
-        self.tableView.register(textFieldCell, forCellReuseIdentifier: "CustomTableViewCell");
-        self.tableView.register(headerCell, forCellReuseIdentifier: "CustomHeaderCell");
-    }
-    
     override func viewDidAppear(_ animated: Bool) {
         ChatService.shared.currentChannel = nil;
         ChatService.shared.onFetchChannels(updateChannelsFct: self.updateChannels);
@@ -63,8 +59,26 @@ class ChatRoomsControllerTableViewController: UITableViewController {
         super.viewDidAppear(animated);
     }
     
+    // MARK: Public functions
+    
     public func updateChannels() -> Void {
         self.tableView.reloadData();
+    }
+    
+    // MARK: Private functions
+    
+    private func registerTableViewCells() {
+        let textFieldCell = UINib(nibName: "CustomTableViewCell", bundle: nil)
+        let headerCell = UINib(nibName: "CustomHeaderCell", bundle: nil)
+        self.tableView.register(textFieldCell, forCellReuseIdentifier: "CustomTableViewCell");
+        self.tableView.register(headerCell, forCellReuseIdentifier: "CustomHeaderCell");
+    }
+    
+    // MARK: Object functions
+    
+    @objc private func refreshData(_ sender: Any) {
+        ChatService.shared.invokeFetchChannels();
+        self.refreshTable.endRefreshing();
     }
 
     // MARK: - Table view data source
@@ -105,6 +119,8 @@ class ChatRoomsControllerTableViewController: UITableViewController {
             cell?.hideCircleLabel();
         }
         
+        cell?.selectionStyle = .none;
+        
         return cell!
     }
     
@@ -126,6 +142,7 @@ class ChatRoomsControllerTableViewController: UITableViewController {
             ChatService.shared.disconnectFromCurrentChatRoom();
             ChatService.shared.invokeFetchChannels();
             self.tableView.reloadData();
+            
         } else if editingStyle == .insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
         }

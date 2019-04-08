@@ -6,6 +6,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using PolyPaint.Utilitaires;
+using System;
 
 namespace PolyPaint.Strokes
 {
@@ -13,8 +14,8 @@ namespace PolyPaint.Strokes
     {
         public ConcurrentDictionary<AnchorPosition, Point> AnchorPoints { get; set; }
 
-        public ConcurrentDictionary<AbstractLineStroke, AnchorPosition> InConnections { get; set; }
-        public ConcurrentDictionary<AbstractLineStroke, AnchorPosition> OutConnections { get; set; }
+        public ConcurrentDictionary<Guid, AnchorPosition> InConnections { get; set; }
+        public ConcurrentDictionary<Guid, AnchorPosition> OutConnections { get; set; }
 
         public AbstractShapeStroke(StylusPointCollection stylusPoints, InkCanvas surfaceDessin, string title, string couleurBordure, string couleurRemplissage, double thicc, DashStyle dashStyle)
             : base(stylusPoints, surfaceDessin, couleurBordure, couleurRemplissage, thicc, dashStyle)
@@ -29,8 +30,8 @@ namespace PolyPaint.Strokes
                 }
             );
 
-            InConnections = new ConcurrentDictionary<AbstractLineStroke, AnchorPosition>();
-            OutConnections = new ConcurrentDictionary<AbstractLineStroke, AnchorPosition>();
+            InConnections = new ConcurrentDictionary<Guid, AnchorPosition>();
+            OutConnections = new ConcurrentDictionary<Guid, AnchorPosition>();
 
             Title = new FormattedText(title, System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, Config.T_FACE, 17, Brushes.Black);
         }
