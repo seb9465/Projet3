@@ -15,7 +15,6 @@
             <Image Name="tutorialImage" Source="/Resources/tutorial/1.png" Width="550" Height="300" Margin="3" />
         </Border>
 
-        
         <TextBlock Name="tutorialText" HorizontalAlignment="Center" MaxWidth="600" Height="60" TextWrapping="Wrap" FontSize="15" TextAlignment="Center">
             Here is your personal profile that contains a gallery of public and private 
         </TextBlock>
