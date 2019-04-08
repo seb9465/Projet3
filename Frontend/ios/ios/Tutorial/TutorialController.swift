@@ -42,7 +42,7 @@ class TutorialController: UIViewController, UIScrollViewDelegate {
     
     // MARK: - Private functions
     
-    private func initSlides() -> Void {
+    private func initSlides() -> Void {
         self._slides = self.createSlides();
         self.initSlidesView();
         setupSlideScrollView(slides: self._slides);
@@ -57,7 +57,9 @@ class TutorialController: UIViewController, UIScrollViewDelegate {
         for slide in self._slides {
             slide.initSlide();
             slide.getStartedBtnAction = {
-                self.dismiss(animated: true, completion: nil);
+                let sb: UIStoryboard = UIStoryboard(name: "Main", bundle: nil);
+                let vc: UIViewController = sb.instantiateViewController(withIdentifier: "MainController")
+                self.present(vc, animated: true, completion: nil);
             }
         }
     }
