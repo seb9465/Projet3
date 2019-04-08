@@ -173,6 +173,8 @@ extension Editor : TouchInputDelegate {
     
     func notifyTouchEnded(point: CGPoint, figure: Figure?) {
         if (self.touchEventState == .CONNECTION) {
+            self.deselect()
+            self.updateSideToolBar()
             self.handleConnectionTouchEnded(point: point)
             self.sourceFigure = nil
             return
