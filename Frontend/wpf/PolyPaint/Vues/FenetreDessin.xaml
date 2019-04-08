@@ -127,9 +127,18 @@
                             Background="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurCouleurFond}, ConverterParameter=change_text, UpdateSourceTrigger=PropertyChanged}" 
                             Command="{Binding Path=ChoisirOutil}"
                             CommandParameter="change_text">
-                        <StackPanel>
-                            <materialDesign:PackIcon Kind="TextShort" Width="25" Height="25"/>
-                        </StackPanel>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="9" />
+                                <RowDefinition Height="16" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="9"/>
+                                <ColumnDefinition Width="16"/>
+                            </Grid.ColumnDefinitions>
+                            <materialDesign:PackIcon Grid.Row="0" Grid.Column="0" Kind="CursorText" Width="9" Height="9"/>
+                            <materialDesign:PackIcon Grid.Column="1" Grid.Row="1" Kind="FormatText" Width="16" Height="16" />
+                        </Grid>
                     </Button>
                     <StackPanel Orientation="Horizontal">
                         <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Width="2" />
@@ -203,7 +212,7 @@
                         Background="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurCouleurFond}, ConverterParameter=text, UpdateSourceTrigger=PropertyChanged}" 
                         Command="{Binding Path=ChoisirOutil}"
                         CommandParameter="text">
-                        <materialDesign:PackIcon Kind="FormatText" Height="17" Width="17" />
+                        <materialDesign:PackIcon Kind="FormatText" Height="25" Width="25" />
                     </Button>
                     <Button Name="Image" Click="AddImageToCanvas"
                         Style="{StaticResource MaterialDesignRaisedLightButton}" HorizontalAlignment="Left" ToolTip="Image" 
