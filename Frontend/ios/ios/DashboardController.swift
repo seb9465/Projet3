@@ -95,8 +95,9 @@ class DashboardController: UIViewController, UITextFieldDelegate {
         UserDefaults.standard.removePersistentDomain(forName: "token");
         UserDefaults.standard.removePersistentDomain(forName: "id");
         
-        let loginController: UIViewController = self.storyboard?.instantiateViewController(withIdentifier: "LoginController");
-        self.navigationController?.popToViewController(loginController, animated: true);
+        let loginController: UIViewController = (self.storyboard?.instantiateViewController(withIdentifier: "LoginStoryboard"))!;
+//        self.navigationController?.popToViewController(loginController, animated: true);
+        self.present(loginController, animated: true, completion: nil);
     }
     
     @IBAction func createNewCanvas(_ sender: Any) {
