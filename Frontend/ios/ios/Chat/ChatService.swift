@@ -76,6 +76,13 @@ class ChatService {
     
     // MARK: Public functions
     
+    public func initHubConnection() -> Void {
+        self._hubConnection = HubConnectionBuilder(url: URL(string: Constants.CHAT_URL)!)
+            .withHttpConnectionOptions() { httpConnectionOptions in
+                httpConnectionOptions.accessTokenProvider = { return USER_TOKEN; }}
+            .build();
+    }
+    
     public func initOnReceivingMessage(currentMemberName: String? = "", insertMessage: @escaping (_ message: Message) -> Void, updateChatRooms: @escaping () -> Void) {
         self.onSendMessage(currentMemberName: currentMemberName, insertMessage: insertMessage, updateChatRooms: updateChatRooms);
     }
@@ -197,6 +204,7 @@ class ChatService {
                 }
             }
         });
+        
         self.invokeChannelsWhenConnected();
     }
     
