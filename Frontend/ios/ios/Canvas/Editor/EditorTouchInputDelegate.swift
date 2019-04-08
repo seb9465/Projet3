@@ -207,6 +207,8 @@ extension Editor : TouchInputDelegate {
 
             CollaborationHub.shared!.selectObjects(drawViewModels: self.getSelectedFiguresDrawviewModels())
             self.deselectLasso();
+            self.updateSideToolBar()
+            
             self.touchEventState = .SELECT
             return
         }

@@ -16,15 +16,11 @@ class UmlImageFigure: UmlFigure {
     override init(drawViewModel: DrawViewModel) {
         super.init(drawViewModel: drawViewModel);
         self.imageBytes = drawViewModel.ImageBytes!
-        self.autoresizingMask = UIView.AutoresizingMask(rawValue: UIView.AutoresizingMask.flexibleBottomMargin.rawValue | UIView.AutoresizingMask.flexibleHeight.rawValue | UIView.AutoresizingMask.flexibleRightMargin.rawValue | UIView.AutoresizingMask.flexibleLeftMargin.rawValue | UIView.AutoresizingMask.flexibleTopMargin.rawValue | UIView.AutoresizingMask.flexibleWidth.rawValue)
+
         self.contentMode = UIView.ContentMode.scaleAspectFit
         self.image = UIImage(data: Data(base64Encoded: self.imageBytes!)!)
-        print(self.frame.width)
-        print(self.frame.height)
-
         self.imageView = UIImageView(image: self.image)
         self.imageView!.frame = CGRect(x: 0, y: 0, width: self.frame.width, height: self.frame.height)
-        
         self.addSubview(imageView!)
         self.initializeAnchorPoints()
     }

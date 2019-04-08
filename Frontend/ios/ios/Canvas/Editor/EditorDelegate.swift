@@ -12,4 +12,5 @@ protocol EditorDelegate {
     func getKicked()
     func setCutButtonState(isEnabled: Bool)
     func setDuplicateButtonState(isEnabled: Bool)
+    func setCurrentTab(index: Int)
 }

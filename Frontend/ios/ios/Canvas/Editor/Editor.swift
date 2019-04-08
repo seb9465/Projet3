@@ -46,12 +46,11 @@ class Editor {
     
     init() {
         self.editorView.delegate = self
-        let rotation = UIRotationGestureRecognizer(target: self, action: #selector(self.rotatedView(_:)))
         let pinch = UIPinchGestureRecognizer(target: self, action: #selector(self.resizeFigure(_:)))
-        self.editorView.addGestureRecognizer(rotation)
         self.editorView.addGestureRecognizer(pinch)
+        let longPress = UILongPressGestureRecognizer(target: self, action: #selector(self.longPress(_:)))
+        self.editorView.addGestureRecognizer(longPress)
     }
-    
     func resize(width: CGFloat, heigth: CGFloat) {
         currentCanvas.canvasHeight = Float(heigth)
         currentCanvas.canvasWidth = Float(width)
@@ -76,6 +75,7 @@ class Editor {
         self.delegate?.setDuplicateButtonState(isEnabled: true)
         self.selectedFigures.append(figure)
         self.selectionOutlines.append(selectionOutline)
+        self.delegate?.setCurrentTab(index: 1)
     }
     
     // Selection recieved by hub
@@ -127,6 +127,7 @@ class Editor {
         CollaborationHub.shared!.selectObjects(drawViewModels: [])
         self.deselectLasso();
         self.selectedFigures.removeAll();
+        self.delegate?.setCurrentTab(index: 0)
         self.delegate?.setCutButtonState(isEnabled: false)
     }
     
@@ -172,6 +173,7 @@ class Editor {
         }
         
         var drawViewModelToSelect:[DrawViewModel] = []
+        var figureToAdd: [Figure] = []
          for figure in self.clipboard {
             var viewModel = figure.exportViewModel()!;
             viewModel.Guid = UUID().uuidString;
@@ -179,13 +181,13 @@ class Editor {
             viewModel.StylusPoints![0].Y = viewModel.StylusPoints![0].Y + 10;
             viewModel.StylusPoints![1].X = viewModel.StylusPoints![1].X + 10;
             viewModel.StylusPoints![1].Y = viewModel.StylusPoints![1].Y + 10;
-            self.select(figure: self.insertFigure(drawViewModel: viewModel));
-            drawViewModelToSelect.append(viewModel)
+            let newFigure: Figure = self.insertFigure(drawViewModel: viewModel)
+            self.select(figure: newFigure);
+            figureToAdd.append(figure)
+            drawViewModelToSelect.append(figure.exportViewModel()!)
         }
-        CollaborationHub.shared?.selectObjects(drawViewModels: [])
+        CollaborationHub.shared!.postNewFigure(figures: figureToAdd);
         CollaborationHub.shared?.selectObjects(drawViewModels: drawViewModelToSelect)
-
-        CollaborationHub.shared!.postNewFigure(figures: self.figures);
         CanvasService.saveOnNewFigure(figures: self.figures, editor: self);
     }
     
@@ -267,6 +269,7 @@ class Editor {
         }
         
         self.deselect();
+        CollaborationHub.shared?.selectObjects(drawViewModels: [])
         self.selectedFigures.removeAll()
         self.selectionOutlines.removeAll()
         self.editorView.setNeedsDisplay()
