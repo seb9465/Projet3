@@ -12,6 +12,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -53,6 +54,24 @@ namespace PolyPaint.Vues
             (DataContext as UserDataContext).Canvas = Canvas;
             
             usernameLabel.Content = username;
+
+            Loaded += async (sender, e) =>
+            {
+
+                using (HttpClient client = new HttpClient())
+                {
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", (string)Application.Current.Properties["token"]);
+                    System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
+                    HttpResponseMessage response = await client.GetAsync($"{Config.URL}/api/user/tutorial");
+                    string responseString = await response.Content.ReadAsStringAsync();
+
+                    if (responseString == "false")
+                    {
+                        Tutoriel tuto = new Tutoriel();
+                    }
+                }
+            };
+
             Closing += UnsubscribeDataContext;
         }
 
@@ -254,6 +273,10 @@ namespace PolyPaint.Vues
                 Close();
                 fenetreDessin.Show();
             }
+        }
+        private void showTutorial(object sender, RoutedEventArgs e)
+        {
+            Tutoriel tutoriel = new Tutoriel();
         }
 
     }
