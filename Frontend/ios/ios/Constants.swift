@@ -25,6 +25,8 @@ struct Constants {
     static let REGISTER_URL: String = Constants.SERVER_BASE_URL + "/api/register";
     static let LOGOUT_URL: String = Constants.SERVER_BASE_URL + "/api/user/logout";
     static let SAVE_URL: String = Constants.SERVER_BASE_URL + "/api/user/canvas";
+    static let TUTORIAL_URL: String = Constants.SERVER_BASE_URL + "/api/user/tutorial";
+    static let TUTORIAL_SHOWN_URL: String = Constants.SERVER_BASE_URL + "/api/user/tutorial/true";
 
     
     static let RED_COLOR: UIColor = UIColor(red: 1, green: 0.419608, blue: 0.419608, alpha: 1);
