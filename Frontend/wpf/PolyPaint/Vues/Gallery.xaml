@@ -28,6 +28,13 @@
                     </Grid>
                 </StackPanel>
             </Button>
+            <Button Style="{StaticResource MaterialDesignRaisedLightButton}" Click="showTutorial"
+             Width="140" Height="40" HorizontalAlignment="Right" Background="Gainsboro" BorderBrush="Gray" Margin="0,-40,145,0" >
+                <StackPanel Orientation="Horizontal">
+                    <Label FontWeight="Bold">Tutorial</Label>
+                    <materialDesign:PackIcon Kind="HelpOutline" Height="24" Width="24"/>
+                </StackPanel>
+            </Button>
             <Button Style="{StaticResource MaterialDesignRaisedLightButton}" Click="Disconnect_Click"
              Width="140" Height="40" HorizontalAlignment="Right" Background="Gainsboro" BorderBrush="Gray" Margin="0,-40,0,0" >
                 <StackPanel Orientation="Horizontal">

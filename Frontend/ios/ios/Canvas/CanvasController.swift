@@ -16,47 +16,102 @@ var canvasId: String = ""
 var currentCanvas: Canvas = Canvas()
 
 class CanvasController: UIViewController {
+    
     // MARK: - Attributes
+    
     private var activeButton: UIBarButtonItem!;
-    @IBOutlet weak var connectionLabel: UILabel!
-    public var editor: Editor = Editor()
+    private var _editor: Editor = Editor()
+    
+    // MARK: Getter - Setter
+    
+    public var editor: Editor {
+        get { return self._editor }
+    }
+    
+    // MARK: - Outlets
+    
+    @IBOutlet var navigationBar: UIToolbar!
     @IBOutlet weak var insertButton: UIBarButtonItem!
     @IBOutlet var selectButton: UIBarButtonItem!
     @IBOutlet var deleteButton: UIBarButtonItem!
     @IBOutlet weak var lassoButton: UIBarButtonItem!
     @IBOutlet weak var quitButton: UIBarButtonItem!
-    @IBOutlet weak var switchButton: UISwitch!
-    
-    @IBOutlet weak var protectionLabel: UILabel!
     @IBOutlet weak var cutButton: UIBarButtonItem!
     @IBOutlet weak var duplicateButton: UIBarButtonItem!
     @IBOutlet weak var exportButton: UIBarButtonItem!
-    @IBOutlet var chatViewButton: UIBarButtonItem!
     
-    @IBOutlet var navigationBar: UIToolbar!
+    @IBOutlet weak var switchButton: UISwitch!
+    @IBOutlet weak var connectionLabel: UILabel!
+    @IBOutlet weak var protectionLabel: UILabel!
+    
+    @IBOutlet var chatViewButton: UIBarButtonItem!
     @IBOutlet var chatViewContainer: UIView!
-
+    @IBOutlet var chatNotifLabel: UILabel!
+    
+    // MARK: - Timing functions
+    
     override func viewDidLoad() {
         super.viewDidLoad();
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
         
         self.loadCanvas()
         CollaborationHub.shared = CollaborationHub(channelId: canvasId)
         CollaborationHub.shared!.connectToHub()
-        CollaborationHub.shared!.delegate = self.editor
-        self.editor.delegate = self
+        CollaborationHub.shared!.delegate = self._editor
+        self._editor.delegate = self
         self.initChatViewContainer();
 
-        self.view.addSubview(self.editor.editorView)
-        setupNetwork()
+        self.view.addSubview(self._editor.editorView)
+        setupNetwork();
+        
+        self.setChatNotifLabel();
+        
+        ChatService.shared.afkMessagesDidChangeClosure = {
+            let channels: [String: [Message]] = ChatService.shared.messagesWhileAFK;
+            print(channels);
+            var counter: Int = 0;
+            for channel in channels {
+                counter += (channels[channel.key]?.count)!;
+            }
+            
+            if (counter > 0) {
+                self.chatNotifLabel.isHidden = false;
+                self.chatNotifLabel.text = String(counter);
+            } else {
+                self.chatNotifLabel.isHidden = true;
+                self.chatNotifLabel.text = "";
+            }
+        }
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated);
+        
+        navigationController?.setNavigationBarHidden(true, animated: animated);
         
     }
-    public func loadCanvas() {
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated);
+        
+        navigationController?.setNavigationBarHidden(false, animated: animated);
+    }
+    
+    // MARK: Private functions
+    
+    private func setChatNotifLabel() -> Void {
+        self.chatNotifLabel.layer.cornerRadius = self.chatNotifLabel.frame.width / 2;
+        self.chatNotifLabel.layer.backgroundColor = Constants.DEFAULT_BLUE_COLOR.cgColor;
+        self.chatNotifLabel.textColor = UIColor.white;
+        self.chatNotifLabel.text = "";
+        self.chatNotifLabel.textAlignment = .center;
+        self.chatNotifLabel.isHidden = true;
+    }
+    
+    private func loadCanvas() -> Void {
         var data: Data = currentCanvas.drawViewModels.data(using: String.Encoding.utf8)!
         let drawViewModels: [DrawViewModel] = try! JSONDecoder().decode(Array<DrawViewModel>.self, from: data)
-        self.editor.loadCanvas(drawViewModels: drawViewModels)
-        self.editor.resize(width: CGFloat(currentCanvas.canvasWidth), heigth: CGFloat(currentCanvas.canvasHeight))
+        self._editor.loadCanvas(drawViewModels: drawViewModels)
+        self._editor.resize(width: CGFloat(currentCanvas.canvasWidth), heigth: CGFloat(currentCanvas.canvasHeight))
         print(String(currentCanvas.canvasWidth) + String(currentCanvas.canvasHeight))
         let token = UserDefaults.standard.string(forKey: "token");
         let jwt = try! decode(jwt: token!)
@@ -77,7 +132,8 @@ class CanvasController: UIViewController {
             self.protectionLabel.text = "Password Protection is OFF"
         }
     }
-    func setupNetwork() {
+    
+    private func setupNetwork() -> Void {
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(reachabilityChanged),
@@ -86,110 +142,132 @@ class CanvasController: UIViewController {
         )
         self.setupInternetConnectionState()
     }
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated);
-        navigationController?.setNavigationBarHidden(true, animated: animated);
-        
-    }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated);
-        navigationController?.setNavigationBarHidden(false, animated: animated);
-    }
-    
-    // MARK: - Button Action Functions
-    
-    @IBAction func undoButton(_ sender: Any) {
-        self.editor.deselect();
-        self.editor.undo(view: self.view);
-    }
-    
-    @IBAction func redoButton(_ sender: Any) {
-        self.editor.deselect();
-        self.editor.redo(view: self.view);
-    }
-    
-    @IBAction func cutButtonPressed(_ sender: Any) {
-        self.editor.cut()
-    }
-    
-    @IBAction func duplicateButtonPressed(_ sender: Any) {
-        if (self.editor.selectedFigures.count == 0 && self.editor.clipboard.count == 0) {
-            let alert: UIAlertController = UIAlertController(title: "Nothing to duplicate!", message: "Clipboard is empty and no figures are selected.", preferredStyle: .alert);
-            let okAction: UIAlertAction = UIAlertAction(title: "Alright!", style: .default, handler: nil);
-            alert.addAction(okAction);
-            self.present(alert, animated: true);
-        } else {
-            self.editor.duplicate();
-        }
-    }
-    @IBAction func clearButton(_ sender: Any) {
-        self.editor.clear()
-        CollaborationHub.shared!.reset();
-        
-    }
-    
-    @IBAction func deleteButton(_ sender: Any) {
-        self.editor.deleteSelectedFigures()
-        CollaborationHub.shared!.CutObjects(drawViewModels: [])
-    }
-    
-    @IBAction func lassoButton(_ sender: Any) {
-        self.resetButtonColor();
-        
-        if (self.editor.touchEventState == .AREA_SELECT) {
-            self.editor.changeTouchHandleState(to: .NONE);
-        } else {
-            self.lassoButton.tintColor = Constants.RED_COLOR;
-            self.editor.changeTouchHandleState(to: .AREA_SELECT)
-        }
-        
-        self.editor.deselect();
-    }
-    
-    @IBAction func selectFigureButton(_ sender: Any) {
-        self.resetButtonColor();
-        
-        if (self.editor.touchEventState == .SELECT) {
-            self.editor.changeTouchHandleState(to: .NONE);
-        } else {
-            self.selectButton.tintColor = Constants.RED_COLOR;
-            self.editor.changeTouchHandleState(to: .SELECT)
-        }
-        
-        self.editor.deselect();
-    }
-    
-    @IBAction func insertButtonPressed(_ sender: Any) {
-        self.resetButtonColor();
-        
-        if (self.editor.touchEventState == .INSERT) {
-            self.editor.changeTouchHandleState(to: .NONE);
-        } else {
-            self.insertButton.tintColor = Constants.RED_COLOR;
-            self.editor.changeTouchHandleState(to: .INSERT)
-        }
-        
-        self.editor.deselect();
-    }
-    
-    @IBAction func exportButtonPressed(_ sender: Any) {
-        let image = self.exportPNG()
-        UIImageWriteToSavedPhotosAlbum(image, self, #selector(image(_:didFinishSavingWithError:contextInfo:)), nil);
-    }
-    
-    public func exportPNG() -> UIImage {
-        UIGraphicsBeginImageContextWithOptions(self.editor.editorView.bounds.size, false, 0.0);
-        self.editor.editorView.drawHierarchy(in: self.editor.editorView.bounds, afterScreenUpdates: true);
+    private func exportPNG() -> UIImage {
+        UIGraphicsBeginImageContextWithOptions(self._editor.editorView.bounds.size, false, 0.0);
+        self._editor.editorView.drawHierarchy(in: self._editor.editorView.bounds, afterScreenUpdates: true);
         let image = UIGraphicsGetImageFromCurrentImageContext();
         UIGraphicsEndImageContext();
         return image!
     }
     
-     private func initializeConnection() {
+    private func initializeConnection() -> Void {
         CollaborationHub.shared = CollaborationHub(channelId: canvasId)
         CollaborationHub.shared!.connectToHub()
-        CollaborationHub.shared!.delegate = self.editor
+        CollaborationHub.shared!.delegate = self._editor
+    }
+    
+    private func setupInternetConnectionState() -> Void {
+        if reach!.isReachableViaWiFi() || reach!.isReachableViaWWAN() {
+            self.connectionLabel.textColor = UIColor.green
+            self.connectionLabel.text = "Online"
+            self.quitButton.isEnabled = true
+        } else {
+            self.connectionLabel.text = "Offline"
+            self.connectionLabel.textColor = UIColor.red
+            self.quitButton.isEnabled = false
+        }
+    }
+    
+    private func initChatViewContainer() -> Void {
+        self.chatViewContainer.sizeToFit();
+        self.view.bringSubviewToFront(self.chatViewContainer);
+        self.chatViewContainer.isHidden = true;
+        self.chatViewContainer.layer.cornerRadius = Constants.ChatView.cornerRadius;
+        self.chatViewContainer.layer.shadowColor = Constants.ChatView.shadowColor;
+        self.chatViewContainer.layer.shadowOffset = Constants.ChatView.shadowOffset;
+        self.chatViewContainer.layer.shadowOpacity = Constants.ChatView.shadowOpacity;
+        self.chatViewContainer.layer.shadowRadius = Constants.ChatView.shadowRadius;
+        self.chatViewContainer.layer.masksToBounds = false;
+    }
+    
+    private func resetButtonColor() -> Void {
+        self.selectButton.tintColor = UIColor.black;
+        self.deleteButton.tintColor = UIColor.black;
+        self.insertButton.tintColor = UIColor.black;
+        self.lassoButton.tintColor = UIColor.black;
+    }
+    
+    // MARK: - Action Functions
+    
+    @IBAction func undoButton(_ sender: Any) -> Void {
+        self._editor.deselect();
+        self._editor.undo(view: self.view);
+    }
+    
+    @IBAction func redoButton(_ sender: Any) -> Void {
+        self._editor.deselect();
+        self._editor.redo(view: self.view);
+    }
+    
+    @IBAction func cutButtonPressed(_ sender: Any) -> Void {
+        self._editor.cut()
+    }
+    
+    @IBAction func duplicateButtonPressed(_ sender: Any) -> Void {
+        if (self._editor.selectedFigures.count == 0 && self._editor.clipboard.count == 0) {
+            let alert: UIAlertController = UIAlertController(title: "Nothing to duplicate!", message: "Clipboard is empty and no figures are selected.", preferredStyle: .alert);
+            let okAction: UIAlertAction = UIAlertAction(title: "Alright!", style: .default, handler: nil);
+            alert.addAction(okAction);
+            self.present(alert, animated: true);
+        } else {
+            self._editor.duplicate();
+        }
+    }
+    
+    @IBAction func clearButton(_ sender: Any) -> Void {
+        self._editor.clear()
+        CollaborationHub.shared!.reset();
+        
+    }
+    
+    @IBAction func deleteButton(_ sender: Any) -> Void {
+        self._editor.deleteSelectedFigures()
+        CollaborationHub.shared!.CutObjects(drawViewModels: [])
+    }
+    
+    @IBAction func lassoButton(_ sender: Any) -> Void {
+        self.resetButtonColor();
+        
+        if (self._editor.touchEventState == .AREA_SELECT) {
+            self._editor.changeTouchHandleState(to: .NONE);
+        } else {
+            self.lassoButton.tintColor = Constants.RED_COLOR;
+            self._editor.changeTouchHandleState(to: .AREA_SELECT)
+        }
+        
+        self._editor.deselect();
+    }
+    
+    @IBAction func selectFigureButton(_ sender: Any) -> Void {
+        self.resetButtonColor();
+        
+        if (self._editor.touchEventState == .SELECT) {
+            self._editor.changeTouchHandleState(to: .NONE);
+        } else {
+            self.selectButton.tintColor = Constants.RED_COLOR;
+            self._editor.changeTouchHandleState(to: .SELECT)
+        }
+        
+        self._editor.deselect();
+    }
+    
+    @IBAction func insertButtonPressed(_ sender: Any) -> Void {
+        self.resetButtonColor();
+        
+        if (self._editor.touchEventState == .INSERT) {
+            self._editor.changeTouchHandleState(to: .NONE);
+        } else {
+            self.insertButton.tintColor = Constants.RED_COLOR;
+            self._editor.changeTouchHandleState(to: .INSERT)
+        }
+        
+        self._editor.deselect();
+    }
+    
+    @IBAction func exportButtonPressed(_ sender: Any) -> Void {
+        let image = self.exportPNG()
+        UIImageWriteToSavedPhotosAlbum(image, self, #selector(image(_:didFinishSavingWithError:contextInfo:)), nil);
     }
     
     @IBAction func chatViewButton(_ sender: Any) {
@@ -266,25 +344,14 @@ class CanvasController: UIViewController {
         
         self.present(alert, animated: true, completion: nil);
     }
-    @objc func keyboardWillShow(notification: NSNotification) {
-        //        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
-        //            if self.view.frame.origin.y == 0 {
-        //                self.view.frame.origin.y -= keyboardSize.height
-        //            }
-        //        }
-    }
     
-    @objc func keyboardWillHide(notification: NSNotification) {
-        //        if self.view.frame.origin.y != 0 {
-        //            self.view.frame.origin.y = 0
-        //        }
-    }
+    // Mark: - Object functions
     
-    @objc func reachabilityChanged(notification: NSNotification) {
+    @objc func reachabilityChanged(notification: NSNotification) -> Void {
         if reach!.isReachableViaWiFi() || reach!.isReachableViaWWAN() {
             CollaborationHub.shared!.disconnectFromHub()
             var viewModels : [DrawViewModel] = []
-            for figure in self.editor.figures {
+            for figure in self._editor.figures {
                 viewModels.append(figure.exportViewModel()!)
             }
             let viewModelsSorted = viewModels.sorted(by: { $0.ItemType!.rawValue < $1.ItemType!.rawValue })
@@ -296,7 +363,7 @@ class CanvasController: UIViewController {
                 if(succes) {
                     let updatedAlert = UIAlertController(title: "Canvas Updated", message: "All your modification while being offline were saved to the cloud!", preferredStyle: .alert)
                     updatedAlert.addAction(UIAlertAction(title: "OK", style: .default))
-                    CollaborationHub.shared?.postNewFigure(figures: self.editor.figures)
+                    CollaborationHub.shared?.postNewFigure(figures: self._editor.figures)
                     self.present(updatedAlert, animated: true, completion: nil);
                 } else {
                     let errorAlert = UIAlertController(title: "Canvas Update Error", message: "Error while updating from cache.", preferredStyle: .alert)
@@ -311,37 +378,7 @@ class CanvasController: UIViewController {
         self.setupInternetConnectionState()
     }
     
-    public func setupInternetConnectionState() {
-        if reach!.isReachableViaWiFi() || reach!.isReachableViaWWAN() {
-            self.connectionLabel.textColor = UIColor.green
-            self.connectionLabel.text = "Online"
-            self.quitButton.isEnabled = true
-        } else {
-            self.connectionLabel.text = "Offline"
-            self.connectionLabel.textColor = UIColor.red
-            self.quitButton.isEnabled = false
-        }
-    }
-    private func initChatViewContainer() -> Void {
-        self.chatViewContainer.sizeToFit();
-        self.view.bringSubviewToFront(self.chatViewContainer);
-        self.chatViewContainer.isHidden = true;
-        self.chatViewContainer.layer.cornerRadius = Constants.ChatView.cornerRadius;
-        self.chatViewContainer.layer.shadowColor = Constants.ChatView.shadowColor;
-        self.chatViewContainer.layer.shadowOffset = Constants.ChatView.shadowOffset;
-        self.chatViewContainer.layer.shadowOpacity = Constants.ChatView.shadowOpacity;
-        self.chatViewContainer.layer.shadowRadius = Constants.ChatView.shadowRadius;
-        self.chatViewContainer.layer.masksToBounds = false;
-    }
-    
-    private func resetButtonColor() -> Void {
-        self.selectButton.tintColor = UIColor.black;
-        self.deleteButton.tintColor = UIColor.black;
-        self.insertButton.tintColor = UIColor.black;
-        self.lassoButton.tintColor = UIColor.black;
-    }
-    
-    @objc private func image(_ image: UIImage, didFinishSavingWithError error: Error?, contextInfo: UnsafeRawPointer) {
+    @objc private func image(_ image: UIImage, didFinishSavingWithError error: Error?, contextInfo: UnsafeRawPointer) -> Void {
         if let error = error {
             let ac = UIAlertController(title: "Exportation error", message: error.localizedDescription, preferredStyle: .alert)
             ac.addAction(UIAlertAction(title: "OK", style: .default))

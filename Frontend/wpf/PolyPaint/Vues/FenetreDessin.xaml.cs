@@ -820,11 +820,6 @@ namespace PolyPaint
             }
         }
 
-        private void showTutorial(object sender, RoutedEventArgs e)
-        {
-            Tutoriel tutoriel = new Tutoriel();
-        }
-
         private void surfaceDessin_ChangeSelection(object sender, EventArgs e)
         {
             (DataContext as VueModele).ChangeSelection(sender as InkCanvas);
