@@ -16,26 +16,38 @@ var canvasId: String = ""
 var currentCanvas: Canvas = Canvas()
 
 class CanvasController: UIViewController {
+    
     // MARK: - Attributes
+    
     private var activeButton: UIBarButtonItem!;
-    @IBOutlet weak var connectionLabel: UILabel!
     public var editor: Editor = Editor()
+    
+    // MARK: - Outlets
+    
+    // MARK: Navigation Bar
+    @IBOutlet var navigationBar: UIToolbar!
     @IBOutlet weak var insertButton: UIBarButtonItem!
     @IBOutlet var selectButton: UIBarButtonItem!
     @IBOutlet var deleteButton: UIBarButtonItem!
     @IBOutlet weak var lassoButton: UIBarButtonItem!
     @IBOutlet weak var quitButton: UIBarButtonItem!
-    @IBOutlet weak var switchButton: UISwitch!
-    
-    @IBOutlet weak var protectionLabel: UILabel!
     @IBOutlet weak var cutButton: UIBarButtonItem!
     @IBOutlet weak var duplicateButton: UIBarButtonItem!
     @IBOutlet weak var exportButton: UIBarButtonItem!
-    @IBOutlet var chatViewButton: UIBarButtonItem!
     
-    @IBOutlet var navigationBar: UIToolbar!
+    // MARK: Connectivity
+    @IBOutlet weak var switchButton: UISwitch!
+    @IBOutlet weak var connectionLabel: UILabel!
+    @IBOutlet weak var protectionLabel: UILabel!
+    
+    // MARK: Chat
+    @IBOutlet var chatViewButton: UIBarButtonItem!
     @IBOutlet var chatViewContainer: UIView!
-
+    @IBOutlet var chatNotifLabel: UILabel!
+    
+    
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad();
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
@@ -49,9 +61,37 @@ class CanvasController: UIViewController {
         self.initChatViewContainer();
 
         self.view.addSubview(self.editor.editorView)
-        setupNetwork()
+        setupNetwork();
         
+        self.setChatNotifLabel();
+        
+        ChatService.shared.afkMessagesDidChangeClosure = {
+            let channels: [String: [Message]] = ChatService.shared.messagesWhileAFK;
+            print(channels);
+            var counter: Int = 0;
+            for channel in channels {
+                counter += (channels[channel.key]?.count)!;
+            }
+            
+            if (counter > 0) {
+                self.chatNotifLabel.isHidden = false;
+                self.chatNotifLabel.text = String(counter);
+            } else {
+                self.chatNotifLabel.isHidden = true;
+                self.chatNotifLabel.text = "";
+            }
+        }
     }
+    
+    private func setChatNotifLabel() -> Void {
+        self.chatNotifLabel.layer.cornerRadius = self.chatNotifLabel.frame.width / 2;
+        self.chatNotifLabel.layer.backgroundColor = Constants.DEFAULT_BLUE_COLOR.cgColor;
+        self.chatNotifLabel.textColor = UIColor.white;
+        self.chatNotifLabel.text = "";
+        self.chatNotifLabel.textAlignment = .center;
+        self.chatNotifLabel.isHidden = true;
+    }
+    
     public func loadCanvas() {
         var data: Data = currentCanvas.drawViewModels.data(using: String.Encoding.utf8)!
         let drawViewModels: [DrawViewModel] = try! JSONDecoder().decode(Array<DrawViewModel>.self, from: data)
