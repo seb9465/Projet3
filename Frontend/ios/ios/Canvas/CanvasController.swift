@@ -31,7 +31,6 @@ class CanvasController: UIViewController {
     @IBOutlet weak var duplicateButton: UIBarButtonItem!
     @IBOutlet weak var exportButton: UIBarButtonItem!
     @IBOutlet var chatViewButton: UIBarButtonItem!
-    
     @IBOutlet var navigationBar: UIToolbar!
     @IBOutlet var chatViewContainer: UIView!
 
@@ -46,7 +45,8 @@ class CanvasController: UIViewController {
         CollaborationHub.shared!.delegate = self.editor
         self.editor.delegate = self
         self.initChatViewContainer();
-
+        self.cutButton.isEnabled = false
+        self.duplicateButton.isEnabled = false
         self.view.addSubview(self.editor.editorView)
         setupNetwork()
         
@@ -340,6 +340,13 @@ class CanvasController: UIViewController {
 }
 
 extension CanvasController: EditorDelegate {
+    func setCutButtonState(isEnabled: Bool) {
+        self.cutButton.isEnabled = isEnabled
+    }
+    func setDuplicateButtonState(isEnabled: Bool) {
+        self.duplicateButton.isEnabled = isEnabled
+    }
+    
     func getKicked() {
         let updatedAlert = UIAlertController(title: "Kicked out", message: "You got kicked out because a password protection was added", preferredStyle: .alert)
         let okAction: UIAlertAction = UIAlertAction(title: "Ok", style: .default, handler: { _ in

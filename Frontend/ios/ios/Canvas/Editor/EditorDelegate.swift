@@ -10,4 +10,6 @@ import UIKit
 
 protocol EditorDelegate {
     func getKicked()
+    func setCutButtonState(isEnabled: Bool)
+    func setDuplicateButtonState(isEnabled: Bool)
 }
