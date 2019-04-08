@@ -41,7 +41,7 @@
                         <textInputTraits key="textInputTraits"/>
                     </textField>
                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BVo-hg-08m" customClass="RoundedCorners" customModule="ios" customModuleProvider="target">
-                        <rect key="frame" x="209" y="85" width="25" height="25"/>
+                        <rect key="frame" x="204" y="82" width="30" height="30"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" name="systemGreenColor" catalog="System" colorSpace="catalog"/>
                         <fontDescription key="fontDescription" type="boldSystem" pointSize="13"/>
