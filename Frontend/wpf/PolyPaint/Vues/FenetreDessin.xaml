@@ -70,14 +70,14 @@
                         </LinearGradientBrush>
                     </StackPanel.Background>
 
-                    <Button  Style="{StaticResource MaterialDesignRaisedButton}" ToolTip="Download canvas as PNG" 
-                    x:Name="DownloadJPG" Width="30" Height="30" Margin="5" Padding="0" Click="DownloadCanvasAsJPG" FontSize="18">
-                        <materialDesign:PackIcon Kind="FileDownload" />
+                    <Button  Style="{StaticResource MaterialDesignFloatingActionButton}" ToolTip="Download canvas as PNG" 
+                    x:Name="DownloadJPG" Width="40" Height="40" Margin="5" Padding="0" Click="DownloadCanvasAsJPG" FontSize="18">
+                        <materialDesign:PackIcon Kind="FileDownload"  Width="25" Height="25"/>
                     </Button>
 
                     <Button  Style="{StaticResource MaterialDesignRaisedButton}" ToolTip="Reinitialize canvas" 
                     x:Name="reinitialiser" Width="30" Height="30" Margin="5" Padding="0" Click="Reinitialiser_Click" FontSize="18">
-                        <materialDesign:PackIcon Kind="Recycle" />
+                        <materialDesign:PackIcon Kind="Garbage" />
                     </Button>
 
                     <Button Style="{StaticResource MaterialDesignRaisedButton}" ToolTip="Undo" 
@@ -127,18 +127,7 @@
                             Background="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurCouleurFond}, ConverterParameter=change_text, UpdateSourceTrigger=PropertyChanged}" 
                             Command="{Binding Path=ChoisirOutil}"
                             CommandParameter="change_text">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="9" />
-                                <RowDefinition Height="16" />
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="9"/>
-                                <ColumnDefinition Width="16"/>
-                            </Grid.ColumnDefinitions>
-                            <materialDesign:PackIcon Grid.Row="0" Grid.Column="0" Kind="CursorText" Width="9" Height="9"/>
-                            <materialDesign:PackIcon Grid.Column="1" Grid.Row="1" Kind="FormatText" Width="16" Height="16" />
-                        </Grid>
+                        <Image Source="/Resources/edittext.png" Height="25" Width="25"/>
                     </Button>
                     <StackPanel Orientation="Horizontal">
                         <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Width="2" />
@@ -445,7 +434,7 @@
                 </ToggleButton>
 
                 <StackPanel Orientation="Vertical" Margin="20" x:Name="chatTab" Visibility="Collapsed" Background="WhiteSmoke">
-                    <Border BorderThickness="1" BorderBrush="Gray" ClipToBounds="True" HorizontalAlignment="Stretch" Height="450">
+                    <Border BorderThickness="1" BorderBrush="Gray" ClipToBounds="True" HorizontalAlignment="Stretch" Height="560">
                         <StackPanel Orientation="Vertical" Margin="10" x:Name="chatWrapper">
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                                 <Button  x:Name="chatButton" HorizontalAlignment="Left" Margin="0,0,10,0"  Width="50" Click="chatButton_Click">
@@ -517,9 +506,9 @@
                                         </Grid>
                                     </Border>
                                 </materialDesign:DialogHost>
-                                <Grid x:Name="chat" Height="225" x:FieldModifier="public">
+                                <Grid x:Name="chat" Height="320" x:FieldModifier="public">
                                     <TextBlock Text="{Binding CurrentRoom, StringFormat='Room: {0}'}" Margin="35,-10,0,0" />
-                                    <ListBox ItemsSource="{Binding MessagesListBox, UpdateSourceTrigger=PropertyChanged}" x:Name="messagesList" HorizontalAlignment="Left" Height="160" Margin="30,10,0,0" VerticalAlignment="Top" Width="400"  BorderThickness="1" BorderBrush="Gray">
+                                    <ListBox ItemsSource="{Binding MessagesListBox, UpdateSourceTrigger=PropertyChanged}" x:Name="messagesList" HorizontalAlignment="Left" Height="240" Margin="30,10,0,0" VerticalAlignment="Top" Width="400"  BorderThickness="1" BorderBrush="Gray">
                                         <ListBox.ItemTemplate>
                                             <DataTemplate>
                                                 <TextBlock Text="{Binding Path=.}" TextWrapping="Wrap"></TextBlock>
