@@ -34,6 +34,9 @@ class TutorialController: UIViewController, UIScrollViewDelegate {
     
     // MARK: - Public functions
     
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        setupSlideScrollView(slides: self._slides)
+    }
     
     // MARK: - Private functions
     
@@ -48,7 +51,13 @@ class TutorialController: UIViewController, UIScrollViewDelegate {
         slide2.labelTitle.text = "TITLE 2";
         slide2.labelDesc.text = "DESCRIPTION 2";
         
-        return [slide1, slide2];
+        let slide3:Slide = Bundle.main.loadNibNamed("Slide", owner: self, options: nil)?.first as! Slide;
+        slide3.imageView.image = UIImage(named: "lock");
+        slide3.labelTitle.text = "FIN";
+        slide3.labelDesc.text = "FIN";
+        // Ajouter bouton pour retourner au début.
+        
+        return [slide1, slide2, slide3];
     }
     
     private func setupSlideScrollView(slides: [Slide]) -> Void {
