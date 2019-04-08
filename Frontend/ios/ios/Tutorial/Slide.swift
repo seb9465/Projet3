@@ -22,18 +22,17 @@ class Slide: UIView {
     // MARK: - Constructors
     
     override init(frame: CGRect) {
-        self.labelTitle.textColor = Constants.RED_COLOR;
-        self.labelDesc.textColor = Constants.RED_COLOR;
-        
-        
-        
         super.init(frame: frame);
         
         self.initGetStartedButton();
+        self.initLabels();
     }
     
     required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        super.init(coder: aDecoder);
+        
+        initGetStartedButton();
+        initLabels();
     }
     
     // MARK: - Timing functions
@@ -42,10 +41,17 @@ class Slide: UIView {
     
     // MARK: - Private functions
     
+    private func initLabels() -> Void {
+        self.labelTitle.textColor = Constants.RED_COLOR;
+        self.labelDesc.textColor = Constants.RED_COLOR;
+    }
+    
     private func initGetStartedButton() -> Void {
-        self.getStartedButon.tintColor = UIColor.white.cgColor;
-        self.getStartedButon.layer.backgroundColor = Constants.RED_COLOR;
-        
+        self.getStartedButon.tintColor = UIColor.white;
+        self.getStartedButon.layer.backgroundColor = Constants.RED_COLOR.cgColor;
+        self.getStartedButon.layer.cornerRadius = 5.0;
+        self.getStartedButon.layer.borderWidth = 0.0;
+        self.getStartedButon.layer.borderColor = UIColor.clear.cgColor;
     }
     
     /*
