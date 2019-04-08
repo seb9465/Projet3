@@ -6,7 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PolyPaint.Vues"
         mc:Ignorable="d"
-        Title="Tutoriel" Height="550" Width="800">
+        Title="PolyPaint PRO" Height="550" Width="800">
     <StackPanel Margin="10">
         <Label HorizontalAlignment="Center" FontSize="25" >
             Welcome to the editor mode tutorial

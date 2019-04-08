@@ -76,6 +76,7 @@ public class LineStrokeAdorner : Adorner
 
         var drawViewModel = StrokeBuilder.GetDrawViewModelsFromStrokes(affectedStrokes);
         (AdornedStroke.SurfaceDessin.DataContext as VueModele).CollaborationClient.CollaborativeDrawAsync(drawViewModel);
+        (AdornedStroke.SurfaceDessin.DataContext as VueModele).CollaborationClient.CollaborativeSelectAsync(StrokeBuilder.GetDrawViewModelsFromStrokes(AdornedStrokes));
         ElbowChanged?.Invoke(this, new EventArgs());
         InvalidateArrange();
     }

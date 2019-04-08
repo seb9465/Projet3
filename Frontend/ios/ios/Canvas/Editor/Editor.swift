@@ -185,6 +185,8 @@ class Editor {
             viewModel.StylusPoints![0].Y = viewModel.StylusPoints![0].Y + 10;
             viewModel.StylusPoints![1].X = viewModel.StylusPoints![1].X + 10;
             viewModel.StylusPoints![1].Y = viewModel.StylusPoints![1].Y + 10;
+            viewModel.InConnections = []
+            viewModel.OutConnections = []
             let newFigure: Figure = self.insertFigure(drawViewModel: viewModel)
             self.select(figure: newFigure);
             figureToAdd.append(newFigure)
@@ -249,9 +251,9 @@ class Editor {
         }
         var viewModelsToDelete: [DrawViewModel] = []
         for figure in self.selectedFigures {
-            if (figure is ConnectionFigure) {
-                (figure as! ConnectionFigure).removeFromConnectedFigures(umlFigures: self.figures.filter({$0 is UmlFigure}) as! [UmlFigure])
-            }
+//            if (figure is ConnectionFigure) {
+//                (figure as! ConnectionFigure).removeFromConnectedFigures(umlFigures: self.figures.filter({$0 is UmlFigure}) as! [UmlFigure])
+//            }
             figure.removeFromSuperview()
             viewModelsToDelete.append(figure.exportViewModel()!)
             self.figures.removeAll{$0 == figure}
@@ -337,14 +339,14 @@ extension Editor: CollaborationHubDelegate {
             if (self.figures.contains(where: {$0.uuid.uuidString.lowercased() == drawViewModel.Guid})) {
                 self.overriteFigure(figureId: drawViewModel.Guid!, newDrawViewModel: drawViewModel, username: itemMessage.Username)
 
-                self.deselect(username: itemMessage.Username)
-                self.select(drawViewModels: itemMessage.Items, username: itemMessage.Username)
+//                self.deselect(username: itemMessage.Username)
+//                self.select(drawViewModels: itemMessage.Items, username: itemMessage.Username)
             } else {
                 self.insertFigure(drawViewModel: drawViewModel)
             }
         }
         
-        self.bindLocalConnectionsToFigures(drawViewModels: itemMessage.Items)
+//        self.bindLocalConnectionsToFigures(drawViewModels: itemMessage.Items)
     }
     
     func delete(drawViewModels: [DrawViewModel]) {
@@ -361,7 +363,7 @@ extension Editor: CollaborationHubDelegate {
         for drawViewModel in drawViewModels  {
             self.insertFigure(drawViewModel: drawViewModel)
         }
-        self.bindLocalConnectionsToFigures(drawViewModels: drawViewModels)
+//        self.bindLocalConnectionsToFigures(drawViewModels: drawViewModels)
     }
     
     func updateClear() {
@@ -391,10 +393,12 @@ extension Editor {
         newFigure.delegate = self
         self.figures.append(newFigure)
         self.editorView.addSubview(newFigure)
+    }
+
         
-        if (oldFigure is ConnectionFigure && newFigure is ConnectionFigure) {
-            self.updateConnectionBindings(oldConnection: oldFigure as! ConnectionFigure, newConnection: newFigure as! ConnectionFigure)
-        }
+//        if (oldFigure is ConnectionFigure && newFigure is ConnectionFigure) {
+//            self.updateConnectionBindings(oldConnection: oldFigure as! ConnectionFigure, newConnection: newFigure as! ConnectionFigure)
+//        }
         
 //        if (oldFigure is UmlFigure && newFigure is UmlFigure) {
 //            print("Updating received Figure connections")
@@ -402,48 +406,42 @@ extension Editor {
 //            (newFigure as! UmlFigure).incomingConnections = (oldFigure as! UmlFigure).incomingConnections
 //            (newFigure as! UmlFigure).updateConnections()
 //        }
-    }
     
-    // Call first to update new model in anchored figures
-    func updateConnectionReferences() {
-        
-    }
+//    func bindLocalConnectionsToFigures(drawViewModels: [DrawViewModel]) {
+//        for umlFigureModel in drawViewModels.filter({$0.ItemType?.description != "Connection"}) {
+//            let figure = self.figures.first(where: {$0.uuid.uuidString.lowercased() == umlFigureModel.Guid}) as! UmlFigure
+//            figure.clearConnections()
+//            let incomingConnections: [[String]] = umlFigureModel.InConnections!
+//            for uuidToin in incomingConnections {
+//                let connection: ConnectionFigure = self.figures.first(where: {$0.uuid.uuidString.lowercased() == uuidToin[0]}) as! ConnectionFigure
+//                figure.addIncomingConnection(connection: connection, anchor: uuidToin[1])
+//            }
+//
+//            let outgoingConnections: [[String]] = umlFigureModel.OutConnections!
+//            for uuidToout in outgoingConnections {
+//                let connection: ConnectionFigure = self.figures.first(where: {$0.uuid.uuidString.lowercased() == uuidToout[0]}) as! ConnectionFigure
+//                figure.addOutgoingConnection(connection: connection, anchor: uuidToout[1])
+//            }
+//        }
+//    }
     
-    func bindLocalConnectionsToFigures(drawViewModels: [DrawViewModel]) {
-        for umlFigureModel in drawViewModels.filter({$0.ItemType?.description != "Connection"}) {
-            let figure = self.figures.first(where: {$0.uuid.uuidString.lowercased() == umlFigureModel.Guid}) as! UmlFigure
-            figure.clearConnections()
-            let incomingConnections: [[String]] = umlFigureModel.InConnections!
-            for uuidToin in incomingConnections {
-                let connection: ConnectionFigure = self.figures.first(where: {$0.uuid.uuidString.lowercased() == uuidToin[0]}) as! ConnectionFigure
-                figure.addIncomingConnection(connection: connection, anchor: uuidToin[1])
-            }
-            
-            let outgoingConnections: [[String]] = umlFigureModel.OutConnections!
-            for uuidToout in outgoingConnections {
-                let connection: ConnectionFigure = self.figures.first(where: {$0.uuid.uuidString.lowercased() == uuidToout[0]}) as! ConnectionFigure
-                figure.addOutgoingConnection(connection: connection, anchor: uuidToout[1])
-            }
-        }
-    }
-    
-    func updateConnectionBindings(oldConnection: ConnectionFigure, newConnection: ConnectionFigure) {
-        for figure in self.figures {
-            if (figure is UmlFigure) {
-                // Replace incoming connections
-                if let incomingAnchor: String = (figure as! UmlFigure).incomingConnections[oldConnection] {
-                (figure as! UmlFigure).incomingConnections.removeValue(forKey: oldConnection)
-                (figure as! UmlFigure).incomingConnections.updateValue(incomingAnchor, forKey: newConnection)
-                }
-                
-                // Replace outgoing connections
-                if let outgoingAnchor: String = (figure as! UmlFigure).outgoingConnections[oldConnection] {
-                    (figure as! UmlFigure).outgoingConnections.removeValue(forKey: oldConnection)
-                    (figure as! UmlFigure).outgoingConnections.updateValue(outgoingAnchor, forKey: newConnection)
-                }
-            }
-        }
-    }
+//    func updateConnectionBindings(oldConnection: ConnectionFigure, newConnection: ConnectionFigure) {
+//        for figure in self.figures {
+//            if (figure is UmlFigure) {
+//                // Replace incoming connections
+//                if let incomingAnchor: String = (figure as! UmlFigure).incomingConnections[oldConnection] {
+//                (figure as! UmlFigure).incomingConnections.removeValue(forKey: oldConnection)
+//                (figure as! UmlFigure).incomingConnections.updateValue(incomingAnchor, forKey: newConnection)
+//                }
+//
+//                // Replace outgoing connections
+//                if let outgoingAnchor: String = (figure as! UmlFigure).outgoingConnections[oldConnection] {
+//                    (figure as! UmlFigure).outgoingConnections.removeValue(forKey: oldConnection)
+//                    (figure as! UmlFigure).outgoingConnections.updateValue(outgoingAnchor, forKey: newConnection)
+//                }
+//            }
+//        }
+//    }
 }
 
 

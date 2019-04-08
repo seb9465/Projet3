@@ -21,7 +21,6 @@
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="P0r-rK-G4e">
                                 <rect key="frame" x="0.0" y="20" width="1024" height="50"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                                <color key="backgroundColor" red="0.83741801979999997" green="0.83743780850000005" blue="0.83742713930000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <items>
                                     <barButtonItem title="Quit" id="4Er-Gx-QB8">
                                         <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -29,69 +28,73 @@
                                             <action selector="quitButtonPressed:" destination="Vts-He-P18" id="xGi-Np-bzb"/>
                                         </connections>
                                     </barButtonItem>
-                                    <barButtonItem title="Export" id="yqP-yF-mGn" userLabel="Export">
-                                        <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <barButtonItem width="20" style="plain" systemItem="fixedSpace" id="86Y-01-ut6"/>
+                                    <barButtonItem title="Export" image="pngexport" id="yqP-yF-mGn" userLabel="Export">
+                                        <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
                                             <action selector="exportButtonPressed:" destination="Vts-He-P18" id="c5G-3f-Ps3"/>
                                         </connections>
                                     </barButtonItem>
-                                    <barButtonItem title="Clear" id="cJl-7R-Nql">
-                                        <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <barButtonItem title="Clear" image="delete" id="cJl-7R-Nql">
+                                        <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
                                             <action selector="clearButton:" destination="Vts-He-P18" id="Kti-wA-ab9"/>
                                         </connections>
                                     </barButtonItem>
-                                    <barButtonItem systemItem="undo" id="vbj-g9-11e">
-                                        <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <barButtonItem width="20" style="plain" systemItem="fixedSpace" id="eob-da-stb"/>
+                                    <barButtonItem image="undo" id="vbj-g9-11e">
+                                        <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
                                             <action selector="undoButton:" destination="Vts-He-P18" id="Q7f-VC-utl"/>
                                         </connections>
                                     </barButtonItem>
-                                    <barButtonItem systemItem="redo" id="Bmp-bw-401">
-                                        <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <barButtonItem image="redo" id="Bmp-bw-401">
+                                        <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
                                             <action selector="redoButton:" destination="Vts-He-P18" id="2RI-2W-Sfy"/>
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem title="Cut" image="cut_button" id="cBy-5K-qpS">
-                                        <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
                                             <action selector="cutButtonPressed:" destination="Vts-He-P18" id="DGb-Kz-z4c"/>
                                         </connections>
                                     </barButtonItem>
-                                    <barButtonItem title="Duplicate" id="BjU-u4-eJ6" userLabel="Paste">
-                                        <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <barButtonItem title="Duplicate" image="duplicate" id="BjU-u4-eJ6" userLabel="Paste">
+                                        <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
                                             <action selector="duplicateButtonPressed:" destination="Vts-He-P18" id="ZyN-In-isq"/>
                                         </connections>
                                     </barButtonItem>
-                                    <barButtonItem title="Lasso" id="Ttp-DJ-46z">
-                                        <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <barButtonItem title="Lasso" image="selection" id="Ttp-DJ-46z">
+                                        <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
                                             <action selector="lassoButton:" destination="Vts-He-P18" id="rPD-vK-NGN"/>
                                         </connections>
                                     </barButtonItem>
+                                    <barButtonItem width="170" style="plain" systemItem="fixedSpace" id="odz-gS-OIZ">
+                                        <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </barButtonItem>
+                                    <barButtonItem title="Chat" id="Kg9-sk-xNL">
+                                        <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <connections>
+                                            <action selector="chatViewButton:" destination="Vts-He-P18" id="U0G-ah-An7"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem width="90" style="plain" systemItem="fixedSpace" id="1pr-66-jBr"/>
                                     <barButtonItem style="plain" id="MeA-86-Ay2">
                                         <switch key="customView" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" id="RsE-TN-IVY">
-                                            <rect key="frame" x="524.5" y="9.5" width="51" height="31"/>
+                                            <rect key="frame" x="740.5" y="9.5" width="51" height="31"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <color key="onTintColor" red="1" green="0.41960784309999999" blue="0.41960784309999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <color key="thumbTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <connections>
                                                 <action selector="switchButtonChangedWithSender:" destination="Vts-He-P18" eventType="valueChanged" id="5As-3f-grU"/>
                                             </connections>
                                         </switch>
                                     </barButtonItem>
-                                    <barButtonItem title="Chat" id="Kg9-sk-xNL">
-                                        <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <connections>
-                                            <action selector="chatViewButton:" destination="Vts-He-P18" id="U0G-ah-An7"/>
-                                        </connections>
-                                    </barButtonItem>
-                                    <barButtonItem title="Tutoriel" id="7Oc-5H-Zh5">
-                                        <connections>
-                                            <action selector="openTutorial:" destination="Vts-He-P18" id="rhY-IH-N0q"/>
-                                        </connections>
-                                    </barButtonItem>
                                 </items>
+                                <color key="barTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </toolbar>
                             <containerView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oVb-fS-ct1">
                                 <rect key="frame" x="0.0" y="70" width="250" height="698"/>
@@ -101,15 +104,8 @@
                                     <segue destination="VIB-9K-WwK" kind="embed" id="HEM-aM-WDJ"/>
                                 </connections>
                             </containerView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Connected" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HVO-Oe-0TK">
-                                <rect key="frame" x="867" y="35" width="137" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="0.0" green="1" blue="0.32939402817876973" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Password protection is ON" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CBO-ut-RYj">
-                                <rect key="frame" x="741" y="35" width="263" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Password protection is ON" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CBO-ut-RYj">
+                                <rect key="frame" x="737" y="35" width="263" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
@@ -123,10 +119,17 @@
                                 </connections>
                             </containerView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="U6c-GP-EbT">
-                                <rect key="frame" x="794" y="20" width="20" height="20"/>
+                                <rect key="frame" x="639" y="20" width="20" height="20"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Connected" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HVO-Oe-0TK">
+                                <rect key="frame" x="449" y="-1" width="126" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="1" blue="0.32939402817876973" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
@@ -175,7 +178,7 @@
                         <color key="backgroundColor" white="0.95999999999999996" alpha="1" colorSpace="calibratedWhite"/>
                         <viewLayoutGuide key="safeArea" id="z2n-LB-6Ne"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Properties" id="yUa-Ry-dxX"/>
+                    <tabBarItem key="tabBarItem" title="Properties" image="edit" id="yUa-Ry-dxX"/>
                     <connections>
                         <outlet property="propertiesTable" destination="1en-YZ-NUJ" id="9sl-cK-sVt"/>
                     </connections>
@@ -206,7 +209,7 @@
                         <color key="backgroundColor" white="0.95999999999999996" alpha="1" colorSpace="calibratedWhite"/>
                         <viewLayoutGuide key="safeArea" id="3iM-4A-97T"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Figures" id="GT8-fS-Miv"/>
+                    <tabBarItem key="tabBarItem" title="Figures" image="shape" id="GT8-fS-Miv"/>
                     <connections>
                         <outlet property="figureTable" destination="7tG-FQ-Ghg" id="CUZ-GO-xyu"/>
                     </connections>
@@ -237,7 +240,7 @@
                         <color key="backgroundColor" white="0.95999999999999996" alpha="1" colorSpace="calibratedWhite"/>
                         <viewLayoutGuide key="safeArea" id="fvE-eU-nR9"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Style" id="UMJ-ZJ-F2J"/>
+                    <tabBarItem key="tabBarItem" title="Style" image="paint" id="UMJ-ZJ-F2J"/>
                     <connections>
                         <outlet property="styleTable" destination="thY-fq-ZM9" id="fsb-MJ-94b"/>
                     </connections>
@@ -277,7 +280,16 @@
         </scene>
     </scenes>
     <resources>
-        <image name="cut_button" width="48" height="48"/>
+        <image name="cut_button" width="36" height="36"/>
+        <image name="delete" width="36" height="36"/>
+        <image name="duplicate" width="36" height="36"/>
+        <image name="edit" width="24" height="24"/>
+        <image name="paint" width="24" height="24"/>
+        <image name="pngexport" width="36" height="36"/>
+        <image name="redo" width="36" height="36"/>
+        <image name="selection" width="36" height="36"/>
+        <image name="shape" width="24" height="24"/>
+        <image name="undo" width="36" height="36"/>
     </resources>
     <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
 </document>

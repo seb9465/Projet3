@@ -6,7 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:convertisseurs="clr-namespace:PolyPaint.Convertisseurs"    
         mc:Ignorable="d"
-        Title="ChatWindow" Height="450" Width="750"
+        Title="PolyPaint PRO" Height="450" Width="750"
         Closing="DataWindow_Closing" 
         PreviewKeyDown="enterKeyDown">
 

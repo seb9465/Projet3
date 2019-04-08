@@ -76,6 +76,13 @@ class ChatService {
     
     // MARK: Public functions
     
+    public func initHubConnection() -> Void {
+        self._hubConnection = HubConnectionBuilder(url: URL(string: Constants.CHAT_URL)!)
+            .withHttpConnectionOptions() { httpConnectionOptions in
+                httpConnectionOptions.accessTokenProvider = { return USER_TOKEN; }}
+            .build();
+    }
+    
     public func initOnReceivingMessage(currentMemberName: String? = "", insertMessage: @escaping (_ message: Message) -> Void, updateChatRooms: @escaping () -> Void) {
         self.onSendMessage(currentMemberName: currentMemberName, insertMessage: insertMessage, updateChatRooms: updateChatRooms);
     }
@@ -135,6 +142,7 @@ class ChatService {
                 self._serverChannels.channels = [];
                 
                 for channel in channels.channels {
+                    print("\t", channel.name, "\t", channel.connected);
                     if (channel.connected) {
                         self._userChannels.channels.append(channel);
                     } else {
@@ -160,10 +168,9 @@ class ChatService {
         let jsondata: String = String(data: json!, encoding: .utf8)!;
         
         self._hubConnection.invoke(method: "DisconnectFromChannel", arguments: [jsondata], invocationDidComplete: { error in
-            print("[ CHAT ] Invoked DisconnectFromChannel.");
+            print("[ CHAT ] Invoked DisconnectFromChannel '", self._currentChannel.name, "'");
             if let e = error {
-                print("[ CHAT ] Error Invoking DisconnectFromChannel.");
-                print(e);
+                print("[ CHAT ] Error Invoking DisconnectFromChannel : ", e);
             }
         });
     }
@@ -178,7 +185,7 @@ class ChatService {
                 let channels: ChannelsMessage = try! JSONDecoder().decode(ChannelsMessage.self, from: channelsJsonData);
                 self._userChannels.channels = [];
                 self._serverChannels.channels = [];
-                print(channels.channels);
+                
                 for channel in channels.channels {
                     if (channel.connected) {
                         self._userChannels.channels.append(channel);
@@ -187,7 +194,7 @@ class ChatService {
                         let jsondata: String = String(data: json!, encoding: .utf8)!;
                         
                         self._hubConnection.invoke(method: "ConnectToChannel", arguments: [jsondata], invocationDidComplete: { error in
-                            print("[ CHAT ] Invoked ConnectToChannel.");
+                            print("[ CHAT ] Invoked ConnectToChannel on ", channel.name);
                             
                             if error != nil {
                                 print("ERROR while invoking ConnectToChannel");
@@ -197,6 +204,7 @@ class ChatService {
                 }
             }
         });
+        
         self.invokeChannelsWhenConnected();
     }
     
