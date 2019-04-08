@@ -75,19 +75,6 @@ class CanvasController: UIViewController {
         super.viewDidAppear(animated);
         
         navigationController?.setNavigationBarHidden(true, animated: animated);
-        
-        AuthentificationAPI.getIsTutorialShown()
-            .done { (response) in
-                if (!response) {
-                    let sb: UIStoryboard = UIStoryboard(name: "Tutorial", bundle: nil);
-                    let tutoController = sb.instantiateViewController(withIdentifier: "TutorialView");
-                    self.present(tutoController, animated: true, completion: nil);
-                    AuthentificationAPI.setIsTutorialShown();
-                }
-            }
-            .catch { (error) in
-                print(error);
-        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
