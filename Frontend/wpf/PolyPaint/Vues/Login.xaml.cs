@@ -49,6 +49,7 @@ namespace PolyPaint.Vues
             //    Username = "alexis",
             //    Password = "!12345Aa",
             //};
+            loginBtn.IsEnabled = false;
 
             string json = JsonConvert.SerializeObject(loginViewModel);
 
@@ -100,6 +101,7 @@ namespace PolyPaint.Vues
                     string error = await result.Content.ReadAsStringAsync();
                     loginError.Text = JsonConvert.DeserializeObject<string>(error);
                 }
+                loginBtn.IsEnabled = true;
             }
         }
 
