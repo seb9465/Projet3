@@ -317,7 +317,7 @@
                 <Slider Name="slider" Width="26" Height="100" Minimum="1" Maximum="10" Orientation="Vertical"
                         Value="{Binding Path=TailleTrait, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                         Margin="0,15,0,15"
-                        Foreground="OrangeRed"
+                        Foreground="#F44236"
                         TickFrequency="1" TickPlacement="BottomRight" IsSnapToTickEnabled="False"
                         PreviewMouseLeftButtonDown="Slider_PreviewMouseLeftButtonDown"
                         PreviewMouseLeftButtonUp="Slider_MouseLeftButtonUp"/>
