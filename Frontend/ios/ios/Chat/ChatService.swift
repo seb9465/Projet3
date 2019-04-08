@@ -178,7 +178,7 @@ class ChatService {
                 let channels: ChannelsMessage = try! JSONDecoder().decode(ChannelsMessage.self, from: channelsJsonData);
                 self._userChannels.channels = [];
                 self._serverChannels.channels = [];
-                
+                print(channels.channels);
                 for channel in channels.channels {
                     if (channel.connected) {
                         self._userChannels.channels.append(channel);
