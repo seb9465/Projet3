@@ -612,6 +612,7 @@
     <Resource Include="Resources\tutorial\6.PNG" />
     <Resource Include="Resources\tutorial\7.PNG" />
     <Resource Include="Resources\tutorial\8.png" />
+    <Resource Include="Resources\edittext.png" />
     <Content Include="SoundEffects\receive.mp3">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
