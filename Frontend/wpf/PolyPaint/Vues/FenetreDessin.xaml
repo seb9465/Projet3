@@ -198,6 +198,9 @@
                             <Image Source="/Resources/uml_class.png" Height="25" Width="25"  />
                         </StackPanel>
                     </Button>
+                    <StackPanel Orientation="Horizontal">
+                        <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Width="2"  />
+                    </StackPanel>
                     <Button Name="text"
                         Style="{StaticResource MaterialDesignRaisedLightButton}" HorizontalAlignment="Left" ToolTip="Text" 
                         BorderBrush="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurBordure}, ConverterParameter=text, UpdateSourceTrigger=PropertyChanged}" 
