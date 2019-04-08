@@ -28,7 +28,7 @@ extension MsgChatController: MessageInputBarDelegate {
             timestamp: result,
             messageId: UUID().uuidString
         );
-        
+
         ChatService.shared.sendMessage(currentUser: self.member.name, message: newMessage, insertMessage: self.insertMessage);
         inputBar.inputTextView.text = "";
         self.messagesCollectionView.reloadData();

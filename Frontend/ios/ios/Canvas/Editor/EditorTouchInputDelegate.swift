@@ -133,69 +133,12 @@ extension Editor : TouchInputDelegate {
     func notifyTouchMoved(point: CGPoint, figure: Figure?) {
         if (self.touchEventState == .TRANSLATE) {
             self.touchEventState = .TRANSLATE
-            // out of bounds
-            var xOffset = CGFloat(point.x - self.previousTouchPoint.x)
-            var yOffset = CGFloat(point.y - self.previousTouchPoint.y)
+
+            let xOffset = CGFloat(point.x - self.previousTouchPoint.x)
+            let yOffset = CGFloat(point.y - self.previousTouchPoint.y)
             
             for figure in self.selectedFigures {
                 let tmpOutlineIndex: Int = self.selectionOutlines.firstIndex(where: { $0.associatedFigureID == figure.uuid })!;
-                let boundTouched: BoundTouched? = self.isOutOfBounds(view: self.selectionOutlines[tmpOutlineIndex])
-
-                
-                switch(boundTouched) {
-                case .Up?:
-                    if(yOffset < 0) {
-                        yOffset = 0
-                    }
-                    break
-                case .Down?:
-                    if(yOffset > 0) {
-                        yOffset = 0
-                    }
-                    break
-                case .Left?:
-                    if(xOffset < 0) {
-                        xOffset = 0
-                    }
-                    break
-                case .Right?:
-                    if(xOffset > 0) {
-                        xOffset = 0
-                    }
-                    break
-                    
-                case .UpLeft?:
-                    if(yOffset < 0) {
-                        yOffset = 0
-                    }
-                    if(xOffset < 0) {
-                        xOffset = 0
-                    }
-                case .UpRight?:
-                    if(yOffset < 0) {
-                        yOffset = 0
-                    }
-                    if(xOffset > 0) {
-                        xOffset = 0
-                    }
-                case .DownLeft?:
-                    if(yOffset > 0) {
-                        yOffset = 0
-                    }
-                    if(xOffset < 0) {
-                        xOffset = 0
-                    }
-                case .DownRight?:
-                    if(yOffset > 0) {
-                        yOffset = 0
-                    }
-                    if(xOffset > 0) {
-                        xOffset = 0
-                    }
-                case .none:
-                    break
-                }
-
                 let offset = CGPoint(x: xOffset, y: yOffset)
                 figure.translate(by: offset)
                 self.selectionOutlines[tmpOutlineIndex].translate(by: offset)
@@ -256,12 +199,16 @@ extension Editor : TouchInputDelegate {
             }
             for figure in self.figures {
                 if (self.selectionLasso.contains(figure: figure)) {
-                    self.select(figure: figure);
+                    if (!self.isFigureSelected(figure: figure)) {
+                        self.select(figure: figure);
+                    }
                 }
             }
 
             CollaborationHub.shared!.selectObjects(drawViewModels: self.getSelectedFiguresDrawviewModels())
             self.deselectLasso();
+            self.updateSideToolBar()
+            
             self.touchEventState = .SELECT
             return
         }
@@ -297,7 +244,7 @@ extension Editor : TouchInputDelegate {
             self.currentChange.1 = models
             self.undoArray.append((self.currentChange))
             
-            CollaborationHub.shared!.postNewFigure(figures: self.selectedFigures)
+            CollaborationHub.shared!.postNewFigure(drawViewModels: models)
             CollaborationHub.shared!.selectObjects(drawViewModels: self.getSelectedFiguresDrawviewModels())
             self.touchEventState = .SELECT
             return
@@ -327,6 +274,7 @@ extension Editor : TouchInputDelegate {
             }
             let connection = self.insertConnectionFigure(firstPoint: self.initialTouchPoint, lastPoint: point, itemType: currentFigureType)
             CollaborationHub.shared!.postNewFigure(figures: [connection])
+            CanvasService.saveOnNewFigure(figures: self.figures, editor: self)
             self.touchEventState = .SELECT
             return
         }
@@ -338,10 +286,10 @@ extension Editor : TouchInputDelegate {
                 return
             }
             let connection = self.insertConnectionFigure(firstPoint: self.initialTouchPoint, lastPoint: point, itemType: currentFigureType)
-            CollaborationHub.shared!.postNewFigure(figures: [connection])
-            
             let sourceAnchor: String = self.sourceFigure.getClosestAnchorPointName(point: self.initialTouchPoint)
             self.sourceFigure.addOutgoingConnection(connection: connection as! ConnectionFigure, anchor: sourceAnchor)
+            CollaborationHub.shared!.postNewFigure(figures: [self.sourceFigure, connection])
+            CanvasService.saveOnNewFigure(figures: self.figures, editor: self)
             self.touchEventState = .SELECT
             return
         }
@@ -362,7 +310,7 @@ extension Editor : TouchInputDelegate {
             let destinationAnchor: String = destinationFigure.getClosestAnchorPointName(point: point)
             destinationFigure.addIncomingConnection(connection: connection as! ConnectionFigure, anchor: destinationAnchor)
             self.touchEventState = .SELECT
-            CollaborationHub.shared!.postNewFigure(figures: self.selectedFigures)
+            CollaborationHub.shared!.postNewFigure(figures: [destinationFigure, connection])
             CanvasService.saveOnNewFigure(figures: self.figures, editor: self)
             return
         }
@@ -380,48 +328,14 @@ extension Editor : TouchInputDelegate {
             lastPoint: destinationFigure.getClosestAnchorPoint(point: point),
             itemType: currentFigureType
         )
-        CollaborationHub.shared!.postNewFigure(figures: [connection])
+        
         let sourceAnchor: String = self.sourceFigure.getClosestAnchorPointName(point: self.initialTouchPoint)
         let destinationAnchor: String = destinationFigure.getClosestAnchorPointName(point: point)
         self.sourceFigure.addOutgoingConnection(connection: connection as! ConnectionFigure, anchor: sourceAnchor)
         destinationFigure.addIncomingConnection(connection: connection as! ConnectionFigure, anchor: destinationAnchor)
+        CollaborationHub.shared!.postNewFigure(figures: [self.sourceFigure, destinationFigure, connection])
+        CanvasService.saveOnNewFigure(figures: self.figures, editor: self)
         self.touchEventState = .SELECT
         return
-    }
-    
-    public func isOutOfBounds(view: UIView) -> BoundTouched? {
-        let intersectedFrame = self.editorView.bounds.intersection(view.frame)
-        let safetySpace: CGFloat = 1
-        
-        if(abs(intersectedFrame.minX - (view.frame.minX - safetySpace)) >  1 && abs(intersectedFrame.minY - (view.frame.minY - safetySpace)) > 1) {
-            
-            return .UpLeft
-        }
-        
-        if(abs(intersectedFrame.maxX - (view.frame.maxX + safetySpace)) > 1 && abs(intersectedFrame.minY - (view.frame.minY - safetySpace)) > 1) {
-            return .UpRight
-        }
-        
-        if(abs(intersectedFrame.maxY - (view.frame.maxY + safetySpace)) > 1 && abs(intersectedFrame.minX - (view.frame.minX - safetySpace)) >  1) {
-            return .DownLeft
-        }
-        
-        if(abs(intersectedFrame.maxY - (view.frame.maxY + safetySpace)) > 1 && abs(intersectedFrame.maxX - (view.frame.maxX + safetySpace)) > 1) {
-            return .DownRight
-        }
-        if(abs(intersectedFrame.minX - (view.frame.minX - safetySpace)) >  1) {
-            return .Left
-        }
-        if(abs(intersectedFrame.minY - (view.frame.minY - safetySpace)) > 1) {
-            return .Up
-        }
-        if(abs(intersectedFrame.maxX - (view.frame.maxX + safetySpace)) > 1) {
-            return .Right
-        }
-        if(abs(intersectedFrame.maxY - (view.frame.maxY + safetySpace)) > 1) {
-            return .Down
-        }
-
-        return nil
     }
 }

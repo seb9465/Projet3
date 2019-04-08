@@ -18,33 +18,20 @@ var currentCanvas: Canvas = Canvas()
 class CanvasController: UIViewController {
     
     // MARK: - Attributes
-    
+    var tabBar: UITabBarController?
     private var activeButton: UIBarButtonItem!;
-    private var _editor: Editor = Editor()
-    
-    // MARK: Getter - Setter
-    
-    public var editor: Editor {
-        get { return self._editor }
-    }
-    
-    // MARK: - Outlets
-    
+    @IBOutlet weak var connectionLabel: UILabel!
+    public var editor: Editor = Editor()
     @IBOutlet var navigationBar: UIToolbar!
-    @IBOutlet weak var insertButton: UIBarButtonItem!
+    @IBOutlet var chatViewButton: UIBarButtonItem!
     @IBOutlet var selectButton: UIBarButtonItem!
-    @IBOutlet var deleteButton: UIBarButtonItem!
     @IBOutlet weak var lassoButton: UIBarButtonItem!
     @IBOutlet weak var quitButton: UIBarButtonItem!
     @IBOutlet weak var cutButton: UIBarButtonItem!
     @IBOutlet weak var duplicateButton: UIBarButtonItem!
     @IBOutlet weak var exportButton: UIBarButtonItem!
-    
     @IBOutlet weak var switchButton: UISwitch!
-    @IBOutlet weak var connectionLabel: UILabel!
     @IBOutlet weak var protectionLabel: UILabel!
-    
-    @IBOutlet var chatViewButton: UIBarButtonItem!
     @IBOutlet var chatViewContainer: UIView!
     @IBOutlet var chatNotifLabel: UILabel!
     
@@ -56,14 +43,16 @@ class CanvasController: UIViewController {
         self.loadCanvas()
         CollaborationHub.shared = CollaborationHub(channelId: canvasId)
         CollaborationHub.shared!.connectToHub()
-        CollaborationHub.shared!.delegate = self._editor
-        self._editor.delegate = self
+        CollaborationHub.shared!.delegate = self.editor
+        self.editor.delegate = self
         self.initChatViewContainer();
-
-        self.view.addSubview(self._editor.editorView)
-        setupNetwork();
-        
+        self.cutButton.isEnabled = false
+        self.duplicateButton.isEnabled = false
+        self.tabBar = children.flatMap({ $0 as? UITabBarController }).first
+        self.view.addSubview(self.editor.editorView)
+        setupNetwork()
         self.setChatNotifLabel();
+
         
         ChatService.shared.afkMessagesDidChangeClosure = {
             let channels: [String: [Message]] = ChatService.shared.messagesWhileAFK;
@@ -110,8 +99,8 @@ class CanvasController: UIViewController {
     private func loadCanvas() -> Void {
         var data: Data = currentCanvas.drawViewModels.data(using: String.Encoding.utf8)!
         let drawViewModels: [DrawViewModel] = try! JSONDecoder().decode(Array<DrawViewModel>.self, from: data)
-        self._editor.loadCanvas(drawViewModels: drawViewModels)
-        self._editor.resize(width: CGFloat(currentCanvas.canvasWidth), heigth: CGFloat(currentCanvas.canvasHeight))
+        self.editor.loadCanvas(drawViewModels: drawViewModels)
+        self.editor.resize(width: CGFloat(currentCanvas.canvasWidth), heigth: CGFloat(currentCanvas.canvasHeight))
         print(String(currentCanvas.canvasWidth) + String(currentCanvas.canvasHeight))
         let token = UserDefaults.standard.string(forKey: "token");
         let jwt = try! decode(jwt: token!)
@@ -144,8 +133,8 @@ class CanvasController: UIViewController {
     }
     
     private func exportPNG() -> UIImage {
-        UIGraphicsBeginImageContextWithOptions(self._editor.editorView.bounds.size, false, 0.0);
-        self._editor.editorView.drawHierarchy(in: self._editor.editorView.bounds, afterScreenUpdates: true);
+        UIGraphicsBeginImageContextWithOptions(self.editor.editorView.bounds.size, false, 0.0);
+        self.editor.editorView.drawHierarchy(in: self.editor.editorView.bounds, afterScreenUpdates: true);
         let image = UIGraphicsGetImageFromCurrentImageContext();
         UIGraphicsEndImageContext();
         return image!
@@ -154,7 +143,7 @@ class CanvasController: UIViewController {
     private func initializeConnection() -> Void {
         CollaborationHub.shared = CollaborationHub(channelId: canvasId)
         CollaborationHub.shared!.connectToHub()
-        CollaborationHub.shared!.delegate = self._editor
+        CollaborationHub.shared!.delegate = self.editor
     }
     
     private func setupInternetConnectionState() -> Void {
@@ -183,89 +172,70 @@ class CanvasController: UIViewController {
     
     private func resetButtonColor() -> Void {
         self.selectButton.tintColor = UIColor.black;
-        self.deleteButton.tintColor = UIColor.black;
-        self.insertButton.tintColor = UIColor.black;
         self.lassoButton.tintColor = UIColor.black;
     }
     
     // MARK: - Action Functions
     
     @IBAction func undoButton(_ sender: Any) -> Void {
-        self._editor.deselect();
-        self._editor.undo(view: self.view);
+        self.editor.deselect();
+        self.editor.undo(view: self.view);
     }
     
     @IBAction func redoButton(_ sender: Any) -> Void {
-        self._editor.deselect();
-        self._editor.redo(view: self.view);
+        self.editor.deselect();
+        self.editor.redo(view: self.view);
     }
     
     @IBAction func cutButtonPressed(_ sender: Any) -> Void {
-        self._editor.cut()
+        self.editor.cut()
     }
     
     @IBAction func duplicateButtonPressed(_ sender: Any) -> Void {
-        if (self._editor.selectedFigures.count == 0 && self._editor.clipboard.count == 0) {
+        if (self.editor.selectedFigures.count == 0 && self.editor.clipboard.count == 0) {
             let alert: UIAlertController = UIAlertController(title: "Nothing to duplicate!", message: "Clipboard is empty and no figures are selected.", preferredStyle: .alert);
             let okAction: UIAlertAction = UIAlertAction(title: "Alright!", style: .default, handler: nil);
             alert.addAction(okAction);
             self.present(alert, animated: true);
         } else {
-            self._editor.duplicate();
+            self.editor.duplicate();
         }
     }
     
     @IBAction func clearButton(_ sender: Any) -> Void {
-        self._editor.clear()
+        self.editor.clear()
         CollaborationHub.shared!.reset();
         
     }
     
-    @IBAction func deleteButton(_ sender: Any) -> Void {
-        self._editor.deleteSelectedFigures()
-        CollaborationHub.shared!.CutObjects(drawViewModels: [])
-    }
     
     @IBAction func lassoButton(_ sender: Any) -> Void {
         self.resetButtonColor();
         
-        if (self._editor.touchEventState == .AREA_SELECT) {
-            self._editor.changeTouchHandleState(to: .NONE);
+        if (self.editor.touchEventState == .AREA_SELECT) {
+            self.editor.changeTouchHandleState(to: .NONE);
         } else {
-            self.lassoButton.tintColor = Constants.Colors.RED_COLOR;
-            self._editor.changeTouchHandleState(to: .AREA_SELECT)
+            self.lassoButton.tintColor = Constants.RED_COLOR;
+            self.editor.changeTouchHandleState(to: .AREA_SELECT)
         }
         
-        self._editor.deselect();
+        self.editor.deselect();
     }
     
     @IBAction func selectFigureButton(_ sender: Any) -> Void {
         self.resetButtonColor();
         
-        if (self._editor.touchEventState == .SELECT) {
-            self._editor.changeTouchHandleState(to: .NONE);
+        if (self.editor.touchEventState == .SELECT) {
+            self.editor.changeTouchHandleState(to: .NONE);
         } else {
-            self.selectButton.tintColor = Constants.Colors.RED_COLOR;
-            self._editor.changeTouchHandleState(to: .SELECT)
+            self.selectButton.tintColor = Constants.RED_COLOR;
+            self.editor.changeTouchHandleState(to: .SELECT)
         }
         
-        self._editor.deselect();
+        self.editor.deselect();
     }
-    
-    @IBAction func insertButtonPressed(_ sender: Any) -> Void {
-        self.resetButtonColor();
-        
-        if (self._editor.touchEventState == .INSERT) {
-            self._editor.changeTouchHandleState(to: .NONE);
-        } else {
-            self.insertButton.tintColor = Constants.Colors.RED_COLOR;
-            self._editor.changeTouchHandleState(to: .INSERT)
-        }
-        
-        self._editor.deselect();
-    }
-    
-    @IBAction func exportButtonPressed(_ sender: Any) -> Void {
+
+    @IBAction func exportButtonPressed(_ sender: Any) {
         let image = self.exportPNG()
         UIImageWriteToSavedPhotosAlbum(image, self, #selector(image(_:didFinishSavingWithError:contextInfo:)), nil);
     }
@@ -351,7 +321,7 @@ class CanvasController: UIViewController {
         if reach!.isReachableViaWiFi() || reach!.isReachableViaWWAN() {
             CollaborationHub.shared!.disconnectFromHub()
             var viewModels : [DrawViewModel] = []
-            for figure in self._editor.figures {
+            for figure in self.editor.figures {
                 viewModels.append(figure.exportViewModel()!)
             }
             let viewModelsSorted = viewModels.sorted(by: { $0.ItemType!.rawValue < $1.ItemType!.rawValue })
@@ -363,7 +333,7 @@ class CanvasController: UIViewController {
                 if(succes) {
                     let updatedAlert = UIAlertController(title: "Canvas Updated", message: "All your modification while being offline were saved to the cloud!", preferredStyle: .alert)
                     updatedAlert.addAction(UIAlertAction(title: "OK", style: .default))
-                    CollaborationHub.shared?.postNewFigure(figures: self._editor.figures)
+                    CollaborationHub.shared?.postNewFigure(figures: self.editor.figures)
                     self.present(updatedAlert, animated: true, completion: nil);
                 } else {
                     let errorAlert = UIAlertController(title: "Canvas Update Error", message: "Error while updating from cache.", preferredStyle: .alert)
@@ -377,8 +347,8 @@ class CanvasController: UIViewController {
         }
         self.setupInternetConnectionState()
     }
-    
-    @objc private func image(_ image: UIImage, didFinishSavingWithError error: Error?, contextInfo: UnsafeRawPointer) -> Void {
+  
+    @objc private func image(_ image: UIImage, didFinishSavingWithError error: Error?, contextInfo: UnsafeRawPointer) {
         if let error = error {
             let ac = UIAlertController(title: "Exportation error", message: error.localizedDescription, preferredStyle: .alert)
             ac.addAction(UIAlertAction(title: "OK", style: .default))
@@ -393,6 +363,21 @@ class CanvasController: UIViewController {
 }
 
 extension CanvasController: EditorDelegate {
+    func setCurrentTab(index: Int) {
+
+        print("longpress with tab index:" + String(index))
+        self.tabBar?.selectedIndex = index
+        self.tabBar?.selectedViewController =  self.tabBar?.viewControllers![index]
+        self.view.setNeedsDisplay()
+    }
+    
+    func setCutButtonState(isEnabled: Bool) {
+        self.cutButton.isEnabled = isEnabled
+    }
+    func setDuplicateButtonState(isEnabled: Bool) {
+        self.duplicateButton.isEnabled = isEnabled
+    }
+    
     func getKicked() {
         let updatedAlert = UIAlertController(title: "Kicked out", message: "You got kicked out because a password protection was added", preferredStyle: .alert)
         let okAction: UIAlertAction = UIAlertAction(title: "Ok", style: .default, handler: { _ in
