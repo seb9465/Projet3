@@ -6,7 +6,7 @@
      TextElement.FontSize="13"
      TextOptions.TextFormattingMode="Ideal"
      TextOptions.TextRenderingMode="Auto"
-     WindowState="Maximized"
+    Width="1250" Height="830"
      Background="{DynamicResource MaterialDesignPaper}"
      FontFamily="{DynamicResource MaterialDesignFont}"
      
@@ -20,7 +20,7 @@
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit" x:Class="PolyPaint.FenetreDessin"
         mc:Ignorable="d"
         Title="PolyPaint PRO" SizeChanged="Window_SizeChanged"
-    MinWidth="1250" MinHeight="750" d:DesignWidth="1287.5">
+    MinWidth="1200" MinHeight="750" d:DesignWidth="1287.5">
     <Window.Resources>
         <convertisseurs:ConvertisseurBordure x:Key="convertisseurBordure" />
         <convertisseurs:ConvertisseurCouleurFond x:Key="convertisseurCouleurFond" />
@@ -30,11 +30,11 @@
         <convertisseurs:ConvertisseurCanvasProtectionText x:Key="convertisseurCanvasProtectionText" />
     </Window.Resources>
     <StackPanel>
-        <DockPanel>
+        <DockPanel Height="59">
             <Button Style="{StaticResource MaterialDesignRaisedLightButton}" Click="ImportFromCloud" IsEnabled="{Binding Path=IsConnected}"
-             Height="40"  Background="Gainsboro"  HorizontalAlignment="Left" BorderBrush="Gray" Margin="0,0,10,0" >
+             Height="40"  Background="Gainsboro"  HorizontalAlignment="Left" BorderBrush="Gray" Margin="10,0,10,0" >
                 <StackPanel Orientation="Horizontal">
-                    <materialDesign:PackIcon Kind="ArrowBack" Height="24" Width="24"/>
+                    <materialDesign:PackIcon VerticalAlignment="Center" Kind="ArrowBack" Height="24" Width="24"/>
                     <Label FontWeight="Bold">Gallery</Label>
                     <Grid Name="progressBar"  Visibility="Collapsed" Margin="10,0,0,0">
                         <ProgressBar  Style="{StaticResource MaterialDesignCircularProgressBar}" Value="0" IsIndeterminate="True" Width="20" Height="20" />
@@ -43,17 +43,17 @@
             </Button>
             <Button Style="{StaticResource MaterialDesignRaisedLightButton}" Click="ResizeCanva_Click"
              Width="140" Height="40" HorizontalAlignment="Right" Background="Gainsboro" BorderBrush="Gray" Margin="0,0,0,0" >
-                <Label FontWeight="Bold">Resize Canvas</Label>
+                <Label HorizontalAlignment="Center" FontWeight="Bold">Resize Canvas</Label>
             </Button>
             <ToggleButton Margin="30,0,0,0" Style="{StaticResource MaterialDesignSwitchToggleButton}" Click="ToggleProtection" 
                 IsChecked="{Binding CanvasProtection}"
                 IsEnabled="{Binding Path=IsCreatedByUser}"/>
             <TextBlock VerticalAlignment="Center" Margin="10,0,0,0" Text="{Binding CanvasProtection, Converter={StaticResource convertisseurCanvasProtectionText}, UpdateSourceTrigger=PropertyChanged}" />
             <Button Style="{StaticResource MaterialDesignRaisedLightButton}" Click="Disconnect_Click"
-             Width="140" Height="40" HorizontalAlignment="Right" Background="Gainsboro" BorderBrush="Gray" Margin="0,0,0,0" >
+             Width="140" Height="40" HorizontalAlignment="Right" Background="Gainsboro" BorderBrush="Gray" Margin="0,0,10,0" >
                 <StackPanel Orientation="Horizontal">
                     <Label FontWeight="Bold">Disconnect</Label>
-                    <materialDesign:PackIcon Kind="LanDisconnect" Height="24" Width="24"/>
+                    <materialDesign:PackIcon VerticalAlignment="Center" Kind="LanDisconnect" Height="24" Width="24"/>
                 </StackPanel>
             </Button>
         </DockPanel>
@@ -89,28 +89,28 @@
                         <materialDesign:PackIcon Kind="RedoVariant" ToolTip="Redo" />
                     </Button>
 
-                    <StackPanel Orientation="Horizontal">
+                    <StackPanel Orientation="Horizontal" Margin="10,0,10,0">
                         <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Width="2" />
                     </StackPanel>
-                    <Button Name="Copier" Click="DupliquerSelection"
+                    <Button Name="Copier" Click="DupliquerSelection" Width="35" Height="35" Padding="0"
                         Style="{StaticResource MaterialDesignRaisedLightButton}" HorizontalAlignment="Left" ToolTip="Duplicate" 
                         Background="Transparent" BorderBrush="Transparent">
-                        <materialDesign:PackIcon Kind="ContentCopy" Height="17" Width="17" />
+                        <materialDesign:PackIcon Kind="ContentCopy" Height="25" Width="25" />
                     </Button>
-                    <Button Name="Couper" Click="SupprimerSelection"
+                    <Button Name="Couper" Click="SupprimerSelection" Width="35" Height="35" Padding="0"
                     Style="{StaticResource MaterialDesignRaisedLightButton}" HorizontalAlignment="Left" ToolTip="Cut"
                         Background="Transparent" BorderBrush="Transparent">
-                        <materialDesign:PackIcon Kind="ContentCut" Height="17" Width="17" />
+                        <materialDesign:PackIcon Kind="ContentCut" Height="25" Width="25" />
                     </Button>
-                    <Button Name="lasso"
+                    <Button Name="lasso" Width="35" Height="35" Padding="0"
                         Style="{StaticResource MaterialDesignRaisedLightButton}" HorizontalAlignment="Left" ToolTip="Lasso" 
                         BorderBrush="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurBordure}, ConverterParameter=lasso, UpdateSourceTrigger=PropertyChanged}" 
                             Background="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurCouleurFond}, ConverterParameter=lasso, UpdateSourceTrigger=PropertyChanged}" 
                             Command="{Binding Path=ChoisirOutil}"
                             CommandParameter="lasso">
-                        <materialDesign:PackIcon Kind="SelectionDrag" Width="17" Height="17" />
+                        <materialDesign:PackIcon Kind="Selection" Width="25" Height="25" />
                     </Button>
-                    <Button Name="select"
+                    <Button Name="select" Width="35" Height="35" Padding="0"
                         Style="{StaticResource MaterialDesignRaisedLightButton}" HorizontalAlignment="Left" ToolTip="Select" 
                         BorderBrush="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurBordure}, ConverterParameter=select, UpdateSourceTrigger=PropertyChanged}" 
                             Background="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurCouleurFond}, ConverterParameter=select, UpdateSourceTrigger=PropertyChanged}" 
@@ -120,7 +120,7 @@
                             <Image Source="/Resources/select.png" Width="25" Height="25"/>
                         </StackPanel>
                     </Button>
-                    <Button Name="change_text"
+                    <Button Name="change_text" Width="35" Height="35" Padding="0"
                         Style="{StaticResource MaterialDesignRaisedLightButton}" HorizontalAlignment="Left" ToolTip="Modify text" 
                         BorderBrush="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurBordure}, ConverterParameter=change_text, UpdateSourceTrigger=PropertyChanged}" 
                             Background="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurCouleurFond}, ConverterParameter=change_text, UpdateSourceTrigger=PropertyChanged}" 
@@ -128,10 +128,10 @@
                             CommandParameter="change_text">
                         <Image Source="/Resources/edittext.png" Height="25" Width="25"/>
                     </Button>
-                    <StackPanel Orientation="Horizontal">
+                    <StackPanel Orientation="Horizontal" Margin="10,0,10,0">
                         <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Width="2" />
                     </StackPanel>
-                    <Button Name="rectangle"
+                    <Button Name="rectangle" Width="35" Height="35" Padding="0"
                         Style="{StaticResource MaterialDesignRaisedLightButton}" HorizontalAlignment="Left" ToolTip="Rectangle" 
                         BorderBrush="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurBordure}, ConverterParameter=rectangle, UpdateSourceTrigger=PropertyChanged}" 
                         Background="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurCouleurFond}, ConverterParameter=rectangle, UpdateSourceTrigger=PropertyChanged}" 
@@ -141,7 +141,7 @@
                             <Image Source="/Resources/rectangle.png" Height="25" Width="25"  />
                         </StackPanel>
                     </Button>
-                    <Button Name="activity"
+                    <Button Name="activity" Width="35" Height="35" Padding="0"
                         Style="{StaticResource MaterialDesignRaisedLightButton}" HorizontalAlignment="Left" ToolTip="Activity" 
                         BorderBrush="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurBordure}, ConverterParameter=activity, UpdateSourceTrigger=PropertyChanged}" 
                         Background="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurCouleurFond}, ConverterParameter=activity, UpdateSourceTrigger=PropertyChanged}" 
@@ -151,7 +151,7 @@
                             <Image Source="/Resources/activity.png" Height="25" Width="25"  />
                         </StackPanel>
                     </Button>
-                    <Button Name="artefact"
+                    <Button Name="artefact" Width="35" Height="35" Padding="0"
                         Style="{StaticResource MaterialDesignRaisedLightButton}" HorizontalAlignment="Left" ToolTip="Artefact" 
                         BorderBrush="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurBordure}, ConverterParameter=artefact, UpdateSourceTrigger=PropertyChanged}" 
                         Background="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurCouleurFond}, ConverterParameter=artefact, UpdateSourceTrigger=PropertyChanged}" 
@@ -161,7 +161,7 @@
                             <Image Source="/Resources/artefact.png" Height="25" Width="25"  />
                         </StackPanel>
                     </Button>
-                    <Button Name="phase"
+                    <Button Name="phase" Width="35" Height="35" Padding="0"
                         Style="{StaticResource MaterialDesignRaisedLightButton}" HorizontalAlignment="Left" ToolTip="Phase" 
                         BorderBrush="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurBordure}, ConverterParameter=phase, UpdateSourceTrigger=PropertyChanged}" 
                         Background="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurCouleurFond}, ConverterParameter=phase, UpdateSourceTrigger=PropertyChanged}" 
@@ -171,7 +171,7 @@
                             <Image Source="/Resources/phase.png" Height="25" Width="25"  />
                         </StackPanel>
                     </Button>
-                    <Button Name="role"
+                    <Button Name="role" Width="35" Height="35" Padding="0"
                         Style="{StaticResource MaterialDesignRaisedLightButton}" HorizontalAlignment="Left" ToolTip="Role" 
                         BorderBrush="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurBordure}, ConverterParameter=role, UpdateSourceTrigger=PropertyChanged}" 
                         Background="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurCouleurFond}, ConverterParameter=role, UpdateSourceTrigger=PropertyChanged}" 
@@ -181,7 +181,7 @@
                             <Image Source="/Resources/role.png" Height="25" Width="25"  />
                         </StackPanel>
                     </Button>
-                    <Button Name="uml_class"
+                    <Button Name="uml_class" Width="35" Height="35" Padding="0"
                         Style="{StaticResource MaterialDesignRaisedLightButton}" HorizontalAlignment="Left" ToolTip="UML class" 
                         BorderBrush="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurBordure}, ConverterParameter=uml_class, UpdateSourceTrigger=PropertyChanged}" 
                         Background="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurCouleurFond}, ConverterParameter=uml_class, UpdateSourceTrigger=PropertyChanged}" 
@@ -191,10 +191,10 @@
                             <Image Source="/Resources/uml_class.png" Height="25" Width="25"  />
                         </StackPanel>
                     </Button>
-                    <StackPanel Orientation="Horizontal">
+                    <StackPanel Orientation="Horizontal" Margin="10,0,10,0">
                         <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Width="2"  />
                     </StackPanel>
-                    <Button Name="text"
+                    <Button Name="text" Width="35" Height="35" Padding="0"
                         Style="{StaticResource MaterialDesignRaisedLightButton}" HorizontalAlignment="Left" ToolTip="Text" 
                         BorderBrush="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurBordure}, ConverterParameter=text, UpdateSourceTrigger=PropertyChanged}" 
                         Background="{Binding Path=OutilSelectionne, Converter={StaticResource convertisseurCouleurFond}, ConverterParameter=text, UpdateSourceTrigger=PropertyChanged}" 
@@ -202,12 +202,12 @@
                         CommandParameter="text">
                         <materialDesign:PackIcon Kind="FormatText" Height="25" Width="25" />
                     </Button>
-                    <Button Name="Image" Click="AddImageToCanvas"
+                    <Button Name="Image" Click="AddImageToCanvas" Width="35" Height="35" Padding="0"
                         Style="{StaticResource MaterialDesignRaisedLightButton}" HorizontalAlignment="Left" ToolTip="Image" 
                         Background="Transparent" BorderBrush="Transparent">
                         <materialDesign:PackIcon Kind="FileImage" Height="25" Width="25" />
                     </Button>
-                    <StackPanel Orientation="Horizontal">
+                    <StackPanel Orientation="Horizontal" Margin="10,0,10,0">
                         <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Width="2"  />
                     </StackPanel>
                     <StackPanel Orientation="Vertical" Margin="5,5,5,5" VerticalAlignment="Center">
