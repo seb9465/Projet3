@@ -10,23 +10,23 @@ import UIKit
 
 extension Editor {
     @objc func rotatedView(_ sender: UIRotationGestureRecognizer) {
-        if(!self.selectedFigures.isEmpty && sender.state == .changed) {
-            let currentRotationAngle = Int(rad2deg(sender.rotation));
-            
-            if(currentRotationAngle % 45 == 0) {    // 45 degree pour faciliter la gesture
-                for figure in self.selectedFigures {
-                    let tempFigure: Figure = figure;
-                    if(self.oldRotationAngle < currentRotationAngle) {
-                        self.rotate(orientation: .right);
-                    } else {
-                        self.rotate(orientation: .left);
-                    }
-                    self.deselectFigure(figure: tempFigure);
-                    self.select(figure: figure);
-                }
-            }
-            oldRotationAngle = currentRotationAngle;
-        }
+//        if(!self.selectedFigures.isEmpty && sender.state == .changed) {
+//            let currentRotationAngle = Int(rad2deg(sender.rotation));
+//            
+//            if(currentRotationAngle % 45 == 0) {    // 45 degree pour faciliter la gesture
+//                for figure in self.selectedFigures {
+//                    let tempFigure: Figure = figure;
+//                    if(self.oldRotationAngle < currentRotationAngle) {
+//                        self.rotate(orientation: .right);
+//                    } else {
+//                        self.rotate(orientation: .left);
+//                    }
+//                    self.deselectFigure(figure: tempFigure);
+//                    self.select(figure: figure);
+//                }
+//            }
+//            oldRotationAngle = currentRotationAngle;
+//        }
     }
     
     func rad2deg(_ number: CGFloat) -> CGFloat {
@@ -59,7 +59,7 @@ extension Editor {
         
         // To be fixed later
         self.initialPinchDistance = CGPoint(x: xD, y: yD)
-        self.selectedFigures[0].resize(by: CGPoint(x: xScale, y: yScale))
+        self.selectedFigures[0].resize(by: CGPoint(x: xScale, y: yScale), figures: self.figures)
         let outlineIndex: Int = self.selectionOutlines.firstIndex(where: { $0.associatedFigureID == self.selectedFigures[0].uuid })!
         self.selectionOutlines[outlineIndex].updateOutline(newFrame: self.selectedFigures[0].getSelectionFrame())
         

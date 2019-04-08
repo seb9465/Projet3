@@ -17,10 +17,10 @@ class RotateCell: UITableViewCell {
     }
     
     @IBAction func RotateLeft(_ sender: UIButton) {
-        self.delegate?.rotate(orientation: RotateOrientation.left)
+//        self.delegate?.rotate(orientation: RotateOrientation.left)
     }
     @IBAction func RotateRight(_ sender: UIButton) {
-        self.delegate?.rotate(orientation: RotateOrientation.right)
+//        self.delegate?.rotate(orientation: RotateOrientation.right)
     }
 }
 

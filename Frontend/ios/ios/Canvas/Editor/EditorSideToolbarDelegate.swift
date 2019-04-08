@@ -120,14 +120,14 @@ extension Editor: SideToolbarDelegate {
         }
     }
     
-    func rotate(orientation: RotateOrientation) {
-        for figure in self.selectedFigures {
-            let tempFigure: Figure = figure;
-            figure.rotate(orientation: orientation);
-            self.deselectFigure(figure: tempFigure);
-            self.select(figure: figure);
-        }
-        
-        CollaborationHub.shared!.postNewFigure(figures: self.selectedFigures)
-    }
+//    func rotate(orientation: RotateOrientation) {
+//        for figure in self.selectedFigures {
+//            let tempFigure: Figure = figure;
+//            figure.rotate(orientation: orientation);
+//            self.deselectFigure(figure: tempFigure);
+//            self.select(figure: figure);
+//        }
+//        
+//        CollaborationHub.shared!.postNewFigure(figures: self.selectedFigures)
+//    }
 }
