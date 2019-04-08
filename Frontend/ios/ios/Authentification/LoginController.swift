@@ -74,7 +74,12 @@ class LoginController: UIViewController, UITextFieldDelegate, WKUIDelegate {
                             self.present(tutoController, animated: true, completion: nil);
                             AuthentificationAPI.setIsTutorialShown();
                         }
-                }
+                        
+                        UIViewController.removeSpinner(spinner: spinner);
+                    }
+                    .catch { (error) in
+                        UIViewController.removeSpinner(spinner: spinner);
+                    }
             }.catch { (responseError) in
                 UIViewController.removeSpinner(spinner: spinner);
                 // TODO: Afficher le bon message d'erreur. En attente du serveur.
