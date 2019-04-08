@@ -48,6 +48,7 @@ class CanvasController: UIViewController {
         self.cutButton.isEnabled = false
         self.duplicateButton.isEnabled = false
         self.tabBar = children.flatMap({ $0 as? UITabBarController }).first
+        
         self.view.addSubview(self.editor.editorView)
         setupNetwork()
         self.setChatNotifLabel();
