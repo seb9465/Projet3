@@ -11,6 +11,7 @@ import UIKit
 class EditorView: UIView {
     var delegate: TouchInputDelegate?
     var canvasAnchor: CanvasAnchor?
+    var biggerCanvasAnchor: ClearCanvasAnchor?
     
     init() {
         var viewFrame : CGRect = CGRect(x: 250, y: 0, width: UIScreen.main.bounds.width - 250, height: UIScreen.main.bounds.height - 70)
@@ -38,7 +39,9 @@ class EditorView: UIView {
     }
     
     func addAnchor() {
+        self.biggerCanvasAnchor = ClearCanvasAnchor(position: CGPoint(x: self.frame.width, y: self.frame.height))
         self.canvasAnchor = CanvasAnchor(position: CGPoint(x: self.frame.width, y: self.frame.height))
+        self.layer.addSublayer(self.biggerCanvasAnchor!)
         self.layer.addSublayer(self.canvasAnchor!)
     }
     
@@ -46,6 +49,11 @@ class EditorView: UIView {
         if (self.canvasAnchor != nil) {
             self.canvasAnchor?.removeFromSuperlayer()
         }
+        if (self.biggerCanvasAnchor != nil) {
+            self.biggerCanvasAnchor?.removeFromSuperlayer()
+        }
+        self.biggerCanvasAnchor = ClearCanvasAnchor(position: CGPoint(x: self.frame.width, y: self.frame.height))
+        self.layer.addSublayer(self.biggerCanvasAnchor!)
         self.canvasAnchor = CanvasAnchor(position: CGPoint(x: self.frame.width, y: self.frame.height))
         self.layer.addSublayer(self.canvasAnchor!)
         setNeedsDisplay()
@@ -53,8 +61,8 @@ class EditorView: UIView {
     
     func isPointOnAnchor(point: CGPoint) -> Bool{
         for layer in self.layer.sublayers!{
-            if (layer is CanvasAnchor) {
-                if let path = (layer as! CanvasAnchor).path, path.contains(point) {
+            if (layer is CanvasAnchor || layer is ClearCanvasAnchor) {
+                if let path = (layer as! CAShapeLayer).path, path.contains(point) {
                     print("FINI_HIHIHI")
                     return true
                 }

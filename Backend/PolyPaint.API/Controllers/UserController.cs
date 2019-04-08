@@ -51,6 +51,29 @@ namespace PolyPaint.API.Controllers
             return Ok(canvas);
         }
 
+        [HttpGet]
+        [Authorize]
+        [Route("tutorial")]
+        public async Task<IActionResult> GetTutorialValue()
+        {
+            ClaimsPrincipal user = this.User;
+            string userId = user.FindFirstValue(ClaimTypes.NameIdentifier);
+            bool wasTheTutorialShowed = await _userService.GetTutorialValue(userId);
+            return Ok(wasTheTutorialShowed);
+        }
+
+
+        [HttpGet]
+        [Authorize]
+        [Route("tutorial/{wasSeen}")]
+        public async Task<IActionResult> GetTutorialValue(bool wasSeen)
+        {
+            ClaimsPrincipal user = this.User;
+            string userId = user.FindFirstValue(ClaimTypes.NameIdentifier);
+            bool wasCompletedOnSenCriss = await _userService.SetTutorialValue(userId, wasSeen);
+            return Ok(wasCompletedOnSenCriss);
+        }
+
 
         [Authorize]
         [HttpGet]

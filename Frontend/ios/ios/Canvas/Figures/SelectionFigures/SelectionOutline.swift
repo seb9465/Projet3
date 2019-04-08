@@ -95,8 +95,9 @@ class SelectionOutline: UIView {
         if(username != "") {
             let usernameTextLayer = CATextLayer()
             usernameTextLayer.string = username
+            usernameTextLayer.fontSize = 18
             usernameTextLayer.frame = self.layer.bounds
-            usernameTextLayer.backgroundColor = UIColor.red.withAlphaComponent(0.4).cgColor
+            usernameTextLayer.backgroundColor = UIColor.gray.withAlphaComponent(0.4).cgColor
             self.layer.addSublayer(usernameTextLayer)
             usernameTextLayer.setNeedsDisplay()
         }

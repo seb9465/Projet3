@@ -33,7 +33,7 @@ class UmlClassFigure: UmlFigure {
     override init(drawViewModel: DrawViewModel) {
         super.init(drawViewModel: drawViewModel);
         self.methods = drawViewModel.Methods!
-        self.attributes = drawViewModel.Properties!
+        self.attributes = drawViewModel.Properties!        
         self.initializeAnchorPoints()
     }
     
@@ -66,18 +66,27 @@ class UmlClassFigure: UmlFigure {
         setNeedsDisplay();
     }
     
-    override func draw(_ rect: CGRect) {        
-        let outerRect = CGRect(x: 0, y: 0, width: self.frame.width, height: self.frame.height).insetBy(dx: 5, dy: 5);
-        let nameRect = CGRect(x: 0, y: 0, width: self.frame.width, height: 50).insetBy(dx: 5, dy: 5);
+    override func draw(_ rect: CGRect) {
+        var width = abs(self.frame.origin.x - self.frame.maxX)
+        var height = abs(self.frame.origin.y - self.frame.maxY)
+        
+        if (Int(self.currentAngle / 90) % 2 != 0) {
+            let temp = width
+            width = height
+            height = temp
+        }
+        
+        let outerRect = CGRect(x: 0, y: 0, width: width, height: height).insetBy(dx: 5, dy: 5);
+        let nameRect = CGRect(x: 0, y: 0, width: width, height: 50).insetBy(dx: 5, dy: 5);
         let separatorY: CGFloat = CGFloat(60 + 16 * (self.attributes.count))
 
         let nameSeparation = UIBezierPath()
         nameSeparation.move(to: CGPoint(x: 5, y: 40))
-        nameSeparation.addLine(to: CGPoint(x: self.frame.width - 5, y: 40))
+        nameSeparation.addLine(to: CGPoint(x: width - 5, y: 40))
         
         let attributeSeparation = UIBezierPath()
         attributeSeparation.move(to: CGPoint(x: 5, y: separatorY))
-        attributeSeparation.addLine(to: CGPoint(x: self.frame.width - 5, y: separatorY))
+        attributeSeparation.addLine(to: CGPoint(x: width - 5, y: separatorY))
         
         let outerRectPath = UIBezierPath(rect: outerRect)
         let nameRectPath = UIBezierPath(rect: nameRect)
@@ -105,17 +114,17 @@ class UmlClassFigure: UmlFigure {
         nameLabel.drawText(in: nameRect)
         
         for n in 0..<self.attributes.count {
-            let methodRect = CGRect(x: 0, y: CGFloat(50 + (16 * n)), width: self.frame.width, height: 16).insetBy(dx: 5, dy: 5);
+            let methodRect = CGRect(x: 0, y: CGFloat(50 + (16 * n)), width: width, height: 16).insetBy(dx: 5, dy: 5);
             let methodLabel = UILabel(frame: methodRect)
-            methodLabel.text = "  • " + self.attributes[n]
+            methodLabel.text = "  •" + self.attributes[n]
             methodLabel.textAlignment = .left
             methodLabel.drawText(in: methodRect)
         }
         
         for n in 0..<self.methods.count {
-            let attributesRect = CGRect(x: 0, y: CGFloat(Int(separatorY + 10) + (16 * n)), width: self.frame.width, height: 16).insetBy(dx: 5, dy: 5);
+            let attributesRect = CGRect(x: 0, y: CGFloat(Int(separatorY + 10) + (16 * n)), width: width, height: 16).insetBy(dx: 5, dy: 5);
             let attributeLabel = UILabel(frame: attributesRect)
-            attributeLabel.text = "  • " + self.methods[n]
+            attributeLabel.text = "  •" + self.methods[n]
             attributeLabel.textAlignment = .left
             attributeLabel.drawText(in: attributesRect)
         }

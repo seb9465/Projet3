@@ -20,10 +20,8 @@ class StyleTableController: UIViewController {
 
         let nib = UINib.init(nibName: "BorderCell", bundle: nil)
         let fillNib = UINib.init(nibName: "FillCell", bundle: nil)
-        let rotateNib = UINib.init(nibName: "RotateCell", bundle: nil)
         self.styleTable.register(nib, forCellReuseIdentifier: "BorderCell")
         self.styleTable.register(fillNib, forCellReuseIdentifier: "FillCell")
-        self.styleTable.register(rotateNib, forCellReuseIdentifier: "RotateCell")
         self.styleTable.backgroundColor = #colorLiteral(red: 0.9681890607, green: 0.9681890607, blue: 0.9681890607, alpha: 1)
     }
 }
@@ -33,7 +31,7 @@ extension StyleTableController: UITableViewDelegate, UITableViewDataSource {
         if (self.editor.selectedFigures.isEmpty) {
             return 0
         }
-        return 3
+        return 2
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -59,10 +57,6 @@ extension StyleTableController: UITableViewDelegate, UITableViewDataSource {
             cell.delegate = self.editor
             cell.thicknessSlider.value = Float(editor.selectedFigures[0].lineWidth / 10)
             return cell
-        case 2:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "RotateCell", for: indexPath) as! RotateCell
-            cell.delegate = self.editor
-            return cell;
         default:
             return UITableViewCell();
         }

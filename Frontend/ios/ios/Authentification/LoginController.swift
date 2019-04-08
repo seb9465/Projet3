@@ -57,7 +57,7 @@ class LoginController: UIViewController, UITextFieldDelegate, WKUIDelegate {
         }
 //        AuthentificationAPI.login(username: emailField.text!, password: passwordField.text!)
 //        AuthentificationAPI.login(username: "william.sevigny", password: "!12345Aa")
-        AuthentificationAPI.login(username: "seb.cado2", password: "!12345Aa")
+        AuthentificationAPI.login(username: "sebastien.labine", password: "!12345Aa")
             .done { (token) in
                 UIViewController.removeSpinner(spinner: spinner);
                 self.validationLabel.text = "";
@@ -150,7 +150,7 @@ class LoginController: UIViewController, UITextFieldDelegate, WKUIDelegate {
     @IBAction func facebookButtonClicked(_ sender: Any) {
         self.validationLabel.text = "";
         let loginManager = LoginManager()
- //       loginManager.loginBehavior = .web
+        loginManager.loginBehavior = .web
         loginManager.logIn(readPermissions: [.email, .publicProfile], viewController: self, completion: { loginResult in
             switch loginResult {
             case .failed(let error):

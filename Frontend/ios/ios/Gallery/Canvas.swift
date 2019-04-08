@@ -25,8 +25,8 @@ struct Canvas: Codable  {
         self.canvasVisibility = "";
         self.canvasAutor = "";
         self.canvasProtection = "";
-        self.canvasWidth = 100
-        self.canvasHeight = 100
+        self.canvasWidth = 705
+        self.canvasHeight = 620
     }
 
     init(canvasId: String, name: String, drawViewModels: String, image: String, canvasVisibility: String, canvasAutor: String, canvasProtection: String, canvasWidth: Float, canvasHeight: Float) {

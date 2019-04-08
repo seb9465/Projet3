@@ -56,6 +56,22 @@ namespace PolyPaint.DataAccess.Services
             return user.Canvas;
         }
 
+
+        public async Task<bool> GetTutorialValue(string userId)
+        {
+            ApplicationUser user = await _userManager.Users.SingleAsync(u => u.Id == userId);
+            return user.IsTutorialShown;
+        }
+
+        public async Task<bool> SetTutorialValue(string userId, bool wasSeen)
+        {
+            ApplicationUser user = await _userManager.Users.SingleAsync(u => u.Id == userId);
+            user.IsTutorialShown = wasSeen;
+            await _userManager.UpdateAsync(user);
+            return user.IsTutorialShown;
+        }
+
+
         public List<Canvas> GetAllCanvas()
         {
             return _ctx.Canvas.ToList();
