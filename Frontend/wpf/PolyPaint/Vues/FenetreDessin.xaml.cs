@@ -521,20 +521,23 @@ namespace PolyPaint
                     break;
                 case "select":
                     var selectedStrokes = surfaceDessin.GetSelectedStrokes();
-                    var affectedStrokes = InkCanvasEventManager.UpdateAnchorPointsPosition(surfaceDessin);
-                    affectedStrokes.Add(selectedStrokes);
                     selectedItems = StrokeBuilder.GetDrawViewModelsFromStrokes(selectedStrokes);
-                    var affectedItems = StrokeBuilder.GetDrawViewModelsFromStrokes(affectedStrokes);
-
-                    (DataContext as VueModele).CollaborationClient.CollaborativeDrawAsync(affectedItems);
                     (DataContext as VueModele).CollaborationClient.CollaborativeSelectAsync(selectedItems);
-
-                    CurrentChange.Item2 = new StrokeCollection(selectedStrokes).Clone();
-                    if (CurrentChange.Item1 != null && CurrentChange.Item1.Count > 0 &&
-                        CurrentChange.Item2 != null && CurrentChange.Item2.Count > 0 &&
-                        (CurrentChange.Item1[0] as AbstractStroke).Center != (CurrentChange.Item2[0] as AbstractStroke).Center)
+                    if (IsMoving)
                     {
-                        AddToUndoStack();
+                        var affectedStrokes = InkCanvasEventManager.UpdateAnchorPointsPosition(surfaceDessin);
+                        if (!affectedStrokes.Any(x => selectedStrokes.Select(y => (y as AbstractStroke).Guid).Contains((x as AbstractStroke).Guid))) affectedStrokes.Add(selectedStrokes);
+                        var affectedItems = StrokeBuilder.GetDrawViewModelsFromStrokes(affectedStrokes);
+
+                        (DataContext as VueModele).CollaborationClient.CollaborativeDrawAsync(affectedItems);
+
+                        CurrentChange.Item2 = new StrokeCollection(selectedStrokes).Clone();
+                        if (CurrentChange.Item1 != null && CurrentChange.Item1.Count > 0 &&
+                            CurrentChange.Item2 != null && CurrentChange.Item2.Count > 0 &&
+                            (CurrentChange.Item1[0] as AbstractStroke).Center != (CurrentChange.Item2[0] as AbstractStroke).Center)
+                        {
+                            AddToUndoStack();
+                        }
                     }
                     IsResizing = false;
                     IsMoving = false;
@@ -736,12 +739,21 @@ namespace PolyPaint
             var selectedStrokes = surfaceDessin.GetSelectedStrokes();
             if (selectedStrokes.Count == 1 && selectedStrokes[0] is AbstractLineStroke && ((AbstractLineStroke)selectedStrokes[0]).Snapped)
                 e.Cancel = true;
+            else if (selectedStrokes.Count > 1 && !CanMove())
+                e.Cancel = true;
             else if (selectedStrokes.Count == 1 && selectedStrokes[0] is AbstractLineStroke)
             {
                 var newX = (selectedStrokes[0] as AbstractLineStroke).LastElbowPosition.X + e.NewRectangle.X - e.OldRectangle.X;
                 var newY = (selectedStrokes[0] as AbstractLineStroke).LastElbowPosition.Y + e.NewRectangle.Y - e.OldRectangle.Y;
                 (selectedStrokes[0] as AbstractLineStroke).LastElbowPosition = new Point(newX, newY);
             }
+        }
+
+        private bool CanMove()
+        {
+            var selectedconnections = surfaceDessin.GetSelectedStrokes().Where(x => x is AbstractLineStroke);
+            var scedrick = surfaceDessin.Strokes.Where(x => x is AbstractShapeStroke && ((x as AbstractShapeStroke).InConnections.Any(y => selectedconnections.Select(z => (z as AbstractStroke).Guid).Contains(y.Key)) || (x as AbstractShapeStroke).OutConnections.Any(y => selectedconnections.Select(z => (z as AbstractStroke).Guid).Contains(y.Key))));
+            return scedrick.All(x => surfaceDessin.GetSelectedStrokes().Select(y => (y as AbstractStroke).Guid).Contains((x as AbstractStroke).Guid));
         }
 
         void InkCanvas_SelectionResizing(object sender, InkCanvasSelectionEditingEventArgs e)

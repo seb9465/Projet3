@@ -277,7 +277,8 @@ namespace PolyPaint.Utilitaires
                     {
                         AnchorPosition pos = (AnchorPosition)Enum.Parse(typeof(AnchorPosition), connection[1], true);
                         var stroke = (AbstractLineStroke)surfaceDessin.Strokes.Where(x => x is AbstractLineStroke).FirstOrDefault(x => (x as AbstractLineStroke).Guid.ToString() == connection[0]);
-                        shape.InConnections.TryAdd(stroke, pos);
+                        if (stroke != null)
+                            shape.InConnections.TryAdd(stroke.Guid, pos);
                         var connStroke = surfaceDessin.Strokes.FirstOrDefault(x => (x as AbstractStroke).Guid.ToString() == connection[0]);
                         if (connStroke != null)
                         {
@@ -291,7 +292,8 @@ namespace PolyPaint.Utilitaires
                     {
                         AnchorPosition pos = (AnchorPosition)Enum.Parse(typeof(AnchorPosition), connection[1], true);
                         var stroke = (AbstractLineStroke)surfaceDessin.Strokes.Where(x => x is AbstractLineStroke).FirstOrDefault(x => (x as AbstractLineStroke).Guid.ToString() == connection[0]);
-                        shape.OutConnections.TryAdd(stroke, pos);
+                        if (stroke != null)
+                            shape.OutConnections.TryAdd(stroke.Guid, pos);
                         var connStroke = surfaceDessin.Strokes.FirstOrDefault(x => (x as AbstractStroke).Guid.ToString() == connection[0]);
                         if (connStroke != null)
                         {
@@ -405,8 +407,8 @@ namespace PolyPaint.Utilitaires
                         foreach (var property in (stroke as UmlClassStroke).Properties)
                             drawingStroke.Properties.Add(property.Title);
                     }
-                    drawingStroke.InConnections = new List<List<string>>((stroke as AbstractShapeStroke).InConnections.Select(x => new List<string>() { x.Key.Guid.ToString(), x.Value.ToString().ToLower() }));
-                    drawingStroke.OutConnections = new List<List<string>>((stroke as AbstractShapeStroke).OutConnections.Select(x => new List<string>() { x.Key.Guid.ToString(), x.Value.ToString().ToLower() }));
+                    drawingStroke.InConnections = new List<List<string>>((stroke as AbstractShapeStroke).InConnections.Select(x => new List<string>() { x.Key.ToString(), x.Value.ToString().ToLower() }));
+                    drawingStroke.OutConnections = new List<List<string>>((stroke as AbstractShapeStroke).OutConnections.Select(x => new List<string>() { x.Key.ToString(), x.Value.ToString().ToLower() }));
                 }
 
                 if (stroke is AbstractLineStroke)
