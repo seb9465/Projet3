@@ -14,8 +14,6 @@ class DashboardController: UIViewController, UITextFieldDelegate {
     
     // MARK: - Attributes
     
-    private var lastEditingState: Bool = false;
-    
     // MARK: - Outlets
     
     @IBOutlet weak var galleryView: UIView!
@@ -165,13 +163,12 @@ class DashboardController: UIViewController, UITextFieldDelegate {
     @IBAction func windowChatTrigger(_ sender: Any) {
         if (self.viewContainerChat.isHidden) {
             self.viewContainerChat.isHidden = false;
-            if (self.lastEditingState) {
-                self.setEditing(true, animated: true);
-            }
+            self.view.addSubview(self.viewContainerChat);
+            let view: UIView = self.view.subviews.last!;
+            view.layoutIfNeeded();
         } else {
             self.viewContainerChat.isHidden = true;
-            self.view.endEditing(true);
-            self.lastEditingState = self.isEditing;
+            self.viewContainerChat.removeFromSuperview()
         }
     }
 }
