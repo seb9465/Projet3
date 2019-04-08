@@ -20,7 +20,6 @@ class CanvasController: UIViewController {
     private var activeButton: UIBarButtonItem!;
     @IBOutlet weak var connectionLabel: UILabel!
     public var editor: Editor = Editor()
-    @IBOutlet weak var insertButton: UIBarButtonItem!
     @IBOutlet var selectButton: UIBarButtonItem!
     @IBOutlet var deleteButton: UIBarButtonItem!
     @IBOutlet weak var lassoButton: UIBarButtonItem!
@@ -159,20 +158,7 @@ class CanvasController: UIViewController {
         
         self.editor.deselect();
     }
-    
-    @IBAction func insertButtonPressed(_ sender: Any) {
-        self.resetButtonColor();
-        
-        if (self.editor.touchEventState == .INSERT) {
-            self.editor.changeTouchHandleState(to: .NONE);
-        } else {
-            self.insertButton.tintColor = Constants.RED_COLOR;
-            self.editor.changeTouchHandleState(to: .INSERT)
-        }
-        
-        self.editor.deselect();
-    }
-    
+
     @IBAction func exportButtonPressed(_ sender: Any) {
         let image = self.exportPNG()
         UIImageWriteToSavedPhotosAlbum(image, self, #selector(image(_:didFinishSavingWithError:contextInfo:)), nil);
@@ -336,8 +322,6 @@ class CanvasController: UIViewController {
     
     private func resetButtonColor() -> Void {
         self.selectButton.tintColor = UIColor.black;
-        self.deleteButton.tintColor = UIColor.black;
-        self.insertButton.tintColor = UIColor.black;
         self.lassoButton.tintColor = UIColor.black;
     }
     
