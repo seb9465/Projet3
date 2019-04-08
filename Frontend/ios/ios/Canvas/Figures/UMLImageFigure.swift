@@ -29,6 +29,12 @@ class UmlImageFigure: UmlFigure {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func resize(by: CGPoint) {
+        super.resize(by: by)
+        self.imageView!.frame = CGRect(x: 0, y: 0, width: self.frame.width, height: self.frame.height)
+        setNeedsDisplay()
+    }
+    
     override func exportViewModel() -> DrawViewModel {
         let point1 = PolyPaintStylusPoint(X: Double(self.firstPoint.x), Y: Double(self.firstPoint.y), PressureFactor: 1)
         let point2 = PolyPaintStylusPoint(X: Double(self.lastPoint.x), Y: Double(self.lastPoint.y), PressureFactor: 1)
