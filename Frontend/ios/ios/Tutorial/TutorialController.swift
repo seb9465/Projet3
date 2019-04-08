@@ -16,12 +16,17 @@ class TutorialController: UIViewController {
     // MARK: - Outlets
 
     @IBOutlet var scrollView: UIScrollView!
-    @IBOutlet var pageControle: UIPageControl!
+    @IBOutlet var pageControl: UIPageControl!
     
     // MARK: - Timing functions
     
     override func viewDidLoad() {
         let slides: [Slide] = self.createSlides();
+        setupSlideScrollView(slides: slides);
+        
+        self.pageControl.numberOfPages = slides.count;
+        self.pageControl.currentPage = 0;
+        self.view.bringSubviewToFront(self.pageControl);
     }
     
     // MARK: - Public functions
@@ -43,9 +48,9 @@ class TutorialController: UIViewController {
         self.scrollView.contentSize = CGSize(width: self.view.frame.width * CGFloat(slides.count), height: self.view.frame.height);
         self.scrollView.isPagingEnabled = true;
         
-        for slide in slides {
-            slide.frame = CGRect(x: self.view.frame.width * CGFloat(i), y: 0, width: self.view.frame.width, height: self.view.frame.height)
-            self.scrollView.addSubview(slide)
+        for i in 0 ..< slides.count {
+            slides[i].frame = CGRect(x: self.view.frame.width * CGFloat(i), y: 0, width: self.view.frame.width, height: self.view.frame.height);
+            self.scrollView.addSubview(slides[i]);
         }
     }
 }
