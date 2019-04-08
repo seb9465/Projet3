@@ -51,6 +51,8 @@ namespace PolyPaint
         private Point currentPoint, mouseLeftDownPoint;
         bool isMenuOpen = false;
         private ViewStateEnum _viewState { get; set; }
+        private double _currentWidth;
+        private double _currentHeight;
 
         private (StrokeCollection, StrokeCollection) CurrentChange = (new StrokeCollection(), new StrokeCollection());
         private Stack<(StrokeCollection, StrokeCollection)> UndoStack { get; set; }
@@ -77,6 +79,7 @@ namespace PolyPaint
             (DataContext as VueModele).CollaborationClient.ProtectionChanged += HandleProtectionChanged;
             (DataContext as VueModele).CollaborationClient.ClientConnected += SendSelectedStrokesToOthers;
             (DataContext as VueModele).PropertyChanged += VueModelePropertyChanged;
+            (DataContext as VueModele).ChatClient.MessageReceived += ScrollDown;
 
             (DataContext as VueModele).OnRotation += UpdateAdorner;
 
@@ -220,6 +223,8 @@ namespace PolyPaint
                 drawviewmodels.ForEach(x => x.Guid = Guid.NewGuid().ToString());
                 drawviewmodels.ForEach(x => x.StylusPoints.ForEach(y => y.X += 10));
                 drawviewmodels.ForEach(x => x.StylusPoints.ForEach(y => y.Y += 10));
+                drawviewmodels.Where(x => !x.IsConnection()).ToList().ForEach(x => x.InConnections.Clear());
+                drawviewmodels.Where(x => !x.IsConnection()).ToList().ForEach(x => x.OutConnections.Clear());
                 StrokeBuilder.BuildStrokesFromDrawViewModels(drawviewmodels, surfaceDessin);
 
                 StrokeCollection sCollection = new StrokeCollection(surfaceDessin.Strokes.Where(x => drawviewmodels.Select(y => y.Guid).Contains((x as AbstractStroke).Guid.ToString())).ToList());
@@ -345,7 +350,7 @@ namespace PolyPaint
                         (DataContext as VueModele).IsCreatedByUser = Canvas.CanvasAutor == Application.Current.Properties["username"].ToString();
                     }
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
                     (DataContext as VueModele).IsCreatedByUser = false;
                     (DataContext as VueModele).IsConnected = false;
@@ -455,6 +460,7 @@ namespace PolyPaint
             mediaPlayer.Play();
             messageTextBox.Text = String.Empty;
             messageTextBox.Focus();
+            ScrollDown(null, null);
         }
 
 
@@ -522,7 +528,6 @@ namespace PolyPaint
                 case "select":
                     var selectedStrokes = surfaceDessin.GetSelectedStrokes();
                     selectedItems = StrokeBuilder.GetDrawViewModelsFromStrokes(selectedStrokes);
-                    (DataContext as VueModele).CollaborationClient.CollaborativeSelectAsync(selectedItems);
                     if (IsMoving || IsResizing)
                     {
                         var affectedStrokes = InkCanvasEventManager.UpdateAnchorPointsPosition(surfaceDessin);
@@ -539,6 +544,7 @@ namespace PolyPaint
                             AddToUndoStack();
                         }
                     }
+                    (DataContext as VueModele).CollaborationClient.CollaborativeSelectAsync(selectedItems);
                     IsResizing = false;
                     IsMoving = false;
                     break;
@@ -991,8 +997,14 @@ namespace PolyPaint
             Undoable_Executed(sender, e);
         }
 
-        void Window_Loaded(object sender, RoutedEventArgs e)
+        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
+            _currentHeight = e.NewSize.Height;
+            _currentWidth = e.NewSize.Width;
+            chatBorder.Height = _currentHeight-210;
+            chat.Height = _currentHeight - 450;
+            messagesList.Height = _currentHeight - 530;
         }
+        
     }
 }

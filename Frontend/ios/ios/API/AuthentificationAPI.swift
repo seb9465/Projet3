@@ -8,6 +8,7 @@
 
 import Alamofire
 import PromiseKit
+import AwaitKit
 
 class AuthentificationAPI {
     
@@ -94,9 +95,14 @@ class AuthentificationAPI {
         }
     }
     
-    static func logout() -> Void {
-        let headers = ["Authorization": "Bearer " + UserDefaults.standard.string(forKey: "token")!];
-        
-        Manager.request(Constants.LOGOUT_URL as URLConvertible, method: .get, encoding: JSONEncoding.default, headers: headers)
+    static func logout() -> Promise<Void> {
+        return async {
+            let headers = ["Authorization": "Bearer " + UserDefaults.standard.string(forKey: "token")!];
+            
+            Manager.request(Constants.LOGOUT_URL as URLConvertible, method: .get, encoding: JSONEncoding.default, headers: headers);
+            
+            ChatService.shared.disconnectFromHub();
+            UserDefaults.standard.removePersistentDomain(forName: "token");
+        }
     }
 }

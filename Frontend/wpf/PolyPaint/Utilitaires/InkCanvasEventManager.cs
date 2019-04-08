@@ -191,15 +191,21 @@ namespace PolyPaint.Utilitaires
                 {
                     var newAnchorPoint = shape.AnchorPoints[conn.Value];
                     var lineStroke = surfaceDessin.Strokes.FirstOrDefault(x => (x as AbstractStroke).Guid == conn.Key);
-                    lineStroke.StylusPoints[1] = new StylusPoint(newAnchorPoint.X, newAnchorPoint.Y);
-                    if (!affectedStrokes.Select(x => (x as AbstractStroke).Guid).Contains(conn.Key)) affectedStrokes.Add(lineStroke);
+                    if (lineStroke != null)
+                    {
+                        lineStroke.StylusPoints[1] = new StylusPoint(newAnchorPoint.X, newAnchorPoint.Y);
+                        if (!affectedStrokes.Select(x => (x as AbstractStroke).Guid).Contains(conn.Key)) affectedStrokes.Add(lineStroke);
+                    }
                 }
                 foreach (var conn in shape.OutConnections)
                 {
                     var newAnchorPoint = shape.AnchorPoints[conn.Value];
                     var lineStroke = surfaceDessin.Strokes.FirstOrDefault(x => (x as AbstractStroke).Guid == conn.Key);
-                    lineStroke.StylusPoints[0] = new StylusPoint(newAnchorPoint.X, newAnchorPoint.Y);
-                    if (!affectedStrokes.Select(x => (x as AbstractStroke).Guid).Contains(conn.Key)) affectedStrokes.Add(lineStroke);
+                    if (lineStroke != null)
+                    {
+                        lineStroke.StylusPoints[0] = new StylusPoint(newAnchorPoint.X, newAnchorPoint.Y);
+                        if (!affectedStrokes.Select(x => (x as AbstractStroke).Guid).Contains(conn.Key)) affectedStrokes.Add(lineStroke);
+                    }
                 }
             }
 

@@ -14,9 +14,9 @@ import WebKit
 import FacebookLogin
 import FacebookCore
 import JWTDecode
+
 class LoginController: UIViewController, UITextFieldDelegate, WKUIDelegate {
     
-    @IBOutlet weak var facebookButton: RoundedCorners!
     // MARK: Outlets
     
     @IBOutlet weak var serverlabel: UILabel!;
@@ -25,6 +25,7 @@ class LoginController: UIViewController, UITextFieldDelegate, WKUIDelegate {
     @IBOutlet var validationLabel: UILabel!;
     @IBOutlet var loginButton: UIButton!;
     @IBOutlet weak var offlineButton: RoundedCorners!;
+    @IBOutlet weak var facebookButton: RoundedCorners!
     
     // MARK: Timing functions
     
@@ -49,15 +50,10 @@ class LoginController: UIViewController, UITextFieldDelegate, WKUIDelegate {
      */
     @IBAction func loginPressed(_ sender: Any) -> Void {
         let spinner = UIViewController.displaySpinner(onView: self.view);
-        let token = UserDefaults.standard.string(forKey: "token");
         
-        if (token != nil) {
-            AuthentificationAPI.logout()
-            UserDefaults.standard.removePersistentDomain(forName: "token");
-        }
 //        AuthentificationAPI.login(username: emailField.text!, password: passwordField.text!)
-        AuthentificationAPI.login(username: "william.sevigny", password: "!12345Aa")
-//        AuthentificationAPI.login(username: "sebastien.labine", password: "!12345Aa")
+//        AuthentificationAPI.login(username: "william.sevigny", password: "!12345Aa")
+        AuthentificationAPI.login(username: "seb.cado2", password: "!12345Aa")
             .done { (token) in
                 UIViewController.removeSpinner(spinner: spinner);
                 self.validationLabel.text = "";
@@ -65,7 +61,6 @@ class LoginController: UIViewController, UITextFieldDelegate, WKUIDelegate {
                 self.present((self.storyboard?.instantiateViewController(withIdentifier: "MainController"))!, animated: true, completion: nil);
             }.catch { (responseError) in
                 UIViewController.removeSpinner(spinner: spinner);
-                // TODO: Afficher le bon message d'erreur. En attente du serveur.
                 self.validationLabel.text = responseError.localizedDescription;
         }
     }
@@ -141,12 +136,11 @@ class LoginController: UIViewController, UITextFieldDelegate, WKUIDelegate {
         loginManager.loginBehavior = .web
         loginManager.logIn(readPermissions: [.email, .publicProfile], viewController: self, completion: { loginResult in
             switch loginResult {
-            case .failed(let error):
+            case .failed:
                self.showErrorMessage()
             case .cancelled:
                 print("User cancelled login.")
-            case .success(let grantedPermissions, let declinedPermissions, let accessToken):
-                print("Logged in!")
+            case .success( _, _, let accessToken):
                 
                 let connection = GraphRequestConnection()
                 connection.add( GraphRequest(graphPath: "me", parameters: ["fields":"email,id,first_name,last_name"], accessToken: AccessToken.current, httpMethod: .GET, apiVersion: FacebookCore.GraphAPIVersion.defaultVersion)) { httpResponse, result in
@@ -161,19 +155,22 @@ class LoginController: UIViewController, UITextFieldDelegate, WKUIDelegate {
                         }).catch({(Error) in
                             self.validationLabel.text = Error.localizedDescription;
                         })
+                        break;
                     case .failed(let error):
                         print(error)
                         self.showErrorMessage()
+                        break;
                     }
                 }
                 connection.start()
             }
-        })
+        });
     }
+    
     public func showErrorMessage() {
         let alert: UIAlertController = UIAlertController(title: "Error!", message: "An error as occured. Please try again.", preferredStyle: .alert);
         let okAction: UIAlertAction = UIAlertAction(title: "Ok", style: .default, handler: nil);
         alert.addAction(okAction);
-        self.present(alert, animated: true, completion: nil)
+        self.present(alert, animated: true, completion: nil);
     }
 }
