@@ -54,16 +54,16 @@
                                             <action selector="redoButton:" destination="Vts-He-P18" id="2RI-2W-Sfy"/>
                                         </connections>
                                     </barButtonItem>
-                                    <barButtonItem title="Duplicate" image="duplicate" id="BjU-u4-eJ6" userLabel="Paste">
-                                        <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <connections>
-                                            <action selector="duplicateButtonPressed:" destination="Vts-He-P18" id="ZyN-In-isq"/>
-                                        </connections>
-                                    </barButtonItem>
                                     <barButtonItem title="Cut" image="cut_button" id="cBy-5K-qpS">
                                         <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
                                             <action selector="cutButtonPressed:" destination="Vts-He-P18" id="DGb-Kz-z4c"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem title="Duplicate" image="duplicate" id="BjU-u4-eJ6" userLabel="Paste">
+                                        <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <connections>
+                                            <action selector="duplicateButtonPressed:" destination="Vts-He-P18" id="ZyN-In-isq"/>
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem title="Lasso" image="selection" id="Ttp-DJ-46z">
