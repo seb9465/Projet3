@@ -321,6 +321,7 @@ class CanvasController: UIViewController {
     }
     
     private func resetButtonColor() -> Void {
+        self.setDuplicateButtonState(isEnabled: false)
         self.selectButton.tintColor = UIColor.black;
         self.lassoButton.tintColor = UIColor.black;
     }
