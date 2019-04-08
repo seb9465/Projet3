@@ -33,7 +33,7 @@ namespace PolyPaint.Strokes
             InConnections = new ConcurrentDictionary<Guid, AnchorPosition>();
             OutConnections = new ConcurrentDictionary<Guid, AnchorPosition>();
 
-            Title = new FormattedText(title, System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, Config.T_FACE, 17, Brushes.Black);
+            Title = new FormattedText(title, System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, Config.T_FACE, 12, Brushes.Black);
         }
 
         protected virtual void DrawAnchorPoints(DrawingContext drawingContext)
