@@ -267,7 +267,7 @@ class CollaborationHub {
             let jsonData = jsonString.data(using: .utf8);
             let itemMessage: ItemMessage = try! JSONDecoder().decode(ItemMessage.self, from: jsonData!);
             
-            self.delegate!.delete(drawViewModels: itemMessage.Items)
+            self.delegate.delete(drawViewModels: itemMessage.Items)
         })
     }
     
