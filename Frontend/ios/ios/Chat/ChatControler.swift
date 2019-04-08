@@ -52,13 +52,14 @@ class MsgChatController: MessagesViewController, MsgChatProtocol {
     
     override func viewWillDisappear(_ animated: Bool) -> Void {
         print("VIEW DISAPPEARS");
-         super.viewWillDisappear(animated);
+        
+        super.viewWillDisappear(animated);
     }
     
     public func messageInputBar(_ inputBar: MessageInputBar, textViewTextDidChangeTo text: String) -> Void {
-        if(messageInputBar.inputTextView.text.contains("\n")) {
+        if (messageInputBar.inputTextView.text.contains("\n")) {
             messageInputBar.inputTextView.text.popLast();
-            if(messageInputBar.sendButton.isEnabled) {
+            if (messageInputBar.sendButton.isEnabled) {
                 messageInputBar.didSelectSendButton();
             }
         }

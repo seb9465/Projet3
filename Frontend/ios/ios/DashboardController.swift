@@ -12,7 +12,10 @@ import Alamofire
 
 class DashboardController: UIViewController, UITextFieldDelegate {
     
-    // MARK: Outlets
+    // MARK: - Attributes
+    
+    
+    // MARK: - Outlets
     
     @IBOutlet weak var galleryView: UIView!
     @IBOutlet weak var usernameLabel: UILabel!
@@ -21,7 +24,7 @@ class DashboardController: UIViewController, UITextFieldDelegate {
     @IBOutlet var windowChatButton: RoundedCorners!
     @IBOutlet var chatNotifLabel: UILabel!
     
-    // MARK: Timing functions
+    // MARK: - Timing functions
     
     override func viewDidLoad() { self.navigationItem.setHidesBackButton(true, animated:true);
         super.viewDidLoad();
@@ -55,7 +58,7 @@ class DashboardController: UIViewController, UITextFieldDelegate {
         }
     }
     
-    // MARK: Private functions
+    // MARK: - Private functions
     
     private func setChatViewContainer() -> Void {
         self.viewContainerChat.sizeToFit();
@@ -85,7 +88,7 @@ class DashboardController: UIViewController, UITextFieldDelegate {
         }
     }
     
-    // MARK: Action functions
+    // MARK: - Action functions
     
     @IBAction func logoutButton(_ sender: Any) {
         AuthentificationAPI.logout()
@@ -163,6 +166,7 @@ class DashboardController: UIViewController, UITextFieldDelegate {
             self.viewContainerChat.isHidden = false;
         } else {
             self.viewContainerChat.isHidden = true;
+//            self.isEditing;
             self.view.endEditing(true);
         }
     }
