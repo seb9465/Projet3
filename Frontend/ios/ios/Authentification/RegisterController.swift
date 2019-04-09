@@ -51,8 +51,8 @@ class RegisterController: UIViewController {
     // MARK: Timing functions
     
     public override func viewDidLoad() {
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil);
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil);
         
         self.contentView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(returnTextView(gesture:))))
         
@@ -259,7 +259,7 @@ class RegisterController: UIViewController {
     private func buildOkAlert() -> UIAlertController {
         let alert: UIAlertController = UIAlertController(title: "Registration complete!", message: "Welcome abord " + self.firstNameField.text!, preferredStyle: .alert);
         
-        let okAction: UIAlertAction = UIAlertAction(title: "Sick, let me in!", style: .default, handler: { action in
+        let okAction: UIAlertAction = UIAlertAction(title: "Ok!", style: .default, handler: { action in
             self.dismiss(animated: true, completion: nil)
         });
         
@@ -271,7 +271,7 @@ class RegisterController: UIViewController {
     private func buildFailureAlert() -> UIAlertController {
         let alert: UIAlertController = UIAlertController(title: "Something went wrong", message: nil, preferredStyle: .alert);
         
-        let okAction: UIAlertAction = UIAlertAction(title: "Damn, alright I'll try again.", style: .default, handler: nil);
+        let okAction: UIAlertAction = UIAlertAction(title: "Ok", style: .default, handler: nil);
         
         alert.addAction(okAction);
         
@@ -302,35 +302,23 @@ class RegisterController: UIViewController {
         activeField = nil
     }
     
-    /**
-     When keyboard opens, it will enable the scrolling.
-    */
-    @objc func keyboardWillShow(notification: NSNotification) {
-        if keyboardHeight != nil {
-            return
-        }
-        
-        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
-            keyboardHeight = keyboardSize.height;
-            
-            UIView.animate(withDuration: 0.3, animations: {
-                self.constraintContentHeight.constant += self.keyboardHeight
-            });
+    @objc func keyboardWillShow(notification: NSNotification) -> Void {
+        if let keyboardSize: CGRect = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+            if (self.view.frame.origin.y == 0) {
+                self.view.frame.origin.y -= keyboardSize.height / 3;
+            }
         }
     }
     
     /**
-     When keyboard closes, it will disable the scrolling.
-    */
-    @objc func keyboardWillHide(notification: NSNotification) {
-        UIView.animate(withDuration: 0.3) {
-            guard let heightConstraint = self.constraintContentHeight else { return }
-            guard let keybHeight = self.keyboardHeight else { return }
-            heightConstraint.constant -= keybHeight
+     When keyboard closes, the view will go back to normal.
+     */
+    @objc func keyboardWillHide(notification: NSNotification) -> Void {
+        if (self.view.frame.origin.y != 0) {
+            self.view.frame.origin.y = 0;
         }
-        
-        self.keyboardHeight = nil
     }
+    
     
     /**
      Makes the Register button enabled while the fields are not filled or errors are still present.

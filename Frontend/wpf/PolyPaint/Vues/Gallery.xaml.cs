@@ -282,7 +282,7 @@ namespace PolyPaint.Vues
                     fenetreDessin.Show();
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
             }
         }
