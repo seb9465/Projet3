@@ -29,16 +29,16 @@
                 <PasswordBox Name="passwordBox" HorizontalAlignment="Left" Height="30" Margin="35,50,0,0" VerticalAlignment="Top" Width="205" PasswordChanged="FieldsUpdate"/>
             </StackPanel>
             <TextBlock x:Name="loginError" TextWrapping="Wrap" TextAlignment="Center" Margin="0,20,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="#DDFF0000" Width="140" />
-            <Button Content="Login"  Width="160px" VerticalAlignment="Top" Margin="0,20,0,0" Name="loginBtn" Click="LoginBtn_Click" Height="Auto"/>
-            <Button Width="97" Margin="0,20,0,0" Background="#FF4444FF" BorderBrush="#FF4444FF" Click="Button_ClickAsync">
+            <Button Content="Sign In"  Width="160px" VerticalAlignment="Top" Margin="0,20,0,0" Name="loginBtn" Click="LoginBtn_Click" Height="Auto"/>
+            <Button Width="250" Margin="0,20,0,0" Background="#FF4444FF" BorderBrush="#FF4444FF" Click="Button_ClickAsync">
                             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Name="colonne" Width="15" />
-                    <ColumnDefinition Width="50" />
+                    <ColumnDefinition Width="140" />
                 </Grid.ColumnDefinitions>
 
                                 <materialDesign:PackIcon Kind="FacebookBox" />
-                                <TextBlock Grid.Column="1" Text="Login" FontSize="12" Margin="6,0,-6,0"/>
+                                <TextBlock Grid.Column="1" Text="Continue with Facebook" FontSize="12" Margin="6,0,-6,0"/>
                             </Grid>
                         </Button>
         </StackPanel>
