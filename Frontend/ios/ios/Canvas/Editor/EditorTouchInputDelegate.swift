@@ -190,7 +190,7 @@ extension Editor : TouchInputDelegate {
                 return
             }
             
-            print(figure?.uuid)
+//            print(figure?.uuid)
             self.select(figure: figure!)
             self.updateSideToolBar()
             CollaborationHub.shared!.selectObjects(drawViewModels: [(figure!.exportViewModel())!])
