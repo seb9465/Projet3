@@ -280,9 +280,10 @@ class Editor {
         for figure in self.figures {
             figure.removeFromSuperview()
         }
-        
-        self.deselect();
-        CollaborationHub.shared?.selectObjects(drawViewModels: [])
+        for selectionOutline in self.selectedOutlinesDictionnary {
+            self.deselect(username: selectionOutline.key)
+        }
+        self.deselect()
         self.selectedFigures.removeAll()
         self.selectionOutlines.removeAll()
         self.editorView.setNeedsDisplay()
