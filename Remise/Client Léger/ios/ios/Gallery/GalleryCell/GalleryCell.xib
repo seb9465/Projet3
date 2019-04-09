@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="GalleryCell" id="gTV-IL-0wX" customClass="GalleryCell" customModule="ios" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="243.5" height="245.5"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="243.5" height="245.5"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UR5-Rt-Q4r">
+                        <rect key="frame" x="0.0" y="201" width="243.5" height="45"/>
+                        <subviews>
+                            <imageView opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VQP-UF-j1y" userLabel="ImageView">
+                                <rect key="frame" x="-5" y="-201" width="254" height="205"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Privacy" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="M4N-Ou-jY3">
+                                <rect key="frame" x="8" y="24" width="41.5" height="14.5"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                <color key="textColor" white="0.95999999999999996" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Canvas Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I8e-G8-Cep">
+                                <rect key="frame" x="8" y="5" width="181" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView opaque="NO" userInteractionEnabled="NO" alpha="0.65000000000000002" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="lock.png" translatesAutoresizingMaskIntoConstraints="NO" id="qVJ-yM-c1O" userLabel="LockView">
+                                <rect key="frame" x="208" y="9" width="27" height="27"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="0.41960784309999999" blue="0.41960784309999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="243.5" id="OeK-u6-q1g"/>
+                            <constraint firstAttribute="height" constant="45" id="gWw-t5-Zch"/>
+                        </constraints>
+                    </view>
+                </subviews>
+            </view>
+            <constraints>
+                <constraint firstItem="UR5-Rt-Q4r" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="201" id="eY0-ft-9OL"/>
+                <constraint firstItem="UR5-Rt-Q4r" firstAttribute="centerX" secondItem="gTV-IL-0wX" secondAttribute="centerX" id="fZ0-F3-TV4"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
+            <connections>
+                <outlet property="imageView" destination="VQP-UF-j1y" id="v84-bt-LWr"/>
+                <outlet property="lockImage" destination="qVJ-yM-c1O" id="XrE-vY-3fO"/>
+                <outlet property="nameLabel" destination="I8e-G8-Cep" id="iEx-ag-Z98"/>
+                <outlet property="privacyLabel" destination="M4N-Ou-jY3" id="8G4-SR-Yrd"/>
+            </connections>
+            <point key="canvasLocation" x="52.799999999999997" y="48.575712143928037"/>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <image name="lock.png" width="764" height="980"/>
+    </resources>
+</document>
