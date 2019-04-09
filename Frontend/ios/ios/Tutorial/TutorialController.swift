@@ -64,32 +64,37 @@ class TutorialController: UIViewController, UIScrollViewDelegate {
     }
     
     private func createSlides() -> [Slide] {
-        var images: [String] = [];
-        var titles: [String] = [];
-        var descriptions: [String] = [];
-//        var test: [String, String, String] = []
+        var slides: [SlideInfo] = [];
         
-        let slide1:Slide = Bundle.main.loadNibNamed("Slide", owner: self, options: nil)?.first as! Slide;
-        slide1.imageView.image = UIImage(named: "tutorial-1");
-        slide1.labelTitle.text = "Dashboard";
-        slide1.labelDesc.text = "You are now in your personal profile that contains a gallery of public and private images.";
+        slides.append(SlideInfo(imageName: "tutorial-1", title: "Dashboard", description: "You are now in your personal profile that contains a gallery of public and private images."));
+        slides.append(SlideInfo(imageName: "tutorial-2", title: "Dashboard", description: "You are now in your personal profile that contains a gallery of public and private images."));
+        slides.append(SlideInfo(imageName: "tutorial-3", title: "Chatroom", description: "Here are your channels. You can access a channel by clicking on it."));
+        slides.append(SlideInfo(imageName: "tutorial-4", title: "Register to another chatroom", description: "You can register to a new chatroom by clicking the plus sign."));
+        slides.append(SlideInfo(imageName: "tutorial-5", title: "Add a chatroom", description: "You can create a new room by writing the name of the room you desire. You can also register to an existing chatroom by clicking on it."));
+        slides.append(SlideInfo(imageName: "tutorial-7", title: "Open an existing canvas", description: "In the gallery, you can open an existing canvas by clicking on it."));
+        slides.append(SlideInfo(imageName: "tutorial-6", title: "Create a new canvas", description: "In the gallery, you can create a new canvas by clicking on the New Canvas button."));
+        slides.append(SlideInfo(imageName: "tutorial-8", title: "Creating a new canvas", description: "When creating a new canvas, you will be asked to select a visibility and a protection. A public canvas can be seen by every user in the gallery. A protected canvas can only be seen by yourself."));
+        slides.append(SlideInfo(imageName: "tutorial-9", title: "Password protection", description: "Once you have selected the visibility of your canvas, you will be asked a password. Password is optionnal."));
+        slides.append(SlideInfo(imageName: "tutorial-10", title: "Editor", description: "Here is the canvas editor."));
+        slides.append(SlideInfo(imageName: "tutorial-11", title: "Insert figure", description: "You can insert element to the canvas by selecting it in the menu."));
+        slides.append(SlideInfo(imageName: "tutorial-12", title: "Insert connection", description: "You can insert a connection figure to the canvas by selecting it in the menu."));
+        slides.append(SlideInfo(imageName: "tutorial-13", title: "Styling", description: "You can change the style of an element via the left side menu."));
+        slides.append(SlideInfo(imageName: "tutorial-14", title: "Tools", description: "There are plently of tools available in the top bar. From left to right, there is the quit button, the save button, the clear button, the undo button, the redo button, the cut button, the duplicate button and the selection button."));
+        slides.append(SlideInfo(imageName: "tutorial-15", title: "Chat in the Editor View", description: "From the Editor view, you can access the chat by clicking the top right button."));
+        slides.append(SlideInfo(imageName: "", title: "You are ready to go!", description: ""));
         
-        let slide2:Slide = Bundle.main.loadNibNamed("Slide", owner: self, options: nil)?.first as! Slide;
-        slide2.imageView.image = UIImage(named: "tutorial-2");
-        slide2.labelTitle.text = "Chat";
-        slide2.labelDesc.text = "You can access the chat via the right side menu.";
+        var s: [Slide] = [];
         
-        let slide3:Slide = Bundle.main.loadNibNamed("Slide", owner: self, options: nil)?.first as! Slide;
-        slide3.imageView.image = UIImage(named: "tutorial-3");
-        slide3.labelTitle.text = "Chatroom";
-        slide3.labelDesc.text = "Here are your channels. You can access a channel by clicking on it.";
+        for slideInfos in slides {
+            let slide: Slide = Bundle.main.loadNibNamed("Slide", owner: self, options: nil)?.first as! Slide;
+            slide.imageView.image = UIImage(named: slideInfos.imageName);
+            slide.labelTitle.text = slideInfos.title;
+            slide.labelDesc.text = slideInfos.description;
+            
+            s.append(slide);
+        }
         
-        let slide4:Slide = Bundle.main.loadNibNamed("Slide", owner: self, options: nil)?.first as! Slide;
-        slide4.imageView.image = UIImage(named: "tutorial-4");
-        slide4.labelTitle.text = "Register to another chatroom";
-        slide4.labelDesc.text = "You can register to a new chatroom by clicking the plus sign.";
-        
-        return [slide1, slide2, slide3];
+        return s;
     }
     
     private func initPageControl() -> Void {
