@@ -28,7 +28,17 @@ class UmlImageFigure: UmlFigure {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+    override func draw(_ rect: CGRect) {
+        var width = abs(self.frame.origin.x - self.frame.maxX)
+        var height = abs(self.frame.origin.y - self.frame.maxY)
+        
+        if (Int(self.currentAngle / 90) % 2 != 0) {
+            let temp = width
+            width = height
+            height = temp
+        }
+        self.imageView!.frame = CGRect(x: 0, y: 0, width: width, height: height)
+    }
     override func resize(by: CGPoint, figures: [Figure]) {
         super.resize(by: by, figures: figures)
         self.imageView!.frame = CGRect(x: 0, y: 0, width: self.frame.width, height: self.frame.height)
