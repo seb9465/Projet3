@@ -70,6 +70,12 @@ class TutorialController: UIViewController, UIScrollViewDelegate {
         slides.append(SlideInfo(imageName: "tutorial-2", title: "Dashboard", description: "You are now in your personal profile that contains a gallery of public and private images."));
         slides.append(SlideInfo(imageName: "tutorial-3", title: "Chatroom", description: "Here are your channels. You can access a channel by clicking on it."));
         slides.append(SlideInfo(imageName: "tutorial-4", title: "Register to another chatroom", description: "You can register to a new chatroom by clicking the plus sign."));
+        slides.append(SlideInfo(imageName: "tutorial-5", title: "Add a chatroom", description: "You can create a new room by writing the name of the room you desire. You can also register to an existing chatroom by clicking on it."));
+        slides.append(SlideInfo(imageName: "tutorial-7", title: "Open an existing canvas", description: "In the gallery, you can open an existing canvas by clicking on it."));
+        slides.append(SlideInfo(imageName: "tutorial-6", title: "Create a new canvas", description: "In the gallery, you can create a new canvas by clicking on the New Canvas button."));
+        slides.append(SlideInfo(imageName: "tutorial-8", title: "Creating a new canvas", description: "When creating a new canvas, you will be asked to select a visibility and a protection. A public canvas can be seen by every user in the gallery. A protected canvas can only be seen by yourself."));
+        slides.append(SlideInfo(imageName: "tutorial-9", title: "Password protection", description: "Once you have selected the visibility of your canvas, you will be asked a password. Password is optionnal."));
+        
         slides.append(SlideInfo(imageName: "", title: "You are ready to go!", description: ""))
         
         var s: [Slide] = [];
