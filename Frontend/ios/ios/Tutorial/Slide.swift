@@ -41,7 +41,7 @@ class Slide: UIView {
     
     private func initLabels() -> Void {
         self.labelTitle.textColor = Constants.Colors.RED_COLOR;
-        self.labelDesc.textColor = Constants.Colors.RED_COLOR;
+        self.labelDesc.textColor = UIColor.black;
     }
     
     private func initGetStartedButton() -> Void {
