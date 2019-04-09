@@ -41,6 +41,10 @@ extension Editor {
             return
         }
         
+        if (self.areModificationsSelectedByAnotherUser(drawViewModels: self.undoArray.last!.1)) {
+            return
+        }
+        
         let beforeAfter = undoArray.popLast()!
         
         if (beforeAfter.0.isEmpty) {
@@ -72,6 +76,10 @@ extension Editor {
             return
         }
         
+        if (self.areModificationsSelectedByAnotherUser(drawViewModels: self.undoArray.last!.0)) {
+            return
+        }
+        
         let beforeAfter = redoArray.popLast()!
         
         if (beforeAfter.0.isEmpty) {
@@ -95,5 +103,19 @@ extension Editor {
         CollaborationHub.shared?.postNewFigure(drawViewModels: beforeAfter.1)
         CanvasService.saveOnNewFigure(figures: self.figures, editor: self)
         self.undoArray.append(beforeAfter)
+    }
+    
+    func areModificationsSelectedByAnotherUser(drawViewModels: [DrawViewModel]) -> Bool {
+        for drawViewModel in drawViewModels {
+            for pair in self.selectedFiguresDictionnary {
+                for selectedModel in pair.value {
+                    if(selectedModel.Guid == drawViewModel.Guid) {
+                        print("Selection cancelled: Figure already selected by another user")
+                        return true
+                    }
+                }
+            }
+        }
+        return false
     }
 }
