@@ -48,6 +48,9 @@ class AddScreenViewController: UIViewController, UITableViewDelegate, UITableVie
     @IBAction func saveButton(_ sender: Any) {
         if (!(self.channelName.text?.isEmpty)!) {
             ChatService.shared.createNewChannel(channelName: channelName.text!);
+            ChatService.shared.currentChannel = Channel(name: channelName.text!, connected: true);
+            ChatService.shared.connectToGroup();
+            ChatService.shared.currentChannel = nil;
         }
         
         self.navigationController?.popViewController(animated: true);

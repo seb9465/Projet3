@@ -34,7 +34,6 @@ namespace PolyPaint.VueModeles
         private Editeur editeur = new Editeur();
         private string _currentRoom;
         private string _selectedBorder;
-        private MediaPlayer mediaPlayer = new MediaPlayer();
         private ConcurrentDictionary<string, List<DrawViewModel>> _onlineSelection { get; set; }
         public InkCanvas SurfaceDessin { get; private set; }
         public ChatClient ChatClient { get; set; }
@@ -459,9 +458,6 @@ namespace PolyPaint.VueModeles
                 });
             });
             ProprieteModifiee("MessagesListBox");
-            //mediaPlayer.Open(new Uri("SoundEffects//receive.mp3", UriKind.Relative));
-            //mediaPlayer.Volume = 100;
-            //mediaPlayer.Play();
         }
 
         public void ConnectedToRoom(object sender, MessageArgs e)

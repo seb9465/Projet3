@@ -118,6 +118,7 @@ class UmlClassFigure: UmlFigure {
             let methodLabel = UILabel(frame: methodRect)
             methodLabel.text = "  •" + self.attributes[n]
             methodLabel.textAlignment = .left
+            methodLabel.font = methodLabel.font.withSize(12)
             methodLabel.drawText(in: methodRect)
         }
         
@@ -126,6 +127,7 @@ class UmlClassFigure: UmlFigure {
             let attributeLabel = UILabel(frame: attributesRect)
             attributeLabel.text = "  •" + self.methods[n]
             attributeLabel.textAlignment = .left
+            attributeLabel.font = attributeLabel.font.withSize(12)
             attributeLabel.drawText(in: attributesRect)
         }
     }

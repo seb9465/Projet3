@@ -216,7 +216,6 @@ class CanvasController: UIViewController {
             self.lassoButton.tintColor = Constants.Colors.RED_COLOR;
             self.editor.changeTouchHandleState(to: .AREA_SELECT)
         }
-        
         self.editor.deselect();
     }
     
@@ -360,9 +359,10 @@ class CanvasController: UIViewController {
 }
 
 extension CanvasController: EditorDelegate {
+    func lassoIsDone() {
+        self.resetButtonColor()
+    }
     func setCurrentTab(index: Int) {
-
-        print("longpress with tab index:" + String(index))
         self.tabBar?.selectedIndex = index
         self.tabBar?.selectedViewController =  self.tabBar?.viewControllers![index]
         self.view.setNeedsDisplay()

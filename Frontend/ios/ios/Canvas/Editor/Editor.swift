@@ -48,9 +48,9 @@ class Editor {
         self.editorView.delegate = self
         let pinch = UIPinchGestureRecognizer(target: self, action: #selector(self.resizeFigure(_:)))
         self.editorView.addGestureRecognizer(pinch)
-        let tap = UITapGestureRecognizer(target: self, action: #selector(self.tap(_:)))
-        tap.numberOfTapsRequired = 2
-        self.editorView.addGestureRecognizer(tap)
+//        let tap = UITapGestureRecognizer(target: self, action: #selector(self.tap(_:)))
+//        tap.numberOfTapsRequired = 2
+//        self.editorView.addGestureRecognizer(tap)
     }
     func resize(width: CGFloat, heigth: CGFloat) {
         currentCanvas.canvasHeight = Float(heigth)
@@ -162,6 +162,7 @@ class Editor {
         if (self.selectionLasso != nil) {
             self.selectionLasso.removeFromSuperview();
             self.selectionLasso = nil;
+            self.delegate?.lassoIsDone()
         }
     }
     
@@ -171,7 +172,6 @@ class Editor {
     }
     
     public func duplicate() -> Void {
-        self.currentChange.0 = []
         if (self.selectedFigures.count > 0) {
             self.copy();
             self.deselect();
@@ -193,19 +193,14 @@ class Editor {
             figureToAdd.append(newFigure)
             drawViewModelToSelect.append(newFigure.exportViewModel()!)
         }
-        self.currentChange.1 = self.getSelectedFiguresDrawviewModels()
-        self.undoArray.append(self.currentChange)
         CollaborationHub.shared!.postNewFigure(figures: figureToAdd);
         CollaborationHub.shared?.selectObjects(drawViewModels: drawViewModelToSelect)
         CanvasService.saveOnNewFigure(figures: self.figures, editor: self);
     }
     
     public func cut() -> Void {
-        self.currentChange.0 = self.getSelectedFiguresDrawviewModels()
         self.copy();
         self.deleteSelectedFigures();
-        self.currentChange.1 = []
-        self.undoArray.append(self.currentChange)
     }
     
     public func insertFigure(position: CGPoint) -> Void {
@@ -285,9 +280,10 @@ class Editor {
         for figure in self.figures {
             figure.removeFromSuperview()
         }
-        
-        self.deselect();
-        CollaborationHub.shared?.selectObjects(drawViewModels: [])
+        for selectionOutline in self.selectedOutlinesDictionnary {
+            self.deselect(username: selectionOutline.key)
+        }
+        self.deselect()
         self.selectedFigures.removeAll()
         self.selectionOutlines.removeAll()
         self.editorView.setNeedsDisplay()

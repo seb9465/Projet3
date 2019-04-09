@@ -38,7 +38,6 @@ namespace PolyPaint.Vues
         private ChatWindow externalChatWindow;
         bool isMenuOpen = false;
         private ViewStateEnum _viewState { get; set; }
-        private MediaPlayer mediaPlayer = new MediaPlayer();
         private InkCanvas SurfaceDessin { get; set; }
         private double _currentWidth;
         private double _currentHeight;
@@ -126,9 +125,6 @@ namespace PolyPaint.Vues
             {
                 (DataContext as UserDataContext).ChatClient.SendMessage(messageTextBox.Text, (DataContext as UserDataContext).CurrentRoom);
             }
-            mediaPlayer.Open(new Uri("SoundEffects//send.mp3", UriKind.Relative));
-            mediaPlayer.Volume = 100;
-            mediaPlayer.Play();
             messageTextBox.Text = String.Empty;
             messageTextBox.Focus();
         }
