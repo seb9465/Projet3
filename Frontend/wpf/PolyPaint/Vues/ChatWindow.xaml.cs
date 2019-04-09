@@ -27,6 +27,7 @@ namespace PolyPaint.Vues
         {
             InitializeComponent();
             DataContext = dataContext;
+            (DataContext as IChatDataContext).ChatClient.MessageReceived += ScrollDown;
     }
 
         private void DataWindow_Closing(object sender, CancelEventArgs e)
