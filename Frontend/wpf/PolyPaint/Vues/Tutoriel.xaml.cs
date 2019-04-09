@@ -55,7 +55,7 @@ namespace PolyPaint.Vues
                     previousPageButton.Visibility = Visibility.Visible;
                     nextPageButton.Visibility = Visibility.Visible;
                     break;
-                case 2: //CELUI QUI ETAIT LE DERNIER
+                case 2: 
                     tutorialImage.Source = new BitmapImage(new Uri(@"/Resources/tutorial/2.png", UriKind.Relative));
                     tutorialText.Text = "You can connect to a chanel by clicking the connected/disconnected button. You can change the visible channel by selecting one of the radio button ";
                     previousPageButton.Visibility = Visibility.Visible;
