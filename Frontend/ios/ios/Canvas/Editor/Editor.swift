@@ -162,6 +162,7 @@ class Editor {
         if (self.selectionLasso != nil) {
             self.selectionLasso.removeFromSuperview();
             self.selectionLasso = nil;
+            self.delegate?.lassoIsDone()
         }
     }
     
