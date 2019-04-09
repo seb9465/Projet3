@@ -85,6 +85,7 @@ namespace PolyPaint.Vues
         private void NewCanva_Click(object sender, RoutedEventArgs e)
         {
             UploadToCloud uploadToCloud = new UploadToCloud((DataContext as UserDataContext).ChatClient);
+            uploadToCloud.Done += (zender, ze) => { Close(); };
            
         }
 
@@ -246,37 +247,43 @@ namespace PolyPaint.Vues
         }
         private async void OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            SelectedCanvas = (SaveableCanvas)ImagePreviews.SelectedItem;
-            var canvases = new ObservableCollection<SaveableCanvas>();
-            using (HttpClient client = new HttpClient())
+            try
             {
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", (string)Application.Current.Properties["token"]);
-                System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
-                HttpResponseMessage response = await client.GetAsync($"{Config.URL}/api/user/AllCanvas");
-                string responseString = await response.Content.ReadAsStringAsync();
-                canvases = JsonConvert.DeserializeObject<ObservableCollection<SaveableCanvas>>(responseString);
-            }
-            SelectedCanvas = canvases.FirstOrDefault(x => x.CanvasId == (ImagePreviews.SelectedItem as SaveableCanvas).CanvasId);
-            List<DrawViewModel> drawViewModels = JsonConvert.DeserializeObject<List<DrawViewModel>>(SelectedCanvas.DrawViewModels);
-            if (SelectedCanvas.CanvasProtection != "" && SelectedCanvas.CanvasAutor != username)
-            {
-                var prompt = new PromptPassword(SelectedCanvas, drawViewModels, (DataContext as UserDataContext).ChatClient);
-                prompt.Closing += (a, n) =>
+                SelectedCanvas = (SaveableCanvas)ImagePreviews.SelectedItem;
+                var canvases = new ObservableCollection<SaveableCanvas>();
+                using (HttpClient client = new HttpClient())
                 {
-                    if(prompt.Password == SelectedCanvas.CanvasProtection)
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", (string)Application.Current.Properties["token"]);
+                    System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
+                    HttpResponseMessage response = await client.GetAsync($"{Config.URL}/api/user/AllCanvas");
+                    string responseString = await response.Content.ReadAsStringAsync();
+                    canvases = JsonConvert.DeserializeObject<ObservableCollection<SaveableCanvas>>(responseString);
+                }
+                SelectedCanvas = canvases.FirstOrDefault(x => x.CanvasId == (ImagePreviews.SelectedItem as SaveableCanvas).CanvasId);
+                List<DrawViewModel> drawViewModels = JsonConvert.DeserializeObject<List<DrawViewModel>>(SelectedCanvas.DrawViewModels);
+                if (SelectedCanvas.CanvasProtection != "" && SelectedCanvas.CanvasAutor != username)
+                {
+                    var prompt = new PromptPassword(SelectedCanvas, drawViewModels, (DataContext as UserDataContext).ChatClient);
+                    prompt.Closing += (a, n) =>
                     {
-                        Close();
-                    }
-                };
-                prompt.ShowDialog();
-                SelectedCanvas = null;
+                        if (prompt.Password == SelectedCanvas.CanvasProtection)
+                        {
+                            Close();
+                        }
+                    };
+                    prompt.ShowDialog();
+                    SelectedCanvas = null;
+                }
+                else
+                {
+                    FenetreDessin fenetreDessin = new FenetreDessin(drawViewModels, SelectedCanvas, (DataContext as UserDataContext).ChatClient);
+                    Application.Current.MainWindow = fenetreDessin;
+                    Close();
+                    fenetreDessin.Show();
+                }
             }
-            else
+            catch (Exception)
             {
-                FenetreDessin fenetreDessin = new FenetreDessin(drawViewModels, SelectedCanvas, (DataContext as UserDataContext).ChatClient);
-                Application.Current.MainWindow = fenetreDessin;
-                Close();
-                fenetreDessin.Show();
             }
         }
         private void showTutorial(object sender, RoutedEventArgs e)

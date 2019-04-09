@@ -16,7 +16,7 @@ extension Editor {
         for drawViewModel in drawViewModels  {
             figure = self.insertFigure(drawViewModel: drawViewModel)
         }
-//        self.bindLocalConnectionsToFigures(drawViewModels: drawViewModels)
+
         if(figure != nil){
             if (figure! is UmlFigure) {
                 (figure! as! UmlFigure).updateConnections(figures: self.figures)
@@ -27,14 +27,10 @@ extension Editor {
     // ** ONLY USED FOR UNDO / REDO  **
     func deleteFigures(drawViewModels: [DrawViewModel]) {
         for drawViewModel in drawViewModels {
-            let figure = self.getFigureFromDrawViewModel(model: drawViewModel)
-            
-//            if (figure is ConnectionFigure) {
-//                (figure as! ConnectionFigure).removeFromConnectedFigures(umlFigures: self.figures.filter({$0 is UmlFigure}) as! [UmlFigure])
-//            }
-            
-            figure.removeFromSuperview()
-            self.figures.removeAll{$0 == figure}
+            if let figure = self.getFigureFromDrawViewModel(model: drawViewModel) {
+                figure.removeFromSuperview()
+                self.figures.removeAll{$0 == figure}
+            }
         }
         
         self.deselect()
@@ -42,6 +38,10 @@ extension Editor {
     
     public func undo(view: UIView) -> Void {
         if (self.undoArray.isEmpty) {
+            return
+        }
+        
+        if (self.areModificationsSelectedByAnotherUser(drawViewModels: self.undoArray.last!.1)) {
             return
         }
         
@@ -76,6 +76,10 @@ extension Editor {
             return
         }
         
+        if (self.areModificationsSelectedByAnotherUser(drawViewModels: self.undoArray.last!.0)) {
+            return
+        }
+        
         let beforeAfter = redoArray.popLast()!
         
         if (beforeAfter.0.isEmpty) {
@@ -99,5 +103,19 @@ extension Editor {
         CollaborationHub.shared?.postNewFigure(drawViewModels: beforeAfter.1)
         CanvasService.saveOnNewFigure(figures: self.figures, editor: self)
         self.undoArray.append(beforeAfter)
+    }
+    
+    func areModificationsSelectedByAnotherUser(drawViewModels: [DrawViewModel]) -> Bool {
+        for drawViewModel in drawViewModels {
+            for pair in self.selectedFiguresDictionnary {
+                for selectedModel in pair.value {
+                    if(selectedModel.Guid == drawViewModel.Guid) {
+                        print("Selection cancelled: Figure already selected by another user")
+                        return true
+                    }
+                }
+            }
+        }
+        return false
     }
 }

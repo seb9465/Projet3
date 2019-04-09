@@ -252,6 +252,10 @@ class CanvasController: UIViewController {
                             },
                            completion: nil
             );
+            self.chatViewContainer.isHidden = false;
+            self.view.addSubview(self.chatViewContainer);
+            let view: UIView = self.view.subviews.last!;
+            view.layoutIfNeeded();
         } else {
             self.chatViewButton.tintColor = UIColor.black;
             UIView.animate(withDuration: 0.35,
@@ -265,6 +269,8 @@ class CanvasController: UIViewController {
                             },
                            completion: nil
             );
+            self.chatViewContainer.isHidden = true;
+            self.chatViewContainer.removeFromSuperview()
         }
     }
     
@@ -282,8 +288,9 @@ class CanvasController: UIViewController {
                 let enteredPassword = passwordAlert.textFields![0].text!
                 self.protectionLabel.text = "Password Protection is ON"
                 currentCanvas.canvasProtection = enteredPassword
-                CanvasService.SaveOnline(canvas: currentCanvas)
-                CollaborationHub.shared!.changeProtection(isProtected: true)
+                CanvasService.SaveOnline(canvas: currentCanvas).done({(result) in
+                    CollaborationHub.shared!.changeProtection(isProtected: true)
+                })
             }))
             self.present(passwordAlert, animated: true, completion: nil)
         } else {
@@ -363,7 +370,6 @@ extension CanvasController: EditorDelegate {
         self.resetButtonColor()
     }
     func setCurrentTab(index: Int) {
-        print("longpress with tab index:" + String(index))
         self.tabBar?.selectedIndex = index
         self.tabBar?.selectedViewController =  self.tabBar?.viewControllers![index]
         self.view.setNeedsDisplay()

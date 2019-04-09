@@ -6,6 +6,7 @@
          xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:local="clr-namespace:PolyPaint.Vues"
         mc:Ignorable="d"
+        Closing="Window_Closing"
        
         Title="PolyPaint PRO" Height="246.664" Width="432.889">
     <Grid Margin="0,30,0,0">

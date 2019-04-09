@@ -8,7 +8,7 @@ namespace PolyPaint.Vues
     {
         public double CanvasHeight;
         public double CanvasWidth;
-
+        private bool _isWindowClosedCorrectly = false;
         private double InitWidth { get; set; }
         private double InitHeight { get; set; }
 
@@ -20,10 +20,12 @@ namespace PolyPaint.Vues
             heightTextBox.Text = height.ToString();
             widthTextBox.Text = width.ToString();
             ShowDialog();
+
         }
 
         private void Ok_Click(object sender, RoutedEventArgs e)
         {
+            _isWindowClosedCorrectly = true;
             CanvasHeight = heightTextBox.Text == "" ? InitHeight : Convert.ToDouble(heightTextBox.Text);
             CanvasWidth = widthTextBox.Text == "" ? InitWidth : Convert.ToDouble(widthTextBox.Text);
             Close();
@@ -38,6 +40,14 @@ namespace PolyPaint.Vues
             else
             {
                 OkButton.IsEnabled = true;
+            }
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (!_isWindowClosedCorrectly)
+            {
+                e.Cancel = true;
             }
         }
     }

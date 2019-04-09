@@ -76,7 +76,7 @@
                         <Image Source="/Resources/download.png"  Width="25" Height="25"/>
                     </Button>
 
-                    <Button  Style="{StaticResource MaterialDesignRaisedButton}" ToolTip="Reinitialize canvas" 
+                    <Button  Style="{StaticResource MaterialDesignRaisedButton}" ToolTip="Reset canvas" 
                     x:Name="reinitialiser" Width="30" Height="30" Margin="5" Padding="0" Click="Reinitialiser_Click" FontSize="18">
                         <materialDesign:PackIcon Kind="Garbage" />
                     </Button>
