@@ -83,6 +83,7 @@
 		B713BCF0225AFB43006077FD /* Tutorial.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B713BCEF225AFB43006077FD /* Tutorial.storyboard */; };
 		B713BCF2225AFD4E006077FD /* Slide.swift in Sources */ = {isa = PBXBuildFile; fileRef = B713BCF1225AFD4E006077FD /* Slide.swift */; };
 		B713BCF4225AFD5E006077FD /* Slide.xib in Resources */ = {isa = PBXBuildFile; fileRef = B713BCF3225AFD5E006077FD /* Slide.xib */; };
+		B737B7C6225C22F300786AE2 /* SlideInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = B737B7C5225C22F300786AE2 /* SlideInfo.swift */; };
 		B74BE372221F40950001D62A /* CanvasService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74BE371221F40950001D62A /* CanvasService.swift */; };
 		B7567946220F33CD00F80B12 /* ChatService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7567945220F33CD00F80B12 /* ChatService.swift */; };
 		B7567948220F355F00F80B12 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7567947220F355F00F80B12 /* Constants.swift */; };
@@ -229,6 +230,7 @@
 		B713BCEF225AFB43006077FD /* Tutorial.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Tutorial.storyboard; sourceTree = "<group>"; };
 		B713BCF1225AFD4E006077FD /* Slide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Slide.swift; sourceTree = "<group>"; };
 		B713BCF3225AFD5E006077FD /* Slide.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = Slide.xib; sourceTree = "<group>"; };
+		B737B7C5225C22F300786AE2 /* SlideInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlideInfo.swift; sourceTree = "<group>"; };
 		B74BE371221F40950001D62A /* CanvasService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasService.swift; sourceTree = "<group>"; };
 		B7567945220F33CD00F80B12 /* ChatService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatService.swift; sourceTree = "<group>"; };
 		B7567947220F355F00F80B12 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -677,6 +679,7 @@
 				B713BCEF225AFB43006077FD /* Tutorial.storyboard */,
 				B713BCF1225AFD4E006077FD /* Slide.swift */,
 				B713BCF3225AFD5E006077FD /* Slide.xib */,
+				B737B7C5225C22F300786AE2 /* SlideInfo.swift */,
 			);
 			path = Tutorial;
 			sourceTree = "<group>";
@@ -1066,6 +1069,7 @@
 				B7B1B4392231BE8000BEE17D /* MessageDataSourceExtension.swift in Sources */,
 				B7B1B4402231C06900BEE17D /* MessageLayoutExtension.swift in Sources */,
 				B79117DF2234AE830008CB4C /* Channel.swift in Sources */,
+				B737B7C6225C22F300786AE2 /* SlideInfo.swift in Sources */,
 				B7A3A5C02203BF3B00031F64 /* ChatControler.swift in Sources */,
 				3DA5CA43224414D200087298 /* GalleryController.swift in Sources */,
 				3D2052A9224A944C00C488F1 /* ColorPicker.swift in Sources */,
