@@ -71,12 +71,12 @@ public class LineStrokeAdorner : Adorner
         AdornedStroke.LastElbowPosition = dragPos;
 
         var affectedStrokes = AdornedStroke.TrySnap();
-        affectedStrokes.Add(AdornedStroke);
+        if (!affectedStrokes.Select(x => (x as AbstractStroke).Guid).Contains(AdornedStroke.Guid)) affectedStrokes.Add(AdornedStroke);
         AdornedStroke.StylusPoints = new StylusPointCollection() { spoints[0], spoints[1], new StylusPoint(dragPos.X, dragPos.Y) };
 
         var drawViewModel = StrokeBuilder.GetDrawViewModelsFromStrokes(affectedStrokes);
         (AdornedStroke.SurfaceDessin.DataContext as VueModele).CollaborationClient.CollaborativeDrawAsync(drawViewModel);
-        (AdornedStroke.SurfaceDessin.DataContext as VueModele).CollaborationClient.CollaborativeSelectAsync(StrokeBuilder.GetDrawViewModelsFromStrokes(AdornedStrokes));
+        (AdornedStroke.SurfaceDessin.DataContext as VueModele).CollaborationClient.CollaborativeSelectAsync(StrokeBuilder.GetDrawViewModelsFromStrokes((AdornedElement as InkCanvas).GetSelectedStrokes()));
         ElbowChanged?.Invoke(this, new EventArgs());
         InvalidateArrange();
     }
