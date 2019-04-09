@@ -19,6 +19,7 @@ namespace PolyPaint.Vues
     public partial class UploadToCloud : Window, INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
+        public event EventHandler Done;
         public ChatClient ChatClient;
         private bool _isProtected;
         public bool IsProtected
@@ -38,7 +39,7 @@ namespace PolyPaint.Vues
             InitializeComponent();
             ChatClient = chatClient;
             _isProtected = protectionComboBox.Text == "Protected";
-            this.ShowDialog();
+            this.Show();
         }
 
         protected virtual void ProprieteModifiee([CallerMemberName] string propertyName = null)
@@ -55,6 +56,8 @@ namespace PolyPaint.Vues
             Application.Current.MainWindow = fenetreDessin;
             Close();
             fenetreDessin.Show();
+
+            Done?.Invoke(this, new EventArgs());
         }
 
         private void protectionComboBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)

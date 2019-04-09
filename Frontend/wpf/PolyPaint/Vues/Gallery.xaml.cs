@@ -86,6 +86,7 @@ namespace PolyPaint.Vues
         private void NewCanva_Click(object sender, RoutedEventArgs e)
         {
             UploadToCloud uploadToCloud = new UploadToCloud((DataContext as UserDataContext).ChatClient);
+            uploadToCloud.Done += (zender, ze) => { Close(); };
            
         }
 
