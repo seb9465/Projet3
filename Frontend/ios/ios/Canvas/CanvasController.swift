@@ -288,8 +288,9 @@ class CanvasController: UIViewController {
                 let enteredPassword = passwordAlert.textFields![0].text!
                 self.protectionLabel.text = "Password Protection is ON"
                 currentCanvas.canvasProtection = enteredPassword
-                CanvasService.SaveOnline(canvas: currentCanvas)
-                CollaborationHub.shared!.changeProtection(isProtected: true)
+                CanvasService.SaveOnline(canvas: currentCanvas).done({(result) in
+                    CollaborationHub.shared!.changeProtection(isProtected: true)
+                })
             }))
             self.present(passwordAlert, animated: true, completion: nil)
         } else {
