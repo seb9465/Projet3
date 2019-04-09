@@ -75,8 +75,13 @@ class TutorialController: UIViewController, UIScrollViewDelegate {
         slides.append(SlideInfo(imageName: "tutorial-6", title: "Create a new canvas", description: "In the gallery, you can create a new canvas by clicking on the New Canvas button."));
         slides.append(SlideInfo(imageName: "tutorial-8", title: "Creating a new canvas", description: "When creating a new canvas, you will be asked to select a visibility and a protection. A public canvas can be seen by every user in the gallery. A protected canvas can only be seen by yourself."));
         slides.append(SlideInfo(imageName: "tutorial-9", title: "Password protection", description: "Once you have selected the visibility of your canvas, you will be asked a password. Password is optionnal."));
-        
-        slides.append(SlideInfo(imageName: "", title: "You are ready to go!", description: ""))
+        slides.append(SlideInfo(imageName: "tutorial-10", title: "Editor", description: "Here is the canvas editor."));
+        slides.append(SlideInfo(imageName: "tutorial-11", title: "Insert figure", description: "You can insert element to the canvas by selecting it in the menu."));
+        slides.append(SlideInfo(imageName: "tutorial-12", title: "Insert connection", description: "You can insert a connection figure to the canvas by selecting it in the menu."));
+        slides.append(SlideInfo(imageName: "tutorial-13", title: "Styling", description: "You can change the style of an element via the left side menu."));
+        slides.append(SlideInfo(imageName: "tutorial-14", title: "Tools", description: "There are plently of tools available in the top bar. From left to right, there is the quit button, the save button, the clear button, the undo button, the redo button, the cut button, the duplicate button and the selection button."));
+        slides.append(SlideInfo(imageName: "tutorial-15", title: "Chat in the Editor View", description: "From the Editor view, you can access the chat by clicking the top right button."));
+        slides.append(SlideInfo(imageName: "", title: "You are ready to go!", description: ""));
         
         var s: [Slide] = [];
         
