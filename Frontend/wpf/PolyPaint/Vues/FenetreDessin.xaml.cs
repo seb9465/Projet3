@@ -365,10 +365,13 @@ namespace PolyPaint
                 }
                 catch (Exception)
                 {
+                    if ((DataContext as VueModele).IsConnected)
+                    {
+                        MessageBox.Show("Connection has been lost. All changes are saved locally until reconnection (or application exit).");
+                    }
                     (DataContext as VueModele).IsCreatedByUser = false;
                     (DataContext as VueModele).IsConnected = false;
                     try { await UnsubscribeToServer(); } catch (Exception) { }
-                    MessageBox.Show("Connection has been lost. All changes are saved locally until reconnection (or application exit).");
                 }
             }
 
@@ -543,7 +546,7 @@ namespace PolyPaint
                     {
                         var affectedStrokes = InkCanvasEventManager.UpdateAnchorPointsPosition(surfaceDessin);
                         //if (!affectedStrokes.Any(x => selectedStrokes.Select(y => (y as AbstractStroke).Guid).Contains((x as AbstractStroke).Guid))) affectedStrokes.Add(selectedStrokes);
-                        foreach(var stroke in selectedStrokes)
+                        foreach (var stroke in selectedStrokes)
                         {
                             if (!affectedStrokes.Select(x => (x as AbstractStroke).Guid).Contains((stroke as AbstractStroke).Guid)) affectedStrokes.Add(stroke);
                         }
