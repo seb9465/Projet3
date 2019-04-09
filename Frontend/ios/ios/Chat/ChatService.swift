@@ -263,7 +263,9 @@ class ChatService {
                     messageId: UUID().uuidString
                 );
                 
-                insertMessage(newMessage);
+                if (self._currentChannel != nil && obj.channelId == self._currentChannel.name) {
+                    insertMessage(newMessage);
+                }
             }
         });
     }

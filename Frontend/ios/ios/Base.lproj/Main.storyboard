@@ -96,13 +96,6 @@
                                 <color key="textColor" red="1" green="0.41960784309999999" blue="0.41960784309999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Server: " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qs7-Nw-GU5" userLabel="serverlabel">
-                                <rect key="frame" x="27" y="81" width="286" height="12"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="10"/>
-                                <color key="textColor" red="0.016804177310000001" green="0.19835099580000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kE2-GA-VrO" customClass="RoundedCorners" customModule="ios" customModuleProvider="target">
                                 <rect key="frame" x="393" y="576" width="239" height="38"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -124,7 +117,6 @@
                         <outlet property="facebookButton" destination="kE2-GA-VrO" id="cmL-XF-FM2"/>
                         <outlet property="loginButton" destination="Hrm-z5-RNa" id="dpS-kU-zbE"/>
                         <outlet property="passwordField" destination="Q8W-2o-jAM" id="fIx-n1-Fs4"/>
-                        <outlet property="serverlabel" destination="Qs7-Nw-GU5" id="eNO-CJ-Gq7"/>
                         <outlet property="validationLabel" destination="xyw-KZ-w3f" id="g6P-Eu-5FF"/>
                     </connections>
                 </viewController>
@@ -492,20 +484,8 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Kti-Cb-B64" customClass="RoundedCorners" customModule="ios" customModuleProvider="target">
-                                <rect key="frame" x="727" y="76" width="131" height="44"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="1" green="0.41960784309999999" blue="0.41960784309999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
-                                <state key="normal" title="New Canvas">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                </state>
-                                <connections>
-                                    <action selector="createNewCanvas:" destination="eTb-Zs-q24" eventType="touchUpInside" id="9CG-DB-fLh"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KXK-ig-5Z3" customClass="RoundedCorners" customModule="ios" customModuleProvider="target">
-                                <rect key="frame" x="435" y="76" width="131" height="44"/>
+                                <rect key="frame" x="726" y="76" width="130.99999999999955" height="44"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="1" green="0.41960784309999999" blue="0.41960784309999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
@@ -514,6 +494,18 @@
                                 </state>
                                 <connections>
                                     <segue destination="6AX-Fv-lLR" kind="show" id="oEV-hz-2QT"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Kti-Cb-B64" customClass="RoundedCorners" customModule="ios" customModuleProvider="target">
+                                <rect key="frame" x="434" y="76" width="130.99999999999955" height="44"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="1" green="0.41960784309999999" blue="0.41960784309999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
+                                <state key="normal" title="New Canvas">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="createNewCanvas:" destination="eTb-Zs-q24" eventType="touchUpInside" id="9CG-DB-fLh"/>
                                 </connections>
                             </button>
                         </subviews>

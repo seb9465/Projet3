@@ -71,8 +71,8 @@ extension Editor {
         }
     }
     
-    @objc func longPress(_ sender: UILongPressGestureRecognizer) {
-        if (self.selectedFigures.count != 1 || self.touchEventState != .SELECT) {
+    @objc func tap(_ sender: UILongPressGestureRecognizer) {
+        if (self.selectedFigures.count != 1) {
             return
         }        
         self.delegate?.setCurrentTab(index: 2)

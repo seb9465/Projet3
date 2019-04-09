@@ -38,6 +38,10 @@ extension PropertiesTableController: UITableViewDelegate, UITableViewDataSource 
         if (self.editor.selectedFigures.isEmpty) {
             return 0
         }
+
+        if (self.editor.selectedFigures[0] is UmlImageFigure) {
+            return 0
+        }
         
         if (self.editor.selectedFigures[0] is UmlClassFigure) {
             return 2
