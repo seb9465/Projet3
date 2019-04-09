@@ -13,4 +13,5 @@ protocol EditorDelegate {
     func setCutButtonState(isEnabled: Bool)
     func setDuplicateButtonState(isEnabled: Bool)
     func setCurrentTab(index: Int)
+    func lassoIsDone()
 }
