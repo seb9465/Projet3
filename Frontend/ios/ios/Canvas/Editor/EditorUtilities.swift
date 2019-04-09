@@ -36,8 +36,8 @@ extension Editor {
         return self.figures.filter({$0 is UmlFigure}) as! [UmlFigure]
     }
     
-    func getFigureFromDrawViewModel(model: DrawViewModel) -> Figure {
-        return self.figures.first(where: {$0.uuid.uuidString.lowercased() == model.Guid})!
+    func getFigureFromDrawViewModel(model: DrawViewModel) -> Figure? {
+        return self.figures.first(where: {$0.uuid.uuidString.lowercased() == model.Guid})
     }
     
     func isAllAnchoredFiguresInSelection(connection: ConnectionFigure) -> Bool{

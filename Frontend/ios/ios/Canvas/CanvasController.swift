@@ -364,7 +364,6 @@ extension CanvasController: EditorDelegate {
         self.resetButtonColor()
     }
     func setCurrentTab(index: Int) {
-        print("longpress with tab index:" + String(index))
         self.tabBar?.selectedIndex = index
         self.tabBar?.selectedViewController =  self.tabBar?.viewControllers![index]
         self.view.setNeedsDisplay()
