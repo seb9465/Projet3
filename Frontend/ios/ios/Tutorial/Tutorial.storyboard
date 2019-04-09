@@ -28,6 +28,17 @@
                                 <color key="pageIndicatorTintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <color key="currentPageIndicatorTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </pageControl>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hOy-pY-5Sj" userLabel="Skip">
+                                <rect key="frame" x="885" y="711" width="119" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.99901801349999997" green="0.24845618010000001" blue="0.20372647050000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <state key="normal" title="Skip">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="skipPressed:" destination="iKh-52-CV6" eventType="touchUpInside" id="8aX-Wn-w7j"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="5vf-ZI-ti9"/>
@@ -35,6 +46,7 @@
                     <connections>
                         <outlet property="pageControl" destination="Wo5-2M-PaK" id="cZ1-vG-NYq"/>
                         <outlet property="scrollView" destination="uhg-2I-ZBe" id="emw-Or-Hww"/>
+                        <outlet property="skipButton" destination="hOy-pY-5Sj" id="42U-1W-r75"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7sR-8x-Xdb" userLabel="First Responder" sceneMemberID="firstResponder"/>

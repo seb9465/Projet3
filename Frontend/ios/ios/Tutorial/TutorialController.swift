@@ -19,6 +19,7 @@ class TutorialController: UIViewController, UIScrollViewDelegate {
     @IBOutlet var scrollView: UIScrollView!
     @IBOutlet var pageControl: UIPageControl!
     
+    @IBOutlet weak var skipButton: UIButton!
     // MARK: - Timing functions
     
     override func viewDidLoad() {
@@ -42,6 +43,10 @@ class TutorialController: UIViewController, UIScrollViewDelegate {
     
     // MARK: - Private functions
     
+    @IBAction func skipPressed(_ sender: Any) {
+        AuthentificationAPI.setIsTutorialShown()
+        self.dismiss(animated: true, completion: nil)
+    }
     private func initSlides() -> Void {
         self._slides = self.createSlides();
         self.initSlidesView();

@@ -336,6 +336,7 @@ class CanvasController: UIViewController {
                 if(succes) {
                     let updatedAlert = UIAlertController(title: "Canvas Updated", message: "All your modification while being offline were saved to the cloud!", preferredStyle: .alert)
                     updatedAlert.addAction(UIAlertAction(title: "OK", style: .default))
+                    CollaborationHub.shared?.reset()
                     CollaborationHub.shared?.postNewFigure(figures: self.editor.figures)
                     self.present(updatedAlert, animated: true, completion: nil);
                 } else {
