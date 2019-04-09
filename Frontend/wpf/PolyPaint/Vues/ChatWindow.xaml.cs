@@ -22,11 +22,11 @@ namespace PolyPaint.Vues
     public partial class ChatWindow : Window
     {
 
-        private MediaPlayer mediaPlayer = new MediaPlayer();
         public ChatWindow(object dataContext)
         {
             InitializeComponent();
             DataContext = dataContext;
+            (DataContext as IChatDataContext).ChatClient.MessageReceived += ScrollDown;
     }
 
         private void DataWindow_Closing(object sender, CancelEventArgs e)
@@ -75,9 +75,6 @@ namespace PolyPaint.Vues
             {
                 (DataContext as IChatDataContext).ChatClient.SendMessage(messageTextBox.Text, (DataContext as IChatDataContext).CurrentRoom);
             }
-            mediaPlayer.Open(new Uri("SoundEffects//send.mp3", UriKind.Relative));
-            mediaPlayer.Volume = 100;
-            mediaPlayer.Play();
             messageTextBox.Text = String.Empty;
             messageTextBox.Focus();
         }

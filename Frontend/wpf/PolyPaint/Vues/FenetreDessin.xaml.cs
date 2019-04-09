@@ -45,7 +45,6 @@ namespace PolyPaint
 
 
         private ChatWindow externalChatWindow;
-        private MediaPlayer mediaPlayer = new MediaPlayer();
         private InkCanvasEventManager icEventManager = new InkCanvasEventManager();
         private bool IsDrawing = false;
         private Point currentPoint, mouseLeftDownPoint;
@@ -100,6 +99,8 @@ namespace PolyPaint
             RedoStack = new Stack<(StrokeCollection, StrokeCollection)>();
 
             Closing += Unselect;
+
+            SendToCloud();
         }
 
         private void Unselect(object sender, CancelEventArgs e)
@@ -455,9 +456,6 @@ namespace PolyPaint
             {
                 (DataContext as VueModele).ChatClient.SendMessage(messageTextBox.Text, (DataContext as VueModele).CurrentRoom);
             }
-            mediaPlayer.Open(new Uri("SoundEffects//send.mp3", UriKind.Relative));
-            mediaPlayer.Volume = 100;
-            mediaPlayer.Play();
             messageTextBox.Text = String.Empty;
             messageTextBox.Focus();
             ScrollDown(null, null);
@@ -653,8 +651,13 @@ namespace PolyPaint
             (DataContext as VueModele).Reinitialiser.Execute(null);
             (DataContext as VueModele).CollaborationClient.CollaborativeSelectAsync(new List<DrawViewModel>());
             (DataContext as VueModele).CollaborationClient.CollaborativeResetAsync();
-            SendToCloud();
             ReplaceAdorner();
+            foreach (var selection in _onlineSelectedAdorners)
+            {
+                if (_onlineSelectedAdorners.TryGetValue(selection.Key, out var adorner))
+                    adornerLayer.Remove(adorner);
+            }
+            SendToCloud();
         }
 
         private void ReceiveDraw(object sender, MessageArgs args)
@@ -702,6 +705,11 @@ namespace PolyPaint
             Dispatcher.Invoke(() =>
             {
                 (DataContext as VueModele).Reinitialiser.Execute(null);
+                foreach (var selection in _onlineSelectedAdorners)
+                {
+                    if (_onlineSelectedAdorners.TryGetValue(selection.Key, out var adorner))
+                        adornerLayer.Remove(adorner);
+                }
                 (DataContext as VueModele).SelectNothing();
                 ReplaceAdorner();
             });
