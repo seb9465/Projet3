@@ -359,6 +359,7 @@ namespace PolyPaint
                         (DataContext as VueModele).IsConnected = true;
                         (DataContext as VueModele).IsCreatedByUser = Canvas.CanvasAutor == Application.Current.Properties["username"].ToString();
                         try { SubscribeToServer(); } catch (Exception) { }
+                        (DataContext as VueModele).CollaborationClient.CollaborativeResetAsync();
                         (DataContext as VueModele).CollaborationClient.CollaborativeDrawAsync(StrokeBuilder.GetDrawViewModelsFromStrokes(surfaceDessin.Strokes));
                     }
                 }
