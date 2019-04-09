@@ -64,20 +64,30 @@ class TutorialController: UIViewController, UIScrollViewDelegate {
     }
     
     private func createSlides() -> [Slide] {
+        var images: [String] = [];
+        var titles: [String] = [];
+        var descriptions: [String] = [];
+//        var test: [String, String, String] = []
+        
         let slide1:Slide = Bundle.main.loadNibNamed("Slide", owner: self, options: nil)?.first as! Slide;
-        slide1.imageView.image = UIImage(named: "chienperdu2");
-        slide1.labelTitle.text = "TITLE 1";
-        slide1.labelDesc.text = "DESCRIPTION 1";
+        slide1.imageView.image = UIImage(named: "tutorial-1");
+        slide1.labelTitle.text = "Dashboard";
+        slide1.labelDesc.text = "You are now in your personal profile that contains a gallery of public and private images.";
         
         let slide2:Slide = Bundle.main.loadNibNamed("Slide", owner: self, options: nil)?.first as! Slide;
-        slide2.imageView.image = UIImage(named: "chienperdu1");
-        slide2.labelTitle.text = "TITLE 2";
-        slide2.labelDesc.text = "DESCRIPTION 2";
+        slide2.imageView.image = UIImage(named: "tutorial-2");
+        slide2.labelTitle.text = "Chat";
+        slide2.labelDesc.text = "You can access the chat via the right side menu.";
         
         let slide3:Slide = Bundle.main.loadNibNamed("Slide", owner: self, options: nil)?.first as! Slide;
-        slide3.imageView.image = nil;
-        slide3.labelTitle.text = "FIN";
-        slide3.labelDesc.text = "FIN";
+        slide3.imageView.image = UIImage(named: "tutorial-3");
+        slide3.labelTitle.text = "Chatroom";
+        slide3.labelDesc.text = "Here are your channels. You can access a channel by clicking on it.";
+        
+        let slide4:Slide = Bundle.main.loadNibNamed("Slide", owner: self, options: nil)?.first as! Slide;
+        slide4.imageView.image = UIImage(named: "tutorial-4");
+        slide4.labelTitle.text = "Register to another chatroom";
+        slide4.labelDesc.text = "You can register to a new chatroom by clicking the plus sign.";
         
         return [slide1, slide2, slide3];
     }
