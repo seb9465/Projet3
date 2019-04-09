@@ -270,6 +270,18 @@ namespace PolyPaint.VueModeles
             await ChatClient.Disconnect();
         }
 
+        internal void SubscribeChatClient()
+        {
+            ChatClient.MessageReceived += AddMessage;
+            ChatClient.ChannelsReceived+= InitializeChatRooms;
+            ChatClient.ChannelCreated += AddRoomItem;
+            ChatClient.ConnectedToChannel += ConnectedToRoom;
+            ChatClient.ConnectedToChannelSender += ConnectedToRoomSender;
+            ChatClient.DisconnectedFromChannel += DisconnectedFromRoom;
+            ChatClient.DisconnectedFromChannelSender += DisconnectedFromRoomSender;
+            ChatClient.Initialize(Application.Current.Properties["token"].ToString());
+        }
+
         /// <summary>
         /// Traite les évènements de modifications de propriétés qui ont été lancés à partir
         /// du modèle.

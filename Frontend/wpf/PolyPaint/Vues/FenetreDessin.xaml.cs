@@ -358,12 +358,15 @@ namespace PolyPaint
                         MessageBox.Show("Connection has been retrieved. All changes were pushed.");
                         (DataContext as VueModele).IsConnected = true;
                         (DataContext as VueModele).IsCreatedByUser = Canvas.CanvasAutor == Application.Current.Properties["username"].ToString();
+                        try { SubscribeToServer(); } catch (Exception) { }
+                        (DataContext as VueModele).CollaborationClient.CollaborativeDrawAsync(StrokeBuilder.GetDrawViewModelsFromStrokes(surfaceDessin.Strokes));
                     }
                 }
                 catch (Exception)
                 {
                     (DataContext as VueModele).IsCreatedByUser = false;
                     (DataContext as VueModele).IsConnected = false;
+                    try { await UnsubscribeToServer(); } catch (Exception) { }
                     MessageBox.Show("Connection has been lost. All changes are saved locally until reconnection (or application exit).");
                 }
             }
@@ -891,6 +894,23 @@ namespace PolyPaint
             (DataContext as VueModele).PropertyChanged -= VueModelePropertyChanged;
             await (DataContext as VueModele).CollaborationClient.Disconnect();
             await (DataContext as VueModele).UnsubscribeChatClient();
+        }
+
+        private void SubscribeToServer()
+        {
+            (DataContext as VueModele).CollaborationClient.DrawReceived += ReceiveDraw;
+            (DataContext as VueModele).CollaborationClient.SelectReceived += ReceiveSelect;
+            (DataContext as VueModele).CollaborationClient.DuplicateReceived += ReceiveDuplicate;
+            (DataContext as VueModele).CollaborationClient.DeleteReceived += ReceiveDelete;
+            (DataContext as VueModele).CollaborationClient.ResetReceived += ReceiveReset;
+            (DataContext as VueModele).CollaborationClient.ResizeCanvasReceived += ReceiveResizeCanvas;
+            (DataContext as VueModele).CollaborationClient.KickedReceived += LeaveCanvas;
+            (DataContext as VueModele).CollaborationClient.ProtectionChanged += HandleProtectionChanged;
+            (DataContext as VueModele).CollaborationClient.ClientConnected += SendSelectedStrokesToOthers;
+            (DataContext as VueModele).CollaborationClient.CollaborativeSelectAsync(new List<DrawViewModel>());
+            (DataContext as VueModele).PropertyChanged += VueModelePropertyChanged;
+            (DataContext as VueModele).CollaborationClient.Initialize(Application.Current.Properties["token"].ToString());
+            (DataContext as VueModele).SubscribeChatClient();
         }
 
         private void LeaveCanvas(object sender, MessageArgs e)
