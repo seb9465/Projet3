@@ -15,13 +15,14 @@ class UmlActorFigure: UmlFigure {
     init(firstPoint: CGPoint, lastPoint: CGPoint) {
         super.init(firstPoint: firstPoint, lastPoint: lastPoint, width: BASE_WIDTH, height: BASE_WIDTH)
         self.itemType = ItemTypeEnum.Role
-
+        self.name = "Role"
     }
     
     init(origin: CGPoint) {
         super.init(touchedPoint: origin, width: BASE_WIDTH, height: BASE_HEIGHT)
         self.itemType = ItemTypeEnum.Role
         self.initializeAnchorPoints()
+        self.name = "Role"
     }
     
     override init(drawViewModel: DrawViewModel) {

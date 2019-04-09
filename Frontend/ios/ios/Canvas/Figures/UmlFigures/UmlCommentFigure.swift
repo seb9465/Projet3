@@ -16,6 +16,7 @@ class UmlCommentFigure: UmlFigure {
         super.init(firstPoint: firstPoint, lastPoint: lastPoint, width: BASE_WIDTH, height: BASE_WIDTH)
         self.itemType = ItemTypeEnum.Comment
         self.initializeAnchorPoints()
+        self.name = "Comment"
     }
     
     override init(drawViewModel: DrawViewModel) {
@@ -29,6 +30,7 @@ class UmlCommentFigure: UmlFigure {
         super.init(touchedPoint: origin, width: BASE_WIDTH, height: BASE_HEIGHT)
         self.itemType = ItemTypeEnum.Comment
         self.initializeAnchorPoints()
+        self.name = "Comment"
     }
     
     required init?(coder aDecoder: NSCoder) {

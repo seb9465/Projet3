@@ -76,7 +76,7 @@ extension Editor {
             return
         }
         
-        if (self.areModificationsSelectedByAnotherUser(drawViewModels: self.undoArray.last!.0)) {
+        if (self.areModificationsSelectedByAnotherUser(drawViewModels: self.redoArray.last!.0)) {
             return
         }
         

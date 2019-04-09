@@ -28,6 +28,7 @@ class UmlImageFigure: UmlFigure {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
     override func draw(_ rect: CGRect) {
         var width = abs(self.frame.origin.x - self.frame.maxX)
         var height = abs(self.frame.origin.y - self.frame.maxY)

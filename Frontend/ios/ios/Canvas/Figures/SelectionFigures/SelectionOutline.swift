@@ -94,7 +94,7 @@ class SelectionOutline: UIView {
     public func addUsernameSelecting(username: String) {
         if(username != "") {
             let usernameTextLayer = CATextLayer()
-            usernameTextLayer.string = username
+            usernameTextLayer.string = "  " + username
             usernameTextLayer.fontSize = 18
             usernameTextLayer.frame = self.layer.bounds
             usernameTextLayer.backgroundColor = UIColor.gray.withAlphaComponent(0.4).cgColor

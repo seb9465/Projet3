@@ -16,6 +16,7 @@ class UmlArtefactFigure: UmlFigure {
         super.init(firstPoint: firstPoint, lastPoint: lastPoint, width: BASE_WIDTH, height: BASE_WIDTH)
         self.itemType = ItemTypeEnum.Artefact
         self.initializeAnchorPoints()
+        self.name = "Artefact"
     }
     
     override init(drawViewModel: DrawViewModel) {
@@ -27,6 +28,7 @@ class UmlArtefactFigure: UmlFigure {
         super.init(touchedPoint: origin, width: BASE_WIDTH, height: BASE_HEIGHT)
         self.itemType = ItemTypeEnum.Artefact
         self.initializeAnchorPoints()
+        self.name = "Artefact"
     }
     
     required init?(coder aDecoder: NSCoder) {

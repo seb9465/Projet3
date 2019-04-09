@@ -34,6 +34,12 @@ extension Editor {
     }
     
     @objc func resizeFigure(_ sender: UIPinchGestureRecognizer) {
+        if (sender.state == .cancelled || sender.state == .ended) {
+            self.currentChange.1 = self.getSelectedFiguresDrawviewModels()
+            self.undoArray.append(self.currentChange)
+            CollaborationHub.shared!.postNewFigure(figures: self.selectedFigures)
+            CollaborationHub.shared!.selectObjects(drawViewModels: self.getSelectedFiguresDrawviewModels())
+        }
         // very important:
         if sender.numberOfTouches < 2 {
             print("avoided an obscure crash!!")
@@ -63,12 +69,6 @@ extension Editor {
         let outlineIndex: Int = self.selectionOutlines.firstIndex(where: { $0.associatedFigureID == self.selectedFigures[0].uuid })!
         self.selectionOutlines[outlineIndex].updateOutline(newFrame: self.selectedFigures[0].getSelectionFrame())
         
-        if (sender.state == .cancelled || sender.state == .ended) {
-            self.currentChange.1 = self.getSelectedFiguresDrawviewModels()
-            self.undoArray.append(self.currentChange)
-            CollaborationHub.shared!.postNewFigure(figures: self.selectedFigures)
-            CollaborationHub.shared!.selectObjects(drawViewModels: self.getSelectedFiguresDrawviewModels())
-        }
     }
     
     @objc func tap(_ sender: UILongPressGestureRecognizer) {

@@ -16,12 +16,14 @@ class UmlActivityFigure: UmlFigure {
         super.init(firstPoint: firstPoint, lastPoint: lastPoint, width: BASE_WIDTH, height: BASE_WIDTH)
         self.itemType = ItemTypeEnum.Activity
         self.initializeAnchorPoints()
+        self.name = "Activity"
     }
     
     init(origin: CGPoint) {
         super.init(touchedPoint: origin, width: BASE_WIDTH, height: BASE_HEIGHT)
         self.itemType = ItemTypeEnum.Activity
         self.initializeAnchorPoints()
+        self.name = "Activity"
     }
     
     override init(drawViewModel: DrawViewModel) {
