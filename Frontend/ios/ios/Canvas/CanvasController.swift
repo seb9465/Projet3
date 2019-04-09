@@ -252,6 +252,10 @@ class CanvasController: UIViewController {
                             },
                            completion: nil
             );
+            self.chatViewContainer.isHidden = false;
+            self.view.addSubview(self.chatViewContainer);
+            let view: UIView = self.view.subviews.last!;
+            view.layoutIfNeeded();
         } else {
             self.chatViewButton.tintColor = UIColor.black;
             UIView.animate(withDuration: 0.35,
@@ -265,6 +269,8 @@ class CanvasController: UIViewController {
                             },
                            completion: nil
             );
+            self.chatViewContainer.isHidden = true;
+            self.chatViewContainer.removeFromSuperview()
         }
     }
     
