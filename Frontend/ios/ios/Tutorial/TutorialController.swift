@@ -64,32 +64,26 @@ class TutorialController: UIViewController, UIScrollViewDelegate {
     }
     
     private func createSlides() -> [Slide] {
-        var images: [String] = [];
-        var titles: [String] = [];
-        var descriptions: [String] = [];
-//        var test: [String, String, String] = []
+        var slides: [SlideInfo] = [];
         
-        let slide1:Slide = Bundle.main.loadNibNamed("Slide", owner: self, options: nil)?.first as! Slide;
-        slide1.imageView.image = UIImage(named: "tutorial-1");
-        slide1.labelTitle.text = "Dashboard";
-        slide1.labelDesc.text = "You are now in your personal profile that contains a gallery of public and private images.";
+        slides.append(SlideInfo(imageName: "tutorial-1", title: "Dashboard", description: "You are now in your personal profile that contains a gallery of public and private images."));
+        slides.append(SlideInfo(imageName: "tutorial-2", title: "Dashboard", description: "You are now in your personal profile that contains a gallery of public and private images."));
+        slides.append(SlideInfo(imageName: "tutorial-3", title: "Chatroom", description: "Here are your channels. You can access a channel by clicking on it."));
+        slides.append(SlideInfo(imageName: "tutorial-4", title: "Register to another chatroom", description: "You can register to a new chatroom by clicking the plus sign."));
+        slides.append(SlideInfo(imageName: "", title: "You are ready to go!", description: ""))
         
-        let slide2:Slide = Bundle.main.loadNibNamed("Slide", owner: self, options: nil)?.first as! Slide;
-        slide2.imageView.image = UIImage(named: "tutorial-2");
-        slide2.labelTitle.text = "Chat";
-        slide2.labelDesc.text = "You can access the chat via the right side menu.";
+        var s: [Slide] = [];
         
-        let slide3:Slide = Bundle.main.loadNibNamed("Slide", owner: self, options: nil)?.first as! Slide;
-        slide3.imageView.image = UIImage(named: "tutorial-3");
-        slide3.labelTitle.text = "Chatroom";
-        slide3.labelDesc.text = "Here are your channels. You can access a channel by clicking on it.";
+        for slideInfos in slides {
+            let slide: Slide = Bundle.main.loadNibNamed("Slide", owner: self, options: nil)?.first as! Slide;
+            slide.imageView.image = UIImage(named: slideInfos.imageName);
+            slide.labelTitle.text = slideInfos.title;
+            slide.labelDesc.text = slideInfos.description;
+            
+            s.append(slide);
+        }
         
-        let slide4:Slide = Bundle.main.loadNibNamed("Slide", owner: self, options: nil)?.first as! Slide;
-        slide4.imageView.image = UIImage(named: "tutorial-4");
-        slide4.labelTitle.text = "Register to another chatroom";
-        slide4.labelDesc.text = "You can register to a new chatroom by clicking the plus sign.";
-        
-        return [slide1, slide2, slide3];
+        return s;
     }
     
     private func initPageControl() -> Void {
