@@ -119,8 +119,8 @@ namespace PolyPaint
                 var toRemove = new StrokeCollection(surfaceDessin.Strokes.Where(x => change.Item2.Select(y => (y as AbstractStroke).Guid).Contains((x as AbstractStroke).Guid)));
                 surfaceDessin.Strokes.Remove(toRemove);
                 (DataContext as VueModele).SelectNothing();
-                (DataContext as VueModele).CollaborationClient.CollaborativeSelectAsync(new List<DrawViewModel>());
                 (DataContext as VueModele).CollaborationClient.CollaborativeDeleteAsync(StrokeBuilder.GetDrawViewModelsFromStrokes(toRemove));
+                (DataContext as VueModele).CollaborationClient.CollaborativeSelectAsync(new List<DrawViewModel>());
             }
             else
             {
@@ -132,8 +132,8 @@ namespace PolyPaint
                     var affectedDvms = StrokeBuilder.GetDrawViewModelsFromStrokes(affectedStrokes);
                     if (!affectedDvms.Any(x => dvms.Select(y => y.Guid).Contains(x.Guid))) affectedDvms.AddRange(dvms);
                     StrokeCollection sCollection = new StrokeCollection(surfaceDessin.Strokes.Where(x => dvms.Select(y => y.Guid).Contains((x as AbstractStroke).Guid.ToString())).ToList());
-                    (DataContext as VueModele).CollaborationClient.CollaborativeSelectAsync(dvms);
                     (DataContext as VueModele).CollaborationClient.CollaborativeDrawAsync(affectedDvms);
+                    (DataContext as VueModele).CollaborationClient.CollaborativeSelectAsync(dvms);
                     Dispatcher.Invoke(() =>
                     {
                         (DataContext as VueModele).SelectItems(sCollection);
@@ -155,8 +155,8 @@ namespace PolyPaint
                 var toRemove = new StrokeCollection(surfaceDessin.Strokes.Where(x => change.Item1.Select(y => (y as AbstractStroke).Guid).Contains((x as AbstractStroke).Guid)));
                 surfaceDessin.Strokes.Remove(toRemove);
                 (DataContext as VueModele).SelectNothing();
-                (DataContext as VueModele).CollaborationClient.CollaborativeSelectAsync(new List<DrawViewModel>());
                 (DataContext as VueModele).CollaborationClient.CollaborativeDeleteAsync(StrokeBuilder.GetDrawViewModelsFromStrokes(toRemove));
+                (DataContext as VueModele).CollaborationClient.CollaborativeSelectAsync(new List<DrawViewModel>());
             }
             else
             {
@@ -168,8 +168,8 @@ namespace PolyPaint
                     var affectedDvms = StrokeBuilder.GetDrawViewModelsFromStrokes(affectedStrokes);
                     if (!affectedDvms.Any(x => dvms.Select(y => y.Guid).Contains(x.Guid))) affectedDvms.AddRange(dvms);
                     StrokeCollection sCollection = new StrokeCollection(surfaceDessin.Strokes.Where(x => dvms.Select(y => y.Guid).Contains((x as AbstractStroke).Guid.ToString())).ToList());
-                    (DataContext as VueModele).CollaborationClient.CollaborativeSelectAsync(dvms);
                     (DataContext as VueModele).CollaborationClient.CollaborativeDrawAsync(affectedDvms);
+                    (DataContext as VueModele).CollaborationClient.CollaborativeSelectAsync(dvms);
                     Dispatcher.Invoke(() =>
                     {
                         (DataContext as VueModele).SelectItems(sCollection);
